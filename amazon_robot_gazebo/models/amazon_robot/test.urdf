@@ -1,0 +1,125 @@
+<?xml version="1.0" ?>
+<robot name="amazon_robot2">
+    <joint name="amazon_robot2__left_wheel_joint" type="fixed">
+        <parent link="amazon_robot2__base"/>
+        <child link="amazon_robot2__left_wheel"/>
+        <origin rpy="0     1.5707 1.5707" xyz="0      0.27    0.04999"/>
+        <axis xyz="-1.e+00  0.e+00  9.e-05"/>
+        <limit effort="0" lower="0" upper="0" velocity="0"/>
+    </joint>
+    <joint name="amazon_robot2__right_wheel_joint" type="fixed">
+        <parent link="amazon_robot2__base"/>
+        <child link="amazon_robot2__right_wheel"/>
+        <origin rpy="0     1.5707 1.5707" xyz="0   -0.27  0.05"/>
+        <axis xyz="-1.e+00  0.e+00  9.e-05"/>
+        <limit effort="0" lower="0" upper="0" velocity="0"/>
+    </joint>
+    <joint name="amazon_robot2__lidar_joint" type="fixed">
+        <parent link="amazon_robot2__base"/>
+        <child link="amazon_robot2__lidar"/>
+        <origin rpy="0 0 0" xyz="-0.064  0     0.121"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="0" lower="0" upper="0" velocity="0"/>
+    </joint>
+    <link name="amazon_robot2__base">
+        <inertial>
+            <mass value="2"/>
+            <origin rpy="0 0 0" xyz="0   0   0.05"/>
+            <inertia ixx="0.000" ixy="0.000" ixz="0.000" iyy="0.000" iyz="0.000" izz="0.000"/>
+        </inertial>
+        <collision name="amazon_robot2__base_collision">
+            <origin rpy="0 0 0" xyz="0   0   0.05"/>
+            <geometry>
+                <box size="1 .750 .15"/>
+            </geometry>
+        </collision>
+        <collision name="amazon_robot2__front_caster_collision">
+            <origin rpy="0 0 0" xyz="0.4   0   -0.05"/>
+            <geometry>
+                <sphere radius=".05"/>
+            </geometry>
+        </collision>
+        <collision name="amazon_robot2__back_caster_collision">
+            <origin rpy="0 0 0" xyz="-0.4   0   -0.05"/>
+            <geometry>
+                <sphere radius=".05"/>
+            </geometry>
+        </collision>
+        <visual name="amazon_robot2__base_visual">
+            <origin rpy="0 0 0" xyz="0   0   0.05"/>
+            <geometry>
+                <box size="1 .750 .15"/>
+            </geometry>
+        </visual>
+        <visual name="amazon_robot2__front_caster_visual">
+            <origin rpy="0 0 0" xyz="0.4   0   -0.05"/>
+            <geometry>
+                <sphere radius=".05"/>
+            </geometry>
+        </visual>
+        <visual name="amazon_robot2__back_caster_visual">
+            <origin rpy="0 0 0" xyz="-0.4   0   -0.05"/>
+            <geometry>
+                <sphere radius=".05"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="amazon_robot2__left_wheel">
+        <inertial>
+            <mass value="0"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <collision name="amazon_robot2__collision">
+            <origin rpy="0 0 0" xyz="0   0   0.03"/>
+            <geometry>
+                <cylinder length=".05" radius=".15"/>
+            </geometry>
+        </collision>
+        <visual name="amazon_robot2__visual">
+            <origin rpy="0 0 0" xyz="0   0   0.03"/>
+            <geometry>
+                <cylinder length=".05" radius=".15"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="amazon_robot2__right_wheel">
+        <inertial>
+            <mass value="0"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <collision name="amazon_robot2__collision">
+            <origin rpy="0 0 0" xyz="0    0   -0.03"/>
+            <geometry>
+                <cylinder length=".05" radius=".15"/>
+            </geometry>
+        </collision>
+        <visual name="amazon_robot2__visual">
+            <origin rpy="0 0 0" xyz="0    0   -0.03"/>
+            <geometry>
+                <cylinder length=".05" radius=".15"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="amazon_robot2__lidar">
+        <inertial>
+            <mass value="0.125"/>
+            <origin rpy="0 0 0" xyz="0.139 0    0.15"/>
+            <inertia ixx="0.001" ixy="0.000" ixz="0.000" iyy="0.001" iyz="0.000" izz="0.001"/>
+        </inertial>
+        <collision name="amazon_robot2__lidar_sensor_collision">
+            <origin rpy="0 0 0" xyz="0.203 0    0.029"/>
+            <geometry>
+                <cylinder length="0.055" radius="0.0508"/>
+            </geometry>
+        </collision>
+        <visual name="amazon_robot2__lidar_sensor_visual">
+            <origin rpy="0 0 0" xyz="0.203 0    0.029"/>
+            <geometry>
+                <mesh filename="package://amazon_robot_gazebo/models/amazon_robot/meshes/lds.dae"
+                      scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+</robot>

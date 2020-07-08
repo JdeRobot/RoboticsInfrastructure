@@ -1,0 +1,110 @@
+<launch>
+  <arg name="x_pos" default="-2.0"/>
+  <arg name="y_pos" default="-0.5"/>
+  <arg name="z_pos" default="0.0"/>
+  <arg name="model" default="waffle_pi"/>
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+  <arg name="move_forward_only" default="false"/>
+  <arg name="open_rviz" default="true"/>
+
+
+  <arg name="map_file" default="$(find amazon_robot_description)/maps/map.yaml"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find amazon_robot_gazebo)/worlds/warehouse.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="true"/>
+  </include>
+    <!--    <arg name="world_name" value="$(find amazon_robot_gazebo)/worlds/amazon_warehouse.world"/>-->
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find amazon_robot_description)/urdf/amazon_warehouse_robot.urdf.xacro" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"  args="-urdf -model amazon_robot -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find amazon_robot_gazebo)/config/amazon_robot_control.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/amazon_robot" args="joint1_position_controller joint_state_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/amazon_robot/joint_states" />
+  </node>
+
+
+
+  <!-- move_base -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/dwa_local_planner_params_$(arg model).yaml" command="load" />
+    <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+  </node>
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz"/>
+  </group>
+
+    <!-- Arguments -->
+    <arg name="scan_topic"     default="scan"/>
+    <arg name="initial_pose_x" default="0.0"/>
+    <arg name="initial_pose_y" default="0.0"/>
+    <arg name="initial_pose_a" default="0.0"/>
+
+    <!-- AMCL -->
+    <node pkg="amcl" type="amcl" name="amcl">
+
+      <param name="min_particles"             value="500"/>
+      <param name="max_particles"             value="3000"/>
+      <param name="kld_err"                   value="0.02"/>
+      <param name="update_min_d"              value="0.20"/>
+      <param name="update_min_a"              value="0.20"/>
+      <param name="resample_interval"         value="1"/>
+      <param name="transform_tolerance"       value="0.5"/>
+      <param name="recovery_alpha_slow"       value="0.00"/>
+      <param name="recovery_alpha_fast"       value="0.00"/>
+      <param name="initial_pose_x"            value="$(arg initial_pose_x)"/>
+      <param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
+      <param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
+      <param name="gui_publish_rate"          value="50.0"/>
+
+      <remap from="scan"                      to="$(arg scan_topic)"/>
+      <param name="laser_max_range"           value="3.5"/>
+      <param name="laser_max_beams"           value="180"/>
+      <param name="laser_z_hit"               value="0.5"/>
+      <param name="laser_z_short"             value="0.05"/>
+      <param name="laser_z_max"               value="0.05"/>
+      <param name="laser_z_rand"              value="0.5"/>
+      <param name="laser_sigma_hit"           value="0.2"/>
+      <param name="laser_lambda_short"        value="0.1"/>
+      <param name="laser_likelihood_max_dist" value="2.0"/>
+      <param name="laser_model_type"          value="likelihood_field"/>
+
+      <param name="odom_model_type"           value="diff"/>
+      <param name="odom_alpha1"               value="0.1"/>
+      <param name="odom_alpha2"               value="0.1"/>
+      <param name="odom_alpha3"               value="0.1"/>
+      <param name="odom_alpha4"               value="0.1"/>
+      <param name="odom_frame_id"             value="odom"/>
+      <param name="base_frame_id"             value="base_footprint"/>
+
+    </node>
+
+</launch>

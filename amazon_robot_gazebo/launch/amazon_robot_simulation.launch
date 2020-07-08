@@ -1,0 +1,10 @@
+<launch>
+  <arg name="cmd_vel" default="/cmd_vel"/>
+  <arg name="name" default="amazon_robot"/>
+
+  <param name="cmd_vel_topic_name" value="$(arg cmd_vel)"/>
+
+  <node name="$(arg name)_drive" pkg="amazon_robot_gazebo" type="amazon_robot_drive" required="true" output="screen"/>
+
+
+</launch>
