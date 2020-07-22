@@ -1,11 +1,10 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <model name="amazon_robot2"> 
-    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+    <pose>-0.064 0 0.048 0 0 0</pose>
       <link name="base_footprint"/>
       <link name="base_link">
       <inertial>
-        <pose>-0.064 0 0.048 0 0 0</pose>
          <inertia>
             <ixx>0.001</ixx>
             <ixy>0.000</ixy>
@@ -18,7 +17,6 @@
       </inertial>
 
         <collision name="base_collision">
-          <pose>-0.064 0 0.048 0 0 0</pose>
           <geometry>
             <box>
               <size>0.532 0.532 0.188</size>
@@ -27,7 +25,6 @@
         </collision>
 
         <visual name="base_visual">
-          <pose>-0.064 0 0 0 0 0</pose>
           <geometry>
             <mesh>
               <uri>model://amazon_robot2/meshes/waffle_pi_base.dae</uri>
@@ -93,8 +90,8 @@
       </link>
 
       <link name="base_scan">
+       <pose>-0.052 0 0.222 0 0 0</pose>   
         <inertial>
-          <pose>-0.052 0 0.222 0 0 0</pose>
           <inertia>
             <ixx>0.001</ixx>
             <ixy>0.000</ixy>
@@ -107,7 +104,6 @@
         </inertial>
 
         <collision name="lidar_sensor_collision">
-          <pose>-0.052 0 0.222 0 0 0</pose>
           <geometry>
             <cylinder>
               <radius>0.0508</radius>
@@ -117,7 +113,6 @@
         </collision>
 
         <visual name="lidar_sensor_visual">
-          <pose>-0.064 0 0.242 0 0 0</pose>
           <geometry>
             <mesh>
               <uri>model://amazon_robot2/meshes/lds.dae</uri>
@@ -164,9 +159,8 @@
       </link>
 
       <link name="wheel_left_link">
-
+        <pose>0.0 0.288 0.023 -1.57 0 0</pose>
         <inertial>
-          <pose>0.0 0.288 0.023 -1.57 0 0</pose>
           <inertia>
             <ixx>0.001</ixx>
             <ixy>0.000</ixy>
@@ -179,7 +173,6 @@
         </inertial>
 
         <collision name="wheel_left_collision">
-          <pose>0.0 0.288 0.023 -1.57 0 0</pose>
           <geometry>
             <cylinder>
               <radius>0.072</radius>
@@ -211,7 +204,6 @@
         </collision>
 
         <visual name="wheel_left_visual">
-          <pose>0.0 0.288 0.023 0 0 0</pose>
           <geometry>
             <mesh>
               <uri>model://amazon_robot2/meshes/left_tire.dae</uri>
@@ -222,9 +214,8 @@
       </link>
 
       <link name="wheel_right_link">
-
+        <pose>0.0 -0.288 0.023 -1.57 0 0</pose>  
         <inertial>
-          <pose>0.0 -0.288 0.023 -1.57 0 0</pose>
           <inertia>
             <ixx>0.001</ixx>
             <ixy>0.000</ixy>
@@ -237,7 +228,6 @@
         </inertial>
       
         <collision name="wheel_right_collision">
-          <pose>0.0 -0.288 0.023 -1.57 0 0</pose>
           <geometry>
             <cylinder>
               <radius>0.072</radius>
@@ -269,7 +259,6 @@
         </collision>
 
         <visual name="wheel_right_visual">
-          <pose>0.0 -0.288 0.023 0 0 0</pose>
           <geometry>
             <mesh>
               <uri>model://amazon_robot2/meshes/right_tire.dae</uri>
@@ -348,16 +337,15 @@
       </link>
 
   <link name="lift_link"> 
+    <pose>-0.02 0.0 0.25 0 0 0</pose>
     <visual name="lift_visual">
-      <pose>-0.02 0.0 0.20 0 0 0</pose>
         <geometry>
             <box>
-              <size>0.40 0.40 0.01</size>
+              <size>0.50 0.50 0.05</size>
             </box>
         </geometry>
       </visual>
       <inertial>
-      <pose>-0.02 0.0 0.20 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -370,7 +358,6 @@
       </inertial>
       
       <collision name="lift_collision">
-        <pose>-0.02 0.0 0.20 0 0 0</pose>
         <geometry>
             <box>
               <size>0.40 0.40 0.01</size>
@@ -402,8 +389,8 @@
 
 
   <link name="link_platform_mid"> 
+    <pose>-0.02 0.0 0.17 0 0 0</pose>  
     <visual name="link_platform_mid_visual">
-        <pose>-0.02 0.0 0.17 0 0 0</pose>
         <geometry>
             <box>
               <size>0.02 0.02 0.25</size>
@@ -411,7 +398,6 @@
         </geometry>
       </visual>
       <inertial>
-      <pose>-0.02 0.0 0.17 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -424,7 +410,6 @@
       </inertial>
       
       <collision name="link_platform_mid_collision">
-        <pose>-0.02 0.0 0.17 0 0 0</pose>
         <geometry>
             <box>
               <size>0.02 0.02 0.25</size>
@@ -452,7 +437,7 @@
           </contact>
         </surface>
       </collision>
-  </link>
+    </link>
 
 
 
@@ -558,9 +543,9 @@
         <parent>link_platform_mid</parent>
         <child>lift_link</child>
         <axis>
-          <xyz>0 1 0</xyz>
+          <xyz>0 0 1</xyz>
         </axis>
-        <limit effort="10000.0" lower="-0.05" upper="0.24" velocity="0.5"/>
+        <limit effort="10000.0" lower="0.05" upper="0.25" velocity="0.5"/>
       </joint>  
 
 
