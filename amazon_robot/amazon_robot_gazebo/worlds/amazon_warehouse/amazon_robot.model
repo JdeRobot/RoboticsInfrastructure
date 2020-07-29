@@ -68,27 +68,6 @@
               <step>1.5 2 0</step>
           </distribution>
       </population>
-              <include>
-            <uri>model://warehouse_pallet</uri>
-            <name>warehouse_pallet_0</name>
-            <pose>1 -15 0 0 0 0</pose>
-        </include>
-
-        <population name="pallet_population0">
-            <model name="pallet_set0">
-                <include>
-                    <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
-                </include>
-            </model>
-            <pose>-7 -5 0 0 0 0</pose>
-            <distribution>
-                <type>grid</type>
-                <rows>2</rows>
-                <cols>3</cols>
-                <step>1.5 2 0</step>
-            </distribution>
-        </population>
 
 
         <population name="pallet_population1">

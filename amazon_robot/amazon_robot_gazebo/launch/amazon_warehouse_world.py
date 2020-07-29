@@ -31,7 +31,7 @@ def generate_launch_description():
     # world = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'worlds', world_file_name)
     # launch_file_dir = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'launch')
 
-    world_file_name = 'empty_worlds/amazon_robot.model'
+    world_file_name = 'amazon_warehouse/amazon_robot.model'
     world = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'worlds', world_file_name)
     launch_file_dir = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'launch')
 

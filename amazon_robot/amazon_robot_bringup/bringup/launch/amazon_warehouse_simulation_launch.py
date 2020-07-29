@@ -32,6 +32,11 @@ def generate_launch_description():
     launch_dir = os.path.join(bringup_dir, 'launch')
 
 
+    world_file_name = 'amazon_warehouse/amazon_robot.model'
+    world = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'worlds', world_file_name)
+    launch_file_dir = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'launch')
+
+
     # Directory of Amazon Robot Gazebo
 
     gazebo_dir = get_package_share_directory('amazon_robot_gazebo')
@@ -131,25 +136,25 @@ def generate_launch_description():
         default_value='False',
         description='Whether to execute gzclient)')
 
-    declare_world_cmd = DeclareLaunchArgument(
-        'world',
+    # declare_world_cmd = DeclareLaunchArgument(
+        # 'world',
         # TODO(orduno) Switch back once ROS argument passing has been fixed upstream
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         #                            'worlds/turtlebot3_worlds/waffle.model'),
-        default_value=os.path.join(bringup_dir, 'worlds', 'world_only.model'),
-        description='Full path to world model file to load')
+        # default_value=os.path.join(amazon_robot_gazebo, 'worlds', 'world_only.model'),
+        # description='Full path to world model file to load')
 
     # Specify the actions
-    # start_gazebo_server_cmd = ExecuteProcess(
-    #     condition=IfCondition(use_simulator),
-    #     cmd=['gzserver', '-s', ' libgazebo_ros_factory.so', world],
-    #     cwd=[launch_dir], output='screen')
+    start_gazebo_server_cmd = ExecuteProcess(
+        condition=IfCondition(use_simulator),
+        cmd=['gzserver', '-s', ' libgazebo_ros_init.so', world],
+        cwd=[launch_dir], output='screen')
 
-    # start_gazebo_client_cmd = ExecuteProcess(
-    #     condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])),
-    #     cmd=['gzclient'],
-    #     cwd=[launch_dir], output='screen')
+    start_gazebo_client_cmd = ExecuteProcess(
+        condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])),
+        cmd=['gzclient'],
+        cwd=[launch_dir], output='screen')
 
     urdf = os.path.join(bringup_dir, 'urdf', 'amazon_robot.urdf')
 
@@ -213,12 +218,12 @@ def generate_launch_description():
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_simulator_cmd)
-    ld.add_action(declare_world_cmd)
+    # ld.add_action(declare_world_cmd)
     ld.add_action(gazebo_cmd)
 
     # Add any conditioned actions
-    # ld.add_action(start_gazebo_server_cmd)
-    # ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(start_gazebo_server_cmd)
+    ld.add_action(start_gazebo_client_cmd)
 
     # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
