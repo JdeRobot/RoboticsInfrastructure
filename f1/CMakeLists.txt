@@ -32,4 +32,3 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/assets-setup.sh
 DESTINATION gazebo)
 
 
-include(cpackit.cmake)

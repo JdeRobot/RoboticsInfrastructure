@@ -232,7 +232,7 @@
               <far>15.000000</far>
           </clip>
         </camera>
-          <plugin name='camera_dump' filename='libcamera_dumpF1.so'/>
+          <plugin name='camera_dump' filename='libgazebo_ros_camera.so'/>
       </sensor>
         <visual name='visual'>
           <geometry>
