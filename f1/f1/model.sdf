@@ -612,16 +612,6 @@
           <xyz>1 0 0</xyz>
       </axis>
     </joint>
-    <plugin filename="libgazebo_ros_imu_sensor.so" name="pose3d">
-        <topicName>/F1/imu</topicName>
-        <bodyName>f1</bodyName>
-        <updateRateHZ>10.0</updateRateHZ>
-        <gaussianNoise>0.0</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>imu_link</frameName>
-      </plugin>
-
     <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
       <commandTopic>F1/cmd_vel</commandTopic>
       <odometryTopic>F1/odom</odometryTopic>
