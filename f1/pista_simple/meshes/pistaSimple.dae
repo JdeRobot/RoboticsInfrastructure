@@ -119,13 +119,13 @@
   </library_lights>
   <library_images>
     <image id="__Tile_Checker_BW_2_jpg_001" name="__Tile_Checker_BW_2_jpg_001">
-      <init_from>__Tile_Checker_BW_2.jpg.001.jpg</init_from>
+      <init_from>checker.png</init_from>
     </image>
     <image id="Grass_Light_Green_jpg_001" name="Grass_Light_Green_jpg_001">
-      <init_from>Grass_Light_Green.jpg.001.jpg</init_from>
+      <init_from>grass.png</init_from>
     </image>
     <image id="Asphalt_New_jpg_001" name="Asphalt_New_jpg_001">
-      <init_from>Asphalt_New.jpg.001.jpg</init_from>
+      <init_from>asphalt.png</init_from>
     </image>
   </library_images>
   <library_effects>
