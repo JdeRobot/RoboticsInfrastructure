@@ -101,14 +101,14 @@
           </cylinder>
         </geometry>
       </collision>
-
+<!--
       <visual name="visual">
           <geometry>
             <mesh>
             	<uri>model://f1/meshes/wheel.dae</uri>
           	</mesh>
         </geometry>
-      </visual>
+      </visual>-->
 
 		</link>     
         
@@ -135,13 +135,13 @@
         </geometry>
       </collision>
 
-      <visual name="visual">
+      <!--<visual name="visual">
           <geometry>
             <mesh>
             	<uri>model://f1/meshes/wheel.dae</uri>
           	</mesh>
         </geometry>
-      </visual>
+      </visual>-->
 
     </link>
       <link name="rear_left_wheel">
@@ -186,14 +186,14 @@
       </surface>
       </collision>
 
-      <visual name="visual">
+      <!--<visual name="visual">
          <geometry>
           <cylinder>
             <radius>.06</radius>
             <length>.07</length>
           </cylinder>
         </geometry>
-      </visual>
+      </visual>-->
 
     </link>
      
@@ -239,14 +239,14 @@
       </surface>
       </collision>
 
-      <visual name="visual">
+      <!--<visual name="visual">
          <geometry>
           <cylinder>
              <radius>.06</radius>
              <length>.07</length>
           </cylinder>
         </geometry>
-      </visual>
+      </visual>-->
 
     </link>
 
@@ -536,7 +536,7 @@
           <xyz>0 0 0</xyz>
       </axis>
     </joint>
-
+<!--
 	  <joint type="revolute" name="laser_joint">
         <pose>0 0 0 0 0 0</pose>
         <child>laser</child>
@@ -545,6 +545,7 @@
           <xyz>0 0 0</xyz>
       </axis>
     </joint>
+-->
       
       <joint type="revolute" name="front_left_steering_wheel">
         <pose>0 0 0 0 0 0</pose>
