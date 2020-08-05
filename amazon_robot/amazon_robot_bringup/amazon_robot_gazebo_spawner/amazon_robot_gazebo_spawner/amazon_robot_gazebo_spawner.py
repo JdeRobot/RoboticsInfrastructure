@@ -61,13 +61,19 @@ def main():
     node.get_logger().info('spawning `{}` on namespace `{}` at {}, {}, {}'.format(
         args.robot_name, args.robot_namespace, args.x, args.y, args.z))
 
-    # Get path to the robot's sdf file
-    if args.turtlebot_type is not None:
-        sdf_file_path = os.path.join(
-            get_package_share_directory('amazon_robot_gazebo'), 'models',
-            'amazon_robot', 'model.sdf')
-    else:
-        sdf_file_path = args.sdf
+
+    sdf_file_path = os.path.join(
+        get_package_share_directory('amazon_robot_gazebo'), 'models',
+        'amazon_robot2', 'model.sdf')
+
+
+    # # Get path to the robot's sdf file
+    # if args.turtlebot_type is not None:
+    #     sdf_file_path = os.path.join(
+    #         get_package_share_directory('amazon_robot_gazebo'), 'models',
+    #         'amazon_robot', 'model.sdf')
+    # else:
+    #     sdf_file_path = args.sdf
 
     # We need to remap the transform (/tf) topic so each robot has its own.
     # We do this by adding `ROS argument entries` to the sdf file for

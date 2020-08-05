@@ -348,8 +348,8 @@
       </link>
 
   <link name="lift_link"> 
+    <pose>-0.02 0.0 0.20 0 0 0</pose>
     <visual name="lift_visual">
-      <pose>-0.02 0.0 0.20 0 0 0</pose>
         <geometry>
             <box>
               <size>0.40 0.40 0.01</size>
@@ -357,7 +357,6 @@
         </geometry>
       </visual>
       <inertial>
-      <pose>-0.02 0.0 0.20 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -370,7 +369,6 @@
       </inertial>
       
       <collision name="lift_collision">
-        <pose>-0.02 0.0 0.20 0 0 0</pose>
         <geometry>
             <box>
               <size>0.40 0.40 0.01</size>
@@ -379,8 +377,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>200000.0</mu>
-              <mu2>200000.0</mu2>
+              <mu>1</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
               <slip1>0.0</slip1>
               <slip2>0.0</slip2>
@@ -403,7 +401,7 @@
 
   <link name="link_platform_mid"> 
     <visual name="link_platform_mid_visual">
-        <pose>-0.02 0.0 0.17 0 0 0</pose>
+        <pose>-0.02 0.0 0.30 0 0 0</pose>
         <geometry>
             <box>
               <size>0.02 0.02 0.25</size>
@@ -411,7 +409,7 @@
         </geometry>
       </visual>
       <inertial>
-      <pose>-0.02 0.0 0.17 0 0 0</pose>
+        <pose>-0.02 0.0 0.30 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -424,7 +422,7 @@
       </inertial>
       
       <collision name="link_platform_mid_collision">
-        <pose>-0.02 0.0 0.17 0 0 0</pose>
+        <pose>-0.02 0.0 0.30 0 0 0</pose>
         <geometry>
             <box>
               <size>0.02 0.02 0.25</size>
@@ -433,8 +431,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>200000.0</mu>
-              <mu2>200000.0</mu2>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
               <fdir1>0 0 0</fdir1>
               <slip1>0.0</slip1>
               <slip2>0.0</slip2>
@@ -543,6 +541,13 @@
           <xyz>0 0 1</xyz>
         </axis>
       </joint> -->
+      
+      <joint name="imu_joint" type="fixed">
+          <parent>base_link</parent>
+          <child>imu_link</child>
+          <pose>0.0 0.0 0.010 0 0 0</pose>
+      </joint>
+      
 
       <joint name="platform_joint" type="fixed">
         <parent>base_link</parent>
@@ -558,9 +563,38 @@
         <parent>link_platform_mid</parent>
         <child>lift_link</child>
         <axis>
-          <xyz>0 1 0</xyz>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0.20</lower>
+          <upper>0.30</upper>
+          <effort>190</effort>
+          <velocity>5.89</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <provide_feedback>1</provide_feedback>
+        <ode>
+          <provide_feedback>1</provide_feedback>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+        <!-- <axis>
+          <use_parent_model_frame>true</use_parent_model_frame>
+          <xyz>0 0 1</xyz>
         </axis>
-        <limit effort="10000.0" lower="-0.05" upper="0.24" velocity="0.5"/>
+        <limit effort="6" lower="0.00" upper="0.100" velocity="50"/> -->
       </joint>  
 
 
