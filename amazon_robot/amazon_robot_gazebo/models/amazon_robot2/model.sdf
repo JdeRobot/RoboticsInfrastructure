@@ -380,7 +380,7 @@
         </link>
         <link name="link_platform_mid">
             <visual name="link_platform_mid_visual">
-                <pose>-0.02 0.0 0.30 0 0 0</pose>
+                <pose>-0.02 0.0 0.25 0 0 0</pose>
                 <geometry>
                     <box>
                         <size>0.02 0.02 0.25</size>
@@ -388,7 +388,7 @@
                 </geometry>
             </visual>
             <inertial>
-                <pose>-0.02 0.0 0.30 0 0 0</pose>
+                <pose>-0.02 0.0 0.25 0 0 0</pose>
                 <inertia>
                     <ixx>0.001</ixx>
                     <ixy>0.000</ixy>
@@ -400,10 +400,10 @@
                 <mass>0.1</mass>
             </inertial>
             <collision name="link_platform_mid_collision">
-                <pose>-0.02 0.0 0.30 0 0 0</pose>
+                <pose>-0.02 0.0 0.25 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>0.02 0.02 0.25</size>
+                        <size>0.02 0.02 0.20</size>
                     </box>
                 </geometry>
                 <surface>
@@ -490,9 +490,9 @@
             <axis>
                 <xyz>0 0 1</xyz>
                 <limit>
-                    <lower>0.20</lower>
-                    <upper>0.30</upper>
-                    <effort>190</effort>
+                    <lower>0.18</lower>
+                    <upper>0.32</upper>
+                    <effort>20</effort>
                     <velocity>5.89</velocity>
                 </limit>
                 <dynamics>
@@ -527,9 +527,9 @@
             <right_joint>wheel_right_joint</right_joint>
             <!-- kinematics -->
             <wheel_separation>0.574</wheel_separation>
-            <wheel_diameter>0.144</wheel_diameter>
+            <wheel_diameter>0.120</wheel_diameter>
             <!-- limits -->
-            <max_wheel_torque>50</max_wheel_torque>
+            <max_wheel_torque>70</max_wheel_torque>
             <max_wheel_acceleration>4.0</max_wheel_acceleration>
             <command_topic>cmd_vel</command_topic>
             <!-- output -->
@@ -550,16 +550,6 @@
             <joint_name>wheel_left_joint</joint_name>
             <joint_name>wheel_right_joint</joint_name>
         </plugin>
-        <plugin name="amazon_ros_force_system" filename="libgazebo_ros_force.so">
-            <ros>
-                <!-- <namespace>/tb3</namespace> -->
-              <namespace>/test</namespace>
-              <remapping>gazebo_ros_force:=force_test</remapping>
-            </ros>
-            <!-- Name of link within model which will receive the force -->
-            <link_name>lift_link</link_name>
-            <!-- Frame where the force/torque will be applied (options: world; link)-->
-            <force_frame>link</force_frame>
-        </plugin>
+       
     </model>
 </sdf>

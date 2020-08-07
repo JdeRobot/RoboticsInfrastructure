@@ -59,7 +59,7 @@
           <model name="pallet_set0">
               <include>
                   <uri>model://warehouse_pallet</uri>
-                  <pose>0 0 0 0 0 1.57</pose>
+                  <pose>0 0 0 0 0 0</pose>
               </include>
           </model>
           <pose>-7 -5 0 0 0 0</pose>
@@ -76,7 +76,7 @@
             <model name="pallet_set1">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>0 -5 0 0 0 0</pose>
@@ -93,7 +93,7 @@
             <model name="pallet_set2">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>7 -5 0 0 0 0</pose>
@@ -111,7 +111,7 @@
             <model name="pallet_set3">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>-7 5 0 0 0 0</pose>
@@ -128,7 +128,7 @@
             <model name="pallet_set4">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>0 5 0 0 0 0</pose>
@@ -145,7 +145,7 @@
             <model name="pallet_set5">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>7 5 0 0 0 0</pose>
@@ -162,7 +162,7 @@
             <model name="pallet_set6">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>-2 -13.5 0 0 0 0</pose>
@@ -179,7 +179,7 @@
             <model name="pallet_set7">
                 <include>
                     <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
             <pose>-2 13.5 0 0 0 0</pose>
