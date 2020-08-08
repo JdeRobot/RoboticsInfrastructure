@@ -28,7 +28,6 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 '--robot_name', launch.substitutions.LaunchConfiguration('robot_name'),
-                '--robot_namespace', launch.substitutions.LaunchConfiguration('robot_name'),
                 '-x', launch.substitutions.LaunchConfiguration('x_pose'),
                 '-y', launch.substitutions.LaunchConfiguration('y_pose'),
                 '-z', launch.substitutions.LaunchConfiguration('z_pose')]),

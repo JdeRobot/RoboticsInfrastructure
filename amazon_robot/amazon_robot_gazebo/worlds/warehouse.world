@@ -1,55 +1,87 @@
-<?xml version="1.0" ?>
-<sdf version="1.4">
-    <world name="default">
-        <!-- World Camera Settings-->
-        <gui>
-            <camera name="user_camera">
-                <pose frame=''>24.1194 -0.328974 17.8913 0 0.683643 3.13619</pose>
-                <!--<pose frame=''>0.715311 -25.388 35.3666 0 0.999643 1.53219</pose>-->
-                <view_controller>orbit</view_controller>
-                <projection_type>perspective</projection_type>
-            </camera>
-        </gui>
-        <!--A global light source -->
-        <include>
-            <uri>model://sun</uri>
-            <cast_shadows>0</cast_shadows>
-        </include>
-        <!-- A ground plane -->
-        <include>
-            <uri>model://ground_plane</uri>
-        </include>
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="default">
 
-        <!-- Warehouse pallets -->
-        <!--    <include>
-              <uri>model://warehouse_pallet</uri>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <scene>
+      <shadows>false</shadows>
+    </scene>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>0.319654 -0.235002 9.29441 0 1.5138 0.009599</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <physics type="ode">
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.400000</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000.000000</contact_max_correcting_vel>
+          <contact_surface_layer>0.01000</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+
+    <!-- <include>
+      <uri>model://amazon_robot2</uri>
+        <pose>1 -15 0 0 0 0</pose>
+
+    </include> -->
+
+    <!-- <plugin name="gazebo_ros_joint_state_publisher"
+          filename="libgazebo_ros_joint_state_publisher.so">
+        <ros>
+            <namespace>/robot</namespace>
+            <remapping>joint_states:=joint_states_demo</remapping>
+        </ros>
+        <update_rate>2</update_rate>
+        <joint_name>lift_joint</joint_name>
+        <joint_name>lower_joint</joint_name>
+    </plugin> -->
+
+
+    <include>
+          <uri>model://warehouse_pallet</uri>
           <name>warehouse_pallet_0</name>
-            </include>
-        -->
+          <pose>1 -15 0 0 0 0</pose>
+    </include>
 
-        <!-- Temporarily delivered pallet -->
-        <include>
-            <uri>model://warehouse_pallet</uri>
-            <name>warehouse_pallet_0</name>
-            <pose>1 -15 0 0 0 0</pose>
-        </include>
-
-        <population name="pallet_population0">
-            <model name="pallet_set0">
-                <include>
-                    <uri>model://warehouse_pallet</uri>
-                    <pose>0 0 0 0 0 1.57</pose>
-                </include>
-            </model>
-            <pose>-7 -5 0 0 0 0</pose>
-            <distribution>
-                <type>grid</type>
-                <rows>2</rows>
-                <cols>3</cols>
-                <step>1.5 2 0</step>
-            </distribution>
-        </population>
-
+    <population name="pallet_population0">
+          <model name="pallet_set0">
+              <include>
+                  <uri>model://warehouse_pallet</uri>
+                  <pose>0 0 0 0 0 1.57</pose>
+              </include>
+          </model>
+          <pose>-7 -5 0 0 0 0</pose>
+          <distribution>
+              <type>grid</type>
+              <rows>2</rows>
+              <cols>3</cols>
+              <step>1.5 2 0</step>
+          </distribution>
+      </population>
 
         <population name="pallet_population1">
             <model name="pallet_set1">
@@ -169,36 +201,8 @@
                 <step>1.5 2 0</step>
             </distribution>
         </population>
-
-
-<!--        &lt;!&ndash; Our Robot model &ndash;&gt;-->
-<!--        <model name="amazon_warehouse_robot">-->
-<!--            <include>-->
-<!--                <uri>model://amazon_robot</uri>-->
-<!--                <pose>0 0 0 0 0 0</pose>-->
-<!--            </include>-->
-<!--        </model>-->
-
-        <!-- Walls that surround the warehouse -->
         <include>
             <uri>model://warehouse_walls</uri>
         </include>
-
-        <!-- A visual element to show staging area
-          <model name="staging_area">
-          <link name="staging_area_link">
-                <visual name="staging_area_visual">
-            <pose>10 0 0 0 0 0</pose>
-                  <cast_shadows>false</cast_shadows>
-            <geometry>
-              <plane>
-                <normal>0 0 1</normal>
-                <size>15 19</size>
-            </plane>
-            </geometry>
-                </visual>
-          </link>
-          </model>
-        -->
-    </world>
+  </world>
 </sdf>
