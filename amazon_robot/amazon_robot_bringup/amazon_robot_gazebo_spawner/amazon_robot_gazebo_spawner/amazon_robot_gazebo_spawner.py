@@ -86,7 +86,6 @@ def main():
             # broadcasting a transform between`odom` and `base_footprint`
             break
 
-    
     # Set data for request
     request = SpawnEntity.Request()
     request.name = args.robot_name
@@ -108,9 +107,6 @@ def main():
     else:
         node.get_logger().info('spawning `{}` at {}, {}, {}'.format(
             args.robot_name, args.x, args.y, args.z))
-
-
-    
 
     node.get_logger().info('Sending service request to `/spawn_entity`')
     future = client.call_async(request)

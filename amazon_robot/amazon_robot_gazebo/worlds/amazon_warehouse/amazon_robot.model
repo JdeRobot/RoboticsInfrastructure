@@ -194,6 +194,5 @@
         <include>
             <uri>model://warehouse_walls</uri>
         </include>
-
   </world>
 </sdf>

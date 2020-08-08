@@ -83,7 +83,6 @@
           </distribution>
       </population>
 
-
         <population name="pallet_population1">
             <model name="pallet_set1">
                 <include>
@@ -202,10 +201,8 @@
                 <step>1.5 2 0</step>
             </distribution>
         </population>
-
         <include>
             <uri>model://warehouse_walls</uri>
         </include>
-
   </world>
 </sdf>
