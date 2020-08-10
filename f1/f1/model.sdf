@@ -281,7 +281,7 @@
 		<plugin name="camera_controller_left" filename="libgazebo_ros_camera.so">
 			<alwaysOn>true</alwaysOn>
 			<updateRate>0.0</updateRate>
-			<cameraName>F1/cameraL</cameraName>
+			<cameraName>F1ROS/cameraL</cameraName>
 			<imageTopicName>image_raw</imageTopicName>
 			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
 			<frameName>camera_top_body_left</frameName>
@@ -362,7 +362,7 @@
 		<plugin name="camera_controller_right" filename="libgazebo_ros_camera.so">
 			<alwaysOn>true</alwaysOn>
 			<updateRate>0.0</updateRate>
-			<cameraName>F1/cameraR</cameraName>
+			<cameraName>F1ROS/cameraR</cameraName>
 			<imageTopicName>image_raw</imageTopicName>
 			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
 			<frameName>camera_top_body_right</frameName>
@@ -614,8 +614,8 @@
       </axis>
     </joint>
     <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
-      <commandTopic>F1/cmd_vel</commandTopic>
-      <odometryTopic>F1/odom</odometryTopic>
+      <commandTopic>F1ROS/cmd_vel</commandTopic>
+      <odometryTopic>F1ROS/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometryRate>20.0</odometryRate>
       <robotBaseFrame>f1</robotBaseFrame>
