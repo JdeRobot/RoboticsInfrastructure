@@ -162,7 +162,7 @@ RobotController::on_activate(const rclcpp_lifecycle::State & /*state*/)
 
   if (use_bond_) {
     // create bond connection
-    createBond();
+    nav2_util::LifecycleNode::createBond();
   }
 
   return nav2_util::CallbackReturn::SUCCESS;
@@ -177,7 +177,7 @@ RobotController::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 
   if (use_bond_) {
     // destroy bond connection
-    destroyBond();
+    nav2_util::LifecycleNode::destroyBond();
   }
 
   return nav2_util::CallbackReturn::SUCCESS;

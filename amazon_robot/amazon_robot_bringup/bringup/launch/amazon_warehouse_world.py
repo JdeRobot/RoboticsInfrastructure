@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (c) 2018 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,8 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""This is all-in-one launch script intended for use by nav2 developers."""
+# Modified by:
+# Shreyas Gokhale <shreyas6gokhale@gmail.com>
 
 import os
 
@@ -25,22 +26,21 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
-    # Get the launch directory
-    bringup_dir = get_package_share_directory('amazon_robot_bringup')
-    launch_dir = os.path.join(bringup_dir, 'launch')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
+    nav2_bringup_dir = get_package_share_directory('nav2_bringup')
+    nav2_launch_dir = os.path.join(nav2_bringup_dir, 'launch')
 
-    world_file_name = 'amazon_warehouse/amazon_robot.model'
-    world = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'worlds', world_file_name)
-    launch_file_dir = os.path.join(get_package_share_directory('amazon_robot_gazebo'), 'launch')
+    amazon_gazebo_package_dir = get_package_share_directory('amazon_robot_gazebo')
+    amazon_gazebo_package_launch_dir= os.path.join(amazon_gazebo_package_dir, 'launch')
+    
+    amazon_description_dir = get_package_share_directory('amazon_robot_description')
+    this_launch_dir = os.path.dirname(os.path.realpath(__file__))
 
+    amazon_bringup_package_dir = get_package_share_directory('amazon_robot_bringup')
 
-    # Directory of Amazon Robot Gazebo
-
-    gazebo_dir = get_package_share_directory('amazon_robot_gazebo')
-    gazebo_launch_dir = os.path.join(gazebo_dir, 'launch')
+    spawn_robot = True
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -60,6 +60,7 @@ def generate_launch_description():
     headless = LaunchConfiguration('headless')
     world = LaunchConfiguration('world')
 
+
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
     # https://github.com/ros/geometry2/issues/32
@@ -69,7 +70,9 @@ def generate_launch_description():
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
 
+
     # Declare the launch arguments
+    # Useful with multi robot
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace',
         default_value='',
@@ -80,14 +83,10 @@ def generate_launch_description():
         default_value='false',
         description='Whether to apply a namespace to the navigation stack')
 
-    declare_slam_cmd = DeclareLaunchArgument(
-        'slam',
-        default_value='False',
-        description='Whether run a SLAM')
-
+    # Map
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(bringup_dir, 'maps', 'amazon_warehouse.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'maps', 'amazon_warehouse.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -95,11 +94,14 @@ def generate_launch_description():
         default_value='true',
         description='Use simulation (Gazebo) clock if true')
 
+    # Navigation 2 parameters
+    # Change accordingly
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(bringup_dir, 'params', 'nav2_params_with_control.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'params', 'nav2_params_with_control.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
+    # Navigation 2 default behaviour tree. Might need to change in the future
     declare_bt_xml_cmd = DeclareLaunchArgument(
         'default_bt_xml_filename',
         default_value=os.path.join(
@@ -107,13 +109,18 @@ def generate_launch_description():
             'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
         description='Full path to the behavior tree xml file to use')
 
+    declare_slam_cmd = DeclareLaunchArgument(
+        'slam',
+        default_value='False',
+        description='Whether run a SLAM')
+    
     declare_autostart_cmd = DeclareLaunchArgument(
         'autostart', default_value='true',
         description='Automatically startup the nav2 stack')
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config_file',
-        default_value=os.path.join(bringup_dir, 'rviz', 'nav2_default_view.rviz'),
+        default_value=os.path.join(nav2_bringup_dir, 'rviz', 'nav2_default_view.rviz'),
         description='Full path to the RVIZ config file to use')
 
     declare_use_simulator_cmd = DeclareLaunchArgument(
@@ -136,27 +143,29 @@ def generate_launch_description():
         default_value='False',
         description='Whether to execute gzclient)')
 
-    # declare_world_cmd = DeclareLaunchArgument(
-        # 'world',
+    # Our own gazebo world from CustomRobots
+    declare_world_cmd = DeclareLaunchArgument(
+        'world',
         # TODO(orduno) Switch back once ROS argument passing has been fixed upstream
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         #                            'worlds/turtlebot3_worlds/waffle.model'),
-        # default_value=os.path.join(amazon_robot_gazebo, 'worlds', 'world_only.model'),
-        # description='Full path to world model file to load')
+        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'amazon_warehouse' , 'amazon_robot.model'),
+        description='Full path to world model file to load')
 
+
+    # Default Nav2 actions
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
-        condition=IfCondition(use_simulator),
-        cmd=['gzserver', '-s', ' libgazebo_ros_init.so', world],
-        cwd=[launch_dir], output='screen')
+        cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
+        cwd=[nav2_launch_dir], output='screen')
 
     start_gazebo_client_cmd = ExecuteProcess(
-        condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])),
         cmd=['gzclient'],
-        cwd=[launch_dir], output='screen')
+        cwd=[nav2_launch_dir], output='screen')
 
-    urdf = os.path.join(bringup_dir, 'urdf', 'amazon_robot.urdf')
+    # Our own robot urdf from CustomRobot
+    urdf = os.path.join(amazon_description_dir, 'urdf', 'amazon_robot_xacro_generated.urdf')
 
     start_robot_state_publisher_cmd = Node(
         condition=IfCondition(use_robot_state_pub),
@@ -170,21 +179,14 @@ def generate_launch_description():
         arguments=[urdf])
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'rviz_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'rviz_launch.py')),
         condition=IfCondition(use_rviz),
         launch_arguments={'namespace': '',
                           'use_namespace': 'False',
                           'rviz_config': rviz_config_file}.items())
 
-    gazebo_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(gazebo_launch_dir, 'amazon_warehouse_world.py')),
-        condition=IfCondition(use_rviz),
-        launch_arguments={'namespace': '',
-                          'use_namespace': 'False'}.items())
-
-
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'bringup_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(amazon_bringup_package_dir, 'launch', 'bringup_launch.py')),
         launch_arguments={'namespace': namespace,
                           'use_namespace': use_namespace,
                           'slam': slam,
@@ -193,12 +195,18 @@ def generate_launch_description():
                           'params_file': params_file,
                           'default_bt_xml_filename': default_bt_xml_filename,
                           'autostart': autostart}.items())
+    
+    if spawn_robot is True:
+        spawn_robot_cmd = IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(amazon_bringup_package_dir, 'launch',
+                                                            'spawn_tb3_launch.py')),
+                    launch_arguments={
+                                    'x_pose': '0',
+                                    'y_pose': '0',
+                                    'z_pose': '0', 
+                                    'robot_name': 'amazon_robot'                           
+                                    }.items())
 
-    """ spawn_robot_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'spawn_tb3_launch.py')),
-        launch_arguments={'namespace': namespace,
-                          'use_namespace': use_namespace
-                          'robot_name' : }.items()) """
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -218,17 +226,19 @@ def generate_launch_description():
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_simulator_cmd)
-    # ld.add_action(declare_world_cmd)
-    ld.add_action(gazebo_cmd)
+    ld.add_action(declare_world_cmd)
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
 
+    if spawn_robot is True:
+        ld.add_action(spawn_robot_cmd)
+
+
     # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
-    # ld.add_action(spawn_robot_cmd)
 
     return ld

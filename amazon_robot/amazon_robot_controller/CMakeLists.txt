@@ -8,7 +8,6 @@ find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(amazon_robot_bt REQUIRED)
 find_package(nav2_behavior_tree REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
@@ -17,6 +16,7 @@ find_package(std_srvs REQUIRED)
 find_package(nav2_util REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(amazon_robot_msg REQUIRED)
+find_package(bondcpp REQUIRED)
 
 nav2_package()
 
@@ -44,9 +44,9 @@ set(dependencies
   rclcpp_lifecycle
   std_msgs
   geometry_msgs
-  amazon_robot_bt
   nav2_behavior_tree
   nav_msgs
+  bondcpp
   nav2_msgs
   behaviortree_cpp_v3
   std_srvs
