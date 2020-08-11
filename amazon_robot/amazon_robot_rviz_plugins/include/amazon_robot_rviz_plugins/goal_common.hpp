@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <memory>
 
-#include "amazon_robot_controller/robot_controller.hpp"
-#include "rclcpp/rclcpp.hpp"
+#ifndef AMAZON_ROBOT_RVIZ_PLUGINS__GOAL_COMMON_HPP_
+#define AMAZON_ROBOT_RVIZ_PLUGINS__GOAL_COMMON_HPP_
 
-int main(int argc, char ** argv)
+#include "amazon_robot_rviz_plugins/goal_pose_updater.hpp"
+
+namespace amazon_robot_rviz_plugins
 {
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<amazon_robot_controller::RobotController>();
-  rclcpp::spin(node->get_node_base_interface());
-  rclcpp::shutdown();
+extern GoalPoseUpdater GoalUpdater;
+}  // amazon_robot_rviz_plugins
 
-  return 0;
-}
+#endif  //  

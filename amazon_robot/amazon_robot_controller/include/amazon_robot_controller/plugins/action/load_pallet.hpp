@@ -20,6 +20,7 @@
 
 
 #include <string>
+#include <vector>
 
 // #include "behaviortree_cpp_v3/behavior_tree.h"
 // #include "behaviortree_cpp_v3/bt_factory.h"
@@ -30,16 +31,16 @@
 namespace amazon_robot_controller
 {
 
-class LoadPallet : public BT::ActionNodeBase
+class LoadPallet : public BT::SyncActionNode
 {
 public:
   explicit LoadPallet(
-    const std::string & xml_tag_name,
+    const std::string & action_name,
     const BT::NodeConfiguration & conf);
 
   LoadPallet() = delete;
 
-  void halt();
+  // void halt();
 
   BT::NodeStatus tick() override;
 

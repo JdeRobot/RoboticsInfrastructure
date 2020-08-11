@@ -317,5 +317,6 @@ robot_controller:
     - nav2_time_expired_condition_bt_node
     - nav2_distance_traveled_condition_bt_node
     - nav2_navigate_to_pose_action_bt_node
-    - nav2_all_goals_achieved_condition_bt_node
-    - nav2_get_next_goal_action_bt_node
+    - amazon_robot_all_goals_achieved_condition_bt_node
+    - amazon_robot_get_next_goal_action_bt_node
+    - amazon_robot_load_pallet_action_bt_node

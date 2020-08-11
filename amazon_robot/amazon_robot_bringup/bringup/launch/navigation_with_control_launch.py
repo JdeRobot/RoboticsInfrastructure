@@ -74,7 +74,7 @@ def generate_launch_description():
             description='Top-level namespace'),
 
         DeclareLaunchArgument(
-            'use_sim_time', default_value='false',
+            'use_sim_time', default_value='true',
             description='Use simulation (Gazebo) clock if true'),
 
         DeclareLaunchArgument(

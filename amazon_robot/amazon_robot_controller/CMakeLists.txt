@@ -61,7 +61,7 @@ list(APPEND plugin_libs amazon_robot_all_goals_achieved_condition_bt_node)
 add_library(amazon_robot_get_next_goal_action_bt_node SHARED plugins/action/get_next_goal_action.cpp )
 list(APPEND plugin_libs amazon_robot_get_next_goal_action_bt_node)
 
-add_library(amazon_robot_load_pallet_action_bt_node SHARED plugins/action/LoadPallet.cpp)
+add_library(amazon_robot_load_pallet_action_bt_node SHARED plugins/action/load_pallet.cpp)
 list(APPEND plugin_libs amazon_robot_load_pallet_action_bt_node)
 
 foreach(bt_plugin ${plugin_libs})

@@ -17,7 +17,7 @@
 #include <string>
 #include <iostream>
 
-#include "amazon_robot_controller/plugins/action/LoadPallet.hpp"
+#include "amazon_robot_controller/plugins/action/load_pallet.hpp"
 // #include "gazebo_msgs/apply_joint_effort.hpp"
 // #include "behaviortree_cpp_v3/behavior_tree.h"
 // #include "nav2_behavior_tree/bt_service_node.hpp"
@@ -26,9 +26,9 @@ namespace amazon_robot_controller
 {
 
 LoadPallet::LoadPallet(
-  const std::string & xml_tag_name,
+  const std::string & action_name,
   const BT::NodeConfiguration & conf)
-: BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
+: BT::SyncActionNode(action_name, conf), counter_(0)
 {
   // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
   // rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
