@@ -1,4 +1,4 @@
-// Copyright 2019 Intelligent Robotics Lab
+// Copyright (c) 2020  Shreyas Gokhale 
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
 namespace amazon_robot_controller
 {
 
-class LoadPallet : public BT::SyncActionNode
+class LoadPallet : public BT::ActionNodeBase
 {
 public:
   explicit LoadPallet(
@@ -40,7 +40,7 @@ public:
 
   LoadPallet() = delete;
 
-  // void halt();
+  void halt() override;
 
   BT::NodeStatus tick() override;
 
@@ -49,8 +49,8 @@ public:
     return {BT::InputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
         "goals",
         "Destinations to plan to with Load / Unload"),
-      BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?")};
-      // BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
+      BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
+      BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
   }
 
 private:

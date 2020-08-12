@@ -28,22 +28,26 @@ namespace amazon_robot_controller
 LoadPallet::LoadPallet(
   const std::string & action_name,
   const BT::NodeConfiguration & conf)
-: BT::SyncActionNode(action_name, conf), counter_(0)
+: BT::ActionNodeBase(action_name, conf), counter_(0)
 {
   // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
   // rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
   // node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
 }
-// void
-// LoadPallet::halt()
-// {
-//   std::cout << "LoadPallet halt" << std::endl;
-// }
+
+void
+LoadPallet::halt()
+{
+  std::cout << "LoadPallet halt" << std::endl;
+}
+
 BT::NodeStatus LoadPallet::tick()
 {
   std::vector<geometry_msgs::msg::PoseStamped> goals;
 
   std::cout << "LoadPallet tick " << counter_ << std::endl;
+  // std::cout << "Received Goal " << goals << std::endl;
+
 
 
   if (counter_++ < 5) {

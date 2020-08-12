@@ -97,7 +97,7 @@ def generate_launch_description():
             'controller_bt_xml_filename',
             default_value=os.path.join(
                 get_package_share_directory('amazon_robot_controller'),
-                'behavior_trees', 'follow_waypoints.xml'),
+                'behavior_trees', 'follow_waypoints_and_load.xml'),
             description='Full path to the behavior tree xml file to use for robot_controller'),
 
         DeclareLaunchArgument(

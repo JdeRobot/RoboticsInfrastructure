@@ -1,5 +1,13 @@
 {
     "python.autoComplete.extraPaths": [
         "/opt/ros/foxy/lib/python3.8/site-packages"
-    ]
+    ],
+    "files.associations": {
+        "cmath": "cpp",
+        "cstddef": "cpp",
+        "string": "cpp",
+        "algorithm": "cpp",
+        "memory_resource": "cpp",
+        "new": "cpp"
+    }
 }
