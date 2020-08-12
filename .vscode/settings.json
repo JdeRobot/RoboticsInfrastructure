@@ -8,6 +8,12 @@
         "string": "cpp",
         "algorithm": "cpp",
         "memory_resource": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "unordered_map": "cpp",
+        "memory": "cpp",
+        "future": "cpp",
+        "istream": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp"
     }
 }

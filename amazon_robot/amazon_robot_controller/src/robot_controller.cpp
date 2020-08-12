@@ -89,6 +89,17 @@ RobotController::on_configure(const rclcpp_lifecycle::State & /*state*/)
   // Support for handling the topic-based goal pose from rviz
   client_node_ = std::make_shared<rclcpp::Node>("_", options);
 
+  // set up node 2
+  load_client_node_ = rclcpp::Node::make_shared("load_client_node");
+
+  //gazebo_msgs/srv/ApplyJointEffort
+  rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_client =
+    load_client_node_->create_client<gazebo_msgs::srv::ApplyJointEffort>("apply_joint_effort");
+
+
+
+
+
   action_server_ = std::make_unique<ActionServer>(
     get_node_base_interface(),
     get_node_clock_interface(),
@@ -112,6 +123,9 @@ RobotController::on_configure(const rclcpp_lifecycle::State & /*state*/)
   blackboard_->set<bool>("initial_pose_received", false);  // NOLINT
   blackboard_->set<int>("number_recoveries", 0);  // NOLINT
   blackboard_->set<int>("joint_position", 0);  // NOLINT
+  blackboard_->set<rclcpp::Node::SharedPtr>("load_node", load_client_node_);  // NOLINT
+  blackboard_->set<rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr>("load_client", load_client);  // NOLINT
+
 
   // Get the BT filename to use from the node parameter
   std::string controller_bt_xml_filename;
@@ -319,7 +333,6 @@ RobotController::initializeBlackboard(std::shared_ptr<const Action::Goal> goal)
   blackboard_->set("goal", goal->poses[0]);
   blackboard_->set("goal_achieved", false);
   blackboard_->set("joint_state", 0);
-
 }
 
 }  // namespace amazon_robot_controller

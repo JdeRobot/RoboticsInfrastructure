@@ -31,6 +31,8 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/create_timer_ros.h"
 #include "amazon_robot_msg/action/follow_targets.hpp"
+#include "gazebo_msgs/srv/apply_joint_effort.hpp"
+
 
 
 namespace amazon_robot_controller
@@ -129,6 +131,9 @@ protected:
 
   // A regular, non-spinning ROS node that we can use for calls to the action client
   rclcpp::Node::SharedPtr client_node_;
+
+  // Client node for calling lift effort service
+  rclcpp::Node::SharedPtr load_client_node_;
 
   // The parameters for test
   // Whether or not to use bond

@@ -17,6 +17,7 @@ find_package(nav2_util REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(amazon_robot_msg REQUIRED)
 find_package(bondcpp REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 
 nav2_package()
 
@@ -53,6 +54,7 @@ set(dependencies
   nav2_util
   tf2_ros
   amazon_robot_msg
+  gazebo_msgs
 )
 
 add_library(amazon_robot_all_goals_achieved_condition_bt_node SHARED plugins/condition/all_goals_achieved_condition.cpp)

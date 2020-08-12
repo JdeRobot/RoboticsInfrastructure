@@ -30,9 +30,9 @@ LoadPallet::LoadPallet(
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(action_name, conf), counter_(0)
 {
-  // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
-  // rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
-  // node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
+  load_pallet_node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("load_node");
+  load_pallet_client_ = config().blackboard->get<rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr>("load_client");
+
 }
 
 void
@@ -43,11 +43,38 @@ LoadPallet::halt()
 
 BT::NodeStatus LoadPallet::tick()
 {
+
   std::vector<geometry_msgs::msg::PoseStamped> goals;
 
   std::cout << "LoadPallet tick " << counter_ << std::endl;
   // std::cout << "Received Goal " << goals << std::endl;
 
+  auto request = std::make_shared<gazebo_msgs::srv::ApplyJointEffort::Request>();
+  // '{joint_name: "lift_joint", effort: -2.0, start_time: {sec: 0, nanosec: 0}, duration: {sec: 2000, nanosec: 0} }'
+
+  request->joint_name = "lift_joint";
+  request->effort = 5;
+  request->start_time.sec = 0;
+  request->duration.sec = 2000;
+  
+  while (!load_pallet_client_->wait_for_service(1s)) {
+    if (!rclcpp::ok()) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+    return BT::NodeStatus::FAILURE;
+    }
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+  }
+
+  auto result = load_pallet_client_->async_send_request(request);
+  // Wait for the result.
+  if (rclcpp::spin_until_future_complete(load_pallet_node_, result) ==
+    rclcpp::FutureReturnCode::SUCCESS)
+  {
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Service Success!");
+
+  } else {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service ApplyJointEffort");
+  }
 
 
   if (counter_++ < 5) {

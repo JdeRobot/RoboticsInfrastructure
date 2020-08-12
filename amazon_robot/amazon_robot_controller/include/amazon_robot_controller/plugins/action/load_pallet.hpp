@@ -21,15 +21,22 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
+
 
 // #include "behaviortree_cpp_v3/behavior_tree.h"
 // #include "behaviortree_cpp_v3/bt_factory.h"
 #include "behaviortree_cpp_v3/action_node.h"
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "gazebo_msgs/srv/apply_joint_effort.hpp"
+#include "rclcpp/rclcpp.hpp"
+
 
 
 namespace amazon_robot_controller
 {
+
+using namespace std::chrono_literals;
 
 class LoadPallet : public BT::ActionNodeBase
 {
@@ -55,6 +62,8 @@ public:
 
 private:
   int counter_;
+  rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_pallet_client_;
+  rclcpp::Node::SharedPtr load_pallet_node_;
 };
 
 }  // namespace amazon_robot_controller

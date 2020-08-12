@@ -23,6 +23,7 @@
   <build_depend>nav2_util</build_depend>
   <build_depend>amazon_robot_msg</build_depend>
   <build_depend>bondcpp</build_depend>
+  <build_depend>gazebo_msgs</build_depend>
 
   <exec_depend>behaviortree_cpp_v3</exec_depend>
   <exec_depend>rclcpp</exec_depend>
@@ -35,6 +36,7 @@
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>amazon_robot_msg</exec_depend>
   <exec_depend>bondcpp</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
 
   <test_depend>ament_lint_common</test_depend>
   <test_depend>ament_lint_auto</test_depend>
