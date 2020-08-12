@@ -94,7 +94,7 @@ RobotController::on_configure(const rclcpp_lifecycle::State & /*state*/)
     get_node_clock_interface(),
     get_node_logging_interface(),
     get_node_waitables_interface(),
-    "follow_targets", std::bind(&RobotController::followTargets, this));
+    "FollowTargets", std::bind(&RobotController::followTargets, this));
 
   // Get the libraries to pull plugins from
   plugin_lib_names_ = get_parameter("plugin_lib_names").as_string_array();
@@ -312,6 +312,7 @@ void
 RobotController::initializeBlackboard(std::shared_ptr<const Action::Goal> goal)
 {
   // Update the goals on the blackboard
+  RCLCPP_INFO(get_logger(), "Initalizing Blackboard");
   blackboard_->set("goals", goal->poses);
   blackboard_->set("current_waypoint_idx", 0);
   blackboard_->set("num_waypoints", goal->poses.size());
