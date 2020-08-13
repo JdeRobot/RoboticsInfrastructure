@@ -157,7 +157,7 @@
         </link>
         <link name="wheel_left_link">
             <inertial>
-                <pose>0.0 0.288 0.023 -1.57 0 0</pose>
+                <pose>0.0 0.288 0.046 -1.57 0 0</pose>
                 <inertia>
                     <ixx>0.001</ixx>
                     <ixy>0.000</ixy>
@@ -169,11 +169,11 @@
                 <mass>0.1</mass>
             </inertial>
             <collision name="wheel_left_collision">
-                <pose>0.0 0.288 0.023 -1.57 0 0</pose>
+                <pose>0.0 0.288 0.046 -1.57 0 0</pose>
                 <geometry>
                     <cylinder>
-                        <radius>0.072</radius>
-                        <length>0.020</length>
+                        <radius>0.100</radius>
+                        <length>0.018</length>
                     </cylinder>
                 </geometry>
                 <surface>
@@ -200,7 +200,7 @@
                 </surface>
             </collision>
             <visual name="wheel_left_visual">
-                <pose>0.0 0.288 0.023 0 0 0</pose>
+                <pose>0.0 0.288 0.046 0 0 0</pose>
                 <geometry>
                     <mesh>
                         <uri>model://amazon_robot2/meshes/left_tire.dae</uri>
@@ -211,7 +211,7 @@
         </link>
         <link name="wheel_right_link">
             <inertial>
-                <pose>0.0 -0.288 0.023 -1.57 0 0</pose>
+                <pose>0.0 -0.288 0.046 -1.57 0 0</pose>
                 <inertia>
                     <ixx>0.001</ixx>
                     <ixy>0.000</ixy>
@@ -223,11 +223,11 @@
                 <mass>0.1</mass>
             </inertial>
             <collision name="wheel_right_collision">
-                <pose>0.0 -0.288 0.023 -1.57 0 0</pose>
+                <pose>0.0 -0.288 0.046 -1.57 0 0</pose>
                 <geometry>
                     <cylinder>
-                        <radius>0.072</radius>
-                        <length>0.020</length>
+                        <radius>0.100</radius>
+                        <length>0.018</length>
                     </cylinder>
                 </geometry>
                 <surface>
@@ -254,7 +254,7 @@
                 </surface>
             </collision>
             <visual name="wheel_right_visual">
-                <pose>0.0 -0.288 0.023 0 0 0</pose>
+                <pose>0.0 -0.288 0.046 0 0 0</pose>
                 <geometry>
                     <mesh>
                         <uri>model://amazon_robot2/meshes/right_tire.dae</uri>
@@ -429,7 +429,7 @@
                 </surface>
             </collision>
         </link>
-        <!-- <link name="link_platform_mid"><visual><pose>0.0 0.0 0.023 0 0 0</pose><geometry><box size="0.02 0.02 0.15" /></geometry></visual><collision><pose>0.0 -0.288 0.023 -1.57 0 0</pose><geometry><box size="0.02 0.02 0.10" /></geometry></collision><inertial><pose>0.0 -0.288 0.023 -1.57 0 0</pose><mass>0.1</mass><inertia
+        <!-- <link name="link_platform_mid"><visual><pose>0.0 0.0 0.023 0 0 0</pose><geometry><box size="0.02 0.02 0.15" /></geometry></visual><collision><pose>0.0 -0.288 0.046 -1.57 0 0</pose><geometry><box size="0.02 0.02 0.10" /></geometry></collision><inertial><pose>0.0 -0.288 0.046 -1.57 0 0</pose><mass>0.1</mass><inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
                 izz="1.0"/></inertial></link> -->
@@ -441,7 +441,7 @@
         <joint name="wheel_left_joint" type="revolute">
             <parent>base_link</parent>
             <child>wheel_left_link</child>
-            <pose>0.0 0.288 0.023 -1.57 0 0</pose>
+            <pose>0.0 0.288 0.046 -1.57 0 0</pose>
             <axis>
                 <xyz>0 0 1</xyz>
             </axis>
@@ -449,7 +449,7 @@
         <joint name="wheel_right_joint" type="revolute">
             <parent>base_link</parent>
             <child>wheel_right_link</child>
-            <pose>0.0 -0.228 0.023 -1.57 0 0</pose>
+            <pose>0.0 -0.228 0.046 -1.57 0 0</pose>
             <axis>
                 <xyz>0 0 1</xyz>
             </axis>
@@ -529,7 +529,7 @@
             <wheel_separation>0.574</wheel_separation>
             <wheel_diameter>0.120</wheel_diameter>
             <!-- limits -->
-            <max_wheel_torque>70</max_wheel_torque>
+            <max_wheel_torque>80</max_wheel_torque>
             <max_wheel_acceleration>4.0</max_wheel_acceleration>
             <command_topic>cmd_vel</command_topic>
             <!-- output -->

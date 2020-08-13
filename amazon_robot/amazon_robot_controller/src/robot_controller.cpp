@@ -332,7 +332,7 @@ RobotController::initializeBlackboard(std::shared_ptr<const Action::Goal> goal)
   blackboard_->set("num_waypoints", goal->poses.size());
   blackboard_->set("goal", goal->poses[0]);
   blackboard_->set("goal_achieved", false);
-  blackboard_->set("joint_state", 0);
+  blackboard_->set("joint_state", false);
 }
 
 }  // namespace amazon_robot_controller

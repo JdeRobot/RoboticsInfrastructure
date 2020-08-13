@@ -51,6 +51,8 @@ public:
 
   BT::NodeStatus tick() override;
 
+  bool ApplyJointEffort();
+
   static BT::PortsList providedPorts()
   {
     return {BT::InputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
@@ -59,6 +61,7 @@ public:
       BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
       BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
   }
+  bool is_loaded_ = false;
 
 private:
   int counter_;

@@ -32,6 +32,7 @@ LoadPallet::LoadPallet(
 {
   load_pallet_node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("load_node");
   load_pallet_client_ = config().blackboard->get<rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr>("load_client");
+  is_loaded_ = false; 
 
 }
 
@@ -46,21 +47,49 @@ BT::NodeStatus LoadPallet::tick()
 
   std::vector<geometry_msgs::msg::PoseStamped> goals;
 
-  std::cout << "LoadPallet tick " << counter_ << std::endl;
-  // std::cout << "Received Goal " << goals << std::endl;
+  std::cout << " LoadPallet Behaviour Called " << std::endl;
+ 
+  if (!ApplyJointEffort()) {  
+    std::cout << "Load / Unload of pallet failed!! Returning..."; 
+  } else {
+    std::cout << "Load / Unload of pallet successful. Returning...";  
+  }
+
+  return BT::NodeStatus::SUCCESS;
+
+}
+
+bool LoadPallet::ApplyJointEffort(){
+
+  // auto joint_state = config().blackboard->get<rclcpp::Node::SharedPtr>("joint_state");
+  std::cout << "Applying joint force"; 
 
   auto request = std::make_shared<gazebo_msgs::srv::ApplyJointEffort::Request>();
   // '{joint_name: "lift_joint", effort: -2.0, start_time: {sec: 0, nanosec: 0}, duration: {sec: 2000, nanosec: 0} }'
 
   request->joint_name = "lift_joint";
-  request->effort = 5;
   request->start_time.sec = 0;
   request->duration.sec = 2000;
+
+  if (is_loaded_ == true) 
+  {
+    request->effort = -4; 
+    is_loaded_ = false;
+    std::cout << "Unloaded Pallet"; 
+
+  }
+  else
+  {
+    is_loaded_ = true;
+    request->effort = 3;
+    std::cout << "Loaded Pallet"; 
+
+  }
   
   while (!load_pallet_client_->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
-    return BT::NodeStatus::FAILURE;
+    return false;
     }
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
   }
@@ -74,15 +103,10 @@ BT::NodeStatus LoadPallet::tick()
 
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service ApplyJointEffort");
+    return false;
   }
 
-
-  if (counter_++ < 5) {
-    return BT::NodeStatus::RUNNING;
-  } else {
-    counter_ = 0;
-    return BT::NodeStatus::SUCCESS;
-  }
+  return true;
 }
 
 }  // namespace amazon_robot_controller
