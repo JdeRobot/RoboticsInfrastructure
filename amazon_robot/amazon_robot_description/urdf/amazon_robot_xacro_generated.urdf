@@ -322,5 +322,55 @@
         <limit effort="190.0" lower="0.20" upper="0.30" velocity="5.89"/>
         <safety_controller k_velocity="10" k_position="15" soft_lower_limit="-2.0" soft_upper_limit="0.5" />
     </joint>
+
+
+
+
+
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.23 0 0.23" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0.23 0 0.23" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+
+  <joint name="camera_depth_joint" type="fixed">
+    <origin xyz="0.005 0.028 0.013" rpy="0 0 0"/>
+    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py + r200_cam_depth_offset} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_depth_frame"/>
+  </joint>
+  <link name="camera_depth_frame"/>
+
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_depth_frame"/>
+    <child link="camera_depth_optical_frame"/>
+  </joint>
+  <link name="camera_depth_optical_frame"/>
+
+
+
+
+
+
+
+
+
+
 </robot>
 

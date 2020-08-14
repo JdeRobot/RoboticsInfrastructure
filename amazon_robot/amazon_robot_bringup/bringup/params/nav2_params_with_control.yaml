@@ -83,9 +83,9 @@ bt_navigator_rclcpp_node:
 controller_server:
   ros__parameters:
     use_sim_time: True
-    controller_frequency: 20.0
+    controller_frequency: 10.0
     min_x_velocity_threshold: 0.001
-    min_y_velocity_threshold: 0.5
+    min_y_velocity_threshold: 1.0
     min_theta_velocity_threshold: 0.001
     controller_plugins: ["FollowPath"]
 
@@ -111,14 +111,17 @@ controller_server:
       decel_lim_theta: -3.2
       vx_samples: 20
       vy_samples: 5
-      vtheta_samples: 20
-      sim_time: 1.7
+      vtheta_samples: 10
+      sim_time: 2.0
       linear_granularity: 0.05
-      angular_granularity: 0.025
+      angular_granularity: 0.25
+      xy_goal_tolerance: 0.2
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.20
+      yaw_goal_tolerance: 0.2
       trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
+      # latch_xy_tolerance: false
+      use_grid_path: false
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 0.02
@@ -140,7 +143,7 @@ local_costmap:
   local_costmap:
     ros__parameters:
       update_frequency: 5.0
-      publish_frequency: 2.0
+      publish_frequency: 3.0
       global_frame: odom
       robot_base_frame: base_link
       use_sim_time: True
@@ -192,7 +195,7 @@ local_costmap:
 global_costmap:
   global_costmap:
     ros__parameters:
-      update_frequency: 1.0
+      update_frequency: 3.0
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
@@ -254,13 +257,13 @@ map_saver:
 
 planner_server:
   ros__parameters:
-    expected_planner_frequency: 20.0
+    expected_planner_frequency: 1.0
     use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
-      use_astar: true
+      use_astar: false
       allow_unknown: true
 
 planner_server_rclcpp_node:
@@ -271,7 +274,7 @@ recoveries_server:
   ros__parameters:
     costmap_topic: local_costmap/costmap_raw
     footprint_topic: local_costmap/published_footprint
-    cycle_frequency: 10.0
+    cycle_frequency: 5.0
     recovery_plugins: ["spin", "backup", "wait"]
     spin:
       plugin: "nav2_recoveries/Spin"
