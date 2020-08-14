@@ -89,6 +89,12 @@
         <kp>1000000.0</kp>
         <material>Gazebo/Red</material>
     </gazebo>
+     <gazebo reference="lift_link">
+        <mu1>20000</mu1>
+        <mu2>20000</mu2>
+        <kp>1000000.0</kp>
+        <material>Gazebo/Red</material>
+    </gazebo>
     <gazebo reference="imu_link">
         <sensor name="imu" type="imu">
             <always_on>true</always_on>
@@ -319,7 +325,7 @@
         <axis><use_parent_model_frame>true</use_parent_model_frame><xyz>0 0 1</xyz></axis>
         <calibration rising="0.0"/>
         <dynamics damping="0.0" friction="0.0"/>
-        <limit effort="190.0" lower="0.20" upper="0.30" velocity="5.89"/>
+        <limit effort="20.0" lower="0.20" upper="0.30" velocity="5.00"/>
         <safety_controller k_velocity="10" k_position="15" soft_lower_limit="-2.0" soft_upper_limit="0.5" />
     </joint>
 

@@ -549,16 +549,16 @@ Nav2Panel::startWaypointFollowing(std::vector<geometry_msgs::msg::PoseStamped> p
 void
 Nav2Panel::startNavigation(geometry_msgs::msg::PoseStamped pose)
 {
-  // auto is_action_server_ready =
-  //   navigation_action_client_->wait_for_action_server(std::chrono::seconds(5));
+  auto is_action_server_ready =
+    navigation_action_client_->wait_for_action_server(std::chrono::seconds(5));
  
-  // if (!is_action_server_ready) {
-  //   RCLCPP_ERROR(
-  //     client_node_->get_logger(),
-  //     "FollowTargets action server is not available."
-  //     " Is the initial pose set?");
-  //   return;
-  // }
+  if (!is_action_server_ready) {
+    RCLCPP_ERROR(
+      client_node_->get_logger(),
+      "Navigation action server is not available."
+      " Is the initial pose set?");
+    return;
+  }
 
   // Send the goal pose
   navigation_goal_.pose = pose;

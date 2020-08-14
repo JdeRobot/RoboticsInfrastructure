@@ -27,11 +27,14 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    # Use Simulation time from gazebo
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
+    # Brinup Package locations for nav2
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
     nav2_launch_dir = os.path.join(nav2_bringup_dir, 'launch')
 
+    # Our bringup location
     amazon_gazebo_package_dir = get_package_share_directory('amazon_robot_gazebo')
     amazon_gazebo_package_launch_dir= os.path.join(amazon_gazebo_package_dir, 'launch')
     
@@ -40,6 +43,7 @@ def generate_launch_description():
 
     amazon_bringup_package_dir = get_package_share_directory('amazon_robot_bringup')
 
+    # We will spawn the robot
     spawn_robot = True
 
     # Create the launch configuration variables
