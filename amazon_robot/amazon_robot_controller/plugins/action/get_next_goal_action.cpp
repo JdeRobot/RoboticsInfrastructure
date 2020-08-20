@@ -17,49 +17,60 @@
 
 #include "amazon_robot_controller/plugins/action/get_next_goal_action.hpp"
 
-namespace amazon_robot_controller
-{
+namespace amazon_robot_controller {
 
-GetNextGoalAction::GetNextGoalAction(
-  const std::string & action_name,
-  const BT::NodeConfiguration & conf)
-: BT::SyncActionNode(action_name, conf)
-{
-}
+    GetNextGoalAction::GetNextGoalAction(
+            const std::string &action_name,
+            const BT::NodeConfiguration &conf)
+            : BT::SyncActionNode(action_name, conf) {
+    }
 
-BT::NodeStatus GetNextGoalAction::tick()
-{
-  std::vector<geometry_msgs::msg::PoseStamped> goals;
-  if (!getInput("goals", goals)) {
-    return BT::NodeStatus::FAILURE;
-  }
-  int64_t current_waypoint_idx = config().blackboard->get<int64_t>("current_waypoint_idx");
-  int64_t num_waypoints = config().blackboard->get<int64_t>("num_waypoints");
+    BT::NodeStatus GetNextGoalAction::tick() {
+        std::cout << " Getting Next Goal " << std::endl;
 
-  bool goal_achieved;
-  if (!getInput("goal_achieved", goal_achieved)) {
-    goal_achieved = false;
-  }
+        std::vector <geometry_msgs::msg::PoseStamped> goals;
+        if (!getInput("goals", goals)) {
+            return BT::NodeStatus::FAILURE;
+        }
 
-  if (!goal_achieved) {
-    return BT::NodeStatus::SUCCESS;
-  }
+        int64_t current_waypoint_idx = config().blackboard->get<int64_t>("current_waypoint_idx");
+        int64_t num_waypoints = config().blackboard->get<int64_t>("num_waypoints");
 
-  if (current_waypoint_idx >= num_waypoints - 1) {
-    return BT::NodeStatus::FAILURE;
-  }
+        std::cout << " current_waypoint_idx " << current_waypoint_idx << std::endl;
+        std::cout << " num_waypoints " << num_waypoints << std::endl;
 
-  setOutput("goal_achieved", false);
-  // setOutput("goal", goals.second[current_waypoint_idx + 1]);
-  setOutput("goal", goals[current_waypoint_idx + 1]);
-  config().blackboard->set("current_waypoint_idx", current_waypoint_idx + 1);
-  return BT::NodeStatus::SUCCESS;
-}
+
+        bool goal_achieved;
+        if (!getInput("goal_achieved", goal_achieved)) {
+            goal_achieved = false;
+        }
+
+        if (!goal_achieved) {
+            return BT::NodeStatus::SUCCESS;
+        }
+
+        if (current_waypoint_idx >= num_waypoints - 1) {
+            return BT::NodeStatus::FAILURE;
+        }
+
+        setOutput("goal_achieved", false);
+
+
+        // setOutput("goal", goals.second[current_waypoint_idx + 1]);
+
+        setOutput("goal", goals[current_waypoint_idx + 1]);
+        config().blackboard->set("current_waypoint_idx", current_waypoint_idx + 1);
+
+        std::cout << "Success!!  current_waypoint_idx " << current_waypoint_idx << std::endl;
+
+        return BT::NodeStatus::SUCCESS;
+    }
 
 }  // namespace amazon_robot_controller
 
 #include "behaviortree_cpp_v3/bt_factory.h"
+
 BT_REGISTER_NODES(factory)
-{
-  factory.registerNodeType<amazon_robot_controller::GetNextGoalAction>("GetNextGoal");
-}
+        {
+                factory.registerNodeType<amazon_robot_controller::GetNextGoalAction>("GetNextGoal");
+        }

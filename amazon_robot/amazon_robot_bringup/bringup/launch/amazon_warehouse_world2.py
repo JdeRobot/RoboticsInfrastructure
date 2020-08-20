@@ -43,8 +43,8 @@ def generate_launch_description():
 
     amazon_bringup_package_dir = get_package_share_directory('amazon_robot_bringup')
 
-    # We will spawn the robot
-    spawn_robot = True
+    # We will not spawn the robot
+    spawn_robot = False
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -154,7 +154,7 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         #                            'worlds/turtlebot3_worlds/waffle.model'),
-        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'amazon_warehouse' , 'amazon_warehouse.model'),
+        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'amazon_warehouse' , 'amazon_warehouse_with_robot.model'),
         description='Full path to world model file to load')
 
 

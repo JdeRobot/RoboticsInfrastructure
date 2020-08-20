@@ -3,4 +3,5 @@
 build/
 install/
 log/
-.vscode/
+/.vscode/
+/.idea/
