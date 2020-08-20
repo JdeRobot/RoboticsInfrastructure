@@ -161,7 +161,7 @@ def generate_launch_description():
     # Default Nav2 actions
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
-        cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
+        cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_init.so', '-s' , 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
         cwd=[nav2_launch_dir], output='screen')
 
     start_gazebo_client_cmd = ExecuteProcess(

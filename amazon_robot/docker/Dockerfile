@@ -36,7 +36,17 @@ RUN . /opt/overlay_ws/install/setup.sh && \
 
 #RUN /bin/bash -c "source /opt/overlay_ws/install/setup.sh && cd /opt/warehouse_ws/ && colcon build --symlink-install"
 
+
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+    
+
 COPY docker/ros_entrypoint.sh /
+
+ENV GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models
 
 RUN chmod 755 /ros_entrypoint.sh
 
