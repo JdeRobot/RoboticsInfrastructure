@@ -525,11 +525,11 @@
             <left_joint>wheel_left_joint</left_joint>
             <right_joint>wheel_right_joint</right_joint>
             <!-- kinematics -->
-            <wheel_separation>0.574</wheel_separation>
-            <wheel_diameter>0.120</wheel_diameter>
+            <wheel_separation>0.576</wheel_separation>
+            <wheel_diameter>0.092</wheel_diameter>
             <!-- limits -->
             <max_wheel_torque>80</max_wheel_torque>
-            <max_wheel_acceleration>4.0</max_wheel_acceleration>
+            <max_wheel_acceleration>1.0</max_wheel_acceleration>
             <command_topic>cmd_vel</command_topic>
             <!-- output -->
             <publish_odom>true</publish_odom>
@@ -554,7 +554,7 @@
 
     <link name="camera_rgb_frame">
       <inertial>
-        <pose>0.23 0 0.23 0 0 0</pose>
+<!--        <pose>0.23 0 0.23 0 0 0</pose>-->
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -567,7 +567,7 @@
       </inertial>
 
       <collision name="camera_collision">
-        <pose>0.23 0 0.23 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
             <size>0.10 0.10 0.02</size>
