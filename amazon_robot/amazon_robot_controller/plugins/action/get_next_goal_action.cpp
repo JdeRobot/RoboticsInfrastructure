@@ -26,7 +26,7 @@ namespace amazon_robot_controller {
     }
 
     BT::NodeStatus GetNextGoalAction::tick() {
-        std::cout << " Getting Next Goal " << std::endl;
+//        std::cout << " Getting Next Goal " << std::endl;
 
         std::vector <geometry_msgs::msg::PoseStamped> goals;
         if (!getInput("goals", goals)) {
@@ -36,8 +36,8 @@ namespace amazon_robot_controller {
         int64_t current_waypoint_idx = config().blackboard->get<int64_t>("current_waypoint_idx");
         int64_t num_waypoints = config().blackboard->get<int64_t>("num_waypoints");
 
-        std::cout << " current_waypoint_idx " << current_waypoint_idx << std::endl;
-        std::cout << " num_waypoints " << num_waypoints << std::endl;
+//        std::cout << " current_waypoint_idx " << current_waypoint_idx << std::endl;
+//        std::cout << " num_waypoints " << num_waypoints << std::endl;
 
 
         bool goal_achieved;

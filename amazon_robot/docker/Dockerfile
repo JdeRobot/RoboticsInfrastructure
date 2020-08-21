@@ -21,7 +21,6 @@ RUN . /opt/underlay_ws/install/setup.sh && \
 #
 #RUN /bin/bash -c "cd /opt/overlay_ws/ && colcon build --symlink-install"
 
-
 COPY . /opt/warehouse_ws/src/
 
 WORKDIR /opt/warehouse_ws/
@@ -29,10 +28,7 @@ WORKDIR /opt/warehouse_ws/
 RUN . /opt/overlay_ws/install/setup.sh && \
     colcon build \
       --symlink-install \
-      --mixin $OVERLAY_MIXINS \
     || ([ -z "$FAIL_ON_BUILD_FAILURE" ] || exit 1)
-
-
 
 #RUN /bin/bash -c "source /opt/overlay_ws/install/setup.sh && cd /opt/warehouse_ws/ && colcon build --symlink-install"
 
@@ -42,7 +38,7 @@ ENV NVIDIA_VISIBLE_DEVICES \
     ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-    
+
 
 COPY docker/ros_entrypoint.sh /
 
