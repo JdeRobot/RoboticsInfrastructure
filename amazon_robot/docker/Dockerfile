@@ -36,6 +36,12 @@ RUN . /opt/underlay_ws/install/setup.sh && \
 COPY . /opt/warehouse_ws/src/
 
 WORKDIR /opt/warehouse_ws/
+#
+#RUN . /opt/overlay_ws/install/setup.sh \
+#    && cd /opt/overlay_ws/ \
+#    && rosdep update \
+#    && rosdep install -y -r --from-paths src --ignore-src --rosdistro=foxy -y
+#
 
 RUN . /opt/overlay_ws/install/setup.sh && \
     colcon build \
