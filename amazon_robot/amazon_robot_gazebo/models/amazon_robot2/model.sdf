@@ -528,7 +528,7 @@
             <wheel_separation>0.576</wheel_separation>
             <wheel_diameter>0.092</wheel_diameter>
             <!-- limits -->
-            <max_wheel_torque>80</max_wheel_torque>
+            <max_wheel_torque>20</max_wheel_torque>
             <max_wheel_acceleration>1.0</max_wheel_acceleration>
             <command_topic>cmd_vel</command_topic>
             <!-- output -->

@@ -90,7 +90,7 @@ def generate_launch_description():
     # Map
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(amazon_bringup_package_dir, 'maps', 'amazon_warehouse.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'maps', 'turtlebot3_world.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -154,19 +154,20 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         #                            'worlds/turtlebot3_worlds/waffle.model'),
-        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'amazon_warehouse' , 'amazon_warehouse_with_robot.model'),
+        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'turtlebot3_worlds' , 'ar_in_tb3_world.model'),
         description='Full path to world model file to load')
 
 
     # Default Nav2 actions
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
-        cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
-        cwd=[nav2_launch_dir], output='screen')
+        cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_init.so', '-s' , 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
+        cwd=[this_launch_dir], output='screen')
+
 
     start_gazebo_client_cmd = ExecuteProcess(
         cmd=['gzclient'],
-        cwd=[nav2_launch_dir], output='screen')
+        cwd=[this_launch_dir], output='screen')
 
     # Our own robot urdf from CustomRobot
     urdf = os.path.join(amazon_description_dir, 'urdf', 'amazon_robot_xacro_generated.urdf')
