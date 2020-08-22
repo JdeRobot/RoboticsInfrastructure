@@ -10,7 +10,8 @@ services:
       - "/dev/dri:/dev/dri"
     environment:
 #      - "RMW_IMPLEMENTATION=rmw_cyclonedds_cpp"
-      - "GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models"
+#      - "GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models"
+      - "GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models:/opt/warehouse_ws/src/aws-robomaker-small-warehouse-world/models"
       - "QT_X11_NO_MITSHM=1"
       - "DISPLAY=unix$DISPLAY"
     #share your user to the container in order to access your x11
