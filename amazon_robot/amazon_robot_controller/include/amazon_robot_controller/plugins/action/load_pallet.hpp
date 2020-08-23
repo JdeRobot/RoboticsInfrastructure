@@ -48,18 +48,19 @@ namespace amazon_robot_controller {
 
         BT::NodeStatus tick() override;
 
-        bool ApplyJointEffort();
+        bool ApplyJointEffort(int load);
 
         static BT::PortsList providedPorts() {
-            return {BT::InputPort < std::vector < geometry_msgs::msg::PoseStamped >> (
-                    "goals",
-                            "Destinations to plan to with Load / Unload"),
-                    BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
-                    BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
+            return {BT::InputPort <std::vector <int32_t>> (
+                    "load_queue",
+                            "Load / Unload sequence corresponding to poses")};
+//                    BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
+//                    BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
         }
 
         bool is_loaded_ = false;
         bool waiting_for_finish_ = false;
+        bool use_default_behaviour_ = false;
     private:
         int counter_;
         rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_pallet_client_;

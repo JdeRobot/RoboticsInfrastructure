@@ -56,8 +56,6 @@ namespace amazon_robot_controller {
         setOutput("goal_achieved", false);
 
 
-        // setOutput("goal", goals.second[current_waypoint_idx + 1]);
-
         setOutput("goal", goals[current_waypoint_idx + 1]);
         config().blackboard->set("current_waypoint_idx", current_waypoint_idx + 1);
 

@@ -9,9 +9,13 @@ sleep 2s
 #sleep 2s
 
 
-#ros2 launch amazon_robot_bringup  amazon_warehouse_world.py slam:=True
+#ros2 launch amazon_robot_bringup  amazon_warehouse_world.py #slam:=True
 
 #ros2 launch amazon_robot_bringup  amazon_robot_in_tb3_world.py
 
 
 ros2 launch amazon_robot_bringup  amazon_robot_in_aws_world.py
+
+#sleep 20s
+#
+#cd /opt/warehouse_ws/src/amazon_robot_bringup/bringup/launch && python3 follow_target_action_client.py &

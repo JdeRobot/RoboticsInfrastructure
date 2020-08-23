@@ -10,7 +10,8 @@
         <ReactiveSequence>
           <GetNextGoal goals="{goals}" goal="{goal}" goal_achieved="{goal_achieved}"/>
           <NavigateToPose goal="{goal}" server_name="navigate_to_pose" server_timeout="10"/>
-          <LoadPallet goal="{goal}"/>
+          <LoadPallet load_queue="{load_queue}"/>
+<!--          <Wait wait_duration="5"/>-->
           <SetBlackboard output_key="goal_achieved" value="true"/>
         </ReactiveSequence>
       </KeepRunningUntilFailure>

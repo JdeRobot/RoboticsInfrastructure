@@ -38,15 +38,27 @@ namespace amazon_robot_controller {
     }
 
     BT::NodeStatus LoadPallet::tick() {
-
-        std::vector <geometry_msgs::msg::PoseStamped> goals;
-
         std::cout << " LoadPallet Behaviour Called " << std::endl;
-
-
         bool action_result_ = false;
+        int load;
+        int32_t current_load_queue_idx = config().blackboard->get<int32_t>("current_load_queue_idx");
+        std::vector <int32_t> load_effort_queue_ = config().blackboard->get<std::vector<int32_t>>("load_queue");
+//        !getInput("load_queue", load_effort_queue_)
+
+
+        if (load_effort_queue_.size()<=1) {
+            std::cout << " No LoadPallet messages found, using alternate Load and Unload " << std::endl;
+            use_default_behaviour_ = true;
+            load = 0;
+        }
+        else{
+            load = load_effort_queue_[current_load_queue_idx];
+            use_default_behaviour_ = false;
+
+        }
+
         if (!waiting_for_finish_) {
-            action_result_ = ApplyJointEffort();
+            action_result_ = ApplyJointEffort(load);
             if (!action_result_) {
                 std::cout << "Load / Unload of pallet failed!! Retrying...";
                 waiting_for_finish_ = false;
@@ -54,26 +66,32 @@ namespace amazon_robot_controller {
             } else {
                 std::cout << "Load / Unload of pallet successful. Returning...";
                 waiting_for_finish_ = true;
+                config().blackboard->set("current_load_queue_idx", current_load_queue_idx + 1);
+
             }
         }
 
         std::cout << "LoadPallet tick " << counter_ << std::endl;
+
+//        return BT::NodeStatus::SUCCESS;
 
 
         if (counter_++ < 10) {
             return BT::NodeStatus::RUNNING;
         } else {
             counter_ = 0;
+//            config().blackboard->set("current_load_queue_idx", current_load_queue_idx + 1);
             waiting_for_finish_ = false;
             return BT::NodeStatus::SUCCESS;
+
         }
 
     }
 
-    bool LoadPallet::ApplyJointEffort() {
+    bool LoadPallet::ApplyJointEffort(int load) {
 
         // auto joint_state = config().blackboard->get<rclcpp::Node::SharedPtr>("joint_state");
-        std::cout << "Applying joint force";
+        std::cout << "Applying joint force" << std::endl;
 
         auto apply_joint_effort_request = std::make_shared<gazebo_msgs::srv::ApplyJointEffort::Request>();
 
@@ -86,7 +104,7 @@ namespace amazon_robot_controller {
         apply_joint_effort_request->start_time.sec = 0;
         apply_joint_effort_request->duration.sec = 2000;
 
-        while (!load_pallet_client_->wait_for_service(1s)) {
+        while (!load_pallet_client_->wait_for_service(2s)) {
             if (!rclcpp::ok()) {
                 RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
                 return false;
@@ -94,18 +112,28 @@ namespace amazon_robot_controller {
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
-        if (is_loaded_ == true) {
-            apply_joint_effort_request->effort = -3;
-            is_loaded_ = false;
-            std::cout << "Unloaded Pallet";
+        if(use_default_behaviour_) {
+            if (is_loaded_ == true) {
+                apply_joint_effort_request->effort = -3;
+                is_loaded_ = false;
+                std::cout << "Unloaded Pallet";
 
-        } else {
-            is_loaded_ = true;
-            apply_joint_effort_request->effort = 3;
-            std::cout << "Loaded Pallet";
+            } else {
+                is_loaded_ = true;
+                apply_joint_effort_request->effort = 3;
+                std::cout << "Loaded Pallet";
+
+            }
+        }
+        else{
+            apply_joint_effort_request->effort = load;
+            std::cout << "Applying effort: " << load << std::endl;
+
+            if (load>=2)
+                is_loaded_ = true;
+            else is_loaded_ = false;
 
         }
-
 
         auto result = load_pallet_client_->async_send_request(apply_joint_effort_request);
         // Wait for the result.
