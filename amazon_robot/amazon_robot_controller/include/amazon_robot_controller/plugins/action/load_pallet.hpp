@@ -32,42 +32,39 @@
 #include "rclcpp/rclcpp.hpp"
 
 
+namespace amazon_robot_controller {
 
-namespace amazon_robot_controller
-{
+    using namespace std::chrono_literals;
 
-using namespace std::chrono_literals;
+    class LoadPallet : public BT::ActionNodeBase {
+    public:
+        explicit LoadPallet(
+                const std::string &action_name,
+                const BT::NodeConfiguration &conf);
 
-class LoadPallet : public BT::ActionNodeBase
-{
-public:
-  explicit LoadPallet(
-    const std::string & action_name,
-    const BT::NodeConfiguration & conf);
+        LoadPallet() = delete;
 
-  LoadPallet() = delete;
+        void halt() override;
 
-  void halt() override;
+        BT::NodeStatus tick() override;
 
-  BT::NodeStatus tick() override;
+        bool ApplyJointEffort();
 
-  bool ApplyJointEffort();
+        static BT::PortsList providedPorts() {
+            return {BT::InputPort < std::vector < geometry_msgs::msg::PoseStamped >> (
+                    "goals",
+                            "Destinations to plan to with Load / Unload"),
+                    BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
+                    BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
+        }
 
-  static BT::PortsList providedPorts()
-  {
-    return {BT::InputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
-        "goals",
-        "Destinations to plan to with Load / Unload"),
-      BT::BidirectionalPort<bool>("goal_achieved", "Has the goal been achieved?"),
-      BT::OutputPort<geometry_msgs::msg::PoseStamped>("goal", "Destination to plan to")};
-  }
-  bool is_loaded_ = false;
-
-private:
-  int counter_;
-  rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_pallet_client_;
-  rclcpp::Node::SharedPtr load_pallet_node_;
-};
+        bool is_loaded_ = false;
+        bool waiting_for_finish_ = false;
+    private:
+        int counter_;
+        rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_pallet_client_;
+        rclcpp::Node::SharedPtr load_pallet_node_;
+    };
 
 }  // namespace amazon_robot_controller
 #endif
