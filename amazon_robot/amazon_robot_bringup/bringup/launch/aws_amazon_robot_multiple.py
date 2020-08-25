@@ -41,17 +41,20 @@ def generate_launch_description():
 
     # Names and poses of the robots
     robots = [
-        {'name': 'robot1', 'x_pose': 0.0, 'y_pose': 0.5, 'z_pose': 0.01},
-        {'name': 'robot2', 'x_pose': 0.0, 'y_pose': -0.5, 'z_pose': 0.01}]
+        {'name': 'robot1', 'x_pose': -0.5, 'y_pose': 0.0, 'z_pose': 0.01},
+        {'name': 'robot2', 'x_pose': 0.5, 'y_pose': 0.0, 'z_pose': 0.01}]
 
+
+    # Our bringup location
     amazon_gazebo_package_dir = get_package_share_directory('amazon_robot_gazebo')
     amazon_gazebo_package_launch_dir= os.path.join(amazon_gazebo_package_dir, 'launch')
+
     amazon_description_dir = get_package_share_directory('amazon_robot_description')
     this_launch_dir = os.path.dirname(os.path.realpath(__file__))
 
     amazon_bringup_package_dir = get_package_share_directory('amazon_robot_bringup')
-    amazon_bringup_package_launch_dir= os.path.join(amazon_bringup_package_dir, 'launch')
 
+    aws_dir = get_package_share_directory('aws_robomaker_small_warehouse_world')
 
     # Simulation settings
     world = LaunchConfiguration('world')
@@ -69,8 +72,15 @@ def generate_launch_description():
 
     declare_world_cmd = DeclareLaunchArgument(
         'world',
-        default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'warehouse.world'),
+        default_value=os.path.join(aws_dir, 'worlds', 'no_roof_small_warehouse.world'),
         description='Full path to world model file to load')
+
+
+#
+#   declare_world_cmd = DeclareLaunchArgument(
+#         'world',
+#         default_value=os.path.join(amazon_gazebo_package_dir, 'worlds', 'warehouse.world'),
+#         description='Full path to world model file to load')
 
     declare_simulator_cmd = DeclareLaunchArgument(
         'simulator',
@@ -79,17 +89,17 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(this_launch_dir, 'maps', 'map.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'maps', 'aws_warehouse' ,'map.yaml'),
         description='Full path to map file to load')
 
     declare_robot1_params_file_cmd = DeclareLaunchArgument(
         'robot1_params_file',
-        default_value=os.path.join(nav2_bringup_dir, 'params', 'nav2_multirobot_params_1.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'params', 'nav2_multirobot_params_1_with_control.yaml'),
         description='Full path to the ROS2 parameters file to use for robot1 launched nodes')
 
     declare_robot2_params_file_cmd = DeclareLaunchArgument(
         'robot2_params_file',
-        default_value=os.path.join(nav2_bringup_dir, 'params', 'nav2_multirobot_params_2.yaml'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'params', 'nav2_multirobot_params_2_with_control.yaml'),
         description='Full path to the ROS2 parameters file to use for robot2 launched nodes')
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
@@ -105,7 +115,7 @@ def generate_launch_description():
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config',
-        default_value=os.path.join(nav2_bringup_dir, 'rviz', 'nav2_namespaced_view.rviz'),
+        default_value=os.path.join(amazon_bringup_package_dir, 'rviz', 'amazon_robot_namespaced_view.rviz'),
         description='Full path to the RVIZ config file to use.')
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
@@ -120,7 +130,7 @@ def generate_launch_description():
 
     # Start Gazebo with plugin providing the robot spawing service
     start_gazebo_cmd = ExecuteProcess(
-        cmd=[simulator, '--verbose', '-s', 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
+        cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s' , 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
         output='screen')
 
     # Define commands for spawing the robots into Gazebo
@@ -145,7 +155,7 @@ def generate_launch_description():
         group = GroupAction([
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                        os.path.join(nav2_launch_dir, 'rviz_launch.py')),
+                        os.path.join(this_launch_dir, 'rviz_launch.py')),
                 condition=IfCondition(use_rviz),
                 launch_arguments={
                                   'namespace': TextSubstitution(text=robot['name']),
@@ -154,9 +164,10 @@ def generate_launch_description():
 
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(this_launch_dir,
-                                                           'amazon_warehouse_world.py')),
+                                                           'amazon_robot_in_aws_world.py')),
                 launch_arguments={'namespace': robot['name'],
                                   'use_namespace': 'True',
+                                  'spawn_robot': 'False',
                                   'map': map_yaml_file,
                                   'use_sim_time': 'True',
                                   'params_file': params_file,

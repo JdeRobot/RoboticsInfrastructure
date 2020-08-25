@@ -14,7 +14,8 @@ sleep 2s
 #ros2 launch amazon_robot_bringup  amazon_robot_in_tb3_world.py
 
 
-ros2 launch amazon_robot_bringup  amazon_robot_in_aws_world.py
+#ros2 launch amazon_robot_bringup  amazon_robot_in_aws_world.py
+ros2 launch amazon_robot_bringup  aws_amazon_robot_multiple.py
 
 #sleep 20s
 #

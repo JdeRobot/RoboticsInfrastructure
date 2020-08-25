@@ -8,7 +8,7 @@ class FollowTargetActionClient(Node):
 
     def __init__(self):
         super().__init__('follow_target_action_client')
-        self._action_client = ActionClient(self, FollowTargets, 'FollowTargets')
+        self._action_client = ActionClient(self, FollowTargets, '/robot1/FollowTargets')
 
 
     def send_goal(self, pose):
