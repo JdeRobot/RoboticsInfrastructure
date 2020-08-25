@@ -14,11 +14,11 @@ class FollowTargetActionClient(Node):
     def send_goal(self, pose):
         goal_msg = FollowTargets.Goal()
         pose_stamped = PoseStamped()
-        pose_stamped.pose.position.x = 2.0
-        pose_stamped.pose.position.y = 1.0
+        pose_stamped.pose.position.x = -5.10
+        pose_stamped.pose.position.y = -3.98
         pose_stamped.pose.position.z = 0.0
         goal_msg.poses = [pose, pose_stamped]
-        goal_msg.load = [1, 2]
+        goal_msg.load = [2, -2]
 
         self._action_client.wait_for_server()
 
@@ -30,8 +30,8 @@ def main(args=None):
 
     action_client = FollowTargetActionClient()
     pose_stamped = PoseStamped()
-    pose_stamped.pose.position.x = 4.0
-    pose_stamped.pose.position.y = 2.0
+    pose_stamped.pose.position.x = 3.62
+    pose_stamped.pose.position.y = 0.42
     pose_stamped.pose.position.z = 0.0
 
     action_client.send_goal(pose_stamped)

@@ -138,6 +138,14 @@ protected:
   // The parameters for test
   // Whether or not to use bond
   bool use_bond_;
+
+  // Service name for lift loader
+  std::string loader_service_;
+
+  // Robot Name
+  std::string robot_name_;
+
+
 };
 
 }
