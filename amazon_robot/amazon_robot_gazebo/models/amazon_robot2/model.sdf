@@ -147,7 +147,6 @@
                 <plugin name="amazon_robot_laserscan" filename="libgazebo_ros_ray_sensor.so">
                     <ros>
                         <!-- <namespace>/tb3</namespace> -->
-                        <!-- <argument>~/out:=scan</argument> -->
                         <remapping>~/out:=scan</remapping>
                     </ros>
                     <output_type>sensor_msgs/LaserScan</output_type>
@@ -542,88 +541,86 @@
         <plugin name="amazon_robot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
             <ros>
                 <!-- <namespace>/tb3</namespace> -->
-                <!-- <argument>~/out:=joint_states</argument> -->
                 <remapping>~/out:=joint_states</remapping>
             </ros>
             <update_rate>30</update_rate>
             <joint_name>wheel_left_joint</joint_name>
             <joint_name>wheel_right_joint</joint_name>
-        </plugin>  
+        </plugin>
 
 
+        <link name="camera_rgb_frame">
+            <inertial>
+                <!--        <pose>0.23 0 0.23 0 0 0</pose>-->
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.125</mass>
+            </inertial>
 
-    <link name="camera_rgb_frame">
-      <inertial>
-<!--        <pose>0.23 0 0.23 0 0 0</pose>-->
-        <inertia>
-          <ixx>0.001</ixx>
-          <ixy>0.000</ixy>
-          <ixz>0.000</ixz>
-          <iyy>0.001</iyy>
-          <iyz>0.000</iyz>
-          <izz>0.001</izz>
-        </inertia>
-        <mass>0.125</mass>
-      </inertial>
+            <collision name="camera_collision">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.10 0.10 0.02</size>
+                    </box>
+                </geometry>
+            </collision>
+            <pose>0.23 0 0.23 0 0 0</pose>
+            <sensor name="camera" type="camera">
+                <always_on>true</always_on>
+                <visualize>true</visualize>
+                <update_rate>30</update_rate>
+                <camera name="intel_realsense_r200">
+                    <horizontal_fov>1.02974</horizontal_fov>
+                    <image>
+                        <width>1920</width>
+                        <height>1080</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <!-- Noise is sampled independently per pixel on each frame.
+                              That pixel's noise value is added to each of its color
+                              channels, which at that point lie in the range [0,1]. -->
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="intel_realsense_r200_depth_driver" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <!--
+                              <remapping>custom_camera/image_raw:=custom_camera/custom_image</remapping>
+                              <remapping>custom_camera/image_depth:=custom_camera/custom_image_depth</remapping>
+                              <remapping>custom_camera/camera_info:=custom_camera/custom_info_raw</remapping>
+                              <remapping>custom_camera/camera_info_depth:=custom_camera/custom_info_depth</remapping>
+                              <remapping>custom_camera/points:=custom_camera/custom_points</remapping>
+                        -->
+                    </ros>
+                    <camera_name>intel_realsense_r200_depth</camera_name>
+                    <frame_name>realsense_depth_frame</frame_name>
+                    <hack_baseline>0.07</hack_baseline>
+                    <min_depth>0.001</min_depth>
+                </plugin>
+            </sensor>
+        </link>
 
-      <collision name="camera_collision">
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.10 0.10 0.02</size>
-          </box>
-        </geometry>
-      </collision>
-        <pose>0.23 0 0.23 0 0 0</pose>
-        <sensor name="camera" type="camera">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <update_rate>30</update_rate>
-        <camera name="intel_realsense_r200">
-          <horizontal_fov>1.02974</horizontal_fov>
-          <image>
-            <width>1920</width>
-            <height>1080</height>
-            <format>R8G8B8</format>
-          </image>
-          <clip>
-            <near>0.02</near>
-            <far>300</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <!-- Noise is sampled independently per pixel on each frame.
-                  That pixel's noise value is added to each of its color
-                  channels, which at that point lie in the range [0,1]. -->
-            <mean>0.0</mean>
-            <stddev>0.007</stddev>
-          </noise>
-        </camera>
-         <plugin name="intel_realsense_r200_depth_driver" filename="libgazebo_ros_camera.so">
-            <ros>
-        <!-- 
-              <argument>custom_camera/image_raw:=custom_camera/custom_image</argument>
-              <argument>custom_camera/image_depth:=custom_camera/custom_image_depth</argument>
-              <argument>custom_camera/camera_info:=custom_camera/custom_info_raw</argument>
-              <argument>custom_camera/camera_info_depth:=custom_camera/custom_info_depth</argument>
-              <argument>custom_camera/points:=custom_camera/custom_points</argument> 
-        -->
-            </ros>
-            <camera_name>intel_realsense_r200_depth</camera_name>
-            <frame_name>realsense_depth_frame</frame_name>
-            <hack_baseline>0.07</hack_baseline>
-            <min_depth>0.001</min_depth>
-          </plugin>
-      </sensor>
-    </link>    
+        <joint name="camera_rgb_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>camera_rgb_frame</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
 
-    <joint name="camera_rgb_joint" type="fixed">
-      <parent>base_link</parent>
-      <child>camera_rgb_frame</child>
-        <axis>
-        <xyz>0 0 1</xyz>
-      </axis>
-    </joint>
-             
     </model>
 </sdf>
