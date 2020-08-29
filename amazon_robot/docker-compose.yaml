@@ -1,0 +1,22 @@
+version: '2.3'
+
+services:
+  amazon-exercise:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: amazon-warehouse-demo
+    devices:
+      - "/dev/dri:/dev/dri"
+    environment:
+#      - "RMW_IMPLEMENTATION=rmw_cyclonedds_cpp"
+#      - "GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models"
+      - "GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models:/opt/warehouse_ws/src/aws-robomaker-small-warehouse-world/models"
+      - "QT_X11_NO_MITSHM=1"
+      - "DISPLAY=unix$DISPLAY"
+    #share your user to the container in order to access your x11
+    volumes:
+      #share your x11 socket and permissions to the container
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./start_simulation.sh:/start_simulation.sh
+    command: /bin/bash -c  "/start_simulation.sh"

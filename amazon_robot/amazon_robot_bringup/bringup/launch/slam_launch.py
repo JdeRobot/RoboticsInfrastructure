@@ -31,13 +31,24 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')
 
+    use_carto = False
+
     # Variables
     lifecycle_nodes = ['map_saver']
 
     # Getting directories and launch-files
     bringup_dir = get_package_share_directory('nav2_bringup')
+
+
+
     slam_toolbox_dir = get_package_share_directory('slam_toolbox')
-    slam_launch_file = os.path.join(slam_toolbox_dir, 'launch', 'online_sync_launch.py')
+
+    if use_carto:
+        amazon_robot_cartographer_dir = get_package_share_directory('amazon_robot_cartographer')
+
+        slam_launch_file = os.path.join(amazon_robot_cartographer_dir, 'launch', 'cartographer.launch.py')
+    else:
+        slam_launch_file = os.path.join(slam_toolbox_dir, 'launch', 'online_sync_launch.py')
 
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {

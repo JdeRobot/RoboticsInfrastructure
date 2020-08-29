@@ -1,0 +1,3 @@
+[submodule "amazon_robot/aws-robomaker-small-warehouse-world"]
+	path = amazon_robot/aws-robomaker-small-warehouse-world
+	url = https://github.com/shreyasgokhale/aws-robomaker-small-warehouse-world
