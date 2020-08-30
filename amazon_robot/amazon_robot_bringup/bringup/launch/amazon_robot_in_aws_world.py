@@ -46,8 +46,10 @@ def generate_launch_description():
 
     aws_dir = get_package_share_directory('aws_robomaker_small_warehouse_world')
 
+    # spawn_robot = True
     # We will not spawn the robot
-    spawn_robot = True
+    spawn_robot = LaunchConfiguration('spawn_robot')
+
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -90,11 +92,21 @@ def generate_launch_description():
         default_value='false',
         description='Whether to apply a namespace to the navigation stack')
 
-    # Map
+    declare_spawn_robot = DeclareLaunchArgument(
+        'spawn_robot',
+        default_value='True',
+        description='Whether to spawn robot')
+
+# Map
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
         default_value=os.path.join(amazon_bringup_package_dir, 'maps', 'aws_warehouse' ,'map.yaml'),
         description='Full path to map file to load')
+
+    declare_use_simulator_cmd = DeclareLaunchArgument(
+        'use_simulator',
+        default_value='True',
+        description='Whether to start the simulator')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
@@ -164,11 +176,13 @@ def generate_launch_description():
     # Default Nav2 actions
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
+        condition=IfCondition(use_simulator),
         cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_init.so', '-s' , 'libgazebo_ros_factory.so', '-s' , 'libgazebo_ros_force_system.so' , world],
         cwd=[this_launch_dir], output='screen')
 
 
     start_gazebo_client_cmd = ExecuteProcess(
+        condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])),
         cmd=['gzclient'],
         cwd=[this_launch_dir], output='screen')
 
@@ -204,16 +218,16 @@ def generate_launch_description():
                           'default_bt_xml_filename': default_bt_xml_filename,
                           'autostart': autostart}.items())
     
-    if spawn_robot is True:
-        spawn_robot_cmd = IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(os.path.join(amazon_bringup_package_dir, 'launch',
-                                                            'spawn_tb3_launch.py')),
-                    launch_arguments={
-                                    'x_pose': '0',
-                                    'y_pose': '0',
-                                    'z_pose': '0',
-                                    'robot_name': 'amazon_robot'
-                                    }.items())
+    spawn_robot_cmd = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(os.path.join(amazon_bringup_package_dir, 'launch',
+                                                        'spawn_tb3_launch.py')),
+                condition=IfCondition(spawn_robot),
+                launch_arguments={
+                                'x_pose': '0',
+                                'y_pose': '0',
+                                'z_pose': '0',
+                                'robot_name': 'amazon_robot'
+                                }.items())
 
 
     # Create the launch description and populate
@@ -235,13 +249,15 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_world_cmd)
+    ld.add_action(declare_spawn_robot)
+    ld.add_action(declare_use_simulator_cmd)
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(spawn_robot_cmd)
 
-    if spawn_robot is True:
-        ld.add_action(spawn_robot_cmd)
+    # if spawn_robot is True:
 
 
     # Add the actions to launch all of the navigation nodes

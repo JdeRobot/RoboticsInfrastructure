@@ -44,6 +44,7 @@ namespace amazon_robot_controller {
         int32_t current_load_queue_idx = config().blackboard->get<int32_t>("current_load_queue_idx");
         std::vector <int32_t> load_effort_queue_ = config().blackboard->get<std::vector<int32_t>>("load_queue");
 //        !getInput("load_queue", load_effort_queue_)
+        robot_name_ = config().blackboard->get<std::string>("robot_name");
 
 
         if (load_effort_queue_.size()<=1) {
@@ -99,10 +100,15 @@ namespace amazon_robot_controller {
         // '{joint_name: "lift_joint", effort: -2.0, start_time: {sec: 0, nanosec: 0}, duration: {sec: 2000, nanosec: 0} }'
 
         // ros2 service call /clear_joint_efforts gazebo_msgs/srv/JointRequest '{joint_name: "joint"}'
+        std::stringstream joint_name;
+        joint_name << robot_name_ << "::" << "lift_joint";
 
-        apply_joint_effort_request->joint_name = "lift_joint";
+        apply_joint_effort_request->joint_name = joint_name.str();
         apply_joint_effort_request->start_time.sec = 0;
         apply_joint_effort_request->duration.sec = 2000;
+
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), joint_name.str());
+
 
         while (!load_pallet_client_->wait_for_service(2s)) {
             if (!rclcpp::ok()) {
