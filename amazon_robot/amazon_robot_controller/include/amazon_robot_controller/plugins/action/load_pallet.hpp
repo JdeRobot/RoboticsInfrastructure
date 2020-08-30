@@ -63,6 +63,7 @@ namespace amazon_robot_controller {
         bool use_default_behaviour_ = false;
     private:
         int counter_;
+        std::string robot_name_;
         rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_pallet_client_;
         rclcpp::Node::SharedPtr load_pallet_node_;
     };

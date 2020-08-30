@@ -28,9 +28,9 @@ def main():
     parser = argparse.ArgumentParser(description='Spawn Robot into Gazebo with navigation2')
     parser.add_argument('-n', '--robot_name', type=str, default='amazon_robot',
                         help='Name of the robot to spawn')
-    parser.add_argument('-ns', '--robot_namespace', type=str, default=' ',
+    parser.add_argument('-ns', '--robot_namespace', type=str, default='robot',
                         help='ROS namespace to apply to the tf and plugins')
-    parser.add_argument('-namespace', '--namespace', type=bool, default=False,  
+    parser.add_argument('-namespace', '--namespace', type=bool, default=True,
                         help='Whether to enable namespacing')
     parser.add_argument('-x', type=float, default=0,
                         help='the x component of the initial position [meters]')
@@ -65,14 +65,6 @@ def main():
         'amazon_robot2', 'model.sdf')
 
 
-    # # Get path to the robot's sdf file
-    # if args.turtlebot_type is not None:
-    #     sdf_file_path = os.path.join(
-    #         get_package_share_directory('amazon_robot_gazebo'), 'models',
-    #         'amazon_robot', 'model.sdf')
-    # else:
-    #     sdf_file_path = args.sdf
-
     # We need to remap the transform (/tf) topic so each robot has its own.
     # We do this by adding `ROS argument entries` to the sdf file for
     # each plugin broadcasting a transform. These argument entries provide the
@@ -86,6 +78,11 @@ def main():
             # broadcasting a transform between`odom` and `base_footprint`
             break
 
+    ros_params = plugin.find('ros')
+    ros_tf_remap = ET.SubElement(ros_params, 'remapping')
+    ros_tf_remap.text = '/tf:=/' + args.robot_namespace + '/tf'
+
+
     # Set data for request
     request = SpawnEntity.Request()
     request.name = args.robot_name
@@ -94,21 +91,18 @@ def main():
     request.initial_pose.position.y = float(args.y)
     request.initial_pose.position.z = float(args.z)
 
-    if args.namespace is True:     
+    if args.namespace is True:
         node.get_logger().info('spawning `{}` on namespace `{}` at {}, {}, {}'.format(
             args.robot_name, args.robot_namespace, args.x, args.y, args.z))
-            
-        ros_params = plugin.find('ros')
-        ros_tf_remap = ET.SubElement(ros_params, 'remapping')
-        ros_tf_remap.text = '/tf:=/' + args.robot_namespace + '/tf'
-        request.robot_namespace = args.robot_namespace
 
+        request.robot_namespace = args.robot_namespace
+        print(args.robot_namespace)
 
     else:
         node.get_logger().info('spawning `{}` at {}, {}, {}'.format(
             args.robot_name, args.x, args.y, args.z))
 
-    node.get_logger().info('Sending service request to `/spawn_entity`')
+    node.get_logger().info('Spawning Robot using service: `/spawn_entity`')
     future = client.call_async(request)
     rclpy.spin_until_future_complete(node, future)
     if future.result() is not None:

@@ -50,6 +50,9 @@ namespace amazon_robot_controller {
         declare_parameter("global_frame", std::string("map"));
         declare_parameter("robot_base_frame", std::string("base_link"));
         declare_parameter("odom_topic", std::string("odom"));
+        declare_parameter("loader_service", std::string("apply_joint_effort"));
+        declare_parameter("robot_name", std::string("robot1"));
+
     }
 
     RobotController::~RobotController() {
@@ -71,10 +74,6 @@ namespace amazon_robot_controller {
         // set up node 2
         load_client_node_ = rclcpp::Node::make_shared("load_client_node");
 
-        //gazebo_msgs/srv/ApplyJointEffort
-        rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_client =
-                load_client_node_->create_client<gazebo_msgs::srv::ApplyJointEffort>("apply_joint_effort");
-
 
         action_server_ = std::make_unique<ActionServer>(
                 get_node_base_interface(),
@@ -92,6 +91,19 @@ namespace amazon_robot_controller {
         // Create the blackboard that will be shared by all of the nodes in the tree
         blackboard_ = BT::Blackboard::create();
 
+        //Get loader service name
+        get_parameter("loader_service", loader_service_);
+        RCLCPP_INFO(get_logger(), loader_service_);
+
+        get_parameter("robot_name", robot_name_);
+        RCLCPP_INFO(get_logger(), robot_name_);
+
+
+        //gazebo_msgs/srv/ApplyJointEffort
+        rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr load_client =
+                load_client_node_->create_client<gazebo_msgs::srv::ApplyJointEffort>(loader_service_);
+
+
         // Put items on the blackboard
         blackboard_->set<rclcpp::Node::SharedPtr>("node", client_node_);  // NOLINT
         blackboard_->set<std::chrono::milliseconds>("server_timeout", std::chrono::milliseconds(10));  // NOLINT
@@ -102,6 +114,8 @@ namespace amazon_robot_controller {
         blackboard_->set<rclcpp::Node::SharedPtr>("load_node", load_client_node_);  // NOLINT
         blackboard_->set<rclcpp::Client<gazebo_msgs::srv::ApplyJointEffort>::SharedPtr>("load_client",
                                                                                         load_client);  // NOLINT
+        blackboard_->set<std::string>("robot_name", robot_name_);  // NOLINT
+
 
 
         // Get the BT filename to use from the node parameter
