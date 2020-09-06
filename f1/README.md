@@ -19,3 +19,9 @@ The following table contains the current F1 circuits of the repository.
 | Nurburgring Line | ![](./imgs/circuit_nurburgring.png)    |
 | Simple circuit   | ![](./imgs/circuit_simple_circuit.png) |
 
+## New curves models
+
+| Before                        | After                        |
+| ----------------------------- | ---------------------------- |
+| ![](./imgs/curves_before.png) | ![](./imgs/curves_after.png) |
+
