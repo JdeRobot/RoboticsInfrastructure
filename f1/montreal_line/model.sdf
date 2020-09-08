@@ -7,14 +7,14 @@
     <collision name="collision">
       <geometry>
         <plane>
-          <size> 200 200</size>
+          <size> 700 500</size>
         </plane>
       </geometry>
     </collision>
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://nurburgring_line/meshes/Circuito_Nurburgrin.dae</uri>
+          <uri>model://montreal_line/meshes/montreal.dae</uri>
         </mesh>
       </geometry>
     </visual>
@@ -23,14 +23,14 @@
     <collision name="collision">
       <geometry>
         <mesh>
-          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
         </mesh>
       </geometry>
     </collision>
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
         </mesh>
       </geometry>
     </visual>
