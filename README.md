@@ -10,6 +10,7 @@ In this JdeRobot repository we structure the formula 1 related robots, Amazon wa
 - ROS version
 - Python version (if you develop in Python).
 
-This repository is divided into **two branches**. **Depending on the version** of the mentioned software you will have to move to one of them to have the version compatible with your software. The branches are:
+This repository is divided into **three branches**. **Depending on the version** of the mentioned software you will have to move to one of them to have the version compatible with your software. The branches are:
 - `melodic-devel` (default branch)
-- `noetic-devel`
+- [`noetic-devel`](https://github.com/JdeRobot/CustomRobots/tree/noetic-devel)
+- [`foxy-devel`](https://github.com/JdeRobot/CustomRobots/tree/foxy-devel)
