@@ -19,7 +19,7 @@
     <collision name="collision">
         <geometry>
             <mesh>
-                 <uri>model://f1_renault/Renault/Car.obj</uri>
+                 <uri>model://f1_renault_laser/Renault/Car.obj</uri>
                  <scale>0.2 0.2 0.2</scale>
             </mesh>
         </geometry>
