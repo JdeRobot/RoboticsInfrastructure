@@ -6,7 +6,7 @@
 		<uri>model://sun</uri>
 	</include>
 	<include>
-		<uri>model://pista_simple</uri>
+		<uri>model://simple_circuit</uri>
 		<pose>0 0 0 0 0 0</pose>
 	</include>
 	<include>
