@@ -380,9 +380,9 @@
 	<wheelDiameter>0.2410</wheelDiameter>
 
 	<torque>20</torque>
-	<commandTopic>roombaROS/cmd_vel</commandTopic>
+	<commandTopic>/roombaROS/cmd_vel</commandTopic>
 	<!-- topic name published in the cpp file -->
-	<odometryTopic>roombaROS/odom</odometryTopic>
+	<odometryTopic>/roombaROS/odom</odometryTopic>
 	<odometryFrame>odom</odometryFrame>
 	<robotBaseFrame>base</robotBaseFrame>
 
