@@ -31,7 +31,7 @@
       </extra>
     </camera>
   </library_cameras>
-  <library_lights>
+  <!--<library_lights>
     <light id="Point-light" name="Point">
       <technique_common>
         <point>
@@ -166,8 +166,8 @@
       </extra>
     </light>
   </library_lights>
-  <library_images/>
-  <library_effects>
+  <library_images/>-->
+  <!--<library_effects>
     <effect id="Color_E05-effect">
       <profile_COMMON>
         <technique sid="common">
@@ -382,8 +382,8 @@
         </technique>
       </profile_COMMON>
     </effect>
-  </library_effects>
-  <library_materials>
+  </library_effects>-->
+  <!--<library_materials>
     <material id="Color_E05-material" name="Color_E05">
       <instance_effect url="#Color_E05-effect"/>
     </material>
@@ -408,7 +408,7 @@
     <material id="edge_color255255255255-material" name="edge_color255255255255">
       <instance_effect url="#edge_color255255255255-effect"/>
     </material>
-  </library_materials>
+  </library_materials>-->
   <library_geometries>
     <geometry id="ID5-mesh" name="ID5">
       <mesh>
