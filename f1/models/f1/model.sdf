@@ -5,6 +5,18 @@
   <static>false</static>
     <link name="f1">
     	<pose>0 0 0 0 0 0</pose>
+	<inertial>
+        <mass>10</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0.0</ixy>
+          <iyy>1</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>1.0</izz>
+      </inertia>
+    </inertial>
+
       <collision name="collision">
             <geometry>
               <mesh>
@@ -21,9 +33,9 @@
     </visual>
   </link>
     <link name="front_right_wheel">
-        <pose>-0.16 0 0.06 0 1.5707 0</pose>
+        <pose>0 -0.16 0.06 0 1.5707 0</pose>
          <inertial>
-        <mass>0.1</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>0.5</ixx>
           <ixy>0.0</ixy>
@@ -45,9 +57,9 @@
 
     </link>
       <link name="front_left_wheel">
-        <pose>0.16 0 0.06 0 1.5707 0</pose>
+        <pose>0 0.16 0.06 0 1.5707 0</pose>
         <inertial>
-        <mass>0.1</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>0.5</ixx>
           <ixy>0.0</ixy>
@@ -68,9 +80,9 @@
     </link>
 
       <link name="front_left_steering_wheel_block">
-        <pose>0.16 0 0.06 0 1.5707 0</pose>
+        <pose>0 0.16 0.06 0 1.5707 0</pose>
         <inertial>
-        <mass>0.01</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>1.0</ixx>
           <ixy>0.0</ixy>
@@ -89,13 +101,21 @@
           </cylinder>
         </geometry>
       </collision>
+<!--
+      <visual name="visual">
+          <geometry>
+            <mesh>
+            	<uri>model://f1/meshes/wheel.dae</uri>
+          	</mesh>
+        </geometry>
+      </visual>-->
 
 		</link>     
         
         <link name="front_right_steering_wheel_block">
-        <pose>-0.16 0 0.06 0 1.5707 0</pose>
+        <pose>0 -0.16 0.06 0 1.5707 0</pose>
         <inertial>
-        <mass>0.01</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>1.0</ixx>
           <ixy>0.0</ixy>
@@ -115,11 +135,19 @@
         </geometry>
       </collision>
 
+      <!--<visual name="visual">
+          <geometry>
+            <mesh>
+            	<uri>model://f1/meshes/wheel.dae</uri>
+          	</mesh>
+        </geometry>
+      </visual>-->
+
     </link>
       <link name="rear_left_wheel">
-        <pose>0.16 0.58 0.06 0 1.5707 0</pose>
+        <pose>-0.58 0.16 0.06 0 1.5707 0</pose>
          <inertial>
-        <mass>0.1</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>0.5</ixx>
           <ixy>0.0</ixy>
@@ -157,13 +185,22 @@
         </contact>
       </surface>
       </collision>
+
+      <!--<visual name="visual">
+         <geometry>
+          <cylinder>
+            <radius>.06</radius>
+            <length>.07</length>
+          </cylinder>
+        </geometry>
+      </visual>-->
 
     </link>
      
       <link name="rear_right_wheel">
-        <pose>-0.16 0.58 0.06 0 1.5707 0</pose>
+        <pose>-0.58 -0.16 0.06 0 1.5707 0</pose>
          <inertial>
-        <mass>0.1</mass>
+        <mass>1</mass>
         <inertia>
           <ixx>0.5</ixx>
           <ixy>0.0</ixy>
@@ -202,12 +239,21 @@
       </surface>
       </collision>
 
+      <!--<visual name="visual">
+         <geometry>
+          <cylinder>
+             <radius>.06</radius>
+             <length>.07</length>
+          </cylinder>
+        </geometry>
+      </visual>-->
+
     </link>
 
 <link name='camera_top_body_left'>
-        <pose>0.050000 -0.09000 0.1442400 0.000000 -0.000000 0.000000</pose>
+        <pose>0.09000 0.050000 0.1442400 0.000000 -0.000000 0.000000</pose>
         <inertial>
-          <mass>0.500000</mass>
+          <mass>2</mass>
           <inertia>
             <ixx>1.000000</ixx>
             <ixy>0.000000</ixy>
@@ -218,9 +264,9 @@
         </inertia>
       </inertial>
         <sensor name='cam_f1_left' type='camera'>
-          <pose>0.000000 0.000000 0.000000  0.00000 0.00000 -1.57000</pose>
+          <pose>0.000000 0.000000 0.000000  0.00000 0.00000 0.00000</pose>
           <update_rate>20.000000</update_rate>
-          <camera name='__default__'>
+          <camera name='cleft'>
             <horizontal_fov>1.570000</horizontal_fov>
             <image>
               <width>640</width>
@@ -232,12 +278,25 @@
               <far>15.000000</far>
           </clip>
         </camera>
-          <plugin name='camera_dump' filename='libgazebo_ros_camera.so'/>
+		<plugin name="camera_controller_left" filename="libgazebo_ros_camera.so">
+			<alwaysOn>true</alwaysOn>
+			<updateRate>0.0</updateRate>
+			<cameraName>F1ROS/cameraL</cameraName>
+			<imageTopicName>image_raw</imageTopicName>
+			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+			<frameName>camera_top_body_left</frameName>
+			<hackBaseline>0.07</hackBaseline>
+			<distortionK1>0.0</distortionK1>
+			<distortionK2>0.0</distortionK2>
+			<distortionK3>0.0</distortionK3>
+			<distortionT1>0.0</distortionT1>
+			<distortionT2>0.0</distortionT2>
+		</plugin>
       </sensor>
         <visual name='visual'>
           <geometry>
 <sphere>
-                          <radius>.01</radius>
+                          <radius>.005</radius>
 </sphere>
         </geometry>
       </visual>
@@ -273,9 +332,9 @@
     </link>
 
 <link name='camera_top_body_right'>
-        <pose>-0.050000 -0.09000 0.1442400 0.000000 -0.000000 0.0000000</pose>
+        <pose>0.09000 -0.050000 0.1442400 0.000000 -0.000000 0.0000000</pose>
         <inertial>
-          <mass>0.500000</mass>
+          <mass>2</mass>
           <inertia>
             <ixx>1.000000</ixx>
             <ixy>0.000000</ixy>
@@ -286,9 +345,9 @@
         </inertia>
       </inertial>
         <sensor name='cam_f1_right' type='camera'>
-          <pose>0.000000 0.000000 0.000000 0.000000 0.00000 -1.570000</pose>
+          <pose>0.000000 0.000000 0.000000 0.000000 0.00000 0.00000</pose>
           <update_rate>20.000000</update_rate>
-          <camera name='__default__'>
+          <camera name='cright'>
             <horizontal_fov>1.570000</horizontal_fov>
             <image>
               <width>640</width>
@@ -300,12 +359,25 @@
               <far>15.000000</far>
           </clip>
         </camera>
-          <plugin name='camera_dump' filename='libgazebo_ros_camera.so'/>
+		<plugin name="camera_controller_right" filename="libgazebo_ros_camera.so">
+			<alwaysOn>true</alwaysOn>
+			<updateRate>0.0</updateRate>
+			<cameraName>F1ROS/cameraR</cameraName>
+			<imageTopicName>image_raw</imageTopicName>
+			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+			<frameName>camera_top_body_right</frameName>
+			<hackBaseline>0.07</hackBaseline>
+			<distortionK1>0.0</distortionK1>
+			<distortionK2>0.0</distortionK2>
+			<distortionK3>0.0</distortionK3>
+			<distortionT1>0.0</distortionT1>
+			<distortionT2>0.0</distortionT2>
+		</plugin>
       </sensor>
         <visual name='visual'>
          <geometry>
 <sphere>
-                          <radius>.01</radius>
+                          <radius>.005</radius>
 </sphere>
         </geometry>
       </visual>
@@ -340,11 +412,11 @@
         <gravity>1</gravity>
     </link>
 
-<link name='laser'>
-        <pose>0.000000 -0.190000 0.072000 0.000000 0.000000 -1.570000</pose>
+<!--<link name='laser'>
+        <pose>0.190000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
         <gravity>0</gravity>
         <inertial>
-          <mass>0.100000</mass>
+          <mass>1</mass>
           <inertia>
             <ixx>1.000000</ixx>
             <ixy>0.000000</ixy>
@@ -357,7 +429,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://f1/meshes/hokuyo.dae</uri>
+              <uri>model://f1ROS/meshes/hokuyo.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -415,7 +487,10 @@
           </range>
         </ray>
           <update_rate>20.000000</update_rate>
-          <plugin name='laser' filename='libgazebo_ros_laser.so'/>
+		<plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+			<topicName>/F1/laser/scan</topicName>
+			<frameName>laser</frameName>
+		</plugin>
           <always_on>1</always_on>
           <visualize>1</visualize>
       </sensor>
@@ -425,7 +500,7 @@
       </velocity_decay>
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
-    </link>
+    </link>-->
       
        <joint type="revolute" name="front_left_wheel_hinge">
         <pose>0 0 0 0 0 0</pose>
@@ -461,7 +536,7 @@
           <xyz>0 0 0</xyz>
       </axis>
     </joint>
-
+<!--
 	  <joint type="revolute" name="laser_joint">
         <pose>0 0 0 0 0 0</pose>
         <child>laser</child>
@@ -470,6 +545,7 @@
           <xyz>0 0 0</xyz>
       </axis>
     </joint>
+-->
       
       <joint type="revolute" name="front_left_steering_wheel">
         <pose>0 0 0 0 0 0</pose>
@@ -537,13 +613,12 @@
           <xyz>1 0 0</xyz>
       </axis>
     </joint>
-     <!-- <plugin name="f1Motors" filename="libmotorsF1.so">
-      	<front_right_joint>front_right_wheel_hinge</front_right_joint>
-      	<front_left_joint>front_left_wheel_hinge</front_left_joint>
-			<front_right_steering_joint>front_right_steering_wheel</front_right_steering_joint>
-			<front_left_steering_joint>front_left_steering_wheel</front_left_steering_joint>
-			<torque>5</torque>
-    </plugin> -->
-    <!-- <plugin name="pose3d" filename="libpose3dF1.so"/> -->
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>F1ROS/cmd_vel</commandTopic>
+      <odometryTopic>F1ROS/odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>f1</robotBaseFrame>
+    </plugin>
 </model>
 </sdf>
