@@ -16,7 +16,7 @@
 			<pose>0 0 0 0 0 0</pose>
 			<geometry>
 				<mesh>
-					<uri>model://curveGP/meshes/circuit_curve.dae</uri>
+					<uri>model://many_curves/meshes/circuit_curve.dae</uri>
 				</mesh>
 			</geometry>
 		</visual>
@@ -26,7 +26,7 @@
             <collision name="collision">
                <geometry>
                   <mesh>
-                        <uri>model://curveGP/meshes/pared.dae</uri>
+                        <uri>model://many_curves/meshes/pared.dae</uri>
                   </mesh>
                                 </geometry>
           </collision>
@@ -34,7 +34,7 @@
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                   <mesh>
-                        <uri>model://curveGP/meshes/pared.dae</uri>
+                        <uri>model://many_curves/meshes/pared.dae</uri>
                   </mesh>
               </geometry>
           </visual>    
