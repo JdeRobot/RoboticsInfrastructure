@@ -10,7 +10,14 @@
     </include>
     <include>
       <uri>model://f1_renault</uri>
-      <pose>27.18 -31.55 0.00 0.00 0.01 -3.12</pose>
+	<!-- NORMAL-->
+	<pose>27.18 -31.55 0.00 0.00 0.01 -3.12</pose>
+        <!-- 1st difficult turn -->
+	<!--<pose>93.71 22.43 0 0 0.01 -0.35</pose>-->
+        <!-- 2nd diffult turn -->
+	<!-- <pose>103.09 15.36 0 0 0.01 -1.67</pose> -->
+	<!-- 180º turn NORMAL -->
+	<!-- <pose>27.18 -31.55 0 0 0.01 -0.01</pose>-->		
     </include>
     <gui fullscreen='0'>
         <camera name='user_camera'>
