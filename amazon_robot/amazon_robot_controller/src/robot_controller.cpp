@@ -138,7 +138,7 @@ namespace amazon_robot_controller {
         RCLCPP_DEBUG(get_logger(), "Behavior Tree XML: %s", xml_string.c_str());
 
         // Create the Behavior Tree from the XML input
-        tree_ = bt_->buildTreeFromText(xml_string, blackboard_);
+        tree_ = bt_->createTreeFromText(xml_string, blackboard_);
 
         return true;
     }
@@ -149,10 +149,10 @@ namespace amazon_robot_controller {
 
         action_server_->activate();
 
-        if (use_bond_) {
-            // create bond connection
-            nav2_util::LifecycleNode::createBond();
-        }
+        // if (use_bond_) {
+        //     // create bond connection
+        //     nav2_util::LifecycleNode::createBond();
+        // }
 
         return nav2_util::CallbackReturn::SUCCESS;
     }
@@ -163,10 +163,10 @@ namespace amazon_robot_controller {
 
         action_server_->deactivate();
 
-        if (use_bond_) {
-            // destroy bond connection
-            nav2_util::LifecycleNode::destroyBond();
-        }
+        // if (use_bond_) {
+        //     // destroy bond connection
+        //     nav2_util::LifecycleNode::destroyBond();
+        // }
 
         return nav2_util::CallbackReturn::SUCCESS;
     }
