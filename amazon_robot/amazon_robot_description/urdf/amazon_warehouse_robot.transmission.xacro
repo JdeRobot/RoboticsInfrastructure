@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+        <transmission name="lift_screw_trans">
+            <actuator name="lift_screw_motor" >
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+            </actuator>
+            <joint name="lift_joint">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+            </joint>
+            <type>transmission_interface/SimpleTransmission</type>
+            <mechanicalReduction>-47641.53</mechanicalReduction>
+            <simulated_actuated_joint name="lift_screw_motor_screw_joint"
+                                      simulated_reduction="3141.6" />
+        </transmission>
+
+
+</robot>

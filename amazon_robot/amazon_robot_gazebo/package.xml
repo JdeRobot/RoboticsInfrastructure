@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>amazon_robot_gazebo</name>
+  <version>1.2.0</version>
+  <description>
+    Gazebo simulation package for Amazon Warehouse Robot
+  </description>
+  <license>Apache 2.0</license>
+  <author email="shreyas6gokhale@gmail.com">Shreyas</author>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>gazebo_ros</depend>
+  <exec_depend>gazebo</exec_depend>
+  <export>
+    <gazebo_ros gazebo_media_path="${prefix}"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+  </export>
+</package>
