@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<robot name="amazon_robot2_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="laser_visual"  default="false"/>
+  <xacro:arg name="camera_visual" default="false"/>
+  <xacro:arg name="imu_visual"    default="false"/>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <gazebo reference="wheel_left_link">
+    <mu1>20</mu1>
+    <mu2>20</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="wheel_right_link">
+    <mu1>20</mu1>
+    <mu2>20</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="caster_back_right_link">
+    <mu1>20</mu1>
+    <mu2>20</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="caster_back_left_link">
+    <mu1>20</mu1>
+    <mu2>20</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="platform_joint">
+    <mu1>20000</mu1>
+    <mu2>20000</mu2>
+    <kp>1000000.0</kp>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="lift_joint">
+    <mu1>20000</mu1>
+    <mu2>20000</mu2>
+    <kp>1000000.0</kp>
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <sensor type="imu" name="imu">
+      <always_on>true</always_on>
+      <visualize>$(arg imu_visual)</visualize>
+    </sensor>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <alwaysOn>true</alwaysOn>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometrySource>world</odometrySource>
+      <publishOdomTF>true</publishOdomTF>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+      <publishWheelTF>false</publishWheelTF>
+      <publishTf>true</publishTf>
+      <publishWheelJointState>true</publishWheelJointState>
+      <legacyMode>false</legacyMode>
+      <updateRate>30</updateRate>
+      <leftJoint>wheel_left_joint</leftJoint>
+      <rightJoint>wheel_right_joint</rightJoint>
+      <!--      <wheelSeparation>0.287</wheelSeparation>-->
+      <wheelSeparation>0.574</wheelSeparation>
+<!--      <wheelDiameter>0.066</wheelDiameter>-->
+      <wheelDiameter>0.144</wheelDiameter>
+      <wheelAcceleration>4</wheelAcceleration>
+<!--      <wheelAcceleration>1</wheelAcceleration>-->
+      <wheelTorque>50</wheelTorque>
+<!--      <wheelTorque>10</wheelTorque>-->
+      <rosDebugLevel>na</rosDebugLevel>
+      <allow_multiple_cmd_vel_publishers>true</allow_multiple_cmd_vel_publishers>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <bodyName>imu_link</bodyName>
+      <frameName>imu_link</frameName>
+      <topicName>imu</topicName>
+      <serviceName>imu_service</serviceName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <updateRate>200</updateRate>
+      <imu>
+        <noise>
+          <type>gaussian</type>
+          <rate>
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </rate>
+          <accel>
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </accel>
+        </noise>
+      </imu>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="base_scan">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="ray" name="lds_lfcd_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>$(arg laser_visual)</visualize>
+      <update_rate>5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.120</min>
+          <max>3.5</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_lds_lfcd_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>base_scan</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/amazon_robot</robotNamespace>
+<!--      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>-->
+    </plugin>
+  </gazebo>
+
+
+  <!--  <gazebo reference="lift_joint">-->
+<!--    <joint name="lift_joint" type="fixed">-->
+<!--      <parent link="link_platform_mid" />-->
+<!--      <child link="lift_link" />-->
+<!--      <origin xyz="0 0 0.04" rpy="0. 0. 0."/>-->
+<!--    </joint>-->
+<!--  </gazebo>-->
+
+
+  <!--  <gazebo>-->
+<!--    <joint name="lift_joint" type="prismatic" >-->
+<!--      <origin xyz="0 0 0.04" rpy="0. 0. 0."/>-->
+<!--      <child link="lift_link" />-->
+<!--      <parent link="link_platform_mid" />-->
+<!--      &lt;!&ndash;    <axis xyz="0 0 1" rpy="0 0 0"/>&ndash;&gt;-->
+<!--      <limit effort="10.0" lower="0.0" upper="1.86" velocity="0.5"/>-->
+<!--      <inertia ixx="0.024" ixy="0.0" ixz="0.083" iyy="0.569" iyz="0.0" izz="0.555"/>-->
+<!--    </joint>-->
+<!--  </gazebo>-->
+
+<!--  <gazebo reference="lift_screw">-->
+<!--    <joint type="prismatic" name="lift_joint">-->
+<!--      <parent>link_platform_mid</parent>-->
+<!--      <child>lift_link</child>-->
+<!--      <axis>-->
+<!--        <xyz>0 0 1</xyz>-->
+<!--      </axis>-->
+<!--      <thread_pitch>3141.6</thread_pitch>-->
+<!--    </joint>-->
+<!--  </gazebo>-->
+
+
+</robot>
