@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://montmelo_line</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <gui fullscreen='0'>
+        <camera name='user_camera'>
+            <pose frame=''>36.59 -32.77 2.64 0.00 0.23 2.85</pose>
+            <view_controller>orbit</view_controller>
+            <projection_type>perspective</projection_type>
+        </camera>
+    </gui>
+
+    <scene>
+        <sky>
+	    <clouds>
+	        <speed>12</speed>
+	    </clouds>
+	</sky>
+    </scene>
+
+  </world>
+</sdf>

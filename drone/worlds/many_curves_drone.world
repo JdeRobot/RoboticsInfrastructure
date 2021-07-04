@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+<world name="default">
+        <!-- A global light source -->
+        <include>
+                <uri>model://sun</uri>
+        </include>
+        <include>
+                <uri>model://many_curves</uri>
+                <pose>0 0 0 0 0 0</pose>
+        </include>
+        <scene>
+                <sky>
+                        <clouds>
+                                <speed>12</speed>
+                        </clouds>
+                </sky>
+                <ambient>1.0 1.0 1.0 1.0</ambient>
+                <shadows>false</shadows>
+                <grid>false</grid>
+        </scene>
+</world>
+</sdf>
