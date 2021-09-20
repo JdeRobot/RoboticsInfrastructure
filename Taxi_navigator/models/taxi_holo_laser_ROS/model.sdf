@@ -23,10 +23,8 @@
           </mesh>
         </geometry>
       </visual>
-    </link>
-  <link name='laser_front'>
-  <pose>2.400000 0.000000 0.800000 0.000000 0.000000 0.00000</pose>
     <sensor name='laser_f' type='ray'>
+    <pose>2.400000 0.000000 0.500000 0.000000 0.000000 0.00000</pose>
       <ray>
         <scan>
           <horizontal>
@@ -52,10 +50,8 @@
     </sensor>    
     <self_collide>0</self_collide>
     <kinematic>0</kinematic>
-    </link>
-    <link name='laser_right'>
-  <pose>0.500000 -1.250000 0.800000 0.000000 0.000000 -1.57080</pose>
     <sensor name='laser_r' type='ray'>
+      <pose>0.500000 -1.250000 0.500000 0.000000 0.000000 -1.57080</pose>
       <ray>
         <scan>
           <horizontal>
@@ -80,11 +76,9 @@
       <visualize>1</visualize>
     </sensor>    
     <self_collide>0</self_collide>
-    <kinematic>0</kinematic>
-    </link>
-      <link name='laser_back'>
-  <pose>-2.400000 0.000000 0.800000 0.000000 0.000000 3.141600</pose>
+    <kinematic>0</kinematic>    
     <sensor name='laser_b' type='ray'>
+      <pose>-2.400000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
       <ray>
         <scan>
           <horizontal>
