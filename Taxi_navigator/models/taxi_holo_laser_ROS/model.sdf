@@ -23,6 +23,8 @@
           </mesh>
         </geometry>
       </visual>
+    </link>
+    <link name="laser_front">
     <sensor name='laser_f' type='ray'>
     <pose>2.400000 0.000000 0.500000 0.000000 0.000000 0.00000</pose>
       <ray>
@@ -42,7 +44,7 @@
       </ray>
       <update_rate>20.000000</update_rate>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/F1ROS/laser/scan</topicName>
+        <topicName>/F1ROS/laser_f/scan</topicName>
         <frameName>laser</frameName>
       </plugin>
       <always_on>1</always_on>
@@ -50,6 +52,8 @@
     </sensor>    
     <self_collide>0</self_collide>
     <kinematic>0</kinematic>
+    </link>
+    <link name="laser_right">
     <sensor name='laser_r' type='ray'>
       <pose>0.500000 -1.250000 0.500000 0.000000 0.000000 -1.57080</pose>
       <ray>
@@ -69,14 +73,16 @@
       </ray>
       <update_rate>20.000000</update_rate>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/F1ROS/laser/scan</topicName>
+        <topicName>/F1ROS/laser_r/scan</topicName>
         <frameName>laser</frameName>
       </plugin>
       <always_on>1</always_on>
       <visualize>1</visualize>
     </sensor>    
     <self_collide>0</self_collide>
-    <kinematic>0</kinematic>    
+    <kinematic>0</kinematic>
+    </link> 
+    <link name="laser_back">
     <sensor name='laser_b' type='ray'>
       <pose>-2.400000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
       <ray>
@@ -96,7 +102,7 @@
       </ray>
       <update_rate>20.000000</update_rate>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/F1ROS/laser/scan</topicName>
+        <topicName>/F1ROS/laser_b/scan</topicName>
         <frameName>laser</frameName>
       </plugin>
       <always_on>1</always_on>
