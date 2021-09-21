@@ -25,6 +25,7 @@
       </visual>
     </link>
     <link name="laser_front">
+  <gravity>false</gravity>
     <sensor name='laser_f' type='ray'>
     <pose>2.400000 0.000000 0.500000 0.000000 0.000000 0.00000</pose>
       <ray>
@@ -54,7 +55,8 @@
     <kinematic>0</kinematic>
     </link>
     <link name="laser_right">
-    <sensor name='laser_r' type='ray'>
+    <gravity>false</gravity>
+    <sensor name='laser_r' type='ray'>    
       <pose>0.500000 -1.250000 0.500000 0.000000 0.000000 -1.57080</pose>
       <ray>
         <scan>
@@ -83,6 +85,7 @@
     <kinematic>0</kinematic>
     </link> 
     <link name="laser_back">
+    <gravity>false</gravity>
     <sensor name='laser_b' type='ray'>
       <pose>-2.400000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
       <ray>
