@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.4'>
-  <model name='house_int2'>
+  <model name='house_mcvl'>
     <model name='mesa_comedor'>
       <static>true</static>
       <link name='mesa_link'>
