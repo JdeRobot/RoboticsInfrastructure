@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <!-- Ground -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- My robots -->
+    <include>
+      <uri>model://ArDrone2</uri>
+      <pose>0 0 0.7 0 0 0</pose>
+    </include>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://house_3</uri>
+      <pose>3 6.43 0 0 0 0</pose>
+    </include>
+    <!-- Zona Despegue y aterrizaje -->
+    <include>
+      <uri>model://tag_land</uri>
+      <pose>4 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://tag_takeoff</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://posAprilTags</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>
