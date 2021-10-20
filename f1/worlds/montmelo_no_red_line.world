@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
-  <world name="default">
+<world name="default">
     <include>
-      <uri>model://sun</uri>
+        <uri>model://sun</uri>
     </include>
     <include>
-      <uri>model://montmelo_no_red_line</uri>
-      <pose>0 0 0 0 0 0</pose>
+        <uri>model://montmelo_no_red_line</uri>
+        <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault</uri>
+        <uri>model://f1_renault</uri>
         <!-- NORMAL-->
         <pose>27.18 -31.55 0.00 0.00 0.01 -3.12</pose>
         <!-- 1st difficult turn -->
@@ -26,7 +26,6 @@
             <projection_type>perspective</projection_type>
         </camera>
     </gui>
-
     <scene>
         <sky>
             <clouds>
@@ -34,6 +33,5 @@
             </clouds>
         </sky>
     </scene>
-
-  </world>
+</world>
 </sdf>

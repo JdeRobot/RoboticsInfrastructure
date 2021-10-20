@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
-  <world name="default">
+<world name="default">
     <include>
-      <uri>model://sun</uri>
+        <uri>model://sun</uri>
     </include>
     <include>
-      <uri>model://nurburgring_no_red_line</uri>
-      <pose>0 0 0 0 0 0</pose>
+        <uri>model://nurburgring_no_red_line</uri>
+        <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault</uri>
-      <pose>-74.29 37.74 0 0 0 -0.51</pose>
+        <uri>model://f1_renault</uri>
+        <pose>-74.29 37.74 0 0 0 -0.51</pose>
     </include>
     <gui fullscreen='0'>
         <camera name='user_camera'>
@@ -19,7 +19,6 @@
             <projection_type>perspective</projection_type>
         </camera>
     </gui>
-
     <scene>
         <sky>
             <clouds>
@@ -27,6 +26,5 @@
             </clouds>
         </sky>
     </scene>
-
-  </world>
+</world>
 </sdf>
