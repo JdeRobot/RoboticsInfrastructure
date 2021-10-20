@@ -5,7 +5,7 @@
         <uri>model://sun</uri>
     </include>
     <include>
-        <uri>model://montreal_line</uri>
+        <uri>model://montreal_no_red_line</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
     <include>

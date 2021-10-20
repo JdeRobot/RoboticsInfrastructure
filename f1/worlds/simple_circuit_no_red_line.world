@@ -1,20 +1,24 @@
-<?xml version="1.0"?>
-<sdf version="1.4">
+<?xml version="1.0" ?>
+<sdf version="1.5">
 <world name="default">
+    <!-- A global light source -->
     <include>
         <uri>model://sun</uri>
     </include>
     <include>
-        <uri>model://montreal_line</uri>
+        <uri>model://simple_circuit_no_red_line</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
         <uri>model://f1_renault</uri>
-        <pose>-200.88 -90.72 0.00 0.00 0.00 -2.83</pose>
+        <!-- NORMAL -->
+        <pose>53.462 -10.734 0.004 0 0 -1.57</pose>
+        <!-- 180º turn NORMAL -->
+        <!-- <pose>53.462 -10.734 0.004 0 0 1.51</pose>-->
     </include>
     <gui fullscreen='0'>
         <camera name='user_camera'>
-            <pose frame=''>-194.14 -90.29 1.90 0.00 0.21 3.13</pose>
+            <pose frame=''>60 -20.734 2.64 0.00 0.23 2.2</pose> <!--0.23 2.85-->
             <view_controller>orbit</view_controller>
             <projection_type>perspective</projection_type>
         </camera>
@@ -25,6 +29,17 @@
                 <speed>12</speed>
             </clouds>
         </sky>
+        <ambient>1.0 1.0 1.0 1.0</ambient>
+        <shadows>false</shadows>
+        <grid>false</grid>
     </scene>
 </world>
 </sdf>
+
+
+
+
+
+
+
+
