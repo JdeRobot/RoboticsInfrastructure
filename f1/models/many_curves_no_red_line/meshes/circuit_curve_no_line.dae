@@ -117,14 +117,14 @@
   <library_effects>
     <effect id="Asphalt_New_001-effect">
       <profile_COMMON>
-        <newparam sid="Asphalt_New_jpg_001-surface">
+        <newparam sid="Asphalt_New-surface">
           <surface type="2D">
-            <init_from>Asphalt_New_jpg_001</init_from>
+            <init_from>Asphalt_New</init_from>
           </surface>
         </newparam>
-        <newparam sid="Asphalt_New_jpg_001-sampler">
+        <newparam sid="Asphalt_New-sampler">
           <sampler2D>
-            <source>Asphalt_New_jpg_001-surface</source>
+            <source>Asphalt_New-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -133,7 +133,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Asphalt_New_jpg_001-sampler" texcoord="ID3-mesh-map-0"/>
+              <texture texture="Asphalt_New-sampler" texcoord="ID3-mesh-map-0"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1</float>
@@ -144,14 +144,14 @@
     </effect>
     <effect id="Grass_Light_Green_001-effect">
       <profile_COMMON>
-        <newparam sid="Grass_Light_Green_jpg_001-surface">
+        <newparam sid="Grass_Light_Green-surface">
           <surface type="2D">
-            <init_from>Grass_Light_Green_jpg_001</init_from>
+            <init_from>Grass_Light_Green</init_from>
           </surface>
         </newparam>
-        <newparam sid="Grass_Light_Green_jpg_001-sampler">
+        <newparam sid="Grass_Light_Green-sampler">
           <sampler2D>
-            <source>Grass_Light_Green_jpg_001-surface</source>
+            <source>Grass_Light_Green-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -160,7 +160,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Grass_Light_Green_jpg_001-sampler" texcoord="ID32-mesh-map-0"/>
+              <texture texture="Grass_Light_Green-sampler" texcoord="ID32-mesh-map-0"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1</float>
@@ -188,11 +188,11 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="Asphalt_New_jpg_001" name="Asphalt_New_jpg_001">
-      <init_from>Asphalt_New.jpg.001.jpg</init_from>
+    <image id="Asphalt_New" name="Asphalt_New">
+      <init_from>Asphalt_New.jpg</init_from>
     </image>
-    <image id="Grass_Light_Green_jpg_001" name="Grass_Light_Green_jpg_001">
-      <init_from>Grass_Light_Green.jpg.001.jpg</init_from>
+    <image id="Grass_Light_Green" name="Grass_Light_Green">
+      <init_from>Grass_Light_Green.jpg</init_from>
     </image>
   </library_images>
   <library_materials>
