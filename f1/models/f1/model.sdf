@@ -519,7 +519,7 @@
       </axis>
     </joint>
 
- 	  <joint type="revolute" name="camera_left">
+ 	  <joint type="fixed" name="camera_left">
         <pose>0 0 0 0 0 0</pose>
         <child>camera_top_body_left</child>
         <parent>f1</parent>
@@ -528,7 +528,7 @@
       </axis>
     </joint>
 
-	  <joint type="revolute" name="camera_right">
+	  <joint type="fixed" name="camera_right">
         <pose>0 0 0 0 0 0</pose>
         <child>camera_top_body_right</child>
         <parent>f1</parent>
