@@ -273,7 +273,7 @@
      </visual>
    </link>
    <link name='laser'>
-        <pose>0.139000 0.000000 0.0752000 0.000000 0.000000 0.000000</pose>
+        <pose>5.7e-05 -6.5e-05 0.086594 0 -0 0</pose>
         <gravity>0</gravity>
         <inertial>
           <mass>0.100000</mass>
@@ -323,8 +323,8 @@
              </horizontal>
            </scan>
             <range>
-              <min>0.080000</min>
-              <max>10.000000</max>
+              <min>0.1647</min>
+              <max>10.1647</max>
               <resolution>0.010000</resolution>
            </range>
          </ray>
