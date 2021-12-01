@@ -16,7 +16,7 @@
 			<pose>0 0 0 0 0 0</pose>
 			<geometry>
 				<mesh>
-					<uri>model://many_curves/meshes/circuit_curve.dae</uri>
+					<uri>model://many_curves_no_wall/meshes/circuit_curve.dae</uri>
 				</mesh>
 			</geometry>
 		</visual>
