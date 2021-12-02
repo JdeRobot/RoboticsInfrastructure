@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="power_tower_danube">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://power_tower_danube/meshes/power_tower_danube.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://power_tower_danube/meshes/power_tower_danube_lowpoly.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    
+    </link>
+  </model>
+</sdf>
