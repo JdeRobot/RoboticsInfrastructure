@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<robot name="turtlebot2" xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <xacro:include filename="$(find kobuki_description)/urdf/kobuki.urdf"/>
+  <xacro:include filename="$(find turtlebot2)/urdf/sensors/camera.urdf.xacro"/>
+  <xacro:include filename="$(find turtlebot2)/urdf/sensors/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find turtlebot2)/urdf/structures.urdf.xacro"/>
+  <xacro:include filename="$(find turtlebot2)/urdf/colors.urdf.xacro"/>
+
+  <xacro:cylinder_structure name="base_tick1" x="0.08" y="0.14" z="0.25" length="0.35" radius="0.005" parent="base_link"/>
+  <xacro:cylinder_structure name="base_tick2" x="-0.09" y="0.12" z="0.25" length="0.35" radius="0.005" parent="base_link"/>
+  <xacro:cylinder_structure name="base_tick3" x="-0.09" y="-0.12" z="0.25" length="0.35" radius="0.005" parent="base_link"/>
+  <xacro:cylinder_structure name="base_tick4" x="0.08" y="-0.14" z="0.25" length="0.35" radius="0.005" parent="base_link"/>
+  <xacro:cylinder_structure name="base_tick5" x="0.15" y="0.0" z="0.14" length="0.15" radius="0.005" parent="base_link"/>
+  <xacro:cylinder_structure name="camera_support_tick1" x="0.13" y="0.05" z="0.05" length="0.1" radius="0.005" parent="middle_base_link"/>
+  <xacro:cylinder_structure name="camera_support_tick2" x="0.13" y="-0.05" z="0.05" length="0.1" radius="0.005" parent="middle_base_link"/>
+  <xacro:cylinder_structure name="lower_base" x="0.0" y="0.0" z="0.155" length="0.01" radius="0.18" parent="base_link"/>  
+  <xacro:cylinder_structure name="middle_base" x="0.0" y="0.0" z="0.208" length="0.01" radius="0.18" parent="base_link"/>
+  <xacro:cylinder_structure name="upper_base" x="0.0" y="0.0" z="0.42" length="0.01" radius="0.18" parent="base_link"/>
+  <xacro:cube_structure name="camera_support_base" x="0.13" y="0" z="0.0975" x_size="0.0175" y_size="0.15" z_size="0.005" parent="middle_base_link"/>
+
+  <xacro:set_camera name="camera" xyz="0.13 0 0.32" rpy="0 0 0" parent_frame="base_link"/>
+  <xacro:set_lidar name="lidar" xyz="0 0 0.0275" parent_frame="upper_base_link"/>
+
+</robot>
