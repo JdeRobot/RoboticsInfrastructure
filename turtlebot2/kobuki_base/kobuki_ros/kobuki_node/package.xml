@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>kobuki_node</name>
+  <version>0.7.6</version>
+  <description>
+      ROS node for Kobuki: ROS wrapper for the Kobuki driver.
+  </description>
+  <author>Chris Lalancette</author>
+  <author>Daniel Stonier</author>
+  <author>Jorge Santos Simon</author>
+  <author>Younghun Ju</author>
+  <maintainer email="d.stonier@gmail.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/kobuki-base/kobuki_ros/issues</url>
+  <url type="repository">https://github.com/kobuki-base/kobuki_ros</url>
+  <url type="website">https://kobuki.readthedocs.io/en/release-1.0.x/</url>
+
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+
+  <!-- ROS -->
+  <depend>angles</depend>
+  <depend>diagnostic_msgs</depend>
+  <depend>diagnostic_updater</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+
+  <!-- Kobuki -->
+  <depend>kobuki_core</depend>
+  <depend>kobuki_ros_interfaces</depend>
+
+  <!-- ECL -->
+  <depend>ecl_errors</depend>
+  <depend>ecl_exceptions</depend>
+  <depend>ecl_geometry</depend>
+  <depend>ecl_linear_algebra</depend>
+  <depend>ecl_sigslots</depend>
+
+  <!-- ECL -->
+  <build_depend>ecl_build</build_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

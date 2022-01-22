@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>kobuki_ros_interfaces</name>
+  <version>1.0.0</version>
+  <description>
+    <p>
+      ROS2 message, service and action interfaces for the Kobuki.
+    </p> 
+  </description>
+  <author>Daniel Stonier</author>
+  <author>Younghun Ju</author>
+  <maintainer email="d.stonier@gmail.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url type="website">https://kobuki.readthedocs.io/en/release-1.0.x/</url>
+  <url type="repository">https://github.com/kobuki-base/kobuki_ros_interfaces</url>
+  <url type="bugtracker">https://github.com/kobuki-base/kobuki_ros_interfaces/issues</url>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <depend>std_msgs</depend>
+  <depend>action_msgs</depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <test_depend>ament_lint_common</test_depend>
+
+  <!-- rosidl_cmake requires any message package be part of this group -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
