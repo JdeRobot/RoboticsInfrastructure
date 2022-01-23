@@ -10,6 +10,7 @@
         <geometry>
           <mesh>
             <uri>model://electrical_box/meshes/electrical_box.dae</uri>
+            <scale> 0.75 0.75 0.75 </scale>
           </mesh>
         </geometry>
       </visual>
