@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='rust_defect_02'>
+    <link name='main'>
+    <pose frame=''>0 0 0 0 0 0</pose>
+      <visual name='main_Visual'>
+        <geometry>
+          <box>
+          <size>0.250 0.250 0.01</size>
+          </box>
+        </geometry>
+           <material>
+          <script>
+            <uri>model://rust_defect_02/materials/scripts</uri>
+            <uri>model://rust_defect_02/materials/textures</uri>
+            <name>rust_defect_02</name>
+          </script>
+        </material>
+      </visual>
+     </link>
+    <static>1</static>
+  </model>
+</sdf>

@@ -1,19 +1,19 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
-  <model name='Apriltag36_11_00000'>
+  <model name='rust_defect_03'>
     <link name='main'>
     <pose frame=''>0 0 0 0 0 0</pose>
       <visual name='main_Visual'>
         <geometry>
           <box>
-          <size>1.0 1.0 0.01</size>
+          <size>0.250 0.250 0.01</size>
           </box>
         </geometry>
            <material>
           <script>
-            <uri>model://Apriltag36_11_00000/materials/scripts</uri>
-            <uri>model://Apriltag36_11_00000/materials/textures</uri>
-            <name>Apriltag36_11_00000</name>
+            <uri>model://rust_defect_03/materials/scripts</uri>
+            <uri>model://rust_defect_03/materials/textures</uri>
+            <name>rust_defect_03</name>
           </script>
         </material>
       </visual>

@@ -1,4 +1,4 @@
-material Apriltag36_11_00000
+material rust_defect_03
 {
   technique
   {
@@ -7,7 +7,7 @@ material Apriltag36_11_00000
       lighting off
       texture_unit
       {
-        texture tag36_11_00000.png
+        texture rust_defect_03.png
         filtering none none none
         scale 1.0 1.0
       }
