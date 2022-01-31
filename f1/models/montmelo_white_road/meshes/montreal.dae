@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.93.4 commit date:2021-08-31, commit time:09:23, hash:b7205031cec4</authoring_tool>
     </contributor>
-    <created>2022-01-31T10:56:47</created>
-    <modified>2022-01-31T10:56:47</modified>
+    <created>2022-01-31T11:11:23</created>
+    <modified>2022-01-31T11:11:23</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -105,23 +105,13 @@
     </effect>
     <effect id="Asphalt_New-effect">
       <profile_COMMON>
-        <newparam sid="Asphalt_New_jpg-surface">
-          <surface type="2D">
-            <init_from>Asphalt_New_jpg</init_from>
-          </surface>
-        </newparam>
-        <newparam sid="Asphalt_New_jpg-sampler">
-          <sampler2D>
-            <source>Asphalt_New_jpg-surface</source>
-          </sampler2D>
-        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Asphalt_New_jpg-sampler" texcoord="ID165"/>
+              <color sid="diffuse">1 1 1 1</color>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -149,23 +139,13 @@
     </effect>
     <effect id="Color_A05-effect">
       <profile_COMMON>
-        <newparam sid="Asphalt_New_jpg-surface">
-          <surface type="2D">
-            <init_from>Asphalt_New_jpg</init_from>
-          </surface>
-        </newparam>
-        <newparam sid="Asphalt_New_jpg-sampler">
-          <sampler2D>
-            <source>Asphalt_New_jpg-surface</source>
-          </sampler2D>
-        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Asphalt_New_jpg-sampler"/>
+              <color sid="diffuse">1 0 0 1</color>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -193,9 +173,6 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="Asphalt_New_jpg" name="Asphalt_New_jpg">
-      <init_from>Asphalt_New.jpg</init_from>
-    </image>
     <image id="Grass_Light_Green_jpg" name="Grass_Light_Green_jpg">
       <init_from>Grass_Light_Green.jpg</init_from>
     </image>
