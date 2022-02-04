@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='rust_defect_wire'>
+    <link name='main'>
+    <pose frame=''>0 0 0 0 0 0</pose>
+      <visual name='main_Visual'>
+        <geometry>
+          <box>
+          <size>0.610 0.0150 0.01</size>
+          </box>
+        </geometry>
+           <material>
+          <script>
+            <uri>model://rust_defect_wire/materials/scripts</uri>
+            <uri>model://rust_defect_wire/materials/textures</uri>
+            <name>rust_defect_wire</name>
+          </script>
+        </material>
+      </visual>
+     </link>
+    <static>1</static>
+  </model>
+</sdf>
