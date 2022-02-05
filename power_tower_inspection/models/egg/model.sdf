@@ -10,7 +10,7 @@
         <geometry>
           <mesh>
             <uri>model://egg/meshes/egg.dae</uri>
-	    <scale> 0.3 0.3 0.3 </scale>
+	    <scale> 0.15 0.15 0.15 </scale>
           </mesh>
         </geometry>
       </visual>
