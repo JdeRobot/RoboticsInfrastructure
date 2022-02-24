@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="nest2">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://nest2/meshes/nest.dae</uri>
+            <scale> 0.25 0.25 0.25 </scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://nest2/meshes/nest.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    
+    </link>
+  </model>
+</sdf>

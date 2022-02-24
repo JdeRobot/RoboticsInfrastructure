@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
+<<<<<<< HEAD
 <world name="default">
     <include>
         <uri>model://sun</uri>
@@ -34,4 +35,35 @@
         </sky>
     </scene>
 </world>
+=======
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://montmelo_line</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://f1_renault</uri>
+      <pose>27.18 -31.55 0.00 0.00 0.01 -3.12</pose>
+    </include>
+    <gui fullscreen='0'>
+        <camera name='user_camera'>
+            <pose frame=''>36.59 -32.77 2.64 0.00 0.23 2.85</pose>
+            <view_controller>orbit</view_controller>
+            <projection_type>perspective</projection_type>
+        </camera>
+    </gui>
+
+    <scene>
+        <sky>
+	    <clouds>
+	        <speed>12</speed>
+	    </clouds>
+	</sky>
+    </scene>
+
+  </world>
+>>>>>>> 8f1c52aea37394fa0d8e363d1eb3be4f4ab1577f
 </sdf>

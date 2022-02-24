@@ -1,0 +1,17 @@
+material rust_defect_02
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture rust_defect_02.png
+        filtering none none none
+        scale 1.0 1.0
+      }
+    }
+  }
+}
+
