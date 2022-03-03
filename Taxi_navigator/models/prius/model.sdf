@@ -1095,7 +1095,13 @@
     <self_collide>0</self_collide>
     <kinematic>0</kinematic>
     </link>
-    
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>taxi_holo/cmd_vel</commandTopic>
+      <odometryTopic>taxi_holo/odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>taxi_holo</robotBaseFrame>
+</plugin>
     
     
     
