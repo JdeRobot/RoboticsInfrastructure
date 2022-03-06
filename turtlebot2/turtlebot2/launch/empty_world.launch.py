@@ -13,6 +13,7 @@ def generate_launch_description():
   ld = LaunchDescription()
 
   use_sim_time = LaunchConfiguration('use_sim_time', default='True')
+  
   pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
   gazebo_server = IncludeLaunchDescription(

@@ -5,6 +5,8 @@ This is a version exported to ROS Foxy of Turtlebot 2. The robot has built-in 2 
 * A RGBD simulated camera to obtain a **PointCloud** of the scene captured in every moment.
 * A 360º simulated LIDAR to obtain the distance with the obstacles around the robot.
 
+![](https://github.com/JdeRobot/CustomRobots/blob/foxy-devel/turtlebot2/turtlebot2-sim.png)
+
 ## Usage
 Once the repository is compiled, you will have to execute the following commands (each command in a different terminal and the last is optional):
 ~~~

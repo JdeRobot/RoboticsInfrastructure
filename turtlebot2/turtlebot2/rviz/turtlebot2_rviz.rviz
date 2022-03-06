@@ -51,25 +51,9 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
-        base_tick1_link:
-          Value: true
-        base_tick2_link:
-          Value: true
-        base_tick3_link:
-          Value: true
-        base_tick4_link:
-          Value: true
-        base_tick5_link:
-          Value: true
         camera_depth_frame:
           Value: true
         camera_link:
-          Value: true
-        camera_support_base_link:
-          Value: true
-        camera_support_tick1_link:
-          Value: true
-        camera_support_tick2_link:
           Value: true
         caster_back_link:
           Value: true
@@ -83,15 +67,23 @@ Visualization Manager:
           Value: true
         gyro_link:
           Value: true
-        lidar_link:
+        laser_base_link:
           Value: true
-        lower_base_link:
+        lidar_link:
           Value: true
         middle_base_link:
           Value: true
         odom:
           Value: true
-        upper_base_link:
+        tick1_link:
+          Value: true
+        tick2_link:
+          Value: true
+        tick3_link:
+          Value: true
+        tick4_link:
+          Value: true
+        tick5_link:
           Value: true
         wheel_left_link:
           Value: true
@@ -105,16 +97,6 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            base_tick1_link:
-              {}
-            base_tick2_link:
-              {}
-            base_tick3_link:
-              {}
-            base_tick4_link:
-              {}
-            base_tick5_link:
-              {}
             camera_link:
               camera_depth_frame:
                 {}
@@ -130,24 +112,25 @@ Visualization Manager:
               {}
             gyro_link:
               {}
-            lower_base_link:
-              {}
-            middle_base_link:
-              camera_support_base_link:
-                {}
-              camera_support_tick1_link:
-                {}
-              camera_support_tick2_link:
-                {}
-            upper_base_link:
+            laser_base_link:
               lidar_link:
                 {}
+            middle_base_link:
+              {}
+            tick1_link:
+              {}
+            tick2_link:
+              {}
+            tick3_link:
+              {}
+            tick4_link:
+              {}
+            tick5_link:
+              {}
             wheel_left_link:
               {}
             wheel_right_link:
               {}
-        odom:
-          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -212,9 +195,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 0
+      Max Intensity: -999999
       Min Color: 0; 0; 0
-      Min Intensity: 0
+      Min Intensity: 999999
       Name: LaserScan
       Position Transformer: XYZ
       Selectable: true
@@ -233,7 +216,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -273,25 +256,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 8.224406242370605
+      Distance: 6.096259117126465
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.1897239685058594
-        Y: 0.8624458909034729
-        Z: -0.8031648397445679
+        X: 2.1622471809387207
+        Y: -0.25737181305885315
+        Z: 0.24601179361343384
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6703979969024658
+      Pitch: 0.26039811968803406
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.8985729217529297
+      Yaw: 3.2335734367370605
     Saved: ~
 Window Geometry:
   Displays:
