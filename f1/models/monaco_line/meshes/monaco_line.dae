@@ -21,7 +21,7 @@
       <init_from>TexturesCom_FloorsRegular0274_2_S.jpg.001.jpg</init_from>
     </image>
     <image id="TexturesCom_Cobblestone_5_albedo_S_tif" name="TexturesCom_Cobblestone_5_albedo_S_tif">
-      <init_from>TexturesCom_Cobblestone%205_albedo_S.tif</init_from>
+      <init_from>TexturesCom_Cobblestone_5_albedo_S.tif</init_from>
     </image>
     <image id="TexturesCom_WaterPlain0015_1_seamless_S_jpg" name="TexturesCom_WaterPlain0015_1_seamless_S_jpg">
       <init_from>TexturesCom_WaterPlain0015_1_seamless_S.jpg</init_from>
