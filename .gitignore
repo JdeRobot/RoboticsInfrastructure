@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 build/*
 f1/build/*
 
 # Jupyter Notebook
 .ipynb_checkpoints
-=======
+
 .idea/
->>>>>>> 8f1c52aea37394fa0d8e363d1eb3be4f4ab1577f
