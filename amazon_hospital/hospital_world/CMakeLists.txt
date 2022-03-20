@@ -34,11 +34,6 @@ ament_target_dependencies(
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 install(
-  DIRECTORY include/
-  DESTINATION include
-)
-
-install(
   TARGETS personplugin
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
@@ -54,10 +49,6 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
-
-ament_export_include_directories(
-  include
-)
 
 ament_export_libraries(
   personplugin
