@@ -1,6 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.6">
   <world name="world">
+    <gui fullscreen="1">
+      <camera name="user_camera">
+          <pose>-3 10 3 0 0.4 0</pose>
+      </camera>
+    </gui>
     <gravity>0 0 -9.8</gravity>
     <physics default="0" name="default_physics" type="ode">
       <max_step_size>0.001</max_step_size>
