@@ -41,8 +41,8 @@ namespace gazebo
         int state, current_wp;
         int turn_dir, linear_dir;
         bool auto_movement, linear_movement;
-        float lv_dt = 0.002; // discrete lineal velocity
-        float av_dt = 0.003; // discrete angular velocity
+        float lv_dt = 0.001; // discrete lineal velocity
+        float av_dt = 0.001; // discrete angular velocity
 
         // variables to use in MoveToWaypoint method
         bool orientation_reached = false;
@@ -213,35 +213,44 @@ namespace gazebo
             while (true) {
                 recv_message(this->sockfd, this->addr, &msg, sizeof msg);
                 
+                // USER request
                 if (msg[0] == 'U') {
                     auto_movement = false;
 
+                    // LINEAR VELOCITY request
                     if (msg[1] == 'V') {
                         linear_movement = true;
+                        // move FORWARD
                         if (msg[2] == 'F') {
                             linear_dir = 1;
                         }
+                        // move BACKWARD
                         else if (msg[2] == 'B') {
                             linear_dir = -1;
                         }
                     }
+                    // ANGULAR VELOCITY request
                     else if (msg[1] == 'A') {
                         linear_movement = false;
+                        // turn RIGHT
                         if (msg[2] == 'R') {
                             turn_dir = -1;
                         }
+                        // turn LEFT
                         else if (msg[2] == 'L') {
                             turn_dir = 1;
                         }
                     }
+                    // STOP
                     else if (msg[1] == 'S') {
                         linear_dir = 0;
                         turn_dir = 0;
                     }
                 }
+                // AUTONOMOUS request
                 else if (msg[0] == 'A') {
-                    current_wp = GetNearestWaypoint(this->wp);
-                    auto_movement = true;
+                    // current_wp = GetNearestWaypoint(this->wp);
+                    auto_movement = false; // Set temporal False
                     orientation_reached = false;
                     direction_chosen = false;
                 }
