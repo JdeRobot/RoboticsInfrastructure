@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<launch>
+  <arg name="robot_name"/>
+  <arg name="config_file"/>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find catvehicle)/config/catvehicle_control_mod.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/$(arg robot_name)" args="joint_state_controller joint1_velocity_controller joint2_velocity_controller front_left_steering_position_controller front_right_steering_position_controller"/>
+
+  <!--<node name="joint_states_relay" pkg="topic_tools" type="relay" args="/iri_wam/joint_states /joint_states" />-->
+
+    <!--<group ns="catvehicle">-->
+    <!-- Publishing TF -->
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="true" output="screen">
+        <remap from="/joint_states" to="/catvehicle/joint_states" />
+    </node>
+    
+    
+    <node pkg="tf" type="static_transform_publisher" name="base_link2slamodom_tf_$(arg robot_name)" 
+        args="0 0 0 0 0 0 $(arg robot_name)/base_link /base_footprint 5" />
+  <!-- need for publishing joint states that are not controlled -->
+    <!--<node name="joint_state_publisher$(arg robot_name)" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" output="screen">-->
+        <!--<remap from="/joint_states" to="/$(arg robot_name)/joint_states" />-->
+    <!--</node>-->
+    <!-- set up a static TF transform for publishing SLAM localization estimates wrt base_link -->
+    <!--
+    <node pkg="tf" type="static_transform_publisher" name="base_link2slamodom_tf_$(arg robot_name)" 
+        args="0 0 0 0 0 0 /base_link /slamodom 5" />
+    -->
+    <!--</group>-->
+
+      <!-- we run the python version, so we can be slower-than-real-time -->
+
+    <node name="cmdvel2gazebo$(arg robot_name)" pkg="catvehicle" type="cmdvel2gazebo.py" respawn="false" output="screen"/>
+    <!-- Security Distance System and Odometry -->
+    <!--<group ns="catvehicle">-->
+    <node name="distanceEstimator" pkg="catvehicle" type="distanceEstimator" output="screen">
+    	<param name="scan_topic" value="/catvehicle/front_laser_points"/>
+    </node>
+    
+    <node name="obstacle_stopper$(arg robot_name)" pkg="catvehicle" type="obstacle_stopper.py" respawn="false" output="screen"/>
+    <!-- Let's be safe with obstacles by stopping when we get too close -->
+    <!--<node name="obstacleStopper$(arg robot_name)" pkg="obstaclestopper" type="obstaclestopper_node" output="screen">-->
+        <!--
+        <remap from="/cmd_vel" to="/catvehicle/cmd_vel" />
+        <remap from="/distanceEstimator/dist" to="/catvehicle/distanceEstimator/dist" />
+        <remap from="/cmd_vel" to="/catvehicle/cmd_vel_safe" />
+        <remap from="/cmd_vel" to="/catvehicle/cmd_vel" />
+        -->
+    <!--</node>-->
+    
+    <!-- publish the path information of this vehicle -->
+    <!--
+    <node name="odom2path$(arg robot_name)" pkg="catvehicle" type="odom2path.py" respawn="true" output="screen" args="-n /$(arg robot_name)">
+    </node>
+    -->
+
+
+
+</launch>

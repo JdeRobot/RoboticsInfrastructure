@@ -1,0 +1,9 @@
+<library path="lib/libCanSimTcNodeletClass">
+  <class name="can_sim_tc/CanSimTcNodeletClass"
+         type="can_sim_tc::CanSimTcNodeletClass"
+         base_class_type="nodelet::Nodelet">
+  <description>
+  Can Bus driver simulated.
+  </description>
+  </class>
+</library>

@@ -1,0 +1,12 @@
+- hg:
+    local-name: lusb
+    uri: https://bitbucket.org/DataspeedInc/lusb
+    version: default
+- hg:
+    local-name: dataspeed_can
+    uri: https://bitbucket.org/DataspeedInc/dataspeed_can
+    version: default
+- hg:
+    local-name: dbw_mkz_ros
+    uri: https://bitbucket.org/DataspeedInc/dbw_mkz_ros
+    version: default

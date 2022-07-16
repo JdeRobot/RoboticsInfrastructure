@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package>
+  <name>can_sim_tc</name>
+  <version>0.0.0</version>
+  <description>
+    The can_sim_tc package created for simulating a real BusCan device
+  </description>
+  <maintainer email="rdaneel@todo.todo">rdaneel</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>dataspeed_can_msg_filters</build_depend>
+  <build_depend>dataspeed_can_msgs</build_depend>
+  <build_depend>dbw_mkz_msgs</build_depend>
+  <build_depend>dbw_mkz_can</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <run_depend>dataspeed_can_msg_filters</run_depend>
+  <run_depend>dataspeed_can_msgs</run_depend>
+  <run_depend>dbw_mkz_msgs</run_depend>
+  <run_depend>dbw_mkz_can</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+
+
+
+  <export>
+    <nodelet plugin="${prefix}/nodelets.xml" />
+  </export>
+</package>

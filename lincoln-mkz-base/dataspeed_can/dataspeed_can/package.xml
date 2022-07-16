@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dataspeed_can</name>
+  <version>1.0.4</version>
+  <description>
+    CAN bus tools using Dataspeed hardware
+  </description>
+
+  <license>BSD</license>
+  <author email="khallenbeck@dataspeedinc.com">Kevin Hallenbeck</author>
+  <maintainer email="khallenbeck@dataspeedinc.com">Kevin Hallenbeck</maintainer>
+  <url type="website">http://dataspeedinc.com</url>
+  <url type="repository">https://bitbucket.org/dataspeedinc/dataspeed_can</url>
+  <url type="bugtracker">https://bitbucket.org/dataspeedinc/dataspeed_can/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>dataspeed_can_msg_filters</exec_depend>
+  <exec_depend>dataspeed_can_msgs</exec_depend>
+  <exec_depend>dataspeed_can_tools</exec_depend>
+  <exec_depend>dataspeed_can_usb</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+
+</package>

@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="vrc_task_3">
+    <physics type="ode">
+      <gravity>0 0 0</gravity>
+      <ode>
+        <solver>
+          <use_dynamic_moi_rescaling>true</use_dynamic_moi_rescaling>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.4</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://vrc_firehose_long</uri>
+      <pose>-2.2 2.295 1.1 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://vrc_standpipe</uri>
+      <pose>-2.2019 2.307836 1.1 -1.5707 0 3.141593</pose>
+    </include>
+    <include>
+      <uri>model://vrc_valve</uri>
+      <pose>-3.82 -3.5 1.2 -1.5707 0 0</pose>
+    </include>
+    <plugin filename="libVRCPlugin.so" name="vrc_plugin">
+      <atlas>
+        <model_name>atlas</model_name>
+        <pin_link>pelvis</pin_link>
+      </atlas>
+      <drc_vehicle>
+        <model_name>drc_vehicle</model_name>
+        <seat_link>polaris_ranger_ev::chassis</seat_link>
+      </drc_vehicle>
+      <drc_fire_hose>
+        <fire_hose_model>vrc_firehose_long</fire_hose_model>
+        <coupling_link>coupling</coupling_link>
+        <standpipe_model>standpipe</standpipe_model>
+        <spout_link>standpipe</spout_link>
+        <valve_model>valve</valve_model>
+        <valve_joint>valve</valve_joint>
+        <thread_pitch>-1000</thread_pitch>
+        <coupling_relative_pose>-0.0019 1e-06 0.012836 -0.787193 1.57066 -2.35799</coupling_relative_pose>
+      </drc_fire_hose>
+    </plugin>
+    <plugin filename="libVRCScoringPlugin.so" name="vrc_scoring">
+      <score_file>/tmp/vrc_task_3/score.log</score_file>
+    </plugin>
+  </world>
+</sdf>

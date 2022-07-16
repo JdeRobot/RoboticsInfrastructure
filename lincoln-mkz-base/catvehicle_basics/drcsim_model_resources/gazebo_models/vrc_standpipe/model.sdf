@@ -1,0 +1,88 @@
+<?xml version='1.0'?>
+<sdf version='1.3'>
+  <model name='standpipe'>
+    <static>false</static>
+    <link name="standpipe">
+
+      <!--
+      <collision name="collision_1">
+        <pose>0 0 0.2 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0965</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <collision name="collision_2">
+        <pose>0 0 0.32 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.069</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      -->
+
+      <!-- stop the coupling from entering pipe if valve is open -->
+      <collision name="collision_stopper">
+        <pose>0 0 0.22 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.069</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision">
+        <pose>0 0 0.15 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://vrc_standpipe/meshes/vrc_standpipe.dae</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <visual name="visual">
+        <pose>0 0 0.15 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://vrc_standpipe/meshes/vrc_standpipe.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="world" type="revolute">
+      <parent>world</parent>
+      <child>standpipe</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+      </axis>
+      </physics>
+    </joint>
+
+  </model>
+  </model>
+</sdf>

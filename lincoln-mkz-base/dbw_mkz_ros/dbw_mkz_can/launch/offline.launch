@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="use_sim_time" value="true"/>
+
+  <group ns="vehicle" >
+    <node pkg="dbw_mkz_can" type="dbw_node" name="dbw_node" output="screen">
+      <remap from="can_rx" to="/can_bus_dbw/can_rx"/>
+      <remap from="can_tx" to="/can_bus_dbw/can_tx"/>
+    </node>
+    <include file="$(find dbw_mkz_description)/launch/mkz.launch" />
+  </group>
+
+</launch>

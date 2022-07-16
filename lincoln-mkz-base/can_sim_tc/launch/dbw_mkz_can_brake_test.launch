@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find dbw_mkz_can)/launch/offline.launch" />
+    <!--
+    A world has to be launched in order to start the simulated clock, otherwise there is no clock and offline
+    nothing works, specially rate.sleep
+    -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="false" />
+    </include>
+
+    <include file="$(find can_sim_tc)/launch/can_sim_nodelet.launch" />
+
+    <node pkg="can_sim_tc"
+          type="can_brake_test.py"
+          name="can_bus_reader_publisher_topic_brake_publisher"
+          output="screen">
+    </node>
+
+</launch>

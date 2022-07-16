@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+
+  <model name="mud_atlas">
+    <static>true</static>
+    <pose>0 0 0.2  0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8.0 10.0 0.5</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_without_contact>true</collide_without_contact>
+            <collide_without_contact_bitmask>2</collide_without_contact_bitmask>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual_1">
+        <pose>-2 2.5 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>4 5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://mud_box/materials/scripts</uri>
+            <uri>model://mud_box/materials/textures</uri>
+            <name>vrc/mud</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_2">
+        <pose>2 2.5 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>4 5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://mud_box/materials/scripts</uri>
+            <uri>model://mud_box/materials/textures</uri>
+            <name>vrc/mud</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_3">
+        <pose>2 -2.5 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>4 5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://mud_box/materials/scripts</uri>
+            <uri>model://mud_box/materials/textures</uri>
+            <name>vrc/mud</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_4">
+        <pose>-2 -2.5 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>4 5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://mud_box/materials/scripts</uri>
+            <uri>model://mud_box/materials/textures</uri>
+            <name>vrc/mud</name>
+          </script>
+        </material>
+      </visual>
+      <sensor name="mud_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>1000</update_rate>
+        <contact>
+          <collision>collision</collision>
+        </contact>
+      </sensor>
+    </link>
+    <plugin name="gazebo_mud" filename="libMudPlugin.so">
+      <contact_sensor_name>link/mud_contact</contact_sensor_name>
+      <stiffness>0.0</stiffness>
+      <damping>40.0</damping>
+      <contact_surface_bitmask>2</contact_surface_bitmask>
+      <link_name>atlas::l_foot</link_name>
+      <link_name>atlas::r_foot</link_name>
+      <link_name>atlas::l_lleg</link_name>
+      <link_name>atlas::r_lleg</link_name>
+    </plugin>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- DBW system -->
+  <arg name="sys" default="false"/>
+  <group if="$(arg sys)">
+    <include file="$(find dbw_mkz_can)/launch/dbw.launch" />
+  </group>
+
+  <!-- Rviz -->
+  <arg name="rviz" default="false"/>
+  <group if="$(arg rviz)">
+    <include file="$(find dbw_mkz_description)/launch/rviz.launch" />
+  </group>
+
+  <!-- Joystick demo -->
+  <arg name="ignore" default="false"/>
+  <arg name="enable" default="false"/>
+  <arg name="count" default="false"/>
+  <node ns="vehicle" pkg="dbw_mkz_joystick_demo" type="joystick_demo" name="joystick_demo" output="screen" >
+    <param name="ignore" value="$(arg ignore)" />
+    <param name="enable" value="$(arg enable)" />
+    <param name="count" value="$(arg count)" />
+  </node>
+
+  <!-- Joystick driver -->
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen" >
+    <param name="deadzone" value="0.01" />
+  </node>
+
+</launch>

@@ -1,0 +1,12 @@
+<library path="src">
+  <class name="MKZ Gui" type="dbw_mkz_gui.dbw_mkz_gui.MkzGui" base_class_type="rqt_gui_py::Plugin">
+    <description>
+      RQT plugin to validate the install of MKZ drive-by-wire hardware.
+    </description>
+    <qtgui>
+      <label>MKZ RQT GUI plugin</label>
+      <icon>images/icon.png</icon>
+      <statustip>Dataspeed Inc.</statustip>
+    </qtgui>
+  </class>
+</library>

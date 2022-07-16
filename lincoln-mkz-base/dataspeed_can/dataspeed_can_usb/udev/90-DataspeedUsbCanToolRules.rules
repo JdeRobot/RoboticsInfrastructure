@@ -1,0 +1,8 @@
+#### Install ###############################################################################
+# sudo cp 90-DataspeedUsbCanToolRules.rules /etc/udev/rules.d/                             #
+# sudo udevadm control --reload-rules && sudo service udev restart && sudo udevadm trigger #
+############################################################################################
+
+# Dataspeed USB CAN Tool
+SUBSYSTEMS=="usb",ATTRS{idVendor}=="6923",ATTRS{idProduct}=="0112",MODE="0666"
+
