@@ -1,0 +1,594 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <!-- Note: Rubble pile in different configuration -->
+  <world name="vrc_task_2">
+    <scene>
+      <ambient>0.2 0.2 0.2 1.0</ambient>
+    </scene>
+    <physics type="ode">
+      <gravity>0 0 -9.81</gravity>
+      <ode>
+        <solver>
+          <use_dynamic_moi_rescaling>true</use_dynamic_moi_rescaling>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.4</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+    <!-- Light Source -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.2 0.0 -1.0</direction>
+    </light>
+
+    <light type="point" name="light_bulb">
+      <cast_shadows>false</cast_shadows>
+      <pose>-7.5 -41 5 0 0 0</pose>
+      <diffuse>0.3 0.3 0.3 1</diffuse>
+      <specular>0.0 0.0 0.0 1</specular>
+
+      <attenuation>
+        <range>80</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+    </light>
+
+    <include>
+      <uri>model://vrc_heightmap_2</uri>
+    </include>
+    <include>
+      <uri>model://starting_pen</uri>
+      <pose>-8.27 -38 0.02 0 0 -1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_0</name>
+      <pose>1 -38 2.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_1</uri>
+      <name>gate_number_1_a</name>
+      <pose>1 -35.85 3.75 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_1</uri>
+      <name>gate_number_1_b</name>
+      <pose>1 -40.15 3.75 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_1</name>
+      <pose>0 -22 2.0 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_2</uri>
+      <name>gate_number_2_a</name>
+      <pose>-2.15 -22 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_2</uri>
+      <name>gate_number_2_b</name>
+      <pose>2.15 -22 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_0</name>
+      <static>true</static>
+      <pose>15.763 -4.704 2.66 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_1</name>
+      <static>true</static>
+      <pose>-4.82 7.6 2.75  0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_2</name>
+      <static>true</static>
+      <pose>-0.271239 10.978891 2.65053 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_3</name>
+      <static>true</static>
+      <pose>-10.430363 -1.794219 2.84281 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_4</name>
+      <static>true</static>
+      <pose>14.481933 5.461687 2.651944 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_5</name>
+      <static>true</static>
+      <pose>16.632443 2.107978 2.72098 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_6</name>
+      <static>true</static>
+      <pose>13.247138 -10.905164 2.549825 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_7</name>
+      <static>true</static>
+      <pose>9.107997 -14.508799 2.6829 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_8</name>
+      <static>true</static>
+      <pose>-6.052604 -13.905914 2.1020 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://construction_cone</uri>
+      <name>cone_9</name>
+      <static>true</static>
+      <pose>-7.950964 -8.615575 2.20553 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://house_2</uri>
+      <static>true</static>
+      <pose>24.841499 19.771599 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://house_3</uri>
+      <static>true</static>
+      <pose>-13 20 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_2</name>
+      <pose>0 -10.5 2.0 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_3</uri>
+      <name>gate_number_3_a</name>
+      <pose>-2.15 -10.5 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_3</uri>
+      <name>gate_number_3_b</name>
+      <pose>2.15 -10.5 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_3</name>
+      <pose>6.0 6.5 2.0 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_4</uri>
+      <name>gate_number_4_a</name>
+      <pose>3.85 6.5 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_4</uri>
+      <name>gate_number_4_b</name>
+      <pose>8.15 6.5 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_4</name>
+      <pose>6 18 2 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_5</uri>
+      <name>gate_number_5_a</name>
+      <pose>3.85 18 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_5</uri>
+      <name>gate_number_5_b</name>
+      <pose>8.15 18 3.75 0 0 1.5707</pose>
+    </include>
+    <include>
+      <uri>model://mud_atlas</uri>
+      <name>mud_atlas</name>
+      <pose>0.5 -16.6 -.38 0 0 0</pose>
+    </include>
+
+    <model name="mud_ground_plane">
+      <static>true</static>
+      <pose>0.0 0.0 -0.59 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>.5</mu>
+                <mu2>.5</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+          <script>
+            <uri>model://mud_box/materials/scripts</uri>
+            <uri>model://mud_box/materials/textures</uri>
+            <name>vrc/mud</name>
+          </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!--
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_6</name>
+      <pose>0 134 2.0 0 0 1.5707</pose>
+    </include>
+
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_7</name>
+      <pose>0 152 2.0 0 0 1.5707</pose>
+    </include>
+    -->
+<!--
+    <model name="test_box">
+      <static>false</static>
+      <pose>5 -1 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.3 0.05 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.3 0.05 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+-->
+
+    <!--
+    <model name="start_platform">
+      <static>true</static>
+      <pose>0 -51 0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>20 30 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>20 30 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+-->
+<!--    <plugin filename="libRubblePlugin.so" name="rubble">
+      <bottom_right>4 7.0 0.0</bottom_right>
+      <top_left>10 17 0.4</top_left>
+      <min_size>0.05 0.05 0.05</min_size>
+      <max_size>0.2 0.2 0.2</max_size>
+      <min_mass>0.1</min_mass>
+      <max_mass>1.0</max_mass>
+      <count>50</count>
+    </plugin> -->
+
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block</name>
+      <pose>7.999994 14.271938 0.119138 1.569996 0 1.0</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_0</name>
+      <pose>7.999994 13.571938 0.017117 0.000415 0 1.600107</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_1</name>
+      <pose>8.034527 11.028522 0.140111 -1.677526 0 -1.201830</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_2</name>
+      <pose>6.338434 15.164434 0.119236 -1.570918 0 0.343743</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_3</name>
+      <pose>6.510255 13.660681 0.119189 1.570978 0 0.122518</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_4</name>
+      <pose>7.443250 15.000124 0.234583 -1.185398 1.570794 -0.385398</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_5</name>
+      <pose>5.857943 10.819897 0.017645 0 0 1.797765</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_6</name>
+      <pose>6.068362 7.549482 0.017628 -0.000149 0 -2.074449</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_7</name>
+      <pose>4.233643 7.165561 0.234583 0 1.570796 0</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_8</name>
+      <pose>5.863507 15.016849 0.119138 1.570395 0 -1.496545</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_9</name>
+      <pose>6.700000 8.999984 0.017108 0 0 2.6</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_10</name>
+      <pose>6.836052 12.008048 0.017634 0 0 0.489276</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_11</name>
+      <pose>6.214898 10.970655 0.119248 1.5708 0 2.114063</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_12</name>
+      <pose>7.540978 17.217592 0.235120 -1.601005 1.570775 -1.407452</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_13</name>
+      <pose>6.880469 12.090623 0.220310 -0.000906 0.001199 0.961750</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_14</name>
+      <pose>9.588512 11.080721 0.152221 1.123407 -0.146542 1.167764</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_15</name>
+      <pose>7.751723 9.033362 0.017640 0.000087 -0.000011 1.695999</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_16</name>
+      <pose>9.120844 13.579553 0.235117 2.168 -1.570789 -1.368064</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_17</name>
+      <pose>5.411863 16.667938 0.234983 2.981697 1.570224 -2.253740</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_18</name>
+      <pose>4.999999 11.000035 0.017094 0.000266 0.000013 -0.005116</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_19</name>
+      <pose>8.047156 7.154350 0.032534 0.090862 0.026284 -3.079875</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_20</name>
+      <pose>4.221656 10.069578 0.119200 1.572228 -0.000099 0.076993</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_21</name>
+      <pose>8.999885 8.598369 0.234583 1.991591 1.570795 -1.991591</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_22</name>
+      <pose>9.000010 15.402369 0.017108 0.000017 0.000090 2.799976</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_23</name>
+      <pose>4.894613 14.114341 0.235119 0.393685 1.570783 -0.831023</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_24</name>
+      <pose>7.989601 10.772406 0.049851 -0.232860 -0.041911 1.564724</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_25</name>
+      <pose>6.655590 13.468636 0.235121 -1.166135 1.570792 -2.618959</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_26</name>
+      <pose>8.099932 7.713609 0.119241 1.570830 -0.000010 -0.158713</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_27</name>
+      <pose>6.325397 8.212666 0.235120 -1.377299 1.570777 -0.298664</pose>
+    </include>
+    <include>
+      <uri>model://cinder_block</uri>
+      <name>cinder_block_28</name>
+      <pose>3.727287 10.095365 0.032623 0.000004 0.068917 0.018339</pose>
+    </include>
+<!--
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier8</name>
+      <pose>3.0 13.7 0.000000 0.000000 0.000000 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier9</name>
+      <pose>3.0 10. 0.000000 0.000000 0.000000 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier10</name>
+      <pose>1.33 7.15 0.000000 0.000000 0.000000 0.61</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier11</name>
+      <pose>-1.02 4.440000 0.000000 0.000000 0.000000 1.09</pose>
+    </include>
+
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier12</name>
+      <pose>-2.94 1.29000 0.000000 0.000000 0.000000 0.97</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier13</name>
+      <pose>-4.45 -2.148 0.000000 0.000000 0.000000 1.33</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier14</name>
+      <pose>-4.76 -5.9700 0.000000 0.000000 0.000000 1.67</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier15</name>
+      <pose>-4.13 -9.49000 0.000000 0.000000 0.000000 1.83</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier18</name>
+      <pose>10 14.0 0.000000 0.000000 0.000000 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier19</name>
+      <pose>10 10.0 0.000000 0.000000 0.000000 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier20</name>
+      <pose>10.77 6.12 0.000000 0.000000 0.000000 1.95</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier21</name>
+      <pose>11.69 2.3 0.000000 0.000000 0.000000 1.64</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier22</name>
+      <pose>11.39 -1.55 0.000000 0.000000 0.000000 1.36</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier23</name>
+      <pose>9.75 -5.14 0.000000 0.000000 0.000000 0.93</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier24</name>
+      <pose>8.4 -6.9 0.000000 0.000000 0.000000 0.91</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier25</name>
+      <pose>6.0 -9.559 0.000000 0.000000 0.000000 0.72</pose>
+    </include>
+-->
+
+    <plugin filename="libVRCPlugin.so" name="vrc_plugin">
+      <atlas>
+        <model_name>atlas</model_name>
+        <pin_link>utorso</pin_link>
+      </atlas>
+      <drc_vehicle>
+        <model_name>golf_cart</model_name>
+        <seat_link>chassis</seat_link>
+      </drc_vehicle>
+      <drc_fire_hose>
+        <fire_hose_model>fire_hose</fire_hose_model>
+        <coupling_link>coupling</coupling_link>
+        <standpipe_model>standpipe</standpipe_model>
+        <spout_link>standpipe</spout_link>
+        <thread_pitch>-1000</thread_pitch>
+        <coupling_relative_pose>1.17038e-05 -0.125623 0.35 -0.0412152 -1.57078 1.61199</coupling_relative_pose>
+      </drc_fire_hose>
+    </plugin>
+
+    <plugin filename="libVRCScoringPlugin.so" name="vrc_scoring">
+      <score_file>/tmp/vrc_final_task9/score.log</score_file>
+    </plugin>
+
+  </world>
+</sdf>

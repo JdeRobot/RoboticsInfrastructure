@@ -1,0 +1,36 @@
+<launch>
+
+<arg name="robot_name" default="catvehicle"/>
+
+<arg name="tyre_height" default="0.66"/>
+<arg name="car_width" default="0.765"/>
+<arg name="car_length" default="1.31"/>
+
+<include file="$(find catvehicle)/launch/robotviz.launch">
+</include>
+
+<node pkg="tf" type="static_transform_publisher" name="laser2front_laser_link_tf_$(arg robot_name)" 
+    args="0 0 0 0 0 0 /catvehicle/front_laser_link /laser 10"/>
+
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2velodyne_$(arg robot_name)" 
+    args="0 0 1.7 0 0 0 /catvehicle/base_link /velodyne 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselinkr2front_laser_link_tf_$(arg robot_name)" 
+    args="2.5 0 0 0 0 0 /catvehicle/base_link /catvehicle/front_laser_link 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2odom_tf_$(arg robot_name)" 
+    args="0 0 -2.5 0 0 0 /catvehicle/base_link /catvehicle/odom 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2leftFtire_tf_$(arg robot_name)" 
+    args="$(arg car_length) -$(arg car_width) $(arg tyre_height) 0 0 0 /catvehicle/base_link /catvehicle/front_left_wheel_link 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2rightFtire_tf_$(arg robot_name)" 
+    args="$(arg car_length) $(arg car_width) $(arg tyre_height) 0 0 0 /catvehicle/base_link /catvehicle/front_right_wheel_link 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2leftRtire_tf_$(arg robot_name)" 
+    args="-$(arg car_length) -$(arg car_width) $(arg tyre_height) 0 0 0 /catvehicle/base_link /catvehicle/back_left_wheel_link 10"/>
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2rightRtire_tf_$(arg robot_name)" 
+    args="-$(arg car_length) $(arg car_width) $(arg tyre_height) 0 0 0 /catvehicle/base_link /catvehicle/back_right_wheel_link 10"/>
+</launch>

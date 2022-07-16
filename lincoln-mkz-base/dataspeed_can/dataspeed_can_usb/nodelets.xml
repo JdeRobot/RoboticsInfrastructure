@@ -1,0 +1,9 @@
+<library path="lib/libdataspeed_can_usb">
+  <class name="dataspeed_can_usb/CanDriverNodelet"
+         type="dataspeed_can_usb::CanDriverNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description> 
+      Dataspeed CAN USB Tool driver nodelet
+    </description>
+  </class>
+</library>

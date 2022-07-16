@@ -1,0 +1,16 @@
+<launch>
+
+<arg name="robot_name" default="catvehicle" />
+
+<node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
+</node>
+
+<node pkg="catvehicle_tests" type="cmdvel_tests.py" name="cmdvel_test" output="screen"
+            required="true">
+	<param name="namespace" value="/$(arg robot_name)"/>
+    <remap from="/catvehicle/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" />
+</node>
+
+
+
+</launch>

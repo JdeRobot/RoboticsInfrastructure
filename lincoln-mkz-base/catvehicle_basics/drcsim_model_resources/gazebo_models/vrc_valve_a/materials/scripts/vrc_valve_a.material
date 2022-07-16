@@ -1,0 +1,19 @@
+material vrc/valve_a
+{
+  receive_shadows off
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.7 1.0
+			diffuse 1.0 1.0 1.0 1.0
+			specular 0.1 0.1 0.1 0.0
+
+			texture_unit
+			{
+				texture vrc_valve_a.png
+        filtering anistropic
+			}
+		}
+	}
+}

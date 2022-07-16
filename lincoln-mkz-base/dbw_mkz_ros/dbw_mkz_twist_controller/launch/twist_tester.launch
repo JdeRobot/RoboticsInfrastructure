@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node ns="vehicle" pkg="dbw_mkz_twist_controller" type="twist_tester" name="twist_tester" />
+
+</launch>
