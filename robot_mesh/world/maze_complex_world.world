@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.5">
+	<world name="default">
+    <include>
+ 		    	<uri>model://ground_plane</uri>
+ 		</include>
+ 		<include>
+ 		 	<uri>model://sun</uri>
+ 		</include>
+ 		<include>
+ 		 	<uri>model://maze_complex</uri>
+		</include>
+		<include>
+ 		 	<uri>model://simple_wall</uri>
+		</include>
+		<include>
+			<uri>model://my_robot</uri>
+			<pose>-2.619540 3.456202 0 0 0 1.5806</pose>
+		</include>
+
+	</world>
+</sdf>
