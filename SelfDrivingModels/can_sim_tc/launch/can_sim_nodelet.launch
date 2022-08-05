@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="use_sim_time" value="true"/>
+  <arg name="ackermann_wheelbase" default="2.8498"/>
+  <arg name="ackermann_track"     default="1.6002"/>
+  <arg name="steering_ratio"      default="16.0"/>
+
+
+  <group ns="can_sim" >
+    <node pkg="can_sim_tc" type="cansim_node" name="cansim_node" output="screen">
+      <param name="ackermann_wheelbase" value="$(arg ackermann_wheelbase)" />
+      <param name="ackermann_track" value="$(arg ackermann_track)" />
+      <param name="steering_ratio" value="$(arg steering_ratio)" />
+      <remap from="can_rx" to="/can_bus_dbw/can_rx"/>
+      <remap from="can_tx" to="/can_bus_dbw/can_tx"/>
+    </node>
+  </group>
+
+</launch>

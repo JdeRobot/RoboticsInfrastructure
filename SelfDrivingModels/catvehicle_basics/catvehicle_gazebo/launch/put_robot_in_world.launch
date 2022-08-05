@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<launch>
+
+  <arg name="control_launch_file" default="$(find catvehicle)/launch/catvehicle_control.launch"/>
+
+  <param command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle_mod.xacro' roboname:='catvehicle'" name="robot_description" />
+  <node args="-urdf -model catvehicle -param robot_description -x -0.08 -y -0.09 -z 0.785" name="urdf_spawner" output="screen" pkg="gazebo_ros" respawn="false" type="spawn_model" />
+
+  <include file="$(arg control_launch_file)">
+    <arg name="robot_name" value="catvehicle"/>
+    <arg name="config_file" value="catvehicle_control.yaml"/>
+  </include>
+
+  <include file="$(find can_sim_tc)/launch/basic_offline_cansimnodelet.launch"/>
+
+  <node name="car_controls_to_cmdvel" pkg="catvehicle" type="car_controls_to_cmdvel.py" respawn="false" output="screen"/>
+
+</launch>

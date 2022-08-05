@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find dbw_mkz_can)/launch/base_system.launch" />
+
+    <node pkg="can_sim_tc"
+          type="throttle_command_pub_test.py"
+          name="can_bus_reader_publisher_topic_throttle_publisher"
+          output="screen">
+    </node>
+
+</launch>

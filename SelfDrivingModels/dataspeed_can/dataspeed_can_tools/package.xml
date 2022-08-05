@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dataspeed_can_tools</name>
+  <version>1.0.4</version>
+  <description>
+    CAN bus introspection
+  </description>
+
+  <license>BSD</license>
+  <author email="mradovnikovich@dataspeedinc.com">Micho Radovnikovich</author>
+  <maintainer email="mradovnikovich@dataspeedinc.com">Micho Radovnikovich</maintainer>
+  <url type="website">http://dataspeedinc.com</url>
+  <url type="repository">https://bitbucket.org/dataspeedinc/dataspeed_can</url>
+  <url type="bugtracker">https://bitbucket.org/dataspeedinc/dataspeed_can/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rosbag</depend>
+  <depend>roscpp</depend>
+  <depend>roslib</depend>
+  <depend>nodelet</depend>
+  <depend>std_msgs</depend>
+  <depend>dataspeed_can_msgs</depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelets.xml" />
+  </export>
+
+</package>

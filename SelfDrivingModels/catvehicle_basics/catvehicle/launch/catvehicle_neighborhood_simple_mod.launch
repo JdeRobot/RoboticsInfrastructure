@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<launch>
+
+  
+  <arg default="true" name="paused" />
+  <arg default="true" name="use_sim_time" />
+  <arg default="true" name="gui" />
+  <arg default="false" name="headless" />
+  <arg default="false" name="debug" />
+
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find catvehicle)/worlds/drc_import_1.world"/>
+    <!--<arg name="world_name" value="$(find drcsim_model_resources)/worlds/vrc_task_1.world"/>-->
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+
+
+  <param command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle_simple_mod.xacro' roboname:='catvehicle'" name="robot_description" />
+  <node args="-urdf -model catvehicle -param robot_description -x -0.08 -y -0.09 -z 0.785" name="urdf_spawner" output="screen" pkg="gazebo_ros" respawn="false" type="spawn_model" />
+
+  <include file="$(find catvehicle)/launch/catvehicle_control.launch">
+    <arg name="robot_name" value="catvehicle"/>
+    <arg name="config_file" value="catvehicle_control.yaml"/>
+  </include>
+
+</launch>

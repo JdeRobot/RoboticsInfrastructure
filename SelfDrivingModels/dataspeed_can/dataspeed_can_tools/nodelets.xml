@@ -1,0 +1,16 @@
+<library path="lib/libdataspeed_can_tools">
+  <class name="dataspeed_can_tools/TranslateRxTxNodelet"
+         type="dataspeed_can_tools::TranslateRxTxNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Translate CAN messages from can_rx to can_tx and remove the timestamp
+    </description>
+  </class>
+  <class name="dataspeed_can_tools/TranslateTxRxNodelet"
+         type="dataspeed_can_tools::TranslateTxRxNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Translate CAN messages from can_tx to can_rx and add a timestamp
+    </description>
+  </class>
+</library>

@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<sdf version="1.3">
+  <model name="ladder">
+    <pose>0 0 0 0 0 0</pose>
+    <static>true</static>
+    <link name="link">
+
+      <collision name="right_upright_collision">
+        <pose>0 0.5 2.0 0 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.022</radius>
+            <length>4.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="right_upright_visual">
+        <pose>0 0.5 2.0 0 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.022</radius>
+            <length>4.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+      <collision name="left_upright_collision">
+        <pose>0 -0.5 2.0 0 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.022</radius>
+            <length>4.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="left_upright_visual">
+        <pose>0 -0.5 2.0 0 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.022</radius>
+            <length>4.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+      <collision name="rung_1_collision">
+        <pose>0 0 0.3 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="rung_1_visual">
+        <pose>0 0 0.3 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+
+      <collision name="rung_2_collision">
+        <pose>0 0 0.6 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="rung_2_visual">
+        <pose>0 0 0.6 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+
+      <collision name="rung_3_collision">
+        <pose>0 0 0.9 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="rung_3_visual">
+        <pose>0 0 0.9 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+
+      <collision name="rung_4_collision">
+        <pose>0 0 1.2 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="rung_4_visual">
+        <pose>0 0 1.2 1.5707 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </visual>
+
+    </link> 
+  </model>
+</sdf>
