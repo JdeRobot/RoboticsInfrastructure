@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=gnome-terminal -e "/bin/bash -c '`find /opt/ros $HOME/dbw_ws/devel -name env.sh | sort | head -1` roslaunch dbw_mkz_joystick_demo joystick_demo.launch sys:=true rviz:=true'"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Joystick Demo
+Name=Joystick Demo
+Comment[en_US]=
+Comment=

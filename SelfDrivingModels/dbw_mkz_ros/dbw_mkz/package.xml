@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>dbw_mkz</name>
+  <version>1.0.4</version>
+  <description>
+    Drive-by-wire interface to the Dataspeed Inc. Lincoln MKZ DBW kit
+  </description>
+
+  <license>BSD</license>
+  <author email="khallenbeck@dataspeedinc.com">Kevin Hallenbeck</author>
+  <maintainer email="khallenbeck@dataspeedinc.com">Kevin Hallenbeck</maintainer>
+  <url type="website">http://dataspeedinc.com</url>
+  <url type="repository">https://bitbucket.org/dataspeedinc/dbw_mkz_ros</url>
+  <url type="bugtracker">https://bitbucket.org/dataspeedinc/dbw_mkz_ros/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>dbw_mkz_can</run_depend>
+  <run_depend>dbw_mkz_description</run_depend>
+  <run_depend>dbw_mkz_joystick_demo</run_depend>
+  <run_depend>dbw_mkz_msgs</run_depend>
+  <run_depend>dbw_mkz_twist_controller</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+
+</package>

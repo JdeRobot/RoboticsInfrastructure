@@ -1,0 +1,31 @@
+set (files 
+  __auto_38.png
+  __auto_37.png
+  __auto_33.png
+  __auto_32.png
+  __auto_26.png
+  __auto_.png
+  __auto_9.png
+  __auto_8.png
+  __auto_7.png
+  __auto_6.png
+  __auto_3.png
+  __auto_36.png
+  __auto_35.png
+  __auto_34.png
+  __auto_2.png
+  __auto_27.png
+  __auto_25.png
+  __auto_23.png
+  __auto_22.png
+  __auto_21.png
+  __auto_20.png
+  __auto_1.png
+  __auto_19.png
+  __auto_17.png
+  __auto_13.png
+  __auto_12.png
+  __auto_11.png
+  __auto_10.png
+)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/gazebo_models/environments/${MODEL_NAME}/materials/textures/)

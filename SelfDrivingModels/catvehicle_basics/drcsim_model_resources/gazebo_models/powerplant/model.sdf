@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<gazebo version='1.2'>
+  <model name="powerplant">
+    <pose>350 65 10.2 0 0 0</pose>
+
+    <static>false</static>
+
+    <link name="link">
+      <pose>0 0 0.2 0 0 0</pose>
+
+      <inertial>
+        <mass>100</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>10</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>10</iyy>
+          <iyz>0</iyz>
+          <izz>10</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="wall1">
+        <geometry>
+          <mesh>
+            <uri>model://powerplant/meshes/powerplant.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="visual1">
+        <geometry>
+          <mesh>
+            <uri>model://powerplant/meshes/powerplant.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0.09</linear>
+        <angular>0.09</angular>
+      </velocity_decay>
+
+    </link>
+
+    <joint name="building_world_joint" type="revolute">
+      <parent>world</parent>
+      <child>link</child>
+      <axis>
+        <xyz>0 0 1.000000</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- door -->
+    <link name="door_left">
+      <pose>22.10 -29.1 1.175 0 0 0</pose>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>10</mass>
+        <pose>0.4575 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <visual name="door_left_visual">
+        <pose>0.4575 0 0.025 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.915 .07 1.9</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="door_left_collision">
+        <pose>0.4575 0 0.025 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.915 .07 1.9</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="door_left_joint" type="revolute">
+      <parent>world</parent>
+      <child>door_left</child>
+      <axis>
+        <xyz>0 0 1.000000</xyz>
+        <limit>
+          <lower>-2.0</lower>
+          <upper>2.0</upper>
+        </limit>
+      </axis>
+    </joint>
+    <link name="handle_left">
+      <pose>22.90 -29.16 0.975 0 0 0</pose>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>1</mass>
+        <pose>-0.05 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.1</ixx>
+          <ixy>0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.1</iyy>
+          <iyz>0</iyz>
+          <izz>0.1</izz>
+        </inertia>
+      </inertial>
+      <visual name="handle_visual">
+        <pose>-0.05 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 .03 0.03</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="handle_collision">
+        <pose>-0.05 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 .03 0.03</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="handle_left_joint" type="revolute">
+      <parent>door_left</parent>
+      <child>handle_left</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.8</lower>
+          <upper>0.8</upper>
+        </limit>
+      </axis>
+    </joint>
+    <link name="door_right">
+      <pose>23.94 -29.1 1.175 0 0 0</pose>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>10</mass>
+        <pose>-0.4575 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <visual name="door_right_visual">
+        <pose>-0.4575 0 0.025 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.915 .07 1.9</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="door_right_collision">
+        <pose>-0.4575 0 0.025 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.915 .07 1.9</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="door_right_joint" type="revolute">
+      <parent>world</parent>
+      <child>door_right</child>
+      <axis>
+        <xyz>0 0 1.000000</xyz>
+        <limit>
+          <lower>-0.01</lower>
+          <upper>0.01</upper>
+        </limit>
+      </axis>
+    </joint>
+    <link name="handle_right">
+      <pose>23.14 -29.16 0.975 0 0 0</pose>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>1</mass>
+        <pose>-0.05 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.1</ixx>
+          <ixy>0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.1</iyy>
+          <iyz>0</iyz>
+          <izz>0.1</izz>
+        </inertia>
+      </inertial>
+      <visual name="handle_visual">
+        <pose>0.05 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 .03 0.03</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="handle_collision">
+        <pose>0.05 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 .03 0.03</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="handle_right_joint" type="revolute">
+      <parent>door_right</parent>
+      <child>handle_right</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.8</lower>
+          <upper>0.8</upper>
+        </limit>
+      </axis>
+    </joint>
+    <plugin name="power_plant_plugin" filename="libDRCBuildingPlugin.so">
+      <door_link>door_left</door_link>
+      <door_joint>door_left_joint</door_joint>
+      <handle_joint>handle_left_joint</handle_joint>
+    </plugin>
+  </model>
+</gazebo>

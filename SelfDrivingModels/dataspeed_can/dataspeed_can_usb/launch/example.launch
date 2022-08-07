@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- CAN Bus Hardware -->
+  <node pkg="dataspeed_can_usb" type="can_node" name="can_node" output="screen">
+
+    <!-- CAN Bus 1 -->
+    <remap from="can_bus_1" to="can_bus_1"/>
+    <param name="bitrate_1" value="250000" /> <!-- 250kbit/s -->
+    <param name="channel_1_mask_0"  value="0x80000000" />
+    <param name="channel_1_match_0" value="0x80000000" /> <!-- EID 0x00000000 to 0x1FFFFFFF -->
+
+    <!-- CAN Bus 2 -->
+    <remap from="can_bus_2" to="can_bus_2"/>
+    <param name="bitrate_2" value="1000000" /> <!-- 1Mbit/s -->
+    <param name="channel_2_mask_0"  value="0x80000000" />
+    <param name="channel_2_match_0" value="0x00000000" /> <!-- SID 0x000 to 0x7FF -->
+
+    <!-- CAN Bus 3 -->
+    <remap from="can_bus_3" to="can_bus_dbw"/>
+    <param name="bitrate_3" value="500000" /> <!-- 500kbit/s -->
+    <param name="channel_3_mask_0"  value="0x800007F0" />
+    <param name="channel_3_match_0" value="0x00000060" /> <!-- SID 0x060 to 0x06F -->
+    <param name="channel_3_mask_1"  value="0x800007F0" />
+    <param name="channel_3_match_1" value="0x00000070" /> <!-- SID 0x070 to 0x07F -->
+
+    <!-- CAN Bus 4 -->
+    <remap from="can_bus_4" to="can_bus_4"/>
+    <param name="bitrate_4" value="0" /> <!-- Disable -->
+
+  </node>
+
+</launch>

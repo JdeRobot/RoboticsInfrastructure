@@ -1,0 +1,6 @@
+set (files 
+  canvas_a.png
+  coupling_hexagon.png
+)
+
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/gazebo_models/environments/${MODEL_NAME}/materials/textures)

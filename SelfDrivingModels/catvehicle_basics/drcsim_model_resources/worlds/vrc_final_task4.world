@@ -1,0 +1,657 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="vrc_task_1">
+
+    <!-- place user camera -->
+    <gui>
+      <camera name="user_camera">
+        <pose>-21.660200 -11.942800 12.053900 0.000000 0.443643 0.352194</pose>
+      </camera>
+    </gui>
+
+    <scene>
+      <ambient>0.2 0.2 0.2 1.0</ambient>
+      <grid>false</grid>
+    </scene>
+
+    <physics type="ode">
+      <gravity>0 0 -9.81</gravity>
+      <ode>
+        <solver>
+          <use_dynamic_moi_rescaling>true</use_dynamic_moi_rescaling>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.4</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+
+    <!-- Light Source -->
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.9 0.9 0.9 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.2 0.2 -0.9</direction>
+    </light>
+
+
+    <light type="point" name="light_bulb">
+      <cast_shadows>false</cast_shadows>
+      <pose>11.48 -7.62 5 0 0 0</pose>
+      <diffuse>0.3 0.3 0.3 1</diffuse>
+      <specular>0.0 0.0 0.0 1</specular>
+
+      <attenuation>
+        <range>80</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+    </light>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier_1</name>
+      <pose>-30.782961 12.987309 0 0 0 -0.160001</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier_2</name>
+      <pose>-36.741665 14.062513 0 0 0 -0.160001</pose>
+    </include>
+
+    <include>
+      <uri>model://jersey_barrier</uri>
+      <name>jersey_barrier_3</name>
+      <pose>-42.801369 15.140183 0 0 0 -0.160001</pose>
+    </include>
+
+
+    <include>
+      <uri>model://vrc_heightmap_3</uri>
+    </include>
+
+    <include>
+      <uri>model://vrc_grass_plane2</uri>
+    </include>
+
+    <include>
+      <uri>model://starting_pen</uri>
+      <static>true</static>
+      <pose>7.7 -10.14 0.0 0 0 -.221</pose>
+    </include>
+
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_0</name>
+      <static>true</static>
+      <pose>9.75 -1.15 2.0 0 0 1.3491</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_1</uri>
+      <name>gate_number_1_a</name>
+      <static>true</static>
+      <pose>11.847 -1.656 3.75 0 0 1.349</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_1</uri>
+      <name>gate_number_1_b</name>
+      <static>true</static>
+      <pose>7.662 -0.77 3.75 0 0 1.3491</pose>
+    </include>
+    <include>
+      <uri>model://drc_vehicle</uri>
+      <pose>-1.79 1.21 0 0 0 2.888</pose>
+    </include>
+
+    <include>
+      <uri>model://vehicle_gate</uri>
+      <name>vehiclegate_1</name>
+      <static>true</static>
+      <pose>-7.33 1.38 2 0 0 2.956</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_2</uri>
+      <name>gate_number_2_a</name>
+      <static>true</static>
+      <pose>-7.95 -2.21 3.75 0 0 -0.1599</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_2</uri>
+      <name>gate_number_2_b</name>
+      <static>true</static>
+      <pose>-6.62 4.97 3.75 0 0 3.039</pose>
+    </include>
+
+    <include>
+      <uri>model://speed_limit_sign</uri>
+      <name>speed_sign_2</name>
+      <static>true</static>
+      <pose>-14.25 7.42 0 0 0 -1.712</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_4</name>
+      <static>true</static>
+      <pose>-16.15 -0.9 0 0 0 3.021</pose>
+    </include>
+
+    <include>
+      <uri>model://house_2</uri>
+      <pose>-23.3 -4.35 0 0 0 3.021</pose>
+    </include>
+
+    <include>
+      <uri>model://house_1</uri>
+      <pose>-21.8 14.59 0 0 0 2.916</pose>
+    </include>
+
+    <include>
+      <uri>model://mailbox</uri>
+      <name>mailbox_0</name>
+      <static>true</static>
+      <pose>-26.22 9.33 0 0 0 3.039</pose>
+    </include>
+
+    <include>
+      <uri>model://mailbox</uri>
+      <name>mailbox_1</name>
+      <static>true</static>
+      <pose>-31.89 2.26 0 0 0 -0.199</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_4</name>
+      <pose>-86.547622 91.001313 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_5</name>
+      <pose>-82.999822 91.434153 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_6</name>
+      <pose>-79.454335 92.000720 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_7</name>
+      <pose>-75.552145 93.463218 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_1</name>
+      <pose>-30 7.35 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_5</name>
+      <static>true</static>
+      <pose>-34.15 11. 0 0 0 -0.298</pose>
+    </include>
+
+    <include>
+      <uri>model://mailbox</uri>
+      <name>mailbox_2</name>
+      <static>true</static>
+      <pose>-48.42 13.92 0 0 0 -0.759</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_1</name>
+      <static>true</static>
+      <pose>-51.92 6.585 0 0 0 2.16</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <pose>-50.21 18.51 0 0 0 -0.64</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house_3_d</name>
+      <pose>-75.475288 40.420681 0 0 0 -0.680000</pose>
+    </include>
+    <include>
+      <uri>model://grey_wall</uri>
+      <name>grey_wall_1</name>
+      <pose>-88.124184 49.661770 0 0 0 -0.640001</pose>
+    </include>
+    <include>
+      <uri>model://grey_wall</uri>
+      <name>grey_wall_2</name>
+      <pose>-81.410600 47.454800 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://grey_wall</uri>
+      <name>grey_wall_3</name>
+      <pose>-71 54 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://grey_wall</uri>
+      <name>grey_wall_4</name>
+      <pose>-92.787971 90.169884 0 0 0 0.16</pose>
+    </include>
+    <include>
+      <uri>model://grey_wall</uri>
+      <name>grey_wall_5</name>
+      <pose>-89.445953 94.466454 0 0 0 1.640001</pose>
+    </include>
+
+    <include>
+      <uri>model://house_2</uri>
+      <name>house_2_b</name>
+      <pose>-67 13.86 0 0 0 2.439</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_2</name>
+      <static>true</static>
+      <pose>-61.4 24.12 0 0 0 -0.64</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_15</name>
+      <static>true</static>
+      <pose>-76.52 26.15 0 0 0 2.542</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house_3_b</name>
+      <pose>-88.10 32.43 0 0 0 2.465</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_6</name>
+      <static>true</static>
+      <pose>-86.85 44.66 0 0 0 -0.541</pose>
+    </include>
+
+    <include>
+      <uri>model://fast_food</uri>
+      <static>true</static>
+      <pose>-93.58 56.96 0 0 0 -1.5707</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_3</name>
+      <pose>-98.0 50.62 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_3</name>
+      <static>true</static>
+      <pose>-103.72 49.32 0 0 0 1.519</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_12</name>
+      <static>true</static>
+      <pose>-96 61 0 0 0 -1.655</pose>
+    </include>
+
+    <include>
+      <uri>model://gas_station</uri>
+      <static>true</static>
+      <pose>-114.99 91.1 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://speed_limit_sign</uri>
+      <name>speed_sign_3</name>
+      <static>true</static>
+      <pose>-96.56 72.79 0 0 0 -2.927</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_11</name>
+      <static>true</static>
+      <pose>-96.74 85.02 0 0 0 -1.581</pose>
+    </include>
+
+    <include>
+      <uri>model://dumpster</uri>
+      <static>true</static>
+      <pose>-95.63 95.46 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://dumpster</uri>
+      <static>true</static>
+      <name>dumpster_1</name>
+      <pose>-89 48 0 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_13</name>
+      <static>true</static>
+      <pose>-103.05 101.28 0 0 0 1.785</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_17</name>
+      <static>true</static>
+      <pose>-82.204697 100.420967 0 0 0 -2.87</pose>
+    </include>
+
+    <include>
+      <uri>model://speed_limit_sign</uri>
+      <name>speed_sign_4</name>
+      <static>true</static>
+      <pose>-89.75 107.75 0 0 0 -1.30</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_16</name>
+      <static>true</static>
+      <pose>-77.19 111.36 0 0 0 0.329</pose>
+    </include>
+
+    <include>
+      <uri>model://house_1</uri>
+      <name>house_1_b</name>
+      <pose>-67.63 99.67 0 0 0 -2.872</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_14</name>
+      <static>true</static>
+      <pose>-57.82 108.02 0 0 0 -2.895</pose>
+    </include>
+
+    <include>
+      <uri>model://construction_barrel</uri>
+      <name>barrel_2</name>
+      <pose>-51.25 115.71 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_10</name>
+      <static>true</static>
+      <pose>-47.9 120.1 0 0 0 0.3783</pose>
+    </include>
+
+    <include>
+      <uri>model://speed_limit_sign</uri>
+      <name>speed_sign_5</name>
+      <static>true</static>
+      <pose>-38.64 113.22 0 0 0 1.80</pose>
+    </include>
+
+    <include>
+      <uri>model://house_2</uri>
+      <name>house_2_c</name>
+      <pose>-43.41 124.63 0 0 0 0.2799</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_7</name>
+      <static>true</static>
+      <pose>-27.31 117.42 0 0 0 -2.84</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house_3_c</name>
+      <pose>-15.74 118.37 0 0 0 0.279</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp_post_8</name>
+      <static>true</static>
+      <pose>-17.73 128.94 0 0 0 0.279</pose>
+    </include>
+
+    <include>
+      <uri>model://vehicle_gate</uri>
+      <name>vehiclegate_2</name>
+      <static>true</static>
+      <pose>-12.13 126.33 2.0 0 0 0.279</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_3</uri>
+      <name>gate_number_3_a</name>
+      <static>true</static>
+      <pose>-11.14 122.81 3.75 0 0 0.279</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_3</uri>
+      <name>gate_number_3_b</name>
+      <static>true</static>
+      <pose>-13.08 129.80 3.75 0 0 0.279</pose>
+    </include>
+
+
+    <include>
+      <uri>model://gate</uri>
+      <name>gate_3</name>
+      <static>true</static>
+      <pose>-4.287 132.542 2.0 0 0 1.8505</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_4</uri>
+      <name>gate_number_4_a</name>
+      <static>true</static>
+      <pose>-2.22 133.05 3.75 0 0 1.8505</pose>
+    </include>
+    <include>
+      <uri>model://gate_number_4</uri>
+      <name>gate_number_4_b</name>
+      <static>true</static>
+      <pose>-6.34 131.93 3.75 0 0 1.8505</pose>
+    </include>
+
+
+    <road name="main_street">
+      <width>7.34</width>
+      <point>0 0 0.01</point>
+      <point>-50 10 0.01</point>
+      <point>-100 50 0.01</point>
+      <point>-100 100 0.01</point>
+      <point>0 130 0.01</point>
+    </road>
+
+    <model name="road_boxes">
+      <static>true</static>
+      <link name="link">
+
+        <collision name="collision_1">
+          <pose>-25.5 5.1 0 0 0 -0.197</pose>
+          <geometry>
+            <box>
+              <size>51 7.34 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <collision name="collision_2">
+          <pose>-75 30 0 0 0 -0.6747</pose>
+          <geometry>
+            <box>
+              <size>66.0 7.34 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+
+        <collision name="collision_3">
+          <pose>-100 76 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>7.34 56 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+
+        <collision name="collision_4">
+          <pose>-50 115 0 0 0 0.291</pose>
+          <geometry>
+            <box>
+              <size>105 7.34 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+
+        <collision name="collision_5">
+          <pose>-5 135 0 0 0 1.8505</pose>
+          <geometry>
+            <box>
+              <size>6 5 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <!--
+        <visual name="visual_1">
+          <pose>-25.5 5.1 0 0 0 -0.197</pose>
+          <geometry>
+            <box>
+              <size>51 7.34 0.02</size>
+            </box>
+          </geometry>
+        </visual>
+
+        <visual name="visual_2">
+          <pose>-75 30 0 0 0 -0.6747</pose>
+          <geometry>
+            <box>
+              <size>66.0 7.34 0.02</size>
+            </box>
+          </geometry>
+        </visual>
+
+        <visual name="visual_3">
+          <pose>-100 76 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>7.34 56 0.02</size>
+            </box>
+          </geometry>
+        </visual>
+
+        <visual name="visual_4">
+          <pose>-50 115 0 0 0 0.291</pose>
+          <geometry>
+            <box>
+              <size>105 7.34 0.02</size>
+            </box>
+          </geometry>
+        </visual>
+
+        <visual name="visual_5">
+          <pose>-5 135 0 0 0 1.8505</pose>
+          <geometry>
+            <box>
+              <size>6 5 0.02</size>
+            </box>
+          </geometry>
+        </visual>
+        -->
+      </link>
+    </model>
+
+    <plugin filename="libVRCPlugin.so" name="vrc_plugin">
+      <atlas>
+         <model_name>atlas</model_name>
+         <pin_link>utorso</pin_link>
+      </atlas>
+      <drc_vehicle>
+        <model_name>drc_vehicle</model_name>
+        <seat_link>polaris_ranger_ev::chassis</seat_link>
+      </drc_vehicle>
+      <drc_fire_hose>
+        <fire_hose_model>fire_hose</fire_hose_model>
+        <coupling_link>coupling</coupling_link>
+        <standpipe_model>standpipe</standpipe_model>
+        <spout_link>standpipe</spout_link>
+        <thread_pitch>-1000</thread_pitch>
+        <coupling_relative_pose>
+          1.17038e-05 -0.125623 0.35 -0.0412152 -1.57078 1.61199
+        </coupling_relative_pose>
+      </drc_fire_hose>
+    </plugin>
+
+    <plugin filename="libVRCScoringPlugin.so" name="vrc_scoring">
+      <score_file>/tmp/vrc_final_task4/score.log</score_file>
+    </plugin>
+
+  </world>
+</sdf>

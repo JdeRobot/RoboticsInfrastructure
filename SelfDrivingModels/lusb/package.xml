@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lusb</name>
+  <version>1.0.8</version>
+  <description>
+    Library for interfacing to USB devices
+  </description>
+
+  <license>BSD</license>
+  <author>Dataspeed Inc.</author>
+  <maintainer email="khallenbeck@dataspeedinc.com">Dataspeed Inc.</maintainer>
+  <url type="website">http://dataspeedinc.com</url>
+  <url type="repository">https://bitbucket.org/dataspeedinc/lusb</url>
+  <url type="bugtracker">https://bitbucket.org/dataspeedinc/lusb/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>boost</depend>
+
+  <build_depend>libusb-1.0-dev</build_depend>
+  <exec_depend>libusb-1.0</exec_depend>
+
+</package>

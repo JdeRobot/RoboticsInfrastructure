@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- RViz -->
+  <node pkg="rviz" type="rviz" name="rviz_dbw" respawn="false" output="screen" args="-d $(find dbw_mkz_description)/launch/rviz.rviz" />
+
+</launch>

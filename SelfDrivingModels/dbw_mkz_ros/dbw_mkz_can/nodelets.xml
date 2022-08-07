@@ -1,0 +1,9 @@
+<library path="lib/libdbw_mkz_can">
+  <class name="dbw_mkz_can/DwbNodelet"
+         type="dbw_mkz_can::DwbNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description> 
+      Dataspeed Lincoln MKZ drive-by-wire nodelet
+    </description>
+  </class>
+</library>

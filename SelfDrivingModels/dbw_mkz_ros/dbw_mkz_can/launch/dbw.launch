@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="boo_control"   default="true"/>
+  <arg name="boo_thresh_lo" default="0.20"/>
+  <arg name="boo_thresh_hi" default="0.22"/>
+  <arg name="ackermann_wheelbase" default="2.8498"/>
+  <arg name="ackermann_track"     default="1.6002"/>
+  <arg name="steering_ratio"      default="16.0"/>
+  <arg name="twist_use_pedals"   default="True"/>
+  <arg name="twist_use_steering" default="True"/>
+  <arg name="decel_max" default="3.0"/>
+  <arg name="accel_max" default="3.0"/>
+
+  <!-- CAN Bus Hardware -->
+  <node ns="/" pkg="dataspeed_can_usb" type="can_node" name="can_node" output="screen">
+    <remap from="can_bus_1" to="can_bus_1"/>
+    <param name="bitrate_1" value="0" />
+    <remap from="can_bus_2" to="can_bus_2"/>
+    <param name="bitrate_2" value="0" />
+    <remap from="can_bus_3" to="can_bus_dbw"/>
+    <param name="bitrate_3" value="500000" />
+    <param name="channel_3_mask_0"  value="0x800007F0" />
+    <param name="channel_3_match_0" value="0x00000060" /> <!-- SID 0x060 to 0x06F -->
+    <param name="channel_3_mask_1"  value="0x800007FC" />
+    <param name="channel_3_match_1" value="0x00000070" /> <!-- SID 0x070 to 0x073 -->
+    <param name="channel_3_mask_2"  value="0x800007FE" />
+    <param name="channel_3_match_2" value="0x00000074" /> <!-- SID 0x074 to 0x075 -->
+    <param name="channel_3_mask_3"  value="0x800007FF" />
+    <param name="channel_3_match_3" value="0x0000007F" /> <!-- SID 0x07F to 0x07F -->
+    <!--param name="channel_3_mask_4"  value="0x80000000" /-->
+    <!--param name="channel_3_match_4" value="0x00000000" /--> <!-- SID 0x000 to 0x7FF -->
+    <remap from="can_bus_4" to="can_bus_4"/>
+    <param name="bitrate_4" value="0" />
+  </node>
+
+  <!-- Vehicle Interface -->
+  <group ns="vehicle" >
+    <node pkg="dbw_mkz_can" type="dbw_node" name="dbw_node" output="screen">
+      <remap from="can_rx" to="/can_bus_dbw/can_rx"/>
+      <remap from="can_tx" to="/can_bus_dbw/can_tx"/>
+      <param name="boo_control" value="$(arg boo_control)" />
+      <param name="boo_thresh_lo" value="$(arg boo_thresh_lo)" />
+      <param name="boo_thresh_hi" value="$(arg boo_thresh_hi)" />
+      <param name="ackermann_wheelbase" value="$(arg ackermann_wheelbase)" />
+      <param name="ackermann_track" value="$(arg ackermann_track)" />
+      <param name="steering_ratio" value="$(arg steering_ratio)" />
+    </node>
+    <node pkg="dbw_mkz_twist_controller" type="twist_controller" name="twist_controller" output="screen">
+      <param name="ackermann_wheelbase" value="$(arg ackermann_wheelbase)" />
+      <param name="ackermann_track" value="$(arg ackermann_track)" />
+      <param name="steering_ratio" value="$(arg steering_ratio)" />
+      <param name="pub_pedals" value="$(arg twist_use_pedals)" />
+      <param name="pub_steering" value="$(arg twist_use_steering)" />
+      <param name="decel_max" value="$(arg decel_max)" />
+      <param name="accel_max" value="$(arg accel_max)" />
+    </node>
+    <include file="$(find dbw_mkz_description)/launch/mkz.launch" />
+  </group>
+
+</launch>

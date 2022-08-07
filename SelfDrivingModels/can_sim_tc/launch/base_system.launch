@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <!--
+    A world has to be launched in order to start the simulated clock, otherwise there is no clock and offline
+    nothing works, specially rate.sleep
+    -->
+    <arg name="ackermann_wheelbase" value="2.8498"/>
+    <arg name="ackermann_track"     value="1.6002"/>
+    <arg name="steering_ratio"      value="16.0"/>
+
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="false" />
+    </include>
+
+    <include file="$(find dbw_mkz_can)/launch/offline.launch" />
+    <include file="$(find can_sim_tc)/launch/can_sim_nodelet.launch" >
+        <arg name="ackermann_wheelbase" default="$(arg ackermann_wheelbase)"/>
+        <arg name="ackermann_track"     default="$(arg ackermann_track)"/>
+        <arg name="steering_ratio"      default="$(arg steering_ratio)"/>
+    </include>
+
+</launch>
