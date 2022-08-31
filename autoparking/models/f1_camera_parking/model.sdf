@@ -1,0 +1,494 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+  <model name="f1_camera_parking">
+    <pose>0 0 0 0 0 0</pose>
+    <static>false</static>
+    <link name="f1">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>10</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0.0</ixy>
+          <iyy>1</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>1.0</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/Renault/Car.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/Renault/Car.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='left_cam'>
+        <pose>2.45000 0.040000 0.9000000 0.000000 -0.000000 0.0000000</pose>
+        <geometry>
+          <sphere>
+            <radius>.005</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <sensor name='cam_f1_left' type='camera'>
+        <pose>2.45000 0.040000 0.9000000 0.000000 -0.000000 0.0000000</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cleft'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller_left" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>F1ROS/cameraF</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_top_body_left</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+
+      <visual name='back_cam'>
+        <pose>-2.45000 0.040000 0.1000000 0.000000 -0.000000 3.1416</pose>
+        <geometry>
+          <sphere>
+            <radius>.005</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <sensor name='cam_f1_back' type='camera'>
+        <pose>-2.45000 0.040000 0.1000000 0.000000 -0.000000 3.1416</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cback'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller_back" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>F1ROS/cameraB</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_top_body_back</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+      <!--
+      <sensor name="laser_center" type="ray">
+        <pose>0.01 0 0.03 0 -0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>640</samples>
+              <resolution>1</resolution>
+              <min_angle>-2.26889</min_angle>
+              <max_angle>2.268899</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.08</min>
+            <max>10</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="laser_center" filename="libRayPlugin.so">
+          <topicName>/F1ROS/laserC/scan</topicName>
+          <frameName>laser</frameName>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
+        </plugin>
+      </sensor>
+-->
+    </link>
+
+    <link name='camera_top_body_right'>
+      <pose>1.45000 -0.040000 0.3000000 0.000000 -0.000000 0.0000000</pose>
+      <inertial>
+        <mass>2</mass>
+        <inertia>
+          <ixx>1.000000</ixx>
+          <ixy>0.000000</ixy>
+          <ixz>0.000000</ixz>
+          <iyy>1.000000</iyy>
+          <iyz>0.000000</iyz>
+          <izz>1.000000</izz>
+        </inertia>
+      </inertial>
+      <sensor name='cam_f1_right' type='camera'>
+        <pose>1.45000 -0.040000 0.3000000 0.000000 -0.000000 0.0000000</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cright'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller_right" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>F1ROS/cameraR</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_top_body_right</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.005</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>0.100000 0.100000 0.100000</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>100000.000000</mu>
+              <mu2>100000.000000</mu2>
+              <slip1>0.000000</slip1>
+              <slip2>0.000000</slip2>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>10</max_contacts>
+      </collision>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+
+    <link name='camera_front'>
+      <pose>1.2500 0.00000 0.9000000 0.000000 -0.000000 0.0000000</pose>
+      <inertial>
+        <mass>2</mass>
+        <inertia>
+          <ixx>1.000000</ixx>
+          <ixy>0.000000</ixy>
+          <ixz>0.000000</ixz>
+          <iyy>1.000000</iyy>
+          <iyz>0.000000</iyz>
+          <izz>1.000000</izz>
+        </inertia>
+      </inertial>
+      <sensor name='cam_f1_front' type='camera'>
+        <pose>1.2500 0.00000 0.9000000 0.000000 -0.000000 0.0000000</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cfront'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller_front" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>F1ROS/cameraL</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_front</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.005</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>0.100000 0.100000 0.100000</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>100000.000000</mu>
+              <mu2>100000.000000</mu2>
+              <slip1>0.000000</slip1>
+              <slip2>0.000000</slip2>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>10</max_contacts>
+      </collision>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+
+
+    <link name='laser_front'>
+      <pose>2.00000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
+      <visual name="visual_laser_front">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='laser_front' type='ray'>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>20.000000</update_rate>
+        <plugin name="gazebo_ros_front_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/F1ROS/laserF/scan</topicName>
+          <frameName>laser_front</frameName>
+        </plugin>
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+      </sensor>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+
+
+    <link name='laser_back'>
+      <pose>-2.45000 0.040000 0.5000000 0.000000 -0.000000 3.1416</pose>
+      <visual name="visual_laser_back">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='laser_back' type='ray'>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-0.5000</min_angle>
+              <max_angle>0.5000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>20.000000</update_rate>
+        <plugin name="gazebo_ros_back_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/F1ROS/laserB/scan</topicName>
+          <frameName>laser_back</frameName>
+        </plugin>
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+      </sensor>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+
+    <link name='laser_aleron'>
+      <pose>-2.000 0.00000 1.5000000 0.000000 -0.000000 0</pose>
+      <visual name="visual_laser_aleron">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='laser_aleron' type='ray'>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>20.000000</update_rate>
+        <plugin name="gazebo_ros_aleron_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/F1ROS/laserA/scan</topicName>
+          <frameName>laser_aleron</frameName>
+        </plugin>
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+      </sensor>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+
+    <link name='laser_center'>
+      <pose>0.000 0.0000 0.75000000 0.000000 -0.000000 0</pose>
+      <visual name="visual_laser_center">
+        <geometry>
+          <mesh>
+            <uri>model://f1_camera_parking/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='laser_center' type='ray'>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-3.570000</min_angle>
+              <max_angle>3.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>20.000000</update_rate>
+        <plugin name="gazebo_ros_center_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/F1ROS/laserC/scan</topicName>
+          <frameName>laser_center</frameName>
+        </plugin>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+      </sensor>
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>F1ROS/cmd_vel</commandTopic>
+      <odometryTopic>F1ROS/odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>xf1</robotBaseFrame>
+    </plugin>
+  </model>
+</sdf>
