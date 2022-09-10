@@ -10,7 +10,7 @@
         <geometry>
           <mesh>
             <uri>model://power_tower_danube_wires/meshes/power_tower_danube_wires.dae</uri>
-            <scale>1 1 1</scale> <!-- scale 1 equals to length of 40 meters. It is recommended to only change X scaling -->
+            <scale>0.75 3 3</scale> <!-- scale 1 equals to length of 40 meters. It is recommended to only change X scaling -->
           </mesh>
         </geometry>
       </visual>
