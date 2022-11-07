@@ -1,0 +1,8 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/guillermo/custom_robots/install/openni2_camera_msgs/local/lib/python3.10/dist-packages",
+        "/home/guillermo/custom_robots/install/kobuki_ros_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
