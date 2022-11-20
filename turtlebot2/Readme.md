@@ -23,3 +23,4 @@ ros2 launch turtlebot2 spawn_model.launch.py
 ## Issues
 If after launching the robot only the upper part appears and not the kobuki base, please change the path of the wheels and base to an absolute path (lines 28, 62 and 87 of the turtlebot2.urdf file located in /turtlebot2/urdf).
 
+
