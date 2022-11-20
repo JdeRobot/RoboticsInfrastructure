@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>kobuki_description</name>
+  <version>1.0.0</version>
+  <description>
+      Description of the Kobuki model.
+      Provides the model description of Kobuki for simulation and visualisation. The files in this
+      package are parsed and used by a variety of other components. Most users will not interact directly
+      with this package.
+  </description>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/kobuki-base/kobuki_ros/issues</url>
+  <url type="repository">https://github.com/kobuki-base/kobuki_ros</url>
+  <url type="website">http://ros.org/wiki/kobuki_description</url>
+  <author email="d.stonier@gmail.com">Daniel Stonier</author>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>urdf</build_depend>
+  <build_depend>xacro</build_depend>
+
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
