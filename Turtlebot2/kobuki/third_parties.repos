@@ -1,0 +1,41 @@
+repositories:
+  ThirdParty/kobuki_ros:
+    type: git
+    url: https://github.com/kobuki-base/kobuki_ros.git
+    version: devel
+  ThirdParty/kobuki_ros_iterfaces:
+    type: git
+    url: https://github.com/kobuki-base/kobuki_ros_interfaces.git
+    version: devel
+  ThirdParty/rplidar_ros:
+    type: git
+    url: https://github.com/allenh1/rplidar_ros.git
+    version: ros2
+  ThirdParty/laser_filters:
+    type: git
+    url: https://github.com/ros-perception/laser_filters.git
+    version: ros2
+  ThirdParty/sophus:
+    type: git
+    url: https://github.com/stonier/sophus.git
+    version: release/1.2.x
+  ThirdParty/ecl/ecl_core:
+    type: git
+    url: https://github.com/stonier/ecl_core.git
+    version: devel
+  ThirdParty/ecl/ecl_lite:
+    type: git
+    url: https://github.com/stonier/ecl_lite.git
+    version: devel
+  ThirdParty/ecl/ecl_tools:
+    type: git
+    url: https://github.com/stonier/ecl_tools.git
+    version: devel
+  ThirdParty/kobuki_core:
+    type: git
+    url: https://github.com/kobuki-base/kobuki_core.git
+    version: release/1.3.x
+  ThirdParty/kobuki_ftdi:
+    type: git
+    url: https://github.com/kobuki-base/kobuki_ftdi.git
+    version: devel
