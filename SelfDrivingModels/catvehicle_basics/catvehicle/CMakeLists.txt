@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 2.8.3)
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(catvehicle)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -38,8 +43,6 @@ include_directories(${GAZEBO_INCLUDE_DIRS}
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(include)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -67,12 +70,27 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+include_directories(
+	/usr/include/eigen3
+)
+
 
 add_library(catvehiclegazebo SHARED src/cont.cc ./include/catvehicle/cont.hh)
 target_link_libraries(catvehiclegazebo ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
+## Declare a C++ library
+add_library(catmin_distance SHARED src/distance.cc)
+## Specify libraries to link a library or executable target against
+target_link_libraries(catmin_distance ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
 add_executable( distanceEstimator src/distanceEstimator.cpp )
 target_link_libraries( distanceEstimator ${catkin_LIBRARIES} )
+
+add_executable( distanceEstimatorSteeringBased src/distanceEstimatorSteeringBased.cpp )
+target_link_libraries( distanceEstimatorSteeringBased ${catkin_LIBRARIES})
+
+add_executable( velocityEstimator src/velocityEstimator.cpp )
+target_link_libraries( velocityEstimator ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
@@ -95,32 +113,12 @@ install(DIRECTORY urdf
 install(DIRECTORY worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
-install(DIRECTORY rviz_config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
-install(DIRECTORY config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
 ## Mark executables and/or libraries for installation
 install(TARGETS catvehiclegazebo
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(TARGETS distanceEstimator
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-catkin_install_python(PROGRAMS scripts/cmdvel2gazebo.py scripts/joy2cmdvel.py scripts/odom2path.py scripts/primitiveCmdVel.py scripts/car_controls_to_cmdvel.py scripts/obstacle_stopper.py
-                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-
-## Install project namespaced headers
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE)
 
 #############
 ## Testing ##

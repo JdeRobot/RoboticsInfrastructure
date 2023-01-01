@@ -9,7 +9,7 @@
 #include <cstdlib>
 //#include <unistd.h>
 #include<gazebo_msgs/ModelStates.h>
-
+#include <ignition/math/Vector3.hh>
 namespace gazebo
 {
     class CatSteering : public ModelPlugin
@@ -43,8 +43,8 @@ namespace gazebo
             ros::NodeHandle* rosnode_;
             
             //velocity vector to fetch velocity from model entity
-            math::Vector3 linear_vel;
-            math::Vector3 angular_vel;
+	    ignition::math::Vector3<double> linear_vel;
+	    ignition::math::Vector3<double> angular_vel;
             //Gazebo
             physics::JointPtr steering_joints[2];
             physics::JointController *j_cont;

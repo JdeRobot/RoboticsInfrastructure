@@ -8,7 +8,7 @@
 // TODO: enable distance range we care about
 
 #include "ros/ros.h"
-#include "std_msgs/Float32.h"
+#include "std_msgs/Float64.h"
 #include "sensor_msgs/LaserScan.h"
 
 #include <cstdio>
@@ -16,12 +16,12 @@
 
 
 // this global var holds the distance
-std_msgs::Float32 angle;
-std_msgs::Float32 dist;
-std_msgs::Float32 dist_1;
-std_msgs::Float32 vel;
-std_msgs::Float32 vel_1;
-std_msgs::Float32 accel;
+std_msgs::Float64 angle;
+std_msgs::Float64 dist;
+std_msgs::Float64 dist_1;
+std_msgs::Float64 vel;
+std_msgs::Float64 vel_1;
+std_msgs::Float64 accel;
 ros::Time lastUpdate;
 bool newMessage;
 double angle_min;
@@ -127,8 +127,8 @@ int main( int argc, char **argv )
 
 
 // TODO: make this not just a float value
-  	ros::Publisher dist_pub = n.advertise<std_msgs::Float32>(dist_topic, 1);
-  	ros::Publisher angle_pub = n.advertise<std_msgs::Float32>(angle_topic, 1);
+  	ros::Publisher dist_pub = n.advertise<std_msgs::Float64>(dist_topic, 1);
+  	ros::Publisher angle_pub = n.advertise<std_msgs::Float64>(angle_topic, 1);
 
   	// we also want to subscribe to the signaller
   	ros::Subscriber sub = n.subscribe(scan_topic, 1, &scanCallback);
