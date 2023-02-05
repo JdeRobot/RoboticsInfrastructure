@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <!--
 
 Author: Jonathan Sprinkle
@@ -35,6 +36,7 @@ roslaunch catvehicle joystick.launch
 <launch>
 
 <arg name="robot_name" default="catvehicle" />
+<arg name="velmax" default="15.0"/>
 
 <!-- include information for the joystick, etc. -->
 <node pkg="joy" type="joy_node" name="joy_node" output="screen"
@@ -44,6 +46,7 @@ roslaunch catvehicle joystick.launch
 <node pkg="catvehicle" type="joy2cmdvel.py" name="joy2cmdvel" output="screen"
             required="true">
 	<param name="namespace" value="/$(arg robot_name)"/>
+	<param name="velmax" value="$(arg velmax)"/>
     <remap from="/catvehicle/cmd_vel" to="/$(arg robot_name)/cmd_vel" />
 </node>
 

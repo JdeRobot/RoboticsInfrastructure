@@ -36,9 +36,19 @@ roslaunch catvehicle robotviz.launch
 <launch>
 
 <arg name="robot_name" default="catvehicle" />
+      <arg name="front_laser_points" default="true"/>
+      <arg name="velodyne_points" default="true"/>
+      <arg name="camera_right" default="true"/>
+      <arg name="camera_left" default="true"/>
+      <!-- change these defaults here, to see further left with the velodyne   -->
+      <arg name="velodyne_max_angle" default="0.4"/>
+      <!-- change these defaults here, to see further right with the velodyne   -->
+      <arg name="velodyne_min_angle" default="-0.4"/>
 
 <!-- get xml file from the urdf folder -->
-<param name="catvehicle/robot_description" command="cat $(find catvehicle)/urdf/catvehicle_urdf.xml"/>
+<!--param name="catvehicle/robot_description" command="cat $(find catvehicle)/urdf/catvehicle_urdf.xml"/-->
 
+<param name="catvehicle/robot_description"
+         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' front_laser_points:='$(arg front_laser_points)' velodyne_points:='$(arg velodyne_points)' camera_right:='$(arg camera_right)' camera_left:='$(arg camera_left)' velodyne_max_angle:='$(arg velodyne_max_angle)' velodyne_min_angle:='$(arg velodyne_min_angle)'" />
 
 </launch>

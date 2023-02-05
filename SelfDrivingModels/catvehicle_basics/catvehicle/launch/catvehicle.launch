@@ -1,6 +1,8 @@
+<?xml version="1.0" ?>
+
 <!--
 
-Author: Jonathan Sprinkle
+Author: Jonathan Sprinkle, Rahul Bhadani
 Copyright (c) 2015-2016 Arizona Board of Regents
 All rights reserved.
 
@@ -26,9 +28,6 @@ Summary:
 =======
 This launch file loads the worlds and models for the catvehicle
 
-How to execute it:
-=================
-roslaunch catvehicle catvehicle_empty.launch
 
 -->
 
@@ -36,7 +35,7 @@ roslaunch catvehicle catvehicle_empty.launch
 <arg name="robot_name"/>
 <arg name="init_pose"/>
 <arg name="config_file"/>
-
+<arg name="obstaclestopper"/>
 <rosparam param="/use_sim_time">true</rosparam>
 
 <node name="urdf_spawner$(arg robot_name)" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
@@ -64,37 +63,44 @@ output="screen" ns="/$(arg robot_name)" args="joint1_velocity_controller joint2_
 
 <!-- set up a static TF transform for publishing SLAM localization estimates wrt base_link -->
 <node pkg="tf" type="static_transform_publisher" name="base_link2slamodom_tf_$(arg robot_name)" 
-    args="0 0 0 0 0 0 $(arg robot_name)/base_link $(arg robot_name)/slamodom 5" />
+    args="0 0 0 0 0 1 $(arg robot_name)/base_link $(arg robot_name)/slamodom 5" />
 
-<!-- we run the python version, so we can be slower-than-real-time -->
+ 
 <node name="cmdvel2gazebo$(arg robot_name)" pkg="catvehicle" type="cmdvel2gazebo.py" respawn="false" output="screen"> 
-<remap from="/catvehicle/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" />
+    <remap from="/$(arg robot_name)/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" if="$(arg obstaclestopper)"/>
 </node>
 
-<!-- JMS removing simulink version so we can run slower than real-time
-<node name="cmdvel2gazebo$(arg robot_name)" pkg="cmdvel2gazebo" type="cmdvel2gazebo_node" respawn="false" output="screen"> 
-<remap from="/catvehicle/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" />
-<remap from="/catvehicle/joint1_velocity_controller/command" to="/$(arg robot_name)/joint1_velocity_controller/command" />
-<remap from="/catvehicle/joint2_velocity_controller/command" to="/$(arg robot_name)/joint2_velocity_controller/command" />
-<remap from="/catvehicle/front_left_steering_position_controller/command" to="/$(arg robot_name)/front_left_steering_position_controller/command" />
-<remap from="/catvehicle/front_right_steering_position_controller/command" to="/$(arg robot_name)/front_right_steering_position_controller/command" />
-</node>
--->
+<!--node name="distanceEstimatorSteeringBased" pkg="catvehicle" type="distanceEstimatorSteeringBased" output="screen">
+    <param name="scan_topic" value="/$(arg robot_name)/front_laser_points"/>
+    <param name="steering_topic" value="/$(arg robot_name)/steering"/>
+    <remap from="/$(arg robot_name)/distanceEstimatorSteeringBased/dist" to="/$(arg robot_name)/distanceEstimatorSteeringBased/dist" />
+    <remap from="/$(arg robot_name)/distanceEstimatorSteeringBased/Xdist" to="/$(arg robot_name)/distanceEstimatorSteeringBased/Xdist" />
+    <remap from="/$(arg robot_name)/distanceEstimatorSteeringBased/Ydist" to="/$(arg robot_name)/distanceEstimatorSteeringBased/Ydist" />
+    <remap from="/$(arg robot_name)/distanceEstimatorSteeringBased/angle" to="/$(arg robot_name)/distanceEstimatorSteeringBased/angle" />
+     <param name="tmin" value="-6.0"/--><!-- This is like the xmin in the cartesian windowed estimator -->
+     <!--param name="tmax" value="3.0"/--><!-- This is like the xmax in the cartesian windowed estimator -->
+     <!--param name="smin" value="0.0"/--><!-- This is like the ymin in the cartesian windowed estimator -->
+     <!--param name="smax" value="80.0"/--><!-- This is like the ymax in the cartesian windowed estimator -->
+     <!--param name="epsilon" value="0.005"/--><!-- This is the minimum turning angle for the ring transformation vs a direct cartiesian calculation (to avoid infinite turning radius in calculation) -->
 
-<node name="distanceEstimator" pkg="catvehicle" type="distanceEstimator" output="screen">
-	<param name="scan_topic" value="/$(arg robot_name)/front_laser_points"/>
-</node>
+<!--/node-->
 
-<!-- Let's be safe with obstacles by stopping when we get too close -->
-<node name="obstacleStopper$(arg robot_name)" pkg="obstaclestopper" type="obstaclestopper_node" output="screen">
-    <remap from="/catvehicle/cmd_vel" to="/$(arg robot_name)/cmd_vel" />
-    <remap from="/catvehicle/distanceEstimator" to="/$(arg robot_name)/distanceEstimator" />
-    <remap from="/catvehicle/cmd_vel_safe" to="/$(arg robot_name)/cmd_vel_safe" />
-</node>
+<!--node name="distanceEstimator" pkg="catvehicle" type="distanceEstimator" output="screen">
+    <param name="scan_topic" value="/$(arg robot_name)/front_laser_points"/>
+    <param name="angle_min" value="-10.0"/>
+    <param name="angle_max" value="10.0"/>
+
+</node-->
+
+<!-- Let's be safe with obstacles by stopping when we get too close--> 
+<node name="obstacleStopper$(arg robot_name)" pkg="obstaclestopper" type="obstaclestopper_node" output="screen" if="$(arg obstaclestopper)"/>
 
 <!-- publish the path information of this vehicle -->
-<node name="odom2path$(arg robot_name)" pkg="catvehicle" type="odom2path.py" respawn="true" output="screen" args="-n /$(arg robot_name)">
+<node name="odom2path$(arg robot_name)" pkg="catvehicle" type="odom2path.py" respawn="false" output="screen" args="-n /$(arg robot_name)">
 </node>
 
+<!-- establish this vehicle's place in the global frame for tf transforms -->
+<node pkg="tf" type="static_transform_publisher" name="global_frame_tf_$(arg robot_name)" 
+    args="0 0 0 0 0 0 /world $(arg robot_name)/odom 100"/>
 
 </launch>

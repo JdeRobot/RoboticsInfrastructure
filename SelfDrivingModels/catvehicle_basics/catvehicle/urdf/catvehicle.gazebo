@@ -29,72 +29,140 @@ through Gazebo. For more information and for the tutorials used to create
 this file, see
 http://gazebosim.org/tutorials/?tut=ros_control#Prerequisites
 
-Sensors are included separately, based on the arguments passed to the xacro include
-
 -->
 <robot>
 
 
 <gazebo reference="back_right_wheel_link">
-	      <mu1>10000000</mu1>
-              <mu2>10000000</mu2>
-		<kp>10000000</kp>
-		<kd>1</kd>
+	      <mu1>1000000</mu1>
+              <mu2>1000000</mu2>
+
+		<kp>10000000</kp><!--kp is surface elasticity-->
+		<kd>100</kd><!-- kd is damping-->
 		<minDepth>0.01</minDepth>
-		<maxVel>10.0</maxVel>            
+		<maxVel>1000.0</maxVel>            
 </gazebo>
 
 <gazebo reference="back_left_wheel_link">
-              <mu1>10000000</mu1>
-              <mu2>10000000</mu2>
+              <mu1>100000000</mu1>
+              <mu2>100000000</mu2>
 		<kp>10000000</kp>
-                <kd>1</kd> 
+                <kd>100</kd> 
                 <minDepth>0.01</minDepth>
-                <maxVel>10.0</maxVel>  
+                <maxVel>1000.0</maxVel>  
 </gazebo>
 
 <gazebo reference="front_right_wheel_link">
-	      <mu1>10000000</mu1>
-              <mu2>10000000</mu2>
-                <kp>10000000</kp>
-                <kd>1</kd> 
+	      <mu1>100000000</mu1>
+              <mu2>100000000</mu2>
+                <kp>1000000</kp>
+                <kd>100</kd> 
                 <minDepth>0.01</minDepth>
-                <maxVel>100.0</maxVel> 
+                <maxVel>1000.0</maxVel> 
 </gazebo>
 
 <gazebo reference="front_left_wheel_link">
-	      <mu1>10000000</mu1>
-              <mu2>10000000</mu2>
-                <kp>10000000</kp>
-                <kd>1</kd> 
+	      <mu1>100000000</mu1>
+              <mu2>100000000</mu2>
+                <kp>1000000</kp>
+                <kd>100</kd> 
                 <minDepth>0.01</minDepth>
-                <maxVel>100.0</maxVel> 
+                <maxVel>1000.0</maxVel> 
 </gazebo>
 
 <gazebo reference="front_right_steering_link">
-   <mu1>0.6</mu1>
-   <mu2>0.5</mu2>
+   <mu1>100000000</mu1>
+   <mu2>100000000</mu2>
                 <kp>1000000</kp>
                 <kd>0.1</kd>
                 <minDepth>0.01</minDepth>
-                <maxVel>10.0</maxVel>
+                <maxVel>1000.0</maxVel>
 </gazebo>
 
 <gazebo reference="front_left_steering_link">
-   <mu1>0.6</mu1>
-   <mu2>0.5</mu2>
+   <mu1>100000000</mu1>
+   <mu2>100000000</mu2>
                 <kp>1000000</kp>
                 <kd>0.1</kd>
                 <minDepth>0.01</minDepth>
-                <maxVel>10.0</maxVel>
+                <maxVel>1000.0</maxVel>
+</gazebo>
+
+<gazebo reference="laser_link">
+   <mu1>0.6</mu1>
+   <mu2>0.5</mu2>
+</gazebo>
+
+<gazebo reference="laser_link">
+        <sensor type="ray" name="lidar_sensor">
+              <pose>0 0 0 0 0 0</pose>
+                   <visualize>false</visualize>
+                    <update_rate>5</update_rate>
+                       <ray>
+                           <scan>
+                                <horizontal>
+                                       <samples>100</samples>
+                                           <resolution>1</resolution>
+                                            <min_angle>-0.4</min_angle>
+                                            <max_angle>0.4</max_angle>
+                                </horizontal>
+				<vertical>
+					<samples>20</samples>
+					<resolution>1</resolution>
+					<min_angle>-0.034906585</min_angle>
+					<max_angle>0.326</max_angle>
+				</vertical>
+                           </scan>
+                           <range>
+                                  <min>1</min>
+                                  <max>50.0</max>
+                                 <resolution>0.02</resolution>
+                           </range>
+                      </ray>
+			   <plugin name="laser_controller" filename="libgazebo_ros_block_laser.so">
+			      <frameName>laser_link</frameName>
+			      <hokuyoMinIntensity>101</hokuyoMinIntensity>
+			      <robotNamespace>/$(arg roboname)</robotNamespace>
+			      <topicName>lidar_points</topicName>
+			      <gaussianNoise>0.02</gaussianNoise>
+			      <updateRate>5</updateRate>
+                 </plugin>
+      </sensor>
 </gazebo>
 
 <gazebo>
   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
     <robotNamespace>/$(arg roboname)</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    <legacyModeNS>true</legacyModeNS>
   </plugin>
 </gazebo>
+
+<!--Rear Wheel Drive, cuz why not-->
+<!--
+<gazebo>
+  <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <robotNamespace>/catvehicle</robotNamespace>
+      <rosDebugLevel>Debug</rosDebugLevel>
+      <publishWheelTF>false</publishWheelTF>
+      <publishWheelJointState>true</publishWheelJointState>
+      <alwaysOn>true</alwaysOn>
+      <leftJoint>back_left_wheel_joint</leftJoint>
+      <rightJoint>back_right_wheel_joint</rightJoint>
+      <wheelSeparation>1.73</wheelSeparation>
+      <wheelDiameter>0.712</wheelDiameter>
+      <wheelTorque>350</wheelTorque>
+      <wheelAcceleration>1.0</wheelAcceleration>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometrySource>world</odometrySource>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <cmd_vel_timeout>0.20</cmd_vel_timeout>
+      <updateRate>10.0</updateRate>
+  </plugin>
+</gazebo>
+-->
 
 <gazebo>
     <plugin filename="libgazebo_ros_joint_state_publisher.so" name="joint_state_publisher">
@@ -108,7 +176,7 @@ Sensors are included separately, based on the arguments passed to the xacro incl
 <gazebo>
   <plugin name="cmdvel_controller" filename="libcatvehiclegazebo.so">
 	<robotNamespace>/$(arg roboname)</robotNamespace>
+      <updateRate>$(arg updateRate)</updateRate>
   </plugin>
 </gazebo>
 </robot>
-

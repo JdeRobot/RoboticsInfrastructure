@@ -36,7 +36,7 @@ http://gazebosim.org/tutorials/?tut=ros_control#Prerequisites
 Sensors are included separately, based on the arguments passed to the xacro include
 
 -->
-<robot>
+<robot name="catvehicle">
   <gazebo reference="back_right_wheel_link">
     <mu1>10000</mu1>
     <mu2>10000</mu2>

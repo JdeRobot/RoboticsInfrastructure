@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <package>
   <name>catvehicle</name>
-  <version>2.0.2</version>
+  <version>2.1.0</version>
   <description>The catvehicle package (formerly known as azcar_sim)</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="sprinkjm@email.arizona.edu">Jonathan Sprinkle</maintainer>
+  <maintainer email="rahulbhadani@email.arizona.edu">Rahul Kumar Bhadani</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -74,7 +75,6 @@
   <run_depend>transmission_interface</run_depend>
   <run_depend>velocity_controllers</run_depend>
   <run_depend>velodyne_pointcloud</run_depend>
-  <run_depend>hector_gazebo_plugins</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
