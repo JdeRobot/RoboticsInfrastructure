@@ -1,18 +1,19 @@
 FROM humble_base
 
 # Turtlebot2 simulated and hospital world
-WORKDIR /home
-RUN mkdir -p turtlebot2_ws/src
-COPY ../CustomRobots/turtlebot2 /home/turtlebot2_ws/src
+
+RUN mkdir -p /home/turtlebot2_ws/src && cd /home/turtlebot2_ws/src && \
+	git clone -b humble-devel https://github.com/JdeRobot/CustomRobots.git
+
 RUN echo 'source /home/turtlebot2_ws/install/setup.bash' >> ~/.bashrc
-RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/amazon_hospital/models' >> ~/.bashrc
-RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/amazon_hospital/fuel_models' >> ~/.bashrc
-RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/amazon_hospital/hospital_world/models' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/models' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/fuel_models' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/hospital_world/models' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 WORKDIR /home/turtlebot2_ws
 RUN sudo rosdep fix-permissions 
-RUN rosdep update && rosdep install --from-paths src --ignore-src -r -y
+#RUN rosdep update && rosdep install --from-paths src --ignore-src -r -y
 RUN colcon build --symlink-install
 COPY empty_world_robot.sh /home/turtlebot2_ws
 
