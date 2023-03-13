@@ -2,6 +2,8 @@ FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
+ARG VIRTUALGL_VERSION=3.0
+ARG TURBOVNC_VERSION=3.0
 ENV NVIDIA_DRIVER_CAPABILITIES all
 
 # Setup NON INTERACTIVE ENVIRONMENT
@@ -100,6 +102,28 @@ RUN wget https://xpra.org/xorg.conf \
 
 # Install noVNC
 RUN git clone https://github.com/novnc/noVNC.git
+
+COPY virtualgl32_3.0.90_amd64.deb /
+COPY turbovnc_3.0.3_i386.deb /
+RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libxtst6:i386 \
+    libxv1:i386 \
+    libglu1-mesa:i386 \
+    libegl1-mesa:i386
+
+RUN dpkg -i virtualgl32_3.0.90_amd64.deb 
+
+RUN apt-get update && apt-get install -y \
+    libpam0g:i386 \
+    libxt6:i386 \
+    python3:i386
+
+
+RUN dpkg -i turbovnc_3.0.3_i386.deb
+
+ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
 
 # Source ros humble
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
