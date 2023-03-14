@@ -119,5 +119,3 @@ class PublisherMotors(Node):
         self.lock.acquire()
         self.data.az = az
         self.lock.release()
-
-
