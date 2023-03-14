@@ -24,7 +24,7 @@ class HAL:
         #self.shared_w = SharedValue("angular")
 
         # ROS Topics
-        self.camera = ListenerCamera("/camera/image_raw")
+        self.camera = ListenerCamera("/depth_camera/image_raw")
         self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
 
         # Update thread
@@ -36,8 +36,7 @@ class HAL:
 
     # Get Image from ROS Driver Camera
     def getImage(self):
-        image = self.camera.getImage().data
-        self.shared_image.add(image)
+        return self.camera.getImage().data
 
     # Set the velocity
     def setV(self, velocity):
