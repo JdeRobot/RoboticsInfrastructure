@@ -2,9 +2,9 @@ FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES all
 ARG VIRTUALGL_VERSION=3.0
 ARG TURBOVNC_VERSION=3.0
-ENV NVIDIA_DRIVER_CAPABILITIES all
 
 # Setup NON INTERACTIVE ENVIRONMENT
 ENV DEBIAN_FRONTEND=noninteractive
@@ -41,6 +41,8 @@ RUN apt-get update && apt-get install -y \
   sudo \
   net-tools \
   && rm -rf /var/lib/apt/lists/* 
+
+RUN apt-get update && apt-get install -y alsa-utils alsa-oss
   
 # Install ROS2 and ROS packages
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
@@ -68,14 +70,18 @@ RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pk
   && rosdep update \
   && apt-get update && apt-get install -q -y \
     ros-${ROS_DISTRO}-gazebo* \
-  && rm -rf /var/lib/apt/lists/*
+    ros-${ROS_DISTRO}-ros-gz* \
+  && apt-get -y autoremove \
+	&& apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # websocket server dependency
 RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
 RUN python3.10 -m pip install websockets asyncio
 
 # pip install dependencies
-RUN pip install pylint
+RUN pip install pylint transitions pydantic websocket-client opencv-python
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -100,30 +106,30 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 RUN wget https://xpra.org/xorg.conf \
     && rm -rf /tmp/*
 
-# Install noVNC
+# Install noVNC and websockify
 RUN git clone https://github.com/novnc/noVNC.git
+RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
 
-COPY virtualgl32_3.0.90_amd64.deb /
-COPY turbovnc_3.0.3_i386.deb /
+# VirtualGL
+COPY ./scripts/virtualgl32_3.0.90_amd64.deb /
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libxtst6:i386 \
     libxv1:i386 \
     libglu1-mesa:i386 \
     libegl1-mesa:i386
+RUN dpkg -i virtualgl32_3.0.90_amd64.deb
 
-RUN dpkg -i virtualgl32_3.0.90_amd64.deb 
+# TurboVNC
+#COPY ./scripts/turbovnc_3.0.3_i386.deb /
+#RUN apt-get update && apt-get install -y \
+#    libpam0g:i386 \
+#    libxt6:i386 \
+#    python3:i386
+#RUN dpkg -i turbovnc_3.0.3_i386.deb
 
-RUN apt-get update && apt-get install -y \
-    libpam0g:i386 \
-    libxt6:i386 \
-    python3:i386
-
-
-RUN dpkg -i turbovnc_3.0.3_i386.deb
-
-ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
-
+ENV PATH "$PATH:/opt/VirtualGL/bin"
+#ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Source ros humble
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
