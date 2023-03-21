@@ -1,0 +1,6 @@
+{
+  "sideEffects": false,
+  "module": "../esm/AccordionSummary/index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts"
+}
