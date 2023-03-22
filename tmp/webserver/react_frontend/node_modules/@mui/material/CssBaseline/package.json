@@ -1,0 +1,6 @@
+{
+  "sideEffects": false,
+  "module": "../esm/CssBaseline/index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts"
+}
