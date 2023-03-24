@@ -16,7 +16,6 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
         name=$1
         ;;
     -d | --debug )
-        shift; 
         debug=bash
         ;;
 esac; shift; done

@@ -13,7 +13,7 @@ def generate_launch_description():
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
 
   # Set the path to the Turtlebot2 ROS package
-  pkg_turtlebot2 = FindPackageShare(package='turtlebot2').find('turtlebot2')
+  pkg_turtlebot2 = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set Turtlebot2 Arguments
   x_turtlebot2_position = '53.462'
