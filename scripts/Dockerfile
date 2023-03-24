@@ -20,7 +20,7 @@ RUN echo 'source /home/ws/install/setup.bash' >> ~/.bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/models' >> ~/.bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/fuel_models' >> ~/.bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/hospital_world/models' >> ~/.bashrc
-RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/install/kobuki_description/share' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/install/custom_robots/share' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 # RoboticsAcademy
@@ -30,8 +30,8 @@ RUN mkdir -p /opt/jderobots
 COPY ./CustomRobots /opt/jderobots/CustomRobots
 
 # create workspace and add Robot packages
-RUN mkdir -p /home/ws
-RUN cp -r /opt/jderobots/CustomRobots/turtlebot2 /home/ws/src/
+RUN mkdir -p /home/ws/src
+RUN cp -r /opt/jderobots/CustomRobots /home/ws/src/
 
 # Compile workspace
 WORKDIR /home/ws

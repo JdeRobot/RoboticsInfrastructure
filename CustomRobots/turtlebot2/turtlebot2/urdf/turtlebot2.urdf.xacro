@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <robot name="turtlebot2" xmlns:xacro="http://ros.org/wiki/xacro">
   
-  <xacro:include filename="$(find kobuki_description)/urdf/kobuki.urdf"/>
-  <xacro:include filename="$(find turtlebot2)/urdf/sensors/camera.urdf.xacro"/>
-  <xacro:include filename="$(find turtlebot2)/urdf/sensors/lidar.urdf.xacro"/>
-  <xacro:include filename="$(find turtlebot2)/urdf/structures.urdf.xacro"/>
-  <xacro:include filename="$(find turtlebot2)/urdf/colors.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/urdf/kobuki.urdf"/>
+  <xacro:include filename="$(find custom_robots)/urdf/sensors/camera.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/urdf/sensors/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/urdf/structures.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/urdf/colors.urdf.xacro"/>
 
   <xacro:cylinder_structure name="base_tick1" x="0.08" y="0.14" z="0.25" length="0.35" radius="0.005" parent="base_link"/>
   <xacro:cylinder_structure name="base_tick2" x="-0.09" y="0.12" z="0.25" length="0.35" radius="0.005" parent="base_link"/>

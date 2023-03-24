@@ -14,7 +14,7 @@ def generate_launch_description():
   z_pos = LaunchConfiguration('-z', default='0')
   
   # Find Turtlebot2 package
-  pkg_share = launch_ros.substitutions.FindPackageShare(package='turtlebot2').find('turtlebot2')
+  pkg_share = launch_ros.substitutions.FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Find Urdf File
   urdf_file = os.path.join(pkg_share, 'urdf/turtlebot2.urdf')

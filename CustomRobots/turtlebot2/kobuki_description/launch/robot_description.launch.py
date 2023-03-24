@@ -42,11 +42,11 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     urdf_path = PathJoinSubstitution(
-        [FindPackageShare('kobuki_description'), 'urdf', 'kobuki_standalone.urdf.xacro']
+        [FindPackageShare('custom_robots'), 'urdf', 'kobuki_standalone.urdf.xacro']
     )
 
     rviz_config_path = PathJoinSubstitution(
-        [FindPackageShare('kobuki_description'), 'rviz', 'model.rviz']
+        [FindPackageShare('custom_robots'), 'rviz', 'model.rviz']
     )
 
     return LaunchDescription([
