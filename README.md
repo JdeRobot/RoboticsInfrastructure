@@ -17,11 +17,21 @@ This repository is divided into **four branches**. **Depending on the version** 
 - [`humble-devel`](https://github.com/JdeRobot/CustomRobots/tree/humble-devel)
 
 ## HUMBLE
-To create a docker container with ROS2-humble first pull the RADI image with `docker pull jderobot/robotics-academy:4.3.0` and run:
+To create a docker container with ROS2-humble first pull the RADI image with `docker pull jderobot/robotics-academy:4.3.X` and run:
 ~~~
- cd scripts && ./run.sh -d
+ cd scripts && ./run.sh  <----- starts RAM automatically
 ~~~
-Inside the container run:
+
+Enter the container with a different configuration with:
+~~~
+./run.sh -d      <-----
+./run.sh --debug <----- opens a terminal inside container
+./run.sh -v <absolute_local_route>        <----- creates a shared directory between local 
+./run.sh --volume <absolute_local_route>  <----- host and container in /home/shared_dir
+./run.sh -n <container_name>     <-----
+./run.sh --name <container_name> <----- stablishes the container name (default is: dockerRam_container)
+~~~
+Run RADI inside the container with:
 ~~~
  ./entrypoint.sh
 ~~~
