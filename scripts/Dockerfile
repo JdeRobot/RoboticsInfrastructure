@@ -8,9 +8,11 @@ COPY ./scripts/manager/src/manager/manager.py /
 COPY ./scripts/start_vnc.sh /
 COPY ./scripts/kill_all.sh /
 COPY ./scripts/entrypoint.sh /
+COPY ./scripts/start_vnc_gpu.sh /
+COPY ./scripts/check_device.py /
 
 # give execution permissions
-RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /manager.py
+RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /manager.py /start_vnc_gpu.sh
 
 # environment
 COPY ./.env /.env

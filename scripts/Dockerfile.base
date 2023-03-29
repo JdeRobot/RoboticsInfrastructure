@@ -3,8 +3,8 @@ FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES all
-ARG VIRTUALGL_VERSION=3.0
-ARG TURBOVNC_VERSION=3.0
+ENV VISRTUALGL_VERSION=3.0.2
+ENV TURBOVNC_VERSION=3.0.3
 
 # Setup NON INTERACTIVE ENVIRONMENT
 ENV DEBIAN_FRONTEND=noninteractive
@@ -111,25 +111,50 @@ RUN git clone https://github.com/novnc/noVNC.git
 RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
 
 # VirtualGL
-COPY ./scripts/virtualgl32_3.0.90_amd64.deb /
-RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get install -y --no-install-recommends \
+COPY ./scripts/gpu/virtualgl_${VISRTUALGL_VERSION}_amd64.deb /
+RUN apt-get update && apt-get install -y \
+    libegl1-mesa:amd64
+RUN apt-get update && dpkg -i /virtualgl_${VISRTUALGL_VERSION}_amd64.deb && \
+    rm /virtualgl_${VISRTUALGL_VERSION}_amd64.deb
+
+COPY ./scripts/gpu/virtualgl32_${VISRTUALGL_VERSION}_amd64.deb /
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libxtst6:i386 \
     libxv1:i386 \
     libglu1-mesa:i386 \
     libegl1-mesa:i386
-RUN dpkg -i virtualgl32_3.0.90_amd64.deb
+RUN apt-get update && dpkg -i /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
+    rm /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
+    chmod u+s /usr/lib/libvglfaker.so && \
+    chmod u+s /usr/lib/libdlfaker.so && \
+    chmod u+s /usr/lib32/libvglfaker.so && \
+    chmod u+s /usr/lib32/libdlfaker.so  &&\
+    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so 
 
 # TurboVNC
-#COPY ./scripts/turbovnc_3.0.3_i386.deb /
-#RUN apt-get update && apt-get install -y \
-#    libpam0g:i386 \
-#    libxt6:i386 \
-#    python3:i386
-#RUN dpkg -i turbovnc_3.0.3_i386.deb
+COPY ./scripts/gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
-ENV PATH "$PATH:/opt/VirtualGL/bin"
-#ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+#RUN apt-get update && dpkg -i /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+#    rm /turbovnc_${TURBOVNC_VERSION}_amd64.deb
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y lxde-common && \
+    rm -rf /var/lib/apt/lists/*
+
+# RUN echo -e "no-remote-connections\n\
+# no-httpd\n\
+# no-x11-tcp-connections\n\
+# no-pam-sessions\n\
+# permitted-security-types = None, VNC, otp\
+# " > /etc/turbovncserver-security.conf
+
+ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Source ros humble
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
