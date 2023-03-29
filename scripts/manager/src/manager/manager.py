@@ -67,7 +67,7 @@ class Manager:
         # TODO: review, hardcoded values
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
-        self.application: IRoboticsPythonApplication = None
+        #self.application: IRoboticsPythonApplication = None
 
     def state_change(self, event):
 
@@ -128,13 +128,13 @@ class Manager:
             raise Exception("The application must be an instance of IRoboticsPythonApplication")
 
         params['update_callback'] = self.update
-        self.application = application_class(**params)
+        #self.application = application_class(**params)
         time.sleep(1)
-        self.application.pause()
+        #self.application.pause()
 
     def on_terminate(self, event):
         try:
-            self.application.terminate()
+            #self.application.terminate()
             self.__code_loaded = False
             self.launcher.terminate()
         except Exception:
@@ -149,11 +149,11 @@ class Manager:
         LogManager.logger.info(f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
-        self.application.pause()
+        #self.application.pause()
         self.__code_loaded = False
         LogManager.logger.info("Internal transition load_code executed")
         message_data = event.kwargs.get('data', {})
-        self.application.load_code(message_data['code'])
+        #self.application.load_code(message_data['code'])
         self.__code_loaded = True
 
     def code_loaded(self, event):
@@ -166,22 +166,26 @@ class Manager:
 
     def on_run(self, event):
         if self.code_loaded:
-            self.application.run()
+            #self.application.run()
+            pass
 
     def on_pause(self, msg):
-        self.application.pause()
+        #self.application.pause()
+        pass
 
     def on_resume(self, msg):
-        self.application.resume()
+        #self.application.resume()
+        pass
 
     def on_stop(self, msg):
-        self.application.stop()
+        #self.application.stop()
+        pass
 
     def on_disconnect(self, event):
         try:
             self.__code_loaded = False
             self.launcher.terminate()
-            self.application.terminate()
+            #self.application.terminate()
         except Exception as e:
             LogManager.logger.exception(f"Exception terminating instance")
             print(traceback.format_exc())

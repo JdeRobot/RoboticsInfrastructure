@@ -27,7 +27,7 @@ class LauncherRosApi(ILauncher):
         launch_file = os.path.expandvars(self.launch_file)
 
         #TODO: intruce correct path through launch configuration
-        launch_file =  launch_file + '.py'
+        # launch_file =  launch_file + '.py'
 
         exercise_launch_cmd = f"ros2 launch {launch_file}"
         exercise_launch_thread = DockerThread(exercise_launch_cmd)
