@@ -17,8 +17,7 @@ RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /manager.py /start_vnc_gp
 # environment
 COPY ./.env /.env
 
-# configure setup.bash
-RUN echo 'source /home/ws/install/setup.bash' >> ~/.bashrc
+# configure bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/models' >> ~/.bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/fuel_models' >> ~/.bashrc
 RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/src/amazon_hospital/hospital_world/models' >> ~/.bashrc
