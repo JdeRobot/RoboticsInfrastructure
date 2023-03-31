@@ -388,10 +388,7 @@
 	<wheelDiameter>0.2410</wheelDiameter>
 
 	<torque>20</torque>
-  <ros>
-    <remapping>/cmd_vel:=/roombaROS/cmd_vel</remapping>
-  </ros>
-	<commandTopic>/roombaROS/cmd_vel</commandTopic>
+	<commandTopic>/cmd_vel</commandTopic>
 	<!-- topic name published in the cpp file -->
   <odometryTopic>roombaROS/odom</odometryTopic>
 	<odometryFrame>odom</odometryFrame>
