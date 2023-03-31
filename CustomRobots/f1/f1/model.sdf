@@ -429,7 +429,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://f1ROS/meshes/hokuyo.dae</uri>
+              <uri>model://f1ROS/meshes/hokuyo_f1.dae</uri>
           </mesh>
         </geometry>
       </visual>

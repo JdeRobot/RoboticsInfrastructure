@@ -182,6 +182,9 @@
         </contact>
         <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
           <bumperTopicName>/roombaROS/events/bumper</bumperTopicName>
+          <ros>
+            <remapping>/bumper_states:=/roombaROS/events/bumper</remapping>
+          </ros>
           <frameName>bumper_sensor</frameName>
         </plugin>
      </sensor>
@@ -289,7 +292,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://roombaROS/meshes/hokuyo.dae</uri>
+              <uri>model://roombaROS/meshes/hokuyo_roomba.dae</uri>
            </mesh>
          </geometry>
        </visual>
@@ -331,10 +334,14 @@
           <update_rate>20.000000</update_rate>
           <always_on>1</always_on>
           <visualize>1</visualize>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/roombaROS/laser/scan</topicName>
-        <frameName>hokuyo_link</frameName>
-      </plugin>
+          <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
+            <ros>
+              <remapping>~/out:=/roombaROS/laser/scan</remapping>
+            </ros>
+            <output_type>sensor_msgs/LaserScan</output_type>
+            <frameName>laser</frameName>
+            <update_rate>20.000000</update_rate>
+          </plugin>
        </sensor>
         <velocity_decay>
           <linear>0.000000</linear>
@@ -370,7 +377,8 @@
          </limit>
        </axis>
    </joint>
-   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+<plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
 	<alwaysOn>true</alwaysOn>
 	<updateRate>10</updateRate>
 	<leftJoint>right_wheel_joint</leftJoint>
@@ -380,14 +388,20 @@
 	<wheelDiameter>0.2410</wheelDiameter>
 
 	<torque>20</torque>
+  <ros>
+    <remapping>/cmd_vel:=/roombaROS/cmd_vel</remapping>
+  </ros>
 	<commandTopic>/roombaROS/cmd_vel</commandTopic>
 	<!-- topic name published in the cpp file -->
-	<odometryTopic>/roombaROS/odom</odometryTopic>
+  <odometryTopic>roombaROS/odom</odometryTopic>
 	<odometryFrame>odom</odometryFrame>
+  <odometryRate>20.0</odometryRate>
+  
 	<robotBaseFrame>base</robotBaseFrame>
 
 	<publishWheelTF>true</publishWheelTF>
 	<publishWheelJointState>true</publishWheelJointState>
    </plugin>
+
  </model>
 </sdf>

@@ -19,6 +19,7 @@ endif()
 # find dependencies
 set(PROJECT_DEPENDENCIES
   ament_cmake
+  sensor_msgs
   rclcpp
   rclpy
   urdf
@@ -45,6 +46,14 @@ install(DIRECTORY
   turtlebot2/turtlebot2/launch
   turtlebot2/turtlebot2/rviz
   turtlebot2/turtlebot2/urdf
+
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  # ROOMBA
+  roomba_robot/roombaROS/meshes
+  roomba_robot/roombaROS/materials
 
   DESTINATION share/${PROJECT_NAME}
 )

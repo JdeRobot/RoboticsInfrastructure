@@ -35,14 +35,12 @@ class BrainProcess(multiprocessing.Process):
         # Found a solution but could not find the reason for this
         self.sequential_code = code[1]
         self.iterative_code = code[0]
-        print("\nWHATEFAK  2\n")
 
     # Function to run to start the process
     def run(self):
         # Two threads for running and measuring
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code)
-        print("\nWHATEFAK 3\n")
         self.measure_thread.start()
         self.thread.start()
 

@@ -49,7 +49,7 @@ def laserScan2LaserData(scan):
     laser.maxAngle = scan.angle_max  + PI/2
     laser.maxRange = scan.range_max
     laser.minRange = scan.range_min
-    laser.timeStamp = scan.header.stamp.secs + (scan.header.stamp.nsecs *1e-9)
+    laser.timeStamp = scan.header.stamp.sec + (scan.header.stamp.nanosec *1e-9)
     return laser
 
 class ListenerLaser(Node):
