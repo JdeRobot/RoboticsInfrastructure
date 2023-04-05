@@ -1,14 +1,13 @@
 import rclpy
 import sys
-
 import numpy as np
 import cv2
 import threading
 import time
 from datetime import datetime
 
-from interfaces.camera import ListenerCamera
 from interfaces.motors import PublisherMotors
+from interfaces.camera import ListenerCamera
 from shared.image import SharedImage
 from shared.value import SharedValue
 

@@ -13,9 +13,6 @@ import json
 import importlib
 import os
 
-import rospy
-from std_srvs.srv import Empty
-
 from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
@@ -46,6 +43,131 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
+
+    ################ --- BRAIN --- ################
+
+    # The process function
+    def process_code(self, source_code):
+
+        # Redirect the information to console
+        start_console()
+
+        # Reference Environment for the exec() function
+        iterative_code, sequential_code = self.parse_code(source_code)
+
+        # Whatever the code is, first step is to just stop!
+        self.hal.motors.sendV(0)
+        self.hal.motors.sendW(0)
+
+        # print("The debug level is " + str(debug_level)
+        # print(sequential_code)
+        # print(iterative_code)
+
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
+
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while not self.reload:
+            while (self.stop_brain):
+                if (self.reload):
+                    break
+                time.sleep(0.1)
+
+            start_time = datetime.now()
+
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
+
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
+
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.ideal_cycle):
+                time.sleep((self.ideal_cycle - ms) / 1000.0)
+
+        close_console()
+        print("Current Thread Joined!")
+
+    # Function to generate the modules for use in ACE Editor
+
+    def generate_modules(self):
+        # Define HAL module
+        hal_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("motors", None))
+
+        # Add HAL functions
+        hal_module.HAL.getPose3d = self.hal.getPose3d
+        hal_module.HAL.setV = self.hal.setV
+        hal_module.HAL.setW = self.hal.setW
+        hal_module.HAL.laser = self.hal.laser
+        hal_module.HAL.getLaserData = self.hal.getLaserData
+        hal_module.HAL.getBumperData = self.hal.getBumperData
+
+        # Define GUI module
+        gui_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
+
+        # Add GUI functions
+        # gui_module.GUI.showImage = self.gui.showImage
+
+        # Adding modules to system
+        # Protip: The names should be different from
+        # other modules, otherwise some errors
+        sys.modules["HAL"] = hal_module
+        sys.modules["GUI"] = gui_module
+
+        return gui_module, hal_module
+
+    # Function to measure the frequency of iterations
+    def measure_frequency(self):
+        previous_time = datetime.now()
+        # An infinite loop
+        while True:
+            # Sleep for 2 seconds
+            time.sleep(2)
+
+            # Measure the current time and subtract from the previous time to get real time interval
+            current_time = datetime.now()
+            dt = current_time - previous_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
+            previous_time = current_time
+
+            # Get the time period
+            try:
+                # Division by zero
+                self.measured_cycle = ms / self.iteration_counter
+            except:
+                self.measured_cycle = 0
+
+            # Reset the counter
+            self.iteration_counter = 0
+
+            # Send to client
+            self.send_frequency_message()
+
+
+    ################ --- EXERCISE --- ################
 
     # Function for saving
     def save_code(self, source_code):
@@ -122,127 +244,6 @@ class Template:
             iterative_code = ""
 
         return sequential_code, iterative_code
-
-    # The process function
-
-    def process_code(self, source_code):
-
-        # Redirect the information to console
-        start_console()
-
-        # Reference Environment for the exec() function
-        iterative_code, sequential_code = self.parse_code(source_code)
-
-        # Whatever the code is, first step is to just stop!
-        self.hal.motors.sendV(0)
-        self.hal.motors.sendW(0)
-
-        # print("The debug level is " + str(debug_level)
-        # print(sequential_code)
-        # print(iterative_code)
-
-        # The Python exec function
-        # Run the sequential part
-        gui_module, hal_module = self.generate_modules()
-        reference_environment = {"GUI": gui_module, "HAL": hal_module}
-        exec(sequential_code, reference_environment)
-
-        # Run the iterative part inside template
-        # and keep the check for flag
-        while self.reload == False:
-            while (self.stop_brain == True):
-                if (self.reload == True):
-                    break
-                time.sleep(0.1)
-
-            start_time = datetime.now()
-
-            # Execute the iterative portion
-            exec(iterative_code, reference_environment)
-
-            # Template specifics to run!
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
-                1000 + dt.microseconds / 1000.0
-
-            # Keep updating the iteration counter
-            if (iterative_code == ""):
-                self.iteration_counter = 0
-            else:
-                self.iteration_counter = self.iteration_counter + 1
-
-            # The code should be run for atleast the target time step
-            # If it's less put to sleep
-            if (ms < self.ideal_cycle):
-                time.sleep((self.ideal_cycle - ms) / 1000.0)
-
-        close_console()
-        print("Current Thread Joined!")
-
-    # Function to generate the modules for use in ACE Editor
-
-    def generate_modules(self):
-        # Define HAL module
-        hal_module = importlib.util.module_from_spec(
-            importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL = importlib.util.module_from_spec(
-            importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL.motors = importlib.util.module_from_spec(
-            importlib.machinery.ModuleSpec("motors", None))
-
-        # Add HAL functions
-        hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
-        hal_module.HAL.setV = self.hal.motors.sendV
-        hal_module.HAL.setW = self.hal.motors.sendW
-        hal_module.HAL.laser = self.hal.laser
-        hal_module.HAL.getLaserData = self.hal.laser.getLaserData
-        hal_module.HAL.getBumperData = self.hal.bumper.getBumperData
-
-        # Define GUI module
-        gui_module = importlib.util.module_from_spec(
-            importlib.machinery.ModuleSpec("GUI", None))
-        gui_module.GUI = importlib.util.module_from_spec(
-            importlib.machinery.ModuleSpec("GUI", None))
-
-        # Add GUI functions
-        # gui_module.GUI.showImage = self.gui.showImage
-
-        # Adding modules to system
-        # Protip: The names should be different from
-        # other modules, otherwise some errors
-        sys.modules["HAL"] = hal_module
-        sys.modules["GUI"] = gui_module
-
-        return gui_module, hal_module
-
-    # Function to measure the frequency of iterations
-    def measure_frequency(self):
-        previous_time = datetime.now()
-        # An infinite loop
-        while True:
-            # Sleep for 2 seconds
-            time.sleep(2)
-
-            # Measure the current time and subtract from the previous time to get real time interval
-            current_time = datetime.now()
-            dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
-                1000 + dt.microseconds / 1000.0
-            previous_time = current_time
-
-            # Get the time period
-            try:
-                # Division by zero
-                self.measured_cycle = ms / self.iteration_counter
-            except:
-                self.measured_cycle = 0
-
-            # Reset the counter
-            self.iteration_counter = 0
-
-            # Send to client
-            self.send_frequency_message()
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -326,7 +327,7 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
-            # self.send_frequency_message()
+            self.send_frequency_message()
             return
 
         elif (message[:5] == "#ping"):
@@ -340,6 +341,7 @@ class Template:
                 self.user_code = message[6:]
                 # print(repr(code))
                 self.reload = True
+                self.stop_brain = True
                 self.execute_thread(self.user_code)
             except:
                 pass

@@ -7,6 +7,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import os
+import rclpy
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
@@ -33,14 +34,13 @@ class GUI:
         t.start()
 
         # Create the lap object
-        pose3d_object = ListenerPose3d("/roombaROS/odom")
-        self.map = Map(pose3d_object)
+        self.map = Map(self.hal.pose3d)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
     def initGUI(cls, host, console):
-        # self.payload = {'image': '', 'shape': []}
+        # self.payload = {'map': ''}
         new_instance = cls(host, console)
         return new_instance
 

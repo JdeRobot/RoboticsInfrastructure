@@ -167,15 +167,19 @@ class Manager:
     def on_run(self, event):
         if self.code_loaded:
             self.application.run()
+            pass
 
     def on_pause(self, msg):
         self.application.pause()
+        pass
 
     def on_resume(self, msg):
         self.application.resume()
+        pass
 
     def on_stop(self, msg):
         self.application.stop()
+        pass
 
     def on_disconnect(self, event):
         try:

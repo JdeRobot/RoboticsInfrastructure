@@ -1,6 +1,12 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <model name="roombaROS">
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+        <ros>
+          <namespace>/gazebo</namespace>
+        </ros>
+        <update_rate>1.0</update_rate>
+    </plugin>
     <link name="base">
       <inertial>
         <pose>0.001453 -0.000453 0.029787 0 0 0</pose>
@@ -176,12 +182,15 @@
      </sensor>
      <sensor name="bumper" type="contact">
         <always_on>true</always_on>
-        <update_rate>30.0</update_rate>
+        <update_rate>20.0</update_rate>
         <contact>
           <collision>base_collision</collision>
         </contact>
         <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
           <bumperTopicName>/roombaROS/events/bumper</bumperTopicName>
+          <ros>
+            <remapping>/bumper_states:=/roombaROS/events/bumper</remapping>
+          </ros>
           <frameName>bumper_sensor</frameName>
         </plugin>
      </sensor>
@@ -289,7 +298,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://roombaROS/meshes/hokuyo.dae</uri>
+              <uri>model://roombaROS/meshes/hokuyo_roomba.dae</uri>
            </mesh>
          </geometry>
        </visual>
@@ -331,10 +340,14 @@
           <update_rate>20.000000</update_rate>
           <always_on>1</always_on>
           <visualize>1</visualize>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/roombaROS/laser/scan</topicName>
-        <frameName>hokuyo_link</frameName>
-      </plugin>
+          <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
+            <ros>
+              <remapping>~/out:=/roombaROS/laser/scan</remapping>
+            </ros>
+            <output_type>sensor_msgs/LaserScan</output_type>
+            <frameName>laser</frameName>
+            <update_rate>20.000000</update_rate>
+          </plugin>
        </sensor>
         <velocity_decay>
           <linear>0.000000</linear>
@@ -370,24 +383,28 @@
          </limit>
        </axis>
    </joint>
-   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-	<alwaysOn>true</alwaysOn>
-	<updateRate>10</updateRate>
-	<leftJoint>right_wheel_joint</leftJoint>
-	<rightJoint>left_wheel_joint</rightJoint>
 
-	<wheelSeparation>0.5380</wheelSeparation>
-	<wheelDiameter>0.2410</wheelDiameter>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
+    	<alwaysOn>true</alwaysOn>
+    	<updateRate>10</updateRate>
+    	<leftJoint>right_wheel_joint</leftJoint>
+    	<rightJoint>left_wheel_joint</rightJoint>
 
-	<torque>20</torque>
-	<commandTopic>/roombaROS/cmd_vel</commandTopic>
-	<!-- topic name published in the cpp file -->
-	<odometryTopic>/roombaROS/odom</odometryTopic>
-	<odometryFrame>odom</odometryFrame>
-	<robotBaseFrame>base</robotBaseFrame>
+    	<wheelSeparation>0.5380</wheelSeparation>
+    	<wheelDiameter>0.2410</wheelDiameter>
 
-	<publishWheelTF>true</publishWheelTF>
-	<publishWheelJointState>true</publishWheelJointState>
-   </plugin>
- </model>
+    	<torque>20</torque>
+    	<commandTopic>/cmd_vel</commandTopic>
+    	<!-- topic name published in the cpp file -->
+      <odometryTopic>roombaROS/odom</odometryTopic>
+    	<odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+
+    	<robotBaseFrame>base</robotBaseFrame>
+
+    	<publishWheelTF>true</publishWheelTF>
+    	<publishWheelJointState>true</publishWheelJointState>
+    </plugin>
+
+ </model> 
 </sdf>
