@@ -59,7 +59,7 @@ class PublisherMotors:
  
     def publish (self):
 
-        print("DATA:  ",self.data)
+        
         self.lock.acquire()
         tw = cmdvel2Twist(self.data)
         self.lock.release()
@@ -105,7 +105,6 @@ class PublisherMotors:
         self.lock.acquire()
         self.data.vx = float(vx)
         self.lock.release()
-        print("SENDVX: ",self.data)
 
     def sendVY(self, vy):
 

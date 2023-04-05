@@ -5,7 +5,7 @@ from rclpy.node import Node
 import threading
 from math import asin, atan2, pi
 from gazebo_msgs.msg import ContactsState
-from gazebo_msgs.srv import GetModelState
+from gazebo_msgs.srv import GetEntityState
 
 
 class BumperData ():
@@ -26,7 +26,7 @@ class ListenerBumper(Node):
     '''
         ROS Bumper Subscriber. Bumper Client to Receive Contacts State from ROS nodes.
     '''
-    def __init__(self, topic):
+    def __init__(self, topic, robot):
         '''
         ListenerBumper Constructor.
 
@@ -41,6 +41,23 @@ class ListenerBumper(Node):
         self.sub = None
         self.lock = threading.Lock()
         self.start()
+
+        self.client = self.create_client(GetEntityState, '/gazebo/get_entity_state')
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
+        self.req = GetEntityState.Request()
+        self.req.name = robot
+        self.future = None
+        self.future_lock = threading.Lock()
+
+    def spin_bumper_node(self):
+        
+        future = self.client.call_async(self.req)
+        rclpy.spin_until_future_complete(self, future)
+
+        self.future_lock.acquire()
+        self.future = future
+        self.future_lock.release()
  
     def __callback (self, event):
         '''
@@ -56,7 +73,8 @@ class ListenerBumper(Node):
         self.lock.acquire()
         self.data = bump
         self.lock.release()
-        
+
+
     def stop(self):
         '''
         Stops (Unregisters) the client.
@@ -109,34 +127,38 @@ class ListenerBumper(Node):
             contact_x = event.states[0].contact_normals[0].x
             contact_y = event.states[0].contact_normals[0].y
 
-            #model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-            #robot_coordinates = model_coordinates("roombaROS", "")
-            model_coordinates = self.create_client(GetModelState, '/gazebo/get_model_state')
-            robot_coordinates = model_coordinates.call_async("roombaROS", "")
-            qx = robot_coordinates.pose.orientation.x
-            qy = robot_coordinates.pose.orientation.y
-            qz = robot_coordinates.pose.orientation.z
-            qw = robot_coordinates.pose.orientation.w
+            self.future_lock.acquire()
+            robot_coordinates = self.future.result()
+            self.future_lock.release()
 
-            rotateZa0=2.0*(qx*qy + qw*qz)
-            rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz
-            robotYaw=0.0
-            if(rotateZa0 != 0.0 and rotateZa1 != 0.0):
-                robotYaw=math.atan2(rotateZa0,rotateZa1)
+            if robot_coordinates is not None:
 
-            global_contact_angle = 0.0
-            if(contact_x != 0.0 and contact_y != 0.0):
-                global_contact_angle = math.atan2(contact_y,contact_x)
+                qx = robot_coordinates.state.pose.orientation.x
+                qy = robot_coordinates.state.pose.orientation.y
+                qz = robot_coordinates.state.pose.orientation.z
+                qw = robot_coordinates.state.pose.orientation.w
 
-            relative_contact_angle = global_contact_angle - robotYaw -math.pi
+                rotateZa0=2.0*(qx*qy + qw*qz)
+                rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz
+                robotYaw=0.0
+                if(rotateZa0 != 0.0 and rotateZa1 != 0.0):
+                    robotYaw=math.atan2(rotateZa0,rotateZa1)
 
-            bump.state = 1
-            if relative_contact_angle <= math.pi/2 and relative_contact_angle > math.pi/6: #0.52, 1.5
-                bump.bumper = 0
-            elif relative_contact_angle <= math.pi/6 and relative_contact_angle > -math.pi/6: # -0.52, 0.52
-                bump.bumper = 1
-            elif relative_contact_angle < -math.pi/6 and relative_contact_angle >= -math.pi/2: #-1.5 , -0.52
-                bump.bumper = 2
+                global_contact_angle = 0.0
+                if(contact_x != 0.0 and contact_y != 0.0):
+                    global_contact_angle = math.atan2(contact_y,contact_x)
+
+                relative_contact_angle = global_contact_angle - robotYaw -math.pi
+
+                bump.state = 1
+                if relative_contact_angle <= math.pi/2 and relative_contact_angle > math.pi/6: #0.52, 1.5
+                    bump.bumper = 0
+                elif relative_contact_angle <= math.pi/6 and relative_contact_angle > -math.pi/6: # -0.52, 0.52
+                    bump.bumper = 1
+                elif relative_contact_angle < -math.pi/6 and relative_contact_angle >= -math.pi/2: #-1.5 , -0.52
+                    bump.bumper = 2
+            else:
+                bump.state = 0
         else:
             bump.state = 0
 

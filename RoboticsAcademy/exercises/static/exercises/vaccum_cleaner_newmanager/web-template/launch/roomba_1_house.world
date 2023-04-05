@@ -43,5 +43,14 @@
 		  	<background>0.7 0.7 0.7 1</background>
 		  	<shadows>1</shadows>
 		</scene>
+		
+		<!-- Provides GetEntityState service -->
+        <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+          <ros>
+            <namespace>/gazebo</namespace>
+          </ros>
+          <update_rate>1.0</update_rate>
+        </plugin>
+
   </world>
 </sdf>
