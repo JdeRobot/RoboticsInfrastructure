@@ -1,6 +1,6 @@
 import tempfile
+import re
 from pylint import epylint as lint
-
 
 code = open('user_code.py')
 python_code = code.read()
