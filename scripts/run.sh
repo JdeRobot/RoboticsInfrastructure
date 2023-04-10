@@ -6,7 +6,11 @@ usage() {
             -v | --volume : route to a shared directory (optional)
             -n | --name : name of container (optional)
             -d | --debug : open a terminal inside container (optional)
-            --dev : use device inside container (optional) - [gpu]"
+            --dev : use device inside container (optional) [specify device name]
+            
+            example of usage:
+                ./run.sh -t 4.3.0 -v /home/user/dir -n my_container -d --dev card0
+            "
 }
 
 
@@ -16,6 +20,7 @@ tag=""
 unset route
 unset debug
 unset device
+unset device_name
 
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
     -v | --volume )
@@ -32,7 +37,8 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
         ;;
     --dev )
         shift;
-        device="--device $1"
+        device="--device /dev/dri"
+        device_name=$1
         ;;
     -t | --tag )
         shift;
@@ -52,7 +58,7 @@ if [ -z $name ]; then
 fi
 
 if $volume && [ ! -z $route ] && [ -d $route ] ; then
-    docker run --name $name $device -v $route:/home/shared_dir --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug
+    docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug
 else
-    docker run --name $name $device --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug
+    docker run --name $name $device -e DRI_NAME=$device_name --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug
 fi

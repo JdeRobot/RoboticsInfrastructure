@@ -25,13 +25,19 @@ To create a docker container with ROS2-humble first pull the RADI image with `do
 Enter the container with a different configuration with:
 ~~~
 ./run.sh -d      <-----
-./run.sh --debug <----- opens a terminal inside container
-./run.sh -v <absolute_local_route>        <----- creates a shared directory between local 
+./run.sh --debug <----- open a terminal inside container
+./run.sh -v <absolute_local_route>        <----- create a shared directory between local 
 ./run.sh --volume <absolute_local_route>  <----- host and container in /home/shared_dir
 ./run.sh -n <container_name>     <-----
-./run.sh --name <container_name> <----- stablishes the container name (default is: dockerRam_container)
+./run.sh --name <container_name> <----- stablish the container name (default is: dockerRam_container)
+./run.sh --dev <name of card> <----- enable GPU acceleration (name of device must be specified)
 ~~~
 Run RADI inside the container with:
 ~~~
  ./entrypoint.sh
+~~~
+
+### Example of usage:
+~~~
+./run.sh -v /home/user/directory -n my_container --dev card0 -d
 ~~~

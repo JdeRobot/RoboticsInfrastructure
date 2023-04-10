@@ -1,6 +1,7 @@
 import os
 from typing import List, Any
 import time
+import stat
 
 from src.manager.launcher.launcher_interface import ILauncher, LauncherException
 from src.manager.docker_thread.docker_thread import DockerThread
@@ -20,6 +21,9 @@ class LauncherRosApi(ILauncher):
     running = False
 
     def run(self,callback):
+        DRI_PATH = os.path.join("/dev/dri", os.environ.get("DRI_NAME", "card0"))
+        ACCELERATION_ENABLED = self.check_device(DRI_PATH)
+
         logging.getLogger("roslaunch").setLevel(logging.CRITICAL)
 
         # expand variables in configuration paths
@@ -29,7 +33,11 @@ class LauncherRosApi(ILauncher):
         #TODO: intruce correct path through launch configuration
         # launch_file =  launch_file + '.py'
 
-        exercise_launch_cmd = f"ros2 launch {launch_file}"
+        if (ACCELERATION_ENABLED):
+            exercise_launch_cmd = f"export VGL_DISPLAY={DRI_PATH}; vglrun ros2 launch {launch_file}"
+        else:
+            exercise_launch_cmd = f"ros2 launch {launch_file}"
+
         exercise_launch_thread = DockerThread(exercise_launch_cmd)
         exercise_launch_thread.start()
 
@@ -37,6 +45,12 @@ class LauncherRosApi(ILauncher):
 
     def is_running(self):
         return self.running
+    
+    def check_device(self, device_path):
+        try:
+            return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
+        except:
+            return False
 
     def terminate(self):
         if self.is_running():
