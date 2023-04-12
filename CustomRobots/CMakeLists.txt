@@ -73,6 +73,7 @@ ament_environment_hooks("hooks/resource_paths.sh")
 
 # ============================================================================
 # Resources
+
 install(DIRECTORY
   # TURTLEBOT
   turtlebot2/kobuki_description/launch
@@ -83,22 +84,25 @@ install(DIRECTORY
   turtlebot2/turtlebot2/rviz
   turtlebot2/turtlebot2/urdf
 
-  DESTINATION share/${PROJECT_NAME}
-)
+  # F1
+  f1/models
+  f1/launch
+  f1/worlds
 
-install(DIRECTORY
   # ROOMBA
-  roomba_robot/roombaROS/meshes
-  roomba_robot/roombaROS/materials
+  roomba_robot/models
+  roomba_robot/worlds
+  roomba_robot/launch
 
-  DESTINATION share/${PROJECT_NAME}
-)
-
-install(DIRECTORY
   # ACKERMAN CAR
   ackerman_cars/models
   ackerman_cars/worlds
   ackerman_cars/launch
+
+  # CARS
+  car_junction/models
+  car_junction/worlds
+  car_junction/launch
 
   DESTINATION share/${PROJECT_NAME}
 )
