@@ -16,7 +16,6 @@ function FollowPersonReactRAM() {
         <ExerciseProvider>
           <MainAppBar
             exerciseName={" Follow Person RR"}
-            specificConfiguration={<CircuitSelector></CircuitSelector>}
           />
           <View
             url={THEORY_URL.FollowPerson}

@@ -22,7 +22,7 @@ from shared.value import SharedValue
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, circuit):
+    def __init__(self, host):
         rclpy.init()
         rclpy.create_node('GUI')
 
@@ -31,9 +31,6 @@ class GUI:
         self.client = None
         
         self.host = host
-        
-        # Circuit
-        self.circuit = circuit
 
         # Image variable host
         self.shared_image = SharedImage("guiimage")
@@ -142,8 +139,6 @@ class ProcessGUI(multiprocessing.Process):
         super(ProcessGUI, self).__init__()
 
         self.host = sys.argv[1]
-        # Circuit
-        self.circuit = sys.argv[2]
 
         # Time variables
         self.time_cycle = SharedValue("gui_time_cycle")
@@ -160,7 +155,7 @@ class ProcessGUI(multiprocessing.Process):
     # Function to start the execution of threads
     def run(self):
         # Initialize GUI
-        self.gui = GUI(self.host, self.circuit)
+        self.gui = GUI(self.host)
         self.initialize_events()
 
         # Wait for client before starting

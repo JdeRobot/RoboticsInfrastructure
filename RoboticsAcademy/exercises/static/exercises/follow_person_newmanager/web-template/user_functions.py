@@ -4,7 +4,6 @@ from shared.laserdata import SharedLaserData
 
 import numpy as np
 import cv2
-import rclpy
 from interfaces.ssd_detection import NeuralNetwork, BoundingBox
 from coco_labels import LABEL_MAP
 
@@ -15,13 +14,12 @@ class HALFunctions:
         self.shared_image = SharedImage("halimage")
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
-        self.shared_laserdata = SharedLaserData("laserdatas")
+        self.shared_laserdata = SharedLaserData("laserdata")
 
         self.net = NeuralNetwork()
     
     def getLaserData(self):
         data = self.shared_laserdata.get()
-        print("LASER DT: " + str(data))
         return data
 
     def getBoundingBoxes(self, img):

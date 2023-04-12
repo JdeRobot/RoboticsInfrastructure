@@ -32,7 +32,7 @@ class HAL:
         self.shared_image = SharedImage("halimage")
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
-        self.shared_laserdata = SharedLaserData("laserdatas")
+        self.shared_laserdata = SharedLaserData("laserdata")
 
         # ROS Topics
         self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
