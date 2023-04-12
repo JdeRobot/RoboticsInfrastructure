@@ -1,6 +1,0 @@
-{
-  "sideEffects": false,
-  "module": "../esm/FormControlLabel/index.js",
-  "main": "./index.js",
-  "types": "./index.d.ts"
-}
