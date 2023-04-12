@@ -3,93 +3,93 @@
   "assets": {
     "css/index.css": {
       "name": "css/index.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/index.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/index.css"
     },
-    "js/index.357c5901.js": {
-      "name": "js/index.357c5901.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/index.357c5901.js"
+    "js/index.9852a6de.js": {
+      "name": "js/index.9852a6de.js",
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/index.9852a6de.js"
     },
     "css/exercise.css": {
       "name": "css/exercise.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercise.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercise.css"
     },
-    "js/exercise.2b745f7d.js": {
-      "name": "js/exercise.2b745f7d.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercise.2b745f7d.js"
+    "js/exercise.7529af25.js": {
+      "name": "js/exercise.7529af25.js",
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercise.7529af25.js"
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css"
     },
     "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js": {
       "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js"
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.67797218.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.67797218.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.67797218.js"
+    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js": {
+      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js",
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js"
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.64ac0ebe.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.64ac0ebe.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.64ac0ebe.js"
+    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js": {
+      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js",
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js"
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css"
     },
     "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js": {
       "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js"
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.6b340374.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.6b340374.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.6b340374.js"
+    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js": {
+      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js",
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js"
     },
     "js/src_constants_index_js.c9a8722f.js": {
       "name": "js/src_constants_index_js.c9a8722f.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_constants_index_js.c9a8722f.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_constants_index_js.c9a8722f.js"
     },
     "js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js": {
       "name": "js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js"
     },
     "js/src_helpers_global_js.b0563677.js": {
       "name": "js/src_helpers_global_js.b0563677.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_global_js.b0563677.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_global_js.b0563677.js"
     },
     "css/src_index_js.css": {
       "name": "css/src_index_js.css",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/src_index_js.css"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/src_index_js.css"
     },
     "js/src_index_js.7a1f1cdf.js": {
       "name": "js/src_index_js.7a1f1cdf.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_index_js.7a1f1cdf.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_index_js.7a1f1cdf.js"
     },
     "js/src_libs_video_recorder_js.a396d02a.js": {
       "name": "js/src_libs_video_recorder_js.a396d02a.js",
-      "path": "/home/blancon/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_libs_video_recorder_js.a396d02a.js"
+      "path": "/home/lucia/humble_ws/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_libs_video_recorder_js.a396d02a.js"
     }
   },
   "chunks": {
     "index": [
       "css/index.css",
-      "js/index.357c5901.js"
+      "js/index.9852a6de.js"
     ],
     "exercise": [
       "css/exercise.css",
-      "js/exercise.2b745f7d.js"
+      "js/exercise.7529af25.js"
     ]
   }
 }
