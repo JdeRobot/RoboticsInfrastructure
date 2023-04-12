@@ -12,8 +12,18 @@ def generate_launch_description():
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
 
-  world_path = "/RoboticsAcademy/exercises/static/exercises/follow_line_newmanager/web-template/launch/f1_simple_circuit.world"
-  
+  # Set the path to custom_robots package.
+  pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
+
+  # Set the path to the world file
+  world_file_name = 'roomba_1_house.world'
+  current_dir = "/RoboticsAcademy/exercises/static/exercises/follow_line_newmanager/web-template/launch"
+  world_path = os.path.join(current_dir, world_file_name)
+   
+  # Set the path to the SDF model files.
+  gazebo_models_path = os.path.join(pkg_share, 'models')
+  os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
   # Launch configuration variables specific to simulation
   headless = LaunchConfiguration('headless')
