@@ -94,6 +94,15 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(DIRECTORY
+  # ACKERMAN CAR
+  ackerman_cars/models
+  ackerman_cars/worlds
+  ackerman_cars/launch
+
+  DESTINATION share/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
