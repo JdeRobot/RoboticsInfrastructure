@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
 
-  <model name="f1ros2">
+  <model name="f1_renault">
     <pose>0 0 0.0 0 0 0</pose>
 
     <link name='base_link' />
@@ -75,7 +75,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://f1ros2/meshes/chasis.dae</uri>
+            <uri>model://f1_renault/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -95,7 +95,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1ros2/meshes/chasis.dae</uri>
+            <uri>model://f1_renault/Renault/chasis.dae</uri>
         </mesh>
       </geometry>
       </visual>
@@ -231,7 +231,7 @@
 
     <!-- FRONT LEFT WHEEL -->
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.82 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.72 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -327,7 +327,7 @@
 
     <!-- FRONT RIGHT WHEEL -->
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.825 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.725 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
