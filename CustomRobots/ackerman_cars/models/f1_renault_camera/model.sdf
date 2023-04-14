@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
 
-  <model name="f1ros2">
+  <model name="f1_renault_camera">
     <pose>0 0 0.0 0 0 0</pose>
 
     <link name='base_link' />
@@ -12,51 +12,6 @@
       <child>chassis_link</child>
     </joint>
 
-    <joint name="hokuyo_joint" type="fixed">
-      <parent>base_link</parent>
-      <child>hokuyo_link</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-      </axis>
-    </joint>
-
-    <link name="hokuyo_link">
-      <sensor name="head_hokuyo_sensor" type="ray">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <pose relative_to='base_link'>0 2.34 0.72 0 0 1.5708</pose>
-        <update_rate>40</update_rate>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>720</samples>
-              <resolution>1.000000</resolution>
-              <min_angle>-1.570796</min_angle>
-              <max_angle>1.570796</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.120000</min>
-            <max>30.0</max>
-            <resolution>0.010</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </ray>
-        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
-          <ros>
-            <remapping>~/out:=scan</remapping>
-          </ros>
-          <output_type>sensor_msgs/LaserScan</output_type>
-          <frame_name>hokuyo_link</frame_name>
-        </plugin>
-      </sensor>
-    </link>
-    
     <link name='chassis_link'>
       <inertial>
         <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
@@ -75,7 +30,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://f1ros2/meshes/chasis.dae</uri>
+            <uri>model://f1_renault/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -95,7 +50,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1ros2/meshes/chasis.dae</uri>
+            <uri>model://f1_renault/Renault/chasis.dae</uri>
         </mesh>
       </geometry>
       </visual>
@@ -106,6 +61,152 @@
       <self_collide>1</self_collide>
       <!--  <gravity>1</gravity> -->
     </link>
+
+    <!-- CAMERA -->
+    <link name="camera_f1">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>2</mass>
+            <inertia>
+                <ixx>1.000000</ixx>
+                <ixy>0.000000</ixy>
+                <ixz>0.000000</ixz>
+                <iyy>1.000000</iyy>
+                <iyz>0.000000</iyz>
+                <izz>1.000000</izz>
+            </inertia>
+        </inertial>
+        <!-- Visual sphere to debug camera position-->
+        <!--<visual name='visual'>
+            <pose>0 2.7 0.2 0 0 0</pose>
+            <geometry>
+                <sphere>
+                    <radius>.1</radius>
+                </sphere>
+            </geometry>
+        </visual> -->
+        <velocity_decay>
+          <linear>0.000000</linear>
+          <angular>0.000000</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+
+        <sensor name='cam_f1' type='camera'>
+          <pose>0 2.7 0.2 0 0 1.57</pose>
+          <update_rate>20.000000</update_rate>
+          <camera name='cam'>
+            <horizontal_fov>1.570000</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.100000</near>
+              <far>15.000000</far>
+            </clip>
+          </camera>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>camera</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_f1</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <ros>
+                <namespace>f1ros2</namespace>
+            </ros>
+          </plugin>
+        </sensor>
+
+    </link>
+
+    <joint type="fixed" name="camera_f1_joint">
+        <pose>0 2.7 0.2 0 0 1.57</pose>
+        <child>camera_f1</child>
+        <parent>chassis_link</parent>
+    </joint>
+
+    <!-- THIRD PERSON CAMERA -->
+    <link name="camera_float">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>2</mass>
+            <inertia>
+                <ixx>1.000000</ixx>
+                <ixy>0.000000</ixy>
+                <ixz>0.000000</ixz>
+                <iyy>1.000000</iyy>
+                <iyz>0.000000</iyz>
+                <izz>1.000000</izz>
+            </inertia>
+        </inertial>
+        <!-- Visual sphere to debug camera position-->
+        <!-- <visual name='visual'>
+            <pose>0 -3 2 0 0.1 1.57</pose>
+            <geometry>
+                <sphere>
+                    <radius>.1</radius>
+                </sphere>
+            </geometry>
+        </visual>-->
+        <velocity_decay>
+          <linear>0.000000</linear>
+          <angular>0.000000</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+
+        <sensor name='cam_float' type='camera'>
+          <pose>0 -3 2 0 0.1 1.57</pose>
+          <update_rate>20.000000</update_rate>
+          <camera name='cam'>
+            <horizontal_fov>1.570000</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.100000</near>
+              <far>15.000000</far>
+            </clip>
+          </camera>
+          <plugin name="floating_camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>floating_camera</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_float</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <ros>
+                <namespace>f1ros2</namespace>
+            </ros>
+          </plugin>
+        </sensor>
+
+    </link>
+
+    <joint type="fixed" name="camera_float_joint">
+        <pose>0 -3 2 0 0.1 1.57</pose>
+        <child>camera_float</child>
+        <parent>chassis_link</parent>
+    </joint>
 
     <!-- BACK LEFT WHEEL -->
     <joint name='bl_axle' type='revolute'>
@@ -231,7 +332,7 @@
 
     <!-- FRONT LEFT WHEEL -->
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.82 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.7 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -327,7 +428,7 @@
 
     <!-- FRONT RIGHT WHEEL -->
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.825 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.705 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
