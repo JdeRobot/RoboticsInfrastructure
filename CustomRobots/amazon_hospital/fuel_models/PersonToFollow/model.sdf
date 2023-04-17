@@ -15,7 +15,7 @@
         </inertia>
       </inertial>
 
-      <collision name="bottom">
+      <collision name="person_bottom">
         <pose>0 -0.1 0.01 0 0 0</pose>
         <geometry>
           <box>
@@ -24,7 +24,7 @@
         </geometry>
       </collision>
 
-      <collision name="person">
+      <collision name="person_collision">
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
@@ -33,7 +33,7 @@
         </geometry>
       </collision>
 
-      <visual name="visual">
+      <visual name="person_visual">
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
