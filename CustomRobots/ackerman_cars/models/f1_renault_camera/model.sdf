@@ -30,7 +30,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://f1_renault/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -50,7 +50,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
         </mesh>
       </geometry>
       </visual>
@@ -260,7 +260,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault/Renault/back_left.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/back_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -321,7 +321,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault/Renault/back_right.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/back_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -417,7 +417,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault/Renault/front_left.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/front_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -513,7 +513,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault/Renault/front_right.dae</uri>
+            <uri>model://f1_renault_ackerman/Renault/front_right.dae</uri>
           </mesh>
         </geometry>
       </visual>

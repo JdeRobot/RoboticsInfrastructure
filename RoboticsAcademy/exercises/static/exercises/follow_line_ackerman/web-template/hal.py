@@ -27,8 +27,8 @@ class HAL:
         self.shared_w = SharedValue("angular")
 
         # ROS Topics
-        self.camera = ListenerCamera("/cam_f1_left/image_raw")
-        self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
+        self.camera = ListenerCamera("/f1ros2/cam_f1/image_raw")
+        self.motors = PublisherMotors("/f1ros2/cmd_vel", 4, 0.3)
 
         self.start_time = 0
 

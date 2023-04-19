@@ -13,9 +13,15 @@
       "name": "css/exercise.css",
       "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercise.css"
     },
+<<<<<<< HEAD
     "js/exercise.c3a22e96.js": {
       "name": "js/exercise.c3a22e96.js",
       "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercise.c3a22e96.js"
+=======
+    "js/exercise.029b21e6.js": {
+      "name": "js/exercise.029b21e6.js",
+      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercise.029b21e6.js"
+>>>>>>> 2ba45297 (follow_line_ackerman exercise added and working)
     },
     "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css": {
       "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css",
@@ -89,7 +95,11 @@
     ],
     "exercise": [
       "css/exercise.css",
+<<<<<<< HEAD
       "js/exercise.c3a22e96.js"
+=======
+      "js/exercise.029b21e6.js"
+>>>>>>> 2ba45297 (follow_line_ackerman exercise added and working)
     ]
   }
 }
