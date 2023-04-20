@@ -1,13 +1,16 @@
 from __future__ import annotations
+from transitions import Machine
 
+import sys
+import signal
 import os
 import time
 import traceback
 from queue import Queue
 from uuid import uuid4
+import json
 
 
-from transitions import Machine
 
 from src.comms.new_consumer import ManagerConsumer
 from src.ram_logging.log_manager import LogManager
@@ -16,9 +19,8 @@ from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
-
 from src.manager.docker_thread.docker_thread import DockerThread
-import json
+
 
 
 class Manager:
@@ -68,9 +70,9 @@ class Manager:
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application: IRoboticsPythonApplication = None
+        self.running = True
 
     def state_change(self, event):
-
         LogManager.logger.info(f"State changed to {self.state}")
         if self.consumer is not None:
             self.consumer.send_message(
@@ -81,10 +83,14 @@ class Manager:
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
+    def on_stop(self, event):
+        self.application.stop()
+
     def on_launch(self, event):
         """
         Transition executed on launch trigger activ
         """
+
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(
@@ -95,8 +101,6 @@ class Manager:
         configuration = event.kwargs.get('data', {})
 
         # generate exercise_folder environment variable
-
-        # TODO: change configuration
         self.exercise_id = configuration['exercise_id']
         os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
 
@@ -105,15 +109,16 @@ class Manager:
         application_configuration = configuration.get('application', None)
         if application_configuration is None:
             raise Exception("Application configuration missing")
-        
+
         # check if launchers configuration is missing
         launchers_configuration = configuration.get('launch', None)
         if launchers_configuration is None:
             raise Exception("Launch configuration missing")
 
-        LogManager.logger.info(f"Launch transition started, configuration: {configuration}")
+        LogManager.logger.info(
+            f"Launch transition started, configuration: {configuration}")
 
-        #configuration['terminated_callback'] = terminated_callback
+        # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
         self.launcher.run()
 
@@ -125,14 +130,16 @@ class Manager:
 
         if not issubclass(application_class, IRoboticsPythonApplication):
             self.launcher.terminate()
-            raise Exception("The application must be an instance of IRoboticsPythonApplication")
-
+            raise Exception(
+                "The application must be an instance of IRoboticsPythonApplication")
         params['update_callback'] = self.update
         self.application = application_class(**params)
         time.sleep(1)
         self.application.pause()
 
     def on_terminate(self, event):
+        """Terminates the application and the launcher \
+            and sets the variable __code_loaded to False"""
         try:
             self.application.terminate()
             self.__code_loaded = False
@@ -141,12 +148,26 @@ class Manager:
             LogManager.logger.exception(f"Exception terminating instance")
             print(traceback.format_exc())
 
+    def on_disconnect(self, event):
+        try:
+            self.application.terminate()
+            self.__code_loaded = False
+            self.launcher.terminate()
+        except Exception as e:
+            LogManager.logger.exception(f"Exception terminating instance")
+            print(traceback.format_exc())
+
     def on_enter_connected(self, event):
         LogManager.logger.info("Connect state entered")
 
+    def on_run(self, event):
+        if self.code_loaded:
+            self.application.run()
+
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
-        LogManager.logger.info(f"Start state entered, configuration: {configuration}")
+        LogManager.logger.info(
+            f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
         self.application.pause()
@@ -164,42 +185,32 @@ class Manager:
         response = {"message": f"Exercise state changed to {self.state}"}
         self.consumer.send_message(message.response(response))
 
-    def on_run(self, event):
-        if self.code_loaded:
-            self.application.run()
-            pass
-
     def on_pause(self, msg):
         self.application.pause()
-        pass
 
     def on_resume(self, msg):
         self.application.resume()
-        pass
-
-    def on_stop(self, msg):
-        self.application.stop()
-        pass
-
-    def on_disconnect(self, event):
-        try:
-            self.__code_loaded = False
-            self.launcher.terminate()
-            self.application.terminate()
-        except Exception as e:
-            LogManager.logger.exception(f"Exception terminating instance")
-            print(traceback.format_exc())
 
     def start(self):
         """
         Starts the RAM
         RAM must be run in main thread to be able to handle signaling other processes, for instance ROS launcher.
         """
-        LogManager.logger.info(f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
-       
+        LogManager.logger.info(
+            f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
+
         self.consumer.start()
-        # TODO: change loop end condition
-        while True:
+        
+        def signal_handler(sign, frame):
+                print("\nprogram exiting gracefully")
+                self.running = False
+                self.application.terminate()
+                self.__code_loaded = False
+                self.launcher.terminate()
+
+        signal.signal(signal.SIGINT, signal_handler)
+
+        while self.running:
             message = None
             try:
                 if self.queue.empty():
@@ -209,18 +220,20 @@ class Manager:
                     self.process_messsage(message)
             except Exception as e:
                 if message is not None:
-                    ex = ManagerConsumerMessageException(id=message.id, message=str(e))
+                    ex = ManagerConsumerMessageException(
+                        id=message.id, message=str(e))
                 else:
-                    ex = ManagerConsumerMessageException(id=str(uuid4()), message=str(e))
+                    ex = ManagerConsumerMessageException(
+                        id=str(uuid4()), message=str(e))
                 self.consumer.send_message(ex)
                 LogManager.logger.error(e, exc_info=True)
-                print(ex)
-                
+
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("host", type=str, help="Host to listen to  (0.0.0.0 or all hosts)")
+    parser.add_argument(
+        "host", type=str, help="Host to listen to  (0.0.0.0 or all hosts)")
     parser.add_argument("port", type=int, help="Port to listen to")
     args = parser.parse_args()
 
