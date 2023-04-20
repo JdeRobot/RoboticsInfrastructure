@@ -16,7 +16,7 @@ def generate_launch_description():
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'f1_simple_circuit.world'
+  world_file_name = 'f1_simple_circuit_followingcam.world'
   current_dir = "/RoboticsAcademy/exercises/static/exercises/follow_line_newmanager/web-template/launch"
   world_path = os.path.join(current_dir, world_file_name)
    
