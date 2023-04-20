@@ -210,7 +210,7 @@
 
     <!-- BACK LEFT WHEEL -->
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.47364 0.304997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.775 -1.45364 0.304997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
