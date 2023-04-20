@@ -5,7 +5,7 @@ from uuid import uuid4
 from websocket_server import WebsocketServer
 
 from src.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
-# from src.ram_logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 
 
 class Client:
@@ -33,9 +33,7 @@ class ManagerConsumer:
         self.manager_queue = manager_queue
 
     def handle_client_new(self, client, server):
-        # LogManager.logger.info(f"client connected: {client}")
-        print(f"client connected: {client}")
-
+        LogManager.logger.info(f"client connected: {client}")
         self.client = client
         self.server.deny_new_connections()
 
@@ -43,18 +41,14 @@ class ManagerConsumer:
         if client is None:
             return
 
-        # LogManager.logger.info(f"client disconnected: {client}")
-        print(f"client disconnected: {client}")
-
-        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'disconnect'})
+        LogManager.logger.info(f"client disconnected: {client}")
+        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'reset'})
         self.manager_queue.put(message)
         self.client = None
         self.server.allow_new_connections()
 
     def handle_message_received(self, client, server, websocket_message):
-        # LogManager.logger.info(f"message received: {websocket_message} from client {client}")
-        print(f"message received: {websocket_message} from client {client}")
-
+        LogManager.logger.info(f"message received: {websocket_message} from client {client}")
         message = None
         try:
             s = json.loads(websocket_message)

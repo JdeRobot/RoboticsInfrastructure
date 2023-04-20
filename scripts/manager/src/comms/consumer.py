@@ -7,10 +7,9 @@ import websockets
 from websockets.server import WebSocketServerProtocol
 
 from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
-# from src.ram_logging.log_manager import LogManager
-from src.manager.manager import Manager
+from src.ram_logging.log_manager import LogManager
 
-# logger = LogManager.logger
+logger = LogManager.logger
 
 class ManagerConsumer:
     """
@@ -18,7 +17,7 @@ class ManagerConsumer:
     """
 
     def __init__(self, host, port):
-        
+        from src.manager.manager import Manager
 
 
         """
@@ -45,18 +44,15 @@ class ManagerConsumer:
         @param websocket: websocket
         """
         if self.client is not None and websocket != self.client:
-            # LogManager.logger.debug("Client already connected, rejecting connection")
-            print("Client already connected, rejecting connection")
+            LogManager.logger.debug("Client already connected, rejecting connection")
             await self.reject_connection(websocket)
         else:
             # self.client gets reassigned every time, but code is more clear
             # TODO: Just review this block of code
-            print("Client succesfully connected")
             self.client = websocket
 
         if self.client and self.client.closed:
-            # LogManager.logger.debug("Client disconnected, machine state reset")
-            print("Client disconnected, machine state reset")
+            LogManager.logger.debug("Client disconnected, machine state reset")
             self.manager.reset()
             self.client = None
             return
@@ -65,15 +61,9 @@ class ManagerConsumer:
             try:
                 s = json.loads(websocket_message)
                 message = ManagerConsumerMessage(**s)
-                print(message.command)
-
-                if (message.data != None):
-                    print("\n\t","received from webserver: ",message.data)
-
                 await self.manager.trigger(message.command, data=message.data or None)
                 response = {"message": f"Exercise state changed to {self.manager.state}"}
                 await websocket.send(str(message.response(response)))
-
             except ManagerConsumerMessageException as e:
                 await websocket.send(str(e))
             except Exception as e:
@@ -93,8 +83,7 @@ class ManagerConsumer:
         Starts the consumer and listens for connections
         """
         self.server = websockets.serve(self.handler, self.host, self.port)
-        # LogManager.logger.debug(f"Websocket server listening in {self.host}:{self.port}")
-        print(f"Websocket server listening in {self.host}:{self.port}")
+        LogManager.logger.debug(f"Websocket server listening in {self.host}:{self.port}")
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
 
@@ -102,5 +91,3 @@ class ManagerConsumer:
 if __name__ == '__main__':
     consumer = ManagerConsumer('0.0.0.0', 7163)
     consumer.start()
-
-# holaaa

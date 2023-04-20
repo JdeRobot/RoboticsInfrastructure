@@ -25,9 +25,11 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
                                                                         f'{home_dir}/ws_code.log',
                                                                         'websocket_code=ready')
         if process_ready:
-            LogManager.logger.info(f"Exercise code {exercise_command} launched")
+            LogManager.logger.info(
+                f"Exercise code {exercise_command} launched")
             time.sleep(1)
-            self.exercise_connection = Client('ws://127.0.0.1:1905', 'exercise', self.server_message)
+            self.exercise_connection = Client(
+                'ws://127.0.0.1:1905', 'exercise', self.server_message)
             self.exercise_connection.start()
         else:
             self.exercise_server.kill()
@@ -38,12 +40,13 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         if process_ready:
             LogManager.logger.info(f"Exercise gui {gui_command} launched")
             time.sleep(1)
-            self.gui_connection = Client('ws://127.0.0.1:2303', 'gui', self.server_message)
+            self.gui_connection = Client(
+                'ws://127.0.0.1:2303', 'gui', self.server_message)
             self.gui_connection.start()
         else:
             self.gui_server.kill()
             raise RuntimeError(f"Exercise GUI {gui_command} could not be run")
-        
+
         self.running = True
 
     def _run_exercise_server(self, cmd, log_file, load_string, timeout: int = 5):
@@ -59,17 +62,20 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
                 f.close()
                 time.sleep(0.2)
             except Exception as e:
-                LogManager.logger.debug(f"waiting for server string '{load_string}'...")
+                LogManager.logger.debug(
+                    f"waiting for server string '{load_string}'...")
                 time.sleep(0.2)
 
         return process_ready, process
 
     def server_message(self, name, message):
         if name == "gui":  # message received from GUI server
-            LogManager.logger.debug(f"Message received from gui: {message[:30]}")
+            LogManager.logger.debug(
+                f"Message received from gui: {message[:30]}")
             self._process_gui_message(message)
         elif name == "exercise":  # message received from EXERCISE server
-            LogManager.logger.info(f"Message received from exercise: {message}")
+            LogManager.logger.info(
+                f"Message received from exercise: {message[:30]}")
             self._process_exercise_message(message)
 
     def _process_gui_message(self, message):
@@ -78,11 +84,12 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.gui_connection.send("#ack")
 
     def _process_exercise_message(self, message):
-        comand = message[:5]
-        if (message==comand):
-            payload = comand
-        else:
-            payload = json.loads(message[5:])
+        #comand = message[:5]
+        #if (message==comand):
+        #    payload = comand
+        #else:
+        #    payload = json.loads(message[5:])
+        payload = json.loads(message[5:])
         self.update_callback(payload)
         self.exercise_connection.send("#ack")
     
@@ -134,7 +141,6 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
             self.exercise_connection.send(f"#code {code}")
         else:
             raise Exception(errors)
-
 
     def terminate(self):
         self.running = False
