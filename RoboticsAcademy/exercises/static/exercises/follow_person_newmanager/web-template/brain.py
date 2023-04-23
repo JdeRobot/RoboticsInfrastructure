@@ -3,14 +3,10 @@ import threading
 import multiprocessing
 import sys
 from datetime import datetime
-import re
-import json
 import importlib
 
 from user_functions import GUIFunctions, HALFunctions
-
 from console import start_console, close_console
-
 from shared.value import SharedValue
 
 # The brain process class
@@ -117,6 +113,7 @@ class BrainProcess(multiprocessing.Process):
         hal_module.HAL.setW = self.hal.sendW
         hal_module.HAL.getLaserData = self.hal.getLaserData
         hal_module.HAL.getBoundingBoxes = self.hal.getBoundingBoxes
+        hal_module.HAL.getPose3d = self.hal.getPose3d
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

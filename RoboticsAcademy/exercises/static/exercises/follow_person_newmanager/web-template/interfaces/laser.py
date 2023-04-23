@@ -1,4 +1,3 @@
-import rclpy
 from rclpy.node import Node
 import sensor_msgs.msg
 import threading

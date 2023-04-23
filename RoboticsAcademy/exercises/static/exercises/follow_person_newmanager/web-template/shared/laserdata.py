@@ -7,7 +7,7 @@ import array
 
 class SharedLaserData:
     def __init__(self, name):
-        # Initialize varaibles for memory regions and buffers and Semaphore
+        # Initialize variables for memory regions and buffers and Semaphore
         self.shm_buf = None; self.shm_region = None
         self.laserdata_lock = None
 

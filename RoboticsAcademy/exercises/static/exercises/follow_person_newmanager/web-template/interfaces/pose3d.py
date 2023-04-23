@@ -1,7 +1,7 @@
-import rclpy
+from rclpy.node import Node
 import threading
 from math import asin, atan2, pi
-from nav_msgs.msg import Odometry
+import nav_msgs.msg
 
 def quat2Yaw(qw, qx, qy, qz):
     '''
@@ -106,14 +106,14 @@ class Pose3d ():
 
 
 	def __str__(self):
-		s = "Pose3D: {\n   x: " + str(self.x) + "\n   Y: " + str(self.y)
-		s = s + "\n   Z: " + str(self.z) + "\n   H: " + str(self.h) 
+		s = "Pose3D: {\n   x: " + str(self.x) + "\n   y: " + str(self.y)
+		s = s + "\n   z: " + str(self.z) + "\n   H: " + str(self.h) 
 		s = s + "\n   Yaw: " + str(self.yaw) + "\n   Pitch: " + str(self.pitch) + "\n   Roll: " + str(self.roll)
 		s = s + "\n   quaternion: " + str(self.q) + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
 		return s 
 
 
-class ListenerPose3d:
+class ListenerPose3d(Node):
     '''
         ROS Pose3D Subscriber. Pose3D Client to Receive pose3d from ROS nodes.
     '''
@@ -126,7 +126,7 @@ class ListenerPose3d:
         @type topic: String
 
         '''
-        self.node = rclpy.create_node('ListenerPose3d')
+        super().__init__("pose3d_subscriber_node")
         self.topic = topic
         self.data = Pose3d()
         self.sub = None
@@ -143,6 +143,7 @@ class ListenerPose3d:
 
         '''
         pose = odometry2Pose3D(odom)
+        
 
         self.lock.acquire()
         self.data = pose
@@ -160,7 +161,7 @@ class ListenerPose3d:
         Starts (Subscribes) the client.
 
         '''
-        self.sub = self.node.create_subscription(Odometry, self.topic, self.__callback,10)
+        self.sub = self.create_subscription(nav_msgs.msg.Odometry, self.topic, self.__callback, 10)
 
         
     def getPose3d(self):

@@ -1,8 +1,5 @@
 import threading
 import queue
-import json
-from datetime import datetime
-import time
 
 class TeleopThread(threading.Thread):
     def __init__(self, q, exit_signal, hal):

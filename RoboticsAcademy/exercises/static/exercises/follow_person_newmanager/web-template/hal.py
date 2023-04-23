@@ -2,7 +2,6 @@ import rclpy
 import sys
 
 import numpy as np
-import cv2
 import threading
 import time
 from datetime import datetime
@@ -15,9 +14,9 @@ from interfaces.pose3d import ListenerPose3d
 from shared.image import SharedImage
 from shared.value import SharedValue
 from shared.laserdata import SharedLaserData
+from shared.pose3d import SharedPose3D
 
 # Hardware Abstraction Layer
-
 
 class HAL:
     IMG_WIDTH = 320
@@ -33,6 +32,7 @@ class HAL:
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
         self.shared_laserdata = SharedLaserData("laserdata")
+        self.shared_pose = SharedPose3D("pose")
 
         # ROS Topics
         self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
@@ -52,16 +52,23 @@ class HAL:
         self.start_time = time.time()
         self.thread.start()
 
+    # Get laser data from ROS Driver
     def getLaserData(self):
         try:
             rclpy.spin_once(self.laser)
             values = self.laser.getLaserData().values
             self.shared_laserdata.add(values)
         except Exception as e:
-            print(f"Exception in hal getImage {repr(e)}")
+            print(f"Exception in hal getLaserData {repr(e)}")
 
+    # Get pose from ROS Driver 
     def getPose3d(self):
-        return self.odometry.getPose3d()
+        try:
+            rclpy.spin_once(self.odometry)
+            pose = self.odometry.getPose3d()
+            self.shared_pose.add(pose)
+        except Exception as e:
+            print(f"Exception in hal getPose3d {repr(e)}")
 
     # Get Image from ROS Driver Camera
     def getImage(self):
@@ -97,6 +104,7 @@ class HAL:
         self.getImage()
         self.setV()
         self.setW()
+        self.getPose3d()
 
     # Destructor function to close all fds
     def __del__(self):
@@ -104,6 +112,7 @@ class HAL:
         self.shared_v.close()
         self.shared_w.close()
         self.shared_laserdata.close()
+        self.shared_pose.close()
 
 
 class ThreadHAL(threading.Thread):

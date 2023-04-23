@@ -11,9 +11,7 @@ import numpy as np
 from datetime import datetime
 from websocket_server import WebsocketServer
 import multiprocessing
-import logging
 
-from interfaces.pose3d import ListenerPose3d
 from shared.image import SharedImage
 from shared.image import SharedImage
 from shared.value import SharedValue
