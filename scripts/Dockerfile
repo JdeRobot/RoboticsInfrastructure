@@ -36,7 +36,6 @@ RUN cp -r /opt/jderobots/CustomRobots /home/ws/src/
 
 # Compile workspace
 WORKDIR /home/ws
-RUN sudo rosdep fix-permissions && rosdep update
 RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
 RUN colcon build --symlink-install
 
