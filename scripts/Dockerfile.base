@@ -81,7 +81,7 @@ RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 d
 RUN python3.10 -m pip install websockets asyncio
 
 # pip install dependencies
-RUN pip install pylint transitions pydantic websocket-client opencv-python
+RUN python3.10 -m pip install pylint transitions pydantic websocket-client opencv-python
 
 # Install VNC
 # Xorg segfault error mitigation
