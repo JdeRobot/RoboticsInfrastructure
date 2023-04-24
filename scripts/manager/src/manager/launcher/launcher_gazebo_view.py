@@ -20,17 +20,17 @@ class LauncherGazeboView(ILauncher):
         # Configure browser screen width and height for gzclient
         gzclient_config_cmds = f"echo [geometry] > ~/.gazebo/gui.ini; echo x=0 >> ~/.gazebo/gui.ini; echo y=0 >> ~/.gazebo/gui.ini; echo width={self.width} >> ~/.gazebo/gui.ini; echo height={self.height} >> ~/.gazebo/gui.ini;"
         gz_vnc = Vnc_server()
-        
+
         if ACCELERATION_ENABLED:
             gz_vnc.start_vnc_gpu(self.display, self.internal_port, self.external_port,DRI_PATH)
-            time.sleep(0.1)
+            time.sleep(6)
 
             # Write display config and start gzclient
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         else:
             gz_vnc.start_vnc(self.display, self.internal_port, self.external_port)
-            time.sleep(0.1)
+            time.sleep(6)
 
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} gzclient --verbose")
