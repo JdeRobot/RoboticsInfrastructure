@@ -26,11 +26,11 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 1.6 0.0 0 -0 1.57</pose>
+        <pose>0 0 0.46936 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://autocar/meshes/chassis_link.stl</uri>
           </mesh>
         </geometry>
         <surface>
@@ -45,20 +45,20 @@
           </friction>
         </surface>
       </collision>
-      <visual name="visual">
-        <pose>0 1.6 0.0 0 -0 1.57</pose>
+      <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
+        <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
             <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
-        </mesh>
-      </geometry>
+          </mesh>
+        </geometry>
       </visual>
       <!-- <velocity_decay/> -->
       <!--  <gravity>1</gravity> -->
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
       <!--  <gravity>1</gravity> -->
     </link>
 
@@ -208,9 +208,8 @@
         <parent>chassis_link</parent>
     </joint>
 
-    <!-- BACK LEFT WHEEL -->
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.45364 0.304997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.775 -1.53364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -220,7 +219,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='bl_1'>
       <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -256,7 +254,7 @@
         </surface>
       </collision>
       <visual name='bl_1_visual'>
-        <pose>0.875 1.01364 0.1444 0 -0 0</pose>
+        <pose>0.875 1.0136 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -266,12 +264,11 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
 
-    <!-- BACK RIGHT WHEEL -->
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.45364 0.304997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.775 -1.53364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -281,7 +278,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='br_1'>
       <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -317,7 +313,7 @@
         </surface>
       </collision>
       <visual name='br_1_visual'>
-        <pose>-0.875 1.01364 0.1444 0 -0 0</pose>
+        <pose>-0.875 1.0136 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -327,12 +323,11 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
 
-    <!-- FRONT LEFT WHEEL -->
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.7 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.825 1.51736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -346,7 +341,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='l_steer_1'>
       <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -363,7 +357,7 @@
       </inertial>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
 
     <joint name='fl_axle' type='revolute'>
@@ -377,7 +371,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='fl_1'>
       <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -423,12 +416,11 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
-
-    <!-- FRONT RIGHT WHEEL -->
+    
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.705 1.61736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.825 1.51736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -443,7 +435,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='r_steer_1'>
       <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -460,9 +451,8 @@
       </inertial>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
-
     <joint name='fr_axle' type='revolute'>
       <pose relative_to='r_steer_1'>0.05 0 0 0 -0 0</pose>
       <parent>r_steer_1</parent>
@@ -519,10 +509,9 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
 
-    <!-- STEERING WHEEL -->
     <link name="steering_wheel" />
 
     <joint name="steering_joint" type="revolute">
@@ -570,21 +559,21 @@
 
       <!-- Max absolute steer angle for tyre in radians-->
       <!-- Any cmd_vel angular z greater than this would be capped -->
-      <max_steer>0.85</max_steer>
+      <max_steer>0.87</max_steer>
 
       <!-- Max absolute steering angle of steering wheel -->
       <!-- Max absolute steering angle of steering wheel -->
-      <max_steering_angle>7.85</max_steering_angle>
+      <max_steering_angle>6.28</max_steering_angle>
 
       <!-- Max absolute linear speed in m/s -->
       <max_speed>20</max_speed>
 
       <!-- PID tuning -->
-      <left_steering_pid_gain>4000 0 1</left_steering_pid_gain>
+      <left_steering_pid_gain>1500 0 1</left_steering_pid_gain>
       <left_steering_i_range>0 0</left_steering_i_range>
-      <right_steering_pid_gain>4000 0 1</right_steering_pid_gain>
+      <right_steering_pid_gain>1500 0 1</right_steering_pid_gain>
       <right_steering_i_range>0 0</right_steering_i_range>
-      <linear_velocity_pid_gain>4000 0 1</linear_velocity_pid_gain>
+      <linear_velocity_pid_gain>1000 0 1</linear_velocity_pid_gain>
       <linear_velocity_i_range>0 0</linear_velocity_i_range>
 
       <!-- output -->
@@ -594,7 +583,7 @@
       <publish_distance>true</publish_distance>
 
       <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
+      <robot_base_frame>chasis_link</robot_base_frame>
 
     </plugin>
 
