@@ -41,6 +41,10 @@ class LauncherRosApi(ILauncher):
         exercise_launch_thread = DockerThread(exercise_launch_cmd)
         exercise_launch_thread.start()
 
+        if (self.exercise_id == "follow_person_newmanager"):
+            print("\n\n SLEEEP \n\n")
+            time.sleep(6)
+
         self.running = True
 
     def is_running(self):

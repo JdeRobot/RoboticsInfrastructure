@@ -84,12 +84,11 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.gui_connection.send("#ack")
 
     def _process_exercise_message(self, message):
-        #comand = message[:5]
-        #if (message==comand):
-        #    payload = comand
-        #else:
-        #    payload = json.loads(message[5:])
-        payload = json.loads(message[5:])
+        comand = message[:5]
+        if (message==comand):
+            payload = comand
+        else:
+            payload = json.loads(message[5:])
         self.update_callback(payload)
         self.exercise_connection.send("#ack")
     

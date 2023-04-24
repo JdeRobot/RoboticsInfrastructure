@@ -26,6 +26,8 @@ COPY ./CustomRobots /opt/jderobots/CustomRobots
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
 RUN cp -r /opt/jderobots/CustomRobots /home/ws/src/
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ws/install/custom_robots/share' >> ~/.bashrc
+RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 # Compile workspace
 WORKDIR /home/ws

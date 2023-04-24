@@ -23,14 +23,14 @@ class LauncherGazeboView(ILauncher):
         
         if ACCELERATION_ENABLED:
             gz_vnc.start_vnc_gpu(self.display, self.internal_port, self.external_port,DRI_PATH)
-            time.sleep(6)
+            time.sleep(0.1)
 
             # Write display config and start gzclient
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         else:
             gz_vnc.start_vnc(self.display, self.internal_port, self.external_port)
-            time.sleep(6)
+            time.sleep(0.1)
 
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} gzclient --verbose")
