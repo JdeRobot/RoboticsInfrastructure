@@ -412,21 +412,21 @@
 
       <!-- Max absolute steer angle for tyre in radians-->
       <!-- Any cmd_vel angular z greater than this would be capped -->
-      <max_steer>0.52</max_steer>
+      <max_steer>0.85</max_steer>
 
       <!-- Max absolute steering angle of steering wheel -->
       <!-- Max absolute steering angle of steering wheel -->
-      <max_steering_angle>6.28</max_steering_angle>
+      <max_steering_angle>7.85</max_steering_angle>
 
       <!-- Max absolute linear speed in m/s -->
       <max_speed>50</max_speed>
 
       <!-- PID tuning -->
-      <left_steering_pid_gain>1500 0 1</left_steering_pid_gain>
+      <left_steering_pid_gain>1500 900 450</left_steering_pid_gain>
       <left_steering_i_range>0 0</left_steering_i_range>
-      <right_steering_pid_gain>1500 0 1</right_steering_pid_gain>
+      <right_steering_pid_gain>1500 900 450</right_steering_pid_gain>
       <right_steering_i_range>0 0</right_steering_i_range>
-      <linear_velocity_pid_gain>1000 0 1</linear_velocity_pid_gain>
+      <linear_velocity_pid_gain>1000 100 10</linear_velocity_pid_gain>
       <linear_velocity_i_range>0 0</linear_velocity_i_range>
       
       <!-- output -->
