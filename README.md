@@ -1,6 +1,6 @@
-# JdeRobot - Custom Robots
+# RoboticsInfrastructure
 
-In this JdeRobot repository we structure the formula 1 related robots, Amazon warehouse robots and all specific robots useful for us and not included in the official ROS or Gazebo packages.
+In this repository we have the CustomRobots directory to store the formula 1 related robots, the Amazon warehouse robots and all specific robots useful for us and not included in the official ROS or Gazebo packages.
 
 ## How to contribute.
 
