@@ -30,6 +30,7 @@ class LauncherRosApi(ILauncher):
         self._set_environment()
         launch_file = os.path.expandvars(self.launch_file)
 
+
         #TODO: intruce correct path through launch configuration
         # launch_file =  launch_file + '.py'
 
@@ -53,6 +54,7 @@ class LauncherRosApi(ILauncher):
             return False
 
     def terminate(self):
+        #if (self.exercise_id == "real_follow_person_new_manager")
         if self.is_running():
             kill_cmd = 'pkill -9 -f '
             cmd = kill_cmd + 'gzserver'

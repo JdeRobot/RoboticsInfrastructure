@@ -77,7 +77,6 @@ class ListenerBoundingBoxes(Node):
 		self.sub.unregister()
 	
 	def getBoundingBoxes(self):
-		print("Get Bouding Boxes")  # BORRAR
 		self.lock.acquire()
 		bounding_boxes = self.data
 		self.lock.release()

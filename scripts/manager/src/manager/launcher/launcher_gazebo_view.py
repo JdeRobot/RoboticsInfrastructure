@@ -29,7 +29,6 @@ class LauncherGazeboView(ILauncher):
                 self.display, self.internal_port, self.external_port, DRI_PATH)
 
             if (self.exercise_id == "follow_person_newmanager"):
-                print("\n\n SLEEEP \n\n")
                 time.sleep(6)
             else:
                 time.sleep(0.1)
@@ -41,7 +40,6 @@ class LauncherGazeboView(ILauncher):
                              self.external_port)
 
             if (self.exercise_id == "follow_person_newmanager"):
-                print("\n\n SLEEEP \n\n")
                 time.sleep(6)
             else:
                 time.sleep(0.1)
