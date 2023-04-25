@@ -25,29 +25,21 @@ class LauncherGazeboView(ILauncher):
         gz_vnc = Vnc_server()
 
         if ACCELERATION_ENABLED:
-            gz_vnc.start_vnc_gpu(
-                self.display, self.internal_port, self.external_port, DRI_PATH)
-
-            if (self.exercise_id == "follow_person_newmanager"):
-                print("\n\n SLEEEP \n\n")
-                time.sleep(6)
-            else:
-                time.sleep(0.1)
+            gz_vnc.start_vnc_gpu(self.display, self.internal_port, self.external_port, DRI_PATH)
             # Write display config and start gzclient
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         else:
-            gz_vnc.start_vnc(self.display, self.internal_port,
-                             self.external_port)
-
-            if (self.exercise_id == "follow_person_newmanager"):
-                print("\n\n SLEEEP \n\n")
-                time.sleep(6)
-            else:
-                time.sleep(0.1)
-
+            gz_vnc.start_vnc(self.display, self.internal_port, self.external_port)
+            # Write display config and start gzclient
             gzclient_cmd = (
                 f"export DISPLAY=:0; {gzclient_config_cmds} gzclient --verbose")
+
+        # wait for vnc and gazebo servers to load properly
+        if (self.exercise_id == "follow_person_newmanager"):
+            time.sleep(6)
+        else:
+            time.sleep(0.1)
 
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
