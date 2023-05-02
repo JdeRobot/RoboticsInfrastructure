@@ -83,6 +83,14 @@ RUN python3.10 -m pip install websockets asyncio
 # pip install dependencies
 RUN python3.10 -m pip install pylint transitions pydantic websocket-client opencv-python
 
+# Install Python 3 pip build dependencies first
+RUN python3.10 -m pip install --upgrade pip wheel setuptools
+
+# Python 3 dependencies installed by pip
+RUN python3.10 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
+		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
+		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+
 # Install VNC
 # Xorg segfault error mitigation
 RUN apt-get update && apt-get install -y --no-install-recommends \
