@@ -1,13 +1,13 @@
 FROM jderobot/robotics-applications:base
 
 # Custom Robot Repository
-RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
-	git clone -b $ROS_DISTRO-devel --depth 1 --filter=blob:none --sparse https://github.com/JdeRobot/CustomRobots.git && \
-    cd CustomRobots && \
-    git sparse-checkout set CustomRobots
+RUN mkdir -p /opt/jderobot && \
+    git clone -b $ROS_DISTRO-devel --depth 1 https://github.com/JdeRobot/CustomRobots.git /opt/jderobot
+
 
 # FIXME: rosdep update is run as root, which is strongly discouraged
 # bootstrap rosdep
+
 RUN rosdep init && rosdep update
 
 # jderobot_drones src and stdr simulator
