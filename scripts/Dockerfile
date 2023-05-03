@@ -2,7 +2,9 @@ FROM jderobot/robotics-applications:base
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
-	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
+	git clone -b $ROS_DISTRO-devel --depth 1 --filter=blob:none --sparse https://github.com/JdeRobot/CustomRobots.git && \
+    cd CustomRobots && \
+    git sparse-checkout set CustomRobots
 
 # FIXME: rosdep update is run as root, which is strongly discouraged
 # bootstrap rosdep
@@ -51,7 +53,9 @@ RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
-# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+
+# Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
+RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git /RoboticsAcademy/src
 
 # React
 RUN npm install -g yarn
