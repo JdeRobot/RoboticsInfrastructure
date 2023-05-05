@@ -26,11 +26,11 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 0 0.46936 0 -0 0</pose>
+        <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://autocar/meshes/chassis_link.stl</uri>
+            <scale>5 5 5</scale>
+            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -58,12 +58,12 @@
       <!--  <gravity>1</gravity> -->
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
       <!--  <gravity>1</gravity> -->
     </link>
 
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.53364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -118,11 +118,11 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
 
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.53364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -177,7 +177,7 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
 
     <joint name='l_steer' type='revolute'>
@@ -211,7 +211,7 @@
       </inertial>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
 
     <joint name='fl_axle' type='revolute'>
@@ -270,7 +270,7 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     
     <joint name='r_steer' type='revolute'>
@@ -305,7 +305,7 @@
       </inertial>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     <joint name='fr_axle' type='revolute'>
       <pose relative_to='r_steer_1'>0.05 0 0 0 -0 0</pose>
@@ -363,23 +363,22 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
 
-    <link name="steering_wheel" />
-
+    <!--STEERING WHEEL-->
     <joint name="steering_joint" type="revolute">
-      <pose>-0.002 0 0 0 0 0</pose>
+      <pose relative_to='chassis_link'>-0.01 0.6 0.6 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>steering_wheel</child>
       <axis>
-        <xyz>-0.964118 0.000768 0.265556</xyz>
+        <xyz>0.0 -1.0 0.0</xyz>
         <limit>
           <lower>-100</lower>
           <upper>100</upper>
         </limit>
         <dynamics>
-          <damping>1.0</damping>
+          <damping>10.0</damping>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -389,6 +388,21 @@
         </ode>
       </physics>
     </joint>
+    <link name='steering_wheel'>
+      <pose relative_to='steering_joint'>0 0.87 -0.54 0 0 1.5708</pose>
+      <visual name='steering_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>4.7 4.7 4.7</scale>
+            <uri>model://f1_renault_ackerman/Renault/steering_wheel.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!--  <gravity>1</gravity> -->
+      <!-- <velocity_decay/> -->
+      <self_collide>1</self_collide>
+    </link>
 
     <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
 
@@ -412,11 +426,11 @@
 
       <!-- Max absolute steer angle for tyre in radians-->
       <!-- Any cmd_vel angular z greater than this would be capped -->
-      <max_steer>0.85</max_steer>
+      <max_steer>0.52</max_steer>
 
       <!-- Max absolute steering angle of steering wheel -->
       <!-- Max absolute steering angle of steering wheel -->
-      <max_steering_angle>7.85</max_steering_angle>
+      <max_steering_angle>0.64</max_steering_angle>
 
       <!-- Max absolute linear speed in m/s -->
       <max_speed>50</max_speed>
