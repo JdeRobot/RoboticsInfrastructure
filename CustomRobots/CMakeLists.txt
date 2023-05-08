@@ -95,9 +95,9 @@ install(DIRECTORY
   roomba_robot/launch
 
   # ACKERMAN CAR
-  ackerman_cars/models
-  ackerman_cars/worlds
-  ackerman_cars/launch
+  ackermann_cars/models
+  ackermann_cars/worlds
+  ackermann_cars/launch
 
   # CARS
   car_junction/models
