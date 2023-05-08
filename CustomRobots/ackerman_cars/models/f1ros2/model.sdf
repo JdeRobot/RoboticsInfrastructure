@@ -466,7 +466,6 @@
       <right_steering_joint>r_steer</right_steering_joint>
       <steering_wheel_joint>steering_joint</steering_wheel_joint>
 
-
       <!-- Max absolute steer angle for tyre in radians-->
       <!-- Any cmd_vel angular z greater than this would be capped -->
       <max_steer>0.85</max_steer>
@@ -476,16 +475,16 @@
       <max_steering_angle>7.85</max_steering_angle>
 
       <!-- Max absolute linear speed in m/s -->
-      <max_speed>20</max_speed>
+      <max_speed>50</max_speed>
 
       <!-- PID tuning -->
-      <left_steering_pid_gain>4000 0 1</left_steering_pid_gain>
+      <left_steering_pid_gain>1500 900 450</left_steering_pid_gain>
       <left_steering_i_range>0 0</left_steering_i_range>
-      <right_steering_pid_gain>4000 0 1</right_steering_pid_gain>
+      <right_steering_pid_gain>1500 900 450</right_steering_pid_gain>
       <right_steering_i_range>0 0</right_steering_i_range>
-      <linear_velocity_pid_gain>4000 0 1</linear_velocity_pid_gain>
+      <linear_velocity_pid_gain>1000 100 10</linear_velocity_pid_gain>
       <linear_velocity_i_range>0 0</linear_velocity_i_range>
-
+      
       <!-- output -->
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
@@ -493,7 +492,7 @@
       <publish_distance>true</publish_distance>
 
       <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
+      <robot_base_frame>chasis_link</robot_base_frame>
 
     </plugin>
 
