@@ -1,0 +1,6 @@
+{
+  "sideEffects": false,
+  "module": "../esm/Slide/index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts"
+}
