@@ -30,7 +30,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -50,7 +50,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -258,7 +258,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/back_left.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/back_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -317,7 +317,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/back_right.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/back_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -410,7 +410,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/front_left.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/front_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -503,7 +503,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/front_right.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/front_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -541,7 +541,7 @@
         <geometry>
           <mesh>
             <scale>4.7 4.7 4.7</scale>
-            <uri>model://f1_renault_ackerman/Renault/steering_wheel.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
