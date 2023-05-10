@@ -22,6 +22,9 @@ build:  ## Build RADI
 build-base:  ## Build RADI base
 	@docker build -f Dockerfile.base -t $(DOCKER_USERNAME)/$(BASE_NAME):base .
 
+build-prebase:  ## Build RADI prebase
+	@docker build -f Dockerfile.pre-base -t $(DOCKER_USERNAME)/$(BASE_NAME):pre-base .
+
 build-all: build-base build  ## Build RADI and base
 
 
