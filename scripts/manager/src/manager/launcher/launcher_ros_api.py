@@ -3,8 +3,8 @@ from typing import List, Any
 import time
 import stat
 
-from src.manager.launcher.launcher_interface import ILauncher, LauncherException
-from src.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.launcher.launcher_interface import ILauncher, LauncherException
+from src.manager.manager.docker_thread.docker_thread import DockerThread
 import subprocess
 
 import logging

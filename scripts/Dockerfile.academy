@@ -1,0 +1,46 @@
+FROM jderobot/robotics-applications:base
+
+# copy scripts for vnc displays
+COPY ./start_vnc.sh /
+COPY ./kill_all.sh /
+COPY ./entrypoint.sh /
+COPY ./start_vnc_gpu.sh /
+COPY ./test/check_device.py /
+# give execution permissions
+RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /manager.py /start_vnc_gpu.sh
+
+# environment
+COPY ./.env /.env
+
+# RoboticsAcademy
+# Custom Robot Repository
+# TO DO: change branch to master when pull request gets merged
+RUN git clone -b issue-2050 https://github.com/JdeRobot/RoboticsAcademy.git /RoboticsAcademy
+
+# build reac_fronted
+RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
+
+# Django server
+EXPOSE 8000
+# Manager websocket
+EXPOSE 7163
+
+# Exercise websocket
+EXPOSE 1905
+# GUI websockets
+EXPOSE 2303
+
+# noVNC Console
+EXPOSE 1108
+# noVNC Gazebo
+EXPOSE 6080
+# noVNC Rviz
+EXPOSE 6081
+# noVNC GUI
+EXPOSE 6082
+
+# WebRtc
+EXPOSE 1831
+
+WORKDIR /
+CMD ["./entrypoint.sh"]

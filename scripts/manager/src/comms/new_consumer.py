@@ -4,8 +4,8 @@ from queue import Queue
 from uuid import uuid4
 from websocket_server import WebsocketServer
 
-from src.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
-from src.ram_logging.log_manager import LogManager
+from src.manager.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
+from src.manager.ram_logging.log_manager import LogManager
 
 
 class Client:

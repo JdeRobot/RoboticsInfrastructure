@@ -1,5 +1,5 @@
 import time
-from src.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.docker_thread.docker_thread import DockerThread
 
 
 class Vnc_server:

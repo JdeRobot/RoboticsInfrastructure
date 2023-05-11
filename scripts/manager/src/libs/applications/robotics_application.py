@@ -1,4 +1,4 @@
-from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
+from src.manager.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 
 
 class RoboticsApplication(IRoboticsPythonApplication):
