@@ -104,6 +104,13 @@ install(DIRECTORY
   car_junction/worlds
   car_junction/launch
 
+  # AMAZON WAREHOUSE ROBOT
+  amazon_robot/launch
+  amazon_robot/models
+  amazon_robot/worlds
+  amazon_robot/urdf
+  amazon_robot/meshes
+
   DESTINATION share/${PROJECT_NAME}
 )
 
