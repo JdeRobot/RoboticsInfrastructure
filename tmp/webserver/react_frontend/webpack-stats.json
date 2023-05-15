@@ -3,93 +3,121 @@
   "assets": {
     "css/index.css": {
       "name": "css/index.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/index.css"
-    },
-    "js/index.9852a6de.js": {
-      "name": "js/index.9852a6de.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/index.9852a6de.js"
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/index.css"
     },
     "css/exercise.css": {
       "name": "css/exercise.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercise.css"
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/exercise.css"
     },
-    "js/exercise.c3a22e96.js": {
-      "name": "js/exercise.c3a22e96.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercise.c3a22e96.js"
+    "css/442.css": {
+      "name": "css/442.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/442.css"
     },
-    "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css": {
-      "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.css"
+    "css/827.css": {
+      "name": "css/827.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/827.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test2Exercise-4d63b4.572fa28e.js"
+    "css/446.css": {
+      "name": "css/446.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/446.css"
     },
-    "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css": {
-      "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.css"
+    "css/419.css": {
+      "name": "css/419.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/419.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_Test3Exercise-3899a8.d308d96c.js"
+    "css/605.css": {
+      "name": "css/605.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/605.css"
     },
-    "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css": {
-      "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.css"
+    "css/471.css": {
+      "name": "css/471.css",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/css/471.css"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestExerciseM-214626.a8f90542.js"
+    "js/844.a2772378.js": {
+      "name": "js/844.a2772378.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/844.a2772378.js"
     },
-    "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css": {
-      "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.css"
+    "js/660.682d5ae6.js": {
+      "name": "js/660.682d5ae6.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/660.682d5ae6.js"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestLoader_js.635f94ae.js"
+    "js/617.db0ee6e7.js": {
+      "name": "js/617.db0ee6e7.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/617.db0ee6e7.js"
     },
-    "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css": {
-      "name": "css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.css"
+    "js/471.b096f47c.js": {
+      "name": "js/471.b096f47c.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/471.b096f47c.js"
     },
-    "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js": {
-      "name": "js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/exercises_static_exercises_follow_line_newmanager_web-template_react-components_TestShowScreen_js.60220287.js"
+    "js/398.e18c93f4.js": {
+      "name": "js/398.e18c93f4.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/398.e18c93f4.js"
     },
-    "js/src_constants_index_js.c9a8722f.js": {
-      "name": "js/src_constants_index_js.c9a8722f.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_constants_index_js.c9a8722f.js"
+    "js/419.8c96c2e3.js.LICENSE.txt": {
+      "name": "js/419.8c96c2e3.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/419.8c96c2e3.js.LICENSE.txt"
     },
-    "js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js": {
-      "name": "js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_3DReconstruction_pose3d_js.bb6a3bc8.js"
+    "js/442.509904d0.js.LICENSE.txt": {
+      "name": "js/442.509904d0.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/442.509904d0.js.LICENSE.txt"
     },
-    "js/src_helpers_global_js.b0563677.js": {
-      "name": "js/src_helpers_global_js.b0563677.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_helpers_global_js.b0563677.js"
+    "js/446.20a0cf08.js.LICENSE.txt": {
+      "name": "js/446.20a0cf08.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/446.20a0cf08.js.LICENSE.txt"
     },
-    "css/src_index_js.css": {
-      "name": "css/src_index_js.css",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/css/src_index_js.css"
+    "js/605.1f6453a3.js.LICENSE.txt": {
+      "name": "js/605.1f6453a3.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/605.1f6453a3.js.LICENSE.txt"
     },
-    "js/src_index_js.7a1f1cdf.js": {
-      "name": "js/src_index_js.7a1f1cdf.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_index_js.7a1f1cdf.js"
+    "js/827.07e8c934.js.LICENSE.txt": {
+      "name": "js/827.07e8c934.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/827.07e8c934.js.LICENSE.txt"
     },
-    "js/src_libs_video_recorder_js.a396d02a.js": {
-      "name": "js/src_libs_video_recorder_js.a396d02a.js",
-      "path": "/home/blanca/PRACTICAS/CustomRobots/tmp/webserver/react_frontend/static/react_frontend/js/src_libs_video_recorder_js.a396d02a.js"
+    "js/exercise.dfb356cf.js.LICENSE.txt": {
+      "name": "js/exercise.dfb356cf.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/exercise.dfb356cf.js.LICENSE.txt"
+    },
+    "js/index.50fa85aa.js.LICENSE.txt": {
+      "name": "js/index.50fa85aa.js.LICENSE.txt",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/index.50fa85aa.js.LICENSE.txt"
+    },
+    "js/index.50fa85aa.js": {
+      "name": "js/index.50fa85aa.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/index.50fa85aa.js"
+    },
+    "js/exercise.dfb356cf.js": {
+      "name": "js/exercise.dfb356cf.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/exercise.dfb356cf.js"
+    },
+    "js/442.509904d0.js": {
+      "name": "js/442.509904d0.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/442.509904d0.js"
+    },
+    "js/827.07e8c934.js": {
+      "name": "js/827.07e8c934.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/827.07e8c934.js"
+    },
+    "js/446.20a0cf08.js": {
+      "name": "js/446.20a0cf08.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/446.20a0cf08.js"
+    },
+    "js/419.8c96c2e3.js": {
+      "name": "js/419.8c96c2e3.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/419.8c96c2e3.js"
+    },
+    "js/605.1f6453a3.js": {
+      "name": "js/605.1f6453a3.js",
+      "path": "/home/blanca/PRACTICAS/RoboticsInfraestructure/tmp/webserver/react_frontend/static/react_frontend/js/605.1f6453a3.js"
     }
   },
   "chunks": {
     "index": [
       "css/index.css",
-      "js/index.9852a6de.js"
+      "js/index.50fa85aa.js"
     ],
     "exercise": [
       "css/exercise.css",
-      "js/exercise.c3a22e96.js"
+      "js/exercise.dfb356cf.js"
     ]
   }
 }
