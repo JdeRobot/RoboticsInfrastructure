@@ -7,7 +7,7 @@
     > . install/setup.bash
 - 3. Run platform controller node:
     > ros2 run platform_controller move_platform
-- 4. Sent a command to the controllr by publishing a message:
+- 4. Send a command to the controllr by publishing a message:
     
     LOAD MESSAGE (lift up platform):
     > ros2 topic pub --once  /send_effort std_msgs/String "data: load"
