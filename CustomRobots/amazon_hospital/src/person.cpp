@@ -292,7 +292,7 @@ namespace gazebo
                 std::make_tuple(-PI/2, 0.0)
             };
 
-            auto_movement = false;
+            auto_movement = true;
             linear_movement = true;
             linear_dir = 0;
             
@@ -303,10 +303,9 @@ namespace gazebo
             server_thread = std::thread(&Person::ServerThreadLoop, this);
         }
 
-
         void OnUpdate(const common::UpdateInfo &)
         {
-            auto_movement = true;
+
             if (auto_movement) {
                 if (MoveToWaypoint(wp[current_wp])) {
                     current_wp = std::get<2>(wp[current_wp]);

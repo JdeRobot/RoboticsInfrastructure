@@ -32,7 +32,6 @@ def generate_launch_description():
     '-z', default_value=z_turtlebot2_position,
     description="Position on the axis z of Turtlebot2"
   )
-
   world_path = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/web-template/launch/hospital_follow_person.world"
 
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  

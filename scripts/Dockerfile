@@ -38,6 +38,8 @@ RUN colcon build --symlink-install
 EXPOSE 8000
 # Manager websocket
 EXPOSE 7163
+# Teleoperator websocket
+EXPOSE 7164
 
 # Exercise websocket
 EXPOSE 1905

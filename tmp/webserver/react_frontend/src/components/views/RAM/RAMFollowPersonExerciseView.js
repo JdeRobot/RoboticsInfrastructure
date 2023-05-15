@@ -12,7 +12,7 @@ import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
 function FollowPersonExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <RAMExerciseControl context={props.context} />
+      <RAMExerciseControl context={props.context} teleOpMode={true}/>
       <Box
         sx={{
           display: "flex",

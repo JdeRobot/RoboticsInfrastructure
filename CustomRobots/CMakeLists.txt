@@ -75,15 +75,6 @@ ament_environment_hooks("hooks/resource_paths.sh")
 # Resources
 
 install(DIRECTORY
-  # TURTLEBOT
-  Turtlebot2/turtlebot2_simulated/kobuki_description/launch
-  Turtlebot2/turtlebot2_simulated/kobuki_description/meshes
-  Turtlebot2/turtlebot2_simulated/kobuki_description/rviz
-  Turtlebot2/turtlebot2_simulated/kobuki_description/urdf
-  Turtlebot2/turtlebot2_simulated/turtlebot2/launch
-  Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
-  Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
-
   # F1
   f1/models
   f1/launch
@@ -110,6 +101,14 @@ install(DIRECTORY
   amazon_robot/worlds
   amazon_robot/urdf
   amazon_robot/meshes
+
+  # TURTLEBOT
+  Turtlebot2/turtlebot2_simulated/kobuki_description/launch
+  Turtlebot2/turtlebot2_simulated/kobuki_description/meshes
+  Turtlebot2/turtlebot2_simulated/kobuki_description/rviz
+  Turtlebot2/turtlebot2_simulated/kobuki_description/urdf
+  Turtlebot2/turtlebot2_simulated/turtlebot2/launch
+  Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
 
   DESTINATION share/${PROJECT_NAME}
 )
