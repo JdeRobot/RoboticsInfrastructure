@@ -32,5 +32,5 @@ repositories:
 
   kobuki_plugins:
     type: git
-    url: https://github.com/pawanw17/kobuki_plugins.git
+    url: https://github.com/JdeRobot/kobuki_plugins.git
     version: noetic
