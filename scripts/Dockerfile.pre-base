@@ -299,8 +299,7 @@ RUN apt-get install -y software-properties-common \
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && \
-    git clone -b $ROS_DISTRO-devel --depth 1 https://github.com/JdeRobot/CustomRobots.git /opt/jderobot
-
+    git clone -b $ROS_DISTRO-devel --depth 1 https://github.com/JdeRobot/RoboticsInfrastructure.git /opt/jderobot
 
 # FIXME: rosdep update is run as root, which is strongly discouraged
 # bootstrap rosdep
@@ -345,5 +344,5 @@ RUN apt update && \
         ros-noetic-velodyne-pointcloud
 
 #Catvehicle
-RUN cp -r /opt/jderobot/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivingModels
+RUN cp -r /opt/jderobot/RoboticsInfrastructure/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivingModels
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build catvehicle'
