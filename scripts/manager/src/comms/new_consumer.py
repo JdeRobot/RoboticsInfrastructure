@@ -3,6 +3,7 @@ import logging
 from queue import Queue
 from uuid import uuid4
 from websocket_server import WebsocketServer
+from datetime import datetime
 
 from src.manager.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
 from src.manager.ram_logging.log_manager import LogManager
@@ -40,9 +41,11 @@ class ManagerConsumer:
     def handle_client_disconnect(self, client, server):
         if client is None:
             return
-
         LogManager.logger.info(f"client disconnected: {client}")
-        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'reset'})
+        now = datetime.now()
+        time_string = now.strftime("%H:%M:%S")
+        print(time_string)
+        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'disconnect'})
         self.manager_queue.put(message)
         self.client = None
         self.server.allow_new_connections()

@@ -8,19 +8,22 @@ import time
 import traceback
 from queue import Queue
 from uuid import uuid4
-import json
 
 
 
-from src.manager.comms.new_consumer import ManagerConsumer
-from src.manager.ram_logging.log_manager import LogManager
-
-from src.manager.comms.consumer_message import ManagerConsumerMessageException
-from src.manager.libs.process_utils import get_class, get_class_from_file
-from src.manager.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.manager.launcher.launcher_engine import LauncherEngine
-from src.manager.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
+from src.manager.libs.process_utils import get_class_from_file
+from src.manager.comms.consumer_message import ManagerConsumerMessageException
+from src.manager.ram_logging.log_manager import LogManager
+from src.manager.comms.new_consumer import ManagerConsumer
 
+
+
+
+
+
+# pylint: disable=unused-argument
 
 
 class Manager:
@@ -34,7 +37,7 @@ class Manager:
 
     transitions = [
         # Transitions for state idle
-        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', },
+        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', 'before': 'on_connect'},
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected',
             'dest': 'ready', 'before': 'on_launch'},
@@ -50,15 +53,15 @@ class Manager:
             'dest': 'paused', 'before': 'on_pause'},
         {'trigger': 'stop', 'source': [
             'running', 'paused'], 'dest': 'ready', 'before': 'on_stop'},
-        # Transitions for state paused
-        {'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
         # Global transitions
         {'trigger': 'disconnect', 'source': '*',
             'dest': 'idle', 'before': 'on_disconnect'},
+        #{'trigger': 'get_state', 'source': '*', 'dest': '='},
 
     ]
 
     def __init__(self, host: str, port: int):
+        self.version = "3.4.1"
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
@@ -69,7 +72,7 @@ class Manager:
         # TODO: review, hardcoded values
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
-        self.application: IRoboticsPythonApplication = None
+        self.application = None
         self.running = True
 
     def state_change(self, event):
@@ -83,6 +86,9 @@ class Manager:
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
+    def on_connect(self, event):
+        self.consumer.send_message({'version': self.version}, command="version")
+
     def on_stop(self, event):
         self.application.stop()
 
@@ -90,7 +96,6 @@ class Manager:
         """
         Transition executed on launch trigger activ
         """
-
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(
@@ -150,12 +155,14 @@ class Manager:
 
     def on_disconnect(self, event):
         try:
-            self.application.terminate()
             self.__code_loaded = False
+            self.application.terminate()
             self.launcher.terminate()
         except Exception as e:
             LogManager.logger.exception(f"Exception terminating instance")
             print(traceback.format_exc())
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
     def on_enter_connected(self, event):
         LogManager.logger.info("Connect state entered")

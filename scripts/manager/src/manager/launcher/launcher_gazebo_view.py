@@ -14,6 +14,7 @@ class LauncherGazeboView(ILauncher):
     height: int
     width: int
     running = False
+    threads = []
 
     def run(self, callback):
         DRI_PATH = os.path.join(
@@ -43,6 +44,8 @@ class LauncherGazeboView(ILauncher):
 
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
+        self.threads.append(gzclient_thread)
+
         self.running = True
 
     def check_device(self, device_path):
@@ -55,7 +58,10 @@ class LauncherGazeboView(ILauncher):
         return self.running
 
     def terminate(self):
-        pass
+        for thread in self.threads:
+            thread.terminate()
+            thread.join()
+        self.running = False
 
     def died(self):
         pass
