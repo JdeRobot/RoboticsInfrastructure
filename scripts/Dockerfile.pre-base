@@ -173,9 +173,16 @@ RUN apt-get install -y software-properties-common \
 && curl -L https://www.npmjs.com/install.sh | sh \
 && npm install -g yarn
 
+# Comment and uncomment this lines to generate RADI with updated CustomRobots directory;
+#   this will run the lines below without executing every other line before this one 
+#   as long as there was a pre-base image already created
+#RUN mkdir /building_directory && rm -rf /building_directory
+#RUN mkdir /building_directory2 && rm -rf /building_directory2
+
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && \
-    git clone -b $ROS_DISTRO-devel --depth 1 https://github.com/JdeRobot/RoboticsInfraestructure.git /opt/jderobot
+    #git clone -b $ROS_DISTRO-devel --depth 1 https://github.com/JdeRobot/RoboticsInfraestructure.git /opt/jderobot
+    git clone -b amazon_robot_controller --depth 1 https://github.com/JdeRobot/RoboticsInfraestructure.git /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
