@@ -1,3 +1,7 @@
+##################################################################################
+# Create a miniRADI with RoboticsAcademy and some usefull scripts for developers #
+##################################################################################
+
 FROM jderobot/robotics-applications:base
 
 # copy scripts for vnc displays
@@ -13,8 +17,7 @@ RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /manager.py /start_vnc_gp
 COPY ./.env /.env
 
 # RoboticsAcademy
-# TO DO: change branch to master when pull request gets merged
-RUN git clone -b issue-2050 https://github.com/JdeRobot/RoboticsAcademy.git /RoboticsAcademy
+RUN git clone -b master https://github.com/JdeRobot/RoboticsAcademy.git /RoboticsAcademy
 
 # build react_fronted
 RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
