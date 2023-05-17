@@ -1,9 +1,5 @@
 FROM jderobot/robotics-applications:pre-base
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-# TO DO: uncomment this line when RAM in RoboticsApplicationManager is avaliable for ROS2
-# RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git /RoboticsApplicationManager
-
-# RAM and src directory
-COPY ./manager/src /src/manager/
-COPY ./manager/src/manager/manager.py /
+RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git /src
+RUN mv /src/manager/manager/manager.py /
