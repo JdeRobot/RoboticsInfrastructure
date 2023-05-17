@@ -35,8 +35,7 @@ else
     runserver=""
 fi
 ros_setup=" source /.env && source ~/.bashrc && source /home/ws/install/setup.bash; "
-runmanager="python3 RoboticsAcademy/manager/manager.py"
-runram="python3 /manager.py 0.0.0.0 7163"
+runram="python3 /src/manager/manager/manager.py 0.0.0.0 7163"
 root="cd /"
 
 # TEST LOGS

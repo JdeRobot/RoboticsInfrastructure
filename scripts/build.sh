@@ -6,7 +6,7 @@
 Help()
 {
    # Display Help
-   echo "Syntax: build.sh [-h] [-f] <tag>"
+   echo "Syntax: build.sh [-h] [-f]"
    echo "options:"
    echo "-h   Print this Help."
    echo "-f   Force creation of base image. If ommited, the base image is created only if "
@@ -35,14 +35,6 @@ while getopts ":hf" option; do
 done
 shift $(($OPTIND - 1))
 
-image_tag="$1"
-if [ -z "$image_tag" ]; then
-  echo "You have to specify a tag for the image"
-  echo
-  Help
-  exit 2
-fi
-
 if $force_build || [[ "$(docker images -q jderobot/robotics-applications:pre-base 2> /dev/null)" == "" ]]; then
   echo "BUILDING Jderobot PRE-BASE IMAGE ====================="
   echo
@@ -52,7 +44,3 @@ fi
 echo "BUILDING RoboticsAcademy BASE IMAGE ====================="
 echo
 docker build -f Dockerfile.base -t jderobot/robotics-applications:base .
-
-echo "BUILDING RoboticsAcademy RADI IMAGE ====================="
-echo
-docker build -f Dockerfile.academy --no-cache=true -t jderobot/robotics-academy:$image_tag .
