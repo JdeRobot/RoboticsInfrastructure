@@ -3,8 +3,8 @@ from typing import List, Any
 import time
 import stat
 
-from src.manager.launcher.launcher_interface import ILauncher, LauncherException
-from src.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.launcher.launcher_interface import ILauncher, LauncherException
+from src.manager.manager.docker_thread.docker_thread import DockerThread
 import subprocess
 
 import logging
@@ -29,9 +29,6 @@ class LauncherRosApi(ILauncher):
         # expand variables in configuration paths
         self._set_environment()
         launch_file = os.path.expandvars(self.launch_file)
-
-        #TODO: intruce correct path through launch configuration
-        # launch_file =  launch_file + '.py'
 
         if (ACCELERATION_ENABLED):
             exercise_launch_cmd = f"export VGL_DISPLAY={DRI_PATH}; vglrun ros2 launch {launch_file}"

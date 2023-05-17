@@ -6,8 +6,8 @@ from uuid import uuid4
 import websockets
 from websockets.server import WebSocketServerProtocol
 
-from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
-from src.ram_logging.log_manager import LogManager
+from src.manager.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
+from src.manager.ram_logging.log_manager import LogManager
 
 logger = LogManager.logger
 
@@ -17,7 +17,7 @@ class ManagerConsumer:
     """
 
     def __init__(self, host, port):
-        from src.manager.manager import Manager
+        from src.manager.manager.manager import Manager
 
 
         """

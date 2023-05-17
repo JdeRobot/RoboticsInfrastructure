@@ -2,8 +2,8 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from src.libs.process_utils import get_class, class_from_module
-from src.ram_logging.log_manager import LogManager
+from src.manager.libs.process_utils import get_class, class_from_module
+from src.manager.ram_logging.log_manager import LogManager
 
 
 class LauncherEngine(BaseModel):

@@ -1,6 +1,6 @@
-from src.manager.launcher.launcher_interface import ILauncher
-from src.manager.docker_thread.docker_thread import DockerThread
-from src.manager.vnc.vnc_server import Vnc_server
+from src.manager.manager.launcher.launcher_interface import ILauncher
+from src.manager.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.vnc.vnc_server import Vnc_server
 import time
 import os
 import stat
@@ -14,6 +14,7 @@ class LauncherGazeboView(ILauncher):
     height: int
     width: int
     running = False
+    threads = []
 
     def run(self, callback):
         DRI_PATH = os.path.join(
@@ -43,6 +44,8 @@ class LauncherGazeboView(ILauncher):
 
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
+        self.threads.append(gzclient_thread)
+
         self.running = True
 
     def check_device(self, device_path):
@@ -55,7 +58,10 @@ class LauncherGazeboView(ILauncher):
         return self.running
 
     def terminate(self):
-        pass
+        for thread in self.threads:
+            thread.terminate()
+            thread.join()
+        self.running = False
 
     def died(self):
         pass

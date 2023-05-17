@@ -1,7 +1,7 @@
 {
   "application": {
     "type": "python",
-    "entry_point": "$EXERCISE_FOLDER/web-template/entry_point/exercise.py",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
     "class_name": "Exercise",
     "params": ""
   },
@@ -10,7 +10,7 @@
       "type": "module",
       "module": "ros_api",
       "resource_folders": [
-        "$EXERCISE_FOLDER/web-template/launch"
+        "$EXERCISE_FOLDER/launch/ros2_humble"
       ],
       "model_folders": [
         "$CUSTOM_ROBOTS_FOLDER/f1/models"
@@ -18,35 +18,16 @@
       "plugin_folders": [
       ],
       "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
+      "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/simple_line_follower_ros_headless_${circuit}.launch"
     },
     "1": {
       "type": "module",
-      "module": "vnc",
-      "resource_folders": [
-        "$EXERCISE_FOLDER/web-template/launch"
-      ],
-      "model_folders": [
-        "$CUSTOM_ROBOTS_FOLDER/f1/models"
-      ],
-      "plugin_folders": [
-      ],
-      "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
-    },
-    "2": {
-      "type": "module",
-      "module": "vnc",
-      "resource_folders": [
-        "$EXERCISE_FOLDER/web-template/launch"
-      ],
-      "model_folders": [
-        "$CUSTOM_ROBOTS_FOLDER/f1/models"
-      ],
-      "plugin_folders": [
-      ],
-      "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108,
+      "height": 1080,
+      "width": 1920    
     }
   }
 }
