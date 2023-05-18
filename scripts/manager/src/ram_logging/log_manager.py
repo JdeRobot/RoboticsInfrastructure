@@ -1,7 +1,7 @@
 import logging
 import os
 
-from src.libs.process_utils import classproperty, singleton
+from src.manager.libs.process_utils import classproperty, singleton
 
 
 @singleton

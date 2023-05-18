@@ -1,4 +1,4 @@
-from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
+from src.manager.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 
 
 class RoboticsApplication(IRoboticsPythonApplication):
@@ -15,9 +15,6 @@ class RoboticsApplication(IRoboticsPythonApplication):
         pass
 
     def restart(self):
-        pass
-
-    def pause(self):
         pass
 
     @property

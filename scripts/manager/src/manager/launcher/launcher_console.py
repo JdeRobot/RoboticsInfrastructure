@@ -1,6 +1,6 @@
-from src.manager.launcher.launcher_interface import ILauncher
-from src.manager.docker_thread.docker_thread import DockerThread
-from src.manager.vnc.vnc_server import Vnc_server
+from src.manager.manager.launcher.launcher_interface import ILauncher
+from src.manager.manager.docker_thread.docker_thread import DockerThread
+from src.manager.manager.vnc.vnc_server import Vnc_server
 import time
 import os
 import stat
@@ -11,6 +11,7 @@ class LauncherConsole(ILauncher):
     internal_port: str
     external_port: str
     running = False
+    threads = []
 
     def run(self, callback):
         DRI_PATH = os.path.join("/dev/dri", os.environ.get("DRI_NAME", "card0"))
@@ -29,6 +30,7 @@ class LauncherConsole(ILauncher):
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
+        self.threads.append(console_thread)
 
         self.running = True
     
@@ -42,7 +44,10 @@ class LauncherConsole(ILauncher):
         return self.running
 
     def terminate(self):
-        pass
+        for thread in self.threads:
+            thread.terminate()
+            thread.join()
+        self.running = False
 
     def died(self):
         pass
