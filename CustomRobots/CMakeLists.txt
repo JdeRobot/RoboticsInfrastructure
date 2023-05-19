@@ -111,6 +111,13 @@ install(DIRECTORY
   amazon_robot/urdf
   amazon_robot/meshes
 
+  # AMAZON HOSPITAL
+  amazon_hospital/models
+  amazon_hospital/hospital_world/launch
+  amazon_hospital/hospital_world/worlds
+  amazon_hospital/fuel_models
+  amazon_hospital/worlds
+
   DESTINATION share/${PROJECT_NAME}
 )
 
