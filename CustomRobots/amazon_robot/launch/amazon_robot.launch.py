@@ -82,7 +82,7 @@ def generate_launch_description():
     condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])))
   
   start_robot_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'spawn_model.launch.py')),
+    PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'spawn_amazon_model.launch.py')),
     launch_arguments = {'-x': x_robot_position, '-y': y_robot_position, '-z': z_robot_position}.items()
   )
  
