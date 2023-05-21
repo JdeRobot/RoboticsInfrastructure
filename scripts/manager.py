@@ -65,11 +65,6 @@ class Commands:
         with open(path) as f:
             self.instructions = json.load(f)
 
-    # Function to get the Gazebo Path Variables
-    def get_gazebo_path(self, exercise):
-        gazebo_path = self.instructions[exercise]["gazebo_path"] + ";"
-        return gazebo_path
-
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise, circuit=None):
         roslaunch_cmd = ""
@@ -97,13 +92,12 @@ class Commands:
                                 f"echo width={width} >> ~/.gazebo/gui.ini;",
                                 f"echo height={height} >> ~/.gazebo/gui.ini;"]
 
-        if not (ACCELERATION_ENABLED):
+        if not ACCELERATION_ENABLED:
             # Write display config and start gzclient
-            gzclient_cmd = (f"export DISPLAY=:0;" + self.get_gazebo_path(exercise) +
+            gzclient_cmd = ("export DISPLAY=:0;" +
                             "".join(gzclient_config_cmds) + "gzclient --verbose")
         else:
-            gzclient_cmd = (f"export DISPLAY=:0;" +
-                            self.get_gazebo_path(exercise) +
+            gzclient_cmd = ("export DISPLAY=:0;"
                             "".join(gzclient_config_cmds) +
                             f"export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
