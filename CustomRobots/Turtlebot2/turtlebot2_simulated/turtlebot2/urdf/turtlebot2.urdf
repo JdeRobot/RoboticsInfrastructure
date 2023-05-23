@@ -25,7 +25,7 @@
     <visual>
       <geometry>
         <!-- new mesh -->
-        <mesh filename="package://kobuki_description/meshes/main_body.dae"/>
+        <mesh filename="package://custom_robots/meshes/main_body.dae"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0.001 0 0.05199"/>
     </visual>
@@ -59,7 +59,7 @@
   <link name="wheel_left_link">
     <visual>
       <geometry>
-        <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
+        <mesh filename="package://custom_robots/meshes/wheel.dae"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
@@ -84,7 +84,7 @@
   <link name="wheel_right_link">
     <visual>
       <geometry>
-        <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
+        <mesh filename="package://custom_robots/meshes/wheel.dae"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
