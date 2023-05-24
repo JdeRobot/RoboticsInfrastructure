@@ -1,4 +1,5 @@
 FROM jderobot/robotics-applications:pre-base
 
+RUN mkdir abcde && rm -rf abcde
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git /RoboticsApplicationManager
+RUN git clone -b issue-23 https://github.com/JdeRobot/RoboticsApplicationManager.git /RoboticsApplicationManager
