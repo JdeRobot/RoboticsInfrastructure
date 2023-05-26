@@ -38,9 +38,9 @@ shift $(($OPTIND - 1))
 if $force_build || [[ "$(docker images -q jderobot/robotics-applications:pre-base-2 2> /dev/null)" == "" ]]; then
   echo "BUILDING Jderobot PRE-BASE IMAGE ====================="
   echo
-  docker build -f Dockerfile.pre-base-2 -t jderobot/robotics-applications:pre-base .
+  docker build -f Dockerfile.pre-base-2 -t jderobot/robotics-applications:pre-base-2 .
 fi
 
 echo "BUILDING RoboticsAcademy BASE IMAGE ====================="
 echo
-docker build -f Dockerfile.base-2 -t jderobot/robotics-applications:base .
+docker build -f Dockerfile.base-2 -t jderobot/robotics-applications:base-2 .
