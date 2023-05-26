@@ -93,7 +93,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
 
-        <sensor name='cam_f1' type='camera'>
+        <sensor name='cam_f1_left' type='camera'>
           <pose>0 2.7 0.2 0 0 1.57</pose>
           <update_rate>20.000000</update_rate>
           <camera name='cam'>
@@ -121,9 +121,6 @@
             <distortionK3>0.0</distortionK3>
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
-            <ros>
-                <namespace>f1ros2</namespace>
-            </ros>
           </plugin>
         </sensor>
 
@@ -194,9 +191,7 @@
             <distortionK3>0.0</distortionK3>
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
-            <ros>
-                <namespace>f1ros2</namespace>
-            </ros>
+
           </plugin>
         </sensor>
 
@@ -553,7 +548,6 @@
     <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
 
       <ros>
-        <namespace>f1ros2</namespace>
         <remapping>cmd_vel:=cmd_vel</remapping>
         <remapping>odom:=odom</remapping>
         <remapping>distance:=distance</remapping>
