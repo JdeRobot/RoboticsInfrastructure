@@ -115,8 +115,8 @@ install(DIRECTORY
   amazon_hospital/models
   amazon_hospital/hospital_world/launch
   amazon_hospital/hospital_world/worlds
-  amazon_hospital/fuel_models
   amazon_hospital/worlds
+  amazon_hospital/launch
 
   DESTINATION share/${PROJECT_NAME}
 )

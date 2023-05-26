@@ -42,7 +42,7 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     urdf_path = PathJoinSubstitution(
-        [FindPackageShare('custom_robots'), 'urdf', 'custom_robots.urdf']
+        [FindPackageShare('custom_robots'), 'urdf', 'amazon_warehouse_robot.urdf.xacro']
     )
 
     return LaunchDescription([
