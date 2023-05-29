@@ -1,8 +1,8 @@
 <?xml version='1.0'?>
 <sdf version="1.4">
-<model name="nulburgrin">
+<model name="nurburgring">
   <static>true</static>
-  <link name="nulburgrin">
+  <link name="nurburgring">
     <pose>0 0 0 0 0 0</pose>
     <collision name="collision">
       <geometry>
