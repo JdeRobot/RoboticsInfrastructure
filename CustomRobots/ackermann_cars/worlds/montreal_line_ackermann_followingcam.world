@@ -4,10 +4,10 @@
     <gui fullscreen=1>
      <camera name="user_camera">
         <track_visual>
-          <name>f1_renault</name>
+          <name>f1_renault_camera</name>
           <static>true</static>
           <use_model_frame>true</use_model_frame>
-          <xyz>-1 0 0.3</xyz>
+          <xyz>0 -5 1.6</xyz>
           <inherit_yaw>true</inherit_yaw>
         </track_visual>
       </camera>
@@ -27,12 +27,12 @@
       <pose>0 0 1 0 0 0</pose>
     </include>
     <include>
-	    <uri>model://montreal_line</uri>
+	    <uri>model://big_montreal_line</uri>
 	    <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault</uri>
-      <pose>-200.88 -90.72 0.00 0.00 0.00 -2.83</pose>
+      <uri>model://f1_renault_camera</uri>
+      <pose>-600.67 -271.21 0.00 0.00 0 1.85</pose>
     </include>
   </world>
 </sdf>

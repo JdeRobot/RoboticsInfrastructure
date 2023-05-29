@@ -16,7 +16,7 @@ def generate_launch_description():
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'simple_circuit.world'
+  world_file_name = 'montreal_line_ackermann_followingcam.world'
   world_path = os.path.join(pkg_share, 'worlds', world_file_name)
    
   # Set the path to the SDF model files.
