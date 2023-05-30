@@ -1,8 +1,8 @@
 <?xml version='1.0'?>
 <sdf version="1.4">
-<model name="nurburgring">
+<model name="big_nurburgring">
   <static>true</static>
-  <link name="nurburgring">
+  <link name="big_nurburgring">
     <pose>0 0 0 0 0 0</pose>
     <collision name="collision">
       <geometry>
@@ -15,6 +15,7 @@
       <geometry>
         <mesh>
           <uri>model://nurburgring_line/meshes/Circuito_Nurburgrin.dae</uri>
+          <scale>3 3 3</scale>
         </mesh>
       </geometry>
     </visual>
@@ -24,6 +25,7 @@
       <geometry>
         <mesh>
           <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <scale>3 3 3</scale>
         </mesh>
       </geometry>
     </collision>
@@ -31,6 +33,7 @@
       <geometry>
         <mesh>
           <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <scale>3 3 3</scale>
         </mesh>
       </geometry>
     </visual>
