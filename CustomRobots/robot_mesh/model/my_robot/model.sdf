@@ -1,0 +1,96 @@
+<robot name="my_robot">
+  <link name="base_footprint">
+   <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="1" length="0.3" /> <!-- does not need to match collision -->
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- the model -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"  />
+      <mass value="50" />
+      <inertia ixx="50.0" ixy="0.0" ixz="0.0"
+        iyy="50.0" iyz="0.0"
+        izz="50.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"  />
+      <geometry>
+        <cylinder radius="1" length="0.3" /> <!-- does not need to match collision -->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="1" length="0.3" /> <!-- does not need to match collision -->
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
+
+  <!-- <link name="left_wheel">
+    <collision name="collision">
+      <origin xyz="0.1 0.13 0.1" rpy="0 1.5707 1.5707" />
+      <geometry>
+        <cylinder radius="0.1" length="0.05" />
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin xyz="0.1 0.13 0.1" rpy="0 1.5707 1.5707" />
+      <geometry>
+        <cylinder radius="0.1" length="0.05" />
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name="right_wheel">
+    <collision name="collision">
+      <origin xyz="0.1 -0.13 0.1" rpy="0 1.5707 1.5707" />
+      <geometry>
+        <cylinder radius="0.1" length="0.05" />
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin xyz="0.1 -0.13 0.1" rpy="0 1.5707 1.5707" />
+      <geometry>
+        <cylinder radius="0.1" length="0.05" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint type="revolute" name="left_wheel_hinge">
+    <origin xyz="0 0 -0.03" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="left_wheel" />
+    <axis xyz="0 1 2" />
+    </axis>
+  </joint>
+
+  <joint type="revolute" name="right_wheel_hinge">
+    <origin xyz="0 0 0.03" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="right_wheel" />
+    <axis xyz="0 1 2" />
+  </joint> -->
+
+   <gazebo>
+     <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+       <commandTopic>cmd_vel</commandTopic>
+       <odometryTopic>odom</odometryTopic>
+       <odometryFrame>odom</odometryFrame>
+       <odometryRate>20.0</odometryRate>
+       <robotBaseFrame>base_footprint</robotBaseFrame>
+     </plugin>
+   </gazebo>
+</robot>

@@ -1,0 +1,42 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+<model name="big_montreal_line">
+  <static>true</static>
+  <link name="big_montreal_line">
+    <pose>0 0 0 0 0 0</pose>
+    <collision name="collision">
+      <geometry>
+        <plane>
+          <size> 700 500</size>
+        </plane>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <mesh>
+          <uri>model://montreal_line/meshes/montreal.dae</uri>
+          <scale>3 3 3</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pared">
+    <collision name="collision">
+      <geometry>
+        <mesh>
+          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
+          <scale>3 3 3</scale>
+        </mesh>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <mesh>
+          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
+          <scale>3 3 3</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+</model>
+</sdf>

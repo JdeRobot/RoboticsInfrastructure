@@ -1,5 +1,3 @@
-build/*
-f1/build/*
-
-# Jupyter Notebook
-.ipynb_checkpoints
+.idea/
+__pycache__/
+*.pyc

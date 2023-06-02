@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<sdf version="1.6">
+  <world name="default">
+
+    <gui fullscreen=1>
+      <camera name="user_camera">
+        <track_visual>
+          <name>lincoln</name>
+          <static>true</static>
+          <use_model_frame>true</use_model_frame>
+          <xyz>5 -1 3</xyz>
+          <inherit_yaw>true</inherit_yaw>
+        </track_visual>
+      </camera>
+    </gui>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://lincoln</uri>
+      <pose> 0 0 0 0 0 0 </pose>
+    </include>
+    
+    <scene>
+	<sky>
+	    <clouds>
+	        <speed>12</speed>
+	    </clouds>
+	</sky>
+    </scene>
+    
+  </world>
+</sdf>

@@ -1,0 +1,39 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+<model name="montmelo">
+  <static>true</static>
+  <link name="montmelo">
+    <pose>0 0 0 0 0 0</pose>
+    <collision name="collision">
+      <geometry>
+        <plane>
+          <size> 700 500</size>
+        </plane>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <mesh>
+          <uri>model://montmelo_line/meshes/montmelo.dae</uri>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pared">
+    <collision name="collision">
+      <geometry>
+        <mesh>
+          <uri>model://montmelo_line/meshes/montmelo_pared.dae</uri>
+        </mesh>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <mesh>
+          <uri>model://montmelo_line/meshes/montmelo_pared.dae</uri>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+</model>
+</sdf>

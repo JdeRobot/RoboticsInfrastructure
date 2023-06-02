@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+
+      <uri>model://f1ros2</uri>
+      <pose> 0.0 0.0 0.2 0 0 0 </pose>
+      
+    </include>
+    
+    
+    <scene>
+	<sky>
+	    <clouds>
+	        <speed>12</speed>
+	    </clouds>
+	</sky>
+    </scene>
+    
+  </world>
+</sdf>
