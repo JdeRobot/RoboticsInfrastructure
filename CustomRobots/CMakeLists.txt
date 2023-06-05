@@ -118,6 +118,11 @@ install(DIRECTORY
   amazon_hospital/worlds
   amazon_hospital/launch
 
+  # AUTOPARKING CARS
+  autoparking/launch
+  autoparking/models
+  autoparking/worlds
+
   DESTINATION share/${PROJECT_NAME}
 )
 
