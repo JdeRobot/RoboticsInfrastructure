@@ -47,6 +47,7 @@ add_library(personplugin amazon_hospital/src/person.cpp)
 target_include_directories(personplugin PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+
 ament_target_dependencies(
   personplugin
   "rclcpp"
