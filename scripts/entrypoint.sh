@@ -34,7 +34,7 @@ if [ $webserver == true ]; then
 else
     runserver=""
 fi
-ros_setup=" source /.env && source ~/.bashrc && source /home/ws/install/setup.bash; "
+ros_setup=" source /.env && source ~/.bashrc && source /home/ws/install/setup.bash && source /home/ws2/install/setup.bash; "
 runmanager="python3 RoboticsAcademy/manager/manager.py"
 runram="python3 RoboticsAcademy/src/manager/manager/manager.py 0.0.0.0 7163"
 root="cd /"
