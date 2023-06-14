@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
-    <gui fullscreen=1>
+    <gui fullscreen='1'>
       <camera name='user_camera'>
         <pose >85.76 -94.69 1.7 0.00 0.16 3.132</pose>
         <view_controller>orbit</view_controller>
