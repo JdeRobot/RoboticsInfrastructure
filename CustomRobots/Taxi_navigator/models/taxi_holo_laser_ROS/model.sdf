@@ -1,0 +1,125 @@
+<?xml version='1.0'?>
+<sdf version="1.5">
+<model name="taxi_holo">
+  <pose>0 0 0 0 0 0</pose>
+  <static>false</static>
+    <link name="taxi_holo_laser">
+      <gravity>false</gravity>
+      <inertial>
+        <mass>750.0</mass>
+        <inertia> 
+          <ixx>1</ixx>      
+          <ixy>0.0</ixy>        
+          <ixz>0.0</ixz>        
+          <iyy>1</iyy>      
+          <iyz>0.0</iyz>         
+          <izz>1</izz>      
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://taxi_holo_ROS/meshes/taxi_holo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <link name="laser_front">
+  <gravity>false</gravity>
+    <sensor name='laser_f' type='ray'>
+    <pose>2.400000 0.000000 0.500000 0.000000 0.000000 0.00000</pose>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>180</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>-1.570000</min_angle>
+            <max_angle>1.570000</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.080000</min>
+          <max>11.000000</max>
+          <resolution>0.010000</resolution>
+        </range>
+      </ray>
+      <update_rate>20.000000</update_rate>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/F1ROS/laser_f/scan</topicName>
+        <frameName>laser</frameName>
+      </plugin>
+      <always_on>1</always_on>
+      <visualize>1</visualize>
+    </sensor>    
+    <self_collide>0</self_collide>
+    <kinematic>0</kinematic>
+    </link>
+    <link name="laser_right">
+    <gravity>false</gravity>
+    <sensor name='laser_r' type='ray'>    
+      <pose>0.500000 -1.250000 0.500000 0.000000 0.000000 -1.57080</pose>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>180</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>-1.570000</min_angle>
+            <max_angle>1.570000</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.080000</min>
+          <max>9.500000</max>
+          <resolution>0.010000</resolution>
+        </range>
+      </ray>
+      <update_rate>20.000000</update_rate>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/F1ROS/laser_r/scan</topicName>
+        <frameName>laser</frameName>
+      </plugin>
+      <always_on>1</always_on>
+      <visualize>1</visualize>
+    </sensor>    
+    <self_collide>0</self_collide>
+    <kinematic>0</kinematic>
+    </link> 
+    <link name="laser_back">
+    <gravity>false</gravity>
+    <sensor name='laser_b' type='ray'>
+      <pose>-2.400000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>180</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>-1.570000</min_angle>
+            <max_angle>1.570000</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.080000</min>
+          <max>11.000000</max>
+          <resolution>0.010000</resolution>
+        </range>
+      </ray>
+      <update_rate>20.000000</update_rate>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/F1ROS/laser_b/scan</topicName>
+        <frameName>laser</frameName>
+      </plugin>
+      <always_on>1</always_on>
+      <visualize>1</visualize>
+    </sensor>    
+    <self_collide>0</self_collide>
+    <kinematic>0</kinematic>
+    </link>
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>taxi_holo/cmd_vel</commandTopic>
+      <odometryTopic>taxi_holo/odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>taxi_holo</robotBaseFrame>
+</plugin>
+  </model>
+</sdf>
