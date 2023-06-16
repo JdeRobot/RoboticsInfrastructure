@@ -4,7 +4,7 @@
   
     <gui fullscreen='1'>
       <camera name='user_camera'>
-        <pose >-15.153377 7.715862 4.106214 0 0.364001 -0.724000</pose>
+        <pose >3.25 8.57 3.23 0 0.3 -2.17</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -16,8 +16,8 @@
 
     <!-- Autonomous car -->
     <include>
-      <uri>model://prius_autoparking_3laser</uri>
-      <pose>0 0 0 0 0 0</pose> 
+      <uri>model://prius_ackermann_3laser</uri>
+      <pose>-1.64 0 0 0 0 -1.57</pose> 
     </include>
   
     <!-- A global light source -->
@@ -226,37 +226,37 @@
     <include>
       <uri>model://opel</uri>
       <name>car10</name>
-      <pose>5 -9 0 0 0 0</pose>
+      <pose>5.1 -9.1 0 0 0 -0.018</pose>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>car11</name>
-      <pose>5 -14.6 0 0 0 3.1415</pose>
+      <pose>5.23 -21.69 0 0 0 3.11</pose>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>car12</name>
-      <pose>5 -20 0 0 0 0</pose>
+      <pose>5.3 -27.86 0 0 0 -0.04</pose>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>car13</name>
-      <pose>5 -31 0 0 0 0</pose>
+      <pose>5.26 -39.56 0 0 0 -0.05</pose>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>car14</name>
-      <pose>5 -37.5 0 0 0 0</pose>
+      <pose>5.14 -45.89 0 0 0 -0.05</pose>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>car15</name>
-      <pose>5 -43.5 0 0 0 0</pose>
+      <pose>5.37 -52.07 0 0 0 -0.018</pose>
     </include>
 
     <!--Parking-->
