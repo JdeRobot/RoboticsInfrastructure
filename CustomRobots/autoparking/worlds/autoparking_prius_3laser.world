@@ -2,6 +2,14 @@
 <sdf version="1.4">
   <world name="default">
   
+    <gui fullscreen='1'>
+      <camera name='user_camera'>
+        <pose >-15.153377 7.715862 4.106214 0 0.364001 -0.724000</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
     <scene>
       <grid>true</grid>
     </scene>
