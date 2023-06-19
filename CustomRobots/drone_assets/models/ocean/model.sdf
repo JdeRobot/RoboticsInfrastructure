@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <model name="ocean">
+    <static>true</static>
+    <link name="ocean_link">
+      <visual name="ocean_surface">
+        <pose>0 0 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://ocean/meshes/sea_surface_1000m_x_1000m.dae</uri>
+            <scale>2 2 2</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://ocean/materials/scripts/waves.material</uri>
+            <name>UUVSimulator/SimpleWaves</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,17 @@
+material simple_labyrinth_green
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture simple_labyrinth_green.png
+        filtering none none none
+        scale 1.0 1.0
+      }
+    }
+  }
+}
+

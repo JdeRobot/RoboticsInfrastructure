@@ -1,0 +1,21 @@
+material package_box_03
+{
+    receive shadows off
+    technique
+    {
+        pass
+        {
+            ambient 1.0 1.0 1.0 1.0
+			diffuse 1.0 1.0 1.0 1.0
+			specular 0.1 0.1 0.1 1.0 12.5
+
+            texture_unit
+            {
+                texture package_box_03.png
+                filtering anistropic
+                max_anisotropy 16
+            }
+
+        }
+    }
+}

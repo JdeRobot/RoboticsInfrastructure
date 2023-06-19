@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+  <model name="car_color_beacon">
+    <pose>0 0 0 0 0 0</pose>
+    <static>false</static>
+    <link name="car">
+      <pose>0 0 0.749745 0 0 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://car_color_beacon/meshes/model.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://car_color_beacon/meshes/model.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>car</robotBaseFrame>
+    </plugin>
+  </model>
+</sdf>
+
