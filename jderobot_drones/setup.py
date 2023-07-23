@@ -14,8 +14,8 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='root',
-    maintainer_email='root@todo.todo',
-    description='TODO: Package description',
+    maintainer_email='pawanw17@gmail.com',
+    description='Jde Robot drones package to integrate Aerostack2 and pixhawk with Robotics Academy',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
