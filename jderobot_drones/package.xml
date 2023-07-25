@@ -4,8 +4,8 @@
   <name>jderobot_drones</name>
   <version>0.0.0</version>
   <description>Jde Robot drones package to integrate Aerostack2 and pixhawk with Robotics Academy</description>
-  <maintainer email="pawanw17@gmail.com">root</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="pawanw17@gmail.com">JdeRobot</maintainer>
+  <license>MIT</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

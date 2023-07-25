@@ -13,10 +13,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='root',
+    maintainer='JdeRobot',
     maintainer_email='pawanw17@gmail.com',
     description='Jde Robot drones package to integrate Aerostack2 and pixhawk with Robotics Academy',
-    license='TODO: License declaration',
+    license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
