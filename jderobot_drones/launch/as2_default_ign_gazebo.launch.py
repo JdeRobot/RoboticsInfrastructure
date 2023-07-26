@@ -18,6 +18,8 @@ def generate_launch_description():
 #    rviz_config = os.path.join(os.getcwd(), 'swarm_config.rviz')
 #    print(f'{os.path.isfile(rviz_config)=}')
 
+    sim_config = os.path.join(get_package_share_directory('jderobot_drones'), 'sim_config')
+
     aerial_platform = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('as2_platform_ign_gazebo'), 'launch'),
@@ -25,8 +27,8 @@ def generate_launch_description():
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
             'use_sim_time': 'true',
-            'simulation_config_file': 'sim_config/world.json',
-            'platform_config_file': 'sim_config/platform_config_file.yaml'
+            'simulation_config_file': sim_config + '/world.json',
+            'platform_config_file': sim_config + '/platform_config_file.yaml'
         }.items(),
     )
     state_estimator = IncludeLaunchDescription(
@@ -37,7 +39,7 @@ def generate_launch_description():
             'namespace': LaunchConfiguration('namespace'),
             'use_sim_time': 'true',
             'plugin_name': 'ground_truth',
-            'plugin_config_file': 'sim_config/state_estimator_config_file.yaml'
+            'plugin_config_file': sim_config + '/state_estimator_config_file.yaml'
         }.items(),
     )
     motion_controller = IncludeLaunchDescription(
@@ -47,9 +49,9 @@ def generate_launch_description():
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
             'use_sim_time': 'true',
-            'motion_controller_config_file': 'sim_config/motion_controller.yaml',
+            'motion_controller_config_file': sim_config + '/motion_controller.yaml',
             'plugin_name': 'pid_speed_controller',
-            'plugin_config_file': 'sim_config/motion_controller_plugin.yaml'
+            'plugin_config_file': sim_config + '/motion_controller_plugin.yaml'
         }.items(),
     )
     behaviors = IncludeLaunchDescription(
@@ -72,7 +74,7 @@ def generate_launch_description():
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
             'use_sim_time': 'true',
-            'simulation_config_file': 'sim_config/world.json'
+            'simulation_config_file': sim_config + '/world.json'
         }.items(),
     )
 
