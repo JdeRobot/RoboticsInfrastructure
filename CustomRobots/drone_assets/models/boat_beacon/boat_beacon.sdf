@@ -257,7 +257,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://boat/meshes/body.dae</uri>
+            <uri>model://boat_beacon/meshes/body.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -266,7 +266,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://boat/meshes/battery.dae</uri>
+            <uri>model://boat_beacon/meshes/battery.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -281,7 +281,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://boat/meshes/battery.dae</uri>
+            <uri>model://boat_beacon/meshes/battery.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -296,7 +296,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://boat/meshes//engine.dae</uri>
+            <uri>model://boat_beacon/meshes/engine.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -305,7 +305,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://boat/meshes//engine.dae</uri>
+            <uri>model://boat_beacon/meshes/engine.dae</uri>
           </mesh>
         </geometry>
       </visual>
