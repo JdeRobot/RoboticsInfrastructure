@@ -124,6 +124,9 @@ install(DIRECTORY
   autoparking/models
   autoparking/worlds
 
+  # DRONE_ASSETS
+  drone_assets/models
+
   DESTINATION share/${PROJECT_NAME}
 )
 
