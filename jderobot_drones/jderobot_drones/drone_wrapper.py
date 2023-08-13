@@ -27,8 +27,8 @@ class DroneWrapper(DroneInterfaceBase):
         super().__init__(drone_id, verbose, use_sim_time)
 
         yaw_rate_topic = '/' + drone_id + '/self_localization/twist'
-        cam_frontal_topic = '/' + drone_id + '/sensor_measurements/hd_camera/image_raw'
-        cam_ventral_topic = '/' + drone_id + '/sensor_measurements/hd_camera/image_raw'
+        cam_frontal_topic = '/' + drone_id + '/sensor_measurements/frontal_camera/image_raw'
+        cam_ventral_topic = '/' + drone_id + '/sensor_measurements/ventral_camera/image_raw'
 
         self.yaw_rate = 0.0
         self.frontal_image = Image()
@@ -139,11 +139,12 @@ class DroneWrapper(DroneInterfaceBase):
         self.motion_ref_handler.position.send_position_command_with_yaw_angle([x, y, z], 1.0, 'earth', 'earth', az)
 
     def set_cmd_vel(self, vx: float, vy: float, vz: float, az: float) -> None:
-        """Send position command with yaw speed"""
-        self.motion_ref_handler.position.send_position_command_with_yaw_speed([x, y, z],'earth', az)
+        """Send speed command with yaw angle"""
+        self.motion_ref_handler.speed.send_speed_command_with_yaw_speed([vx, vy, vz], 'base_link', az)
 
     def set_cmd_mix(self, vx: float, vy: float, z: float, az: float) -> None:
-        raise NotImplementedError
+        """Send speed in a plane command with yaw angle"""
+        self.motion_ref_handler.speed_in_a_plane.send_speed_in_a_plane_command_with_yaw_speed([vx, vy], z, 'earth', 'base_link', az)
 
     def takeoff(self, height: float):
         """Send Takeoff command with height"""
