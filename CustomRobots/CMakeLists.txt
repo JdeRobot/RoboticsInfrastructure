@@ -126,6 +126,7 @@ install(DIRECTORY
 
   # DRONE_ASSETS
   drone_assets/models
+  drone_assets/worlds
 
   DESTINATION share/${PROJECT_NAME}
 )
