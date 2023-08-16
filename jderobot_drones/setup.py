@@ -13,7 +13,8 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name), glob('launch/*.launch.py')),
-        (os.path.join('share', package_name, 'sim_config'), glob('sim_config/*'))
+        (os.path.join('share', package_name, 'sim_config/px4_classic'), glob('sim_config/px4_classic/*')),
+        (os.path.join('share', package_name, 'sim_config/ign'), glob('sim_config/ign/*'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,

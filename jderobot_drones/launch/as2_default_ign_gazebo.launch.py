@@ -1,5 +1,5 @@
 """
-as2.launch.py
+as2_default_ign_gazebo.launch.py
 """
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -18,7 +18,7 @@ def generate_launch_description():
 #    rviz_config = os.path.join(os.getcwd(), 'swarm_config.rviz')
 #    print(f'{os.path.isfile(rviz_config)=}')
 
-    sim_config = os.path.join(get_package_share_directory('jderobot_drones'), 'sim_config')
+    sim_config = os.path.join(get_package_share_directory('jderobot_drones'), 'sim_config/ign')
 
     aerial_platform = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
