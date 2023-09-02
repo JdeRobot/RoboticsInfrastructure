@@ -32,7 +32,7 @@ def generate_launch_description():
             '/pixhawk_launch.py']),
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
-            'use_sim_time': 'true',
+            'use_sim_time': 'false',
             'simulation_config_file': LaunchConfiguration('world_file'),
             'platform_config_file': sim_config + '/platform_config.yaml'
         }.items(),
@@ -43,7 +43,7 @@ def generate_launch_description():
             '/state_estimator_launch.py']),
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
-            'use_sim_time': 'true',
+            'use_sim_time': 'false',
             'plugin_name': 'raw_odometry',
             'plugin_config_file': sim_config + '/state_estimator_odom.yaml'
         }.items(),
@@ -54,7 +54,7 @@ def generate_launch_description():
             '/controller_launch.py']),
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
-            'use_sim_time': 'true',
+            'use_sim_time': 'false',
             'motion_controller_config_file': sim_config + '/motion_controller.yaml',
             'plugin_name': 'pid_speed_controller',
             'plugin_config_file': sim_config + '/pid_speed_controller.yaml'
@@ -66,7 +66,7 @@ def generate_launch_description():
             '/motion_behaviors_launch.py']),
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
-            'use_sim_time': 'true',
+            'use_sim_time': 'false',
             'takeoff_plugin_name': 'takeoff_plugin_position',
             'go_to_plugin_name': 'go_to_plugin_position',
             'follow_path_plugin_name': 'follow_path_plugin_position',
@@ -82,6 +82,6 @@ def generate_launch_description():
         micro_xrce,
         aerial_platform,
         state_estimator,
-        motion_controller,
-        behaviors
+        motion_controller
+        # behaviors
     ])
