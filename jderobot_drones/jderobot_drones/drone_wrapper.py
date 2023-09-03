@@ -33,14 +33,8 @@ class DroneWrapper(DroneInterfaceBase):
         super().__init__(drone_id, verbose, use_sim_time=False)
 
         yaw_rate_topic = '/' + drone_id + '/self_localization/twist'
-        cam_frontal_topic = '/' + drone_id + \
-            '/sensor_measurements/frontal_camera/image_raw'
-        cam_ventral_topic = '/' + drone_id + \
-            '/sensor_measurements/ventral_camera/image_raw'
 
         self.yaw_rate = 0.0
-        self.frontal_image = Image()
-        self.ventral_image = Image()
 
         self.bridge = CvBridge()
 
@@ -57,20 +51,6 @@ class DroneWrapper(DroneInterfaceBase):
             self.yaw_rate_cb,
             qos_profile)
         self.yaw_subscription  # prevent unused variable warning
-
-        self.cam_frontal_subscription = self.create_subscription(
-            Image,
-            cam_frontal_topic,
-            self.cam_frontal_cb,
-            qos_profile)
-        self.cam_frontal_subscription  # prevent unused variable warning
-
-        self.cam_ventral_subscription = self.create_subscription(
-            Image,
-            cam_ventral_topic,
-            self.cam_ventral_cb,
-            qos_profile)
-        self.cam_ventral_subscription  # prevent unused variable warning
 
         self.motion_ref_handler = MotionReferenceHandlerModule(drone=self)
 
@@ -233,28 +213,6 @@ class DroneWrapper(DroneInterfaceBase):
             PlatformStateMachineEvent.LANDED))
 
         self.disarm()
-
-    def cam_frontal_cb(self, msg):
-        """Callback to update current Frontal Image"""
-        self.frontal_image = msg
-
-    def cam_ventral_cb(self, msg):
-        """Callback to update current Ventral Image"""
-        self.ventral_image = msg
-
-    def get_frontal_image(self) -> ndarray:
-        """Get drone front view.
-
-        :rtype: numpy.ndarray
-        """
-        return self.bridge.imgmsg_to_cv2(self.frontal_image)
-
-    def get_ventral_image(self) -> ndarray:
-        """Get drone ventral view.
-
-        :rtype: numpy.ndarray
-        """
-        return self.bridge.imgmsg_to_cv2(self.ventral_image)
 
 
 def main(args=None):
