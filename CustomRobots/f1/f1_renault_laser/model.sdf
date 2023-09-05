@@ -16,6 +16,7 @@
           <izz>1.0</izz>
       </inertia>
     </inertial>
+    <kinematic>true</kinematic>
     <collision name="collision">
         <geometry>
             <mesh>
