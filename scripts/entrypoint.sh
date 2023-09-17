@@ -32,7 +32,7 @@ if [[ "$1" == '--' ]]; then shift; fi
 
 ros_setup=" source /opt/ros/noetic/setup.bash ; source /catkin_ws/devel/setup.bash ; source /.env ; "
 if [ $webserver == true ]; then
-    runserver="python3 RoboticsAcademy/manage.py runserver 0.0.0.0:8000"
+    runserver="python3 RoboticsAcademy/manage.py runserver 0.0.0.0:7164"
 else
     runserver=""
 fi
