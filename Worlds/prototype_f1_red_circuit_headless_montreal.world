@@ -1,13 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
-    <gui fullscreen='1'>
-        <camera name='user_camera'>
-            <pose frame=''>-198.14 -92.40 1.91 0.00 0.31 2.98</pose>
-            <view_controller>orbit</view_controller>
-            <projection_type>perspective</projection_type>
-        </camera>
-    </gui>
+    <gui fullscreen=1></gui>
     <scene>
       <grid>false</grid>
       <sky>
@@ -27,7 +21,7 @@
 	    <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault</uri>
+      <uri>model://f1</uri>
       <pose>-201.462 -90.9 0.004 0 0 -2.8</pose>
     </include>
   </world>
