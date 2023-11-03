@@ -126,17 +126,17 @@ class DroneWrapper(DroneInterfaceBase):
     def set_cmd_pos(self, x: float, y: float, z: float, az: float) -> None:
         """Send position command with yaw angle"""
         self.motion_ref_handler.position.send_position_command_with_yaw_angle(
-            [x, y, z], 1.0, 'earth', self.namespace + '/base_link', az)
+            [x, y, z], 1.0, 'earth', self.namespace + '/base_link', float(az))
 
     def set_cmd_vel(self, vx: float, vy: float, vz: float, az: float) -> None:
         """Send speed command with yaw angle"""
         self.motion_ref_handler.speed.send_speed_command_with_yaw_speed(
-            [vx, vy, vz], self.namespace + '/base_link', az)
+            [vx, vy, vz], self.namespace + '/base_link', float(az))
 
     def set_cmd_mix(self, vx: float, vy: float, z: float, az: float) -> None:
         """Send speed in a plane command with yaw angle"""
         self.motion_ref_handler.speed_in_a_plane.send_speed_in_a_plane_command_with_yaw_speed(
-            [vx, vy], z, 'earth', self.namespace + '/base_link', az)
+            [vx, vy], z, 'earth', self.namespace + '/base_link', float(az))
 
     async def call_state_event_service(self, event_value: PlatformStateMachineEvent) -> None:
         """Request aerostack to update state machine given the new event
