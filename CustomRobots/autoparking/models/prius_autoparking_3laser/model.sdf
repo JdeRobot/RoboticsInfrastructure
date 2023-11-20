@@ -1021,6 +1021,7 @@
     </link>
 
     <link name="laser_right">
+    <gravity>false</gravity>
       <sensor name="side_hokuyo_sensor" type="ray">
         <always_on>true</always_on>
         <visualize>true</visualize>
@@ -1036,7 +1037,7 @@
             </horizontal>
           </scan>
           <range>
-            <min>0.120000</min>
+            <min>2.40000</min>
             <max>30.0</max>
             <resolution>0.010</resolution>
           </range>
@@ -1079,7 +1080,7 @@
             </horizontal>
           </scan>
           <range>
-            <min>0.120000</min>
+            <min>2.40000</min>
             <max>30.0</max>
             <resolution>0.010</resolution>
           </range>
