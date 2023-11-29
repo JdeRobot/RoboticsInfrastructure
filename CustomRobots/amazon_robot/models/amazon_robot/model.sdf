@@ -120,8 +120,8 @@
                 </geometry>
             </visual>
             <sensor name="hls_lfcd_lds" type="ray">
-                <always_on>true</always_on>
-                <visualize>true</visualize>
+                <always_on>false</always_on>
+                <visualize>false</visualize>
                 <pose>-0.064 0 0.262 0 0 0</pose>
                 <update_rate>5</update_rate>
                 <ray>
@@ -573,8 +573,8 @@
             </collision>
             <pose>0.23 0 0.23 0 0 0</pose>
             <sensor name="camera" type="camera">
-                <always_on>true</always_on>
-                <visualize>true</visualize>
+                <always_on>false</always_on>
+                <visualize>false</visualize>
                 <update_rate>30</update_rate>
                 <camera name="intel_realsense_r200">
                     <horizontal_fov>1.02974</horizontal_fov>
