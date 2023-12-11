@@ -1,0 +1,330 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="default">
+  
+    <gui fullscreen='1'>
+      <camera name='user_camera'>
+        <pose >3.25 8.57 3.23 0 0.3 -2.17</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <scene>
+      <grid>false</grid>
+    </scene>
+
+    <!-- Autonomous car -->
+    <include>
+      <uri>model://prius_autoparking_3laser</uri>
+      <pose>-1.64 0 0 0 0 -1.57</pose> 
+    </include>
+  
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+      <pose>1.5 -30 100 0 0 0</pose>
+    </include>
+    
+    <!-- Stop signs -->
+    <include>
+      <static>true</static>
+      <uri>model://stop_sign</uri>
+      <pose>3.5 -3.5 0 0 0 0</pose>
+    </include>
+    
+    <include>
+      <static>true</static>
+      <uri>model://stop_sign</uri>
+      <pose>-3 3 0 0 0 3.15</pose>
+    </include>
+    
+    
+    <!-- Houses -->
+    <include>
+      <uri>model://house_1</uri>
+      <name>house1</name>
+      <pose>-14 13 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://house_1</uri>
+      <name>house1_2</name>
+      <pose>-45 13 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://house_2</uri>
+      <name>house2</name>
+      <pose>-32 12 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house3</name>
+      <pose>-14 -10 0 0 0 1.55</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house3_2</name>
+      <pose>-14 -20 0 0 0 1.55</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house3_3</name>
+      <pose>-14 -30 0 0 0 1.55</pose>
+    </include>
+
+    <include>
+      <uri>model://house_3</uri>
+      <name>house3_4</name>
+      <pose>-14 -40 0 0 0 1.55</pose>
+    </include>
+    
+    
+    <!-- A gas station -->
+    <include>
+      <uri>model://gas_station</uri>
+      <pose>14 16 0 0 0 1.57</pose>
+    </include>
+    
+    
+    <!-- Lamps -->
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp1</name>
+      <pose>-5.6 13 0 0 0 1.55</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp2</name>
+      <pose>5.6 23 0 0 0 -1.55</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp3</name>
+      <pose>-5.6 33 0 0 0 1.55</pose>
+    </include>
+    
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp4</name>
+      <pose>-10 -6 0 0 0 1.55</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp5</name>
+      <pose>8.6 -12.8 0 0 0 -1.55</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp6</name>
+      <pose>-10 -23 0 0 0 1.55</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp7</name>
+      <pose>8.6 -33 0 0 0 -1.55</pose>
+    </include>
+    
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp8</name>
+      <pose>6 5.6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp9</name>
+      <pose>12 -5 0 0 0 3.15</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp10</name>
+      <pose>20.5 5.6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp11</name>
+      <pose>33 -5 0 0 0 3.15</pose>
+    </include>
+
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp12</name>
+      <pose>-13 5.6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp13</name>
+      <pose>-23 -5.6 0 0 0 3.15</pose>
+    </include>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>lamp14</name>
+      <pose>-33 5.6 0 0 0 0</pose>
+    </include>
+    
+    <!-- Cars -->
+    <!--Battery-->
+    <include>
+      <uri>model://opel</uri>
+      <name>car1</name>
+      <pose>30 1.5 0 0 0 -1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car2</name>
+      <pose>-6.5 -7.7 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car3</name>
+      <pose>-6.7 -11 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car4</name>
+      <pose>-6.7 -14.2 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car5</name>
+      <pose>-6.7 -20 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car6</name>
+      <pose>-6.7 -23 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car7</name>
+      <pose>-6.7 -28.5 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car8</name>
+      <pose>-6.7 -31 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car9</name>
+      <pose>-6.7 -33.5 0 0 0 -1.14</pose>
+    </include>
+
+    <!--In Line-->
+    <include>
+      <uri>model://opel</uri>
+      <name>car10</name>
+      <pose>5.1 -9.1 0 0 0 -0.018</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car11</name>
+      <pose>5.23 -21.69 0 0 0 3.11</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car12</name>
+      <pose>5.3 -27.86 0 0 0 -0.04</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car13</name>
+      <pose>5.26 -39.56 0 0 0 -0.05</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car14</name>
+      <pose>5.14 -45.89 0 0 0 -0.05</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car15</name>
+      <pose>5.37 -52.07 0 0 0 -0.018</pose>
+    </include>
+
+    <!--Parking-->
+    <include>
+      <uri>model://opel</uri>
+      <name>car16</name>
+      <pose>22.8 -8.9 0 0 0 3.1415</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car17</name>
+      <pose>26.8 -9 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car18</name>
+      <pose>37.85 -9 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car19</name>
+      <pose>26.85 -23.5 0 0 0 3.1415</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car20</name>
+      <pose>30.9 -23 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car21</name>
+      <pose>34.3 -23.3 0 0 0 3.1415</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car22</name>
+      <pose>41 -30.6 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car23</name>
+      <pose>30.4 -30.85 0 0 0 3.1415</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car24</name>
+      <pose>10.5 -22.5 0 0 0 3.1415</pose>
+    </include>
+
+    <include>
+      <uri>model://opel</uri>
+      <name>car25</name>
+      <pose>10.5 -29.67 0 0 0 0</pose>
+    </include>
+    
+    <!-- Roads -->
+    <include>
+      <uri>model://parking</uri>
+      <pose>0 0 0 0 0 -1.5708</pose>
+    </include>
+    
+  </world>
+</sdf>
