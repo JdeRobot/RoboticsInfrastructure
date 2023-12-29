@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
 
-  <model name="bmw_logistic_robot_ackermann">
+  <model name="ackermann_logistic_robot">
     <pose>0 0 0.0 0 0 0</pose>
 
     <link name='base_link' />
@@ -29,7 +29,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/chassis.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/chassis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -49,7 +49,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/chassis.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/chassis.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -111,7 +111,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/wheel.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -170,7 +170,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/wheel.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -262,7 +262,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/wheel.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -355,7 +355,7 @@
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
-            <uri>model://bmw_logistic_robot_ackermann/meshes/wheel.dae</uri>
+            <uri>model://ackermann_logistic_robot/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -448,7 +448,7 @@
       <visual name="lift_visual">
           <geometry>
               <mesh>
-                  <uri>model://bmw_logistic_robot_ackermann/meshes/platform.dae</uri>
+                  <uri>model://ackermann_logistic_robot/meshes/platform.dae</uri>
                   <scale>0.5 0.5 0.5</scale>
               </mesh>
           </geometry>
