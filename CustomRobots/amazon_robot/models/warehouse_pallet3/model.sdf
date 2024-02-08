@@ -20,7 +20,7 @@
       <kinematic>0</kinematic>
       <gravity>1</gravity>
       <visual name='holding1_visual'>
-        <pose frame=''>0 0.39 0.45 0 -0 0</pose>
+        <pose frame=''>0 0.39 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>1.98 0.02 0.05</size>
@@ -139,7 +139,7 @@
         <cast_shadows>1</cast_shadows>
       </visual>
       <visual name='visual1'>
-        <pose frame=''>0 0 0.45 0 -0 0</pose>
+        <pose frame=''>0 0 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>2 0.8 0.03</size>
@@ -162,7 +162,7 @@
         <cast_shadows>1</cast_shadows>
       </visual>
       <visual name='holding2_visual'>
-        <pose frame=''>0 -0.39 0.45 0 -0 0</pose>
+        <pose frame=''>0 -0.39 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>1.98 0.02 0.05</size>
@@ -185,7 +185,7 @@
         <cast_shadows>1</cast_shadows>
       </visual>
       <visual name='holding3_visual'>
-        <pose frame=''>0.98 0 0.45 0 -0 1.57</pose>
+        <pose frame=''>0.98 0 0.3 0 -0 1.57</pose>
         <geometry>
           <box>
             <size>0.8 0.02 0.05</size>
@@ -208,7 +208,7 @@
         <cast_shadows>1</cast_shadows>
       </visual>
       <visual name='holding4_visual'>
-        <pose frame=''>-0.98 0 0.45 0 -0 1.57</pose>
+        <pose frame=''>-0.98 0 0.3 0 -0 1.57</pose>
         <geometry>
           <box>
             <size>0.8 0.02 0.05</size>
@@ -233,7 +233,7 @@
       <collision name='surface1'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>0 0 0.45 0 -0 0</pose>
+        <pose frame=''>0 0 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>2 0.8 0.03</size>
@@ -288,7 +288,7 @@
       <collision name='holding1_collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>0 0.39 0.45 0 -0 0</pose>
+        <pose frame=''>0 0.39 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>1.98 0.02 0.05</size>
@@ -343,7 +343,7 @@
       <collision name='holding2_collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>0 -0.4 0.45 0 -0 0</pose>
+        <pose frame=''>0 -0.4 0.3 0 -0 0</pose>
         <geometry>
           <box>
             <size>1.98 0.02 0.05</size>
@@ -398,7 +398,7 @@
       <collision name='holding4_collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>-0.98 0 0.45 0 -0 1.57</pose>
+        <pose frame=''>-0.98 0 0.3 0 -0 1.57</pose>
         <geometry>
           <box>
             <size>0.8 0.02 0.05</size>
@@ -453,7 +453,7 @@
       <collision name='holding3_collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>0.98 0 0.45 0 -0 1.57</pose>
+        <pose frame=''>0.98 0 0.3 0 -0 1.57</pose>
         <geometry>
           <box>
             <size>0.8 0.02 0.05</size>
