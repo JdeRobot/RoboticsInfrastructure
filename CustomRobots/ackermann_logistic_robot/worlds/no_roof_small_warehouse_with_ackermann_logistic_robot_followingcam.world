@@ -10,14 +10,14 @@
     </physics>
 
     <include>
-      <uri>model://amazon_robot</uri>
+      <uri>model://ackermann_logistic_robot</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
 
     <gui fullscreen='1'>
       <camera name="user_camera">
         <track_visual>
-          <name>amazon_robot</name>
+          <name>ackermann_logistic_robot</name>
           <static>true</static>
           <use_model_frame>true</use_model_frame>
           <xyz>-3 0 0.65</xyz>
