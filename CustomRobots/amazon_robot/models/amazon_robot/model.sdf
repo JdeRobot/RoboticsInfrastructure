@@ -17,7 +17,7 @@
                 <mass>1.0</mass>
             </inertial>
             <collision name="base_collision">
-                <pose>-0.064 0 0.048 0 0 0</pose>
+                <pose>-0.064 0 0.09 0 0 0</pose>
                 <geometry>
                     <box>
                         <size>0.532 0.532 0.188</size>
@@ -102,11 +102,11 @@
                 <mass>0.125</mass>
             </inertial>
             <collision name="lidar_sensor_collision">
-                <pose>-0.052 0 0.2 0 0 0</pose>
+                <pose>-0.052 0 0.234 0 0 0</pose>
                 <geometry>
                     <cylinder>
                         <radius>0.0508</radius>
-                        <length>0.055</length>
+                        <length>0.032</length>
                     </cylinder>
                 </geometry>
             </collision>
@@ -265,7 +265,7 @@
         <link name='caster_back_right_link'>
             <pose>-0.268 -0.064 -0.016 0 0 0</pose>
             <inertial>
-                <mass>0.001</mass>
+                <mass>0.1</mass>
                 <inertia>
                     <ixx>0.00001</ixx>
                     <ixy>0.000</ixy>
@@ -275,10 +275,30 @@
                     <izz>0.00001</izz>
                 </inertia>
             </inertial>
-            <collision name='collision'>
+            <visual name="caster_back_right_visual">
                 <geometry>
                     <sphere>
-                        <radius>0.005000</radius>
+                        <radius>0.035000</radius>
+                    </sphere>
+                </geometry>
+                <material>
+                    <script>
+                      <uri>file://media/materials/scripts/gazebo.material</uri>
+                      <name>Gazebo/Black</name>
+                    </script>
+                    <shader type='pixel'>
+                      <normal_map>__default__</normal_map>
+                    </shader>
+                    <ambient>0.3 0.3 0.3 1</ambient>
+                    <diffuse>0.7 0.7 0.7 1</diffuse>
+                    <specular>0.01 0.01 0.01 1</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+            </visual>
+            <collision name='caster_back_right_collision'>
+                <geometry>
+                    <sphere>
+                        <radius>0.035000</radius>
                     </sphere>
                 </geometry>
                 <surface>
@@ -298,7 +318,7 @@
         <link name='caster_back_left_link'>
             <pose>-0.268 0.064 -0.016 0 0 0</pose>
             <inertial>
-                <mass>0.001</mass>
+                <mass>0.1</mass>
                 <inertia>
                     <ixx>0.00001</ixx>
                     <ixy>0.000</ixy>
@@ -308,10 +328,30 @@
                     <izz>0.00001</izz>
                 </inertia>
             </inertial>
-            <collision name='collision'>
+            <visual name="caster_back_left_visual">
                 <geometry>
                     <sphere>
-                        <radius>0.005000</radius>
+                        <radius>0.035000</radius>
+                    </sphere>
+                </geometry>
+                <material>
+                    <script>
+                      <uri>file://media/materials/scripts/gazebo.material</uri>
+                      <name>Gazebo/Black</name>
+                    </script>
+                    <shader type='pixel'>
+                      <normal_map>__default__</normal_map>
+                    </shader>
+                    <ambient>0.3 0.3 0.3 1</ambient>
+                    <diffuse>0.7 0.7 0.7 1</diffuse>
+                    <specular>0.01 0.01 0.01 1</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+            </visual>
+            <collision name='caster_back_left_collision'>
+                <geometry>
+                    <sphere>
+                        <radius>0.035000</radius>
                     </sphere>
                 </geometry>
                 <surface>
@@ -352,14 +392,14 @@
             <collision name="lift_collision">
                 <geometry>
                     <box>
-                        <size>0.40 0.40 0.01</size>
+                        <size>0.50 0.50 0.05</size>
                     </box>
                 </geometry>
                 <surface>
                     <friction>
                         <ode>
-                            <mu>1000000</mu>
-                            <mu2>100000</mu2>
+                            <mu>1e+15</mu>
+                            <mu2>1e+15</mu2>
                             <fdir1>0 0 0</fdir1>
                             <slip1>0.0</slip1>
                             <slip2>0.0</slip2>
@@ -430,10 +470,6 @@
                 </surface>
             </collision>
         </link>
-        <!-- <link name="link_platform_mid"><visual><pose>0.0 0.0 0.023 0 0 0</pose><geometry><box size="0.02 0.02 0.15" /></geometry></visual><collision><pose>0.0 -0.288 0.046 -1.57 0 0</pose><geometry><box size="0.02 0.02 0.10" /></geometry></collision><inertial><pose>0.0 -0.288 0.046 -1.57 0 0</pose><mass>0.1</mass><inertia
-                ixx="1.0" ixy="0.0" ixz="0.0"
-                iyy="1.0" iyz="0.0"
-                izz="1.0"/></inertial></link> -->
         <joint name="base_joint" type="fixed">
             <parent>base_footprint</parent>
             <child>base_link</child>
@@ -492,11 +528,11 @@
                 <limit>
                     <lower>0.18</lower>
                     <upper>0.30</upper>
-                    <effort>20</effort>
+                    <effort>50</effort>
                     <velocity>0.5</velocity>
                 </limit>
                 <dynamics>
-                    <damping>0.1</damping>
+                    <damping>0.3</damping>
                     <friction>0</friction>
                     <spring_reference>0</spring_reference>
                     <spring_stiffness>0</spring_stiffness>
@@ -552,7 +588,6 @@
 
         <link name="camera_rgb_frame">
             <inertial>
-                
                 <inertia>
                     <ixx>0.001</ixx>
                     <ixy>0.000</ixy>
@@ -565,10 +600,10 @@
             </inertial>
 
             <collision name="camera_collision">
-                <pose>0 0 0 0 0 0</pose>
+                <pose>-0.04 0 0.0 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>0.10 0.10 0.02</size>
+                        <size>0.05 0.2 0.02</size>
                     </box>
                 </geometry>
             </collision>
