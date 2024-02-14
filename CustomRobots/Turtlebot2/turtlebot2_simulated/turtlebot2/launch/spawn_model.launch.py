@@ -5,8 +5,12 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
+import time
 
 def generate_launch_description():
+
+  # In order to ensure gazebo is properly intialized
+  time.sleep(4.0)
   
   # Set (x, y, z) default position of turtlebot2
   x_pos = LaunchConfiguration('-x', default='0')
