@@ -398,8 +398,8 @@
                 <surface>
                     <friction>
                         <ode>
-                            <mu>1e+15</mu>
-                            <mu2>1e+15</mu2>
+                            <mu>inf</mu>
+                            <mu2>inf</mu2>
                             <fdir1>0 0 0</fdir1>
                             <slip1>0.0</slip1>
                             <slip2>0.0</slip2>
@@ -528,7 +528,7 @@
                 <limit>
                     <lower>0.18</lower>
                     <upper>0.30</upper>
-                    <effort>50</effort>
+                    <effort>500</effort>
                     <velocity>0.5</velocity>
                 </limit>
                 <dynamics>

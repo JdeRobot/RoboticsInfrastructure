@@ -232,7 +232,7 @@
       </visual>
       <collision name='surface1'>
         <laser_retro>0</laser_retro>
-        <max_contacts>10</max_contacts>
+        <max_contacts>20</max_contacts>
         <pose frame=''>0 0 0.3 0 -0 0</pose>
         <geometry>
           <box>
@@ -242,8 +242,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>20</mu>
-              <mu2>20</mu2>
+              <mu>inf</mu>
+              <mu2>inf</mu2>
               <fdir1>0 0 0</fdir1>
               <slip1>0</slip1>
               <slip2>0</slip2>
@@ -272,7 +272,7 @@
               <kp>1e+13</kp>
               <kd>1</kd>
               <max_vel>0.01</max_vel>
-              <min_depth>0</min_depth>
+              <min_depth>0.001</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
@@ -462,8 +462,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>1e+09</mu>
-              <mu2>1e+09</mu2>
+              <mu>1e+15</mu>
+              <mu2>1e+15</mu2>
               <fdir1>0 0 0</fdir1>
               <slip1>0</slip1>
               <slip2>0</slip2>
