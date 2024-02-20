@@ -76,7 +76,7 @@
       <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
       <inertial>
         <pose>-0.0 0 -0 0 -0 0</pose>
-        <mass>4.5</mass>
+        <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
           <ixy>0</ixy>
@@ -100,8 +100,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>1.7</mu>
-              <mu2>1.7</mu2>
+              <mu>1e+6</mu>
+              <mu2>1e+6</mu2>
             </ode>
           </friction>
         </surface>
@@ -159,8 +159,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>1.7</mu>
-              <mu2>1.7</mu2>
+              <mu>1e+6</mu>
+              <mu2>1e+6</mu2>
             </ode>
           </friction>
         </surface>
@@ -251,8 +251,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>1.1</mu>
-              <mu2>1.1</mu2>
+              <mu>1e+6</mu>
+              <mu2>1e+6</mu2>
             </ode>
           </friction>
         </surface>
@@ -344,8 +344,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>1.7</mu>
-              <mu2>1.7</mu2>
+              <mu>1e+6</mu>
+              <mu2>1e+6</mu2>
             </ode>
           </friction>
         </surface>
