@@ -366,8 +366,8 @@
 
     <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
       <ros>
-        <remapping>cmd_vel:=cmd_vel</remapping>
-        <remapping>odom:=odom</remapping>
+        <remapping>cmd_vel:=/amazon_robot/cmd_vel</remapping>
+        <remapping>odom:=/amazon_robot/odom</remapping>
         <remapping>distance:=distance</remapping>
       </ros>
 

@@ -119,6 +119,11 @@ install(DIRECTORY
   amazon_hospital/worlds
   amazon_hospital/launch
 
+  # ACKERMANN LOGISTIC ROBOT
+  ackermann_logistic_robot/launch
+  ackermann_logistic_robot/models
+  ackermann_logistic_robot/worlds
+
   # AUTOPARKING CARS
   autoparking/launch
   autoparking/models
