@@ -2,6 +2,14 @@
 <sdf version="1.6">
   <world name="world">
 
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/follow_person</namespace>
+        <argument>model_states:=model_states_follow_person</argument>
+      </ros>
+      <update_rate>1.0</update_rate>
+    </plugin>
+
     <gui fullscreen=1>
       <camera name='user_camera'>
         <pose >-2 10 1 0 0 0</pose>
