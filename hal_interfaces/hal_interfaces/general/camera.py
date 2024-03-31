@@ -56,8 +56,6 @@ def imageMsg2Image(img, bridge):
 
 
 ### HAL INTERFACE ###
-
-
 class CameraNode(Node):
 
     def __init__(self, topic):
