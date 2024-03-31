@@ -30,7 +30,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -50,7 +50,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackerman/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/chasis.dae</uri>
         </mesh>
       </geometry>
       </visual>
@@ -93,7 +93,7 @@
         <kinematic>0</kinematic>
         <gravity>0</gravity>
 
-        <sensor name='cam_f1' type='camera'>
+        <sensor name='cam_f1_left' type='camera'>
           <pose>0 2.7 0.5 0 0 1.57</pose>
           <update_rate>20.000000</update_rate>
           <camera name='cam'>
@@ -260,7 +260,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/back_left.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/back_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -321,7 +321,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/back_right.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/back_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -417,7 +417,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/front_left.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/front_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -513,7 +513,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackerman/Renault/front_right.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/front_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -550,7 +550,7 @@
         <geometry>
           <mesh>
             <scale>4.7 4.7 4.7</scale>
-            <uri>model://f1_renault_ackerman/Renault/steering_wheel.dae</uri>
+            <uri>model://f1_renault_ackermann/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>

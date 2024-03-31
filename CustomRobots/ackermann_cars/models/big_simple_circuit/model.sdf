@@ -2,7 +2,7 @@
 <sdf version="1.3">
     <model name="big_simple_circuit">
         <static>true</static>
-        <link name="mapa">
+        <link name="big_simple_circuit">
             <pose>0 0 0 0 0 0</pose>
             <collision name="collision">
                 <geometry>
