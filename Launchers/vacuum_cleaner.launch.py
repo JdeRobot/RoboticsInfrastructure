@@ -28,7 +28,7 @@ def generate_launch_description():
     # Set the path to the SDF model files.
     gazebo_models_path = os.path.join(pkg_share, "models")
     gazebo_models_env = os.environ["GAZEBO_MODEL_PATH"]
-    gazebo_models_env += ":" + gazebo_models_path
+    gazebo_models_env = gazebo_models_env + ":" + gazebo_models_path
     set_models_env = SetEnvironmentVariable("GAZEBO_MODEL_PATH", gazebo_models_env)
 
     ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
