@@ -1,6 +1,6 @@
 # RoboticsInfrastructure
 
-In this repository we have the CustomRobots directory to store the formula 1 related robots, the Amazon warehouse robots and all specific robots useful for us and not included in the official ROS or Gazebo packages.
+Robots and tools useful for us and not included in the official ROS or Gazebo packages.
 
 ## How to contribute.
 
