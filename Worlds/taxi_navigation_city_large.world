@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <sdf version="1.4">   
-    <world name="cityLarge">
+	<world name="default">
+		<gui fullscreen=1>
+			<camera name="user_camera">
+				<track_visual>
+				  <name>taxi_holo_ROS</name>
+				  <static>true</static>
+				  <use_model_frame>true</use_model_frame>
+				  <xyz>-1 0 0.25</xyz>
+				  <inherit_yaw>true</inherit_yaw>
+				</track_visual>
+	  		</camera>
+		</gui>
         <!-- My city -->
         <include>
             <uri>model://cityLarge</uri>
@@ -15,5 +26,5 @@
             <uri>model://sun</uri>
         </include>
 
-    </world>
+	</world>
 </sdf>
