@@ -60,9 +60,13 @@
         </range>
       </ray>
       <update_rate>20.000000</update_rate>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/F1ROS/laser/scan</topicName>
-        <frameName>laser</frameName>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+              <namespace>/f1</namespace>
+              <remapping>~/out:=laser/scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>base_scan</frame_name>
       </plugin>
       <always_on>1</always_on>
       <visualize>1</visualize>
