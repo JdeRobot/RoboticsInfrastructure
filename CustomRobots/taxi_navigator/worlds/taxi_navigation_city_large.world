@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <sdf version="1.4">   
-    <world name="cityLarge">
+	<world name="default">
+		<gui fullscreen=1>
+			<camera name="user_camera">
+                <pose >0 0 80 0 1.5529944 0</pose>
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+	  		</camera>
+		</gui>
         <!-- My city -->
         <include>
             <uri>model://cityLarge</uri>
@@ -15,5 +22,5 @@
             <uri>model://sun</uri>
         </include>
 
-    </world>
+	</world>
 </sdf>

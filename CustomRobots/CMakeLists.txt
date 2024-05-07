@@ -131,6 +131,9 @@ install(DIRECTORY
 
   # DRONE_ASSETS
   drone_assets/models
+  
+  # GLOBAL_NAVIGATION
+  taxi_navigator/models
 
   DESTINATION share/${PROJECT_NAME}
 )
