@@ -1,10 +1,6 @@
 import os
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    IncludeLaunchDescription,
-    SetEnvironmentVariable,
-)
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PythonExpression
@@ -17,19 +13,18 @@ def generate_launch_description():
     # Set the path to the Gazebo ROS package
     pkg_gazebo_ros = FindPackageShare(package="gazebo_ros").find("gazebo_ros")
 
-    # Set the path to custom_robots package.
-    pkg_share = FindPackageShare(package="custom_robots").find("custom_robots")
+    # Set the path to the Turtlebot2 ROS package
+    pkg_share_dir = FindPackageShare(package="custom_robots").find("custom_robots")
 
-    # Set the path to the world file
     world_file_name = "roomba_1_house.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
-    # Set the path to the SDF model files.
-    gazebo_models_path = os.path.join(pkg_share, "models")
-    gazebo_models_env = os.environ["GAZEBO_MODEL_PATH"]
-    gazebo_models_env = gazebo_models_env + ":" + gazebo_models_path
-    set_models_env = SetEnvironmentVariable("GAZEBO_MODEL_PATH", gazebo_models_env)
+    # Set the path to the SDF model files
+    gazebo_models_path = os.path.join(pkg_share_dir, "models")
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    )
 
     ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
     # Launch configuration variables specific to simulation
@@ -70,14 +65,13 @@ def generate_launch_description():
             os.path.join(pkg_gazebo_ros, "launch", "gzserver.launch.py")
         ),
         condition=IfCondition(use_simulator),
-        launch_arguments={"world": world}.items(),
+        launch_arguments={"world": world, "pause": "true"}.items(),
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(set_models_env)
     ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_use_simulator_cmd)
