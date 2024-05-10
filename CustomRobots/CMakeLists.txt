@@ -135,6 +135,11 @@ install(DIRECTORY
   # GLOBAL_NAVIGATION
   taxi_navigator/models
 
+  # 3D RECONSTRUCTION
+  3d_reconstruction/launch
+  3d_reconstruction/models
+  3d_reconstruction/worlds
+
   DESTINATION share/${PROJECT_NAME}
 )
 
