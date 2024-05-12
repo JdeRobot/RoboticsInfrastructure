@@ -1,6 +1,44 @@
 from rclpy.node import Node
 from gazebo_msgs.msg import ContactsState
-from functools import partial
+
+### AUXILIARY FUNCTIONS ###
+
+RIGHT_BUMPER = 0
+CENTER_BUMPER = 1
+LEFT_BUMPER = 2
+
+
+class BumperData:
+
+    def __init__(self):
+
+        self.state = 0
+        self.bumper = CENTER_BUMPER
+
+    def __str__(self):
+        s = (
+            "Bumper: {\n   state: "
+            + str(self.state)
+            + "\n   bumper: "
+            + str(self.bumper)
+            + "\n}"
+        )
+        return s
+
+
+def contactsToBumperData(contacts):
+
+    bumper_data = BumperData()
+
+    for i in range(len(contacts)):
+
+        if len(contacts[i].states) > 0:
+
+            bumper_data.state = 1
+            bumper_data.bumper = i
+            break
+
+    return bumper_data
 
 
 ### HAL INTERFACE ###
@@ -35,7 +73,7 @@ class BumperNode(Node):
         self.contact_states_[1] = contact
 
     def left_callback(self, contact):
-        self.contact_states_[1] = contact
+        self.contact_states_[2] = contact
 
-    def get_contact(self, index):
-        return self.contact_states_[index]
+    def getBumperData(self):
+        return contactsToBumperData(self.contact_states_)
