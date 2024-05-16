@@ -11,10 +11,6 @@
         <include>
 	      <uri>model://roombaROS</uri>
           <pose>-1 1.5 0 0 0 0</pose>
-    		 <!--<pose>5.04 3.80 0 0 0 -1.57 </pose> Room-->
-    		 <!--<pose>5.04 0.00 0 0 0 -1.57 </pose> Bedroom-->
-    		 <!--<pose>-2.35 5.44 0 0 0 -1.57 </pose> Living room-->
-           <!--<pose>-3.50 1.45 0 0 0 -1.57 </pose> Dining room-->
         </include>
     	<include>
     	     <uri>model://house_int2</uri>
