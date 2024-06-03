@@ -21,7 +21,7 @@
 	<pose>-53.46 11.50 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault_laser</uri>
+      <uri>model://f1_renault_laser_no_cam</uri>
       <pose>0.04 0.68 0 0 0 -1.57</pose>
     </include>
     <include>
