@@ -38,6 +38,9 @@ class Image:
 
 def imageMsg2Image(img, bridge):
 
+    if len(img.data) == 0:
+        return None
+
     image = Image()
 
     image.width = img.width
