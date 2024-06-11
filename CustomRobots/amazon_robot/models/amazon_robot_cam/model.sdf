@@ -549,5 +549,83 @@
             <joint_name>wheel_right_joint</joint_name>
         </plugin>
 
+
+        <link name="camera_rgb_frame">
+            <inertial>
+                
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.125</mass>
+            </inertial>
+
+            <collision name="camera_collision">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.10 0.10 0.02</size>
+                    </box>
+                </geometry>
+            </collision>
+            <pose>0.23 0 0.23 0 0 0</pose>
+            <sensor name="camera" type="camera">
+                <always_on>false</always_on>
+                <visualize>false</visualize>
+                <update_rate>30</update_rate>
+                <camera name="intel_realsense_r200">
+                    <horizontal_fov>1.02974</horizontal_fov>
+                    <image>
+                        <width>1920</width>
+                        <height>1080</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <!-- Noise is sampled independently per pixel on each frame.
+                              That pixel's noise value is added to each of its color
+                              channels, which at that point lie in the range [0,1]. -->
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="intel_realsense_r200_depth_driver" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>/amazon_robot</namespace>
+                    </ros>
+                    <camera_name>camera_front</camera_name>
+                    <frame_name>realsense_depth_frame</frame_name>
+                    <hack_baseline>0.07</hack_baseline>
+                    <min_depth>0.001</min_depth>
+                </plugin>
+            </sensor>
+
+            <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
+                <pose>-0.05 0 -0.045 0 0 0</pose>
+                <geometry>
+                  <mesh>
+                    <scale>0.002 0.002 0.002</scale>
+                    <uri>model://amazon_robot/meshes/cam.dae</uri>
+                  </mesh>
+                </geometry>
+            </visual>
+        </link>
+
+        <joint name="camera_rgb_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>camera_rgb_frame</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+
     </model>
 </sdf>
