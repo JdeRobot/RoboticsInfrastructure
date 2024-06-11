@@ -18,7 +18,7 @@
     </physics>
 
     <include>
-      <uri>model://amazon_robot</uri>
+      <uri>model://amazon_robot_no_cam</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
     

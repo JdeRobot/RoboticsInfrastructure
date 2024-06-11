@@ -1,0 +1,553 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <model name="amazon_robot">
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <link name="base_footprint"/>
+        <link name="base_link">
+            <inertial>
+                <pose>-0.064 0 0.048 0 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>1.0</mass>
+            </inertial>
+            <collision name="base_collision">
+                <pose>-0.064 0 0.048 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.532 0.532 0.188</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="base_visual">
+                <pose>-0.064 0 0 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/waffle_pi_base.dae</uri>
+                        <scale>0.002 0.002 0.002</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <link name="imu_link">
+            <sensor name="amazon_robot_imu" type="imu">
+                <always_on>true</always_on>
+                <update_rate>300</update_rate>
+                <imu>
+                    <angular_velocity>
+                        <x>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>2e-4</stddev>
+                            </noise>
+                        </x>
+                        <y>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>2e-4</stddev>
+                            </noise>
+                        </y>
+                        <z>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>2e-4</stddev>
+                            </noise>
+                        </z>
+                    </angular_velocity>
+                    <linear_acceleration>
+                        <x>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>1.7e-2</stddev>
+                            </noise>
+                        </x>
+                        <y>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>1.7e-2</stddev>
+                            </noise>
+                        </y>
+                        <z>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>1.7e-2</stddev>
+                            </noise>
+                        </z>
+                    </linear_acceleration>
+                </imu>
+                <plugin name="amazon_robot_imu" filename="libgazebo_ros_imu_sensor.so">
+                    <ros>
+                        <namespace>/amazon_robot</namespace>
+                        <remapping>~/out:=imu</remapping>
+                    </ros>
+                </plugin>
+            </sensor>
+        </link>
+        <link name="base_scan">
+            <inertial>
+                <pose>-0.052 0 0.2 0 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.125</mass>
+            </inertial>
+            <collision name="lidar_sensor_collision">
+                <pose>-0.052 0 0.2 0 0 0</pose>
+                <geometry>
+                    <cylinder>
+                        <radius>0.0508</radius>
+                        <length>0.055</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+            <visual name="lidar_sensor_visual">
+                <pose>-0.064 0 0.242 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/lds.dae</uri>
+                        <scale>0.001 0.001 0.001</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+            <sensor name="hls_lfcd_lds" type="ray">
+                <always_on>false</always_on>
+                <visualize>false</visualize>
+                <pose>-0.064 0 0.242 0 0 0</pose>
+                <update_rate>5</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>360</samples>
+                            <resolution>1.000000</resolution>
+                            <min_angle>0.000000</min_angle>
+                            <max_angle>6.280000</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.130000</min>
+                        <max>3.5</max>
+                        <resolution>0.015000</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </ray>
+                <plugin name="amazon_robot_laserscan" filename="libgazebo_ros_ray_sensor.so">
+                    <ros>
+                        <namespace>/amazon_robot</namespace>
+                        <remapping>~/out:=scan</remapping>
+                    </ros>
+                    <output_type>sensor_msgs/LaserScan</output_type>
+                    <frame_name>base_scan</frame_name>
+                </plugin>
+            </sensor>
+        </link>
+        <link name="wheel_left_link">
+            <inertial>
+                <pose>0.0 0.288 0.046 -1.57 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="wheel_left_collision">
+                <pose>0.0 0.288 0.046 -1.57 0 0</pose>
+                <geometry>
+                    <cylinder>
+                        <radius>0.100</radius>
+                        <length>0.018</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <!-- This friction pamareter don't contain reliable data!! -->
+                    <friction>
+                        <ode>
+                            <mu>100000.0</mu>
+                            <mu2>100000.0</mu2>
+                            <fdir1>0 0 0</fdir1>
+                            <slip1>0.0</slip1>
+                            <slip2>0.0</slip2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+            <visual name="wheel_left_visual">
+                <pose>0.0 0.288 0.046 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/left_tire.dae</uri>
+                        <scale>0.003 0.003 0.003</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <link name="wheel_right_link">
+            <inertial>
+                <pose>0.0 -0.288 0.046 -1.57 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="wheel_right_collision">
+                <pose>0.0 -0.288 0.046 -1.57 0 0</pose>
+                <geometry>
+                    <cylinder>
+                        <radius>0.100</radius>
+                        <length>0.018</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <!-- This friction pamareter don't contain reliable data!! -->
+                    <friction>
+                        <ode>
+                            <mu>100000.0</mu>
+                            <mu2>100000.0</mu2>
+                            <fdir1>0 0 0</fdir1>
+                            <slip1>0.0</slip1>
+                            <slip2>0.0</slip2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+            <visual name="wheel_right_visual">
+                <pose>0.0 -0.288 0.046 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/right_tire.dae</uri>
+                        <scale>0.003 0.003 0.003</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <link name='caster_back_right_link'>
+            <pose>-0.268 -0.064 -0.016 0 0 0</pose>
+            <inertial>
+                <mass>0.001</mass>
+                <inertia>
+                    <ixx>0.00001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.00001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.00001</izz>
+                </inertia>
+            </inertial>
+            <collision name='collision'>
+                <geometry>
+                    <sphere>
+                        <radius>0.005000</radius>
+                    </sphere>
+                </geometry>
+                <surface>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+        </link>
+        <link name='caster_back_left_link'>
+            <pose>-0.268 0.064 -0.016 0 0 0</pose>
+            <inertial>
+                <mass>0.001</mass>
+                <inertia>
+                    <ixx>0.00001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.00001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.00001</izz>
+                </inertia>
+            </inertial>
+            <collision name='collision'>
+                <geometry>
+                    <sphere>
+                        <radius>0.005000</radius>
+                    </sphere>
+                </geometry>
+                <surface>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+        </link>
+        <link name="lift_link">
+            <pose>-0.02 0.0 0.1 0 0 0</pose>
+            <visual name="lift_visual">
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/platform2.dae</uri>
+                        <scale>0.5 0.5 0.5</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+            <inertial>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="lift_collision">
+                <geometry>
+                    <box>
+                        <size>0.40 0.40 0.01</size>
+                    </box>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1000000</mu>
+                            <mu2>100000</mu2>
+                            <fdir1>0 0 0</fdir1>
+                            <slip1>0.0</slip1>
+                            <slip2>0.0</slip2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+        </link>
+        <link name="link_platform_mid">
+            <visual name="link_platform_mid_visual">
+                <pose>-0.02 0.0 0.2 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://amazon_robot/meshes/fixed_support.dae</uri>
+                        <scale>0.5 0.5 0.5</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+            <inertial>
+                <pose>-0.02 0.0 0.2 0 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="link_platform_mid_collision">
+                <pose>-0.02 0.0 0.2 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.02 0.02 0.12</size>
+                    </box>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1.0</mu>
+                            <mu2>1.0</mu2>
+                            <fdir1>0 0 0</fdir1>
+                            <slip1>0.0</slip1>
+                            <slip2>0.0</slip2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <soft_cfm>0</soft_cfm>
+                            <soft_erp>0.2</soft_erp>
+                            <kp>1e+5</kp>
+                            <kd>1</kd>
+                            <max_vel>0.01</max_vel>
+                            <min_depth>0.001</min_depth>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+        </link>
+        <!-- <link name="link_platform_mid"><visual><pose>0.0 0.0 0.023 0 0 0</pose><geometry><box size="0.02 0.02 0.15" /></geometry></visual><collision><pose>0.0 -0.288 0.046 -1.57 0 0</pose><geometry><box size="0.02 0.02 0.10" /></geometry></collision><inertial><pose>0.0 -0.288 0.046 -1.57 0 0</pose><mass>0.1</mass><inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0"/></inertial></link> -->
+        <joint name="base_joint" type="fixed">
+            <parent>base_footprint</parent>
+            <child>base_link</child>
+            <pose>0.0 0.0 0.010 0 0 0</pose>
+        </joint>
+        <joint name="wheel_left_joint" type="revolute">
+            <parent>base_link</parent>
+            <child>wheel_left_link</child>
+            <pose>0.0 0.288 0.046 -1.57 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="wheel_right_joint" type="revolute">
+            <parent>base_link</parent>
+            <child>wheel_right_link</child>
+            <pose>0.0 -0.228 0.046 -1.57 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name='caster_back_right_joint' type='ball'>
+            <parent>base_link</parent>
+            <child>caster_back_right_link</child>
+            <!-- <pose>-0.268 0.064 -0.016 -1.57 0 0</pose> -->
+        </joint>
+        <joint name='caster_back_left_joint' type='ball'>
+            <parent>base_link</parent>
+            <child>caster_back_left_link</child>
+            <!-- <pose>-0.268 0.064 -0.016 -1.57 0 0</pose> -->
+        </joint>
+        <joint name="lidar_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>base_scan</child>
+            <pose>-0.064 0 0.224 0 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="imu_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>imu_link</child>
+            <pose>0.0 0.0 0.010 0 0 0</pose>
+        </joint>
+        <joint name="platform_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>link_platform_mid</child>
+            <!-- <pose>0.0 0 0.20 0 0 0</pose> -->
+            <!-- <axis><xyz>0 0 1</xyz></axis> -->
+        </joint>
+        <joint name="lift_joint" type="prismatic">
+            <parent>link_platform_mid</parent>
+            <child>lift_link</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <limit>
+                    <lower>0.18</lower>
+                    <upper>0.30</upper>
+                    <effort>20</effort>
+                    <velocity>0.5</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.1</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+                <use_parent_model_frame>1</use_parent_model_frame>
+            </axis>
+            <physics>
+                <provide_feedback>1</provide_feedback>
+                <ode>
+                    <provide_feedback>1</provide_feedback>
+                    <implicit_spring_damper>1</implicit_spring_damper>
+                    <cfm_damping>1</cfm_damping>
+                    <limit>
+                        <cfm>0</cfm>
+                        <erp>0.2</erp>
+                    </limit>
+                </ode>
+            </physics>
+            <!-- <axis><use_parent_model_frame>true</use_parent_model_frame><xyz>0 0 1</xyz></axis><limit effort="6" lower="0.00" upper="0.100" velocity="50"/> -->
+        </joint>
+        <plugin name="amazon_robot_diff_drive" filename="libgazebo_ros_diff_drive.so">
+            <ros>
+                 <namespace>/amazon_robot</namespace>
+            </ros>
+            <update_rate>30</update_rate>
+            <!-- wheels -->
+            <left_joint>wheel_left_joint</left_joint>
+            <right_joint>wheel_right_joint</right_joint>
+            <!-- kinematics -->
+            <wheel_separation>0.576</wheel_separation>
+            <wheel_diameter>0.092</wheel_diameter>
+            <!-- limits -->
+            <max_wheel_torque>20</max_wheel_torque>
+            <max_wheel_acceleration>1.0</max_wheel_acceleration>
+            <command_topic>cmd_vel</command_topic>
+            <!-- output -->
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>false</publish_wheel_tf>
+            <odometry_topic>odom</odometry_topic>
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+        </plugin>
+        <plugin name="amazon_robot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+            <ros>
+                <remapping>~/out:=joint_states</remapping>
+            </ros>
+            <update_rate>30</update_rate>
+            <joint_name>wheel_left_joint</joint_name>
+            <joint_name>wheel_right_joint</joint_name>
+        </plugin>
+
+    </model>
+</sdf>

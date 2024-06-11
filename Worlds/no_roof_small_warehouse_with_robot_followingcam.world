@@ -17,7 +17,7 @@
     <gui fullscreen='1'>
       <camera name="user_camera">
         <track_visual>
-          <name>amazon_robot</name>
+          <name>amazon_robot_no_cam</name>
           <static>true</static>
           <use_model_frame>true</use_model_frame>
           <xyz>-3 0 0.65</xyz>
