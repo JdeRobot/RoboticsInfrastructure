@@ -14,7 +14,7 @@ def generate_launch_description():
   ros_gz_sim = FindPackageShare(__package__='ros_gz_sim').find('ros_gz_sim')
 
   # Set the path to this package.
-  pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
+  # pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
   world_file_name = 'simple_circuit_followingcam.world'
@@ -22,8 +22,8 @@ def generate_launch_description():
   world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
-  gazebo_models_path = os.path.join(pkg_share, 'models')
-  os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+  # gazebo_models_path = os.path.join(pkg_share, 'models')
+  # os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
 
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
   # Launch configuration variables specific to simulation
