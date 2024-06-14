@@ -11,14 +11,14 @@ def generate_launch_description():
  
   # Set the path to the Gazebo ROS package
   # pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
-  ros_gz_sim = FindPackageShare(__package__='ros_gz_sim').find('ros_gz_sim')
+  ros_gz_sim = FindPackageShare(package='ros_gz_sim').find('ros_gz_sim')
 
   # Set the path to this package.
   # pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'simple_circuit_followingcam.world'
-  worlds_dir = "/opt/jderobot/Worlds"
+  world_file_name = 'empty_world.world'
+  worlds_dir = "/worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
@@ -54,18 +54,13 @@ def generate_launch_description():
     
   # Specify the actions
 
-  # Start Gazebo server
-  # start_gazebo_server_cmd = IncludeLaunchDescription(
-  #   PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
-  #   condition=IfCondition(use_simulator),
-  #   launch_arguments={'world': world}.items())
-  
+  # Start Gazebo server  
   start_gazebo_server_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(
         os.path.join(ros_gz_sim, 'launch', 'gz_sim.launch.py')
     ),
     launch_arguments={'gz_args': ['-r -s -v4 ', world], 'on_exit_shutdown': 'true'}.items()
-)
+  )
  
   # Create the launch description and populate
   ld = LaunchDescription()
