@@ -11,11 +11,14 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <uri>model://number1/materials/scripts</uri>
-            <uri>model://number1/materials/textures</uri>
-            <name>Number/One</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+          <metal>
+            <albedo_map>model://number1/materials/textures/number1.png</albedo_map>
+          </metal>
+          </pbr>
         </material>
       </visual>
     </link>

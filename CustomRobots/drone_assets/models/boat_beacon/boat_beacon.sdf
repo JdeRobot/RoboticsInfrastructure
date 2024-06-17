@@ -270,10 +270,9 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/DarkGrey</name>
-            <uri>__default__</uri>
-          </script>
+          <ambient>0.1 0.1 0.1 1</ambient>   
+          <diffuse>0.1 0.1 0.1 1</diffuse>  
+          <specular>0.05 0.05 0.05 1</specular> 
         </material>
       </visual>
       <visual name='base_link_fixed_joint_lump__right_battery_visual_visual_2'>
@@ -285,10 +284,9 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/DarkGrey</name>
-            <uri>__default__</uri>
-          </script>
+          <ambient>0.1 0.1 0.1 1</ambient>   
+          <diffuse>0.1 0.1 0.1 1</diffuse>  
+          <specular>0.05 0.05 0.05 1</specular> 
         </material>
       </visual>
       <visual name='right_engine_link_visual'>
@@ -345,12 +343,11 @@
             <size>0.9 0.9 0.1</size>
           </box>
         </geometry>
-	<material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Green</name>
-          </script>
-        </material>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
       </visual>
     </link>
 

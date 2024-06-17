@@ -18,11 +18,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://asphalt_plane/materials/scripts</uri>
-            <uri>model://asphalt_plane/materials/textures</uri>
-            <name>vrc/asphalt</name>
-          </script>
+          <ambient>0.5 0.5 0.5 1.0</ambient>
+          <diffuse>0.5 0.5 0.5 1.0</diffuse>
+          <specular>0.2 0.2 0.2 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://asphalt_plane/materials/textures/tarmac.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
     </link>

@@ -12,7 +12,7 @@
   </asset>
   <library_images>
     <image id="start_pad_png" name="start_pad_png">
-      <init_from>end_pad.png</init_from>
+      <init_from>model://custom_box_target_red/materials/textures/end_pad.png</init_from>
     </image>
   </library_images>
   <library_effects>

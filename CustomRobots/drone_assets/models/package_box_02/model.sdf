@@ -22,11 +22,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://package_box_02/materials/scripts</uri>
-            <uri>model://package_box_02/materials/textures</uri>
-            <name>package_box_02</name>
-          </script>
+          <ambient>1.0 1.0 1.0 1.0</ambient>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+                <albedo_map>model://package_box_02/materials/textures/package_box_02.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <collision name='main_collision'>
