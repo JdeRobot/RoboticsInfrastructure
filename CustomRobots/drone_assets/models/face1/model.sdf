@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.4'>
+<sdf version='1.6'>
   <model name='face1'>
     <static>true</static>
     <link name='link'>
@@ -31,12 +31,15 @@
         </plane>
       </geometry>
         <material>
-          <script>
-            <uri>model://face1/materials/scripts</uri>
-            <uri>model://face1/materials/textures</uri>
-            <name>vrc/face1</name>
-        </script>
-      </material>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://face1/materials/textures/face1.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
     </visual>
   </link>
 </model>
