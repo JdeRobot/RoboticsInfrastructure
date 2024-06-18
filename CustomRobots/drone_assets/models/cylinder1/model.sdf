@@ -26,14 +26,10 @@
           </cylinder>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
           <!-- Brown -->
-          <ambient>0.9 0.6 0.3 1</ambient>
-          <diffuse>0.698039 0.698039 0.698039 1</diffuse>
-          <specular>0.898039 0.898039 0.898039 1 20</specular>
+          <ambient>0.25 0.15 0.05 1</ambient>
+          <diffuse>0.54 0.27 0.07 1</diffuse>
+          <specular>0.63 0.32 0.18 1</specular>
           <emissive>0 0 0 1</emissive>
           <shader type='vertex'>
             <normal_map>__default__</normal_map>

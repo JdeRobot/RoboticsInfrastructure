@@ -25,14 +25,10 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
           <!-- Cyan -->
           <ambient>0.698039 0.698039 0.698039 1</ambient>
           <diffuse>0.698039 0.698039 0.698039 1</diffuse>
-          <specular>0.898039 0.898039 0.898039 1 20</specular>
+          <specular>0.898039 0.898039 0.898039 1</specular>
           <emissive>0 0.945098 0.980392 1</emissive>
           <shader type='vertex'>
             <normal_map>__default__</normal_map>
