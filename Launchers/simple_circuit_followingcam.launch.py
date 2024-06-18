@@ -9,16 +9,15 @@ from launch_ros.substitutions import FindPackageShare
  
 def generate_launch_description():
  
-  # Set the path to the Gazebo ROS package
-  # pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
+  # Set the path to the ros_gz_sim package  
   ros_gz_sim = FindPackageShare(package='ros_gz_sim').find('ros_gz_sim')
 
   # Set the path to this package.
   # pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'empty_world.world'
-  worlds_dir = "/worlds"
+  world_file_name = 'empty.world'
+  worlds_dir = "/opt/jderobots/Worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
