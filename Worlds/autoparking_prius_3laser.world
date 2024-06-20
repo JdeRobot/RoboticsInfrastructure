@@ -24,8 +24,8 @@
 
     <!-- Autocar -->
     <include>
-      <uri>model://prius_autoparking_3laser</uri>
-      <pose>-7 2.5 0.02 0 0 0</pose> 
+      <uri>model://prius_ackermann_3laser</uri>
+      <pose>-7 2.5 0.02 0 0 -1.54</pose> 
     </include>
     
     
