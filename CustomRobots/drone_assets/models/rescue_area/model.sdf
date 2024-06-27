@@ -30,12 +30,15 @@
             <size>15 19</size>
         </plane>
       </geometry>
-        <material>
-          <script>
-            <uri>model://rescue_area/materials/scripts</uri>
-            <uri>model://rescue_area/materials/textures</uri>
-            <name>vrc/rescue_area</name>
-        </script>
+      <material>
+        <ambient>0.8 1.0 0.8 1.0</ambient>
+        <diffuse>0.8 1.0 0.8 1.0</diffuse>
+        <specular>0.1 0.1 0.1 1.0</specular>
+        <pbr>
+          <metal>
+            <albedo_map>model://rescue_area/materials/textures/rescue_area.png</albedo_map>
+          </metal>
+        </pbr>
       </material>
     </visual>
   </link>

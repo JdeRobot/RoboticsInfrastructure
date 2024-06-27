@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.4'>
+<sdf version='1.6'>
   <model name='logoDeloitte'>
     <static>true</static>
     <link name='link'>
@@ -30,13 +30,16 @@
             <size>8 4</size>
         </plane>
       </geometry>
-        <material>
-          <script>
-            <uri>model://logoDeloitte/materials/scripts</uri>
-            <uri>model://logoDeloitte/materials/textures</uri>
-            <name>vrc/logoDeloitte</name>
-        </script>
-      </material>
+          <material>
+            <ambient>0.8 1.0 0.8 1.0</ambient>
+            <diffuse>0.8 1.0 0.8 1.0</diffuse>
+            <specular>0.1 0.1 0.1 1.0</specular>
+            <pbr>
+              <metal>
+                  <albedo_map>model://logoDeloitte/materials/textures/logoDeloitte.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
     </visual>
   </link>
 </model>

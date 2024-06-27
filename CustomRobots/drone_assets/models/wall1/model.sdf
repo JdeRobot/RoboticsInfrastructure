@@ -25,10 +25,6 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
           <!-- Blue -->
           <ambient>0 0 1 1</ambient>
           <diffuse>0.3 0.3 0.8 1</diffuse>

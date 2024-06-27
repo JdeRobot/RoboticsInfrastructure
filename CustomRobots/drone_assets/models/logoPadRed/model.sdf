@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.4'>
+<sdf version='1.6'>
     <model name='logoPadRed'>
         <static>true</static>
         <link name='link'>
@@ -30,13 +30,16 @@
                         <size>2 2</size>
                     </plane>
                 </geometry>
-                <material>
-                    <script>
-                        <uri>model://logoPadRed/materials/scripts</uri>
-                        <uri>model://logoPadRed/materials/textures</uri>
-                        <name>logoPadRed</name>
-                    </script>
-                </material>
+                    <material>
+                        <ambient>0.8 1.0 0.8 1.0</ambient>
+                        <diffuse>0.8 1.0 0.8 1.0</diffuse>
+                        <specular>0.1 0.1 0.1 1.0</specular>
+                        <pbr>
+                            <metal>
+                                <albedo_map>mmodel://logoPadRed/materials/textures/end_pad.png</albedo_map>
+                            </metal>
+                        </pbr>
+                    </material>
             </visual>
         </link>
     </model>

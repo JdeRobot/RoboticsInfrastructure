@@ -103,7 +103,7 @@
   </library_lights>
   <library_images>
     <image id="start_pad_png" name="start_pad_png">
-      <init_from>start_pad.png</init_from>
+      <init_from>model://custom_box_target_green/materials/textures/start_pad.png</init_from>
     </image>
   </library_images>
   <library_effects>

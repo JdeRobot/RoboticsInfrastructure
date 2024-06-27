@@ -15,11 +15,6 @@
     <unit meter="1.000000" name="centimeter"/>
     <up_axis>Z_UP</up_axis>
   </asset>
-  <library_images>
-    <image id="Payload_ncl1_1-image" name="Payload_ncl1_1">
-      <init_from>battery.png</init_from>
-    </image>
-  </library_images>
   <library_materials>
     <material id="Payload" name="Payload">
       <instance_effect url="#Payload-fx"/>

@@ -20,11 +20,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -50,11 +53,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -80,11 +86,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -110,11 +119,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -140,11 +152,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -170,11 +185,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -200,11 +218,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -230,11 +251,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -260,11 +284,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -290,11 +317,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -320,11 +350,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -350,11 +383,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -380,11 +416,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -410,11 +449,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -440,11 +482,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -470,11 +515,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -500,11 +548,14 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>model://simple_labyrinth_green/materials/scripts</uri>
-            <uri>model://simple_labyrinth_green/materials/textures</uri>
-            <name>simple_labyrinth_green</name>
-          </script>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://simple_labyrinth_green/materials/textures/simple_labyrinth_green.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
       <velocity_decay>
@@ -530,10 +581,9 @@
           </box>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
         </material>
       </visual>
       <velocity_decay>

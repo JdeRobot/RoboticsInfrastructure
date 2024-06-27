@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.4'>
+<sdf version='1.6'>
     <model name='logoBeacon'>
         <static>true</static>
         <link name='link'>
@@ -31,11 +31,14 @@
                     </plane>
                 </geometry>
                 <material>
-                    <script>
-                        <uri>model://logoBeacon/materials/scripts</uri>
-                        <uri>model://logoBeacon/materials/textures</uri>
-                        <name>logoBeacon</name>
-                    </script>
+                    <ambient>0.8 1.0 0.8 1.0</ambient>
+                    <diffuse>0.8 1.0 0.8 1.0</diffuse>
+                    <specular>0.1 0.1 0.1 1.0</specular>
+                    <pbr>
+                        <metal>
+                            <albedo_map>model://logoBeacon/materials/textures/color_beacon.png</albedo_map>
+                        </metal>
+                    </pbr>
                 </material>
             </visual>
         </link>

@@ -31,12 +31,15 @@
         </plane>
       </geometry>
         <material>
-          <script>
-            <uri>model://face5/materials/scripts</uri>
-            <uri>model://face5/materials/textures</uri>
-            <name>vrc/face5</name>
-        </script>
-      </material>
+          <ambient>0.8 1.0 0.8 1.0</ambient>
+          <diffuse>0.8 1.0 0.8 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://face5/materials/textures/face5.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
     </visual>
   </link>
 </model>

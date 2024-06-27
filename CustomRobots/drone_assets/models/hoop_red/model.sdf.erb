@@ -73,11 +73,10 @@
           </polyline>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Red</name>
-          </script>
-        </material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+      </material>
       </visual>
       <collision name='hoop_collision'>
         <pose>0 0.05 <%= pole_height/2 + 0.979342%> 1.57519 -0.165904 -0.00102</pose>
@@ -142,10 +141,9 @@
         </geometry>
         <material>
           <lighting>1</lighting>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Red</name>
-          </script>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
         </material>
       </visual>
       <collision name='pole_collision'>
