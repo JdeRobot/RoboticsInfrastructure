@@ -16,7 +16,7 @@ def generate_launch_description():
     # Set the path to the Turtlebot2 ROS package
     pkg_share_dir = FindPackageShare(package="custom_robots").find("custom_robots")
 
-    world_file_name = "roomba_1_house.world"
+    world_file_name = "roomba_1_house_followingcam.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
