@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="rescue_people_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!--light-->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <gui>
+      <camera name='user_camera'>
+        <pose>4.5 4.5 1.5 0 0 -0.785</pose>
+      </camera>
+    </gui>
+
+    <!-- People -->
+		<include>
+			  <uri>model://face1</uri>
+			  <pose>35 -35 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			  <uri>model://face2</uri>
+			  <pose>42 -40 0 0 0 0.57</pose>
+		</include>
+		<include>
+			  <uri>model://face3</uri>
+			  <pose>32 -39 0 0 0 2.57</pose>
+		</include>
+		<include>
+			  <uri>model://face4</uri>
+			  <pose>40 -34 0 0 0 0</pose>
+		</include>
+		<include>
+			  <uri>model://face5</uri>
+			  <pose>25 -35 0 0 0 1.11</pose>
+		</include>
+		<include>
+			  <uri>model://face6</uri>
+			  <pose>37 -31 0 0 0 -1.0</pose>
+		</include>
+
+		<!-- Boat -->
+		<include>
+			  <uri>model://boat_beacon</uri>
+			  <pose>0 0 0 0 0 0.785</pose>
+		</include>
+
+		<!-- Ocean -->
+		<include>
+        <uri>model://ocean</uri>
+			  <pose>0 0 -0.02 0 0 -1.57</pose>
+		</include>
+
+  </world>
+</sdf>
