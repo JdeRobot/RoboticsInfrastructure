@@ -1,0 +1,9 @@
+{
+    "world": "follow_road",
+    "drones": [
+        {
+            "model": "iris_dual_cam",
+            "pose": [ 14.96, 0.0, 0.3, 1.57]
+        }
+    ]
+}
