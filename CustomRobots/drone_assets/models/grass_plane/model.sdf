@@ -36,8 +36,8 @@
           <specular>0.1 0.1 0.1 1.0</specular>
             <pbr>
               <metal>
-                <albedo_map>model://grass_plane/materials/textures/grass_dry.png</albedo_map>
-                <normal_map>model://grass_plane/materials/textures/grass_dry.png</normal_map>
+                <albedo_map>model://grass_plane/materials/textures/grass_dry1.png</albedo_map>
+                <!-- <normal_map>model://grass_plane/materials/textures/grass_dry1.png</normal_map> -->
               </metal>
             </pbr>
         </material>

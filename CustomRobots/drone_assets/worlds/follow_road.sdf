@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="rescue_people_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!--light-->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <gui>
+      <camera name='user_camera'>
+        <pose>-25 20 1.5 0 0 -0.785</pose>
+      </camera>
+    </gui>
+
+		<!-- Building -->
+    <include>
+      <uri>model://osrf_first_office</uri>
+      <name>osrf_first_office</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    
+    <!-- Grass Plane -->
+    <include>
+      <uri>model://grass_plane</uri>
+      <name>grass_plane</name>
+      <pose>0 0 -0.001 0 0 0</pose>
+    </include>
+
+    <!-- Road -->
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane</name>
+      <pose>-20 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve</name>
+      <pose>-19.128223419189453 -6.8325963020324707 0 0 0 2.0420399331135193</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_0</name>
+      <pose>-20 9.9763221740722656 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_1</name>
+      <pose>-14.0817 -11.5282 0 0 0 0.95207399999999986</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_2</name>
+      <pose>-5.9459776878356916 -17.320466995239258 0 0 0 0.95207395533950367</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_0</name>
+      <pose>0.14164115488529147 -20.581552505493164 0 0 0 2.9917700031401813</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_1</name>
+      <pose>4.1792788505554208 -21.100765228271481 0 0 0 -0.16342002852905516</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_3</name>
+      <pose>10.21527099609375 -24.437944412231445 0 0 0 -2.202900012738445</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_2</name>
+      <pose>16.223600387573239 -27.780799865722653 0 0 0 2.9730700001345052</pose>
+    </include>
+    
+  </world>
+</sdf>
