@@ -48,7 +48,7 @@
     <include>
       <uri>model://osrf_first_office</uri>
       <name>osrf_first_office</name>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>2.7431375980377197 -5.286156177520752 0 0 0 -0.73836601026213899</pose>
     </include>
     
     <!-- Grass Plane -->
@@ -67,17 +67,12 @@
     <include>
       <uri>model://road_curve</uri>
       <name>road_curve</name>
-      <pose>-19.128223419189453 -6.8325963020324707 0 0 0 2.0420399331135193</pose>
-    </include>
-    <include>
-      <uri>model://road_plane</uri>
-      <name>road_plane_0</name>
-      <pose>-20 9.9763221740722656 0 0 0 0</pose>
+      <pose>-19.128223419189453 -6.8325963020324707 0 0 0 2.0420399331135197</pose>
     </include>
     <include>
       <uri>model://road_plane</uri>
       <name>road_plane_1</name>
-      <pose>-14.0817 -11.5282 0 0 0 0.95207399999999986</pose>
+      <pose>-14.0817 -11.5282 0 0 0 0.95207399999999998</pose>
     </include>
     <include>
       <uri>model://road_plane</uri>
@@ -104,6 +99,81 @@
       <name>road_curve_2</name>
       <pose>16.223600387573239 -27.780799865722653 0 0 0 2.9730700001345052</pose>
     </include>
-    
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_3</name>
+      <pose>19.776954650878906 -26.706022262573242 0 0 0 -2.3829599949628224</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_4</name>
+      <pose>21.017391204833984 -23.230445861816406 0 0 0 -1.4487100328069633</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_4</name>
+      <pose>17.954458236694336 -17.02301025390625 0 0 0 0.58389300612600548</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_5</name>
+      <pose>14.925982475280762 -10.838279724121094 0 0 0 1.6777900079117787</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_5</name>
+      <pose>16.516273498535156 -4.1151680946350098 0 0 0 -0.35735699209187988</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_6</name>
+      <pose>18.102605819702148 2.611170768737793 0 0 0 -1.4624300425145729</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_7</name>
+      <pose>16.092544555664062 5.7186846733093262 0 0 0 -0.52887699027007007</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_8</name>
+      <pose>12.658302307128906 7.5311212539672852 0 0 0 2.6473999899781404</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_14</name>
+      <pose>3.3998198509216309 15.474347114562988 0 0 0 -0.72206896531390119</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_15</name>
+      <pose>-0.12906567752361298 16.466999053955078 0 0 0 0.18520300174408241</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_9</name>
+      <pose>-19.122169494628906 6.8502402305603027 0 0 0 1.0991300287569881</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_12</name>
+      <pose>-16.12800407409668 9.0331172943115234 0 0 0 0.16141699844184379</pose>
+    </include>
+    <include>
+      <uri>model://road_curve</uri>
+      <name>road_curve_16</name>
+      <pose>-12.077943801879883 9.586822509765625 0 0 0 -2.9699500006083168</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_0</name>
+      <pose>-6.1061697006225586 13.010586738586426 0 0 0 2.2191100224937821</pose>
+    </include>
+    <include>
+      <uri>model://road_plane</uri>
+      <name>road_plane_6</name>
+      <pose>7.3916501998901367 11.8665771484375 0 0 0 0.81320396213978929</pose>
+    </include>
+
   </world>
 </sdf>
