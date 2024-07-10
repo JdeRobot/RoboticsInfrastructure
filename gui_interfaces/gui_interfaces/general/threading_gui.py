@@ -46,6 +46,8 @@ class ThreadingGUI:
             with self.ack_lock:
                 self.ack = True
                 self.ack_frontend = True
+        else:
+            LogManager.logger.error("Unsupported msg")
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
