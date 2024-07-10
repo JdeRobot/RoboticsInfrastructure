@@ -71,8 +71,3 @@ class ThreadingGUI:
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
-    # Prepares and sends a map to the websocket server
-    # Update the gui
-    def update_gui(self):
-	    pass
-
