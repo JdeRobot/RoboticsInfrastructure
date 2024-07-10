@@ -74,5 +74,5 @@ class ThreadingGUI:
     # Prepares and sends a map to the websocket server
     # Update the gui
     def update_gui(self):
-	pass
+	    pass
 
