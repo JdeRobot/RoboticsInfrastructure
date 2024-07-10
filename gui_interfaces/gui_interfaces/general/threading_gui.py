@@ -30,8 +30,6 @@ class ThreadingGUI:
         self.host = host
         self.node = rclpy.create_node("node")
 
-        self.payload = {}
-
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
 
