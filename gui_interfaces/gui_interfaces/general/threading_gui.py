@@ -1,14 +1,8 @@
 import rclpy
-import json
-import cv2
-import base64
 import threading
 import time
 import websocket
-import numpy as np
-import matplotlib.pyplot as plt
 from src.manager.ram_logging.log_manager import LogManager
-from console import start_console
 
 class ThreadingGUI:
 
@@ -29,7 +23,8 @@ class ThreadingGUI:
 
         self.host = host
         self.node = rclpy.create_node("node")
-
+    
+    def start(self):
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
 
