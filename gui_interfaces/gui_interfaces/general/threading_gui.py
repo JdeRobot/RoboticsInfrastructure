@@ -71,3 +71,9 @@ class ThreadingGUI:
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
+    def send_to_client(self, msg):
+        if self.client:
+            try:
+                self.client.send(msg)
+            except Exception as e:
+                LogManager.logger.info(f"Error sending message: {e}")
