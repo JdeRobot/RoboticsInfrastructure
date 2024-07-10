@@ -153,10 +153,10 @@
   </library_lights>
   <library_images>
     <image id="OSRFOffice_Diffuse_tga">
-      <init_from>osrf_first_office_diffuse.jpg</init_from>
+      <init_from>model://osrf_first_office/materials/textures/osrf_first_office_diffuse.jpg</init_from>
     </image>
     <image id="OSRFOffice_Spec_tga">
-      <init_from>osrf_first_office_spec.jpg</init_from>
+      <init_from>model://osrf_first_office/materials/textures/osrf_first_office_spec.jpg</init_from>
     </image>
   </library_images>
   <library_visual_scenes>
