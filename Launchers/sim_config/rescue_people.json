@@ -1,0 +1,22 @@
+{
+    "world_name": "rescue_people_harmonic",
+    "drones": [
+        {
+            "model_type": "quadrotor_base",
+            "model_name": "drone0",
+            "xyz": [ 0.0, 0.0, 1.45 ],
+            "rpy": [ 0, 0, 0.0 ],
+            "payload": [
+                {
+                    "model_name": "front_camera",
+                    "model_type": "hd_camera"
+                },
+                {
+                    "model_name": "ventral_camera",
+                    "model_type": "hd_camera",
+                    "rpy": [ 0, 1.57, 0.0 ]
+                }
+            ]
+        }
+    ]
+}
