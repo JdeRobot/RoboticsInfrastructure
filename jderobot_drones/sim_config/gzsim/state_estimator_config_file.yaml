@@ -1,3 +1,5 @@
 /**:
   ros__parameters:
-    use_ignition_tf: True
+    use_gps: false  # Use GPS data
+    set_origin_on_start: false  # Set origin of the map frame with the first GPS data
+    use_gazebo_tf: True  # Use the gazebo tf tree
