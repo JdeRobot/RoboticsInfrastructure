@@ -17,6 +17,12 @@ from cv_bridge import CvBridge
 import rclpy
 from rclpy.qos import QoSProfile, QoSHistoryPolicy, QoSReliabilityPolicy, QoSDurabilityPolicy
 
+import subprocess
+import sys
+from tf2_ros import TransformException
+from tf2_ros.buffer import Buffer
+from tf2_ros.transform_listener import TransformListener
+from std_srvs.srv import Trigger
 
 class DroneWrapper(DroneInterfaceBase):
     """
@@ -56,6 +62,10 @@ class DroneWrapper(DroneInterfaceBase):
 
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
+        
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
+        self.reset_service = self.create_service(Trigger, 'quadrotor/reset_pose', self.reset)
 
     def get_position(self) -> List[float]:
         """Get drone position (x, y, z) in m.
@@ -214,6 +224,59 @@ class DroneWrapper(DroneInterfaceBase):
 
         self.disarm()
 
+    def reset(self, request, response):
+        """Reset the drone position and aerostack state machine"""
+
+        # Get the transform from 'earth' to 'drone0/map'
+        from_frame_rel = 'earth'
+        to_frame_rel = 'drone0/map'
+
+        try:
+            t = self.tf_buffer.lookup_transform(
+                    to_frame_rel,
+                    from_frame_rel,
+                    rclpy.time.Time())
+        except TransformException as ex:
+            self.get_logger().info(
+                f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
+            response.success = False
+            return response
+        
+        x = t.transform.translation.x
+        y = t.transform.translation.x
+        z = t.transform.translation.x
+
+        qx = t.transform.rotation.x
+        qy = t.transform.rotation.y
+        qz = t.transform.rotation.z
+        qw = t.transform.rotation.w
+
+        # the gz service to reset model pose
+        service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
+        reqtype = "gz.msgs.Pose"
+        reptype = "gz.msgs.Boolean"
+        timeout = "3000"
+        req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
+
+        command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
+
+        subprocess.call(
+            f"{command}",
+            shell=True,
+            stdout=sys.stdout,
+            stderr=subprocess.STDOUT,
+            bufsize=1024,
+            universal_newlines=True,
+        )
+        
+        # Updating the aerostack state machine to LANDED
+        asyncio.run(self.call_state_event_service(
+            PlatformStateMachineEvent.LAND))
+        asyncio.run(self.call_state_event_service(
+            PlatformStateMachineEvent.LANDED))
+        
+        response.success = True
+        return response
 
 def main(args=None):
     rclpy.init(args=args)
