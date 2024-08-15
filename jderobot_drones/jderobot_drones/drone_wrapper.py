@@ -228,14 +228,14 @@ class DroneWrapper(DroneInterfaceBase):
         """Reset the drone position and aerostack state machine"""
 
         # Get the transform from 'earth' to 'drone0/map'
-        from_frame_rel = 'earth'
-        to_frame_rel = 'drone0/map'
+        from_frame_rel = 'drone0/map'
+        to_frame_rel = 'earth'
 
         try:
             t = self.tf_buffer.lookup_transform(
                     to_frame_rel,
                     from_frame_rel,
-                    rclpy.time.Time())
+                    rclpy.time.Time(seconds=0))
         except TransformException as ex:
             self.get_logger().info(
                 f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
