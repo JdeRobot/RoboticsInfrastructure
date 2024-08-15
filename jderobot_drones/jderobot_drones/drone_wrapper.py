@@ -65,7 +65,7 @@ class DroneWrapper(DroneInterfaceBase):
         
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
-        self.reset_service = self.create_service(Trigger, 'quadrotor/reset_pose', self.reset)
+        self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
 
     def get_position(self) -> List[float]:
         """Get drone position (x, y, z) in m.
