@@ -231,25 +231,34 @@ class DroneWrapper(DroneInterfaceBase):
         from_frame_rel = 'drone0/map'
         to_frame_rel = 'earth'
 
-        try:
-            t = self.tf_buffer.lookup_transform(
-                    to_frame_rel,
-                    from_frame_rel,
-                    rclpy.time.Time(seconds=0))
-        except TransformException as ex:
-            self.get_logger().info(
-                f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
-            response.success = False
-            return response
+        # try:
+        #     t = self.tf_buffer.lookup_transform(
+        #             to_frame_rel,
+        #             from_frame_rel,
+        #             rclpy.time.Time(seconds=0))
+        # except TransformException as ex:
+        #     self.get_logger().info(
+        #         f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
+        #     response.success = False
+        #     return response
         
-        x = t.transform.translation.x
-        y = t.transform.translation.x
-        z = t.transform.translation.x
+        # x = t.transform.translation.x
+        # y = t.transform.translation.x
+        # z = t.transform.translation.x
 
-        qx = t.transform.rotation.x
-        qy = t.transform.rotation.y
-        qz = t.transform.rotation.z
-        qw = t.transform.rotation.w
+        # qx = t.transform.rotation.x
+        # qy = t.transform.rotation.y
+        # qz = t.transform.rotation.z
+        # qw = t.transform.rotation.w
+
+        x = 0
+        y = 0
+        z = 1.449
+
+        qx = 0
+        qy = 0
+        qz = 0
+        qw = 1
 
         # the gz service to reset model pose
         service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
