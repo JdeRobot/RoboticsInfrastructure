@@ -265,8 +265,8 @@ class DroneWrapper(DroneInterfaceBase):
         reqtype = "gz.msgs.Pose"
         reptype = "gz.msgs.Boolean"
         timeout = "3000"
-        req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
-
+        # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
+        req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
         command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
 
         subprocess.call(
