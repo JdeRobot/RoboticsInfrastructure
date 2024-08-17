@@ -50,6 +50,11 @@ class DroneReset(Node):
         from_frame_rel = 'drone0/map'
         to_frame_rel = 'earth'
 
+        self.get_logger().info('Reset service called')  # Add this line
+        # Your reset logic here
+        response.success = True
+        return response
+
         # try:
         #     t = self.tf_buffer.lookup_transform(
         #             to_frame_rel,
@@ -98,13 +103,13 @@ class DroneReset(Node):
         # )
         
         # Updating the aerostack state machine to LANDED
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.LAND))
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.LANDED))
+        # asyncio.run(self.call_state_event_service(
+        #     PlatformStateMachineEvent.LAND))
+        # asyncio.run(self.call_state_event_service(
+        #     PlatformStateMachineEvent.LANDED))
         
-        response.success = True
-        return response
+        # response.success = True
+        # return response
 
 def main(args=None):
     rclpy.init(args=args)
