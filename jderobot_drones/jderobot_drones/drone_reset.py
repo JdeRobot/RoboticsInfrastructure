@@ -70,32 +70,32 @@ class DroneReset(Node):
         # qz = t.transform.rotation.z
         # qw = t.transform.rotation.w
 
-        x = 0
-        y = 0
-        z = 1.449
+        # x = 0
+        # y = 0
+        # z = 1.449
 
-        qx = 0
-        qy = 0
-        qz = 0
-        qw = 1
+        # qx = 0
+        # qy = 0
+        # qz = 0
+        # qw = 1
 
-        # the gz service to reset model pose
-        service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
-        reqtype = "gz.msgs.Pose"
-        reptype = "gz.msgs.Boolean"
-        timeout = "3000"
-        # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
-        req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
-        command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
+        # # the gz service to reset model pose
+        # service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
+        # reqtype = "gz.msgs.Pose"
+        # reptype = "gz.msgs.Boolean"
+        # timeout = "3000"
+        # # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
+        # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
+        # command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
 
-        subprocess.call(
-            f"{command}",
-            shell=True,
-            stdout=sys.stdout,
-            stderr=subprocess.STDOUT,
-            bufsize=1024,
-            universal_newlines=True,
-        )
+        # subprocess.call(
+        #     f"{command}",
+        #     shell=True,
+        #     stdout=sys.stdout,
+        #     stderr=subprocess.STDOUT,
+        #     bufsize=1024,
+        #     universal_newlines=True,
+        # )
         
         # Updating the aerostack state machine to LANDED
         asyncio.run(self.call_state_event_service(
