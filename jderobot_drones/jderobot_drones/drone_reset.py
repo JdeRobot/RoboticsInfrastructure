@@ -19,6 +19,12 @@ class DroneReset(Node):
         
         if not rclpy.ok(): 
             rclpy.init()
+
+        drone_id: str = "drone0"
+        
+        self.state_event_service_client = self.create_client(
+            SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
+            
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
