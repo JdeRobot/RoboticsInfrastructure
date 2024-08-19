@@ -16,6 +16,9 @@ class DroneReset(Node):
 
     def __init__(self):
         super().__init__('quadrotor_reset')
+        
+        if not rclpy.ok(): 
+            rclpy.init()
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
@@ -50,10 +53,10 @@ class DroneReset(Node):
         from_frame_rel = 'drone0/map'
         to_frame_rel = 'earth'
 
-        self.get_logger().info('Reset service called')  # Add this line
-        # Your reset logic here
-        response.success = True
-        return response
+        # self.get_logger().info('Reset service called')  # Add this line
+        # # Your reset logic here
+        # response.success = True
+        # return response
 
         # try:
         #     t = self.tf_buffer.lookup_transform(
@@ -75,41 +78,41 @@ class DroneReset(Node):
         # qz = t.transform.rotation.z
         # qw = t.transform.rotation.w
 
-        # x = 0
-        # y = 0
-        # z = 1.449
+        x = 0
+        y = 0
+        z = 1.449
 
-        # qx = 0
-        # qy = 0
-        # qz = 0
-        # qw = 1
+        qx = 0
+        qy = 0
+        qz = 0
+        qw = 1
 
-        # # the gz service to reset model pose
-        # service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
-        # reqtype = "gz.msgs.Pose"
-        # reptype = "gz.msgs.Boolean"
-        # timeout = "3000"
-        # # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
-        # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
-        # command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
+        # the gz service to reset model pose
+        service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
+        reqtype = "gz.msgs.Pose"
+        reptype = "gz.msgs.Boolean"
+        timeout = "3000"
+        # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
+        req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
+        command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
 
-        # subprocess.call(
-        #     f"{command}",
-        #     shell=True,
-        #     stdout=sys.stdout,
-        #     stderr=subprocess.STDOUT,
-        #     bufsize=1024,
-        #     universal_newlines=True,
-        # )
+        subprocess.call(
+            f"{command}",
+            shell=True,
+            stdout=sys.stdout,
+            stderr=subprocess.STDOUT,
+            bufsize=1024,
+            universal_newlines=True,
+        )
         
         # Updating the aerostack state machine to LANDED
-        # asyncio.run(self.call_state_event_service(
-        #     PlatformStateMachineEvent.LAND))
-        # asyncio.run(self.call_state_event_service(
-        #     PlatformStateMachineEvent.LANDED))
+        asyncio.run(self.call_state_event_service(
+            PlatformStateMachineEvent.LAND))
+        asyncio.run(self.call_state_event_service(
+            PlatformStateMachineEvent.LANDED))
         
-        # response.success = True
-        # return response
+        response.success = True
+        return response
 
 def main(args=None):
     rclpy.init(args=args)

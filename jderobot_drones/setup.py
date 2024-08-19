@@ -25,7 +25,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'service = jderobot_drones.drone_reset:main',
+            'drone_reset = jderobot_drones.drone_reset:main',
         ],
     },
 )
