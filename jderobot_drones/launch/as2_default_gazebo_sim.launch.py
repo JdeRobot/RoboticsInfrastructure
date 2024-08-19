@@ -1,5 +1,5 @@
 """
-as2_default_ign_gazebo.launch.py
+as2_default_gazebo_sim.launch.py
 """
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -14,21 +14,29 @@ def generate_launch_description():
     Launch aerostack2 nodes
     """
 
-    # If needed
-#    rviz_config = os.path.join(os.getcwd(), 'swarm_config.rviz')
-#    print(f'{os.path.isfile(rviz_config)=}')
+    sim_config = os.path.join(get_package_share_directory('jderobot_drones'), 'sim_config/gzsim')
 
-    sim_config = os.path.join(get_package_share_directory('jderobot_drones'), 'sim_config/ign')
-
-    aerial_platform = IncludeLaunchDescription(
+    gazebo_assets = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('as2_platform_ign_gazebo'), 'launch'),
-            '/ign_gazebo_launch.py']),
+            get_package_share_directory('as2_gazebo_assets'), 'launch'),
+            '/launch_simulation.py']),
         launch_arguments={
             'namespace': LaunchConfiguration('namespace'),
             'use_sim_time': 'true',
-            'simulation_config_file': sim_config + '/world.json',
-            'platform_config_file': sim_config + '/platform_config_file.yaml'
+            'headless': 'true',
+            'verbose': 'true',
+            'run_on_start': 'true',
+            'simulation_config_file': LaunchConfiguration('world_file'),
+        }.items(),
+    )
+    platform_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('as2_platform_gazebo'), 'launch'),
+            '/platform_gazebo_launch.py']),
+        launch_arguments={
+            'namespace': LaunchConfiguration('namespace'),
+            'use_sim_time': 'true',
+            'simulation_config_file': LaunchConfiguration('world_file'),
         }.items(),
     )
     state_estimator = IncludeLaunchDescription(
@@ -67,23 +75,15 @@ def generate_launch_description():
             'land_plugin_name': 'land_plugin_speed'
         }.items(),
     )
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('as2_ign_gazebo_assets'), 'launch'),
-            '/launch_simulation.py']),
-        launch_arguments={
-            'namespace': LaunchConfiguration('namespace'),
-            'use_sim_time': 'true',
-            'simulation_config_file': sim_config + '/world.json'
-        }.items(),
-    )
 
     return LaunchDescription([
         DeclareLaunchArgument('namespace', default_value='drone0',
                               description='Drone namespace.'),
-        aerial_platform,
+        DeclareLaunchArgument('world_file', default_value=sim_config + '/world.json',
+                              description='json world file'),
+        gazebo_assets,
+        platform_gazebo,
         state_estimator,
         motion_controller,
-        behaviors,
-#        gazebo
+        # behaviors,
     ])
