@@ -76,8 +76,8 @@ class DroneReset(Node):
             return response
         
         x = t.transform.translation.x
-        y = t.transform.translation.x
-        z = t.transform.translation.x
+        y = t.transform.translation.y
+        z = t.transform.translation.z
 
         qx = t.transform.rotation.x
         qy = t.transform.rotation.y
