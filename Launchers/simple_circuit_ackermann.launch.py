@@ -17,7 +17,7 @@ def generate_launch_description():
 
   # Set the path to the world file
   world_file_name = 'simple_circuit_ackermann.world'
-  worlds_dir = "/opt/jderobots/Worlds"
+  worlds_dir = "/opt/jderobot/Worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
@@ -58,7 +58,7 @@ def generate_launch_description():
     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
     condition=IfCondition(use_simulator),
     launch_arguments={'world': world}.items())
-
+ 
   # Create the launch description and populate
   ld = LaunchDescription()
  
