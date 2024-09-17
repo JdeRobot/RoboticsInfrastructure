@@ -63,6 +63,11 @@ class DroneWrapper(DroneInterfaceBase):
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
         
+        asyncio.run(self.call_state_event_service(
+            PlatformStateMachineEvent.LANDED))
+
+        self.disarm()
+        
         # self.tf_buffer = Buffer()
         # self.tf_listener = TransformListener(self.tf_buffer, self)
         # self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
