@@ -92,7 +92,10 @@ class DroneReset(Node):
         # qy = 0
         # qz = 0
         # qw = 1
-
+        await self.call_state_event_service(
+            PlatformStateMachineEvent.LAND)
+        await self.call_state_event_service(
+            PlatformStateMachineEvent.LANDED)
         # the gz service to reset model pose
         service = "$(gz service -l | grep '^/world/\w*/set_pose$')"
         reqtype = "gz.msgs.Pose"
@@ -101,7 +104,7 @@ class DroneReset(Node):
         # req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{x: {qx}, y: {qy}, z: {qz}, w: {qw}}}'
         req = f'name: "drone0", position: {{x: {x}, y: {y}, z: {z}}}'
         command = f"gz service -s {service} --reqtype {reqtype} --reptype {reptype} --timeout {timeout} --req '{req}'"
-
+        self.get_logger().info('Quadrotor position set to its initial value')
         subprocess.call(
             f"{command}",
             shell=True,
@@ -110,14 +113,8 @@ class DroneReset(Node):
             bufsize=1024,
             universal_newlines=True,
         )
-        self.get_logger().info('Quadrotor position set to its initial value')
+        # self.get_logger().info('Quadrotor position set to its initial value')
         # Updating the aerostack state machine to LANDED
-        print("PRE")
-        await self.call_state_event_service(
-            PlatformStateMachineEvent.LAND)
-        await self.call_state_event_service(
-            PlatformStateMachineEvent.LANDED)
-        print("POST")
         
         response.success = True
         return response
