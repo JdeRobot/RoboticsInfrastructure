@@ -63,11 +63,6 @@ class DroneWrapper(DroneInterfaceBase):
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
         
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.LANDED))
-
-        self.disarm()
-        
         # self.tf_buffer = Buffer()
         # self.tf_listener = TransformListener(self.tf_buffer, self)
         # self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
@@ -295,6 +290,11 @@ class DroneWrapper(DroneInterfaceBase):
 def main(args=None):
     rclpy.init(args=args)
     drone = DroneWrapper()
+
+    asyncio.run(drone.call_state_event_service(PlatformStateMachineEvent.LANDED))
+
+    # Desarmar el dron si es necesario, ya que estamos en el contexto adecuado
+    drone.disarm()
     rclpy.spin(drone)
     rclpy.shutdown()
 
