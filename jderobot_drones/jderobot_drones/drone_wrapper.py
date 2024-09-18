@@ -64,10 +64,24 @@ class DroneWrapper(DroneInterfaceBase):
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
         
+        self.shutdown_service = self.create_service(Trigger, '/drone0_interface/shutdown', self.handle_shutdown)
+        
         # self.tf_buffer = Buffer()
         # self.tf_listener = TransformListener(self.tf_buffer, self)
         # self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
 
+    def shutdown(self):
+        self.destroy_node()
+
+        self.get_logger().info('Node DroneWrapper killed.')
+
+    def handle_shutdown(self, request, response):
+        self.shutdown()
+        
+        response.success = True
+        response.message = "Success killing node"
+        return response
+    
     def get_position(self) -> List[float]:
         """Get drone position (x, y, z) in m.
 
