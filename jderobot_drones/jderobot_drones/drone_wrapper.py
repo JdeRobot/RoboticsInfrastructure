@@ -37,6 +37,7 @@ class DroneWrapper(DroneInterfaceBase):
 
     def __init__(self, drone_id: str = "drone0", verbose: bool = False) -> None:
         super().__init__(drone_id, verbose, use_sim_time=False)
+        self.get_logger().info(f"Node '{self.get_name()}' created correctly.")
 
         yaw_rate_topic = '/' + drone_id + '/self_localization/twist'
 
