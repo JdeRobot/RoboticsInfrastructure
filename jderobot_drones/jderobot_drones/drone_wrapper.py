@@ -62,9 +62,6 @@ class DroneWrapper(DroneInterfaceBase):
 
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
-
-        self.create_task(self.call_state_event_service(PlatformStateMachineEvent.LANDED))
-        self.disarm()
         
         # self.tf_buffer = Buffer()
         # self.tf_listener = TransformListener(self.tf_buffer, self)
