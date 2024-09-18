@@ -169,6 +169,7 @@ class DroneWrapper(DroneInterfaceBase):
         if response is not None:
             self.get_logger().info(f'Success: {response.success}')
             self.get_logger().info(f'Current State: {response.current_state}')
+            self.get_logger().info(f"DEBUGG: NODE '{self.get_name()}'.")
         else:
             self.get_logger().error('Service call failed')
 
@@ -291,6 +292,7 @@ class DroneWrapper(DroneInterfaceBase):
 def main(args=None):
     rclpy.init(args=args)
     drone = DroneWrapper()
+    print(isinstance(drone, rclpy.node.Node))
     rclpy.spin(drone)
     rclpy.shutdown()
 
