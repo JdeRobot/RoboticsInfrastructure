@@ -71,9 +71,10 @@ class DroneWrapper(DroneInterfaceBase):
         # self.reset_service = self.create_service(Trigger, '/quadrotor_reset_pose', self.reset)
 
     def shutdown(self):
+        self.get_logger().info('Shutting down node...')
         self.destroy_node()
+        self.get_logger().info('Node destroyed.')
 
-        self.get_logger().info('Node DroneWrapper killed.')
 
     def handle_shutdown(self, request, response):
         self.shutdown()
@@ -183,7 +184,6 @@ class DroneWrapper(DroneInterfaceBase):
         if response is not None:
             self.get_logger().info(f'Success: {response.success}')
             self.get_logger().info(f'Current State: {response.current_state}')
-            self.get_logger().info(f"DEBUGG: NODE '{self.get_name()}'.")
         else:
             self.get_logger().error('Service call failed')
 
