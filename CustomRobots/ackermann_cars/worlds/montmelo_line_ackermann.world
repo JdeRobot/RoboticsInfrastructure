@@ -28,7 +28,7 @@
     </include>
     <include>
       <uri>model://f1_renault_camera</uri>
-      <pose>80.87 -94.62 0.00 0.00 0 1.56</pose>
+      <pose>134.98 -157.93 0.026 0 0 1.56</pose>
     </include>
   </world>
 </sdf>

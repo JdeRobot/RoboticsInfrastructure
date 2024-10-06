@@ -16,8 +16,8 @@
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <mesh>
-                        <uri>model://simple_circuit/meshes/simple_line.dae</uri>
-                        <scale>3 3 3</scale>
+                        <uri>model://big_simple_circuit/meshes/simple_line.dae</uri>
+                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </visual>
@@ -27,8 +27,8 @@
             <collision name="collision">
                <geometry>
                     <mesh>
-                        <uri>model://simple_circuit/meshes/pared.dae</uri>
-                        <scale>3 3 3</scale>
+                        <uri>model://big_simple_circuit/meshes/pared.dae</uri>
+                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </collision>
@@ -36,8 +36,8 @@
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <mesh>
-                        <uri>model://simple_circuit/meshes/pared.dae</uri>
-                        <scale>3 3 3</scale>
+                        <uri>model://big_simple_circuit/meshes/pared.dae</uri>
+                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </visual>    

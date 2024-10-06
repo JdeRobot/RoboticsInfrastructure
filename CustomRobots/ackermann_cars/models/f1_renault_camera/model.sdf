@@ -26,7 +26,7 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <pose>0 1.6 0.0 0 -0 1.57</pose>
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
@@ -45,14 +45,14 @@
           </friction>
         </surface>
       </collision>
-      <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+      <visual name="visual">
+        <pose>0 1.6 0.0 0 -0 1.57</pose>
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
             <uri>model://f1_renault_ackermann/Renault/chasis.dae</uri>
-          </mesh>
-        </geometry>
+        </mesh>
+      </geometry>
       </visual>
       <!-- <velocity_decay/> -->
       <!--  <gravity>1</gravity> -->
@@ -62,7 +62,7 @@
       <!--  <gravity>1</gravity> -->
     </link>
 
-     <!-- CAMERA -->
+    <!-- CAMERA -->
     <link name="camera_f1">
         <pose>0 0 0 0 0 0</pose>
         <inertial>
@@ -84,17 +84,17 @@
                     <radius>.1</radius>
                 </sphere>
             </geometry>
-        </visual> -->
+        </visual>-->
         <velocity_decay>
           <linear>0.000000</linear>
           <angular>0.000000</angular>
         </velocity_decay>
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
-        <gravity>1</gravity>
+        <gravity>0</gravity>
 
         <sensor name='cam_f1_left' type='camera'>
-          <pose>0 2.7 0.2 0 0 1.57</pose>
+          <pose>0 2.7 0.5 0 0 1.57</pose>
           <update_rate>20.000000</update_rate>
           <camera name='cam'>
             <horizontal_fov>1.570000</horizontal_fov>
@@ -121,6 +121,9 @@
             <distortionK3>0.0</distortionK3>
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
+            <ros>
+                <namespace>f1ros2</namespace>
+            </ros>
           </plugin>
         </sensor>
 
@@ -161,7 +164,7 @@
         </velocity_decay>
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
-        <gravity>1</gravity>
+        <gravity>0</gravity>
 
         <sensor name='cam_float' type='camera'>
           <pose>0 -3 2 0 0.1 1.57</pose>
@@ -191,7 +194,9 @@
             <distortionK3>0.0</distortionK3>
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
-
+            <ros>
+                <namespace>f1ros2</namespace>
+            </ros>
           </plugin>
         </sensor>
 
@@ -203,8 +208,9 @@
         <parent>chassis_link</parent>
     </joint>
 
+    <!-- BACK LEFT WHEEL -->
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.775 -1.75364 0.304997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -214,6 +220,7 @@
         </dynamics>
       </axis>
     </joint>
+
     <link name='bl_1'>
       <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -249,7 +256,7 @@
         </surface>
       </collision>
       <visual name='bl_1_visual'>
-        <pose>0.875 1.0136 0.1444 0 -0 0</pose>
+        <pose>0.875 1.01364 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -262,8 +269,9 @@
       <self_collide>0</self_collide>
     </link>
 
+    <!-- BACK RIGHT WHEEL -->
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.775 -1.75364 0.304997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -273,6 +281,7 @@
         </dynamics>
       </axis>
     </joint>
+
     <link name='br_1'>
       <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -308,7 +317,7 @@
         </surface>
       </collision>
       <visual name='br_1_visual'>
-        <pose>-0.875 1.0136 0.1444 0 -0 0</pose>
+        <pose>-0.875 1.01364 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -321,8 +330,9 @@
       <self_collide>0</self_collide>
     </link>
 
+    <!-- FRONT LEFT WHEEL -->
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.825 1.51736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.7 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -332,10 +342,11 @@
           <upper>0.95</upper>
         </limit>
         <dynamics>
-          <friction>18.0474092253</friction>
+          <friction>12.031606150200002</friction>
         </dynamics>
       </axis>
     </joint>
+
     <link name='l_steer_1'>
       <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -366,6 +377,7 @@
         </dynamics>
       </axis>
     </joint>
+
     <link name='fl_1'>
       <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -381,12 +393,12 @@
         </inertia>
       </inertial>
       <collision name='fl_1_collision'>
-        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose relative_to='fl_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://autocar/meshes/fl_1.stl</uri>
-          </mesh>
+          <cylinder>
+            <radius>.3425</radius>
+            <length>.22</length>
+          </cylinder>
         </geometry>
         <surface>
           <contact>
@@ -394,8 +406,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>1.1</mu>
-              <mu2>1.1</mu2>
+              <mu>1.7</mu>
+              <mu2>1.7</mu2>
             </ode>
           </friction>
         </surface>
@@ -413,9 +425,10 @@
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
-    
+
+    <!-- FRONT RIGHT WHEEL -->
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.825 1.51736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.705 1.61736 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -426,10 +439,11 @@
         </limit>
         <dynamics>
           <damping>0.01</damping>
-          <friction>18.0474092253</friction>
+          <friction>12.031606150200002</friction>
         </dynamics>
       </axis>
     </joint>
+
     <link name='r_steer_1'>
       <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -448,6 +462,7 @@
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
+
     <joint name='fr_axle' type='revolute'>
       <pose relative_to='r_steer_1'>0.05 0 0 0 -0 0</pose>
       <parent>r_steer_1</parent>
@@ -474,12 +489,12 @@
         </inertia>
       </inertial>
       <collision name='fr_1_collision'>
-        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose relative_to='fr_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://autocar/meshes/fr_1.stl</uri>
-          </mesh>
+          <cylinder>
+            <radius>.3425</radius>
+            <length>.22</length>
+          </cylinder>
         </geometry>
         <surface>
           <contact>
@@ -507,7 +522,7 @@
       <self_collide>0</self_collide>
     </link>
 
-    <!--STEERING WHEEL-->
+       <!--STEERING WHEEL-->
     <joint name="steering_joint" type="revolute">
       <pose relative_to='chassis_link'>-0.01 0.6 0.6 0 0 0</pose>
       <parent>chassis_link</parent>
@@ -515,13 +530,12 @@
       <axis>
         <xyz>0.0 -1.0 0.0</xyz>
         <limit>
-          <lower>-100</lower>
-          <upper>100</upper>
+          <lower>-0.6</lower>
+          <upper>0.6</upper>
         </limit>
         <dynamics>
-          <damping>10.0</damping>
+          <damping>0.0</damping>
         </dynamics>
-        <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
       <physics>
         <ode>
@@ -542,12 +556,13 @@
       </visual>
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
 
     <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
 
       <ros>
+        <namespace>f1ros2</namespace>
         <remapping>cmd_vel:=cmd_vel</remapping>
         <remapping>odom:=odom</remapping>
         <remapping>distance:=distance</remapping>
