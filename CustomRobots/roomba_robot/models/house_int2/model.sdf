@@ -4261,7 +4261,7 @@
         <self_collide>1</self_collide>
         <kinematic>0</kinematic>
       </link>
-      <pose>4.7 4.48 0 0 -0 0</pose>
+      <pose>4.4 4.48 0 0 -0 0</pose>
       <static>0</static>
     </model>
     <model name='estanteria_2'>
