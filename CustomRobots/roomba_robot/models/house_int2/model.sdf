@@ -4673,7 +4673,7 @@
         <self_collide>1</self_collide>
         <kinematic>0</kinematic>
       </link>
-      <pose>4.4 0.5 0 0 -0 0</pose>
+      <pose>4.7 0.5 0 0 -0 0</pose>
       <static>0</static>
     </model>
     <model name='mesita_1'>
