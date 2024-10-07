@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="Vanity">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual_wood">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/vanity.dae</uri>
+            <submesh>
+              <name>Wood</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Wood_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Wood_Normal.png</normal_map>
+              <roughness_map>materials/textures/Wood_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="visual_counter">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/vanity.dae</uri>
+            <submesh>
+              <name>Counter</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Counter_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Counter_Normal.png</normal_map>
+              <roughness>0.2</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="visual_silver">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/vanity.dae</uri>
+            <submesh>
+              <name>Silver</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <metalness>1</metalness>
+              <roughness>0.2</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box001">
+        <pose>0.0 -0.0106516 0.379152 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.21718 0.575318 0.758303</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box002">
+        <pose>-0.272681 -0.305972 0.585342 1.5708 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0102536 0.107767 0.0349179</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box003">
+        <pose>-0.184261 -0.305972 0.585342 1.5708 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0102536 0.107767 0.0349179</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box004">
+        <pose>0.369992 -0.305972 0.663856 1.5708 1.5708 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0102536 0.107767 0.0349179</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box005">
+        <pose>0.369992 -0.305972 0.458689 1.5708 1.5708 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0102536 0.107767 0.0349179</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box006">
+        <pose>0.369992 -0.305972 0.253608 1.5708 1.5708 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0102536 0.107767 0.0349179</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box007">
+        <pose>-0.139849 0.209554 0.765791 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.125907 0.0331994 0.113379</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box008">
+        <pose>0.13985 0.209554 0.765791 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.125907 0.0331994 0.113379</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box009">
+        <pose>0.0 0.147483 0.795837 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0428084 0.163859 0.17347</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

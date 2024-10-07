@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="sky">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="Sky_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/sky.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Sky.png</albedo_map>
+              <emissive_map>materials/textures/Sky.png</emissive_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

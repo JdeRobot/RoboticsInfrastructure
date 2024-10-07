@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="Fridge">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/fridge.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Fridge_Albedo.jpg</albedo_map>
+              <normal_map>materials/textures/Fridge_Normal.png</normal_map>
+              <roughness_map>materials/textures/Fridge_Roughness.jpg</roughness_map>
+              <metalness_map>materials/textures/Fridge_Metalness.jpg</metalness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box001">
+        <pose>0.0 0.0 0.867923 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.734673 0.7239 1.73585</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

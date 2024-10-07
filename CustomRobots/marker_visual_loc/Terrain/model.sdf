@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="harmonic_heightmap">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <pose>0 -300 -5 0 0 0</pose>
+        <geometry>
+          <heightmap>
+            <uri>materials/textures/Heightmap.png</uri>
+            <size>1200 1200 600</size>
+          </heightmap>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <heightmap>
+            <use_terrain_paging>true</use_terrain_paging>
+            <texture>
+              <diffuse>materials/textures/Sand_Albedo.png</diffuse>
+              <normal>materials/textures/Sand_Normal.png</normal>
+              <size>10</size>
+            </texture>
+            <texture>
+              <diffuse>materials/textures/Grass_Albedo.png</diffuse>
+              <normal>materials/textures/Grass_Normal.png</normal>
+              <size>10</size>
+            </texture>
+            <texture>
+              <diffuse>materials/textures/Rock_Albedo.png</diffuse>
+              <normal>materials/textures/Rock_Normal.png</normal>
+              <size>120</size>
+            </texture>
+            <blend>
+              <min_height>6</min_height>
+              <fade_dist>6</fade_dist>
+            </blend>
+            <blend>
+              <min_height>7</min_height>
+              <fade_dist>70</fade_dist>
+            </blend>
+            <uri>materials/textures/Heightmap.png</uri>
+            <size>1200 1200 201.66</size>
+            <pos>0 -300 -5</pos>
+          </heightmap>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

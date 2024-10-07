@@ -1,0 +1,235 @@
+
+material Fallback/ConcreteTiles_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ConcreteTiles_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Siding_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Siding_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/WhiteWood_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture WhiteWood_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Roof_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Roof_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Brick_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Brick_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Deck_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Deck_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Stairs_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Stairs_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Baseboard_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Baseboard_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/StainlessSteel_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture StainlessSteel_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Cabinets_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Cabinets_Albedo.jpeg
+        }
+      }
+    }
+  }
+material Fallback/Fireplace_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Fireplace_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Counter_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Counter_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/WallBeige_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture WallBeige_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Glass_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Glass.png
+        }
+      }
+    }
+  }
+material Fallback/Cobblestone_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Cobblestone_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Floor_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Floor_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/WallWhite_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture WallWhite_Albedo.png
+        }
+      }
+    }
+  }
+material Fallback/Hedge
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Hedge.png
+        }
+      }
+    }
+  }

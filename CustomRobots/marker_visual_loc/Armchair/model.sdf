@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="Armchair">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/armchair.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Armchair_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Armchair_Normal.png</normal_map>
+              <roughness_map>materials/textures/Armchair_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box001">
+        <pose>0.0 0.261949 0.460133 -0.384212 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.631431 0.0699235 0.445858</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box003">
+        <pose>0.0 -0.0236233 0.268079 1.47249 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.631431 0.130198 0.491702</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box004">
+        <pose>-0.29402 0.291571 0.221926 -3.0538 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0315716 0.038458 0.445858</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box005">
+        <pose>-0.29402 -0.242078 0.24347 2.87267 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0315716 0.038458 0.50382</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box006">
+        <pose>-0.312721 0.0406857 0.462906 1.48645 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0754561 0.038458 0.67008</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box007">
+        <pose>0.29402 0.291571 0.221926 -3.0538 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0315716 0.038458 0.445858</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box008">
+        <pose>0.29402 -0.242078 0.24347 2.87267 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0315716 0.038458 0.50382</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box009">
+        <pose>0.31272 0.0406857 0.462906 1.48645 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0754561 0.038458 0.67008</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box010">
+        <pose>-0.000554919 0.305595 0.439838 -0.0833634 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.591172 0.0720425 0.0233079</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

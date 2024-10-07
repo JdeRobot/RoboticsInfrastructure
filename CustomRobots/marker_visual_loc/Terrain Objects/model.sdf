@@ -1,0 +1,1344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="lakehouseterrain">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="RockPile_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>RockPile</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/RockPile_Albedo.png</albedo_map>
+              <normal_map>materials/textures/RockPile_Normal.png</normal_map>
+              <roughness_map>materials/textures/RockPile_Roughness.png</roughness_map>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/RockPile_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Bush_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>Bush</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Bush01_Albedo.png</albedo_map>
+              <roughness>0.9</roughness>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/Bush01_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Rock01_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>Rock01</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Rock01_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Rock01_Normal.png</normal_map>
+              <roughness_map>materials/textures/Rock01_Roughness.png</roughness_map>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/Rock01_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Rock02_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>Rock02</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Rock02_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Rock02_Normal.png</normal_map>
+              <roughness_map>materials/textures/Rock02_Roughness.png</roughness_map>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/Rock02_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="JeffreyTreeLeaves_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>JeffreyTreeLeaves</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/TreeJeffreyPine_Albedo.png</albedo_map>
+              <roughness>0.9</roughness>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/TreeJeffreyPine_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="JeffreyTreeBark_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>JeffreyTreeBark</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Bark_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Bark_Normal.png</normal_map>
+              <roughness>0.9</roughness>
+              <metalness>0</metalness>
+              <!-- <light_map uv_set="1">materials/textures/LightmapDark.png</light_map> -->
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>materials/scripts/</uri>
+            <uri>materials/textures/</uri>
+            <name>UrbanTile/Bark_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Stump">
+        <cast_shadows>true</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>Stump</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Stump_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Stump_Normal.png</normal_map>
+              <metalness>0</metalness>
+              <roughness>1</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="Log">
+        <cast_shadows>true</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>meshes/terrainobjects.dae</uri>
+            <scale>1 1 1</scale>
+            <submesh>
+              <name>Log</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Log_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Log_Normal.png</normal_map>
+              <metalness>0</metalness>
+              <roughness>1</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="Background Trees">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>meshes/background_trees.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/TreeBillboard_Pine_HS.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Rock01_Collider_62">
+        <pose>-13.85 29.2 -0.149999 1.54938 -0.108275 -1.4642</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0925913 0.0925913 0.0925913</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_61">
+        <pose>-3.011 12.572 5.655 1.64608 0.589584 -1.85892</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0765549 0.0765549 0.0765549</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_60">
+        <pose>25.52 -49.02 19.74 1.59514 -0.0720534 -1.50843</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.418799 0.418799 0.418799</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_59">
+        <pose>25.2753 -54.3438 20.13 -2.11838 0.465225 -0.851434</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.418799 0.418799 0.418799</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_58">
+        <pose>-226.47 -21.62 -2.98 0.37281 0.554471 2.51987</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>1.08293 1.08293 1.08293</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_57">
+        <pose>-207.18 0.9 -0.64 0.744983 -0.0572695 -1.52805</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.383459 0.38346 0.383459</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_56">
+        <pose>-211.33 13.03 -0.639999 0.985681 -0.429833 -0.640877</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.709624 0.709624 0.709624</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_55">
+        <pose>-219.78 -0.98 -2.3 3.11015 0.00624987 1.57457</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>1.08293 1.08293 1.08293</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_54">
+        <pose>-137.48 -52.18 2.19 -1.88131 0.489525 -2.67695</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>1.5289 1.5289 1.5289</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_53">
+        <pose>153.96 -71.55 22.17 -2.29088 -0.18094 -1.79075</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.831392 0.831392 0.831392</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_52">
+        <pose>154.27 -98.48 40.93 0.591428 0.259046 -1.84697</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.831392 0.831392 0.831392</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_51">
+        <pose>103.56 30.29 6.3 -2.05146 -0.90631 -0.0932676</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.429734 0.429734 0.429734</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_50">
+        <pose>95.84 32.11 4.53 -0.339031 -0.28061 3.03216</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.577856 0.577856 0.577856</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_49">
+        <pose>-76.32 17.7 0.800001 2.89658 0.0131037 1.36506</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.274654 0.274655 0.274654</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_48">
+        <pose>-45.94 -43.6 2.46 1.47448 1.14212 -1.39708</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.669739 0.669739 0.669739</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_47">
+        <pose>-58.76 -44.84 4.52 2.37038 -0.261797 1.52875</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.669739 0.669739 0.669739</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_46">
+        <pose>-71.2 10.29 0.8 -1.57412 1.06289 1.7438</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.543849 0.543849 0.543849</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_45">
+        <pose>-39.32 12.54 -0.469999 -2.01028 -0.779961 -2.35258</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_44">
+        <pose>-7.14 -82.89 13.91 -1.93177 -0.817206 -0.191363</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.785619 0.785619 0.785619</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_43">
+        <pose>28.32 44.17 -0.229998 -0.370357 0.237485 -0.93277</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.303526 0.303526 0.303526</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_42">
+        <pose>-0.92 23.04 4.0 0.84754 -0.273245 1.67723</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_41">
+        <pose>-4.16 -40.19 6.92 -1.98457 -0.571686 -0.589588</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.416471 0.416471 0.416471</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_40">
+        <pose>-6.83 -48.26 10.13 -2.59505 0.134361 1.40204</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.595402 0.595402 0.595402</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_39">
+        <pose>-13.71 -55.8 7.43 1.67262 0.373683 -1.93531</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.595402 0.595402 0.595402</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_38">
+        <pose>42.51 -13.52 8.51 0.148316 0.728935 -2.62778</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.595402 0.595402 0.595402</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_37">
+        <pose>51.46 -7.74 9.18 0.459385 -0.00646295 1.7897</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.434219 0.434219 0.434219</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_36">
+        <pose>48.54 -15.23 10.8602 -2.02408 -0.768508 -0.02671</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.43422 0.434219 0.434219</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_35">
+        <pose>-37.33 14.93 0.540467 2.18783 -0.0693842 -1.08546</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_34">
+        <pose>-0.749432 27.8572 2.19 1.82979 0.179892 -1.80297</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_33">
+        <pose>24.38 43.83 0.490002 2.93994 0.605073 0.504454</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_32">
+        <pose>96.9909 -55.5118 24.5872 2.43334 0.0454828 1.65211</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.816806 0.816806 0.816806</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_31">
+        <pose>95.5696 -18.6359 12.01 0.537717 -0.944548 0.270854</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.368371 0.368371 0.368371</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_30">
+        <pose>-19.2652 -92.0146 18.6118 0.877466 -0.559401 1.86272</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.785619 0.785619 0.785619</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_29">
+        <pose>-82.71 12.44 0.8 0.512085 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.543849 0.543849 0.543849</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_28">
+        <pose>-56.4103 -33.8545 7.53619 -0.316958 1.24931 -2.79088</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.669739 0.669739 0.669739</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_27">
+        <pose>-63.58 -53.6 8.96 -1.14659 0.117434 -1.66739</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.464705 0.464705 0.464705</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_26">
+        <pose>-59.9226 -24.3304 7.17963 -0.101018 0.535916 -2.51286</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.32832 0.32832 0.32832</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_25">
+        <pose>78.3238 24.3286 5.6 2.88253 0.494809 0.119138</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.561636 0.561636 0.561636</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_24">
+        <pose>77.95 31.12 6.0 -3.05103 0.894792 0.41813</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.305425 0.305425 0.305425</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_23">
+        <pose>108.8 34.69 2.39 -1.24927 0.754511 -2.39203</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.577856 0.577856 0.577856</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_22">
+        <pose>114.59 -49.06 21.8855 1.07118 -0.24708 1.94865</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.772735 0.772735 0.772734</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_21">
+        <pose>141.08 -104.24 40.71 0.590241 0.263056 -1.85157</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.652584 0.652584 0.652584</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_20">
+        <pose>-146.296 -38.6498 6.849 -0.475523 0.410089 3.13391</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.864271 0.864271 0.864271</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_19">
+        <pose>35.45 -46.64 19.04 0.353856 -0.180307 1.25998</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.418799 0.418799 0.418799</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_18">
+        <pose>118.546 -7.34099 10.87 1.32732 0.62685 -2.32506</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.602974 0.602974 0.602974</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_17">
+        <pose>111.463 -16.969 13.95 1.5708 3.278260 -2.9265</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.347396 0.347396 0.347396</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_16">
+        <pose>7.87 -22.87 6.36 -0.389548 -0.0303665 1.37225</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.162382 0.162382 0.162382</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_15">
+        <pose>7.92 -15.66 5.86 1.5708 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.131865 0.131865 0.131865</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_14">
+        <pose>59.3594 45.254 0.640002 0.759397 1.229350 -3.04895</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.28635 0.28635 0.28635</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_13">
+        <pose>6.127 40.583 0.395002 1.84199 0.61055 -2.0352</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0498512 0.0498512 0.0498512</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_12">
+        <pose>5.414 25.798 4.354 1.55548 -0.0721284 -1.47762</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.107071 0.107071 0.107072</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_11">
+        <pose>17.064 15.237 5.0 1.5708 0.0 1.7918</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_10">
+        <pose>15.253 18.423 5.911 -0.570376 -0.114998 1.46682</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0746473 0.0746473 0.0746473</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_9">
+        <pose>15.307 11.368 5.83 -0.348574 0.615025 -0.80666</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.107072 0.107072 0.107071</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_8">
+        <pose>2.949 -9.01 6.28 -0.901707 -0.0419167 1.16168</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0860905 0.0860905 0.0860905</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_7">
+        <pose>-17.14 -18.72 5.641 0.750607 -0.105271 -0.647237</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_6">
+        <pose>-2.473 35.064 1.151 1.37372 0.567345 -2.34232</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.167324 0.167324 0.167324</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_5">
+        <pose>4.18766 19.5487 5.567 0.581212 -0.343856 0.316382</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0860905 0.0860905 0.0860905</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_4">
+        <pose>7.442 24.223 5.332 0.872262 -0.639949 -0.25384</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0879981 0.0879981 0.0879981</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_3">
+        <pose>2.635 8.95 5.451 2.99595 -0.926956 -3.09921</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.120422 0.120422 0.120422</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_2">
+        <pose>-2.572 10.368 5.778 -0.248221 0.0913395 1.65411</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.0765548 0.0765549 0.0765549</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider_1">
+        <pose>-15.6877 11.0218 3.61 0.388618 -0.623566 0.974232</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.215787 0.215787 0.215787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="Rock01_Collider">
+        <pose>-15.06 27.2 -0.669999 3.10764 -0.172082 1.42044</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock01.dae</uri>
+            <scale>0.145216 0.145216 0.145216</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider">
+        <pose>-15.638 -14.924 6.359 2.92566 -0.791832 0.769929</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.133437 0.133437 0.133437</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_1">
+        <pose>4.302 41.148 -0.315998 -1.65968 0.35208 2.53928</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.15334 0.15334 0.15334</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_2">
+        <pose>96.0638 16.7138 8.83 -0.77303 -0.283936 -1.75366</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.555661 0.555661 0.555661</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_3">
+        <pose>28.27 -40.62 18.46 1.5708 -0.53039 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.376133 0.376133 0.376133</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_4">
+        <pose>28.1563 -50.6305 22.9 1.7512 -0.290022 0.159898</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.376133 0.376133 0.376133</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_5">
+        <pose>141.549 -71.6492 29.71 1.65995 0.3286 2.91735</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.665379 0.665379 0.665379</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_6">
+        <pose>104.888 -39.2539 19.44 1.64171 0.0258351 0.137725</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.605536 0.605537 0.605537</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_7">
+        <pose>-67.14 -70.41 9.52 -1.17897 1.23284 -1.34025</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.8715 0.8715 0.8715</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_8">
+        <pose>-89.15 7.9 2.69076 1.77497 0.0671459 2.65275</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.376133 0.376133 0.376133</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_9">
+        <pose>-71.45 20.91 0.411616 1.5708 0.0 -0.291397</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.395024 0.395024 0.395024</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_10">
+        <pose>-19.6154 -77.9517 13.7722 1.5708 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.529069 0.529069 0.529069</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_11">
+        <pose>84.81 -60.68 24.01 1.68882 -0.00744034 2.20046</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.499128 0.499128 0.499128</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_12">
+        <pose>-29.08 15.21 -0.839999 1.89244 -0.126683 1.55475</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.376133 0.376133 0.376133</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_13">
+        <pose>-4.6 -35.6 6.58 1.96881 -0.0997364 0.879418</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.186633 0.186633 0.186633</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rock02_collider_14">
+        <pose>1.47627 -39.8111 11.2873 1.5708 0.0 0.555827</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rock02.dae</uri>
+            <scale>0.376133 0.376133 0.376133</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_29">
+        <pose>-3.49 -39.1 10.99 -0.437595 -0.202497 -0.140881</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0060457 0.0060457 0.0060457</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_28">
+        <pose>-10.6446 -39.7229 6.08 -0.0448556 -0.127 -0.0194671</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477845 0.00477845 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_30">
+        <pose>-0.99 -34.85 7.44 -0.317045 -0.213755 0.0158561</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477845 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_27">
+        <pose>-1.43792 30.3448 2.61 -0.287696 -0.104014 0.285123</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_26">
+        <pose>22.48 41.41 2.16 -0.0486734 -0.172843 -0.704799</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_25">
+        <pose>90.24 -16.73 14.23 -0.123153 0.0655716 0.00811877</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477845</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_24">
+        <pose>-2.11834 -72.9305 17.52 0.0 -0.255236 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0109025 0.0109025 0.0109025</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_31">
+        <pose>-12.34 -74.26 14.22 0.393253 -0.0613005 -2.25178</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0141787 0.0141787 0.0141787</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_32">
+        <pose>24.52 46.12 0.920002 0.511252 0.0966989 -1.80538</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477845 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_23">
+        <pose>-63.34 -46.63 12.94 -0.112664 0.195696 -0.110523</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00655222 0.00655222 0.00655222</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_22">
+        <pose>-54.64 -23.68 6.15 -0.14942 0.123824 0.143596</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0060457 0.0060457 0.0060457</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_33">
+        <pose>-45.96 -30.01 5.44 -0.0125016 0.0103851 -1.82105</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00802265 0.00802264 0.00802264</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_21">
+        <pose>112.668 -35.1119 19.14 -0.174642 -0.0381702 -0.442292</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0120852 0.0120852 0.0120852</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_34">
+        <pose>91.56 -46.05 20.87 0.0906006 0.150487 0.875637</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0163585 0.0163585 0.0163585</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_20">
+        <pose>144.62 -67.61 32.07 -0.416475 -0.0613467 -0.295505</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00972033 0.00972033 0.00972033</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_35">
+        <pose>143.39 -73.32 33.95 -0.173342 -0.0396668 1.15756</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00972033 0.00972034 0.00972033</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_19">
+        <pose>55.9125 -2.69271 8.4 -0.26558 -0.185169 0.199388</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00701716 0.00701716 0.00701716</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_36">
+        <pose>45.31 -4.62 8.75 0.257138 -0.00607084 1.58682</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00708998 0.00708998 0.00708998</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_18">
+        <pose>34.4136 -38.722 18.89 -0.345852 -0.222247 -0.110324</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00579197 0.00579197 0.00579197</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_37">
+        <pose>21.75 -41.56 17.57 0.430002 0.0453518 -2.40855</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00579197 0.00579197 0.00579196</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_17">
+        <pose>-148.025 -23.74 5.56 -0.0204592 0.0750566 0.00155168</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00925539 0.00925539 0.00925539</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_16">
+        <pose>8.1 -17.53 6.15 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_15">
+        <pose>-45.4233 -34.2438 5.91 -0.151697 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_14">
+        <pose>5.051 39.47 0.376002 0.194572 -0.16598 -1.05538</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00287782 0.00287782 0.00287782</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_13">
+        <pose>7.171 42.053 0.0240018 -0.137156 -0.137762 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00173745 0.00173745 0.00173745</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_12">
+        <pose>-0.032 39.536 0.200002 -0.18868 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00300455 0.00300455 0.00300455</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_11">
+        <pose>7.112 4.261 6.005 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00258218 0.00258218 0.00258218</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_10">
+        <pose>5.546 -15.098 6.183 0.222873 -0.104337 -0.695818</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00203309 0.00203309 0.00203309</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_9">
+        <pose>2.88 -10.441 6.095 0.0884301 0.0511042 1.0481</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00207533 0.00207533 0.00207533</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_8">
+        <pose>-14.662 -15.958 6.16 -1.43456e-07 0.0 -1.92372</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00269437 0.00269437 0.00269437</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_7">
+        <pose>2.498 19.264 5.749 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0022443 0.0022443 0.0022443</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_6">
+        <pose>2.41533 22.9683 4.731 -1.62532e-07 0.0 -1.61966</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00232878 0.00232878 0.00232878</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_5">
+        <pose>-6.488 -1.896 6.054 0.202483 0.0134045 1.28081</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00275115 0.00275115 0.00204611</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_38">
+        <pose>-6.516 -4.425 6.184 -1.60145e-07 0.0 -1.70169</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00216755 0.00216755 0.00161207</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_4">
+        <pose>16.865 31.19 3.672 0.347347 0.0231517 -1.67135</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00266667 0.00266666 0.00266667</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_3">
+        <pose>3.283 32.868 2.901 -0.1627 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00152629 0.00152629 0.00152629</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_2">
+        <pose>-14.231 10.965 5.51 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.0024977 0.0024977 0.0024977</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider_1">
+        <pose>-14.9815 14.2558 4.517 -0.240315 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00334243 0.00334243 0.00334243</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="rockpile_collider">
+        <pose>51.2014 7.59159 6.94 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_rockpile.dae</uri>
+            <scale>0.00477846 0.00477846 0.00477846</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="StumpCollider">
+        <pose>0.281 31.562 2.918 0.0572849 -0.065186 0.0183151</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_stump.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="StumpCollider_1">
+        <pose>44.9528 2.38428 7.43 0.25085 0.020702 -2.56125</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_stump.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="StumpCollider_2">
+        <pose>-42.2841 -31.2647 5.359 0.0 0.0 0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_stump.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name="StumpCollider_3">
+        <pose>-9.63565 -35.0113 6.179 0.0657493 0.0427428 0.00303132</pose>
+        <geometry>
+          <mesh>
+            <uri>meshes/collider_stump.dae</uri>
+            <scale>1.3801 1.3801 1.3801</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

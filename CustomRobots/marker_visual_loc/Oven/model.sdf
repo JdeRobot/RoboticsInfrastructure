@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="Oven">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual_oven">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/oven.dae</uri>
+            <submesh>
+              <name>Oven</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Oven_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Oven_Normal.png</normal_map>
+              <roughness_map>materials/textures/Oven_Roughness.png</roughness_map>
+              <metalness_map>materials/textures/Oven_Metalness.png</metalness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="visual_glass">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/oven.dae</uri>
+            <submesh>
+              <name>Glass</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Glass.png</albedo_map>
+              <roughness>0.1</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box001">
+        <pose>-0.000304252 -1.66893e-06 0.517103 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.691523 0.96649 1.03421</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

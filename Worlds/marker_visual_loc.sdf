@@ -1,0 +1,289 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.9">
+  <world name="default">
+
+
+
+    <physics name="1ms" type="ignored">
+      <dart>
+        <!-- Heightmaps behave better with the bullet collision detector -->
+        <collision_detector>bullet</collision_detector>
+      </dart>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
+      <graded_buoyancy>
+        <default_density>1000</default_density>
+        <density_change>
+          <above_depth>0</above_depth>
+          <density>1</density>
+        </density_change>
+      </graded_buoyancy>
+      <enable>Tethys</enable>
+    </plugin>
+    <plugin
+      filename="gz-sim-dvl-system"
+      name="gz::sim::systems::DopplerVelocityLogSystem">
+    </plugin>
+
+    <gravity>0 0 -9.8</gravity>
+    <scene>
+      <ambient>1 1 1</ambient>
+      <grid>false</grid>
+      <sky></sky>
+    </scene>
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 20 -1.3 0 0.5</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.01 0.01 0.01 1</specular>
+      <intensity>2</intensity>
+      <visualize>false</visualize>
+    </light>
+    <light type="point" name="point_light">
+      <pose>0.73 0.09 8.77 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>.01 .01 .01 1</specular>
+      <attenuation>
+        <range>20</range>
+        <linear>0.2</linear>
+        <constant>0.8</constant>
+        <quadratic>0.01</quadratic>
+      </attenuation>
+      <cast_shadows>true</cast_shadows>
+      <visualize>false</visualize>
+    </light>
+    <light type="point" name="point_light_01">
+      <pose>3.482 -4.28 8.87 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.01 0.01 0.01 1</specular>
+      <attenuation>
+        <range>10</range>
+        <linear>0.5</linear>
+        <constant>0.8</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
+      <visualize>false</visualize>
+    </light>
+    <light type="point" name="point_light_02">
+      <pose>0.13 0.46 11.60 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.01 0.01 0.01 1</specular>
+      <attenuation>
+        <range>10</range>
+        <linear>0.2</linear>
+        <constant>0.5</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
+      <visualize>false</visualize>
+    </light>
+    <light type="point" name="point_light_03">
+      <pose>4.27 -1.27 11.21 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.01 0.01 0.01 1</specular>
+      <attenuation>
+        <range>10</range>
+        <linear>0.5</linear>
+        <constant>0.8</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
+      <visualize>false</visualize>
+    </light>
+    <light type="point" name="point_light_04">
+      <pose>-0.31 -3.78 8.61 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>.01 .01 .01 1</specular>
+      <attenuation>
+        <range>10</range>
+        <linear>0.5</linear>
+        <constant>0.8</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
+      <visualize>false</visualize>
+    </light>
+    <include>
+      <name>Lake House</name>
+      <uri>Lake House</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>Water</name>
+      <uri>Coast Waves 2</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>Terrain</name>
+      <uri>Terrain</uri>
+    </include>
+    <include>
+      <name>Terrain Objects</name>
+      <uri>Terrain Objects</uri>
+    </include>
+    <include>
+      <name>Armchair_01</name>
+      <pose>-0.24 -0.13 6.90 0 0 -0.77</pose>
+      <uri>Armchair</uri>
+    </include>
+    <include>
+      <name>Armchair_02</name>
+      <pose>-0.12 -1.44 6.90 0 0 -1.75</pose>
+      <uri>Armchair</uri>
+    </include>
+    <include>
+      <pose>5.46 -1.63 9.46 0 0 -1.57</pose>
+      <name>Bathtub</name>
+      <uri>Bathtub</uri>
+    </include>
+    <include>
+      <pose>0.14 -1.62 9.46 0 0 3.14</pose>
+      <name>Bed</name>
+      <uri>Bed</uri>
+    </include>
+    <include>
+      <pose>3.45 -3.88 6.90 0 0 -1.57</pose>
+      <name>Dining Table</name>
+      <uri>Dining Table</uri>
+    </include>
+    <include>
+      <pose>2.9 -3.34 6.90 0 0 -0.03</pose>
+      <name>Dining Chair 01</name>
+      <uri>Dining Chair</uri>
+    </include>
+    <include>
+      <pose>3.87 -3.19 6.90 0 0 -0.32</pose>
+      <name>Dining Chair 02</name>
+      <uri>Dining Chair</uri>
+    </include>
+    <include>
+      <pose>3.81 -4.43 6.90 0 0 -2.69</pose>
+      <name>Dining Chair 03</name>
+      <uri>Dining Chair</uri>
+    </include>
+    <include>
+      <pose>2.88 -4.60 6.90 0 0 2.87</pose>
+      <name>Dining Chair 04</name>
+      <uri>Dining Chair</uri>
+    </include>
+    <include>
+      <pose>1.75 -3.89 6.90 0 0 0</pose>
+      <name>Fridge</name>
+      <uri>Fridge</uri>
+    </include>
+    <include>
+      <pose>4.34 -6.36 6.83 0 0 1.57</pose>
+      <name>Oven</name>
+      <uri>Oven</uri>
+    </include>
+    <include>
+      <pose>2.75 -1.79 9.46 0 0 1.57</pose>
+      <name>Toilet</name>
+      <uri>Toilet</uri>
+    </include>
+    <include>
+      <pose>3.03 0.49 9.46 0 0 1.57</pose>
+      <name>Vanity</name>
+      <uri>Vanity</uri>
+    </include>
+    <include>
+      <pose>-0.39 2.31 9.48 0 0 -1.57</pose>
+      <name>Desk</name>
+      <uri>Desk</uri>
+    </include>
+    <include>
+      <pose>-0.74 1.45 9.48 0 0 -0.81</pose>
+      <name>Office Chair</name>
+      <uri>Office Chair</uri>
+    </include>
+    <include>
+      <pose>2.98 0.85 6.91 0 0 -2.37</pose>
+      <name>Piano</name>
+      <uri>Piano</uri>
+    </include>
+    <include>
+      <pose>0 0 0 0 0 2.6</pose>
+      <name>Sky</name>
+      <uri>Sky</uri>
+    </include>
+    
+  <!-- April Tags -->
+    <include>
+      <pose>0 0 0 0 0 0</pose>
+      <name>posAprilTags</name>
+      <uri>posAprilTags</uri>
+    </include>
+
+
+
+    <model name="boundary">
+      <static>true</static>
+      <link name="link">
+        <collision name="x">
+          <pose>3000 0 0 0 0 0</pose>
+          <geometry>
+          <box>
+            <size>1 6000 6000</size>
+          </box>
+          </geometry>
+        </collision>
+        <collision name="y">
+          <pose>0 3000 0 0 0 0</pose>
+          <geometry>
+          <box>
+            <size>6000 1 6000</size>
+          </box>
+          </geometry>
+        </collision>
+        <collision name="x_neg">
+          <pose>-3000 0 0 0 0 0</pose>
+          <geometry>
+          <box>
+            <size>1 6000 6000</size>
+          </box>
+          </geometry>
+        </collision>
+        <collision name="y_neg">
+          <pose>0 -3000 0 0 0 0</pose>
+          <geometry>
+          <box>
+            <size>6000 1 6000</size>
+          </box>
+          </geometry>
+        </collision>
+        <collision name="bottom">
+          <pose>0 0 -3000 0 0 0</pose>
+          <geometry>
+          <box>
+            <size>6000 6000 1</size>
+          </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+  </world>
+</sdf>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="Bathtub">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/bathtub.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Bathtub_Albedo.jpg</albedo_map>
+              <normal_map>materials/textures/Bathtub_Normal.png</normal_map>
+              <roughness_map>materials/textures/Bathtub_Roughness.jpg</roughness_map>
+              <metalness_map>materials/textures/Bathtub_Metalness.jpg</metalness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box003">
+        <pose>0.0 0.0 0.341135 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.83106 0.767396 0.426196</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box002">
+        <pose>0.100994 0.424134 0.359413 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.20341 0.0898533 0.718826</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box001">
+        <pose>-0.0080871 -0.00691932 0.077711 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.20452 0.471123 0.155422</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

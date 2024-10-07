@@ -1,0 +1,1943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="house">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="Concrete_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Concrete</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/ConcreteTiles_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/ConcreteTiles_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/ConcreteTiles_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/ConcreteTiles_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Siding_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Siding</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Siding_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Siding_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Siding_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Siding_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="WhiteWood_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>WhiteWood</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/WhiteWood_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/WhiteWood_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/WhiteWood_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/WhiteWood_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Roof_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Roof</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Roof_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Roof_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Roof_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Roof_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Deck_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Deck</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Deck_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Deck_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Deck_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Deck_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="WallBeige_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>WallBeige</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/WallBeige_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Wall_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Wall_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/WallBeige_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Brick_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Brick</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Brick_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Brick_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Brick_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Brick_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Asphalt_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Asphalt</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Asphalt_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Asphalt_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Asphalt_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Asphalt_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Baseboard_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Baseboard</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Baseboard_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Baseboard_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Baseboard_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Baseboard_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Cobblestone_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Cobblestone</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Cobblestone_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Cobblestone_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Cobblestone_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Cobblestone_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Cabinets_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Cabinets</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Cabinets_Albedo.jpeg</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Cabinets_Normal.jpeg</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Cabinets_Roughness.jpeg</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Cabinets_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="StainlessSteel_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>StainlessSteel</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/StainlessSteel_Albedo.png</albedo_map>
+              <metalness_map>model://Lake House/materials/textures/StainlessSteel_Metalness.png</metalness_map>
+              <roughness_map>model://Lake House/materials/textures/StainlessSteel_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/StainlessSteel_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Fireplace_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Fireplace</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Fireplace_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Fireplace_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Fireplace_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Fireplace_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Counter_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Counter</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Counter_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Counter_Normal.png</normal_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Counter_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Hedge_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Hedge</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Hedges_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Hedges_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Hedges_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Hedge_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Glass_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Glass</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Glass.png</albedo_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Glass_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Floor_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Floor</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Floor_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Floor_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Floor_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Floor_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="WallWhite_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>WallWhite</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/WallWhite_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Wall_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Wall_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/WallWhite_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <visual name="Stairs_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Lake House/meshes/house.dae</uri>
+            <submesh>
+              <name>Stairs</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://Lake House/materials/textures/Stairs_Albedo.png</albedo_map>
+              <normal_map>model://Lake House/materials/textures/Stairs_Normal.png</normal_map>
+              <roughness_map>model://Lake House/materials/textures/Stairs_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+          <!-- fallback to script if no PBR support-->
+          <!-- <script>
+            <uri>model://Lake House/materials/scripts/</uri>
+            <uri>model://Lake House/materials/textures/</uri>
+            <name>Fallback/Stairs_Diffuse</name>
+          </script> -->
+        </material>
+      </visual>
+      <collision name="Box264">
+        <pose>6.48595 22.671 4.39152 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box265">
+        <pose>6.20971 22.7998 4.23912 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box266">
+        <pose>5.93347 22.9286 4.08672 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box267">
+        <pose>5.65723 23.0575 3.93432 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box268">
+        <pose>5.38098 23.1863 3.78192 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box269">
+        <pose>5.10474 23.3151 3.62952 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box270">
+        <pose>4.8285 23.4439 3.47712 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box271">
+        <pose>4.55226 23.5727 3.32472 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box272">
+        <pose>4.27601 23.7015 3.17232 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box273">
+        <pose>3.99977 23.8303 3.01992 0.0 0.0 -2.00713</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box274">
+        <pose>3.09902 28.5939 3.00152 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box275">
+        <pose>2.94662 28.8578 2.84912 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box276">
+        <pose>2.79422 29.1218 2.69672 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box277">
+        <pose>2.64182 29.3858 2.54432 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box278">
+        <pose>2.48942 29.6497 2.39192 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box279">
+        <pose>2.33702 29.9137 2.23952 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box280">
+        <pose>2.18462 30.1777 2.08712 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box281">
+        <pose>2.03222 30.4416 1.93472 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box282">
+        <pose>1.87982 30.7056 1.78232 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box283">
+        <pose>1.72742 30.9696 1.62992 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box284">
+        <pose>1.57502 31.2335 1.47752 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box285">
+        <pose>1.42262 31.4975 1.32512 0.0 0.0 -2.61799</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box286">
+        <pose>1.55496 35.2256 1.23697 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box287">
+        <pose>1.55496 35.5304 1.08456 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box288">
+        <pose>1.55496 35.8352 0.932166 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box289">
+        <pose>1.55496 36.14 0.779767 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box290">
+        <pose>1.55496 36.4448 0.627366 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box291">
+        <pose>1.55496 36.7496 0.474965 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box292">
+        <pose>1.55496 37.0544 0.322566 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box293">
+        <pose>1.55496 37.3592 0.170167 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box294">
+        <pose>1.55496 37.664 0.0177656 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box295">
+        <pose>1.55496 37.9688 -0.134635 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box296">
+        <pose>1.55496 38.2736 -0.287035 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box297">
+        <pose>1.55496 38.5784 -0.439434 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box298">
+        <pose>1.55496 38.8832 -0.591835 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box299">
+        <pose>1.55496 39.188 -0.744236 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box300">
+        <pose>1.55496 39.4928 -0.896635 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box301">
+        <pose>1.55496 39.7976 -1.04903 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box302">
+        <pose>1.55496 40.1024 -1.20143 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box303">
+        <pose>1.55496 40.4072 -1.35384 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box304">
+        <pose>1.57699 32.7625 2.52081 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.9494 4.65 1.1045</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box305">
+        <pose>3.35466 26.0097 4.59231 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.81294 4.60304 0.474934</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box306">
+        <pose>4.86095 23.3037 4.59231 0.0 0.0 1.06465</pose>
+        <geometry>
+          <box>
+            <size>1.63165 4.60304 0.474934</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box307">
+        <pose>1.57699 40.522 0.0961467 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>4.28868 7.0 0.474934</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box434">
+        <pose>1.87068 -0.00746155 11.953 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.23481 5.84594 0.0194221</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box310">
+        <pose>0.0540314 10.6757 4.51147 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>3.5055 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box311">
+        <pose>-0.113493 7.60315 4.66387 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>3.2148 5.86539 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box313">
+        <pose>-0.361706 5.08709 4.77971 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>2.7873 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box316">
+        <pose>-0.375128 4.78229 4.93211 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>2.5992 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box317">
+        <pose>0.501661 -0.472484 5.57728 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>13.3432 10.3482 1.85124</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box318">
+        <pose>2.80803 -5.5388 5.57728 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.73845 3.62188 1.85124</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Cylinder007">
+        <pose>-3.99238 -18.686 5.53156 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>1.845</length>
+            <radius>9.76</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Box319">
+        <pose>-3.76456 -7.27381 5.57728 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>4.84478 4.10307 1.85124</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Cylinder008">
+        <pose>10.2033 16.7223 3.11 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>6.22</length>
+            <radius>4.24918</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Cylinder009">
+        <pose>13.0895 14.4144 3.11 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>6.22</length>
+            <radius>2.40418</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Box320">
+        <pose>7.69284 18.1085 3.11 0.0 0.0 -0.420944</pose>
+        <geometry>
+          <box>
+            <size>5.59319 9.08337 6.22</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Cylinder010">
+        <pose>3.48187 14.6793 3.11 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>6.22</length>
+            <radius>3.82426</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Box321">
+        <pose>8.99854 13.0963 3.11 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.12555 2.17107 6.22</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Cylinder011">
+        <pose>2.65053 12.9259 3.11 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>6.22</length>
+            <radius>5.12451</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Box322">
+        <pose>5.28042 15.9668 3.11 0.0 0.0 -1.41995</pose>
+        <geometry>
+          <box>
+            <size>5.59319 3.63335 6.22</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box323">
+        <pose>14.1176 16.6899 3.11 0.0 0.0 -1.20441</pose>
+        <geometry>
+          <box>
+            <size>3.13219 1.30801 6.22</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box324">
+        <pose>3.34019 28.2401 4.59231 0.0 0.0 0.554669</pose>
+        <geometry>
+          <box>
+            <size>1.63165 0.846638 0.474934</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box325">
+        <pose>-4.24645 0.595903 4.93 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box326">
+        <pose>-4.55125 0.595904 4.7751 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box329">
+        <pose>0.604722 -4.80262 4.93 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box330">
+        <pose>0.604721 -5.10742 4.7751 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.71 0.31 3.66</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box331">
+        <pose>0.984091 -0.00475311 3.455 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>10.168 9.3 6.91</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box332">
+        <pose>3.67673 -5.74726 3.455 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>4.78351 2.24595 6.91</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box333">
+        <pose>-0.391062 -4.50911 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box334">
+        <pose>1.07796 -4.50911 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box336">
+        <pose>-3.9554 -4.50911 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box337">
+        <pose>-2.03484 -4.50911 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box338">
+        <pose>-3.9554 -2.52465 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box339">
+        <pose>-3.9554 -0.391956 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box340">
+        <pose>-3.9554 1.59186 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box341">
+        <pose>-3.9554 3.02782 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box342">
+        <pose>-3.9554 4.49688 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box343">
+        <pose>-1.94202 4.49688 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box344">
+        <pose>1.07989 4.49688 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box345">
+        <pose>5.92499 4.49688 7.94762 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 2.09094</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box346">
+        <pose>-2.94966 4.49346 7.29243 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.84197 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box347">
+        <pose>-3.95468 3.0096 7.29243 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>2.87347 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box348">
+        <pose>-3.95468 -2.52893 7.29243 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>4.10907 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box349">
+        <pose>-2.17808 -4.50898 7.29243 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>3.61598 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box350">
+        <pose>3.53944 4.49346 7.29243 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>4.82596 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box351">
+        <pose>5.92878 3.74029 7.29243 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.54431 0.0497828 0.805</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box352">
+        <pose>0.908772 0.0124688 9.09242 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>10.2352 9.51664 0.136869</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box353">
+        <pose>3.37125 2.89799 8.096 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>5.35515 0.13 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box354">
+        <pose>6.00262 -1.96236 8.096 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>9.74622 0.137 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box355">
+        <pose>3.66259 -6.80988 8.096 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>4.77565 0.127 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box356">
+        <pose>1.32212 -4.90714 8.096 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>3.92415 0.107 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box357">
+        <pose>-1.02311 -2.91994 8.096 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>2.39326 0.127 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box358">
+        <pose>-2.251 -2.35937 8.096 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.25883 0.135 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box359">
+        <pose>-2.25149 1.95592 8.096 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.94142 0.135 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box360">
+        <pose>4.80255 0.563147 8.16325 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.42573 4.62123 2.52451</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box361">
+        <pose>5.473 -1.59959 6.98944 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box362">
+        <pose>5.473 -1.39109 7.18694 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box363">
+        <pose>5.473 -1.18259 7.38444 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box364">
+        <pose>5.473 -0.974091 7.58194 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box365">
+        <pose>5.473 -0.765592 7.77944 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box366">
+        <pose>5.473 -0.557092 7.97694 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box367">
+        <pose>5.473 -0.348592 8.17444 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box368">
+        <pose>5.473 -0.140092 8.37194 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box369">
+        <pose>5.473 0.0684083 8.56944 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box370">
+        <pose>5.473 0.276908 8.76694 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box371">
+        <pose>5.473 0.485408 8.96445 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box372">
+        <pose>5.473 0.693908 9.16195 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box373">
+        <pose>5.473 0.902408 9.35945 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.94573 0.24 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box374">
+        <pose>-2.251 -0.125214 8.096 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.427697 0.135 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box375">
+        <pose>-2.251 0.526443 9.13804 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.0077 0.135 0.3107</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box376">
+        <pose>1.22281 -2.91994 8.096 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>0.303258 0.127 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box377">
+        <pose>0.609143 -2.91994 9.13456 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>1.04326 0.127 0.3007</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box378">
+        <pose>-1.9605 2.89799 8.096 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.71617 0.13 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box379">
+        <pose>-0.448343 2.89799 9.12625 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>2.39617 0.13 0.2868</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box380">
+        <pose>1.87421 2.89828 9.32942 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.39094 0.133623 0.0888368</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box381">
+        <pose>1.87379 2.89808 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.3906 0.135127 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box382">
+        <pose>6.00237 -0.0106311 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.134035 5.95299 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box383">
+        <pose>1.87467 -2.91988 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>8.39089 0.135341 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box384">
+        <pose>-2.25262 -2.35722 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.138041 1.26122 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box385">
+        <pose>-2.25265 1.3125 10.6242 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.138283 3.30377 2.67935</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box386">
+        <pose>5.43036 -0.0887549 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.06577 0.109247 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box387">
+        <pose>4.94845 0.585543 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.109245 1.4627 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box388">
+        <pose>3.26492 1.26173 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.19943 0.112197 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box389">
+        <pose>2.67967 -0.797709 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.117186 4.23358 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box390">
+        <pose>1.37608 -0.00646496 9.39596 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>7.2443 5.76825 0.135952</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box391">
+        <pose>5.46156 -1.46555 9.39598 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.06819 2.9084 0.136</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box392">
+        <pose>5.48098 1.94539 9.39598 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.00993 1.85477 0.136</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box393">
+        <pose>4.81492 1.26173 10.6245 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.239887 0.112197 2.679</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box394">
+        <pose>4.3074 1.26173 11.8204 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.02989 0.112197 0.58617</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box395">
+        <pose>4.61319 0.856891 10.4788 0.0 0.0 -0.0872665</pose>
+        <geometry>
+          <box>
+            <size>0.0267053 0.80236 2.02005</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box396">
+        <pose>0.971644 3.7903 9.55338 -0.468434 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>10.109 1.82156 0.0485544</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box397">
+        <pose>-3.18773 -0.011652 9.56253 -0.443423 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>9.19919 1.94907 0.0485544</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box398">
+        <pose>-1.56387 -3.8503 9.54268 -0.471973 0.0 -3.14159</pose>
+        <geometry>
+          <box>
+            <size>4.97493 1.94907 0.0485544</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box399">
+        <pose>4.9993 -5.03916 9.94963 -0.549176 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>4.13964 3.25495 0.158554</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box400">
+        <pose>2.32924 -5.03916 9.94963 -0.549176 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>4.13964 3.25495 0.158554</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box401">
+        <pose>4.18308 -6.80988 9.01932 0.0 -0.546898 3.14159</pose>
+        <geometry>
+          <box>
+            <size>2.70827 0.127 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box402">
+        <pose>3.11116 -6.80988 9.004 0.0 0.561855 3.14159</pose>
+        <geometry>
+          <box>
+            <size>2.70827 0.127 2.39</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box403">
+        <pose>1.677 -5.49126 7.35875 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.631729 2.52691 0.927727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box404">
+        <pose>3.79418 -6.44428 7.35875 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.631729 3.7651 0.927727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box405">
+        <pose>5.22333 -6.60099 8.72833 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.381729 1.20728 0.917727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box406">
+        <pose>2.96174 -6.60099 8.72833 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.381729 1.7747 0.917727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box407">
+        <pose>1.53255 -5.1667 8.72833 0.0 0.0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>0.341729 1.7747 0.917727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box408">
+        <pose>1.74226 -6.38305 8.72833 0.0 0.0 -2.35619</pose>
+        <geometry>
+          <box>
+            <size>0.341729 0.916086 0.917727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box409">
+        <pose>1.61634 -6.5058 8.72833 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.441729 0.446086 0.917727</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box410">
+        <pose>-2.01343 -1.0384 8.28208 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.539029 1.79905 0.0408998</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box411">
+        <pose>-2.03487 -1.0384 6.93189 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.499029 1.65513 0.0608998</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box412">
+        <pose>-2.07575 -1.70181 7.54667 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.417567 0.220922 1.24982</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box413">
+        <pose>-2.07575 -0.371676 7.54667 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.417567 0.220922 1.24982</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box414">
+        <pose>-2.1304 -1.02449 7.948 1.5708 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.17082 0.42274 0.374811</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box415">
+        <pose>-2.13031 -1.58846 7.34603 1.5708 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.105198 0.835739 0.375</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box416">
+        <pose>-2.13031 -0.483594 7.34603 1.5708 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.105198 0.835739 0.375</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box417">
+        <pose>-2.32639 -1.02741 7.35967 1.5708 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.02471 0.785089 0.0240283</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box418">
+        <pose>-2.14493 -1.0296 6.98567 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.36173 1.21871 0.0901146</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box419">
+        <pose>-2.04737 -1.0384 8.20969 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.469029 1.65513 0.1309</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box420">
+        <pose>-2.4804 -1.03149 10.1734 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.813694 1.52782 6.66144</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box421">
+        <pose>10.6632 12.2242 6.33566 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>5.35068 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box422">
+        <pose>13.9616 12.457 6.33566 0.0 0.0 0.349066</pose>
+        <geometry>
+          <box>
+            <size>1.97975 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box423">
+        <pose>14.9876 13.3146 6.16412 0.0 0.261799 1.13446</pose>
+        <geometry>
+          <box>
+            <size>1.24724 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box424">
+        <pose>15.2371 13.9373 6.00415 0.0 0.174533 1.48353</pose>
+        <geometry>
+          <box>
+            <size>1.24724 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box425">
+        <pose>7.12441 12.0803 6.33566 0.0 0.0 0.137661</pose>
+        <geometry>
+          <box>
+            <size>1.92625 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box426">
+        <pose>5.41907 11.5711 6.33566 0.0 0.0 0.450398</pose>
+        <geometry>
+          <box>
+            <size>1.92625 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box427">
+        <pose>3.65971 10.9832 6.33566 0.0 0.0 0.240012</pose>
+        <geometry>
+          <box>
+            <size>1.92625 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box428">
+        <pose>2.38962 10.7296 6.33566 0.0 0.0 0.165872</pose>
+        <geometry>
+          <box>
+            <size>1.42542 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box429">
+        <pose>1.45196 10.2626 6.33566 0.0 0.0 0.864165</pose>
+        <geometry>
+          <box>
+            <size>1.12354 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box430">
+        <pose>1.13292 7.36276 6.33566 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>5.23625 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box431">
+        <pose>-1.86786 7.67013 6.33566 0.0 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>6.1698 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box432">
+        <pose>-2.09967 11.2666 6.33566 0.0 0.0 1.94408</pose>
+        <geometry>
+          <box>
+            <size>1.23396 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box433">
+        <pose>-2.35831 12.4542 6.12218 0.0 0.292173 1.5708</pose>
+        <geometry>
+          <box>
+            <size>1.69053 0.438434 0.670049</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box435">
+        <pose>1.86908 -0.0415952 12.0591 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>9.0082 6.58276 0.199182</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box308">
+        <pose>1.97487 46.0518 -0.161212 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.23085 7.0 0.964934</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box439">
+        <pose>-0.18666 -0.327678 0.0603817 0.0 0.0 -2.01489</pose>
+        <geometry>
+          <box>
+            <size>0.0700512 0.0647695 0.00858712</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Cylinder012">
+        <pose>-004.01462 -018.6737 005.94452 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <length>002.14238</length>
+            <radius>003.11195</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="Box437">
+        <pose>-010.3194 -026.745 006.03817 0.0 0.0 -2.8448</pose>
+        <geometry>
+          <box>
+            <size>007.00512 004.76247 000.858712</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box438">
+        <pose>-016.0249 -028.7138 006.03817 0.0 0.0 -2.29205</pose>
+        <geometry>
+          <box>
+            <size>007.00512 006.47695 000.858712</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box436">
+        <pose>-012.8537 -022.7838 006.03817 0.0 0.0 -2.03362</pose>
+        <geometry>
+          <box>
+            <size>007.00512 004.76247 000.858712</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

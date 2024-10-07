@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="DiningTable">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual_wood">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/diningtable.dae</uri>
+            <submesh>
+              <name>Wood</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Wood_Albedo.png</albedo_map>
+              <normal_map>materials/textures/Wood_Normal.png</normal_map>
+              <roughness_map>materials/textures/Wood_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="visual_black">
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/diningtable.dae</uri>
+            <submesh>
+              <name>Black</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.1 0.1 0.1</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <roughness>0.5</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box011">
+        <pose>0.0 0.302465 0.49338 -1.25664 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.058 0.091 1.10422</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box010">
+        <pose>0.0 -0.302465 0.49338 1.25664 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.058 0.091 1.10422</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box009">
+        <pose>-0.361336 -0.961929 0.36405 -0.10472 0.10472 -0.010472</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.736144</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box008">
+        <pose>0.361336 -0.961929 0.36405 -0.10472 -0.10472 0.010472</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.736144</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box007">
+        <pose>0.361336 0.961929 0.36405 0.10472 -0.10472 -0.010472</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.736144</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box006">
+        <pose>-0.361336 0.961929 0.36405 0.10472 0.10472 0.010472</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.736144</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box005">
+        <pose>0.0 -0.97917 0.236278 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.084456 0.884815 0.099045</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box004">
+        <pose>0.0 0.97917 0.236278 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.084456 0.884815 0.099045</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box003">
+        <pose>0.0 0.0 0.320813 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0612 2.15808 0.1065</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box002">
+        <pose>0.0 0.0 0.664356 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.68 1.91 0.1065</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box001">
+        <pose>0.0 0.0 0.725 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>1.0 2.35 0.03</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
