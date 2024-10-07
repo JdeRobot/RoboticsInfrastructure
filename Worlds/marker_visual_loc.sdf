@@ -3,8 +3,6 @@
 <sdf version="1.9">
   <world name="default">
 
-
-
     <physics name="1ms" type="ignored">
       <dart>
         <!-- Heightmaps behave better with the bullet collision detector -->
