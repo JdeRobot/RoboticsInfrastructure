@@ -126,115 +126,120 @@
     </light>
     <include>
       <name>Lake House</name>
-      <uri>Lake House</uri>
+      <uri>model://Lake House</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
       <name>Water</name>
-      <uri>Coast Waves 2</uri>
+      <uri>model://Coast Waves 2</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
       <name>Terrain</name>
-      <uri>Terrain</uri>
+      <uri>model://Terrain</uri>
     </include>
     <include>
       <name>Terrain Objects</name>
-      <uri>Terrain Objects</uri>
+      <uri>model://Terrain Objects</uri>
     </include>
     <include>
       <name>Armchair_01</name>
       <pose>-0.24 -0.13 6.90 0 0 -0.77</pose>
-      <uri>Armchair</uri>
+      <uri>model://Armchair</uri>
     </include>
     <include>
       <name>Armchair_02</name>
       <pose>-0.12 -1.44 6.90 0 0 -1.75</pose>
-      <uri>Armchair</uri>
+      <uri>model://Armchair</uri>
     </include>
     <include>
       <pose>5.46 -1.63 9.46 0 0 -1.57</pose>
       <name>Bathtub</name>
-      <uri>Bathtub</uri>
+      <uri>model://Bathtub</uri>
     </include>
     <include>
       <pose>0.14 -1.62 9.46 0 0 3.14</pose>
       <name>Bed</name>
-      <uri>Bed</uri>
+      <uri>model://Bed</uri>
     </include>
     <include>
       <pose>3.45 -3.88 6.90 0 0 -1.57</pose>
       <name>Dining Table</name>
-      <uri>Dining Table</uri>
+      <uri>model://Dining Table</uri>
     </include>
     <include>
       <pose>2.9 -3.34 6.90 0 0 -0.03</pose>
       <name>Dining Chair 01</name>
-      <uri>Dining Chair</uri>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>3.87 -3.19 6.90 0 0 -0.32</pose>
       <name>Dining Chair 02</name>
-      <uri>Dining Chair</uri>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>3.81 -4.43 6.90 0 0 -2.69</pose>
       <name>Dining Chair 03</name>
-      <uri>Dining Chair</uri>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>2.88 -4.60 6.90 0 0 2.87</pose>
       <name>Dining Chair 04</name>
-      <uri>Dining Chair</uri>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>1.75 -3.89 6.90 0 0 0</pose>
       <name>Fridge</name>
-      <uri>Fridge</uri>
+      <uri>model://Fridge</uri>
     </include>
     <include>
       <pose>4.34 -6.36 6.83 0 0 1.57</pose>
       <name>Oven</name>
-      <uri>Oven</uri>
+      <uri>model://Oven</uri>
     </include>
     <include>
       <pose>2.75 -1.79 9.46 0 0 1.57</pose>
       <name>Toilet</name>
-      <uri>Toilet</uri>
+      <uri>model://Toilet</uri>
     </include>
     <include>
       <pose>3.03 0.49 9.46 0 0 1.57</pose>
       <name>Vanity</name>
-      <uri>Vanity</uri>
+      <uri>model://Vanity</uri>
     </include>
     <include>
       <pose>-0.39 2.31 9.48 0 0 -1.57</pose>
       <name>Desk</name>
-      <uri>Desk</uri>
+      <uri>model://Desk</uri>
     </include>
     <include>
       <pose>-0.74 1.45 9.48 0 0 -0.81</pose>
       <name>Office Chair</name>
-      <uri>Office Chair</uri>
+      <uri>model://Office Chair</uri>
     </include>
     <include>
       <pose>2.98 0.85 6.91 0 0 -2.37</pose>
       <name>Piano</name>
-      <uri>Piano</uri>
+      <uri>model://Piano</uri>
     </include>
     <include>
       <pose>0 0 0 0 0 2.6</pose>
       <name>Sky</name>
-      <uri>Sky</uri>
+      <uri>model://Sky</uri>
     </include>
     
-  <!-- April Tags -->
+    <!-- April Tags -->
     <include>
       <pose>0 0 0 0 0 0</pose>
       <name>posAprilTags</name>
-      <uri>posAprilTags</uri>
+      <uri>model://posAprilTags</uri>
     </include>
 
+    <!-- Robot -->
+    <include>
+      <pose>1.0 -2.5 7.0 0 0 0</pose>
+      <uri>model://marble_husky_sensor_config_5</uri>
+    </include>
 
 
     <model name="boundary">

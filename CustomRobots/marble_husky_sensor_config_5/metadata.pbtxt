@@ -1,0 +1,13 @@
+model {
+  file: "model.sdf"
+  file_format {
+    version {
+      major: 1
+      minor: 6
+    }
+    name: "sdf"
+  }
+}
+name: "marble_husky_sensor_config_6"
+description: "CU\'s husky config with 4 FLIR Backfly Cameras, two Ouster OS1 64 channel lidars, two picoflex TOF cameras, and an RPLidar S1"
+
