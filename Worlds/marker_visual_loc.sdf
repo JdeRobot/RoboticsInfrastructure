@@ -237,7 +237,7 @@
 
     <!-- Robot -->
     <include>
-      <pose>1.0 -2.5 7.0 0 0 0</pose>
+      <pose>1.0 -1.5 7.1 0 0 1.57079</pose>
       <uri>model://marble_husky_sensor_config_5</uri>
     </include>
 
