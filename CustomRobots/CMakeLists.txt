@@ -141,25 +141,7 @@ install(DIRECTORY
   3d_reconstruction/worlds
 
   # MARKER VISUAL LOC
-  marker_visual_loc/Armchair
-  marker_visual_loc/Bathub
-  marker_visual_loc/Bed
-  marker_visual_loc/Coast_Waves_2
-  marker_visual_loc/Desk
-  marker_visual_loc/Dinning_Chair
-  marker_visual_loc/Dinning_Table
-  marker_visual_loc/Fridge
-  marker_visual_loc/Lake_House
-  marker_visual_loc/Office_Chair
-  marker_visual_loc/Oven
-  marker_visual_loc/Piano
-  marker_visual_loc/posAprilTags
-  marker_visual_loc/Sky
-  marker_visual_loc/Terrain
-  marker_visual_loc/Terrain_Objects
-  marker_visual_loc/Tethys_Sensors
-  marker_visual_loc/Toilet
-  marker_visual_loc/Vanity
+  marker_visual_loc
 
   DESTINATION share/${PROJECT_NAME}
 )
