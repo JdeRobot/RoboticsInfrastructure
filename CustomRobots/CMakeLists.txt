@@ -141,7 +141,7 @@ install(DIRECTORY
   3d_reconstruction/worlds
 
   # MARKER VISUAL LOC
-  marker_visual_loc
+  marker_visual_loc/models
 
   DESTINATION share/${PROJECT_NAME}
 )
