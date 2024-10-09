@@ -124,14 +124,15 @@
       <cast_shadows>false</cast_shadows>
       <visualize>false</visualize>
     </light>
+    
     <include>
-      <name>Lake House</name>
-      <uri>model://Lake House</uri>
+      <name>Lake_House</name>
+      <uri>model://Lake_House</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
       <name>Water</name>
-      <uri>model://Coast Waves 2</uri>
+      <uri>model://Coast_Waves_2</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
@@ -139,8 +140,8 @@
       <uri>model://Terrain</uri>
     </include>
     <include>
-      <name>Terrain Objects</name>
-      <uri>model://Terrain Objects</uri>
+      <name>Terrain_Objects</name>
+      <uri>model://Terrain_Objects</uri>
     </include>
     <include>
       <name>Armchair_01</name>
@@ -164,28 +165,28 @@
     </include>
     <include>
       <pose>3.45 -3.88 6.90 0 0 -1.57</pose>
-      <name>Dining Table</name>
-      <uri>model://Dining Table</uri>
+      <name>Dining_Table</name>
+      <uri>model://Dining_Table</uri>
     </include>
     <include>
       <pose>2.9 -3.34 6.90 0 0 -0.03</pose>
-      <name>Dining Chair 01</name>
-      <uri>model://Dining Chair</uri>
+      <name>Dining_Chair_01</name>
+      <uri>model://Dining_Chair</uri>
     </include>
     <include>
       <pose>3.87 -3.19 6.90 0 0 -0.32</pose>
-      <name>Dining Chair 02</name>
-      <uri>model://Dining Chair</uri>
+      <name>Dining_Chair_02</name>
+      <uri>model://Dining_Chair</uri>
     </include>
     <include>
       <pose>3.81 -4.43 6.90 0 0 -2.69</pose>
-      <name>Dining Chair 03</name>
-      <uri>model://Dining Chair</uri>
+      <name>Dining_Chair_03</name>
+      <uri>model://Dining_Chair</uri>
     </include>
     <include>
       <pose>2.88 -4.60 6.90 0 0 2.87</pose>
-      <name>Dining Chair 04</name>
-      <uri>model://Dining Chair</uri>
+      <name>Dining_Chair_04</name>
+      <uri>model://Dining_Chair</uri>
     </include>
     <include>
       <pose>1.75 -3.89 6.90 0 0 0</pose>
@@ -214,8 +215,8 @@
     </include>
     <include>
       <pose>-0.74 1.45 9.48 0 0 -0.81</pose>
-      <name>Office Chair</name>
-      <uri>model://Office Chair</uri>
+      <name>Office_Chair</name>
+      <uri>model://Office_Chair</uri>
     </include>
     <include>
       <pose>2.98 0.85 6.91 0 0 -2.37</pose>
