@@ -62,7 +62,7 @@
     </link>
 
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.225 -0.305 0.015 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.18 -0.244 0.0 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -90,7 +90,7 @@
         <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
-            <radius>.09</radius>
+            <radius>.072</radius>
             <length>.06</length>
           </cylinder>
         </geometry>
@@ -121,7 +121,7 @@
     </link>
 
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.225 -0.305 0.015 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.18 -0.244 0.0 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -149,7 +149,7 @@
         <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
-            <radius>.09</radius>
+            <radius>.072</radius>
             <length>.06</length>
           </cylinder>
         </geometry>
@@ -180,7 +180,7 @@
     </link>
 
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.295 0.305 0.015 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.236 0.244 0.0 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -241,7 +241,7 @@
         <pose>0.0 -0.0 0.0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
-            <radius>.09</radius>
+            <radius>.072</radius>
             <length>.06</length>
           </cylinder>
         </geometry>
@@ -272,7 +272,7 @@
     </link>
 
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.295 0.305 0.015 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.236 0.244 0.0 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -334,7 +334,7 @@
         <pose>-0.0 -0.0 0.0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
-            <radius>.09</radius>
+            <radius>.072</radius>
             <length>.06</length>
           </cylinder>
         </geometry>
@@ -444,11 +444,11 @@
       <!-- <axis><use_parent_model_frame>true</use_parent_model_frame><xyz>0 0 1</xyz></axis><limit effort="6" lower="0.00" upper="0.100" velocity="50"/> -->
     </joint>
     <link name="lift_link">
-      <pose>-0.0 0.0 -0.03 0 0 0</pose>
+      <pose>-0.0 0.0 0.0 0 0 0</pose>
       <visual name="lift_visual">
           <geometry>
               <mesh>
-                  <uri>model://ackermann_logistic_robot/meshes/platform2.dae</uri>
+                  <uri>model://ackermann_logistic_robot/meshes/platform.dae</uri>
                   <scale>0.5 0.5 0.5</scale>
               </mesh>
           </geometry>
