@@ -25,7 +25,7 @@ set(PROJECT_DEPENDENCIES
   urdf
   xacro
   ament_cmake_ros
-  gazebo
+  # gazebo
   pluginlib
   Threads
 )
@@ -51,7 +51,7 @@ target_include_directories(personplugin PUBLIC
 ament_target_dependencies(
   personplugin
   "rclcpp"
-  "gazebo"
+  # "gazebo"
   "pluginlib"
 )
 
