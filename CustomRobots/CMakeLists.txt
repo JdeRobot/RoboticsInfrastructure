@@ -25,7 +25,7 @@ set(PROJECT_DEPENDENCIES
   urdf
   xacro
   ament_cmake_ros
-  # gazebo
+  gazebo
   pluginlib
   Threads
 )
@@ -37,35 +37,35 @@ endforeach()
 
 # ============================================================================
 # Person plugin
-#if(CMAKE_USE_PTHREADS_INIT)
-#  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-#endif()
+if(CMAKE_USE_PTHREADS_INIT)
+  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
+endif()
 
-#include_directories(${GAZEBO_INCLUDE_DIRS})
+include_directories(${GAZEBO_INCLUDE_DIRS})
 
-#add_library(personplugin amazon_hospital/src/person.cpp)
-#target_include_directories(personplugin PUBLIC
-#  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#  $<INSTALL_INTERFACE:include>)
+add_library(personplugin amazon_hospital/src/person.cpp)
+target_include_directories(personplugin PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
 
-#ament_target_dependencies(
-  # personplugin
-#  "rclcpp"
-  # "gazebo"
-#  "pluginlib"
-#)
+ament_target_dependencies(
+  personplugin
+  "rclcpp"
+  "gazebo"
+  "pluginlib"
+)
 
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
-#target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
+target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
-#install(
-#  TARGETS personplugin
-#  EXPORT export_${PROJECT_NAME}
-#  ARCHIVE DESTINATION lib
-#  LIBRARY DESTINATION lib
-#  RUNTIME DESTINATION bin
-#)
+install(
+  TARGETS personplugin
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 # ============================================================================
 # Hooks
@@ -152,9 +152,9 @@ if(BUILD_TESTING)
 endif()
 
 
-#ament_export_libraries(
-#  personplugin
-#)
+ament_export_libraries(
+  personplugin
+)
 
 ament_export_targets(
   export_${PROJECT_NAME}
