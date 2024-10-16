@@ -25,7 +25,7 @@ set(PROJECT_DEPENDENCIES
   urdf
   xacro
   ament_cmake_ros
-  gazebo
+  # gazebo
   pluginlib
   Threads
 )
@@ -43,15 +43,15 @@ endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(personplugin PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+#add_library(personplugin amazon_hospital/src/person.cpp)
+#target_include_directories(personplugin PUBLIC
+#  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#  $<INSTALL_INTERFACE:include>)
 
 ament_target_dependencies(
-  personplugin
+  # personplugin
   "rclcpp"
-  "gazebo"
+  # "gazebo"
   "pluginlib"
 )
 
