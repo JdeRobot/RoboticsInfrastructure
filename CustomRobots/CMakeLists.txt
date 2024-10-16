@@ -49,7 +49,6 @@ include_directories(${GAZEBO_INCLUDE_DIRS})
 #  $<INSTALL_INTERFACE:include>)
 
 ament_target_dependencies(
-  # personplugin
   "rclcpp"
   # "gazebo"
   "pluginlib"
