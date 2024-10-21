@@ -31,8 +31,9 @@ get_gpu_device() {
             if [ -n "$device" ]; then
                 # Set the DRI_NAME environment variable to the card name (e.g., card0, card1)
                 export DRI_NAME="$device"
+                export DRI_VENDOR="$vendor"
                 # Echo the selected vendor and DRI_NAME
-                echo "Vendor: $vendor"
+                echo "DRI_VENDOR: $DRI_VENDOR"
                 echo "DRI_NAME: $DRI_NAME"
                 return 0
             fi
