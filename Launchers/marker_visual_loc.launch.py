@@ -1,89 +1,123 @@
 import os
+
+from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
-from launch.conditions import IfCondition, UnlessCondition
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    AppendEnvironmentVariable
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, Command
+from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
 
-    # Set the path to the Gazebo Harmonic ROS package (gz-sim)
-    pkg_gazebo_ros = FindPackageShare(package="gazebo_ros").find("gazebo_ros")
+    x = LaunchConfiguration('x')
+    y = LaunchConfiguration('y')
+    z = LaunchConfiguration('z')
+    roll = LaunchConfiguration('R')
+    pitch = LaunchConfiguration('P')
+    yaw = LaunchConfiguration('Y')
 
-    # Set the path to the Turtlebot2 ROS package
-    pkg_share_dir = FindPackageShare(package="custom_robots").find("custom_robots")
+    package_dir = get_package_share_directory('custom_robots')
+    ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
+    gazebo_models_path = os.path.join(package_dir, "models")
+
+    robot_launch_dir = "/opt/jderobot/Launchers/marker_visual_loc"
+    robot_model_dir = os.path.join(package_dir, 'models')
+    
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    x_pose = LaunchConfiguration('x_pose', default='1.0')
+    y_pose = LaunchConfiguration('y_pose', default='-1.5')
+    z_pose = LaunchConfiguration('z_pose', default='7.1')
     world_file_name = "marker_visual_loc.sdf"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
-    # Set the path to the SDF model files
-    gazebo_models_path = os.path.join(pkg_share_dir, "models")
-    os.environ["GAZEBO_MODEL_PATH"] = (
-        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+
+    gazebo_client = IncludeLaunchDescription(
+	PythonLaunchDescriptionSource(
+            os.path.join(ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': '-g -v4 '}.items()
+     )
+    gazebo_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': ['-r -s -v4 ', world], 'on_exit_shutdown': 'true'}.items()
     )
 
-    ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
-    # Launch configuration variables specific to simulation
-    headless = LaunchConfiguration("headless")
-    use_sim_time = LaunchConfiguration("use_sim_time")
-    use_simulator = LaunchConfiguration("use_simulator")
-    world = LaunchConfiguration("world")
-
-    declare_simulator_cmd = DeclareLaunchArgument(
-        name="headless",
-        default_value="False",
-        description="Whether to execute gzclient (GUI)",
+    declare_x_cmd = DeclareLaunchArgument(
+        'x', default_value='1.0'
     )
 
-    declare_use_sim_time_cmd = DeclareLaunchArgument(
-        name="use_sim_time",
-        default_value="true",
-        description="Use simulation (Gazebo) clock if true",
+    declare_y_cmd = DeclareLaunchArgument(
+        'y', default_value='-1.5'
     )
 
-    declare_use_simulator_cmd = DeclareLaunchArgument(
-        name="use_simulator",
-        default_value="True",
-        description="Whether to start the simulator",
+    declare_z_cmd = DeclareLaunchArgument(
+        'z', default_value='7.1'
     )
 
-    declare_world_cmd = DeclareLaunchArgument(
-        name="world",
-        default_value=world_path,
-        description="Full path to the world model file to load",
+    declare_roll_cmd = DeclareLaunchArgument(
+        'R', default_value='0.0'
     )
 
-    # Specify the actions
-
-    # Start Gazebo Harmonic (gz-sim) server
-    start_gazebo_server_cmd = ExecuteProcess(
-        cmd=["gz", "sim", "-r", world],
-        condition=IfCondition(use_simulator),
-        output="screen"
+    declare_pitch_cmd = DeclareLaunchArgument(
+        'P', default_value='0.0'
     )
 
-    # Optionally start the Gazebo client (GUI) if not headless
-    start_gazebo_client_cmd = ExecuteProcess(
-        cmd=["gz", "sim", "-g"],
-        condition=UnlessCondition(headless),
-        output="screen"
+    declare_yaw_cmd = DeclareLaunchArgument(
+        'Y', default_value='1.57079'
     )
 
-    # Create the launch description and populate
+    robot_state_publisher_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(robot_launch_dir, 'robot_state_publisher.launch.py')
+        ),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
+    spawn_robot_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(robot_launch_dir, 'spawn_robot.launch.py')
+        ),
+        launch_arguments={
+            'x_pose': x_pose,
+            'y_pose': y_pose,
+            'z_pose': z_pose
+        }.items()
+    )
+
+    world_entity_cmd = Node(package='ros_gz_sim', executable='create',
+                            arguments=['-name',
+                                       'world',
+                                       '-file',
+                                       world_path
+                                       ],
+                            output='screen')
+
     ld = LaunchDescription()
 
-    # Declare the launch options
-    ld.add_action(declare_simulator_cmd)
-    ld.add_action(declare_use_sim_time_cmd)
-    ld.add_action(declare_use_simulator_cmd)
-    ld.add_action(declare_world_cmd)
-
-    # Add any actions
-    ld.add_action(start_gazebo_server_cmd)
-    ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', robot_model_dir))
+    set_env_vars_resources = AppendEnvironmentVariable('GZ_SIM_RESOURCE_PATH', os.path.join(package_dir,'models'))
+    ld.add_action(set_env_vars_resources)
+    ld.add_action(gazebo_server)
+    ld.add_action(gazebo_client)
+    ld.add_action(declare_x_cmd)
+    ld.add_action(declare_y_cmd)
+    ld.add_action(declare_z_cmd)
+    ld.add_action(declare_roll_cmd)
+    ld.add_action(declare_pitch_cmd)
+    ld.add_action(declare_yaw_cmd)
+    ld.add_action(world_entity_cmd)
+    ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(spawn_robot_cmd)
 
     return ld

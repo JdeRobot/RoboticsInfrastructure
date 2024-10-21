@@ -236,19 +236,6 @@
       <uri>model://posAprilTags</uri>
     </include>
 
-    <!-- Robot -->
-    <include>
-      <pose>1.0 -1.5 7.1 0 0 1.57079</pose>
-      <uri>
-      https://fuel.gazebosim.org/1.0/OpenRobotics/models/MARBLE_HUSKY_SENSOR_CONFIG_5
-      </uri>
-    </include>
-    <!-- <include>
-      <pose>1.0 -1.5 7.1 0 0 1.57079</pose>
-      <uri>model://marble_husky_sensor_config_5</uri>
-    </include> -->
-
-
     <model name="boundary">
       <static>true</static>
       <link name="link">

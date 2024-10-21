@@ -32,6 +32,10 @@
   <exec_depend>xacro</exec_depend>
   <exec_depend>urdf</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
+  <!-- Gz Harmonic -->
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
