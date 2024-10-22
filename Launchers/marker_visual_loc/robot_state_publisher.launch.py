@@ -33,6 +33,7 @@ def generate_launch_description():
 
     urdf_path = os.path.join(
         get_package_share_directory('custom_robots'),
+        'turtlebot3',
         'urdf',
         urdf_file_name)
 

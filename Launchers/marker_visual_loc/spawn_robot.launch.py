@@ -64,6 +64,7 @@ def generate_launch_description():
 
     bridge_params = os.path.join(
         get_package_share_directory('custom_robots'),
+        'turtlebot3',
         'params',
         'robot_params.yaml'
     )
