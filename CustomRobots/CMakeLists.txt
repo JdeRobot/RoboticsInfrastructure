@@ -25,7 +25,6 @@ set(PROJECT_DEPENDENCIES
   urdf
   xacro
   ament_cmake_ros
-  gazebo
   pluginlib
   Threads
 )
@@ -34,6 +33,13 @@ foreach(DEPENDENCY ${PROJECT_DEPENDENCIES})
   find_package(${DEPENDENCY} REQUIRED)
 endforeach()
 
+
+# Gazebo Classic Dependencies
+find_package(gazebo_ros REQUIRED)
+
+# Gazebo Harmonic (Ignition) Dependencies
+find_package(ros_gz_sim REQUIRED)
+find_package(ros_gz_bridge REQUIRED)
 
 # ============================================================================
 # Person plugin
@@ -51,7 +57,7 @@ target_include_directories(personplugin PUBLIC
 ament_target_dependencies(
   personplugin
   "rclcpp"
-  "gazebo"
+  "gazebo_ros"
   "pluginlib"
 )
 
