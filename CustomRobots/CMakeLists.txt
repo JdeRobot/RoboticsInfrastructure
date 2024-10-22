@@ -35,7 +35,7 @@ endforeach()
 
 
 # Gazebo Classic Dependencies
-find_package(gazebo_ros REQUIRED)
+find_package(gazebo11 REQUIRED)
 
 # Gazebo Harmonic (Ignition) Dependencies
 find_package(ros_gz_sim REQUIRED)
@@ -57,7 +57,7 @@ target_include_directories(personplugin PUBLIC
 ament_target_dependencies(
   personplugin
   "rclcpp"
-  "gazebo_ros"
+  "gazebo11"
   "pluginlib"
 )
 
