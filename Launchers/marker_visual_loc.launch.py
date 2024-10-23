@@ -37,7 +37,7 @@ def generate_launch_description():
     x_pose = LaunchConfiguration('x_pose', default='1.0')
     y_pose = LaunchConfiguration('y_pose', default='-1.5')
     z_pose = LaunchConfiguration('z_pose', default='7.1')
-    world_file_name = "marker_visual_loc.sdf"
+    world_file_name = "marker_visual_loc.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 

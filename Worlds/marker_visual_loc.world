@@ -1,24 +1,10 @@
 <?xml version="1.0" ?>
 
 <sdf version="1.9">
-  <world name="default">
-
-    <physics name="1ms" type="ignored">
-      <dart>
-        <!-- Heightmaps behave better with the bullet collision detector -->
-        <collision_detector>bullet</collision_detector>
-      </dart>
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1.0</real_time_factor>
-    </physics>
+  <world name="harmonic">
     <plugin
       filename="gz-sim-physics-system"
       name="gz::sim::systems::Physics">
-    </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
     </plugin>
     <plugin
       filename="gz-sim-user-commands-system"
@@ -29,28 +15,44 @@
       name="gz::sim::systems::SceneBroadcaster">
     </plugin>
     <plugin
-      filename="gz-sim-buoyancy-system"
-      name="gz::sim::systems::Buoyancy">
-      <graded_buoyancy>
-        <default_density>1000</default_density>
-        <density_change>
-          <above_depth>0</above_depth>
-          <density>1</density>
-        </density_change>
-      </graded_buoyancy>
-      <enable>Tethys</enable>
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
     </plugin>
     <plugin
-      filename="gz-sim-dvl-system"
-      name="gz::sim::systems::DopplerVelocityLogSystem">
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
     </plugin>
 
-    <gravity>0 0 -9.8</gravity>
-    <scene>
-      <ambient>1 1 1</ambient>
-      <grid>false</grid>
-      <sky></sky>
-    </scene>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>0.319654 -0.235002 9.29441 0 1.5138 0.009599</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <physics type="ode">
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.400000</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000.000000</contact_max_correcting_vel>
+          <contact_surface_layer>0.01000</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 20 -1.3 0 0.5</pose>
@@ -124,25 +126,24 @@
       <cast_shadows>false</cast_shadows>
       <visualize>false</visualize>
     </light>
-    
     <include>
-      <name>Lake_House</name>
-      <uri>model://Lake_House</uri>
+      <name>Lake House</name>
+      <uri>model://Lake House</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
-    <include>
+    <!-- <include>
       <name>Water</name>
-      <uri>model://Coast_Waves_2</uri>
+      <uri>model://Coast Waves 2</uri>
       <pose>0 0 0 0 0 0</pose>
-    </include>
+    </include> -->
     <include>
       <name>Terrain</name>
       <uri>model://Terrain</uri>
     </include>
-    <include>
-      <name>Terrain_Objects</name>
-      <uri>model://Terrain_Objects</uri>
-    </include>
+    <!-- <include>
+      <name>Terrain Objects</name>
+      <uri>model://Terrain Objects</uri>
+    </include> -->
     <include>
       <name>Armchair_01</name>
       <pose>-0.24 -0.13 6.90 0 0 -0.77</pose>
@@ -165,28 +166,28 @@
     </include>
     <include>
       <pose>3.45 -3.88 6.90 0 0 -1.57</pose>
-      <name>Dining_Table</name>
-      <uri>model://Dining_Table</uri>
+      <name>Dining Table</name>
+      <uri>model://Dining Table</uri>
     </include>
     <include>
       <pose>2.9 -3.34 6.90 0 0 -0.03</pose>
-      <name>Dining_Chair_01</name>
-      <uri>model://Dining_Chair</uri>
+      <name>Dining Chair 01</name>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>3.87 -3.19 6.90 0 0 -0.32</pose>
-      <name>Dining_Chair_02</name>
-      <uri>model://Dining_Chair</uri>
+      <name>Dining Chair 02</name>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>3.81 -4.43 6.90 0 0 -2.69</pose>
-      <name>Dining_Chair_03</name>
-      <uri>model://Dining_Chair</uri>
+      <name>Dining Chair 03</name>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>2.88 -4.60 6.90 0 0 2.87</pose>
-      <name>Dining_Chair_04</name>
-      <uri>model://Dining_Chair</uri>
+      <name>Dining Chair 04</name>
+      <uri>model://Dining Chair</uri>
     </include>
     <include>
       <pose>1.75 -3.89 6.90 0 0 0</pose>
@@ -215,8 +216,8 @@
     </include>
     <include>
       <pose>-0.74 1.45 9.48 0 0 -0.81</pose>
-      <name>Office_Chair</name>
-      <uri>model://Office_Chair</uri>
+      <name>Office Chair</name>
+      <uri>model://Office Chair</uri>
     </include>
     <include>
       <pose>2.98 0.85 6.91 0 0 -2.37</pose>
@@ -229,7 +230,7 @@
       <uri>model://Sky</uri>
     </include>
     
-    <!-- April Tags -->
+  <!-- April Tags -->
     <include>
       <pose>0 0 0 0 0 0</pose>
       <name>posAprilTags</name>

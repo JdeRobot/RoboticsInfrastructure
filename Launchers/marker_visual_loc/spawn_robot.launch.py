@@ -53,7 +53,7 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-name', TURTLEBOT3_MODEL,
+            '-name', 'waffle',
             '-file', urdf_path,
             '-x', x_pose,
             '-y', y_pose,
@@ -64,7 +64,6 @@ def generate_launch_description():
 
     bridge_params = os.path.join(
         get_package_share_directory('custom_robots'),
-        'turtlebot3',
         'params',
         'robot_params.yaml'
     )
@@ -99,6 +98,7 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(declare_x_position_cmd)
     ld.add_action(declare_y_position_cmd)
+    ld.add_action(declare_z_position_cmd)
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_ros_spawner_cmd)
