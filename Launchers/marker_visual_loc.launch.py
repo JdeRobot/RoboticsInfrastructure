@@ -31,7 +31,7 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(package_dir, "models")
 
     robot_launch_dir = "/opt/jderobot/Launchers/marker_visual_loc"
-    robot_model_dir = os.path.join(package_dir, 'models')
+    robot_model_dir = os.path.join(package_dir, 'models/turtlebot3_waffle')
     
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     x_pose = LaunchConfiguration('x_pose', default='1.0')
