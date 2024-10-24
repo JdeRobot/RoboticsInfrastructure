@@ -136,10 +136,10 @@
       <uri>model://Coast Waves 2</uri>
       <pose>0 0 0 0 0 0</pose>
     </include> -->
-    <include>
+    <!-- <include>
       <name>Terrain</name>
       <uri>model://Terrain</uri>
-    </include>
+    </include> -->
     <!-- <include>
       <name>Terrain Objects</name>
       <uri>model://Terrain Objects</uri>

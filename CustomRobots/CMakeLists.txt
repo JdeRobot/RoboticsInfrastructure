@@ -146,17 +146,11 @@ install(DIRECTORY
 
   # MARKER VISUAL LOC
   marker_visual_loc/models
-  
-
-  DESTINATION share/${PROJECT_NAME}
-)
-
-install(DIRECTORY 
   turtlebot3/models
   turtlebot3/urdf 
   turtlebot3/params
 
-DESTINATION share/${PROJECT_NAME}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
