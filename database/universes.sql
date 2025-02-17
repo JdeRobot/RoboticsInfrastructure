@@ -139,7 +139,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 28	Restaurant	21	0
 29	Vacuums House Markers	25	0
 30	Laser Mapping Warehouse	12	0
-31	Rescue Peopple Harmonic	31	0
+31	Rescue People Harmonic	31	0
 \.
 
 --
@@ -178,7 +178,7 @@ COPY public.worlds (id, name, launch_file_path, ros_version, visualization, worl
 28	Warehouse 1 Ackermann	/opt/jderobot/Launchers/small_warehouse_with_ackermann_logistic_robot.launch.py	ROS2	gazebo_rae	gazebo
 29	Warehouse 2	/opt/jderobot/Launchers/pallet_warehouse.launch.py	ROS2	gazebo_rae	gazebo
 30	Warehouse 2 Ackermann	/opt/jderobot/Launchers/pallet_warehouse_with_ackermann_logistic_robot.launch.py	ROS2	gazebo_rae	gazebo
-31	Rescue Peopple Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	ROS2	gzsim_rae	gazebo
+31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	ROS2	gzsim_rae	gazebo
 \.
 
 --
