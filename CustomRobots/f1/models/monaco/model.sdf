@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="circuito">
+    <static>true</static> <!-- Cambia a false si es un objeto dinámico -->
+    <link name="link">
+      <visual name="asfalto_visual">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <visual name="barrera_visual">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
