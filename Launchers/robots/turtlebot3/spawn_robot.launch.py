@@ -19,9 +19,15 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+)
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
+    robot_launch_dir = "/opt/jderobot/Launchers/robots/turtlebot3"
+
     # Get the urdf file
     model_folder = 'turtlebot3_waffle'
     urdf_path = os.path.join(
@@ -32,35 +38,56 @@ def generate_launch_description():
     )
 
     # Launch configuration variables specific to simulation
-    # x_pose = LaunchConfiguration('x_pose', default='1.0')
-    # y_pose = LaunchConfiguration('y_pose', default='-1.5')
-    # z_pose = LaunchConfiguration('z_pose', default='7.1')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    x_pose = LaunchConfiguration('x_pose', default='1.0')
+    y_pose = LaunchConfiguration('y_pose', default='-1.5')
+    z_pose = LaunchConfiguration('z_pose', default='0.6')
 
     # Declare the launch arguments
-    # declare_x_position_cmd = DeclareLaunchArgument(
-    #     'x_pose', default_value='1.0',
-    #     description='Specify namespace of the robot')
+    declare_x_position_cmd = DeclareLaunchArgument(
+        'x_pose', default_value='1.0',
+        description='Specify namespace of the robot')
 
-    # declare_y_position_cmd = DeclareLaunchArgument(
-    #     'y_pose', default_value='-1.5',
-    #     description='Specify namespace of the robot')
+    declare_y_position_cmd = DeclareLaunchArgument(
+        'y_pose', default_value='-1.5',
+        description='Specify namespace of the robot')
     
-    # declare_z_position_cmd = DeclareLaunchArgument(
-    #     'z_pose', default_value='7.1',
-    #     description='Specify namespace of the robot')
+    declare_z_position_cmd = DeclareLaunchArgument(
+        'z_pose', default_value='0.6',
+        description='Specify namespace of the robot')
+    
+    declare_roll_cmd = DeclareLaunchArgument(
+        'R', default_value='0.0'
+    )
 
-    # start_gazebo_ros_spawner_cmd = Node(
-    #     package='ros_gz_sim',
-    #     executable='create',
-    #     arguments=[
-    #         '-name', 'waffle',
-    #         '-file', urdf_path,
-    #         '-x', x_pose,
-    #         '-y', y_pose,
-    #         '-z', z_pose
-    #     ],
-    #     output='screen',
-    # )
+    declare_pitch_cmd = DeclareLaunchArgument(
+        'P', default_value='0.0'
+    )
+
+    declare_yaw_cmd = DeclareLaunchArgument(
+        'Y', default_value='1.57079'
+    )
+
+
+    start_gazebo_ros_spawner_cmd = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-name', 'waffle',
+            '-file', urdf_path,
+            '-x', x_pose,
+            '-y', y_pose,
+            '-z', z_pose
+        ],
+        output='screen',
+    )
+
+    robot_state_publisher_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(robot_launch_dir, 'robot_state_publisher.launch.py')
+        ),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
 
     bridge_params = os.path.join(
         get_package_share_directory('custom_robots'),
@@ -96,12 +123,15 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
-    # ld.add_action(declare_x_position_cmd)
-    # ld.add_action(declare_y_position_cmd)
-    # ld.add_action(declare_z_position_cmd)
+    ld.add_action(declare_x_position_cmd)
+    ld.add_action(declare_y_position_cmd)
+    ld.add_action(declare_z_position_cmd)
+    ld.add_action(declare_roll_cmd)
+    ld.add_action(declare_pitch_cmd)
+    ld.add_action(declare_yaw_cmd)
 
     # Add any conditioned actions
-    # ld.add_action(start_gazebo_ros_spawner_cmd)
+    ld.add_action(start_gazebo_ros_spawner_cmd)
     ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(start_gazebo_ros_image_bridge_cmd)
     ld.add_action(start_gazebo_ros_depth_bridge_cmd)
