@@ -53,7 +53,7 @@ def generate_launch_description():
         description='Specify namespace of the robot')
     
     declare_z_position_cmd = DeclareLaunchArgument(
-        'z_pose', default_value='0.6',
+        'z_pose', default_value='7.1',
         description='Specify namespace of the robot')
     
     declare_roll_cmd = DeclareLaunchArgument(
@@ -131,6 +131,7 @@ def generate_launch_description():
     ld.add_action(declare_yaw_cmd)
 
     # Add any conditioned actions
+    ld.add_action(robot_state_publisher_cmd)
     ld.add_action(start_gazebo_ros_spawner_cmd)
     ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(start_gazebo_ros_image_bridge_cmd)
