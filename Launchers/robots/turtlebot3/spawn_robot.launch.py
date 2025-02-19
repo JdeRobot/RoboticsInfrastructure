@@ -53,7 +53,7 @@ def generate_launch_description():
         description='Specify namespace of the robot')
     
     declare_z_position_cmd = DeclareLaunchArgument(
-        'z_pose', default_value='7.1',
+        'z_pose', default_value='0.6',
         description='Specify namespace of the robot')
     
     declare_roll_cmd = DeclareLaunchArgument(
