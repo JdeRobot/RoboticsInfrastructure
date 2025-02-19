@@ -44,29 +44,29 @@ def generate_launch_description():
     z_pose = LaunchConfiguration('z_pose', default='0.6')
 
     # Declare the launch arguments
-    declare_x_position_cmd = DeclareLaunchArgument(
-        'x_pose', default_value='1.0',
-        description='Specify namespace of the robot')
+    # declare_x_position_cmd = DeclareLaunchArgument(
+    #     'x_pose', default_value='1.0',
+    #     description='Specify namespace of the robot')
 
-    declare_y_position_cmd = DeclareLaunchArgument(
-        'y_pose', default_value='-1.5',
-        description='Specify namespace of the robot')
+    # declare_y_position_cmd = DeclareLaunchArgument(
+    #     'y_pose', default_value='-1.5',
+    #     description='Specify namespace of the robot')
     
-    declare_z_position_cmd = DeclareLaunchArgument(
-        'z_pose', default_value='0.6',
-        description='Specify namespace of the robot')
+    # declare_z_position_cmd = DeclareLaunchArgument(
+    #     'z_pose', default_value='0.6',
+    #     description='Specify namespace of the robot')
     
-    declare_roll_cmd = DeclareLaunchArgument(
-        'R', default_value='0.0'
-    )
+    # declare_roll_cmd = DeclareLaunchArgument(
+    #     'R', default_value='0.0'
+    # )
 
-    declare_pitch_cmd = DeclareLaunchArgument(
-        'P', default_value='0.0'
-    )
+    # declare_pitch_cmd = DeclareLaunchArgument(
+    #     'P', default_value='0.0'
+    # )
 
-    declare_yaw_cmd = DeclareLaunchArgument(
-        'Y', default_value='1.57079'
-    )
+    # declare_yaw_cmd = DeclareLaunchArgument(
+    #     'Y', default_value='1.57079'
+    # )
 
 
     start_gazebo_ros_spawner_cmd = Node(
@@ -123,12 +123,12 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(declare_x_position_cmd)
-    ld.add_action(declare_y_position_cmd)
-    ld.add_action(declare_z_position_cmd)
-    ld.add_action(declare_roll_cmd)
-    ld.add_action(declare_pitch_cmd)
-    ld.add_action(declare_yaw_cmd)
+    # ld.add_action(declare_x_position_cmd)
+    # ld.add_action(declare_y_position_cmd)
+    # ld.add_action(declare_z_position_cmd)
+    # ld.add_action(declare_roll_cmd)
+    # ld.add_action(declare_pitch_cmd)
+    # ld.add_action(declare_yaw_cmd)
 
     # Add any conditioned actions
     ld.add_action(robot_state_publisher_cmd)
