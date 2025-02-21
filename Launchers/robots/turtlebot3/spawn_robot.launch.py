@@ -26,6 +26,13 @@ from launch.actions import (
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
+    ROBOT_X = os.environ['ROBOT_X']
+    ROBOT_Y = os.environ['ROBOT_Y']
+    ROBOT_Z = os.environ['ROBOT_Z']
+    ROBOT_ROLL = os.environ['ROBOT_ROLL']
+    ROBOT_PITCH = os.environ['ROBOT_PITCH']
+    ROBOT_YAW = os.environ['ROBOT_YAW']
+
     robot_launch_dir = "/opt/jderobot/Launchers/robots/turtlebot3"
 
     # Get the urdf file
@@ -39,9 +46,12 @@ def generate_launch_description():
 
     # Launch configuration variables specific to simulation
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    x_pose = LaunchConfiguration('x_pose', default='1.0')
-    y_pose = LaunchConfiguration('y_pose', default='-1.5')
-    z_pose = LaunchConfiguration('z_pose', default='0.6')
+    x_pose = LaunchConfiguration('x_pose', default=ROBOT_X)
+    y_pose = LaunchConfiguration('y_pose', default=ROBOT_Y)
+    z_pose = LaunchConfiguration('z_pose', default=ROBOT_Z)
+    R_pose = LaunchConfiguration('R_pose', default=ROBOT_ROLL)
+    P_pose = LaunchConfiguration('P_pose', default=ROBOT_PITCH)
+    Y_pose = LaunchConfiguration('Y_pose', default=ROBOT_YAW)
 
     # Declare the launch arguments
     # declare_x_position_cmd = DeclareLaunchArgument(
@@ -77,7 +87,10 @@ def generate_launch_description():
             '-file', urdf_path,
             '-x', x_pose,
             '-y', y_pose,
-            '-z', z_pose
+            '-z', z_pose,
+            '-R', R_pose,
+            '-P', P_pose,
+            '-Y', Y_pose
         ],
         output='screen',
     )
