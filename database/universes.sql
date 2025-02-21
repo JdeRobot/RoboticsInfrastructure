@@ -142,7 +142,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 26	Autoparking Lidar Simple: In line	5	0
 27	Vacuums House Roof	26	0
 28	Restaurant	21	0
-29	Vacuums House Markers	25	1
+29	Vacuums House Markers	25	0
 30	Laser Mapping Warehouse	12	0
 31	Rescue People Harmonic	31	0
 \.
@@ -193,8 +193,8 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_v
 
 COPY public.robots (id, name, launch_file_path) FROM stdin;
 0	None	None
-1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 \.
+-- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 
 --
 -- Name: exercises_universe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user-dev
