@@ -145,6 +145,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 29	Vacuums House Markers	25	0
 30	Laser Mapping Warehouse	12	0
 31	Rescue People Harmonic	31	0
+32	Follow Road Harmonic	32	0
 \.
 
 
