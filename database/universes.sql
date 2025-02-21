@@ -185,6 +185,7 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_v
 29	Warehouse 2	/opt/jderobot/Launchers/pallet_warehouse.launch.py	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 30	Warehouse 2 Ackermann	/opt/jderobot/Launchers/pallet_warehouse_with_ackermann_logistic_robot.launch.py	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	/opt/jderobot/Launchers/visualization/rescue_people.config	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	/opt/jderobot/Launchers/visualization/follow_road.config	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
