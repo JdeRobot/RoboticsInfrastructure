@@ -175,5 +175,11 @@
       <pose>7.3916501998901367 11.8665771484375 0 0 0 0.81320396213978929</pose>
     </include>
 
+    <include>
+        <uri>model://quadrotor_dual_cam</uri>
+        <name>drone0</name>
+        <pose>14.96 0.0 0.3 1.57 0 0</pose>
+    </include>
+
   </world>
 </sdf>
