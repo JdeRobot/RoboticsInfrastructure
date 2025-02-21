@@ -7,11 +7,7 @@
       </ros>
       <update_rate>1.0</update_rate>
     </plugin>
-    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
-
-    <link name="base_footprint"/>
-
-    <link name="base_link">
+    <link name="base">
       <inertial>
         <pose>0.001453 -0.000453 0.029787 0 0 0</pose>
         <inertia>
@@ -458,14 +454,8 @@
       </sensor>
     </link>
 
-    <joint name="base_joint" type="fixed">
-      <parent>base_footprint</parent>
-      <child>base_link</child>
-      <pose>0.0 0.0 0.010 0 0 0</pose>
-    </joint>
-
     <joint name="left_wheel_joint" type="revolute">
-      <parent>base_link</parent>
+      <parent>base</parent>
       <child>left_wheel</child>
       <axis>
         <xyz>0 1 0</xyz>
@@ -473,7 +463,7 @@
       </axis>
     </joint>
     <joint name="right_wheel_joint" type="revolute">
-      <parent>base_link</parent>
+      <parent>base</parent>
       <child>right_wheel</child>
       <axis>
         <xyz>0 1 0</xyz>
@@ -481,7 +471,7 @@
       </axis>
     </joint>
     <joint name='joint_laser' type='fixed'>
-      <parent>base_link</parent>
+      <parent>base</parent>
       <child>laser</child>
       <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
@@ -492,38 +482,26 @@
       </axis>
     </joint>
 
-    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-        <update_rate>30</update_rate>
-        <!-- wheels -->
-        <left_joint>left_wheel_joint</left_joint>
-        <right_joint>right_wheel_joint</right_joint>
-        <!-- kinematics -->
-        <wheel_separation>0.5380</wheel_separation>
-        <wheel_diameter>0.2410</wheel_diameter>
-        <!-- limits -->
-        <max_wheel_torque>20</max_wheel_torque>
-        <max_wheel_acceleration>1.0</max_wheel_acceleration>
-        <command_topic>cmd_vel</command_topic>
-        <!-- output -->
-        <publish_odom>true</publish_odom>
-        <publish_odom_tf>true</publish_odom_tf>
-        <publish_wheel_tf>false</publish_wheel_tf>
-        <odometry_topic>odom</odometry_topic>
-        <odometry_frame>odom</odometry_frame>
-        <robot_base_frame>base_footprint</robot_base_frame>
-        <odom_topic>odom</odom_topic>
-        <frame_id>odom</frame_id>
-        <tf_topic>/tf</tf_topic>
-        <odom_publisher_frequency>30</odom_publisher_frequency>
-        <child_frame_id>base_footprint</child_frame_id>
-    </plugin>
-    <plugin name="robot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
-        <ros>
-            <remapping>~/out:=joint_states</remapping>
-        </ros>
-        <update_rate>30</update_rate>
-        <joint_name>left_wheel_joint</joint_name>
-        <joint_name>right_wheel_joint</joint_name>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>10</updateRate>
+      <leftJoint>right_wheel_joint</leftJoint>
+      <rightJoint>left_wheel_joint</rightJoint>
+
+      <wheelSeparation>0.5380</wheelSeparation>
+      <wheelDiameter>0.2410</wheelDiameter>
+
+      <torque>20</torque>
+      <commandTopic>/cmd_vel</commandTopic>
+      <!-- topic name published in the cpp file -->
+      <odometryTopic>roombaROS/odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+
+      <robotBaseFrame>base</robotBaseFrame>
+
+      <publishWheelTF>true</publishWheelTF>
+      <publishWheelJointState>true</publishWheelJointState>
     </plugin>
 
   </model>
