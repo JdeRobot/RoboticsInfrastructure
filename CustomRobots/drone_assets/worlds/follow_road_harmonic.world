@@ -178,7 +178,7 @@
     <include>
         <uri>model://quadrotor_dual_cam</uri>
         <name>drone0</name>
-        <pose>17.96 0.0 0.3 -0.78 0 0</pose>
+        <pose>17.96 0.0 0.3 -1.57 0 0</pose>
     </include>
 
   </world>
