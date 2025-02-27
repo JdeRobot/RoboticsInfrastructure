@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
-  <world name="follow_road_harmonic">
+  <world name="empty">
     <physics name="4ms" type="ignored">
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -173,6 +173,12 @@
       <uri>model://road_plane</uri>
       <name>road_plane_6</name>
       <pose>7.3916501998901367 11.8665771484375 0 0 0 0.81320396213978929</pose>
+    </include>
+
+    <include>
+        <uri>model://quadrotor_dual_cam</uri>
+        <name>drone0</name>
+        <pose>17.96 0.0 0.3 0 0 -2.0</pose>
     </include>
 
   </world>
