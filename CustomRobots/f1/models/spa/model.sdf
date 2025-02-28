@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+
+    <model name="spa_circuit">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://spa/meshes/spa.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://spa/meshes/spa.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+</sdf>
