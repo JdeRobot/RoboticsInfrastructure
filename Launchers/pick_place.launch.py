@@ -3,15 +3,14 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
-from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
  
 def generate_launch_description():
  
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
-  pkg_ros2srrc = FindPackageShare(package='ros2srrc').find('ros2srrc')
+  pkg_ros2srrc = FindPackageShare(package='ros2srrc_launch').find('ros2srrc_launch')
    
   # Set the path to this package.
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
@@ -68,9 +67,9 @@ def generate_launch_description():
 
   # Start Gazebo server
   start_ros2srrc_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_ros2srrc, 'launch', 'moveit2.launch.py')),
+    PythonLaunchDescriptionSource(os.path.join(pkg_ros2srrc, 'moveit2', 'moveit2.launch.py')),
     condition=IfCondition(use_simulator),
-    launch_arguments={'package': package, 'config': config}.items())
+  )
  
   # Create the launch description and populate
   ld = LaunchDescription()
