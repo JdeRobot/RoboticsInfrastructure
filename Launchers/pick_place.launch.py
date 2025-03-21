@@ -10,7 +10,8 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
  
   # Set the path to the Gazebo ROS package
-  pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
+  pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
+  pkg_ros2srrc = FindPackageShare(package='ros2srrc').find('ros2srrc')
    
   # Set the path to this package.
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
@@ -30,6 +31,8 @@ def generate_launch_description():
   use_sim_time = LaunchConfiguration('use_sim_time')
   use_simulator = LaunchConfiguration('use_simulator')
   world = LaunchConfiguration('world')
+  package = LaunchConfiguration('package')
+  config = LaunchConfiguration('config')
  
   declare_simulator_cmd = DeclareLaunchArgument(
     name='headless',
@@ -50,14 +53,24 @@ def generate_launch_description():
     name='world',
     default_value=world_path,
     description='Full path to the world model file to load')
+  
+  declare_package_cmd = DeclareLaunchArgument(
+    name='package',
+    default_value='ros2srrc_ur5',
+    description='Full path to the world model file to load')
+  
+  declare_config_cmd = DeclareLaunchArgument(
+    name='config',
+    default_value='ur5_2',
+    description='Full path to the world model file to load')
     
   # Specify the actions
 
   # Start Gazebo server
-  start_gazebo_server_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
+  start_ros2srrc_cmd = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(os.path.join(pkg_ros2srrc, 'launch', 'moveit2.launch.py')),
     condition=IfCondition(use_simulator),
-    launch_arguments={'world': world}.items())
+    launch_arguments={'package': package, 'config': config}.items())
  
   # Create the launch description and populate
   ld = LaunchDescription()
@@ -67,8 +80,10 @@ def generate_launch_description():
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
+  ld.add_action(declare_package_cmd)
+  ld.add_action(declare_config_cmd)
  
   # Add any actions
-  ld.add_action(start_gazebo_server_cmd)
+  ld.add_action(start_ros2srrc_cmd)
  
   return ld
