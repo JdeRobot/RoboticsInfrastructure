@@ -66,6 +66,15 @@ def generate_launch_description():
   # Specify the actions
 
   # Start Gazebo server
+  start_gazebo_server_cmd = IncludeLaunchDescription(
+      PythonLaunchDescriptionSource(
+          os.path.join(pkg_gazebo_ros, "launch", "gzserver.launch.py")
+      ),
+      condition=IfCondition(use_simulator),
+      launch_arguments={"world": world, "pause": "true"}.items(),
+  )
+
+  # Start Gazebo server
   start_ros2srrc_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join(pkg_ros2srrc, 'moveit2', 'moveit2.launch.py')),
     condition=IfCondition(use_simulator),
@@ -83,6 +92,7 @@ def generate_launch_description():
   ld.add_action(declare_config_cmd)
  
   # Add any actions
+  ld.add_action(start_gazebo_server_cmd)
   ld.add_action(start_ros2srrc_cmd)
  
   return ld
