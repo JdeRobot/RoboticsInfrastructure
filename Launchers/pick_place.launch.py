@@ -10,7 +10,8 @@ from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnExecutionComplete
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from launch_ros.substitutions import FindPackageShare, FindExecutable
+from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import FindExecutable
 
 
 def generate_launch_description():
@@ -71,7 +72,7 @@ def generate_launch_description():
             [
                 FindExecutable(name="ros2"),
                 " run ros2srrc_execution SpawnObject.py ",
-                '--package "ros2srrc_irb120_gazebo" ',
+                '--package "custom_robots" ',
                 '--urdf "red_box_small.urdf" ',
                 '--name "red_box_small" ',
                 "--x 0.6 --y -0.3 --z 1.01",
@@ -84,7 +85,7 @@ def generate_launch_description():
             [
                 FindExecutable(name="ros2"),
                 " run ros2srrc_execution SpawnObject.py ",
-                '--package "ros2srrc_irb120_gazebo" ',
+                '--package "custom_robots" ',
                 '--urdf "green_cylinder_small.urdf" ',
                 '--name "green_cylinder_small" ',
                 "--x 0.5 --y -0.1 --z 1.01",
@@ -97,7 +98,7 @@ def generate_launch_description():
             [
                 FindExecutable(name="ros2"),
                 " run ros2srrc_execution SpawnObject.py ",
-                '--package "ros2srrc_irb120_gazebo" ',
+                '--package "custom_robots" ',
                 '--urdf "blue_sphere_small.urdf" ',
                 '--name "blue_sphere_small" ',
                 "--x 0.7 --y 0.1 --z 1.01",
@@ -110,7 +111,7 @@ def generate_launch_description():
             [
                 FindExecutable(name="ros2"),
                 " run ros2srrc_execution SpawnObject.py ",
-                '--package "ros2srrc_irb120_gazebo" ',
+                '--package "custom_robots" ',
                 '--urdf "yellow_box_small.urdf" ',
                 '--name "yellow_box_small" ',
                 "--x 0.6 --y 0.3 --z 1.01",
