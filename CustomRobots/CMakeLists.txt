@@ -152,6 +152,7 @@ install(DIRECTORY
   laser_mapping/models
 
   restaurant/models
+  pick_place/models
  
 
   DESTINATION share/${PROJECT_NAME}
