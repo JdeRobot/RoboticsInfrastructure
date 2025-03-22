@@ -1,5 +1,7 @@
 import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch_ros.actions import Node
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
@@ -28,7 +30,14 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
-    extra_launch_dir = "/opt/jderobot/Launchers/pick_place"
+    pieces = [
+        Piece("red_box_small", "objects/red_box_small.urdf", 0.6, 0.3, 1.01),
+        Piece(
+            "green_cylinder_small", "objects/green_cylinder_small.urdf", 0.5, 0.1, 1.01
+        ),
+        Piece("blue_sphere_small", "objects/blue_sphere_small.urdf", 0.7, 0.1, 1.01),
+        Piece("yellow_box_small", "objects/yellow_box_small.urdf", 0.6, 0.3, 1.01),
+    ]
 
     # Set the path to the SDF model files.
     gazebo_models_path = os.path.join(pkg_share, "models")
@@ -86,62 +95,6 @@ def generate_launch_description():
         condition=IfCondition(use_simulator),
     )
 
-    spawn_red_box = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
-        ),
-        launch_arguments={
-            "use_sim_time": use_sim_time,
-            "name": "red_box_small",
-            "path": "objects/red_box_small.urdf",
-            "x": 0.6,
-            "y": 0.3,
-            "z": 1.01,
-        }.items(),
-    )
-
-    spawn_green_cylinder = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
-        ),
-        launch_arguments={
-            "use_sim_time": use_sim_time,
-            "name": "green_cylinder_small",
-            "path": "objects/green_cylinder_small.urdf",
-            "x": 0.5,
-            "y": 0.1,
-            "z": 1.01,
-        }.items(),
-    )
-
-    spawn_blue_sphere = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
-        ),
-        launch_arguments={
-            "use_sim_time": use_sim_time,
-            "name": "blue_sphere_small",
-            "path": "objects/blue_sphere_small.urdf",
-            "x": 0.7,
-            "y": 0.1,
-            "z": 1.01,
-        }.items(),
-    )
-
-    spawn_yellow_box = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
-        ),
-        launch_arguments={
-            "use_sim_time": use_sim_time,
-            "name": "yellow_box_small",
-            "path": "objects/yellow_box_small.urdf",
-            "x": 0.6,
-            "y": 0.3,
-            "z": 1.01,
-        }.items(),
-    )
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -154,12 +107,49 @@ def generate_launch_description():
     # Add any actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_ros2srrc_cmd)
-    ld.add_action(spawn_red_box)
-    ld.add_action(spawn_green_cylinder)
-    ld.add_action(spawn_blue_sphere)
-    ld.add_action(spawn_yellow_box)
+
+    for piece in pieces:
+        ld.add_action(generate_spawn_description(piece))
+        print(pieces)
 
     return ld
+
+
+class Piece:
+    def __init__(self, name, path, x, y, z):
+        self.name = name
+        self.path = os.path.join(
+            get_package_share_directory("custom_robots"), "urdf", path
+        )
+
+        self.x = f"{x}"
+        self.y = f"{y}"
+        self.z = f"{z}"
+
+        with open(self.path, "r") as infp:
+            self.urdf = infp.read()
+
+
+def generate_spawn_description(piece):
+    print("urdf_file_name : {}".format(piece.path))
+
+    return Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        output="screen",
+        arguments=[
+            "-entity",
+            piece.name,
+            "-stdin",
+            piece.urdf,
+            "-x",
+            piece.x,
+            "-y",
+            piece.y,
+            "-z",
+            piece.z,
+        ],
+    )
 
 
 # Launch objects
