@@ -28,6 +28,8 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
+    extra_launch_dir = "/opt/jderobot/Launchers/pick_place"
+
     # Set the path to the SDF model files.
     gazebo_models_path = os.path.join(pkg_share, "models")
     os.environ["GAZEBO_MODEL_PATH"] = (
@@ -67,58 +69,6 @@ def generate_launch_description():
 
     # Specify the actions
 
-    spawn_red_box = ExecuteProcess(
-        cmd=[
-            [
-                FindExecutable(name="ros2"),
-                " run ros2srrc_execution SpawnObject.py ",
-                '--package "custom_robots" ',
-                '--urdf "red_box_small.urdf" ',
-                '--name "red_box_small" ',
-                "--x 0.6 --y -0.3 --z 1.01",
-            ]
-        ],
-    )
-
-    spawn_green_cylinder = ExecuteProcess(
-        cmd=[
-            [
-                FindExecutable(name="ros2"),
-                " run ros2srrc_execution SpawnObject.py ",
-                '--package "custom_robots" ',
-                '--urdf "green_cylinder_small.urdf" ',
-                '--name "green_cylinder_small" ',
-                "--x 0.5 --y -0.1 --z 1.01",
-            ]
-        ],
-    )
-
-    spawn_blue_sphere = ExecuteProcess(
-        cmd=[
-            [
-                FindExecutable(name="ros2"),
-                " run ros2srrc_execution SpawnObject.py ",
-                '--package "custom_robots" ',
-                '--urdf "blue_sphere_small.urdf" ',
-                '--name "blue_sphere_small" ',
-                "--x 0.7 --y 0.1 --z 1.01",
-            ]
-        ],
-    )
-
-    spawn_yellow_box = ExecuteProcess(
-        cmd=[
-            [
-                FindExecutable(name="ros2"),
-                " run ros2srrc_execution SpawnObject.py ",
-                '--package "custom_robots" ',
-                '--urdf "yellow_box_small.urdf" ',
-                '--name "yellow_box_small" ',
-                "--x 0.6 --y 0.3 --z 1.01",
-            ]
-        ],
-    )
-
     # Start Gazebo server
     start_gazebo_server_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -136,19 +86,60 @@ def generate_launch_description():
         condition=IfCondition(use_simulator),
     )
 
-    # Add spawning for the blocks after world is loaded
-    spawn_blocks = (
-        RegisterEventHandler(
-            OnExecutionComplete(
-                target_action=start_gazebo_server_cmd,
-                on_completion=[
-                    spawn_red_box,
-                    spawn_green_cylinder,
-                    spawn_blue_sphere,
-                    spawn_yellow_box
-                ],
-            )
+    spawn_red_box = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
         ),
+        launch_arguments={
+            "use_sim_time": use_sim_time,
+            "name": "red_box_small",
+            "path": "objects/red_box_small.urdf",
+            "x": 0.6,
+            "y": 0.3,
+            "z": 1.01,
+        }.items(),
+    )
+
+    spawn_green_cylinder = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": use_sim_time,
+            "name": "green_cylinder_small",
+            "path": "objects/green_cylinder_small.urdf",
+            "x": 0.5,
+            "y": 0.1,
+            "z": 1.01,
+        }.items(),
+    )
+
+    spawn_blue_sphere = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": use_sim_time,
+            "name": "blue_sphere_small",
+            "path": "objects/blue_sphere_small.urdf",
+            "x": 0.7,
+            "y": 0.1,
+            "z": 1.01,
+        }.items(),
+    )
+
+    spawn_yellow_box = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(extra_launch_dir, "spawn_piece.launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": use_sim_time,
+            "name": "yellow_box_small",
+            "path": "objects/yellow_box_small.urdf",
+            "x": 0.6,
+            "y": 0.3,
+            "z": 1.01,
+        }.items(),
     )
 
     # Create the launch description and populate
@@ -163,14 +154,17 @@ def generate_launch_description():
     # Add any actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_ros2srrc_cmd)
-    ld.add_action(spawn_blocks)
+    ld.add_action(spawn_red_box)
+    ld.add_action(spawn_green_cylinder)
+    ld.add_action(spawn_blue_sphere)
+    ld.add_action(spawn_yellow_box)
 
     return ld
 
 
 # Launch objects
 
-# ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "red_box_small.urdf" --name "red_box_small" --x 0.6 --y -0.3 --z 1.01;
+# ros2 run ros2srrc_execution SpawnObject.py --package "custom_robots" --urdf "red_box_small.urdf" --name "red_box_small" --x 0.6 --y -0.3 --z 1.01;
 # ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "green_cylinder_small.urdf" --name "green_cylinder_small" --x 0.5 --y -0.1 --z 1.01;
 # ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "blue_sphere_small.urdf" --name "blue_sphere_small" --x 0.7 --y 0.1 --z 1.01;
 # ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "yellow_box_small.urdf" --name "yellow_box_small" --x 0.6 --y 0.3 --z 1.01;
