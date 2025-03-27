@@ -108,9 +108,9 @@ def generate_launch_description():
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_ros2srrc_cmd)
 
-    for piece in pieces:
-        ld.add_action(generate_spawn_description(piece))
-        print(pieces)
+    # for piece in pieces:
+    #     ld.add_action(generate_spawn_description(piece))
+    #     print(pieces)
 
     return ld
 
