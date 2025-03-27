@@ -30,15 +30,6 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
-    pieces = [
-        Piece("red_box_small", "objects/red_box_small.urdf", 0.6, 0.3, 1.01),
-        Piece(
-            "green_cylinder_small", "objects/green_cylinder_small.urdf", 0.5, 0.1, 1.01
-        ),
-        Piece("blue_sphere_small", "objects/blue_sphere_small.urdf", 0.7, 0.1, 1.01),
-        Piece("yellow_box_small", "objects/yellow_box_small.urdf", 0.6, 0.3, 1.01),
-    ]
-
     # Set the path to the SDF model files.
     gazebo_models_path = os.path.join(pkg_share, "models")
     os.environ["GAZEBO_MODEL_PATH"] = (
@@ -108,56 +99,7 @@ def generate_launch_description():
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_ros2srrc_cmd)
 
-    # for piece in pieces:
-    #     ld.add_action(generate_spawn_description(piece))
-    #     print(pieces)
-
     return ld
-
-
-class Piece:
-    def __init__(self, name, path, x, y, z):
-        self.name = name
-        self.path = os.path.join(
-            get_package_share_directory("custom_robots"), "urdf", path
-        )
-
-        self.x = f"{x}"
-        self.y = f"{y}"
-        self.z = f"{z}"
-
-        with open(self.path, "r") as infp:
-            self.urdf = infp.read()
-
-
-def generate_spawn_description(piece):
-    print("urdf_file_name : {}".format(piece.path))
-
-    return Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
-        output="screen",
-        arguments=[
-            "-entity",
-            piece.name,
-            "-stdin",
-            piece.urdf,
-            "-x",
-            piece.x,
-            "-y",
-            piece.y,
-            "-z",
-            piece.z,
-        ],
-    )
-
-
-# Launch objects
-
-# ros2 run ros2srrc_execution SpawnObject.py --package "custom_robots" --urdf "red_box_small.urdf" --name "red_box_small" --x 0.6 --y -0.3 --z 1.01;
-# ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "green_cylinder_small.urdf" --name "green_cylinder_small" --x 0.5 --y -0.1 --z 1.01;
-# ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "blue_sphere_small.urdf" --name "blue_sphere_small" --x 0.7 --y 0.1 --z 1.01;
-# ros2 run ros2srrc_execution SpawnObject.py --package "ros2srrc_irb120_gazebo" --urdf "yellow_box_small.urdf" --name "yellow_box_small" --x 0.6 --y 0.3 --z 1.01;
 
 ###################################################################################
 # ROS2 + MOVEIT2

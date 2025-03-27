@@ -1719,22 +1719,22 @@
 
     <include>
       <uri>model://blue_ball</uri>
-      <pose frame=''>0.7 0.1 1.01 0 0 0</pose>
+      <pose frame=''>0.7 0.1 1.04 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://green_cylinder</uri>
-      <pose frame=''>0.5 0.1 1.01 0 0 0</pose>
+      <pose frame=''>0.5 -0.1 1.07 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://red_box</uri>
-      <pose frame=''>0.6 0.3 1.01 0 0 0</pose>
+      <pose frame=''>0.6 -0.3 1.04 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://yellow_box</uri>
-      <pose frame=''>0.6 0.3 1.01 0 0 0</pose>
+      <pose frame=''>0.6 0.3 1.05 0 0 0</pose>
     </include>
 
   </world>
