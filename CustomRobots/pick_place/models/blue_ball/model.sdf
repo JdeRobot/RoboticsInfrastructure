@@ -3,18 +3,18 @@
   <model name='blue_ball'>
     <link name='link_3'>
       <inertial>
-        <mass>0.03</mass>
+        <mass>0.01</mass>
         <inertia>
-          <ixx>0.166667</ixx>
+          <ixx>0</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.166667</iyy>
+          <iyy>0</iyy>
           <iyz>0</iyz>
-          <izz>0.166667</izz>
+          <izz>0</izz>
         </inertia>
         <pose frame=''>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose frame=''>0 0 0.03 0 -0 0</pose>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -23,7 +23,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
-            <radius>0.03</radius>
+            <radius>0.04</radius>
           </sphere>
         </geometry>
         <material>
@@ -48,12 +48,9 @@
         <max_contacts>10</max_contacts>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <box>
-            <size>0.06 0.06 0.06</size>
-          </box>
-          <!-- <sphere>
-            <radius>0.03</radius>
-          </sphere> -->
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
         </geometry>
         <surface>
           <friction>

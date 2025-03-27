@@ -3,26 +3,26 @@
   <model name='yellow_box'>
     <link name='link'>
       <inertial>
-        <mass>0.0001</mass>
+        <mass>0.01</mass>
         <inertia>
-          <ixx>0.166667</ixx>
+          <ixx>0</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.166667</iyy>
+          <iyy>0</iyy>
           <iyz>0</iyz>
-          <izz>0.166667</izz>
+          <izz>0</izz>
         </inertia>
         <pose frame=''>0 0 0 0 -0 0</pose>
       </inertial>
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose frame=''>0 -0 0.02 0 -0 0</pose>
+      <pose frame=''>0 -0 0 0 -0 0</pose>
       <gravity>1</gravity>
       <visual name='visual'>
         <geometry>
           <box>
-            <size>0.03 0.1 0.04</size>
+            <size>0.08 0.04 0.1</size>
           </box>
         </geometry>
         <material>
@@ -48,7 +48,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.03 0.1 0.04</size>
+            <size>0.08 0.04 0.1</size>
           </box>
         </geometry>
         <surface>

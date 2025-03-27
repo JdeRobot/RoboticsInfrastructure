@@ -1718,22 +1718,22 @@
     </model>
 
     <include>
-      <uri>model://blue_sphere_small</uri>
+      <uri>model://blue_ball</uri>
       <pose frame=''>0.7 0.1 1.01 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://green_cylinder_small</uri>
+      <uri>model://green_cylinder</uri>
       <pose frame=''>0.5 0.1 1.01 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://red_box_small</uri>
+      <uri>model://red_box</uri>
       <pose frame=''>0.6 0.3 1.01 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://yellow_box_small</uri>
+      <uri>model://yellow_box</uri>
       <pose frame=''>0.6 0.3 1.01 0 0 0</pose>
     </include>
 
