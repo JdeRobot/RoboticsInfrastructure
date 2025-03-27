@@ -28,11 +28,11 @@
           <plane>
             <normal>0 0 1</normal>
             <size>250 250</size>
-          </plane>
-        </geometry>
+        </plane>
+      </geometry>
         <material>
           <script>
-            <uri>file://media/materials/scripts/Gazebo.material</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Grass</name>
           </script>
         </material>
