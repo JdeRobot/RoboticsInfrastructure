@@ -25,15 +25,11 @@
 
         <cast_shadows>false</cast_shadows>
         <geometry>
-          <plane>
-            <normal>0 0 1</normal>
-            <size>250 250</size>
-        </plane>
-      </geometry>
-        <mesh>
-          <uri>file://grass_plane/materials/textures/grasssss.dae</uri>
-        </mesh>
-    </visual>
+          <mesh>
+            <uri>model://grass_plane/meshes/grasssss.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
   </link>
 </model>
 </sdf>
