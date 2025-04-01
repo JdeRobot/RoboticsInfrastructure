@@ -13,14 +13,14 @@
   <library_effects>
     <effect id="grass-effect">
       <profile_COMMON>
-        <newparam sid="Ilustración_sin_título__6__jpg-surface">
+        <newparam sid="grass-surface">
           <surface type="2D">
-            <init_from>Ilustración_sin_título__6__jpg</init_from>
+            <init_from>grass</init_from>
           </surface>
         </newparam>
-        <newparam sid="Ilustración_sin_título__6__jpg-sampler">
+        <newparam sid="grass-sampler">
           <sampler2D>
-            <source>Ilustración_sin_título__6__jpg-surface</source>
+            <source>grass-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -29,7 +29,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Ilustración_sin_título__6__jpg-sampler" texcoord="UVMap"/>
+              <texture texture="grass-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -40,8 +40,8 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="Ilustración_sin_título__6__jpg" name="Ilustración_sin_título__6__jpg">
-      <init_from>Ilustracio%CC%81n_sin_ti%CC%81tulo%20(6).jpg</init_from>
+    <image id="grass" name="grass">
+      <init_from>grass.jpg</init_from>
     </image>
   </library_images>
   <library_materials>
