@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="ur5_robotiq85" >
+
+	<xacro:arg name="limited" default="true"/>
+
+	<!-- UR5e  -->
+	<xacro:include filename="$(find ur_description)/urdf/ur.urdf.xacro" />	
+</robot>
