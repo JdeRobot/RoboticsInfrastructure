@@ -21,12 +21,12 @@
     </collision>
 
       <visual name='visual_0'>
-        <pose>0 0 0 0 0 0</pose>
+        <pose>2 -5 0 0 0 0</pose>
 
         <cast_shadows>false</cast_shadows>
         <geometry>
           <mesh>
-            <uri>model://grass_plane/meshes/grasssss.dae</uri>
+            <uri>model://grass_plane/meshes/grass_plane.dae</uri>
           </mesh>
         </geometry>
       </visual>
