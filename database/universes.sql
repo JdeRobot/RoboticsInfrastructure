@@ -21,6 +21,10 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
+DROP TABLE public.robots;
+DROP TABLE public.worlds;
+DROP TABLE public.universes CASCADE;
+
 --
 -- Name: universes; Type: TABLE; Schema: public; Owner: user-dev
 --
@@ -160,18 +164,18 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 
 COPY public.worlds (id, name, launch_file_path, visualization_config_path, viewer_model_path, ros_version, visualization, world, start_pose) FROM stdin;
 0	None	None	None	None	ROS2	none	none	{0.0,0.0,0.0,0.0,0.0,0.0}
-1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/3DReconstruction.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 2	Autoparking Gas Station: In battery	/opt/jderobot/Launchers/gas_station_battery_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 3	Autoparking Gas Station: In line	/opt/jderobot/Launchers/gas_station_line_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 4	Autoparking Gas Station: Parking lot	/opt/jderobot/Launchers/gas_station_parking_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 5	Autoparking Lidar Simple: In line	/opt/jderobot/Launchers/prius_360_autoparking.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 6	Autoparking Simple: In battery	/opt/jderobot/Launchers/prius_bateria.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/APSimpleInLine.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 8	City Large	/opt/jderobot/Launchers/taxi_navigator.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/CityLarge.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 9	City Large Followcam	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/Hospital.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/laser_mapping.config	None	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/laser_mapping.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/LaserMappingWarehouse.glb	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/Montmelo.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 15	Montreal Ackermann Circuit	/opt/jderobot/Launchers/montreal_circuit_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -183,16 +187,16 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, viewe
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/Restaurant.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/SimpleCircuit.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/VacuumsHouse.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	/opt/jderobot/Launchers/visualization/marker_visual_loc.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/LakeHouse.glb	ROS2	gzsim_rae	gazebo	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/AmazonWarehouse.glb	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 28	Warehouse 1 Ackermann	/opt/jderobot/Launchers/small_warehouse_with_ackermann_logistic_robot.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 29	Warehouse 2	/opt/jderobot/Launchers/pallet_warehouse.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 30	Warehouse 2 Ackermann	/opt/jderobot/Launchers/pallet_warehouse_with_ackermann_logistic_robot.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	/opt/jderobot/Launchers/visualization/rescue_people.config	None	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	/opt/jderobot/Launchers/visualization/follow_road.config	None	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/small_laser_mapping.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/MappingWarehouse.glb	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	/opt/jderobot/Launchers/visualization/rescue_people.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/RescuePeople.glb	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	/opt/jderobot/Launchers/visualization/follow_road.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/FollowRoad.glb	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/small_laser_mapping.config	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/SmallLaserWarehouse.glb	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 34	Pick And Place Arm	/opt/jderobot/Launchers/pick_place.launch.py	None	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 --../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Worlds/Monaco.glb
@@ -203,13 +207,17 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, viewe
 
 COPY public.robots (id, name, launch_file_path, viewer_model_path) FROM stdin;
 0	None	None	None
-1	Turtlebot 2	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Turtlebot.glb
+1	Turtlebot 2	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Turtlebot2.glb
 2	Roomba	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Roomba.glb
 3	F1_astonMartin	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/F1_astonMartin.glb
 4	F1_redBull	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/F1_redBull.glb
 5	F1_renault	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/F1_renault.glb
 6	Lincoln	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Lincoln.glb
 7	Prius	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Prius.glb
+8	Amazon Robot	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/AmazonRobot.glb
+9	Turtlebot 3	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Turtlebot3.glb
+10	Quadrotor Dual Cam	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/Quadrotor.glb
+11	Ackermann Logistic Robot	None	../../../../static/ModelsViewer/RoboticsInfrastructure/ViewerModels/Robots/AckermannLogistic.glb
 \.
 
 --
