@@ -191,7 +191,7 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_v
 31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	/opt/jderobot/Launchers/visualization/rescue_people.config	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	/opt/jderobot/Launchers/visualization/follow_road.config	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/small_laser_mapping.config	ROS2	gzsim_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-34	Pick And Place Arm	/opt/jderobot/Launchers/pick_place.launch.py	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+34	Pick And Place Arm	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/moveit2.launch.py	None	ROS2	gazebo_rae	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
