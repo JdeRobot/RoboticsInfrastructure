@@ -101,6 +101,7 @@ def generate_launch_description():
 
     return ld
 
+
 ###################################################################################
 # ROS2 + MOVEIT2
 # Pick and place DEMO with 4 small objects - UR5 + Robotiq 85

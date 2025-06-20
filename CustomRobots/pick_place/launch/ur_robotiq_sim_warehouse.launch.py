@@ -42,7 +42,12 @@ from launch.actions import (
 from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -103,7 +108,7 @@ def launch_setup(context, *args, **kwargs):
             "sim_gazebo:=true",
             " ",
             "simulation_controllers:=",
-            initial_joint_controllers,            
+            initial_joint_controllers,
         ]
     )
     robot_description = {"robot_description": robot_description_content}
@@ -127,7 +132,11 @@ def launch_setup(context, *args, **kwargs):
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     # Delay rviz start after `joint_state_broadcaster`
@@ -152,21 +161,18 @@ def launch_setup(context, *args, **kwargs):
         arguments=[initial_joint_controller, "-c", "/controller_manager", "--stopped"],
         condition=UnlessCondition(start_joint_controller),
     )
-        
+
     # Gazebo WORLD file:
     ur5_ros2_warehouse = os.path.join(
-        get_package_share_directory('pick_place_exercise'),
-        'worlds',
-        'warehouse.world')
-        
+        get_package_share_directory("pick_place_exercise"), "worlds", "warehouse.world"
+    )
+
     # Gazebo nodes
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [FindPackageShare("gazebo_ros"), "/launch", "/gazebo.launch.py"]
         ),
-        launch_arguments={
-            "gui": gazebo_gui,"world": ur5_ros2_warehouse
-        }.items(),
+        launch_arguments={"gui": gazebo_gui, "world": ur5_ros2_warehouse}.items(),
     )
 
     # Spawn robot
@@ -177,14 +183,15 @@ def launch_setup(context, *args, **kwargs):
         arguments=["-entity", "ur_gripper", "-topic", "robot_description", "-z", "0.9"],
         output="screen",
     )
-    
+
     # Depending on gui parameter, either launch joint_state_publisher or joint_state_publisher_gui
     joint_state_publisher_gui = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui',
-        condition=IfCondition(launch_jointstate_gui))
-    
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui",
+        name="joint_state_publisher_gui",
+        condition=IfCondition(launch_jointstate_gui),
+    )
+
     nodes_to_start = [
         robot_state_publisher_node,
         joint_state_broadcaster_spawner,
@@ -200,14 +207,24 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    
+
     declared_arguments = []
     # UR specific arguments
     declared_arguments.append(
         DeclareLaunchArgument(
             "ur_type",
             description="Type/series of used UR robot.",
-            choices=["ur3", "ur3e", "ur5", "ur5e", "ur10", "ur10e", "ur16e", "ur20", "ur30"],
+            choices=[
+                "ur3",
+                "ur3e",
+                "ur5",
+                "ur5e",
+                "ur10",
+                "ur10e",
+                "ur16e",
+                "ur20",
+                "ur30",
+            ],
             default_value="ur5e",
         )
     )
@@ -287,10 +304,16 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
+        DeclareLaunchArgument(
+            "launch_rviz", default_value="true", description="Launch RViz?"
+        )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_jointstate_gui", default_value="false", description="Launch Joint State GUI?")
+        DeclareLaunchArgument(
+            "launch_jointstate_gui",
+            default_value="false",
+            description="Launch Joint State GUI?",
+        )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -298,4 +321,6 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )

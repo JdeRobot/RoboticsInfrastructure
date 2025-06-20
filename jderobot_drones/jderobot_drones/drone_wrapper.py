@@ -1,13 +1,16 @@
 """
 drone_wrapper.py
 """
+
 import asyncio
 import time
 from typing import List
 from numpy import ndarray
 
 from as2_python_api.drone_interface_base import DroneInterfaceBase
-from as2_python_api.modules.motion_reference_handler_module import MotionReferenceHandlerModule
+from as2_python_api.modules.motion_reference_handler_module import (
+    MotionReferenceHandlerModule,
+)
 from as2_msgs.srv import SetPlatformStateMachineEvent
 from as2_msgs.msg import PlatformStateMachineEvent, PlatformStatus
 
@@ -15,13 +18,19 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import TwistStamped
 from cv_bridge import CvBridge
 import rclpy
-from rclpy.qos import QoSProfile, QoSHistoryPolicy, QoSReliabilityPolicy, QoSDurabilityPolicy
+from rclpy.qos import (
+    QoSProfile,
+    QoSHistoryPolicy,
+    QoSReliabilityPolicy,
+    QoSDurabilityPolicy,
+)
 
 
 class DroneWrapper(DroneInterfaceBase):
     """
     Drone Wrapper
     """
+
     TK_RATE = 0.1
     TK_HEIGHT_MARGIN = 0.25
     LAND_RATE = 0.1
@@ -32,7 +41,7 @@ class DroneWrapper(DroneInterfaceBase):
     def __init__(self, drone_id: str = "drone0", verbose: bool = False) -> None:
         super().__init__(drone_id, verbose, use_sim_time=True)
 
-        yaw_rate_topic = '/' + drone_id + '/self_localization/twist'
+        yaw_rate_topic = "/" + drone_id + "/self_localization/twist"
 
         self.yaw_rate = 0.0
 
@@ -42,20 +51,20 @@ class DroneWrapper(DroneInterfaceBase):
             history=QoSHistoryPolicy.KEEP_LAST,
             depth=10,
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
-            durability=QoSDurabilityPolicy.VOLATILE
+            durability=QoSDurabilityPolicy.VOLATILE,
         )
 
         self.yaw_subscription = self.create_subscription(
-            TwistStamped,
-            yaw_rate_topic,
-            self.yaw_rate_cb,
-            qos_profile)
+            TwistStamped, yaw_rate_topic, self.yaw_rate_cb, qos_profile
+        )
         self.yaw_subscription  # prevent unused variable warning
 
         self.motion_ref_handler = MotionReferenceHandlerModule(drone=self)
 
         self.state_event_service_client = self.create_client(
-            SetPlatformStateMachineEvent, '/' + drone_id + '/platform/state_machine_event')
+            SetPlatformStateMachineEvent,
+            "/" + drone_id + "/platform/state_machine_event",
+        )
 
     def get_position(self) -> List[float]:
         """Get drone position (x, y, z) in m.
@@ -126,19 +135,24 @@ class DroneWrapper(DroneInterfaceBase):
     def set_cmd_pos(self, x: float, y: float, z: float, az: float) -> None:
         """Send position command with yaw angle"""
         self.motion_ref_handler.position.send_position_command_with_yaw_angle(
-            [x, y, z], 1.0, 'earth', self.namespace + '/base_link', float(az))
+            [x, y, z], 1.0, "earth", self.namespace + "/base_link", float(az)
+        )
 
     def set_cmd_vel(self, vx: float, vy: float, vz: float, az: float) -> None:
         """Send speed command with yaw angle"""
         self.motion_ref_handler.speed.send_speed_command_with_yaw_speed(
-            [vx, vy, vz], self.namespace + '/base_link', float(az))
+            [vx, vy, vz], self.namespace + "/base_link", float(az)
+        )
 
     def set_cmd_mix(self, vx: float, vy: float, z: float, az: float) -> None:
         """Send speed in a plane command with yaw angle"""
         self.motion_ref_handler.speed_in_a_plane.send_speed_in_a_plane_command_with_yaw_speed(
-            [vx, vy], z, 'earth', self.namespace + '/base_link', float(az))
+            [vx, vy], z, "earth", self.namespace + "/base_link", float(az)
+        )
 
-    async def call_state_event_service(self, event_value: PlatformStateMachineEvent) -> None:
+    async def call_state_event_service(
+        self, event_value: PlatformStateMachineEvent
+    ) -> None:
         """Request aerostack to update state machine given the new event
         EMERGENCY  -1
         DISARMED    0
@@ -151,52 +165,52 @@ class DroneWrapper(DroneInterfaceBase):
         request.event.event = event_value
 
         while not self.state_event_service_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Service not available, waiting...')
+            self.get_logger().info("Service not available, waiting...")
 
         response = await self.state_event_service_client.call_async(request)
 
         if response is not None:
-            self.get_logger().info(f'Success: {response.success}')
-            self.get_logger().info(f'Current State: {response.current_state}')
+            self.get_logger().info(f"Success: {response.success}")
+            self.get_logger().info(f"Current State: {response.current_state}")
         else:
-            self.get_logger().error('Service call failed')
+            self.get_logger().error("Service call failed")
 
     def takeoff(self, height: float):
         """Send Takeoff command with height"""
-        if self.get_landed_state() == PlatformStatus.TAKING_OFF or \
-                self.get_landed_state() == PlatformStatus.FLYING:
-            self.get_logger().info('Drone is already flying!')
+        if (
+            self.get_landed_state() == PlatformStatus.TAKING_OFF
+            or self.get_landed_state() == PlatformStatus.FLYING
+        ):
+            self.get_logger().info("Drone is already flying!")
             return
 
         self.arm()
         self.offboard()
 
         # Starting to take off
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.TAKE_OFF))
+        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.TAKE_OFF))
 
         while True:
             if abs(self.position[2] - height) < self.TK_HEIGHT_MARGIN:
                 break
-            self.set_cmd_pos(
-                self.position[0], self.position[1], height, self.get_yaw())
+            self.set_cmd_pos(self.position[0], self.position[1], height, self.get_yaw())
             time.sleep(self.TK_RATE)
 
         # Take off finished
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.TOOK_OFF))
+        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.TOOK_OFF))
 
     def land(self) -> None:
         """Send Landing command"""
 
-        if self.get_landed_state() == PlatformStatus.LANDED or \
-                self.get_landed_state() == PlatformStatus.LANDING:
-            self.get_logger().info('Drone is already landed!')
+        if (
+            self.get_landed_state() == PlatformStatus.LANDED
+            or self.get_landed_state() == PlatformStatus.LANDING
+        ):
+            self.get_logger().info("Drone is already landed!")
             return
 
         # Starting to land
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.LAND))
+        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.LAND))
 
         height = self.position[2]
         while True:
@@ -204,13 +218,14 @@ class DroneWrapper(DroneInterfaceBase):
             time.sleep(self.LAND_RATE)
 
             # Check if drone has landed
-            if abs(self.get_velocity()[2]) < self.LAND_SPEED_MARGIN and \
-                    abs(self.position[2] - height) > self.LAND_HEIGHT_MARGIN:
+            if (
+                abs(self.get_velocity()[2]) < self.LAND_SPEED_MARGIN
+                and abs(self.position[2] - height) > self.LAND_HEIGHT_MARGIN
+            ):
                 break
 
         # Land finished
-        asyncio.run(self.call_state_event_service(
-            PlatformStateMachineEvent.LANDED))
+        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.LANDED))
 
         self.disarm()
 

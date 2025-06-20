@@ -42,40 +42,38 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     urdf_path = PathJoinSubstitution(
-        [FindPackageShare('custom_robots'), 'urdf', 'amazon_warehouse_robot.urdf.xacro']
+        [FindPackageShare("custom_robots"), "urdf", "amazon_warehouse_robot.urdf.xacro"]
     )
 
-    return LaunchDescription([
-
-        DeclareLaunchArgument(
-            name='urdf',
-            default_value=urdf_path,
-            description='URDF path'
-        ),
-
-        DeclareLaunchArgument(
-            name='use_sim_time',
-            default_value='false',
-            description='Use simulation time'
-        ),
-
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{
-                'use_sim_time': LaunchConfiguration('use_sim_time'),
-                'robot_description': Command(['xacro ', LaunchConfiguration('urdf')])
-            }]
-        ),
-
-        Node(
-            package='joint_state_publisher',
-            executable='joint_state_publisher',
-            name='joint_state_publisher',
-            parameters=[{
-                'use_sim_time': LaunchConfiguration('use_sim_time')
-            }]
-        ),
-    ])
+    return LaunchDescription(
+        [
+            DeclareLaunchArgument(
+                name="urdf", default_value=urdf_path, description="URDF path"
+            ),
+            DeclareLaunchArgument(
+                name="use_sim_time",
+                default_value="false",
+                description="Use simulation time",
+            ),
+            Node(
+                package="robot_state_publisher",
+                executable="robot_state_publisher",
+                name="robot_state_publisher",
+                output="screen",
+                parameters=[
+                    {
+                        "use_sim_time": LaunchConfiguration("use_sim_time"),
+                        "robot_description": Command(
+                            ["xacro ", LaunchConfiguration("urdf")]
+                        ),
+                    }
+                ],
+            ),
+            Node(
+                package="joint_state_publisher",
+                executable="joint_state_publisher",
+                name="joint_state_publisher",
+                parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
+            ),
+        ]
+    )

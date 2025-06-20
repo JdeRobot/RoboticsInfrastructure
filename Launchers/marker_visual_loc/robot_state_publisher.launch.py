@@ -26,33 +26,33 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    urdf_file_name = 'turtlebot3_waffle.urdf'
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    urdf_file_name = "turtlebot3_waffle.urdf"
 
-    print('urdf_file_name : {}'.format(urdf_file_name))
+    print("urdf_file_name : {}".format(urdf_file_name))
 
     urdf_path = os.path.join(
-        get_package_share_directory('custom_robots'),
-        'urdf',
-        urdf_file_name)
+        get_package_share_directory("custom_robots"), "urdf", urdf_file_name
+    )
 
-    with open(urdf_path, 'r') as infp:
+    with open(urdf_path, "r") as infp:
         robot_desc = infp.read()
 
-    return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use simulation (Gazebo) clock if true'),
-
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{
-                'use_sim_time': use_sim_time,
-                'robot_description': robot_desc
-            }],
-        ),
-    ])
+    return LaunchDescription(
+        [
+            DeclareLaunchArgument(
+                "use_sim_time",
+                default_value="true",
+                description="Use simulation (Gazebo) clock if true",
+            ),
+            Node(
+                package="robot_state_publisher",
+                executable="robot_state_publisher",
+                name="robot_state_publisher",
+                output="screen",
+                parameters=[
+                    {"use_sim_time": use_sim_time, "robot_description": robot_desc}
+                ],
+            ),
+        ]
+    )
