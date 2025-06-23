@@ -21,27 +21,15 @@
     </collision>
 
       <visual name='visual_0'>
-        <pose>0 0 0 0 0 0</pose>
+        <pose>2 -5 0 0 0 0</pose>
 
         <cast_shadows>false</cast_shadows>
         <geometry>
-          <plane>
-            <normal>0 0 1</normal>
-            <size>250 250</size>
-        </plane>
-      </geometry>
-        <material>
-          <ambient>0.8 1.0 0.8 1.0</ambient>
-          <diffuse>0.8 1.0 0.8 1.0</diffuse>
-          <specular>0.1 0.1 0.1 1.0</specular>
-            <pbr>
-              <metal>
-                <albedo_map>model://grass_plane/materials/textures/grass_dry1.png</albedo_map>
-                <!-- <normal_map>model://grass_plane/materials/textures/grass_dry1.png</normal_map> -->
-              </metal>
-            </pbr>
-        </material>
-    </visual>
+          <mesh>
+            <uri>model://grass_plane/meshes/grass_plane.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
   </link>
 </model>
 </sdf>

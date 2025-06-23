@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<robot name="green_cylinder_small">
+    
+  <link name="green_cylinder_small">
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="0.01" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.15"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.15"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <gazebo reference="green_cylinder_small">
+    <material>Gazebo/Green</material>
+  </gazebo>
+  
+</robot>
+

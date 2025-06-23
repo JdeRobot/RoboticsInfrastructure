@@ -13,6 +13,11 @@
     <light name='point_light2' type='point'>
       <pose frame=''>-3.0 2.0 4.0 0 0 0</pose>
     </light>
+    <light name='point_light3' type='directional'>
+      <pose frame=''>0 0 1.0 0 -1.57 0</pose>
+      <visualize>false</visualize>
+    </light>
+
 
     <!-- Pioneer2dx model -->
     <include>

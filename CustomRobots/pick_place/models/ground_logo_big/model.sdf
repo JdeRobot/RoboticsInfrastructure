@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="ground_logo_big">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+          <pose>0.0 0 0.001 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.5 0.5 0.5</scale>
+            <uri>model://ground_logo/meshes/ground_logo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>
