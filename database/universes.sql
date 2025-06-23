@@ -57,9 +57,9 @@ CREATE TABLE public.worlds (
 	id bigint NOT NULL,
 	name character varying(100) NOT NULL,
 	launch_file_path character varying(200) NOT NULL,
-	visualization_config_path character varying(200) NOT NULL,
+	tools_config character varying(200) NOT NULL,
 	ros_version character varying(4) NOT NULL,
-	visualization character varying(200) NOT NULL,
+	tools character varying(200) NOT NULL,
 	world character varying(50) NOT NULL,
 	start_pose real[6] NOT NULL
 );
@@ -156,7 +156,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 --
 
 
-COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_version, visualization, world, start_pose) FROM stdin;
+COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, tools, world, start_pose) FROM stdin;
 0	None	None	None	ROS2	[]	none	{0.0,0.0,0.0,0.0,0.0,0.0}
 1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 2	Autoparking Gas Station: In battery	/opt/jderobot/Launchers/gas_station_battery_ackermann.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -169,7 +169,7 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_v
 9	City Large Followcam	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/laser_mapping.config	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 15	Montreal Ackermann Circuit	/opt/jderobot/Launchers/montreal_circuit_ackermann.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -182,15 +182,15 @@ COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_v
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	/opt/jderobot/Launchers/visualization/marker_visual_loc.config	ROS2	["gzsim", "console"]	gazebo	{1,-1.5,0.6,0,0,0}
+25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	["gzsim", "console"]	gazebo	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 28	Warehouse 1 Ackermann	/opt/jderobot/Launchers/small_warehouse_with_ackermann_logistic_robot.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 29	Warehouse 2	/opt/jderobot/Launchers/pallet_warehouse.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 30	Warehouse 2 Ackermann	/opt/jderobot/Launchers/pallet_warehouse_with_ackermann_logistic_robot.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	/opt/jderobot/Launchers/visualization/rescue_people.config	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	/opt/jderobot/Launchers/visualization/follow_road.config	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	/opt/jderobot/Launchers/visualization/small_laser_mapping.config	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	["gzsim", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 34	Pick And Place Arm	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/moveit2.launch.py	None	ROS2	["gazebo", "console"]	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
