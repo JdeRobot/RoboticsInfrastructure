@@ -14,11 +14,11 @@ def inject(xml: str, initial_pose: Pose):
     """Create a ROS node, and use it to call the SpawnEntity service"""
 
     rclpy.init()
-    node = rclpy.create_node('inject_node')
-    client = node.create_client(SpawnEntity, 'spawn_entity')
+    node = rclpy.create_node("inject_node")
+    client = node.create_client(SpawnEntity, "spawn_entity")
 
     if not client.service_is_ready():
-        node.get_logger().info('waiting for spawn_entity service...')
+        node.get_logger().info("waiting for spawn_entity service...")
         client.wait_for_service()
 
     request = SpawnEntity.Request()
@@ -28,19 +28,21 @@ def inject(xml: str, initial_pose: Pose):
     rclpy.spin_until_future_complete(node, future)
 
     if future.result() is not None:
-        node.get_logger().info('response: %r' % future.result())
+        node.get_logger().info("response: %r" % future.result())
     else:
-        raise RuntimeError('exception while calling service: %r' % future.exception())
+        raise RuntimeError("exception while calling service: %r" % future.exception())
 
     node.destroy_node()
     rclpy.shutdown()
 
 
 if len(sys.argv) < 6:
-    print('usage: ros2 run tello_gazebo inject_entity.py -- foo.urdf initial_x initial_y initial_z initial_yaw')
+    print(
+        "usage: ros2 run tello_gazebo inject_entity.py -- foo.urdf initial_x initial_y initial_z initial_yaw"
+    )
     sys.exit(1)
 
-f = open(sys.argv[1], 'r')
+f = open(sys.argv[1], "r")
 
 p = Pose()
 p.position.x = float(sys.argv[2])

@@ -25,33 +25,34 @@ from launch.actions import (
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+
 def generate_launch_description():
-    ROBOT_X = os.environ['ROBOT_X']
-    ROBOT_Y = os.environ['ROBOT_Y']
-    ROBOT_Z = os.environ['ROBOT_Z']
-    ROBOT_ROLL = os.environ['ROBOT_ROLL']
-    ROBOT_PITCH = os.environ['ROBOT_PITCH']
-    ROBOT_YAW = os.environ['ROBOT_YAW']
+    ROBOT_X = os.environ["ROBOT_X"]
+    ROBOT_Y = os.environ["ROBOT_Y"]
+    ROBOT_Z = os.environ["ROBOT_Z"]
+    ROBOT_ROLL = os.environ["ROBOT_ROLL"]
+    ROBOT_PITCH = os.environ["ROBOT_PITCH"]
+    ROBOT_YAW = os.environ["ROBOT_YAW"]
 
     robot_launch_dir = "/opt/jderobot/Launchers/robots/turtlebot3"
 
     # Get the urdf file
-    model_folder = 'turtlebot3_waffle'
+    model_folder = "turtlebot3_waffle"
     urdf_path = os.path.join(
-        get_package_share_directory('custom_robots'),
-        'models',
+        get_package_share_directory("custom_robots"),
+        "models",
         model_folder,
-        'model.sdf'
+        "model.sdf",
     )
 
     # Launch configuration variables specific to simulation
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    x_pose = LaunchConfiguration('x_pose', default=ROBOT_X)
-    y_pose = LaunchConfiguration('y_pose', default=ROBOT_Y)
-    z_pose = LaunchConfiguration('z_pose', default=ROBOT_Z)
-    R_pose = LaunchConfiguration('R_pose', default=ROBOT_ROLL)
-    P_pose = LaunchConfiguration('P_pose', default=ROBOT_PITCH)
-    Y_pose = LaunchConfiguration('Y_pose', default=ROBOT_YAW)
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    x_pose = LaunchConfiguration("x_pose", default=ROBOT_X)
+    y_pose = LaunchConfiguration("y_pose", default=ROBOT_Y)
+    z_pose = LaunchConfiguration("z_pose", default=ROBOT_Z)
+    R_pose = LaunchConfiguration("R_pose", default=ROBOT_ROLL)
+    P_pose = LaunchConfiguration("P_pose", default=ROBOT_PITCH)
+    Y_pose = LaunchConfiguration("Y_pose", default=ROBOT_YAW)
 
     # Declare the launch arguments
     # declare_x_position_cmd = DeclareLaunchArgument(
@@ -61,11 +62,11 @@ def generate_launch_description():
     # declare_y_position_cmd = DeclareLaunchArgument(
     #     'y_pose', default_value='-1.5',
     #     description='Specify namespace of the robot')
-    
+
     # declare_z_position_cmd = DeclareLaunchArgument(
     #     'z_pose', default_value='0.6',
     #     description='Specify namespace of the robot')
-    
+
     # declare_roll_cmd = DeclareLaunchArgument(
     #     'R', default_value='0.0'
     # )
@@ -78,59 +79,64 @@ def generate_launch_description():
     #     'Y', default_value='1.57079'
     # )
 
-
     start_gazebo_ros_spawner_cmd = Node(
-        package='ros_gz_sim',
-        executable='create',
+        package="ros_gz_sim",
+        executable="create",
         arguments=[
-            '-name', 'waffle',
-            '-file', urdf_path,
-            '-x', x_pose,
-            '-y', y_pose,
-            '-z', z_pose,
-            '-R', R_pose,
-            '-P', P_pose,
-            '-Y', Y_pose
+            "-name",
+            "waffle",
+            "-file",
+            urdf_path,
+            "-x",
+            x_pose,
+            "-y",
+            y_pose,
+            "-z",
+            z_pose,
+            "-R",
+            R_pose,
+            "-P",
+            P_pose,
+            "-Y",
+            Y_pose,
         ],
-        output='screen',
+        output="screen",
     )
 
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(robot_launch_dir, 'robot_state_publisher.launch.py')
+            os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
         ),
-        launch_arguments={'use_sim_time': use_sim_time}.items()
+        launch_arguments={"use_sim_time": use_sim_time}.items(),
     )
 
     bridge_params = os.path.join(
-        get_package_share_directory('custom_robots'),
-        'params',
-        'robot_params.yaml'
+        get_package_share_directory("custom_robots"), "params", "robot_params.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
         arguments=[
-            '--ros-args',
-            '-p',
-            f'config_file:={bridge_params}',
+            "--ros-args",
+            "-p",
+            f"config_file:={bridge_params}",
         ],
-        output='screen',
+        output="screen",
     )
 
     start_gazebo_ros_image_bridge_cmd = Node(
-        package='ros_gz_image',
-        executable='image_bridge',
-        arguments=['/turtlebot3/camera/image_raw'],
-        output='screen',
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/turtlebot3/camera/image_raw"],
+        output="screen",
     )
 
     start_gazebo_ros_depth_bridge_cmd = Node(
-        package='ros_gz_image',
-        executable='image_bridge',
-        arguments=['/turtlebot3/camera/depth'],
-        output='screen',
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/turtlebot3/camera/depth"],
+        output="screen",
     )
 
     ld = LaunchDescription()

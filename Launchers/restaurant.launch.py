@@ -70,19 +70,17 @@ def generate_launch_description():
     declare_slam_cmd = DeclareLaunchArgument("slam", default_value="True")
 
     declare_map_cmd = DeclareLaunchArgument(
-        'map', default_value=os.path.join(
-            gazebo_models_path,
-            'restaurant',
-            'maps',
-            'restaurant.yaml')
+        "map",
+        default_value=os.path.join(
+            gazebo_models_path, "restaurant", "maps", "restaurant.yaml"
+        ),
     )
 
     declare_nav_params_cmd = DeclareLaunchArgument(
-        'params_file', default_value=os.path.join(
-            gazebo_models_path,
-            'restaurant',
-            'params',
-            'roomba_sim_nav_params.yaml')
+        "params_file",
+        default_value=os.path.join(
+            gazebo_models_path, "restaurant", "params", "roomba_sim_nav_params.yaml"
+        ),
     )
 
     # Specify the actions
@@ -105,24 +103,24 @@ def generate_launch_description():
 
     localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_nav2_ros, 'launch', 'localization_launch.py')
+            os.path.join(pkg_nav2_ros, "launch", "localization_launch.py")
         ),
         launch_arguments={
-            'use_sim_time': use_sim_time,
-            'map': map_file,
-            'slam': slam,
-            'params_file': params_file
-        }.items()
+            "use_sim_time": use_sim_time,
+            "map": map_file,
+            "slam": slam,
+            "params_file": params_file,
+        }.items(),
     )
 
     navigation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_nav2_ros, 'launch', 'navigation_launch.py')
+            os.path.join(pkg_nav2_ros, "launch", "navigation_launch.py")
         ),
         launch_arguments={
-            'use_sim_time': use_sim_time,
-            'params_file': params_file
-        }.items()
+            "use_sim_time": use_sim_time,
+            "params_file": params_file,
+        }.items(),
     )
 
     # Create the launch description and populate
@@ -144,7 +142,7 @@ def generate_launch_description():
     ld.add_action(navigation_cmd)
 
     # Remap nav2
-    cmd_vel_remap = SetRemap(src='cmd_vel_nav', dst='cmd_vel')
+    cmd_vel_remap = SetRemap(src="cmd_vel_nav", dst="cmd_vel")
     ld.add_action(cmd_vel_remap)
 
     return ld

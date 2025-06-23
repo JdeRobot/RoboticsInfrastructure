@@ -23,12 +23,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = 'turtlebot3_waffle'
+    model_folder = "turtlebot3_waffle"
     urdf_path = os.path.join(
-        get_package_share_directory('custom_robots'),
-        'models',
+        get_package_share_directory("custom_robots"),
+        "models",
         model_folder,
-        'model.sdf'
+        "model.sdf",
     )
 
     # Launch configuration variables specific to simulation
@@ -44,7 +44,7 @@ def generate_launch_description():
     # declare_y_position_cmd = DeclareLaunchArgument(
     #     'y_pose', default_value='-1.5',
     #     description='Specify namespace of the robot')
-    
+
     # declare_z_position_cmd = DeclareLaunchArgument(
     #     'z_pose', default_value='7.1',
     #     description='Specify namespace of the robot')
@@ -63,34 +63,32 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory('custom_robots'),
-        'params',
-        'robot_params.yaml'
+        get_package_share_directory("custom_robots"), "params", "robot_params.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
         arguments=[
-            '--ros-args',
-            '-p',
-            f'config_file:={bridge_params}',
+            "--ros-args",
+            "-p",
+            f"config_file:={bridge_params}",
         ],
-        output='screen',
+        output="screen",
     )
 
     start_gazebo_ros_image_bridge_cmd = Node(
-        package='ros_gz_image',
-        executable='image_bridge',
-        arguments=['/turtlebot3/camera/image_raw'],
-        output='screen',
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/turtlebot3/camera/image_raw"],
+        output="screen",
     )
 
     start_gazebo_ros_depth_bridge_cmd = Node(
-        package='ros_gz_image',
-        executable='image_bridge',
-        arguments=['/turtlebot3/camera/depth'],
-        output='screen',
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/turtlebot3/camera/depth"],
+        output="screen",
     )
 
     ld = LaunchDescription()
