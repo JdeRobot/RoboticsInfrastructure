@@ -101,13 +101,15 @@
 
         <include>
             <uri>model://simple_circuit_harmonic</uri>
-            <pose>10 -58.4 0 0 0 0</pose>
-            <!-- <pose>0 0 0 0 0 0</pose>  -->
+            <!-- <pose>10 -58.4 0 0 0 0</pose> -->
+            <pose>0 0 0 0 0 0</pose> 
         </include>
         
         <include>
             <uri>model://f1_renault_ackermann_harmonic</uri>
-            <pose>53.462 -10 0.004 0 0 -1.57</pose>
+            <!-- <pose>53.462 -10 0.004 0 0 -1.57</pose> -->
+            <pose>267.5 0 0 0 0 3.14</pose> 
+
         </include>
     </world>
 </sdf>
