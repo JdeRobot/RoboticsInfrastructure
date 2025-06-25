@@ -17,7 +17,6 @@
                 <geometry>
                     <mesh>
                         <uri>model://simple_circuit_harmonic/meshes/simple_line.dae</uri>
-                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </visual>
@@ -28,7 +27,6 @@
                <geometry>
                     <mesh>
                         <uri>model://simple_circuit_harmonic/meshes/wall.dae</uri>
-                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </collision>
@@ -37,7 +35,6 @@
                 <geometry>
                     <mesh>
                         <uri>model://simple_circuit_harmonic/meshes/wall.dae</uri>
-                        <scale>5 5 5</scale>
                     </mesh>
                 </geometry>
             </visual>    
