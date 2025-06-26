@@ -148,8 +148,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 32	Follow Road Harmonic	32	0
 33	Laser Mapping Warehouse	12	0
 34	Pick And Place World	34	0
-35	Spa Circuit	33	0
-36	Monaco Circuit 34 0
+35	Spa Circuit	35	0
+36	Monaco Circuit	36	0
 \.
 
 
