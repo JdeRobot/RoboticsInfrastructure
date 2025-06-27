@@ -33,7 +33,6 @@ import numpy as np
 
 
 class Image:
-
     def __init__(self):
 
         self.height = 3  # Image height [pixels]
@@ -58,7 +57,6 @@ class Image:
 
 
 class ListenerCamera(Node):
-
     def __init__(self, topic):
         super().__init__("camera_subscriber_node")
 

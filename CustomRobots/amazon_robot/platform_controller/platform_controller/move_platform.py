@@ -49,7 +49,6 @@ class PlatformController(Node):
 
 
 class PlatformCommandListener(Node):
-
     def __init__(self):
         super().__init__("platform_command_listener")
         self.sub = None
