@@ -19,18 +19,14 @@ endif()
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
 add_library(personplugin src/person.cpp)
-target_include_directories(personplugin PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(
+target_include_directories(
   personplugin
-  "rclcpp"
-  "gazebo"
-  "pluginlib"
-)
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
 
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
+# Causes the visibility macros to use dllexport rather than dllimport, which is
+# appropriate when building the dll but not consuming it.
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 install(
@@ -38,24 +34,17 @@ install(
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
+  RUNTIME DESTINATION bin)
 
-install(
-  DIRECTORY launch models worlds
-  DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY launch models worlds DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_export_libraries(
-  personplugin
-)
+ament_export_libraries(personplugin)
 
-ament_export_targets(
-  export_${PROJECT_NAME}
-)
+ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()
