@@ -444,7 +444,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>f1_renault_ackermann_harmonic/Renault/fr_1.stl</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/fr_1.stl</uri>
           </mesh>
         </geometry>
         <surface>
