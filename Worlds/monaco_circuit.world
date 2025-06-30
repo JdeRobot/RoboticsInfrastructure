@@ -1,16 +1,26 @@
-<sdf version='1.10'>
-  <world name='monaco_circuit'>
-    <physics name='1ms' type='ignored'>
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>1000</real_time_update_rate>
-    </physics>
-    <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
-    <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
-    <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
+<?xml version="1.0" ?>
+
+<sdf version="1.9">
+  <world name="default">
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
     <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
-    <gravity>0 0 -9.8</gravity>
-    <atmosphere type='adiabatic'/>
+
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
@@ -46,5 +56,12 @@
         <falloff>0</falloff>
       </spot>
     </light>
+
+    <!-- Robot -->
+    <include>
+      <pose>1 -1.5 10 0 0 0</pose>
+      <name>turtlebot3_waffle</name>
+      <uri>model://turtlebot3_waffle</uri>
+    </include>
   </world>
 </sdf>

@@ -30,13 +30,13 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    robot_launch_dir = "/opt/jderobot/Launchers/spa_circuit"
+    robot_launch_dir = "/opt/jderobot/Launchers/monaco_circuit"
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     x_pose = LaunchConfiguration("x_pose", default="1.0")
     y_pose = LaunchConfiguration("y_pose", default="-1.5")
     z_pose = LaunchConfiguration("z_pose", default="7.1")
-    world_file_name = "spa_circuit.world"
+    world_file_name = "monaco_circuit.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
