@@ -7,7 +7,6 @@ from cv_bridge import CvBridge
 
 
 class telloCam(Node):
-
     def __init__(self):
         super().__init__("tello_camera_node")
         self.subscription = self.create_subscription(
