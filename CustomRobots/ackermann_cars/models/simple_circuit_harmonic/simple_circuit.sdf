@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<sdf version="1.3">
+    <model name="simple_circuit_harmonic">
+        <static>true</static>
+        <link name="simple_circuit_harmonic">
+            <pose>0 0 0 0 0 0</pose>
+            <collision name="collision">
+                <geometry>
+                    <plane>
+                        <normal>0 0 1</normal>
+                        <size>1000 1000</size>
+                    </plane>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://simple_circuit_harmonic/meshes/simple_line.dae</uri>
+                        <scale>5 5 5</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>   
+        <link name="wall">
+            <pose>0 0 0 0 0 0</pose>
+            <collision name="collision">
+               <geometry>
+                    <mesh>
+                        <uri>model://simple_circuit_harmonic/meshes/wall.dae</uri>
+                        <scale>5 5 5</scale>
+                    </mesh>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://simple_circuit_harmonic/meshes/wall.dae</uri>
+                        <scale>5 5 5</scale>
+                    </mesh>
+                </geometry>
+            </visual>    
+	    </link>
+    </model>
+</sdf>
