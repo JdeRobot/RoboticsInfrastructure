@@ -20,8 +20,6 @@ find_package(ament_cmake REQUIRED)
 
 ament_export_include_directories(include)
 
-install(DIRECTORY include/
-  DESTINATION include)
+install(DIRECTORY include/ DESTINATION include)
 
 ament_package()
-

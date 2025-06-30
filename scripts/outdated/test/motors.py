@@ -20,7 +20,6 @@ def cmdvel2Twist(vel):
 
 
 class CMDVel:
-
     def __init__(self):
 
         self.vx = 0  # vel in x[m/s] (use this for V in wheeled robots)
@@ -40,7 +39,6 @@ class CMDVel:
 
 
 class PublisherMotors(Node):
-
     def __init__(self, topic, maxV, maxW):
         super().__init__("FollowLineF1")
         self.maxW = maxW

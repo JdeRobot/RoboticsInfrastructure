@@ -6,7 +6,6 @@ import time
 
 
 class ModelTeleoperator:
-
     def __init__(self, host):
         self.server = None
         self.client = None
