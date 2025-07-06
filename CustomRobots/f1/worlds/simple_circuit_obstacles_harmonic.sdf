@@ -112,8 +112,8 @@
         </include>
         
         <include>
-          <uri>model://f1_renault_laser_no_cam_harmonic</uri>
-          <name>f1_renault_laser_no_cam_harmonic</name>
+          <uri>model://f1_renault_ackermann_harmonic</uri>
+          <name>f1_renault_ackermann_harmonic</name>
           <pose>0.04 0.68 0 0 0 -1.57</pose>
         </include>
         <include>
