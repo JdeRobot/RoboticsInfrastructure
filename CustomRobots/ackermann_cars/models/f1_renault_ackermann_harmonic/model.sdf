@@ -468,7 +468,6 @@
           </mesh>
         </geometry>
       </visual>
-      <self_collide>0</self_collide>
     </link>
         <link name='laser_body'>
       <pose relative_to='chassis_link'>0.500000 0.000000 0.872000 0.000000 0.000000 0.00000</pose>
