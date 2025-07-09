@@ -15,7 +15,7 @@
      <collision name="dummy_collision">
         <geometry>
           <box>
-            <size>4.5 2.0 1.2</size>  <!-- Approximate car dimensions -->
+            <size>22.5 10.0 6.0</size>  <!-- Approximate car dimensions -->
           </box>
         </geometry>
       </collision>
@@ -23,6 +23,7 @@
         <geometry>
           <mesh>
             <uri>model://f1_dummy_harmonic/meshes/F1Y.dae</uri>
+            <scale>5 5 5</scale>
         </mesh>
       </geometry>
     </visual>

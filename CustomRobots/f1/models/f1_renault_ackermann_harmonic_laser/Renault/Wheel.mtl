@@ -27,7 +27,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_indicator.tga
+map_Kd materials/textures/int_indicator.png
 map_bump 
 bump 
 map_opacity 
@@ -43,7 +43,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_digi_tach.tga
+map_Kd materials/textures/int_digi_tach.png
 map_bump 
 bump 
 map_opacity 
@@ -59,7 +59,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_digi_placeholder.tga
+map_Kd materials/textures/int_digi_placeholder.png
 map_bump 
 bump 
 map_opacity 
@@ -75,7 +75,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_info_pod.tga
+map_Kd materials/textures/int_info_pod.png
 map_bump 
 bump 
 map_opacity 
@@ -91,7 +91,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_led.tga
+map_Kd materials/textures/int_led.png
 map_bump 
 bump 
 map_opacity 
@@ -107,7 +107,7 @@ Kd 1 1 1
 Ks 0 0 0
 illum 2
 Ns 2
-map_Kd int_re0_main.tga
+map_Kd materials/textures/int_re0_main.png
 map_bump 
 bump 
 map_opacity 
