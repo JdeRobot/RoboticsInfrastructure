@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
 
-  <model name="f1_renault_ackermann_harmonic">
+  <model name="f1_renault_ackermann_harmonic_laser">
     <pose>0 0 0.0 0 0 0</pose>
 
     <link name='base_link'>
@@ -42,7 +42,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -62,7 +62,7 @@
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -124,7 +124,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/back_left.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -186,7 +186,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/back_right.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -236,7 +236,7 @@
         <geometry>
           <mesh>
             <scale>4.7 4.7 4.7</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/steering_wheel.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -348,7 +348,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/fl_1.stl</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fl_1.stl</uri>
           </mesh>
         </geometry>
         <surface>
@@ -368,7 +368,7 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/front_left.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_left.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -444,7 +444,7 @@
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/fr_1.stl</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fr_1.stl</uri>
           </mesh>
         </geometry>
         <surface>
@@ -464,12 +464,70 @@
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/front_right.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_right.dae</uri>
           </mesh>
         </geometry>
       </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <link name='laser_body'>
+      <pose relative_to='chassis_link'>Change to 0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual_laser">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_ackermann_harmonic_laser/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='laser' type='gpu_ray'>
+        <pose>0 0 0 0 0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>20.000000</update_rate>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <topic>/model/f1_renault_ackermann_harmonic_laser/laser/scan</topic>
+      </sensor>
+      <self_collide>false</self_collide>
     </link>
     
+    <joint type="fixed" name="laser_fix">
+      <pose>0 0 0 0 0 0</pose>
+      <child>laser_body</child>
+      <parent>chassis_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
     <!-- Gazebo Harmonic Plugins -->
     
     <!-- Ackermann Steering Plugin -->
@@ -485,19 +543,19 @@
       <wheel_base>3.351</wheel_base>
       <wheel_separation>1.65</wheel_separation>
       <wheel_radius>0.3425</wheel_radius>
-      <sub_topic>/model/f1_renault_ackermann_harmonic/steer_angle</sub_topic>
+      <sub_topic>/model/f1_renault_ackermann_harmonic_laser/steer_angle</sub_topic>
       <min_velocity>-50</min_velocity>
       <max_velocity>50</max_velocity>
       <min_acceleration>-50</min_acceleration>
       <max_acceleration>50</max_acceleration>
-      <topic>/model/f1_renault_ackermann_harmonic/cmd_vel</topic>
+      <topic>/model/f1_renault_ackermann_harmonic_laser/cmd_vel</topic>
     </plugin>
 
     <!-- Velocity Control Plugin for rear wheels -->
     <!-- <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
       <joint_name>bl_axle</joint_name>
       <joint_name>br_axle</joint_name>
-      <sub_topic>/model/f1_renault_ackermann_harmonic/cmd_vel</sub_topic>
+      <sub_topic>/model/f1_renault_ackermann_harmonic_laser/cmd_vel</sub_topic>
       <use_actuator_msg>true</use_actuator_msg>
       <actuator_number>0</actuator_number>
       <actuator_number>1</actuator_number>
@@ -515,7 +573,7 @@
 
     <!-- Odometry Publisher -->
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-      <odom_topic>/model/f1_renault_ackermann_harmonic/odom</odom_topic>
+      <odom_topic>/model/f1_renault_ackermann_harmonic_laser/odom</odom_topic>
       <robot_base_frame>chassis_link</robot_base_frame>
       <odom_frame>odom</odom_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
@@ -534,7 +592,7 @@
     <!-- Joint Position Controller for steering wheel (optional) -->
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>steering_joint</joint_name>
-      <sub_topic>/model/f1_renault_ackermann_harmonic/steering_wheel_cmd</sub_topic>
+      <sub_topic>/model/f1_renault_ackermann_harmonic_laser/steering_wheel_cmd</sub_topic>
       <p_gain>10</p_gain>
       <i_gain>0.1</i_gain>
       <d_gain>1</d_gain>
