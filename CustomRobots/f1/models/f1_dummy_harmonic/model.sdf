@@ -15,7 +15,7 @@
      <collision name="dummy_collision">
         <geometry>
           <box>
-            <size>22.5 10.0 6.0</size>  <!-- Approximate car dimensions -->
+            <size>2.0 7.0 0.6</size>  <!-- Approximate car dimensions -->
           </box>
         </geometry>
       </collision>
