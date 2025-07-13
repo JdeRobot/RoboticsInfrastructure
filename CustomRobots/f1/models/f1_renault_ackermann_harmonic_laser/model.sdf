@@ -58,7 +58,8 @@
         </surface>
       </collision>
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <!-- <pose>0 1.51 0 0 -0 1.5708</pose> -->
+        <pose>0 1.51 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
@@ -120,7 +121,8 @@
         </surface>
       </collision>
       <visual name='bl_1_visual'>
-        <pose>0.875 1.0136 0.1444 0 -0 0</pose>
+        <!-- <pose>0.875 1.0136 0.1444 0 -0 0</pose> -->
+        <pose>0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -182,7 +184,8 @@
         </surface>
       </collision>
       <visual name='br_1_visual'>
-        <pose>-0.875 1.0136 0.1444 0 -0 0</pose>
+        <!-- <pose>-0.875 1.0136 0.1444 0 -0 0</pose> -->
+        <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -364,7 +367,8 @@
         </surface>
       </collision>
       <visual name='fl_1_visual'>
-        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <!-- <pose>0.875 -1.5174 0.1444 0 -0 0</pose> -->
+        <pose>0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -460,7 +464,8 @@
         </surface>
       </collision>
       <visual name='fr_1_visual'>
-        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <!-- <pose>-0.875 -1.5174 0.1444 0 -0 0</pose> -->
+        <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
@@ -468,10 +473,10 @@
           </mesh>
         </geometry>
       </visual>
-      <self_collide>0</self_collide>
     </link>
+    
     <link name='laser_body'>
-      <pose relative_to='chassis_link'>Change to 0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
+      <pose relative_to='chassis_link'>0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -528,6 +533,7 @@
         <xyz>0 0 1</xyz>
       </axis>
     </joint>
+
     <!-- Gazebo Harmonic Plugins -->
     
     <!-- Ackermann Steering Plugin -->
