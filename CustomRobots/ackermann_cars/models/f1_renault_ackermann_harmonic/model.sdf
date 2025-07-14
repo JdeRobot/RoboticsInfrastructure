@@ -58,11 +58,12 @@
         </surface>
       </collision>
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <!-- <pose>0 1.51 0 0 -0 1.5708</pose> -->
+        <pose>0 1.51 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
             <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/chasis.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/chasis.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -120,11 +121,12 @@
         </surface>
       </collision>
       <visual name='bl_1_visual'>
-        <pose>0.875 1.0136 0.1444 0 -0 0</pose>
+        <!-- <pose>0.875 1.0136 0.1444 0 -0 0</pose> -->
+        <pose>0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/back_left.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/back_left.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -182,11 +184,12 @@
         </surface>
       </collision>
       <visual name='br_1_visual'>
-        <pose>-0.875 1.0136 0.1444 0 -0 0</pose>
+        <!-- <pose>-0.875 1.0136 0.1444 0 -0 0</pose> -->
+        <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/back_right.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/back_right.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -364,11 +367,12 @@
         </surface>
       </collision>
       <visual name='fl_1_visual'>
-        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <!-- <pose>0.875 -1.5174 0.1444 0 -0 0</pose> -->
+        <pose>0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/front_left.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/front_left.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -460,11 +464,12 @@
         </surface>
       </collision>
       <visual name='fr_1_visual'>
-        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <!-- <pose>-0.875 -1.5174 0.1444 0 -0 0</pose> -->
+        <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.1 0.1 0.1</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/front_right.dae</uri>
+            <uri>model://f1_renault_ackermann_harmonic/Renault/front_right.obj</uri>
           </mesh>
         </geometry>
       </visual>
