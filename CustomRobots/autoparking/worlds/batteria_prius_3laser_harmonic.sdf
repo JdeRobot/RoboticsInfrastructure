@@ -119,10 +119,10 @@
     </scene> -->
 
     <!-- Autocar -->
-    <!-- <include>
-      <uri>model://prius</uri>
+    <include>
+      <uri>model://prius_autoparking_3laser_harmonic</uri>
       <pose>-7 2.5 0.02 0 0 -1.54</pose> 
-    </include> -->
+    </include>
     
     <!-- Cars -->
     <model name="car1">
@@ -131,9 +131,10 @@
         <link name="car1">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -153,9 +154,10 @@
         <link name="car2">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -175,9 +177,10 @@
         <link name="car3">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -197,9 +200,10 @@
         <link name="car4">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -219,9 +223,10 @@
         <link name="car5">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -241,9 +246,10 @@
         <link name="car6">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -263,9 +269,10 @@
         <link name="car7">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -285,9 +292,10 @@
         <link name="car8">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -307,9 +315,10 @@
         <link name="car9">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -329,9 +338,10 @@
         <link name="car10">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -351,9 +361,10 @@
         <link name="car11">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
@@ -373,9 +384,10 @@
         <link name="car12">
             <gravity>true</gravity>
             <collision name="collision">
+                <pose>0 0.075 0.75 0 0 0</pose>
                 <geometry>
                     <box>
-                        <size>4.5 1.8 1</size>
+                        <size>2 4.9 1.5</size>
                     </box>
                 </geometry>
             </collision>
