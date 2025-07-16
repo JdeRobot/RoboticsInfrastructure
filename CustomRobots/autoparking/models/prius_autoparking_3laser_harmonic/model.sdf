@@ -26,11 +26,11 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <pose>0 -0.0801 0 0 0 -3.1416</pose>
         <geometry>
           <mesh>
-            <scale>5 5 5</scale>
-            <uri>model://f1_renault_ackermann_harmonic/Renault/chasis.dae</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser/meshes/hybrid_body.obj</uri>
           </mesh>
         </geometry>
         <surface>
