@@ -1,0 +1,22 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v5.2.0)
+
+newmtl Buildings
+Kd 1 1 1
+Ka 0.100000001 0.100000001 0.100000001
+Ks 0.400000006 0.400000006 0.400000006
+Ke 0 0 0
+Ni 1
+Ns 10
+illum 2
+map_Kd Citylarge.png
+
+newmtl Road
+Kd 0.094625257 0.094625257 0.094625257
+Ka 0.100000001 0.100000001 0.100000001
+Ks 0.400000006 0.400000006 0.400000006
+Ke 0 0 0
+Ni 1
+Ns 10
+illum 2
+
