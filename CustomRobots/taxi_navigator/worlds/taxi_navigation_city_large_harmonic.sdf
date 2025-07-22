@@ -137,10 +137,10 @@
         <uri>model://cityLarge_harmonic</uri>
     </include>
     <!-- My robots -->
-    <!-- <include>
+    <include>
         <pose>0 0 0 1.5708 0 -1.5529944</pose>
         <uri>model://taxi_holo_ROS_harmonic</uri>
-    </include> -->
+    </include>
 
 	</world>
 </sdf>

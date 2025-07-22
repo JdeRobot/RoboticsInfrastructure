@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="taxi_holo_ROS_harmonic">
+    <pose>0 0 0 0 0 0</pose>
+    <static>false</static>
+
+    <!-- Chassis link -->
+    <link name="taxi_holo">
+      <inertial>
+        <mass>750.0</mass>
+        <inertia>
+          <ixx>1</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
+          <iyy>1</iyy><iyz>0.0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+
+      <!-- collision & visual both use the same mesh -->
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://taxi_holo_ROS_harmonic/meshes/taxi_holo.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://taxi_holo_ROS_harmonic/meshes/taxi_holo.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- VelocityControl plugin: applies Twist directly to the chassis link -->
+    <plugin
+      filename="gz-sim-velocity-control-system"
+      name="gz::sim::systems::VelocityControl">
+
+      <topic>/taxi_holo/cmd_vel</topic>
+
+    </plugin>
+
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_topic>/taxi_holo/odom</odom_topic>
+      <robot_base_frame>taxi_holo</robot_base_frame>
+      <odom_frame>odom</odom_frame>
+      <odom_publish_frequency>20</odom_publish_frequency>
+      <dimensions>3</dimensions>
+    </plugin>
+
+  </model>
+</sdf>
