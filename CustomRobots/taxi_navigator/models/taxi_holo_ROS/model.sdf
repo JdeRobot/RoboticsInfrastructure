@@ -7,20 +7,20 @@
       <gravity>false</gravity>
       <inertial>
         <mass>750.0</mass>
-        <inertia>
-          <ixx>1</ixx>
-          <ixy>0.0</ixy>
-          <ixz>0.0</ixz>
-          <iyy>1</iyy>
-          <iyz>0.0</iyz>
-          <izz>1</izz>
+        <inertia> 
+          <ixx>1</ixx>      
+          <ixy>0.0</ixy>        
+          <ixz>0.0</ixz>        
+          <iyy>1</iyy>      
+          <iyz>0.0</iyz>         
+          <izz>1</izz>      
         </inertia>
       </inertial>
       <collision name="collision">
         <geometry>
-          <mesh>
-            <uri>model://taxi_holo_ROS/meshes/taxi_holo.dae</uri>
-          </mesh>
+	  <mesh>
+	    <uri>model://taxi_holo_ROS/meshes/taxi_holo.dae</uri>
+	  </mesh>
         </geometry>
       </collision>
       <visual name="visual">
@@ -37,6 +37,6 @@
       <odometryFrame>odom</odometryFrame>
       <odometryRate>20.0</odometryRate>
       <robotBaseFrame>taxi_holo</robotBaseFrame>
-    </plugin>
+</plugin>
   </model>
 </sdf>
