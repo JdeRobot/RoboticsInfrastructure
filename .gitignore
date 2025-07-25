@@ -4,3 +4,12 @@ __pycache__/
 
 # IDEs
 .vscode
+
+# Tests
+build
+install
+test/__pycache__/
+
+# Logs
+**log**
+
