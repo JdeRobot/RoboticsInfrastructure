@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
+"""Tests for 3D reconstruction ROS launch file."""
+
 import os
 import unittest
 import pytest
+import time
 
-import launch
 import launch_testing
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+import rclpy
+from sensor_msgs.msg import CameraInfo, Image
+
 
 @pytest.mark.launch_test
 def generate_test_description():
+    """Generate the launch description for 3D reconstruction tests."""
     # Get absolute path to the launcher
     launcher_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -20,14 +26,10 @@ def generate_test_description():
         "3d_reconstruction.launch.py",
     )
 
-    # Include the launcher we want to test
+    # Start the launch file with arguments
     launch_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(launcher_path),
-        launch_arguments={
-            "headless": "True",
-            "use_simulator": "True",
-            "world_file_name": "kobuki_1_reconstruction3d.world",
-        }.items(),
+        launch_arguments={"headless": "True", "use_simulator": "True"}.items(),
     )
 
     return LaunchDescription(
@@ -38,14 +40,97 @@ def generate_test_description():
     )
 
 
-class Test3DReconstruction(unittest.TestCase):
-    def test_gazebo_server_starts(self, proc_info):
-        """Test that the Gazebo server process starts."""
-        proc_info.assertThat(
-            "gzserver",
-            launch_testing.asserts.processes.ProcessStarts(timeout=90),
+class TestTopicMsgs(unittest.TestCase):
+    """Unit tests for verifying camera topics and images."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up ROS node for testing."""
+        rclpy.init()
+        cls.node = rclpy.create_node("test_node")
+
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up ROS resources after tests."""
+        # Clean up ROS resources
+        cls.node.destroy_node()
+        rclpy.shutdown()
+
+    def test_camera_topics(self, proc_output):
+        """Test that camera topics are publishing msgs."""
+        # First wait for the cameras to start publishing
+        time.sleep(3)
+
+        msgs_left = []
+        msgs_right = []
+
+        # Create subscriptions
+        sub_left = self.__class__.node.create_subscription(
+            CameraInfo,
+            "/cam_turtlebot_left/camera_info",
+            lambda msg: msgs_left.append(msg),
+            10,
         )
 
-    def test_world_loads(self, proc_output):
-        """Test that the world loads correctly."""
-        proc_output.assertWaitFor("Loading world", process="gzserver", timeout=90)
+        sub_right = self.__class__.node.create_subscription(
+            CameraInfo,
+            "/cam_turtlebot_right/camera_info",
+            lambda msg: msgs_right.append(msg),
+            10,
+        )
+
+        # Wait for messages (up to 5 seconds)
+        for _ in range(50):  # 50 x 0.1 seconds = 5 seconds
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+            if msgs_left and msgs_right:
+                break
+
+        # Clean up subscriptions
+        self.__class__.node.destroy_subscription(sub_left)
+        self.__class__.node.destroy_subscription(sub_right)
+
+        # Check results
+        self.assertGreater(len(msgs_left), 0, "No messages received from left camera")
+        self.assertGreater(len(msgs_right), 0, "No messages received from right camera")
+
+        print("\n--- Camera Topics Test Completed Successfully ---")
+
+    def test_camera_images(self, proc_output):
+        """Test that camera images are published."""
+        # First wait for the cameras to start publishing
+        time.sleep(3)
+
+        # Check actual message receipt
+        msgs_left = []
+        msgs_right = []
+
+        # Create subscriptions
+        sub_left = self.__class__.node.create_subscription(
+            Image,
+            "/cam_turtlebot_left/image_raw",
+            lambda msg: msgs_left.append(msg),
+            10,
+        )
+
+        sub_right = self.__class__.node.create_subscription(
+            Image,
+            "/cam_turtlebot_right/image_raw",
+            lambda msg: msgs_right.append(msg),
+            10,
+        )
+
+        # Wait for messages (up to 5 seconds)
+        for _ in range(50):  # 50 x 0.1 seconds =
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+            if msgs_left and msgs_right:
+                break
+
+        # Clean up subscriptions
+        self.__class__.node.destroy_subscription(sub_left)
+        self.__class__.node.destroy_subscription(sub_right)
+
+        # Check results
+        self.assertGreater(len(msgs_left), 0, "No images received from left camera")
+        self.assertGreater(len(msgs_right), 0, "No images received from right camera")
+
+        print("\n--- Camera Images Test Completed Successfully ---")
