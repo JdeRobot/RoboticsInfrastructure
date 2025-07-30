@@ -11,6 +11,7 @@ import launch_testing
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+import psutil
 
 import rclpy
 from sensor_msgs.msg import CameraInfo, Image
@@ -55,6 +56,11 @@ class TestTopicMsgs(unittest.TestCase):
         # Clean up ROS resources
         cls.node.destroy_node()
         rclpy.shutdown()
+        # Stop any running Gazebo processes
+        for proc in psutil.process_iter(["name"]):
+            if proc.info["name"] == "gzserver":
+                print(f"Stopping gzserver (PID={proc.pid})")
+                proc.terminate()
 
     def test_camera_topics(self, proc_output):
         """Test that camera topics are publishing msgs."""
