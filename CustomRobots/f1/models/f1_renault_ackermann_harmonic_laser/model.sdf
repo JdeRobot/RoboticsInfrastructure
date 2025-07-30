@@ -520,7 +520,7 @@
         <update_rate>20.000000</update_rate>
         <always_on>true</always_on>
         <visualize>true</visualize>
-        <topic>/model/f1_renault_ackermann_harmonic_laser/laser/scan</topic>
+        <topic>/laser/scan</topic>
       </sensor>
       <self_collide>false</self_collide>
     </link>
@@ -529,6 +529,71 @@
       <pose>0 0 0 0 0 0</pose>
       <child>laser_body</child>
       <parent>chassis_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <link name="camera_link"/>
+
+    <link name="camera_rgb_frame">
+      <inertial>
+        <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0.000</ixy>
+          <ixz>0.000</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0.000</iyz>
+          <izz>0.001</izz>
+        </inertia>
+        <mass>0.035</mass>
+      </inertial>
+
+      <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+      <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>/camera/image_raw</topic>
+        <gz_frame_id>camera_rgb_frame</gz_frame_id>
+        <camera name="intel_realsense_r200">
+          <camera_info_topic>/camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>15.000000</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera> 
+      </sensor>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>camera_link</child>
+      <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name="camera_rgb_joint" type="fixed">
+      <parent>camera_link</parent>
+      <child>camera_rgb_frame</child>
+      <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
@@ -549,12 +614,12 @@
       <wheel_base>3.351</wheel_base>
       <wheel_separation>1.65</wheel_separation>
       <wheel_radius>0.3425</wheel_radius>
-      <sub_topic>/model/f1_renault_ackermann_harmonic_laser/steer_angle</sub_topic>
+      <sub_topic>/steer_angle</sub_topic>
       <min_velocity>-50</min_velocity>
       <max_velocity>50</max_velocity>
       <min_acceleration>-50</min_acceleration>
       <max_acceleration>50</max_acceleration>
-      <topic>/model/f1_renault_ackermann_harmonic_laser/cmd_vel</topic>
+      <topic>/cmd_vel</topic>
     </plugin>
 
     <!-- Velocity Control Plugin for rear wheels -->
@@ -579,7 +644,7 @@
 
     <!-- Odometry Publisher -->
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-      <odom_topic>/model/f1_renault_ackermann_harmonic_laser/odom</odom_topic>
+      <odom_topic>/odom</odom_topic>
       <robot_base_frame>chassis_link</robot_base_frame>
       <odom_frame>odom</odom_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
@@ -598,7 +663,7 @@
     <!-- Joint Position Controller for steering wheel (optional) -->
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>steering_joint</joint_name>
-      <sub_topic>/model/f1_renault_ackermann_harmonic_laser/steering_wheel_cmd</sub_topic>
+      <sub_topic>/steering_wheel_cmd</sub_topic>
       <p_gain>10</p_gain>
       <i_gain>0.1</i_gain>
       <d_gain>1</d_gain>
