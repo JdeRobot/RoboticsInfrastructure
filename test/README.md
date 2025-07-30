@@ -25,6 +25,12 @@
     colcon build --symlink-install
     ```
 
+-   source the Gazebo environment (if applicable):
+
+    ```bash
+    source /usr/share/gazebo/setup.sh
+    ```
+
 -   source the workspace:
     ```bash
     source install/setup.bash
@@ -60,7 +66,7 @@
 -   run the tests again to include the new test:
 
     ```bash
-    colcon test --event-handlers console_cohesion+ --retest-until-fail 5
+    colcon test --event-handlers console_direct+ --retest-until-fail 5
     ```
 
 -   check the results to ensure the new test is included:
