@@ -66,12 +66,3 @@ jobs:
               if: always()
               run: |
                   colcon test-result --verbose
-
-            - name: Upload test logs
-              if: always()
-              uses: actions/upload-artifact@v3
-              with:
-                  name: test-logs
-                  path: |
-                      log/
-                      build/custom_robots/test_results/
