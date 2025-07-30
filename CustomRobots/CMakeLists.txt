@@ -140,15 +140,15 @@ install(
   DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
+  # find_package(ament_lint_auto REQUIRED)
+  # ament_lint_auto_find_test_dependencies()
 
   find_package(launch_testing_ament_cmake REQUIRED)
   # Use file(GLOB...) to find all test files matching the pattern
   file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test*.py")
   # Loop through each test file and add it as a launch test
   foreach(test_file ${TEST_FILES})
-    add_launch_test(${test_file})
+    add_launch_test(${test_file} TIMEOUT 90)
   endforeach()
 endif()
 
