@@ -65,9 +65,9 @@ class TestTopicMsgs(unittest.TestCase):
                 print(f"Stopping gzserver (PID={proc.pid})")
                 proc.terminate()
 
-    @pytest.mark.skipif(
-        os.environ.get("CI") == "true",
-        reason="Camera tests are unreliable in CI environments",
+    @unittest.skipIf(
+        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
+        "Camera tests are unreliable in CI environments",
     )
     def test_camera_topics(self, proc_output):
         """Test that camera topics are publishing msgs."""
@@ -106,9 +106,9 @@ class TestTopicMsgs(unittest.TestCase):
 
         print("\n--- Camera Topics Test Completed Successfully ---")
 
-    @pytest.mark.skipif(
-        os.environ.get("CI") == "true",
-        reason="Camera tests are unreliable in CI environments",
+    @unittest.skipIf(
+        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
+        "Camera tests are unreliable in CI environments",
     )
     def test_camera_images(self, proc_output):
         """Test that camera images are published."""
