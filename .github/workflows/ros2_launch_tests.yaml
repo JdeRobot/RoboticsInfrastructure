@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 env:
-    WORKSPACE_DIR: /opt/jderobot
+    WORLDS_DIR: /opt/jderobot
     ROS_DISTRO: humble
 
 jobs:
@@ -19,18 +19,20 @@ jobs:
         steps:
             - name: Create checkout directory with proper permissions
               run: |
-                  sudo mkdir -p ${{ env.WORKSPACE_DIR }}
-                  sudo chmod -R 777 ${{ env.WORKSPACE_DIR }}
+                  sudo mkdir -p ${{ env.WORLDS_DIR }}
+                  sudo chmod -R 777 ${{ env.WORLDS_DIR }}
 
             - name: Checkout repository
               uses: actions/checkout@v3
-              with:
-                  path: ${{ env.WORKSPACE_DIR }}
+
+            - name: copy worlds
+              run: |
+                  sudo cp -r ${{ github.workspace }}/Worlds ${{ env.WORLDS_DIR }}
 
             - name: Setup ROS 2 Humble
               uses: ros-tooling/setup-ros@v0.6
               with:
-                  required-ros-distributions: ${{ env.ROS_DISTRO }}
+                  required-ros-distributions: humble
 
             - name: Install Gazebo and dependencies
               run: |
@@ -41,12 +43,13 @@ jobs:
                     ros-humble-joint-state-publisher ros-humble-robot-state-publisher \
                     ros-humble-nav2-msgs ros-humble-turtlebot3*
                   sudo apt-get install -y gazebo libgazebo-dev
+                  # Install any additional dependencies your project needs
 
             - name: Setup Python dependencies
               run: |
                   python -m pip install --upgrade pip
-                  if [ -f ${WORKSPACE_DIR}/test/requirements.txt ]; then
-                    pip install -r ${WORKSPACE_DIR}/test/requirements.txt
+                  if [ -f test/requirements.txt ]; then
+                    pip install -r test/requirements.txt
                   fi
                   pip install pytest pytest-timeout pytest-cov
 
@@ -63,11 +66,7 @@ jobs:
             #       source /opt/ros/humble/setup.bash
             #       source /usr/share/gazebo/setup.sh
             #       colcon build --symlink-install --packages-select custom_robots
-            - name: Build custom_robots package
-              run: |
-                  source /opt/ros/humble/setup.bash
-                  source /usr/share/gazebo/setup.sh
-                  colcon build --symlink-install --packages-select custom_robots
+
             - name: Run launch tests
               run: |
                   source /opt/ros/humble/setup.bash
