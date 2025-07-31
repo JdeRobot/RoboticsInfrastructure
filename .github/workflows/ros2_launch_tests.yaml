@@ -41,14 +41,19 @@ jobs:
 
             - name: Install Gazebo and dependencies
               run: |
+                  # First install libunwind-dev to satisfy dependency requirements
                   sudo apt-get update
+                  sudo apt-get install -y libunwind-dev
+
+                  # Then install the rest of the packages
                   sudo apt-get install -y python3-pip python3-pytest-timeout python3-pytest-cov \
                     ros-humble-launch-testing ros-humble-launch-testing-ament-cmake \
                     ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros ros-humble-xacro \
                     ros-humble-joint-state-publisher ros-humble-robot-state-publisher \
-                    ros-humble-nav2-msgs ros-humble-turtlebot3*
-                  sudo apt-get install -y gazebo libgazebo-dev
-                  # Install any additional dependencies your project needs
+                    ros-humble-nav2-msgs ros-humble-turtlebot3-msgs
+
+                  # Install Gazebo separately with --fix-broken option
+                  sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
             - name: Setup Python dependencies
               run: |
