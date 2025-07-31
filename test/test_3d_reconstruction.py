@@ -51,7 +51,7 @@ class TestTopicMsgs(unittest.TestCase):
         cls.node = rclpy.create_node("test_node")
 
         # wait for topics to be setup
-        time.sleep(30)
+        time.sleep(10)
 
     @classmethod
     def tearDownClass(cls):

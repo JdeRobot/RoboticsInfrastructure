@@ -65,26 +65,31 @@ jobs:
 
             - name: Configure Gazebo for headless rendering
               run: |
+                  # Configure display for headless rendering
                   echo "export GAZEBO_IP=127.0.0.1" >> $GITHUB_ENV
                   echo "export OGRE_RTT_MODE=Copy" >> $GITHUB_ENV
                   echo "export DISPLAY=:1" >> $GITHUB_ENV
-                  # Set up virtual framebuffer
+
+                  # Configure audio to use null devices
+                  echo "export AUDIODEV=null" >> $GITHUB_ENV
+                  echo "export SDL_AUDIODRIVER=dummy" >> $GITHUB_ENV
+
+                  # Create dummy ALSA config
+                  echo 'pcm.!default { type null; }' > ~/.asoundrc
+                  echo 'ctl.!default { type null; }' >> ~/.asoundrc
+
+                  # Set up virtual framebuffer for visual rendering
                   sudo apt-get install -y xvfb
                   Xvfb :1 -screen 0 1280x1024x24 &
+
+                  # Give Xvfb and audio config time to initialize
+                  sleep 3
 
             - name: Build workspace
               run: |
                   source /opt/ros/humble/setup.bash
                   source /usr/share/gazebo/setup.sh
                   colcon build --symlink-install --packages-up-to custom_robots
-
-            # - name: Set timeout for launch tests in CMakeLists.txt
-            #   run: |
-            #       sed -i 's/add_launch_test(${test_file} TIMEOUT 90)/add_launch_test(${test_file} TIMEOUT 180)/g' src/RoboticsInfrastructure/CustomRobots/CMakeLists.txt
-            #       # Rebuild with new timeout settings
-            #       source /opt/ros/humble/setup.bash
-            #       source /usr/share/gazebo/setup.sh
-            #       colcon build --symlink-install --packages-select custom_robots
 
             - name: Run launch tests
               run: |
