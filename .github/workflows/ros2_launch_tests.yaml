@@ -7,20 +7,30 @@ on:
         branches: [main, testing]
     workflow_dispatch:
 
+env:
+    WORKSPACE_DIR: /opt/jderobot
+    ROS_DISTRO: humble
+
 jobs:
     launch-tests:
         runs-on: ubuntu-22.04
         timeout-minutes: 30
 
         steps:
-            - uses: actions/checkout@v3
+            - name: Create checkout directory with proper permissions
+              run: |
+                  sudo mkdir -p ${{ env.WORKSPACE_DIR }}
+                  sudo chmod -R 777 ${{ env.WORKSPACE_DIR }}
+
+            - name: Checkout repository
+              uses: actions/checkout@v3
               with:
-                  path: /opt/jderobot
+                  path: ${{ env.WORKSPACE_DIR }}
 
             - name: Setup ROS 2 Humble
               uses: ros-tooling/setup-ros@v0.6
               with:
-                  required-ros-distributions: humble
+                  required-ros-distributions: ${{ env.ROS_DISTRO }}
 
             - name: Install Gazebo and dependencies
               run: |
@@ -31,13 +41,12 @@ jobs:
                     ros-humble-joint-state-publisher ros-humble-robot-state-publisher \
                     ros-humble-nav2-msgs ros-humble-turtlebot3*
                   sudo apt-get install -y gazebo libgazebo-dev
-                  # Install any additional dependencies your project needs
 
             - name: Setup Python dependencies
               run: |
                   python -m pip install --upgrade pip
-                  if [ -f src/RoboticsInfrastructure/test/requirements.txt ]; then
-                    pip install -r src/RoboticsInfrastructure/test/requirements.txt
+                  if [ -f ${WORKSPACE_DIR}/test/requirements.txt ]; then
+                    pip install -r ${WORKSPACE_DIR}/test/requirements.txt
                   fi
                   pip install pytest pytest-timeout pytest-cov
 
@@ -47,14 +56,18 @@ jobs:
                   source /usr/share/gazebo/setup.sh
                   colcon build --symlink-install --packages-up-to custom_robots
 
-            - name: Set timeout for launch tests in CMakeLists.txt
+            # - name: Set timeout for launch tests in CMakeLists.txt
+            #   run: |
+            #       sed -i 's/add_launch_test(${test_file} TIMEOUT 90)/add_launch_test(${test_file} TIMEOUT 180)/g' src/RoboticsInfrastructure/CustomRobots/CMakeLists.txt
+            #       # Rebuild with new timeout settings
+            #       source /opt/ros/humble/setup.bash
+            #       source /usr/share/gazebo/setup.sh
+            #       colcon build --symlink-install --packages-select custom_robots
+            - name: Build custom_robots package
               run: |
-                  sed -i 's/add_launch_test(${test_file} TIMEOUT 90)/add_launch_test(${test_file} TIMEOUT 180)/g' src/RoboticsInfrastructure/CustomRobots/CMakeLists.txt
-                  # Rebuild with new timeout settings
                   source /opt/ros/humble/setup.bash
                   source /usr/share/gazebo/setup.sh
                   colcon build --symlink-install --packages-select custom_robots
-
             - name: Run launch tests
               run: |
                   source /opt/ros/humble/setup.bash
