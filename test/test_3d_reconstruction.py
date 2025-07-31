@@ -50,6 +50,9 @@ class TestTopicMsgs(unittest.TestCase):
         rclpy.init()
         cls.node = rclpy.create_node("test_node")
 
+        # wait for topics to be setup
+        time.sleep(10)
+
     @classmethod
     def tearDownClass(cls):
         """Clean up ROS resources after tests."""
@@ -64,8 +67,6 @@ class TestTopicMsgs(unittest.TestCase):
 
     def test_camera_topics(self, proc_output):
         """Test that camera topics are publishing msgs."""
-        # First wait for the cameras to start publishing
-        time.sleep(3)
 
         msgs_left = []
         msgs_right = []
@@ -103,8 +104,6 @@ class TestTopicMsgs(unittest.TestCase):
 
     def test_camera_images(self, proc_output):
         """Test that camera images are published."""
-        # First wait for the cameras to start publishing
-        time.sleep(3)
 
         # Check actual message receipt
         msgs_left = []
