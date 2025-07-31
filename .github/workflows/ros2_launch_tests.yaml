@@ -63,6 +63,15 @@ jobs:
                   fi
                   pip install pytest pytest-timeout pytest-cov
 
+            - name: Configure Gazebo for headless rendering
+              run: |
+                  echo "export GAZEBO_IP=127.0.0.1" >> $GITHUB_ENV
+                  echo "export OGRE_RTT_MODE=Copy" >> $GITHUB_ENV
+                  echo "export DISPLAY=:1" >> $GITHUB_ENV
+                  # Set up virtual framebuffer
+                  sudo apt-get install -y xvfb
+                  Xvfb :1 -screen 0 1280x1024x24 &
+
             - name: Build workspace
               run: |
                   source /opt/ros/humble/setup.bash
