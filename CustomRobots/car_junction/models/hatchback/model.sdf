@@ -1,0 +1,498 @@
+<?xml version = "1.0"?>
+<sdf version = "1.9">
+    
+    <model name="hatchback">
+        
+        <plugin filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+            <joint_name>${name}_front_left_steer_joint</joint_name>
+            <joint_name>${name}_front_right_steer_joint</joint_name>
+            <joint_name>${name}_front_left_wheel_joint</joint_name>
+            <joint_name>${name}_front_right_wheel_joint</joint_name>
+            <joint_name>${name}_rear_left_wheel_joint</joint_name>
+            <joint_name>${name}_rear_right_wheel_joint</joint_name>
+            <topic>/model/${name}/joint_states</topic>
+        </plugin>    
+
+        <plugin
+            filename="gz-sim-joint-controller-system"
+            name="gz::sim::systems::JointController">
+            <joint_name>${name}_front_left_wheel_joint</joint_name>
+            <joint_name>${name}_front_right_wheel_joint</joint_name>
+            <joint_name>${name}_rear_left_wheel_joint</joint_name>
+            <joint_name>${name}_rear_right_wheel_joint</joint_name>
+            <initial_velocity>15.0</initial_velocity>
+        </plugin>    
+
+        <link name="${name}_base_link" >
+            <inertial>
+                <pose> 0 0 0 0 0 0 </pose>
+                <mass> 1 </mass>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+            </inertial>
+        </link>
+
+        <joint name="${name}_base_chassis_connection" type="fixed">
+            <pose relative_to='${name}_base_link'>1.45 0 0 0 0 1.57 </pose>
+            <parent>${name}_base_link</parent>
+            <child>${name}_chassis</child>
+        </joint>
+
+        <link name='${name}_chassis'>
+            <pose relative_to='${name}_base_chassis_connection'>0 0 0 0 0 0</pose>
+            
+            <inertial>
+                <pose>0 -0.002982 0.485295 0 -0 1.5708</pose>
+                <mass>1375</mass>
+                <inertia>
+                <ixx>2595.52</ixx>
+                <ixy>0.000189032</ixy>
+                <ixz>-0.949708</ixz>
+                <iyy>657.155</iyy>
+                <iyz>3.48847e-06</iyz>
+                <izz>2749.81</izz>
+                </inertia>
+            </inertial>
+
+            <collision name='${name}_chassis_collision'>
+                <pose>0 0.05 0.625 0 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.7526 2.1 0.95</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__front_bumper_collision_1'>
+                <pose>0 -2 0.458488 0 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.33728 0.48 0.566691</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__hood_collision_2'>
+                <pose>0 -1.90084 0.676305 0.341247 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.59797 0.493107 0.265468</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__windshield_collision_3'>
+                <pose>0 -0.875105 1.03227 0.335476 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.16838 1.65425 0.272347</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__top_front_collision_4'>
+                <pose>0 0.161236 1.38604 0.13503 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.27915 0.625988 0.171868</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__top_rear_collision_5'>
+                <pose>0 0.817696 1.36007 -0.068997 0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.28513 0.771189 0.226557</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__rear_window_collision_6'>
+                <pose>0 1.64053 1.17513 -0.262017 0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.26785 1.11634 0.244286</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__trunk_collision_7'>
+                <pose>0 1.63706 0.88818 0 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.78806 1.13899 0.482746</size>
+                </box>
+                </geometry>
+            </collision>
+
+            <collision name='${name}_chassis_fixed_joint_lump__back_bumper_collision_8'>
+                <pose>0 2.05445 0.57787 0 -0 0</pose>
+                <geometry>
+                <box>
+                    <size>1.78165 0.512093 0.581427</size>
+                </box>
+                </geometry>
+            </collision>      
+ 
+            <visual name='${name}_chassis_visual'>
+                <pose>0 0 0 0 -0 0</pose>
+                <geometry>
+                <mesh>
+                    <scale>0.03 0.03 0.03</scale>
+                    <uri>model://hatchback/meshes/hatchback.obj</uri>
+                </mesh>
+                </geometry>
+            </visual>
+        </link>
+
+
+        <joint name='${name}_front_left_steer_joint' type='revolute'>
+            <pose relative_to='${name}_chassis'>0.767 -1.41 0 0 -0 0</pose>
+            <parent>${name}_chassis</parent>
+            <child>${name}_fl_axle</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <limit>
+                    <lower>-0.7</lower>  
+                    <upper>0.7</upper>
+                    <effort>500</effort>  
+                    <velocity>3.0</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.5</damping>  
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>                    
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_fl_axle'>
+            <pose relative_to='${name}_front_left_steer_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>1</mass>
+                <inertia>
+                <ixx>0.004</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.004</iyy>
+                <iyz>0</iyz>
+                <izz>0.004</izz>
+                </inertia>
+            </inertial>
+        </link>
+
+        <joint name='${name}_front_left_wheel_joint' type='revolute'>
+            <pose relative_to='${name}_fl_axle'>0 0 0 0 -0 0</pose>
+            <parent>${name}_fl_axle</parent>
+            <child>${name}_front_left_wheel</child>
+            <axis>
+                <xyz>1 0 0</xyz>
+                <limit>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+                <dynamics>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_front_left_wheel'>
+            <pose relative_to='${name}_front_left_wheel_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>11</mass>
+                <inertia>
+                    <ixx>0.586312</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.335529</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.335529</izz>
+                </inertia>
+            </inertial>
+            <collision name='${name}_front_left_wheel_collision_collision'>
+                <pose>0 0 0 0 -0 0</pose>
+                <geometry>
+                    <sphere>
+                        <radius>0.31265</radius>
+                    </sphere>
+                </geometry>
+                <surface>
+                    <contact>
+                        <ode>
+                        <kp>1e+08</kp>
+                        <min_depth>0.005</min_depth>
+                        </ode>
+                    </contact>
+                    <friction>
+                        <ode>
+                        <mu>0.9</mu>
+                        <mu2>0.9</mu2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+            
+        </link>
+
+        <joint name='${name}_front_right_steer_joint' type='revolute'>
+            <pose relative_to='${name}_chassis'>-0.767 -1.41 0 0 -0 0</pose>
+            <parent>${name}_chassis</parent>
+            <child>${name}_fr_axle</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <limit>
+                    <lower>-0.7</lower>  
+                    <upper>0.7</upper>
+                    <effort>500</effort>  
+                    <velocity>3.0</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.5</damping>  
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>                    
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_fr_axle'>
+            <pose relative_to='${name}_front_right_steer_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>1</mass>
+                <inertia>
+                <ixx>0.004</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.004</iyy>
+                <iyz>0</iyz>
+                <izz>0.004</izz>
+                </inertia>
+            </inertial>
+        </link>
+
+        <joint name='${name}_front_right_wheel_joint' type='revolute'>
+            <pose relative_to='${name}_fr_axle'>0 0 0 0 -0 0</pose>
+            <parent>${name}_fr_axle</parent>
+            <child>${name}_front_right_wheel</child>
+            <axis>
+                <xyz>1 0 0</xyz>
+                <limit>
+                <lower>-1e+16</lower>
+                <upper>1e+16</upper>
+                </limit>
+                <dynamics>
+                <spring_reference>0</spring_reference>
+                <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_front_right_wheel'>
+            <pose relative_to='${name}_front_right_wheel_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>11</mass>
+                <inertia>
+                <ixx>0.586312</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.335529</iyy>
+                <iyz>0</iyz>
+                <izz>0.335529</izz>
+                </inertia>
+            </inertial>
+            <collision name='${name}_front_right_wheel_collision_collision'>
+                <pose>0 0 0 0 -0 0</pose>
+                <geometry>
+                <sphere>
+                    <radius>0.31265</radius>
+                </sphere>
+                </geometry>
+                <surface>
+                <contact>
+                    <ode>
+                    <kp>1e+08</kp>
+                    <min_depth>0.005</min_depth>
+                    </ode>
+                </contact>
+                <friction>
+                    <ode>
+                    <mu>0.9</mu>
+                    <mu2>0.9</mu2>
+                    </ode>
+                </friction>
+                </surface>
+            </collision>
+            
+        </link>
+
+        <joint name='${name}_rear_left_wheel_joint' type='revolute'>
+            <pose relative_to='${name}_chassis'>0.793 1.45 0.1 0 -0 0</pose>
+            <parent>${name}_chassis</parent>
+            <child>${name}_rear_left_wheel</child>
+            <axis>
+                <xyz>1 0 0</xyz>
+                <limit>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+                <dynamics>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_rear_left_wheel'>
+            <pose relative_to='${name}_rear_left_wheel_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>11</mass>
+                <inertia>
+                <ixx>0.586312</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.335529</iyy>
+                <iyz>0</iyz>
+                <izz>0.335529</izz>
+                </inertia>
+            </inertial>
+            <collision name='${name}_rear_left_wheel_collision_collision'>
+                <pose>0 0 0 0 -0 0</pose>
+                <geometry>
+                <sphere>
+                    <radius>0.31265</radius>
+                </sphere>
+                </geometry>
+                <surface>
+                    <contact>
+                        <ode>
+                        <kp>1e+08</kp>
+                        <min_depth>0.005</min_depth>
+                        </ode>
+                    </contact>
+                    <friction>
+                        <ode>
+                        <mu>0.9</mu>
+                        <mu2>0.9</mu2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+            
+        </link>
+
+        <joint name='${name}_rear_right_wheel_joint' type='revolute'>
+            <pose relative_to='${name}_chassis'>-0.793 1.45 0.1 0 -0 0</pose>
+            <parent>${name}_chassis</parent>
+            <child>${name}_rear_right_wheel</child>
+            <axis>
+                <xyz>1 0 0</xyz>
+                <limit>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+                <dynamics>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='${name}_rear_right_wheel'>
+            <pose relative_to='${name}_rear_right_wheel_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>11</mass>
+                <inertia>
+                <ixx>0.586312</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.335529</iyy>
+                <iyz>0</iyz>
+                <izz>0.335529</izz>
+                </inertia>
+            </inertial>
+            <collision name='${name}_rear_right_wheel_collision_collision'>
+                <pose>0 0 0 0 -0 0</pose>
+                <geometry>
+                <sphere>
+                    <radius>0.31265</radius>
+                </sphere>
+                </geometry>
+                <surface>
+                    <contact>
+                        <ode>
+                        <kp>1e+08</kp>
+                        <min_depth>0.005</min_depth>
+                        </ode>
+                    </contact>
+                    <friction>
+                        <ode>
+                        <mu>0.9</mu>
+                        <mu2>0.9</mu2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+            
+        </link>
+        <joint name='${name}_steering_joint' type='revolute'>
+            <pose relative_to='${name}_chassis'>0.357734 -0.627868 0.988243 -1.3021 0 0</pose>
+            <parent>${name}_chassis</parent>
+            <child>${name}_steering_wheel</child>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <limit>
+                    <effort>1e+07</effort>
+                    <velocity>1e+06</velocity>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+                <dynamics>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+        <link name='${name}_steering_wheel'>
+            <pose relative_to='${name}_steering_joint'>0 0 0 0 -0 0</pose>
+            <inertial>
+                <pose>0 0 0 0 -0 0</pose>
+                <mass>1</mass>
+                <inertia>
+                <ixx>0.145833</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.145833</iyy>
+                <iyz>0</iyz>
+                <izz>0.125</izz>
+                </inertia>
+            </inertial>
+            <visual name='${name}_steering_wheel_visual'>
+                <pose>0 0 0 1.3021 -0 0</pose>
+                <geometry>
+                <mesh>
+                    <scale>0.01 0.01 0.01</scale>
+                    <uri>model://hatchback/meshes/steering_wheel.obj</uri>
+                </mesh>
+                </geometry>
+            </visual>           
+        </link>
+
+        
+            
+    </model>
+</sdf>

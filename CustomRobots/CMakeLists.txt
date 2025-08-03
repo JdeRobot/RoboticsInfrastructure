@@ -94,6 +94,7 @@ install(
     car_junction/models
     car_junction/worlds
     car_junction/launch
+    car_junction/scripts
     # AMAZON WAREHOUSE ROBOT
     amazon_robot/launch
     amazon_robot/models

@@ -7,7 +7,20 @@
             filename="gz-sim-sensors-system"
             name="gz::sim::systems::Sensors">
             <render_engine>ogre2</render_engine>
-        </plugin> 
+        </plugin>
+        
+        <plugin filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+            <joint_name>front_left_steer_joint</joint_name>
+            <joint_name>front_right_steer_joint</joint_name>
+            <joint_name>front_left_wheel_joint</joint_name>
+            <joint_name>front_right_wheel_joint</joint_name>
+            <joint_name>rear_left_wheel_joint</joint_name>
+            <joint_name>rear_right_wheel_joint</joint_name>
+            <topic>/joint_states</topic>
+        </plugin>  
+        
+        
 
         <link name="base_link" >
             <inertial>
@@ -132,11 +145,10 @@
                 <geometry>
                 <mesh>
                     <scale>0.01 0.01 0.01</scale>
-                    <uri>model://waymo_autoparking_360lidar_harmonic/meshes/hybrid_body.obj</uri>
+                    <uri>model://waymo_light/meshes/hybrid_body.obj</uri>
                 </mesh>
                 </geometry>
             </visual>
-
             <link name="top_lidar_link">
                 <pose relative_to="chassis">0 0 1.8 0 0 0</pose>
             </link>
@@ -163,17 +175,16 @@
                 </box>
             </geometry>
             </collision>
-
             <sensor name="top_lidar" type="gpu_lidar">
                 <pose relative_to="chassis">0 0 1.8 0 0 -1.57</pose>  
                 <visualize>false</visualize>
                 <lidar>
                     <scan>
                     <horizontal>
-                        <samples>361</samples>  
+                        <samples>180</samples>  
                         <resolution>1.0</resolution>
-                        <min_angle>-3.14</min_angle>
-                        <max_angle>3.14</max_angle>
+                        <min_angle>-1.047</min_angle>
+                        <max_angle>1.047</max_angle>
                     </horizontal>
                     <vertical>
                         <samples>4</samples> 
@@ -202,7 +213,8 @@
                 </plugin>
             </sensor>
 
-            <visual name="right_side_camera_mount">
+
+            <!-- <visual name="right_side_camera_mount">
                 <pose>0.9 -1.5 0.7 0 0 0</pose>  
                 <geometry>
                     <box>
@@ -256,7 +268,8 @@
                     </noise>
                 </camera>
                 <always_on>true</always_on>
-                <topic>/waymo/camera_right</topic>      
+                <topic>/waymo/camera_right</topic>
+                    
             </sensor>
 
             <visual name="left_side_camera_mount">
@@ -316,8 +329,10 @@
                     </noise>
                 </camera>
                 <always_on>true</always_on>
-                <topic>/waymo/camera_left</topic>   
-            </sensor>
+                <topic>/waymo/camera_left</topic>
+                    
+            </sensor> -->
+
             
             <visual name="front_camera_mount">
                 <pose>0 -1.7 0.9 0 0 0</pose>  
@@ -335,9 +350,10 @@
             </visual>
 
             <sensor name="front_camera" type="camera">
+                
                 <pose relative_to="base_chassis_connection">0 -1.8 0.9 0 0 -1.57</pose>
                 <always_on>1</always_on>
-                <visualize>false</visualize>
+                <visualize>true</visualize>
                 <update_rate>5</update_rate>
                 <camera name="camera_front">
                 <horizontal_fov>2.094</horizontal_fov>
@@ -387,7 +403,8 @@
                     <hack_baseline>0.07</hack_baseline>
                 </plugin>         
             </sensor>
-        </link>
+         
+         </link>
 
 
         <joint name='front_left_steer_joint' type='revolute'>
@@ -484,7 +501,7 @@
                 <geometry>
                     <mesh>
                         <scale>0.01 0.01 0.01</scale>
-                        <uri>model://waymo_autoparking_360lidar_harmonic/meshes/wheel.obj</uri>
+                        <uri>model://waymo_light/meshes/wheel.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -579,13 +596,12 @@
                 </friction>
                 </surface>
             </collision>
-
             <visual name='front_right_wheel_visual'>
                 <pose>0 0 0 0 -0 0</pose>
                 <geometry>
                 <mesh>
                     <scale>0.01 0.01 0.01</scale>
-                    <uri>model://waymo_autoparking_360lidar_harmonic/meshes/wheel.obj</uri>
+                    <uri>model://waymo_light/meshes/wheel.obj</uri>
                 </mesh>
                 </geometry>
             </visual>
@@ -649,7 +665,7 @@
                 <geometry>
                 <mesh>
                     <scale>0.01 0.01 0.01</scale>
-                    <uri>model://waymo_autoparking_360lidar_harmonic/meshes/wheel.obj</uri>
+                    <uri>model://waymo_light/meshes/wheel.obj</uri>
                 </mesh>
                 </geometry>
             </visual>
@@ -713,7 +729,7 @@
                 <geometry>
                 <mesh>
                     <scale>0.01 0.01 0.01</scale>
-                    <uri>model://waymo_autoparking_360lidar_harmonic/meshes/wheel.obj</uri>
+                    <uri>model://waymo_light/meshes/wheel.obj</uri>
                 </mesh>
                 </geometry>
             </visual>
@@ -755,7 +771,7 @@
                 <geometry>
                 <mesh>
                     <scale>0.01 0.01 0.01</scale>
-                    <uri>model://waymo_autoparking_360lidar_harmonic/meshes/steering_wheel.obj</uri>
+                    <uri>model://waymo_light/meshes/steering_wheel.obj</uri>
                 </mesh>
                 </geometry>
             </visual>           
@@ -789,18 +805,6 @@
             
             <topic>/cmd_vel</topic>
         </plugin>
-
-        
-        <plugin filename="gz-sim-joint-state-publisher-system"
-        name="gz::sim::systems::JointStatePublisher">
-            <joint_name>front_left_steer_joint</joint_name>
-            <joint_name>front_right_steer_joint</joint_name>
-            <joint_name>front_left_wheel_joint</joint_name>
-            <joint_name>front_right_wheel_joint</joint_name>
-            <joint_name>rear_left_wheel_joint</joint_name>
-            <joint_name>rear_right_wheel_joint</joint_name>
-            <topic>/joint_states</topic>
-        </plugin> 
             
     </model>
 </sdf>
