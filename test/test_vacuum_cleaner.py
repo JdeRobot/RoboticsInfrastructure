@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Tests for Line Follower (Simple Circuit) ROS launch file."""
+"""Tests for the Vacuum Cleaner (no localization) ROS launch file."""
 
 import os
 import unittest
@@ -14,9 +14,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import psutil
 
 import rclpy
-from sensor_msgs.msg import Image
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
 
 
 @pytest.mark.launch_test
@@ -26,7 +26,7 @@ def generate_test_description():
     launcher_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "Launchers",
-        "simple_circuit.launch.py",
+        "vacuum_cleaner_headless.launch.py",
     )
 
     # Start the launch file with arguments
@@ -118,34 +118,26 @@ class TestTopicMsgs(unittest.TestCase):
         self.__class__.node.destroy_subscription(sub)
         self.__class__.node.destroy_publisher(pub)
 
-    @unittest.skipIf(
-        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
-        "Camera tests are unreliable in CI environments",
-    )
-    def test_camera_images(self, proc_output):
-        """Test that camera images are published."""
-
-        # Check actual message receipt
+    def test_laser_scan_works(self, proc_output):
+        """Test that the laser scan topic is published."""
         msgs = []
 
-        # Create subscriptions
-        sub_left = self.__class__.node.create_subscription(
-            Image,
-            "/cam_f1_left/image_raw",
+        # Create a subscription to the laser scan topic
+        sub = self.__class__.node.create_subscription(
+            LaserScan,
+            "/roombaROS/laser/scan",
             lambda msg: msgs.append(msg),
             qos_profile=10,
         )
 
-        # Wait for messages (up to 5 seconds)
-        for _ in range(50):  # 50 x 0.1 seconds = 5 seconds
+        # Wait for messages (up to 1 second)
+        for _ in range(10):
             rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
             if msgs:
                 break
 
+        # Check that we received at least one message
+        self.assertGreater(len(msgs), 0, msg="No laser scan messages received.")
+
         # Clean up subscriptions
-        self.__class__.node.destroy_subscription(sub_left)
-
-        # Check results
-        self.assertGreater(len(msgs), 0, "No images received from left camera")
-
-        print("\n--- Camera Images Test Completed Successfully ---")
+        self.__class__.node.destroy_subscription(sub)
