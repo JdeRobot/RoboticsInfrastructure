@@ -1,3 +1,4 @@
+annotated-types==0.7.0
 black==22.3.0
 catkin-pkg==1.0.0
 click==8.2.1
@@ -17,6 +18,8 @@ platformdirs==4.3.8
 pluggy==1.6.0
 psutil==7.0.0
 pycodestyle==2.14.0
+pydantic==2.11.7
+pydantic_core==2.33.2
 pydocstyle==6.3.0
 pyflakes==3.4.0
 Pygments==2.19.2
@@ -27,4 +30,5 @@ PyYAML==6.0.2
 six==1.17.0
 snowballstemmer==3.0.1
 tomli==2.2.1
+typing-inspection==0.4.1
 typing_extensions==4.14.1
