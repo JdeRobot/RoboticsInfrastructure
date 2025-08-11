@@ -1,4 +1,4 @@
-name: ROS 2 Launch Tests
+name: ROS 2 Launch Tests (Gazebo Harmonic)
 
 on:
     push:
@@ -98,14 +98,12 @@ jobs:
             - name: Build workspace
               run: |
                   source /opt/ros/humble/setup.bash
-                  source /usr/share/gazebo/setup.sh
                   colcon build --symlink-install --packages-up-to custom_robots
 
             - name: Run launch tests
               run: |
                   source /opt/ros/humble/setup.bash
                   source install/setup.bash
-                  source /usr/share/gazebo/setup.bash
                   colcon test --packages-select custom_robots --event-handlers console_direct+ --return-code-on-test-failure
 
             - name: Show test results
