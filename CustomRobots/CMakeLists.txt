@@ -139,6 +139,11 @@ install(
     pick_place/urdf
   DESTINATION share/${PROJECT_NAME})
 
+install(
+  FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py
+        ${RI_ROOT_DIR}/Launchers/rescue_people.launch.py
+  DESTINATION share/${PROJECT_NAME}/launch)
+
 if(BUILD_TESTING)
   # find_package(ament_lint_auto REQUIRED)
   # ament_lint_auto_find_test_dependencies()

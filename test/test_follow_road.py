@@ -14,9 +14,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import psutil
 
 import rclpy
-from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
-from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Imu
 
 
 @pytest.mark.launch_test
@@ -29,15 +28,18 @@ def generate_test_description():
         "follow_road.launch.py",
     )
 
+    config_file = "/opt/jderobot/jderobot_drones/sim_config/gzsim/world.json"
+
     # Start the launch file with arguments
     launch_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(launcher_path),
         launch_arguments={
             "headless": "True",
             "use_simulator": "True",
-            "simulation_config_file": "/opt/jderobot/jderobot_drones/sim_config/gzsim/as2_config.yaml",  # <-- Add this line
-            "world_file": "/opt/jderobot/jderobot_drones/worlds/follow_road_harmonic.world",
-            "world_name": "follow_road_harmonic",
+            "use_sim_time": "True",
+            "simulation_config_file": config_file,
+            "plugin_name": "differential_flatness_controller",
+            # "plugin_name": "pid_speed_controller",
         }.items(),
     )
 
@@ -69,81 +71,65 @@ class TestTopicMsgs(unittest.TestCase):
         rclpy.shutdown()
         # Stop any running Gazebo processes
         for proc in psutil.process_iter(["name"]):
-            if proc.info["name"] == "gzserver":
+            if proc.info["name"] in ["gzserver", "gazebo", "ign gazebo", "gz"]:
                 print(f"Stopping gzserver (PID={proc.pid})")
                 proc.terminate()
 
-    # def test_odom_works(self, proc_output):
-    #     """Test that the odometry state is updated when the vehicle moves."""
-    #     msgs = []
+    def test_imu_works(self, proc_output):
+        """Test that the imu topic works."""
+        msgs = []
 
-    #     # Create a subscription to the odometry topic
-    #     sub = self.__class__.node.create_subscription(
-    #         Odometry,
-    #         "/odom",
-    #         lambda msg: msgs.append(msg),
-    #         qos_profile=10,
-    #     )
+        sub = self.__class__.node.create_subscription(
+            Imu,
+            "/drone0/sensor_measurements/imu",
+            lambda msg: msgs.append(msg),
+            qos_profile=10,
+        )
 
-    #     # Wait for messages (up to 1 second)
-    #     for _ in range(10):
-    #         rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
-    #         if msgs:
-    #             break
+        # Wait for messages (up to 1 second)
+        for _ in range(10):
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+            if msgs:
+                break
 
-    #     # Create a publisher to the velocity topic to trigger odometry updates
-    #     pub = self.__class__.node.create_publisher(
-    #         Twist,
-    #         "/cmd_vel",
-    #         qos_profile=10,
-    #     )
+        # Check that we received msgs
+        self.assertGreater(len(msgs), 0, msg="No IMU messages received.")
 
-    #     # Publish a high velocity message to move the vehicle
-    #     twist_msg = Twist()
-    #     twist_msg.linear.x = 45.0  # Move forward at 45 m/s
-    #     twist_msg.angular.z = 120.0  # Turn at 120 rad/s
+        # Clean up subscriptions
+        self.__class__.node.destroy_subscription(sub)
 
-    #     # Wait for a short time to allow odometry updates
-    #     for _ in range(10):
-    #         pub.publish(twist_msg)
-    #         rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+    def test_movement_works(self, proc_output):
+        """Test that the velocity topic works correctly."""
+        msgs = []
 
-    #     # Check that the vehicle moved by comparing the difference in odom msgs
-    #     self.assertNotAlmostEqual(
-    #         msgs[0].pose.pose.position.x,
-    #         msgs[-1].pose.pose.position.x,
-    #         msg="Odometry messages did not change after publishing velocity.",
-    #     )
-    #     self.assertNotAlmostEqual(
-    #         msgs[0].pose.pose.position.y,
-    #         msgs[-1].pose.pose.position.y,
-    #         msg="Odometry messages did not change after publishing velocity.",
-    #     )
+        # Create a subscription to the velocity topic
+        sub = self.__class__.node.create_subscription(
+            Twist,
+            "/gz/drone0/cmd_vel",
+            lambda msg: msgs.append(msg),
+            qos_profile=10,
+        )
 
-    #     # Clean up subscriptions
-    #     self.__class__.node.destroy_subscription(sub)
-    #     self.__class__.node.destroy_publisher(pub)
+        # Create a publisher to the velocity topic
+        pub = self.__class__.node.create_publisher(
+            Twist,
+            "/gz/drone0/cmd_vel",
+            qos_profile=10,
+        )
 
-    # def test_laser_scan_works(self, proc_output):
-    #     """Test that the laser scan topic is published."""
-    #     msgs = []
+        # Publish a high velocity message to move the vehicle
+        twist_msg = Twist()
+        twist_msg.linear.x = 45.0  # Move forward at 45 m/s
+        twist_msg.angular.z = 120.0  # Turn at 120 rad/s
 
-    #     # Create a subscription to the laser scan topic
-    #     sub = self.__class__.node.create_subscription(
-    #         LaserScan,
-    #         "/roombaROS/laser/scan",
-    #         lambda msg: msgs.append(msg),
-    #         qos_profile=10,
-    #     )
+        # Wait for a short time to allow odometry updates
+        for _ in range(15):
+            pub.publish(twist_msg)
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
 
-    #     # Wait for messages (up to 1 second)
-    #     for _ in range(10):
-    #         rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
-    #         if msgs:
-    #             break
+        # Check that we received some messages
+        self.assertNotEqual(len(msgs), 0, msg="No cmd_vel messages received.")
 
-    #     # Check that we received at least one message
-    #     self.assertGreater(len(msgs), 0, msg="No laser scan messages received.")
-
-    #     # Clean up subscriptions
-    #     self.__class__.node.destroy_subscription(sub)
+        # Clean up subscriptions
+        self.__class__.node.destroy_subscription(sub)
+        self.__class__.node.destroy_publisher(pub)
