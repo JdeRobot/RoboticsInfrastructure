@@ -24,6 +24,7 @@ def generate_test_description():
     # Get absolute path to the launcher
     launcher_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
         "Launchers",
         "follow_road.launch.py",
     )
@@ -57,6 +58,10 @@ class TestTopicMsgs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up ROS node for testing."""
+        # Skip all tests if the env var not is set (e.g., IS_HARMONIC=0)
+        if os.environ.get("IS_HARMONIC", "0") == "0":
+            raise unittest.SkipTest("Skipping non-harmonic tests due to IS_HARMONIC=0")
+
         rclpy.init()
         cls.node = rclpy.create_node("test_node")
 
