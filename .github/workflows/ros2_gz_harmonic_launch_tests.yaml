@@ -70,7 +70,12 @@ jobs:
                   sudo apt-get install ros-humble-as2-gazebo-assets ros-humble-as2-platform-gazebo ros-humble-ros-gz-image
                   sudo apt-get install -y ros-humble-as2-gazebo-assets ros-humble-as2-state-estimator 
                   sudo apt-get install -y ros-humble-as2-motion-controller ros-humble-as2-behaviors-motion
-                  sudo apt-get install -y --fix-broken gazebo libgazebo-dev
+                  sudo apt-get install -y --fix-broken gazebo libgazebo-
+
+            - name: Rename Launch Files
+              run: |
+                  sudo mv /opt/ros/humble/share/as2_state_estimator/launch/ground_truth_state_estimator.launch.py /opt/ros/humble/share/as2_state_estimator/launch/ground_truth-state_estimator.launch.py
+                  sudo mv /opt/ros/humble/share/as2_motion_controller/launch/pid_speed_controller.launch.py /opt/ros/humble/share/as2_motion_controller/launch/pid_speed_controller-motion_controller.launch.py
 
             - name: Setup Python dependencies
               run: |
