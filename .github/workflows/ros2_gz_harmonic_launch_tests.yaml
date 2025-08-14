@@ -28,6 +28,7 @@ jobs:
             - name: copy worlds
               run: |
                   sudo cp -r ${{ github.workspace }}/Worlds ${{ env.WORLDS_DIR }}
+                  sudo cp -r ${{ github.workspace }}/jderobot_drones ${{ env.WORLDS_DIR }}
 
             - name: Setup ROS 2 Humble
               run: |
