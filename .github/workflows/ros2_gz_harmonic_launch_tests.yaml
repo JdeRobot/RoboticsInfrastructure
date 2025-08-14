@@ -67,7 +67,8 @@ jobs:
                   sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
                   sudo apt remove ros-humble-ros-gzharmonic-bridge ros-humble-ros-gzharmonic-interfaces ros-humble-ros-gzharmonic-sim
                   sudo apt-get install ros-humble-as2-gazebo-assets ros-humble-as2-platform-gazebo ros-humble-ros-gz-image
-                  sudo apt-get install -y ros-humble-as2-state-estimator ros-humble-as2-motion-controller
+                  sudo apt-get install -y ros-humble-as2-gazebo-assets ros-humble-as2-state-estimator 
+                  sudo apt-get install -y ros-humble-as2-motion-controller ros-humble-as2-behaviors-motion
                   sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
             - name: Setup Python dependencies
