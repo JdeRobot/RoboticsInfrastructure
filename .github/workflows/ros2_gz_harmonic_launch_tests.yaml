@@ -70,7 +70,7 @@ jobs:
                   sudo apt-get install ros-humble-as2-gazebo-assets ros-humble-as2-platform-gazebo ros-humble-ros-gz-image
                   sudo apt-get install -y ros-humble-as2-gazebo-assets ros-humble-as2-state-estimator 
                   sudo apt-get install -y ros-humble-as2-motion-controller ros-humble-as2-behaviors-motion
-                  sudo apt-get install -y --fix-broken gazebo libgazebo-
+                  sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
             - name: Rename Launch Files
               run: |
