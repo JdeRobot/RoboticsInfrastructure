@@ -103,7 +103,7 @@ jobs:
             - name: Build workspace
               run: |
                   source /opt/ros/humble/setup.bash
-                  colcon build --symlink-install --packages-up-to custom_robots
+                  colcon build --symlink-install
 
             - name: Run launch tests
               run: |
