@@ -1,14 +1,20 @@
+"""Launch file for following person with following camera in Gazebo simulation."""
+
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
-from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    """
+    Generate the launch description for the following person exercise.
+
+    With a following camera in Gazebo simulation.
+    """
 
     # Set the path to the Gazebo ROS package
     pkg_gazebo_ros = FindPackageShare(package="gazebo_ros").find("gazebo_ros")
