@@ -38,7 +38,6 @@ jobs:
                   sudo apt-get update
                   # Install ROS 2 packages
                   sudo apt-get install -y ros-humble-ros-base python3-colcon-common-extensions
-                  sudo apt-get install -y ros-humble-xacro
 
             - name: "Setup Gazebo"
               uses: gazebo-tooling/setup-gazebo@v0.3.0
@@ -62,6 +61,11 @@ jobs:
 
             #       # Install Gazebo separately with --fix-broken option
             #       sudo apt-get install -y --fix-broken gazebo libgazebo-dev
+
+            - name: Install Gazebo and dependencies
+              run: |
+                  sudo apt-get install -y ros-humble-xacro
+                  sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
             - name: Setup Python dependencies
               run: |
