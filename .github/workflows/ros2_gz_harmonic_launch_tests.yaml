@@ -64,7 +64,7 @@ jobs:
 
             - name: Install Gazebo and dependencies
               run: |
-                  sudo apt-get install -y ros-humble-xacro
+                  sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
                   sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
             - name: Setup Python dependencies
