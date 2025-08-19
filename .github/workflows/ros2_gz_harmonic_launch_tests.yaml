@@ -63,14 +63,27 @@ jobs:
             #       # Install Gazebo separately with --fix-broken option
             #       sudo apt-get install -y --fix-broken gazebo libgazebo-dev
 
-            - name: Install Gazebo and dependencies
+            - name: Install Gazebo Harmonic and dependencies
               run: |
                   sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
                   sudo apt remove ros-humble-ros-gzharmonic-bridge ros-humble-ros-gzharmonic-interfaces ros-humble-ros-gzharmonic-sim
                   sudo apt-get install ros-humble-as2-gazebo-assets ros-humble-as2-platform-gazebo ros-humble-ros-gz-image
                   sudo apt-get install -y ros-humble-as2-gazebo-assets ros-humble-as2-state-estimator 
                   sudo apt-get install -y ros-humble-as2-motion-controller ros-humble-as2-behaviors-motion
-                  sudo apt-get install -y --fix-broken gazebo libgazebo-dev
+
+            - name: Install Gazebo classic and resolve version conflicts
+              run: |
+                  sudo add-apt-repository ppa:openrobotics/gazebo11-gz-cli
+                  sudo apt update
+                  sudo apt-get install gazebo11
+
+                  # Resolve version conflicts
+                  sudo apt-get remove libgazebo11
+                  sudo apt-get install libgazebo11=11.10.2+dfsg-1
+                  sudo apt-get install libgazebo-dev
+
+            - name: "Test Gazebo installation"
+              run: "gz sim --versions"
 
             - name: Rename Launch Files
               run: |
