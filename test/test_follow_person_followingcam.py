@@ -3,6 +3,7 @@
 """Tests for follow person following camera ROS launch file."""
 
 import os
+import sys
 import time
 import unittest
 import pytest
@@ -16,7 +17,8 @@ import rclpy
 from sensor_msgs.msg import Imu, JointState
 from nav_msgs.msg import Odometry
 
-from test.utils import stop_gazebo
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from utils import stop_gazebo  # noqa: E402
 
 
 @pytest.mark.launch_test

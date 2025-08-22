@@ -3,6 +3,7 @@
 """Tests for the Vacuum Cleaner (no localization) ROS launch file."""
 
 import os
+import sys
 import unittest
 import pytest
 import time
@@ -27,7 +28,8 @@ from rclpy.qos import (
     QoSHistoryPolicy,
 )
 
-from test.utils import stop_gazebo
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from utils import stop_gazebo  # noqa: E402
 
 
 @pytest.mark.launch_test

@@ -3,6 +3,7 @@
 """Tests for Line Follower (Simple Circuit) ROS launch file."""
 
 import os
+import sys
 import unittest
 import pytest
 import time
@@ -17,7 +18,8 @@ from sensor_msgs.msg import Image
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 
-from test.utils import stop_gazebo
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from utils import stop_gazebo  # noqa: E402
 
 
 @pytest.mark.launch_test

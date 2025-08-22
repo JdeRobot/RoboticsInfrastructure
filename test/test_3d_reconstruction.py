@@ -3,6 +3,7 @@
 """Tests for 3D reconstruction ROS launch file."""
 
 import os
+import sys
 import unittest
 import pytest
 import time
@@ -15,7 +16,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import rclpy
 from sensor_msgs.msg import CameraInfo, Image
 
-from test.utils import stop_gazebo
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from utils import stop_gazebo  # noqa: E402
 
 
 @pytest.mark.launch_test
