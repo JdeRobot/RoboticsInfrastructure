@@ -60,7 +60,7 @@ jobs:
 
             - name: Install aerostack2 and dependencies
               run: |
-                  sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
+                  sudo apt-get install -y ros-humble-xacro
                   sudo apt-get install -y ros-humble-geographic-msgs libgeographic-dev ros-humble-mocap4r2-msgs
                   sudo apt install git python3-rosdep python3-pip python3-colcon-common-extensions -y
 
@@ -70,14 +70,10 @@ jobs:
                   sudo rosdep init
                   rosdep update
                   rosdep install -y -r -q --from-paths src --ignore-src
+                  sudo apt install ros-humble-ros-gzharmonic
 
             - name: "Test Gazebo installation"
               run: "gz sim --versions"
-
-            - name: Rename Launch Files
-              run: |
-                  sudo mv /opt/ros/humble/share/as2_state_estimator/launch/ground_truth_state_estimator.launch.py /opt/ros/humble/share/as2_state_estimator/launch/ground_truth-state_estimator.launch.py
-                  sudo mv /opt/ros/humble/share/as2_motion_controller/launch/pid_speed_controller.launch.py /opt/ros/humble/share/as2_motion_controller/launch/pid_speed_controller-motion_controller.launch.py
 
             - name: Setup Python dependencies
               run: |
@@ -116,6 +112,11 @@ jobs:
               run: |
                   source /opt/ros/humble/setup.bash
                   colcon build --symlink-install
+
+            - name: Rename Launch Files
+              run: |
+                  cp install/as2_state_estimator/share/as2_state_estimator/launch/ground_truth_state_estimator.launch.py install/as2_state_estimator/share/as2_state_estimator/launch/ground_truth-state_estimator.launch.py
+                  cp install/as2_motion_controller/share/as2_motion_controller/launch/pid_speed_controller.launch.py  install/as2_motion_controller/share/as2_motion_controller/launch/pid_speed_controller-motion_controller.launch.py
 
             - name: Run launch tests
               run: |
