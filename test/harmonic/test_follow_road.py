@@ -9,13 +9,25 @@ import time
 
 import launch_testing
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-import psutil
+from launch.actions import (
+    IncludeLaunchDescription,
+)
+from launch.launch_description_sources import (
+    PythonLaunchDescriptionSource,
+)
 
 import rclpy
-from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
+from geometry_msgs.msg import Twist, PoseStamped
 from sensor_msgs.msg import Imu
+
+from rclpy.qos import (
+    QoSProfile,
+    QoSReliabilityPolicy,
+    QoSHistoryPolicy,
+)
+
+from test.utils import stop_gazebo
 
 
 @pytest.mark.launch_test
@@ -62,7 +74,7 @@ class TestTopicMsgs(unittest.TestCase):
         cls.node = rclpy.create_node("test_node")
 
         # wait for topics to be setup
-        time.sleep(10)
+        time.sleep(15)
 
     @classmethod
     def tearDownClass(cls):
@@ -71,10 +83,7 @@ class TestTopicMsgs(unittest.TestCase):
         cls.node.destroy_node()
         rclpy.shutdown()
         # Stop any running Gazebo processes
-        for proc in psutil.process_iter(["name"]):
-            if proc.info["name"] in ["gzserver", "gazebo", "ign gazebo", "gz"]:
-                print(f"Stopping gzserver (PID={proc.pid})")
-                proc.terminate()
+        stop_gazebo()
 
     def test_imu_works(self, proc_output):
         """Test that the imu topic works."""
@@ -89,12 +98,19 @@ class TestTopicMsgs(unittest.TestCase):
 
         # Wait for messages (up to 1 second)
         for _ in range(10):
-            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+            rclpy.spin_once(
+                self.__class__.node,
+                timeout_sec=0.1,
+            )
             if msgs:
                 break
 
         # Check that we received msgs
-        self.assertGreater(len(msgs), 0, msg="No IMU messages received.")
+        self.assertGreater(
+            len(msgs),
+            0,
+            msg="No IMU messages received.",
+        )
 
         # Clean up subscriptions
         self.__class__.node.destroy_subscription(sub)
@@ -103,33 +119,67 @@ class TestTopicMsgs(unittest.TestCase):
         """Test that the velocity topic works correctly."""
         msgs = []
 
+        sub_qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+        )
+
+        pub_qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+        )
+
         # Create a subscription to the velocity topic
         sub = self.__class__.node.create_subscription(
-            Twist,
-            "/gz/drone0/cmd_vel",
+            PoseStamped,
+            "/drone0/ground_truth/pose",
             lambda msg: msgs.append(msg),
-            qos_profile=10,
+            qos_profile=sub_qos_profile,
+        )
+
+        arm_pub = self.__class__.node.create_publisher(
+            Bool,
+            "/gz/drone0/arm",
+            qos_profile=pub_qos_profile,
         )
 
         # Create a publisher to the velocity topic
         pub = self.__class__.node.create_publisher(
             Twist,
             "/gz/drone0/cmd_vel",
-            qos_profile=10,
+            qos_profile=pub_qos_profile,
         )
 
         # Publish a high velocity message to move the vehicle
         twist_msg = Twist()
-        twist_msg.linear.x = 45.0  # Move forward at 45 m/s
-        twist_msg.angular.z = 120.0  # Turn at 120 rad/s
+        twist_msg.linear.x = 1.0  # Move forward at 1 m/s
+        twist_msg.angular.z = 0.1  # Turn at 10 rad/s
 
+        arm_pub.publish(Bool(data=True))
+        rclpy.spin_once(
+            self.__class__.node,
+            timeout_sec=0.1,
+        )
         # Wait for a short time to allow odometry updates
-        for _ in range(15):
+        for _ in range(100):
             pub.publish(twist_msg)
-            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
-
+            rclpy.spin_once(
+                self.__class__.node,
+                timeout_sec=0.1,
+            )
         # Check that we received some messages
-        self.assertNotEqual(len(msgs), 0, msg="No cmd_vel messages received.")
+        self.assertNotAlmostEqual(
+            msgs[-1].pose.position.x,
+            msgs[0].pose.position.x,
+            msg="Drone did not move.",
+        )
+        self.assertNotEqual(
+            len(msgs),
+            0,
+            msg="No cmd_vel messages received.",
+        )
 
         # Clean up subscriptions
         self.__class__.node.destroy_subscription(sub)

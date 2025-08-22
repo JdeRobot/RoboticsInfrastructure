@@ -11,12 +11,13 @@ import launch_testing
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-import psutil
 
 import rclpy
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
+
+from test.utils import stop_gazebo
 
 
 @pytest.mark.launch_test
@@ -62,10 +63,7 @@ class TestTopicMsgs(unittest.TestCase):
         cls.node.destroy_node()
         rclpy.shutdown()
         # Stop any running Gazebo processes
-        for proc in psutil.process_iter(["name"]):
-            if proc.info["name"] == "gzserver":
-                print(f"Stopping gzserver (PID={proc.pid})")
-                proc.terminate()
+        stop_gazebo()
 
     def test_odom_works(self, proc_output):
         """Test that the odometry state is updated when the vehicle moves."""

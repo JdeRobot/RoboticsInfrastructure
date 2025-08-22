@@ -5,7 +5,6 @@
 import os
 import time
 import unittest
-import psutil
 import pytest
 
 import launch_testing
@@ -16,6 +15,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import rclpy
 from sensor_msgs.msg import Imu, JointState
 from nav_msgs.msg import Odometry
+
+from test.utils import stop_gazebo
 
 
 @pytest.mark.launch_test
@@ -60,10 +61,7 @@ class TestLaunchProcesses(unittest.TestCase):
         cls.node.destroy_node()
         rclpy.shutdown()
         # Stop the gzserver process if it is running
-        for proc in psutil.process_iter(["name"]):
-            if proc.info["name"] == "gzserver":
-                print(f"Stopping gzserver (PID={proc.pid})")
-                proc.terminate()
+        stop_gazebo()
 
     def test_joint_state_topics(self, proc_output):
         """Test that the joint state topics are published correctly."""
