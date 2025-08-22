@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(custom_robots)
 
+# Define project root directory
+set(RI_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -137,9 +140,22 @@ install(
     pick_place/urdf
   DESTINATION share/${PROJECT_NAME})
 
+install(
+  FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py
+        ${RI_ROOT_DIR}/Launchers/rescue_people.launch.py
+  DESTINATION share/${PROJECT_NAME}/launch)
+
 if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
+  # find_package(ament_lint_auto REQUIRED)
+  # ament_lint_auto_find_test_dependencies()
+
+  find_package(launch_testing_ament_cmake REQUIRED)
+  # Use file(GLOB...) to find all test files matching the pattern
+  file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test*.py")
+  # Loop through each test file and add it as a launch test
+  foreach(test_file ${TEST_FILES})
+    add_launch_test(${test_file} TIMEOUT 90)
+  endforeach()
 endif()
 
 ament_export_libraries(personplugin)
