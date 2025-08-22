@@ -47,30 +47,6 @@ jobs:
             - name: "Test Gazebo installation"
               run: "gz sim --versions"
 
-            # - name: Install Gazebo and dependencies
-            #   run: |
-            #       # First install libunwind-dev to satisfy the  dependency requirements
-            #       sudo apt-get update
-            #       sudo apt-get install -y libunwind-dev
-
-            #       # Then install the rest of the packages
-            #       sudo apt-get install -y python3-pip python3-pytest-timeout python3-pytest-cov \
-            #         ros-humble-launch-testing ros-humble-launch-testing-ament-cmake \
-            #         ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros ros-humble-xacro \
-            #         ros-humble-joint-state-publisher ros-humble-robot-state-publisher \
-            #         ros-humble-nav2-msgs ros-humble-turtlebot3-msgs
-
-            #       # Install Gazebo separately with --fix-broken option
-            #       sudo apt-get install -y --fix-broken gazebo libgazebo-dev
-
-            - name: Install Gazebo Harmonic and dependencies
-              run: |
-                  sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
-                  sudo apt remove ros-humble-ros-gzharmonic-bridge ros-humble-ros-gzharmonic-interfaces ros-humble-ros-gzharmonic-sim
-                  sudo apt-get install ros-humble-as2-gazebo-assets ros-humble-as2-platform-gazebo ros-humble-ros-gz-image
-                  sudo apt-get install -y ros-humble-as2-gazebo-assets ros-humble-as2-state-estimator 
-                  sudo apt-get install -y ros-humble-as2-motion-controller ros-humble-as2-behaviors-motion
-
             - name: Install Gazebo classic and resolve version conflicts
               run: |
                   sudo add-apt-repository ppa:openrobotics/gazebo11-gz-cli
@@ -81,6 +57,19 @@ jobs:
                   sudo apt-get remove libgazebo11
                   sudo apt-get install libgazebo11=11.10.2+dfsg-1
                   sudo apt-get install libgazebo-dev
+
+            - name: Install aerostack2 and dependencies
+              run: |
+                  sudo apt-get install -y ros-humble-xacro ros-humble-ros-gz-sim
+                  sudo apt-get install -y ros-humble-geographic-msgs libgeographic-dev ros-humble-mocap4r2-msgs
+                  sudo apt install git python3-rosdep python3-pip python3-colcon-common-extensions -y
+
+                  mkdir -p ./aerostack2_ws/src/ && cd ./aerostack2_ws/src/
+                  git clone https://github.com/aerostack2/aerostack2.git
+                  cd ..
+                  sudo rosdep init
+                  rosdep update
+                  rosdep install -y -r -q --from-paths src --ignore-src
 
             - name: "Test Gazebo installation"
               run: "gz sim --versions"
