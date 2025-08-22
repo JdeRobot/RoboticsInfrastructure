@@ -1,0 +1,130 @@
+name: ROS 2 Launch Tests (Gazebo Harmonic)
+
+on:
+    push:
+        branches: [main, testing]
+    pull_request:
+        branches: [main, testing]
+    workflow_dispatch:
+
+env:
+    WORLDS_DIR: /opt/jderobot
+    ROS_DISTRO: humble
+
+jobs:
+    launch-tests:
+        runs-on: ubuntu-22.04
+        timeout-minutes: 30
+
+        steps:
+            - name: Create checkout directory with proper permissions
+              run: |
+                  sudo mkdir -p ${{ env.WORLDS_DIR }}
+                  sudo chmod -R 777 ${{ env.WORLDS_DIR }}
+
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: copy worlds
+              run: |
+                  sudo cp -r ${{ github.workspace }}/Worlds ${{ env.WORLDS_DIR }}
+                  sudo cp -r ${{ github.workspace }}/jderobot_drones ${{ env.WORLDS_DIR }}
+
+            - name: Setup ROS 2 Humble
+              run: |
+                  # Add the ROS 2 apt repository with updated key
+                  sudo apt-get update && sudo apt-get install -y curl gnupg lsb-release
+                  sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+                  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+                  sudo apt-get update
+                  # Install ROS 2 packages
+                  sudo apt-get install -y ros-humble-ros-base python3-colcon-common-extensions
+
+            - name: "Setup Gazebo"
+              uses: gazebo-tooling/setup-gazebo@v0.3.0
+              with:
+                  required-gazebo-distributions: harmonic
+            - name: "Test Gazebo installation"
+              run: "gz sim --versions"
+
+            - name: Install Gazebo classic and resolve version conflicts
+              run: |
+                  sudo add-apt-repository ppa:openrobotics/gazebo11-gz-cli
+                  sudo apt update
+                  sudo apt-get install gazebo11
+
+                  # Resolve version conflicts
+                  sudo apt-get remove libgazebo11
+                  sudo apt-get install libgazebo11=11.10.2+dfsg-1
+                  sudo apt-get install libgazebo-dev
+
+            - name: Install aerostack2 and dependencies
+              run: |
+                  sudo apt-get install -y ros-humble-xacro
+                  sudo apt-get install -y ros-humble-geographic-msgs libgeographic-dev ros-humble-mocap4r2-msgs
+                  sudo apt install git python3-rosdep python3-pip python3-colcon-common-extensions -y
+
+                  mkdir -p ./aerostack2_ws/src/ && cd ./aerostack2_ws/src/
+                  git clone https://github.com/aerostack2/aerostack2.git
+                  cd ..
+                  sudo rosdep init
+                  rosdep update
+                  rosdep install -y -r -q --from-paths src --ignore-src
+                  sudo apt install ros-humble-ros-gzharmonic
+
+            - name: "Test Gazebo installation"
+              run: "gz sim --versions"
+
+            - name: Setup Python dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  if [ -f test/requirements.txt ]; then
+                    pip install -r test/requirements.txt
+                  fi
+                  pip install pytest pytest-timeout pytest-cov
+
+            - name: Configure Gazebo for headless rendering
+              run: |
+                  # Configure display for headless rendering
+                  echo "export GAZEBO_IP=127.0.0.1" >> $GITHUB_ENV
+                  echo "export OGRE_RTT_MODE=Copy" >> $GITHUB_ENV
+                  echo "export DISPLAY=:1" >> $GITHUB_ENV
+
+                  # Configure audio to use null devices
+                  echo "export AUDIODEV=null" >> $GITHUB_ENV
+                  echo "export SDL_AUDIODRIVER=dummy" >> $GITHUB_ENV
+
+                  # Create dummy ALSA config
+                  echo 'pcm.!default { type null; }' > ~/.asoundrc
+                  echo 'ctl.!default { type null; }' >> ~/.asoundrc
+
+                  # Set up virtual framebuffer for visual rendering
+                  sudo apt-get install -y xvfb
+                  Xvfb :1 -screen 0 1280x1024x24 &
+
+                  # Give Xvfb and audio config time to initialize
+                  sleep 3
+
+            - name: add only Harmonic tests to ros package
+              run: sed -i 's|file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test\*\.py")|file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/harmonic/test_*.py")|' CustomRobots/CMakeLists.txt
+
+            - name: Build workspace
+              run: |
+                  source /opt/ros/humble/setup.bash
+                  colcon build --symlink-install
+
+            - name: Rename Launch Files
+              run: |
+                  cp install/as2_state_estimator/share/as2_state_estimator/launch/ground_truth_state_estimator.launch.py install/as2_state_estimator/share/as2_state_estimator/launch/ground_truth-state_estimator.launch.py
+                  cp install/as2_motion_controller/share/as2_motion_controller/launch/pid_speed_controller.launch.py  install/as2_motion_controller/share/as2_motion_controller/launch/pid_speed_controller-motion_controller.launch.py
+
+            - name: Run launch tests
+              run: |
+                  source /opt/ros/humble/setup.bash
+                  source install/setup.bash
+                  colcon test --packages-select custom_robots --event-handlers console_direct+ --return-code-on-test-failure
+
+            - name: Show test results
+              if: always()
+              run: |
+                  colcon test-result --verbose
