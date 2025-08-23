@@ -2,9 +2,9 @@ name: ROS 2 Launch Tests (Gazebo Harmonic)
 
 on:
     push:
-        branches: [main, testing]
+        branches: [humble-devel, testing, tests-fix]
     pull_request:
-        branches: [main, testing]
+        branches: [humble-devel, testing, tests-fix]
     workflow_dispatch:
 
 env:
