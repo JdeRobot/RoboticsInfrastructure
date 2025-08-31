@@ -1,24 +1,52 @@
+"""
+car_junction.launch.py
+
+Entry point for the Car Junction exercise.
+"""
+
 import os
+
+from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    AppendEnvironmentVariable,
+)
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
 
-    custom_robots_share = get_package_share_directory("custom_robots")
-    world_path = os.path.join(
-        custom_robots_share, "worlds", "road_junction.world"
+    package_dir = get_package_share_directory("custom_robots")
+    ros_gz_sim = get_package_share_directory("ros_gz_sim")
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    world_file_name = "road_junction.world"
+    worlds_dir = "/opt/jderobot/Worlds"
+    world_path = os.path.join(worlds_dir, world_file_name)
+
+    # Start Gazebo server
+    gazebo_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+        ),
+        launch_arguments={
+            "gz_args": ["-r -s -v4 ", world_path],
+            "on_exit_shutdown": "true",
+        }.items(),
     )
-    # Set the path to the SDF model files.
-    gazebo_models_path = os.path.join(pkg_share, "models")
-    os.environ[
-        "GAZEBO_MODEL_PATH"
-    ] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    world_entity_cmd = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=["-name", "world", "-file", world_path],
+        output="screen",
+    )
 
     start_ros_gazebo_bridge = Node(
         package="ros_gz_bridge",
@@ -31,8 +59,8 @@ def generate_launch_description():
             "/waymo/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
         ],
         parameters=[{'use_sim_time': True}],
-        output="screen"
-    ),
+        output="screen",
+    )
     
     start_ros_gazebo_image_bridge = Node(
         package="ros_gz_image",
@@ -40,69 +68,17 @@ def generate_launch_description():
         arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
         output="screen",
     )
-
-    ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
-    # Launch configuration variables specific to simulation
-    headless = LaunchConfiguration("headless")
-    use_sim_time = LaunchConfiguration("use_sim_time")
-    use_simulator = LaunchConfiguration("use_simulator")
-    world = LaunchConfiguration("world")
-
-    declare_simulator_cmd = DeclareLaunchArgument(
-        name="headless",
-        default_value="False",
-        description="Whether to execute gzclient",
-    )
-
-    declare_use_sim_time_cmd = DeclareLaunchArgument(
-        name="use_sim_time",
-        default_value="true",
-        description="Use simulation (Gazebo) clock if true",
-    )
-
-    declare_use_simulator_cmd = DeclareLaunchArgument(
-        name="use_simulator",
-        default_value="True",
-        description="Whether to start the simulator",
-    )
-
-    declare_world_cmd = DeclareLaunchArgument(
-        name="world",
-        default_value=world_path,
-        description="Full path to the world model file to load",
-    )
-
-    # Specify the actions
-
-    # Start Gazebo server
-    start_gazebo_server_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, "launch", "gzserver.launch.py")
-        ),
-        condition=IfCondition(use_simulator),
-        launch_arguments={"world": world}.items(),
-    )
-
-    # Start Gazebo client
-    start_gazebo_client_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, "launch", "gzclient.launch.py")
-        ),
-        condition=IfCondition(PythonExpression([use_simulator, " and not ", headless])),
-    )
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
-    # Declare the launch options
-    ld.add_action(declare_simulator_cmd)
-    ld.add_action(declare_use_sim_time_cmd)
-    ld.add_action(declare_use_simulator_cmd)
-    ld.add_action(declare_world_cmd)
-
     # Add any actions
-    ld.add_action(start_gazebo_server_cmd)
-    ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
+    )
+    ld.add_action(set_env_vars_resources)
+    ld.add_action(gazebo_server)
+    ld.add_action(world_entity_cmd)
     ld.add_action(start_ros_gazebo_bridge)
     ld.add_action(start_ros_gazebo_image_bridge)
 
