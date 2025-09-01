@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.6">
   <model name="number2">
     <pose>0 0 0.4 0 0 0</pose>
@@ -15,9 +15,9 @@
           <diffuse>0.8 1.0 0.8 1.0</diffuse>
           <specular>0.1 0.1 0.1 1.0</specular>
           <pbr>
-          <metal>
-            <albedo_map>model://number2/materials/textures/number2.png</albedo_map>
-          </metal>
+            <metal>
+              <albedo_map>model://number2/materials/textures/number2.png</albedo_map>
+            </metal>
           </pbr>
         </material>
       </visual>
