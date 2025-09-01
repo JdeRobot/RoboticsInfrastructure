@@ -7,7 +7,7 @@
         <geometry>
           <plane>
             <normal>0 0 1</normal>
-            <size>250 250</size>
+            <size>750 750</size>
         </plane>
       </geometry>
         <surface>
@@ -27,6 +27,7 @@
         <geometry>
           <mesh>
             <uri>model://grass_plane/meshes/grass_plane.dae</uri>
+            <scale>3 3 1</scale>
           </mesh>
         </geometry>
       </visual>
