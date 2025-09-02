@@ -208,7 +208,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 34	Pick And Place Arm	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/moveit2.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 36	Drone Gymkhana Harmonic	/opt/jderobot/Launchers/drone_gymkhana.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-36	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
