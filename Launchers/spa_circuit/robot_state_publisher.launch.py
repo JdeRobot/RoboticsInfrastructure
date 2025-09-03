@@ -27,7 +27,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    urdf_file_name = "turtlebot3_waffle.urdf"
+    urdf_file_name = "/model/f1_renault_ackermann_harmonic_laser.urdf"
 
     print("urdf_file_name : {}".format(urdf_file_name))
 

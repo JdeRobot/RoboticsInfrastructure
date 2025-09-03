@@ -475,6 +475,53 @@
       </visual>
     </link>
     
+    <link name="camera_link"/>
+
+    <link name="camera_rgb_frame">
+      <inertial>
+        <pose>0.069 -0.047 0.107 0 0 0</pose>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0.000</ixy>
+          <ixz>0.000</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0.000</iyz>
+          <izz>0.001</izz>
+        </inertia>
+        <mass>0.035</mass>
+      </inertial>
+
+      <pose>0.069 -0.047 0.107 0 0 0</pose>
+      <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>/model/f1_renault_ackermann_harmonic_laser/camera/image_raw</topic>
+        <gz_frame_id>camera_rgb_frame</gz_frame_id>
+        <camera name="intel_realsense_r200">
+          <camera_info_topic>/model/f1_renault_ackermann_harmonic_laser/camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera> 
+      </sensor>
+    </link>
+
     <link name='laser_body'>
       <pose relative_to='chassis_link'>0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
       <inertial>
@@ -525,6 +572,24 @@
       <self_collide>false</self_collide>
     </link>
     
+    <joint name="camera_joint" type="fixed">
+      <parent>chassis_link</parent>
+      <child>camera_link</child>
+      <pose>0.064 -0.065 0.094 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name="camera_rgb_joint" type="fixed">
+      <parent>camera_link</parent>
+      <child>camera_rgb_frame</child>
+      <pose>0.005 0.018 0.013 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
     <joint type="fixed" name="laser_fix">
       <pose>0 0 0 0 0 0</pose>
       <child>laser_body</child>

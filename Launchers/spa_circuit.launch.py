@@ -62,12 +62,12 @@ def generate_launch_description():
 
     declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="1.57079")
 
-    robot_state_publisher_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
-        ),
-        launch_arguments={"use_sim_time": use_sim_time}.items(),
-    )
+    # robot_state_publisher_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
+    #     ),
+    #     launch_arguments={"use_sim_time": use_sim_time}.items(),
+    # )
 
     spawn_robot_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
