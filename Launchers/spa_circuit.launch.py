@@ -49,18 +49,17 @@ def generate_launch_description():
             "on_exit_shutdown": "true",
         }.items(),
     )
+    declare_x_cmd = DeclareLaunchArgument("x", default_value="146")
 
-    declare_x_cmd = DeclareLaunchArgument("x", default_value="1.0")
+    declare_y_cmd = DeclareLaunchArgument("y", default_value="60")
 
-    declare_y_cmd = DeclareLaunchArgument("y", default_value="-1.5")
-
-    declare_z_cmd = DeclareLaunchArgument("z", default_value="7.1")
+    declare_z_cmd = DeclareLaunchArgument("z", default_value="-593.20")
 
     declare_roll_cmd = DeclareLaunchArgument("R", default_value="0.0")
 
     declare_pitch_cmd = DeclareLaunchArgument("P", default_value="0.0")
 
-    declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="1.57079")
+    declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="0.0")
 
     # robot_state_publisher_cmd = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
@@ -99,7 +98,7 @@ def generate_launch_description():
     ld.add_action(declare_pitch_cmd)
     ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
-    ld.add_action(robot_state_publisher_cmd)
+    # ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_robot_cmd)
 
     return ld
