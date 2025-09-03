@@ -85,6 +85,7 @@ install(
     f1/models
     f1/launch
     f1/worlds
+    f1/params
     # ROOMBA
     roomba_robot/models
     roomba_robot/worlds
