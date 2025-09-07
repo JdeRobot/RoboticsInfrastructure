@@ -9,42 +9,50 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    IncludeLaunchDescription,
-    SetEnvironmentVariable,
-    AppendEnvironmentVariable,
-)
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-
 
 def generate_launch_description():
 
-    package_dir = get_package_share_directory("custom_robots")
+    custom_robots_share = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
-    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    world_file_name = "road_junction.world"
-    world_path = os.path.join(package_dir, "worlds", world_file_name)
+    world_path = os.path.join(
+        custom_robots_share, "worlds", "road_junction.world"
+    )
 
-    # Start Gazebo server
-    gazebo_server = IncludeLaunchDescription(
+    declare_use_simulator_cmd = DeclareLaunchArgument(
+        name="use_simulator",
+        default_value="True",
+        description="Whether to start the simulator",
+    )
+    gzsim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+            [
+                os.path.join(get_package_share_directory("jderobot_drones"), "launch"),
+                "/gz_sim.launch.py",
+            ]
         ),
+        condition=IfCondition(LaunchConfiguration("use_simulator")),
         launch_arguments={
-            "gz_args": ["-r -s -v4 ", world_path],
-            "on_exit_shutdown": "true",
+            "namespace": "drone0",
+            "bridges_file": bridges_path,
+            "world_file": world_path,
         }.items(),
     )
-    world_entity_cmd = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=["-name", "world", "-file", world_path],
-        output="screen",
+
+    as2 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(get_package_share_directory("jderobot_drones"), "launch"),
+                "/as2_default_gazebo_sim.launch.py",
+            ]
+        ),
+        launch_arguments={
+            "namespace": "drone0",
+        }.items(),
     )
 
     start_ros_gazebo_bridge = Node(
@@ -67,17 +75,27 @@ def generate_launch_description():
         arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
         output="screen",
     )
+
+    start_gazebo_frontal_image_bridge_cmd = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/drone0/frontal_cam/image_raw"],
+        output="screen",
+    )
+
+    start_gazebo_ventral_image_bridge_cmd = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/drone0/ventral_cam/image_raw"],
+        output="screen",
+    )
     # Create the launch description and populate
     ld = LaunchDescription()
-
-    # Add any actions
-    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
-    )
-    ld.add_action(set_env_vars_resources)
-    ld.add_action(gazebo_server)
-    ld.add_action(world_entity_cmd)
+    ld.add_action(declare_use_simulator_cmd)
+    ld.add_action(gzsim)
+    ld.add_action(as2)
+    ld.add_action(start_gazebo_frontal_image_bridge_cmd)
+    ld.add_action(start_gazebo_ventral_image_bridge_cmd)
     ld.add_action(start_ros_gazebo_bridge)
     ld.add_action(start_ros_gazebo_image_bridge)
 
