@@ -19,6 +19,7 @@ def generate_launch_description():
 
     custom_robots_share = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
+    bridges_path = os.path.join(custom_robots_share, "bridges", "rescue_people.yaml")
     world_path = os.path.join(
         custom_robots_share, "worlds", "road_junction.world"
     )
