@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.9">
-  <world name="default">
+  <world name="road_junction">
 
     <plugin
       filename="gz-sim-scene-broadcaster-system"
