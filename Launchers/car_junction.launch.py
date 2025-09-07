@@ -28,8 +28,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     world_file_name = "road_junction.world"
-    worlds_dir = "/opt/jderobot/Worlds"
-    world_path = os.path.join(worlds_dir, world_file_name)
+    world_path = os.path.join(package_dir, "worlds", world_file_name)
 
     # Start Gazebo server
     gazebo_server = IncludeLaunchDescription(
