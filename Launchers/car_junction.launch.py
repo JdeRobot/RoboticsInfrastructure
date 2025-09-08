@@ -27,6 +27,7 @@ def generate_launch_description():
     package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    gazebo_models_path = os.path.join(package_dir, "models")
     world_file_name = "road_junction.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
@@ -67,11 +68,6 @@ def generate_launch_description():
         output="screen",
     )
     
-    # Set the path to the SDF model files.
-    gazebo_models_path = os.path.join(pkg_share, "models")
-    os.environ["GAZEBO_MODEL_PATH"] = (
-        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
-    )
 
     start_ros_gazebo_image_bridge = Node(
         package="ros_gz_image",
@@ -82,6 +78,11 @@ def generate_launch_description():
 
     # Create the launch description and populate
     ld = LaunchDescription()
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
+    )
+    ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(start_ros_gazebo_bridge)
