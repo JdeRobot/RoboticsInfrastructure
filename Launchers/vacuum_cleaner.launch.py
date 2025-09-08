@@ -1,14 +1,16 @@
+"""Launch file for starting the vacuum cleaner simulation in Gazebo."""
+
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
-from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    """Generate the launch description for the vacuum cleaner Gazebo simulation."""
 
     # Set the path to the Gazebo ROS package
     pkg_gazebo_ros = FindPackageShare(package="gazebo_ros").find("gazebo_ros")
@@ -22,9 +24,9 @@ def generate_launch_description():
 
     # Set the path to the SDF model files
     gazebo_models_path = os.path.join(pkg_share_dir, "models")
-    os.environ[
-        "GAZEBO_MODEL_PATH"
-    ] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    )
 
     ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
     # Launch configuration variables specific to simulation

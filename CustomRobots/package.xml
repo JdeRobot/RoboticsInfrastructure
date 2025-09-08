@@ -35,6 +35,12 @@
   <exec_depend>urdf</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
 
+  <!-- launch testing -->
+  <test_depend>ament_cmake_ros</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>rclpy</test_depend>
+
   <!-- Gz Harmonic -->
   <exec_depend>ros-humble-ros-gzharmonic-bridge</exec_depend>
   <exec_depend>ros-humble-ros-gzharmonic-sim</exec_depend>

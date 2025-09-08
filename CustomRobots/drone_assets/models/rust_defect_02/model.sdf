@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="rust_defect_02">
+    <link name="main">
+      <pose frame="">0 0 0 0 1.57 0</pose>
+      <visual name="main_Visual">
+        <geometry>
+          <box>
+            <size>0.150 0.150 0.01</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1. 1.0 1. 1.0</ambient>
+          <diffuse>1. 1.0 1. 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>
+                model://rust_defect_02/materials/textures/rust_defect_02.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+    <static>1</static>
+  </model>
+</sdf>

@@ -67,6 +67,12 @@ def generate_launch_description():
         output="screen",
     )
     
+    # Set the path to the SDF model files.
+    gazebo_models_path = os.path.join(pkg_share, "models")
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    )
+
     start_ros_gazebo_image_bridge = Node(
         package="ros_gz_image",
         executable="image_bridge",

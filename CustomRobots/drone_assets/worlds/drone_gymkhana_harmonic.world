@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <world name="empty">
+    <physics name="4ms" type="ignored">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!--light-->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <gui>
+      <camera name="user_camera">
+        <pose>4.5 4.5 1.5 0 0 -0.785</pose>
+      </camera>
+    </gui>
+
+    <include>
+      <uri>model://grass_plane</uri>
+    </include>
+
+    <!-- Numbers -->
+    <include>
+      <name>number1</name>
+      <uri>model://number1</uri>
+      <pose>8 8 0.4 0 0 0</pose>
+    </include>
+    <include>
+      <name>number2</name>
+      <uri>model://number2</uri>
+      <pose>8 -8 0.4 0 0 0</pose>
+    </include>
+    <include>
+      <name>number3</name>
+      <uri>model://number3</uri>
+      <pose>-8 -8 0.4 0 0 0</pose>
+    </include>
+    <include>
+      <name>number4</name>
+      <uri>model://number4</uri>
+      <pose>-8 8 0.4 0 0 0</pose>
+    </include>
+
+    <!-- JdeRobot logo and arrows -->
+    <include>
+      <name>logo</name>
+      <uri>model://logoJdeRobot</uri>
+      <pose>0 -4 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>arrow1-2</name>
+      <uri>model://arrow</uri>
+      <pose>8 0 0.01 0 0 -1.57</pose>
+    </include>
+    <include>
+      <name>arrow2-3</name>
+      <uri>model://arrow</uri>
+      <pose>0 -8 0.01 0 0 -3.14159</pose>
+    </include>
+    <include>
+      <name>arrow3-4</name>
+      <uri>model://arrow</uri>
+      <pose>-8 0 0.01 0 0 1.57</pose>
+    </include>
+
+    <!-- Hoops -->
+    <include>
+      <name>hoop1-1</name>
+      <uri>model://hoop_red</uri>
+      <pose>8 3 -4 0 0 0</pose>
+    </include>
+    <include>
+      <name>hoop1-2</name>
+      <uri>model://hoop_red</uri>
+      <pose>8 -3 -4 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>hoop2-1</name>
+      <uri>model://hoop_red</uri>
+      <pose>3 -8 -3 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>hoop2-2</name>
+      <uri>model://hoop_red</uri>
+      <pose>-3 -8 -2 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <name>hoop3-1</name>
+      <uri>model://hoop_red</uri>
+      <pose>-8 -4 -2 0 0 0</pose>
+    </include>
+    <include>
+      <name>hoop3-2</name>
+      <uri>model://hoop_red</uri>
+      <pose>-6 0 -3 0 0 0</pose>
+    </include>
+    <include>
+      <name>hoop3-3</name>
+      <uri>model://hoop_red</uri>
+      <pose>-8 4 -4 0 0 0</pose>
+    </include>
+
+    <!-- Targets -->
+    <include>
+      <name>takeoff-target</name>
+      <uri>model://custom_box_target_green</uri>
+      <pose>0 0 0.5 0 0 0</pose>
+    </include>
+    <include>
+      <name>land-target</name>
+      <uri>model://custom_box_target_red</uri>
+      <pose>0 8 0.5 0 0 0</pose>
+    </include>
+
+    <!-- JdeRobot logo -->
+    <include>
+      <uri>model://logoJdeRobot</uri>
+      <pose>-12.0.0 0.0 0.0 0.0 0.0 0.0</pose>
+    </include>
+
+    <include>
+      <uri>model://quadrotor_dual_cam</uri>
+      <name>drone0</name>
+      <pose>0 0 1.0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
