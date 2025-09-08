@@ -230,6 +230,7 @@ simulator	None
 web_gui	None
 state_monitor	None
 webcam	None
+rviz	None
 \.
 
 
