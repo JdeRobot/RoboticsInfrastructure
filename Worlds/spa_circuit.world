@@ -59,7 +59,7 @@
 
     <!-- Robot -->
     <include>
-      <pose>146 60 -593.20 0 0 0</pose>
+      <pose>146 60 -593.20 0 0 0.35</pose>
       <name>f1_renault_ackermann_harmonic_laser</name>
       <uri>model://f1_renault_ackermann_harmonic_laser</uri>
     </include>
