@@ -76,7 +76,7 @@ def generate_launch_description():
     start_ros_gazebo_image_bridge = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
+        arguments=["/waymo/camera_front"],
         output="screen",
     )
 
