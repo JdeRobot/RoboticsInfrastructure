@@ -356,7 +356,7 @@
                 <visualize>true</visualize>
                 <update_rate>5</update_rate>
                 <camera name="camera_front">
-                <horizontal_fov>2.094</horizontal_fov>
+                <horizontal_fov>1.02974</horizontal_fov>
                 <lens>
                     <intrinsics>
                     
@@ -378,8 +378,8 @@
                     <center>0.5 0.5</center>
                 </distortion>
                 <image>
-                    <width>1080</width>
-                    <height>720</height>
+                    <width>320</width>
+                    <height>240</height>
                     <format>R8G8B8</format>
                 </image>
                 <clip>
