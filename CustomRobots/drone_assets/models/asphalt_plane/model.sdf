@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <sdf version="1.5">
   <model name="asphalt_plane">
     <static>true</static>
@@ -6,7 +6,7 @@
       <collision name="collision">
         <geometry>
           <box>
-            <size>75 75 .1</size>
+            <size>250 250 .1</size>
           </box>
         </geometry>
       </collision>
@@ -14,7 +14,7 @@
         <cast_shadows>false</cast_shadows>
         <geometry>
           <box>
-            <size>75 75 .1</size>
+            <size>250 250 .1</size>
           </box>
         </geometry>
         <material>
@@ -23,7 +23,7 @@
           <specular>0.2 0.2 0.2 1.0</specular>
           <pbr>
             <metal>
-              <albedo_map>model://asphalt_plane/materials/textures/asphalt.jpg</albedo_map>
+              <albedo_map>model://asphalt_plane/materials/textures/tarmac.png</albedo_map>
             </metal>
           </pbr>
         </material>
