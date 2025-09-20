@@ -24,6 +24,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
+    os.environ['PYTHONPATH'] = '/home/ws/src/CustomRobots/car_junction/:' + os.environ.get('PYTHONPATH', '')
     package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
@@ -31,7 +32,7 @@ def generate_launch_description():
     world_file_name = "road_junction.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
-
+    
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
