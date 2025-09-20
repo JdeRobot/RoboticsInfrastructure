@@ -179,7 +179,7 @@
                 <geometry>
                 <mesh>
                     <scale>20 20 20</scale>
-                    <uri>model://sky/meshes/CloudMedium2.obj</uri>
+                    <uri>model://hatchback/meshes/CloudMedium2.obj</uri>
                 </mesh>
                 </geometry>
             </visual>
