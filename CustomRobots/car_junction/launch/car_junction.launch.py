@@ -26,6 +26,8 @@ def generate_launch_description():
         f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
     )
 
+    os.environ['PYTHONPATH'] = '/home/ws/src/CustomRobots/car_junction/:' + os.environ.get('PYTHONPATH', '')
+
     start_ros_gazebo_bridge = (
         Node(
             package="ros_gz_bridge",
