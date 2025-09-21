@@ -24,11 +24,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    os.environ['PYTHONPATH'] = '/home/ws/src/CustomRobots/car_junction/:' + os.environ.get('PYTHONPATH', '')
     package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     gazebo_models_path = os.path.join(package_dir, "models")
+    scripts_dir="/home/ws/src/CustomRobots/car_junction/"
+    scripts_path = os.path.join(scripts_dir, "scripts")
     world_file_name = "road_junction.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
@@ -83,6 +84,11 @@ def generate_launch_description():
         "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
     )
     ld.add_action(set_env_vars_resources)
+    ld.add_action(SetEnvironmentVariable("PYTHONPATH", scripts_path))
+    set_pythonpath = AppendEnvironmentVariable(
+        "PYTHONPATH", os.path.join(scripts_dir, "scripts")
+    )
+    ld.add_action(set_pythonpath)
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(start_ros_gazebo_bridge)
