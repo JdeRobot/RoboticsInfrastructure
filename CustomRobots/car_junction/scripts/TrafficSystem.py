@@ -3,7 +3,6 @@ import random
 import time
 import os
 from gz.msgs10.entity_factory_pb2 import EntityFactory
-from ament_index_python.packages import get_package_share_directory
 from gz.msgs10.entity_pb2 import Entity
 from gz.msgs10.boolean_pb2 import Boolean
 from gz.transport13 import Node
