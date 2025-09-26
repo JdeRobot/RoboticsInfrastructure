@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="duck">
+  <link name="duck_body">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/duck/meshes/duck.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

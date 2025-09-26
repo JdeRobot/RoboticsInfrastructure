@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<robot name="f1">
+  <link name="f1">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/f1/meshes/F1.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="front_right_wheel">
+    <origin rpy="0 1.5707 0" xyz="0 -0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="front_left_wheel">
+    <origin rpy="0 1.5707 0" xyz="0 0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="front_left_steering_wheel_block">
+    <origin rpy="0 1.5707 0" xyz="0 0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="front_right_steering_wheel_block">
+    <origin rpy="0 1.5707 0" xyz="0 -0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="rear_left_wheel">
+    <origin rpy="0 1.5707 0" xyz="-0.58 0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="rear_right_wheel">
+    <origin rpy="0 1.5707 0" xyz="-0.58 -0.16 0.06"/>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="camera_top_body_left">
+    <origin rpy="0.000000 -0.000000 0.000000" xyz="0.09000 0.050000 0.1442400"/>
+    <inertial>
+      <mass value="2"/>
+      <inertia ixx="1.000000" ixy="0.000000" ixz="0.000000" iyy="1.000000" iyz="0.000000" izz="1.000000"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius=".005"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <link name="camera_top_body_right">
+    <origin rpy="0.000000 -0.000000 0.0000000" xyz="0.09000 -0.050000 0.1442400"/>
+    <inertial>
+      <mass value="2"/>
+      <inertia ixx="1.000000" ixy="0.000000" ixz="0.000000" iyy="1.000000" iyz="0.000000" izz="1.000000"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius=".005"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="front_left_wheel_hinge" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="front_left_wheel"/>
+    <parent link="front_left_steering_wheel_block"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  <joint name="front_right_wheel_hinge" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="front_right_wheel"/>
+    <parent link="front_right_steering_wheel_block"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  <joint name="camera_left" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="camera_top_body_left"/>
+    <parent link="f1"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="camera_right" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="camera_top_body_right"/>
+    <parent link="f1"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="front_left_steering_wheel" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="front_left_steering_wheel_block"/>
+    <parent link="f1"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="500.0"/>
+    <limit lower="-0.52359" upper="0.52359"/>
+  </joint>
+  <joint name="front_right_steering_wheel" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="front_right_steering_wheel_block"/>
+    <parent link="f1"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="500.0"/>
+    <limit lower="-0.52359" upper="0.52359"/>
+  </joint>
+  <joint name="rear_right_wheel_hinge" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="rear_right_wheel"/>
+    <parent link="f1"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  <joint name="rear_left_wheel_hinge" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="rear_left_wheel"/>
+    <parent link="f1"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+</robot>

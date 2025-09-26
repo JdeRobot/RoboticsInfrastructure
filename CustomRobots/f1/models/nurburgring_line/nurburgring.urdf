@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<robot name="nurburgring">
+  <link name="nurburgring">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/nurburgring_line/meshes/Circuito_Nurburgrin.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pared">
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/nurburgring_line/meshes/Nurburgrin_Pared.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>
