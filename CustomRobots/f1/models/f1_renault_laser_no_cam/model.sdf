@@ -43,7 +43,7 @@
         </mesh>
       </geometry>
     </visual>
-    <sensor name="hls_lfcd_lds" type="gpu_lidar">
+    <sensor name="laser" type="gpu_lidar">
       <always_on>1</always_on>
       <visualize>1</visualize>
       <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
