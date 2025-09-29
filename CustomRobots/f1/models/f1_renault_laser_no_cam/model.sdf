@@ -43,8 +43,14 @@
         </mesh>
       </geometry>
     </visual>
-    <sensor name='laser' type='ray'>
-      <ray>
+    <sensor name="hls_lfcd_lds" type="gpu_lidar">
+      <always_on>1</always_on>
+      <visualize>1</visualize>
+      <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
+      <update_rate>20.000000</update_rate>
+      <topic>f1/laser/scan</topic>
+      <gz_frame_id>base_scan</gz_frame_id>
+      <lidar>
         <scan>
           <horizontal>
             <samples>180</samples>
@@ -58,19 +64,9 @@
           <max>10.000000</max>
           <resolution>0.010000</resolution>
         </range>
-      </ray>
-      <update_rate>20.000000</update_rate>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
-          <ros>
-              <namespace>/f1</namespace>
-              <remapping>~/out:=laser/scan</remapping>
-          </ros>
-          <output_type>sensor_msgs/LaserScan</output_type>
-          <frame_name>base_scan</frame_name>
-      </plugin>
-      <always_on>1</always_on>
-      <visualize>1</visualize>
+      </lidar>
     </sensor>
+
     <velocity_decay>
       <linear>0.000000</linear>
       <angular>0.000000</angular>
@@ -88,14 +84,6 @@
     </axis>
   </joint>
 
-  <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
-      <commandTopic>F1ROS/cmd_vel</commandTopic>
-      <odometryTopic>F1ROS/odom</odometryTopic>
-      <odometryFrame>odom</odometryFrame>
-      <odometryRate>20.0</odometryRate>
-      <robotBaseFrame>xf1</robotBaseFrame>
-  </plugin>
-
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <!-- wheels -->
       <left_joint>wheel_left_joint</left_joint>
@@ -108,23 +96,23 @@
       <!-- limits -->
       <max_linear_acceleration>1.0</max_linear_acceleration>
 
-      <topic>turtlebot3/cmd_vel</topic>
+      <topic>F1ROS/cmd_vel</topic>
 
       <frame_id>odom</frame_id>
       <!-- <tf_topic>/tf</tf_topic> -->
-      <odom_publisher_frequency>30</odom_publisher_frequency>
-      <child_frame_id>base_footprint</child_frame_id>
+      <odom_publisher_frequency>20.0</odom_publisher_frequency>
+      <child_frame_id>xf1</child_frame_id>
 
     </plugin>
 
     <plugin filename="ignition-gazebo-odometry-publisher-system" name="ignition::gazebo::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
 
-      <robot_base_frame>base_footprint</robot_base_frame>
+      <robot_base_frame>xf1</robot_base_frame>
 
-      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
 
-      <odom_topic>turtlebot3/odom</odom_topic>
+      <odom_topic>F1ROS/odom</odom_topic>
       <dimensions>3</dimensions>
 
     </plugin>
