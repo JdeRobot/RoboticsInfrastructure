@@ -99,22 +99,22 @@ COPY public.robot_viewer (id, name, folder_path) FROM stdin;
 --
 
 COPY public.world_viewer (id, name, folder_path) FROM stdin;
-1	3D Reconstruction	ViewerModels/RoboticsInfrastructure/Worlds/3DReconstruction.glb
-2	Autoparking Simple: In Line	ViewerModels/RoboticsInfrastructure/Worlds/ASimpleInLine.glb
-3	City Large	ViewerModels/RoboticsInfrastructure/Worlds/CityLarge.glb
-4	Follow Person	ViewerModels/RoboticsInfrastructure/Worlds/Hospital.glb
-5	Laser Mapping Warehouse	ViewerModels/RoboticsInfrastructure/Worlds/LaserMappingWarehouse.glb
-6	Montmelo Ackermann Circuit	ViewerModels/RoboticsInfrastructure/Worlds/Montmelo.glb
-7	Montreal Circuit	ViewerModels/RoboticsInfrastructure/Worlds/Montreal.glb
-8	Nurburgring Circuit	ViewerModels/RoboticsInfrastructure/Worlds/Nurburgring.glb
-9	Restaurant	ViewerModels/RoboticsInfrastructure/Worlds/Restaurant.glb
-10	Simple Circuit	ViewerModels/RoboticsInfrastructure/Worlds/SimpleCircuit.glb
-11	Vacuums House	ViewerModels/RoboticsInfrastructure/Worlds/VacuumsHouse.glb
-12	Vacuums House Markers	ViewerModels/RoboticsInfrastructure/Worlds/LakeHouse.glb
-13	Warehouse 1	ViewerModels/RoboticsInfrastructure/Worlds/AmazonWarehouse.glb
-14	Rescue People Harmonic	ViewerModels/RoboticsInfrastructure/Worlds/RescuePeople.glb
-15	Follow Road Harmonic	ViewerModels/RoboticsInfrastructure/Worlds/FollowRoad.glb
-16	Pick & Place Arm	ViewerModels/RoboticsInfrastructure/Worlds/SmallLaserWarehouse.glb
+1	3D Reconstruction	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/3DReconstruction.glb
+2	Autoparking Simple: In Line	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/ASimpleInLine.glb
+3	City Large	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/CityLarge.glb
+4	Follow Person	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/Hospital.glb
+5	Laser Mapping Warehouse	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/LaserMappingWarehouse.glb
+6	Montmelo Ackermann Circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/Montmelo.glb
+7	Montreal Circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/Montreal.glb
+8	Nurburgring Circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/Nurburgring.glb
+9	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/Restaurant.glb
+10	Simple Circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/SimpleCircuit.glb
+11	Vacuums House	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/VacuumsHouse.glb
+12	Vacuums House Markers	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/LakeHouse.glb
+13	Warehouse 1	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/AmazonWarehouse.glb
+14	Rescue People Harmonic	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/RescuePeople.glb
+15	Follow Road Harmonic	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/FollowRoad.glb
+16	Pick & Place Arm	../../../../static/ModelsViewer/RoboticsInfrastructure/Worlds/SmallLaserWarehouse.glb
 \.
 
 
