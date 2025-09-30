@@ -90,7 +90,7 @@ COPY public.robot_viewer (id, name, folder_path) FROM stdin;
 8	Amazon Robot	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/amazon_robot/urdf/amazon_robot.urdf
 9	Turtlebot3	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/turtlebot3/urdf/turtlebot3_waffle.urdf
 10	Typhoon h480 dual cam	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/drone_assets/models/typhoon_h480_dual_cam/typhoon.urdf
-11	Ackermann Logistic Robot	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/ackerman_logistic_robot/models/ackerman_logistic_robot/ackermannLogisticRobot.urdf
+11	Ackermann Logistic Robot	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/ackermannLogisticRobot.urdf
 \.
 
 
