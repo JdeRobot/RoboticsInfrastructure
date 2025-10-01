@@ -163,6 +163,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 36	Drone Gymkhana World	36	0
 37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
+39	O3DE World	39	0
 \.
 
 
@@ -211,6 +212,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 36	Drone Gymkhana Harmonic	/opt/jderobot/Launchers/drone_gymkhana.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+39	O3DE Warehouse	data/workspace/ROS2Demo/build/linux/bin/profile/ROS2Demo.GameLauncher	None	ROS2	o3de	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
