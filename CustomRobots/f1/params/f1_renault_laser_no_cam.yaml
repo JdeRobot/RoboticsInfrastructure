@@ -5,7 +5,6 @@
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
 
-
 # gz topic subscribed to by DiffDrive plugin
 - ros_topic_name: "F1ROS/cmd_vel"
   gz_topic_name: "F1ROS/cmd_vel"

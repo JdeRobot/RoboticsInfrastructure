@@ -43,6 +43,7 @@
         </mesh>
       </geometry>
     </visual>
+
     <sensor name="laser" type="gpu_lidar">
       <always_on>1</always_on>
       <visualize>1</visualize>
@@ -88,33 +89,25 @@
       <!-- wheels -->
       <left_joint>wheel_left_joint</left_joint>
       <right_joint>wheel_right_joint</right_joint>
-
       <!-- kinematics -->
       <wheel_separation>0.287</wheel_separation>
       <wheel_radius>0.033</wheel_radius>
-
       <!-- limits -->
       <max_linear_acceleration>1.0</max_linear_acceleration>
-
       <topic>F1ROS/cmd_vel</topic>
-
       <frame_id>odom</frame_id>
       <!-- <tf_topic>/tf</tf_topic> -->
       <odom_publisher_frequency>20.0</odom_publisher_frequency>
       <child_frame_id>xf1</child_frame_id>
-
     </plugin>
 
     <plugin filename="ignition-gazebo-odometry-publisher-system" name="ignition::gazebo::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
-
       <robot_base_frame>xf1</robot_base_frame>
-
       <odom_publish_frequency>20.0</odom_publish_frequency>
-
       <odom_topic>F1ROS/odom</odom_topic>
       <dimensions>3</dimensions>
-
     </plugin>
+
 </model>
 </sdf>
