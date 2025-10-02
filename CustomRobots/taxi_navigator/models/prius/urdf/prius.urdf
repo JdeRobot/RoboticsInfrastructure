@@ -40,6 +40,17 @@
   </joint>
 
   <link name="chassis">
+
+<visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.75"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>

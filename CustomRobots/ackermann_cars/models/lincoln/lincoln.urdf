@@ -43,6 +43,16 @@
         <emissive>0.0 0.0 0.0 1.0</emissive>
       </material>
     </visual>
+<visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.5"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+
   </link>
   <joint name="bl_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="-0.775 -1.33364 0.324997"/>

@@ -58,6 +58,15 @@
 
   <link name="base_link">
     <visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.15"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+    <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>

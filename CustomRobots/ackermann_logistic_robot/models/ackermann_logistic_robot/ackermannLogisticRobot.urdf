@@ -13,6 +13,15 @@
       <inertia ixx="1997.86" ixy="-3e-05" ixz="-1e-06" iyy="442.769" iyz="62.5206" izz="2238.05"/>
     </inertial>
     <visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.25"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+    <visual>
       <origin rpy="0 -0 0" xyz="0 0 0.0"/>
       <geometry>
         <mesh filename="package://ackermann_logistic_robot/models/ackermann_logistic_robot/meshes/chassis.dae" scale="0.5 0.5 0.5"/>
