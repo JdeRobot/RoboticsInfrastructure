@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<robot name="hokuyo">
+  <link name="link">
+    <inertial>
+      <mass value="0.1"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/hokuyo/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

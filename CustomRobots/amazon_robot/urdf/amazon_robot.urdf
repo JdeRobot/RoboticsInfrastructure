@@ -60,7 +60,7 @@
     <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/bases/waffle_pi_base.stl" scale="1 1 1"/>
+        <mesh filename="package://amazon_robot/meshes/bases/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="orange"/>
     </visual>

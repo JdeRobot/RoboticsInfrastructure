@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<robot name="circuito">
+  <link name="link">
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/monaco/meshes/monaco.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/monaco/meshes/monaco.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>
