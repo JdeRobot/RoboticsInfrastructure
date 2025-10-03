@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<robot name="roombaROS_cam">
+  <link name="base">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.001453 -0.000453 0.029787"/>
+      <inertia ixx="0.058640" ixy="0.000124" ixz="0.000615" iyy="0.058786" iyz="0.000014" izz="1.532440"/>
+      <mass value="2.234000"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.047800"/>
+      <geometry>
+        <mesh filename="package://roomba_robot/models/roombaROS/meshes/create_body.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin rpy="0 1.570700 1.570700" xyz="0.130000 0 0.017000"/>
+      <geometry>
+        <sphere radius="0.009000"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin rpy="0 1.570700 1.570700" xyz="-0.130000 0 0.017000"/>
+      <geometry>
+        <sphere radius="0.007500"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_wheel">
+    <origin rpy="0 0 0" xyz="0 0.130000 0.032000"/>
+    <inertial>
+      <inertia ixx="0.001000" ixy="0" ixz="0" iyy="0.001000" iyz="0" izz="0.001000"/>
+      <mass value="0.010000"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.023000" radius="0.033000"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_wheel">
+    <origin rpy="0 0 0" xyz="0 -0.130000 0.032000"/>
+    <inertial>
+      <inertia ixx="0.001000" ixy="0" ixz="0" iyy="0.001000" iyz="0" izz="0.001000"/>
+      <mass value="0.010000"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.023000" radius="0.033000"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="laser">
+    <origin rpy="0.000000 0.000000 0.000000" xyz="0.139000 0.000000 0.0752000"/>
+    <inertial>
+      <mass value="0.100000"/>
+      <inertia ixx="1.000000" ixy="0.000000" ixz="0.000000" iyy="1.000000" iyz="0.000000" izz="1.000000"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://roomba_robot/models/roombaROS/meshes/hokuyo_roomba.dae"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="left_wheel_joint" type="revolute">
+    <parent link="base"/>
+    <child link="left_wheel"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 1 0"/>
+  </joint>
+  <joint name="right_wheel_joint" type="revolute">
+    <parent link="base"/>
+    <child link="right_wheel"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 1 0"/>
+  </joint>
+  <joint name="joint_laser" type="fixed">
+    <parent link="base"/>
+    <child link="laser"/>
+    <axis xyz="0.000000 0.000000 0.000000"/>
+    <limit lower="0.000000" upper="0.000000"/>
+    <origin xyz="0.000000 0.000000 0.000000"/>
+  </joint>
+</robot>

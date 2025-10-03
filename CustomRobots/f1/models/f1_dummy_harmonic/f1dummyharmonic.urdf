@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<robot name="f1">
+  <link name="car">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.dae" scale="5 5 5"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

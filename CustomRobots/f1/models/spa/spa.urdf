@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="spa_circuit">
+  <link name="link">
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/spa/meshes/spa.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

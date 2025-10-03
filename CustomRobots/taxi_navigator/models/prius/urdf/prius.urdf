@@ -40,10 +40,21 @@
   </joint>
 
   <link name="chassis">
+
+<visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.75"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
 
@@ -144,7 +155,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -162,7 +173,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -180,7 +191,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -198,7 +209,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -210,7 +221,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.302101 0 0"/>
       <geometry>
-        <mesh filename="package://prius_description/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>

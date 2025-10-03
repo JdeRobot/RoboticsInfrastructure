@@ -1,0 +1,302 @@
+<?xml version="1.0" ?>
+<robot name="typhoon_h480_dual_cam">
+  <link name="base_link">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.001005 0 -0.0090035"/>
+      <mass value="2.02"/>
+      <inertia ixx="0.05892500" ixy="0" ixz="0" iyy="0.05892500" iyz="0" izz="0.11222500"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.000000 -0.000000 0.0000000" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.15"/>
+      </geometry>
+	    <material name="half_transparent">
+                <color rgba="0 0 0 0"/>
+            </material>
+    </visual>
+    <visual>
+      <origin rpy="0 0 3.141592" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/main_body_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <link name="cgo3_mount_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.041 0 -0.162"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/cgo3_mount_remeshed_v1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="cgo3_mount_joint" type="revolute">
+    <child link="cgo3_mount_link"/>
+    <parent link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="100" lower="0" upper="0" velocity="-1"/>
+    <dynamics damping="1"/>
+  </joint>
+  <link name="left_leg">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 -0.14314 -0.207252"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00026 0.040515 0.048"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/leg2_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="left_leg_joint" type="revolute">
+    <child link="left_leg"/>
+    <parent link="base_link"/>
+    <origin rpy="0 0 0" xyz="0.00026 -0.040515 -0.048"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="100" lower="0" upper="1" velocity="-1"/>
+    <dynamics damping="0.1"/>
+  </joint>
+  <link name="right_leg">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.14314 -0.207252"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00026 -0.040515 0.048"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/leg1_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="right_leg_joint" type="revolute">
+    <child link="right_leg"/>
+    <parent link="base_link"/>
+    <origin rpy="0 0 0" xyz="0.00026 0.040515 -0.048"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="100" lower="0" upper="1" velocity="-1"/>
+    <dynamics damping="0.1"/>
+  </joint>
+  <link name="typhoon_h480_dual_cam/imu_link">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.015"/>
+      <inertia ixx="1e-05" ixy="0" ixz="0" iyy="1e-05" iyz="0" izz="1e-05"/>
+    </inertial>
+  </link>
+  <joint name="typhoon_h480_dual_cam/imu_joint" type="revolute">
+    <child link="typhoon_h480_dual_cam/imu_link"/>
+    <parent link="base_link"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="0" upper="0" velocity="0"/>
+    <origin xyz="1 0 0"/>
+  </joint>
+  <link name="rotor_3">
+    <origin rpy="0 0 0" xyz="0.211396 0.119762 0.082219"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.211396 -0.119762 -0.082219"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_ccw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/Blue"/>
+    </visual>
+  </link>
+  <joint name="rotor_3_joint" type="revolute">
+    <child link="rotor_3"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="0.211396 0.119762 0.082219"/>
+  </joint>
+  <link name="rotor_0">
+    <origin rpy="0 0 2.09439510239" xyz="-0.209396 0.122762 0.082219"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.211396 -0.119762 -0.082219"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_ccw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/Blue"/>
+    </visual>
+  </link>
+  <joint name="rotor_0_joint" type="revolute">
+    <child link="rotor_0"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="-0.209396 0.122762 0.082219"/>
+  </joint>
+  <link name="rotor_4">
+    <origin rpy="0 0 0" xyz="-0.00187896 0.242705 0.0822169"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00187896 -0.242705 -0.0822169"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_cw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="rotor_4_joint" type="revolute">
+    <child link="rotor_4"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="-0.00187896 0.242705 0.0822169"/>
+  </joint>
+  <link name="rotor_1">
+    <origin rpy="0 0 -2.09439510239" xyz="0.211396 -0.119762 0.082219"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00187896 -0.242705 -0.0822169"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_cw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="rotor_1_joint" type="revolute">
+    <child link="rotor_1"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="0.211396 -0.119762 0.082219"/>
+  </joint>
+  <link name="rotor_5">
+    <origin rpy="0 0 -2.09439510239" xyz="-0.00187896 -0.242705 0.0822169"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.211396 -0.119762 -0.082219"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_ccw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/Blue"/>
+    </visual>
+  </link>
+  <joint name="rotor_5_joint" type="revolute">
+    <child link="rotor_5"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="-0.00187896 -0.242705 0.0822169"/>
+  </joint>
+  <link name="rotor_2">
+    <origin rpy="0 0 2.09439510239" xyz="-0.209396 -0.122762 0.082219"/>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.005"/>
+      <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="0.000273104" iyz="0" izz="0.000274004"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00187896 -0.242705 -0.0822169"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/typhoon_h480_dual_cam/meshes/prop_cw_assembly_remeshed_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Gazebo/DarkGrey"/>
+    </visual>
+  </link>
+  <joint name="rotor_2_joint" type="revolute">
+    <child link="rotor_2"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-1e+16" upper="1e+16" velocity="-1"/>
+    <dynamics damping="0.005"/>
+    <origin xyz="-0.209396 -0.122762 0.082219"/>
+  </joint>
+  <link name="cam_frontal">
+    <origin rpy="0 -0 0" xyz="0.104 0 0"/>
+    <inertial>
+      <mass value="0.00001"/>
+      <inertia ixx="4.15e-6" ixy="0" ixz="0" iyy="2.407e-6" iyz="0" izz="2.407e-6"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="cam_frontal_joint" type="fixed">
+    <child link="cam_frontal"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="0"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+  <link name="cam_ventral">
+    <origin rpy="0 1.57 0" xyz="0.104 0 -0.015"/>
+    <inertial>
+      <mass value="0.00001"/>
+      <inertia ixx="4.15e-6" ixy="0" ixz="0" iyy="2.407e-6" iyz="0" izz="2.407e-6"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="cam_ventral_joint" type="fixed">
+    <child link="cam_ventral"/>
+    <parent link="base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="0"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+  <include>
+    <uri>model://gps</uri>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <name>gps</name>
+  </include>
+  <joint name="gps_joint" type="fixed">
+    <child link="gps::link"/>
+    <parent link="base_link"/>
+  </joint>
+  <material name="Gazebo/DarkGrey">
+    <color rgba=".175 .175 .175 1.0"/>
+  </material>
+  <material name="Gazebo/Blue">
+    <color rgba="0 0 1 1.0"/>
+  </material>
+</robot>
