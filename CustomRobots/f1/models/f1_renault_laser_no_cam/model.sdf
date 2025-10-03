@@ -1,11 +1,12 @@
 <?xml version='1.0'?>
-<sdf version="1.4">
+<sdf version="1.9">
 <model name="f1_renault">
   <pose>0 0 0 0 0 0</pose>
   <static>false</static>
+
     <link name="f1">
       <pose>0 0 0 0 0 0</pose>
-  <inertial>
+      <inertial>
         <mass>10</mass>
         <inertia>
           <ixx>1</ixx>
@@ -14,76 +15,163 @@
           <ixz>0.0</ixz>
           <iyz>0.0</iyz>
           <izz>1.0</izz>
-      </inertia>
-    </inertial>
-    <collision name="collision">
-        <geometry>
-            <mesh>
-                 <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
-                 <scale>0.2 0.2 0.2</scale>
-            </mesh>
-        </geometry>
-    </collision>
-    <visual name="visual">
+        </inertia>
+      </inertial>
+      <collision name="collision">
         <geometry>
           <mesh>
             <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
             <scale>0.2 0.2 0.2</scale>
-        </mesh>
-      </geometry>
-    </visual>
-  </link>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
+            <scale>0.2 0.2 0.2</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
 
-  <link name='laser_body'>
-  <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
-  <visual name="visual_laser">
-      <geometry>
-        <mesh>
-          <uri>model://f1_renault_laser_no_cam/meshes/hokuyo.dae</uri>
-        </mesh>
-      </geometry>
-    </visual>
-
-    <sensor name="laser" type="gpu_lidar">
-      <always_on>1</always_on>
-      <visualize>1</visualize>
+    <link name='laser_body'>
       <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
-      <update_rate>20.000000</update_rate>
-      <topic>f1/laser/scan</topic>
-      <gz_frame_id>base_scan</gz_frame_id>
-      <lidar>
-        <scan>
-          <horizontal>
-            <samples>180</samples>
-            <resolution>1.000000</resolution>
-            <min_angle>-1.570000</min_angle>
-            <max_angle>1.570000</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.080000</min>
-          <max>10.000000</max>
-          <resolution>0.010000</resolution>
-        </range>
-      </lidar>
-    </sensor>
+      <visual name="visual_laser">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_laser_no_cam/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
 
-    <velocity_decay>
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
+        <update_rate>20.000000</update_rate>
+        <topic>f1/laser/scan</topic>
+        <frame>base_scan</frame>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </link>
+
+    <!-- <velocity_decay>
       <linear>0.000000</linear>
       <angular>0.000000</angular>
     </velocity_decay>
     <self_collide>0</self_collide>
     <kinematic>0</kinematic>
-  </link>
+  </link> -->
   
-  <joint type="fixed" name="laser_fix">
+    <joint type="fixed" name="laser_fix">
       <pose>0 0 0 0 0 0</pose>
       <child>laser_body</child>
       <parent>f1</parent>
-      <axis>
+      <!-- <axis>
         <xyz>0 0 0</xyz>
-    </axis>
-  </joint>
+    </axis> -->
+    </joint>
+
+    <link name="wheel_left">
+      <pose>0.1 0.15 0.0 0 0 0</pose>
+      <inertial>
+        <mass>0.5</mass>
+        <inertia>
+          <ixx>0.01</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01</iyy>
+          <iyz>0</iyz>
+          <izz>0.01</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.033</radius>
+            <length>0.02</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>0.033</radius>
+            <length>0.02</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="wheel_right">
+      <pose>0.1 -0.15 0.0 0 0 0</pose>
+      <inertial>
+        <mass>0.5</mass>
+        <inertia>
+          <ixx>0.01</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01</iyy>
+          <iyz>0</iyz>
+          <izz>0.01</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.033</radius>
+            <length>0.02</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>0.033</radius>
+            <length>0.02</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="wheel_left_joint">
+      <parent>f1</parent>
+      <child>wheel_left</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <joint type="revolute" name="wheel_right_joint">
+      <parent>f1</parent>
+      <child>wheel_right</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+    </joint>
 
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <!-- wheels -->
@@ -101,7 +189,7 @@
       <child_frame_id>xf1</child_frame_id>
     </plugin>
 
-    <plugin filename="ignition-gazebo-odometry-publisher-system" name="ignition::gazebo::systems::OdometryPublisher">
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
       <robot_base_frame>xf1</robot_base_frame>
       <odom_publish_frequency>20.0</odom_publish_frequency>
