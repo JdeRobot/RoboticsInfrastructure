@@ -19,13 +19,13 @@
       </inertial>
       <collision name="collision">
         <geometry>
-          <mesh>
+          <!-- <mesh>
             <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
             <scale>0.2 0.2 0.2</scale>
-          </mesh>
-          <!-- <box>
+          </mesh> -->
+          <box>
             <size>0.6 0.3 0.2</size>
-          </box> -->
+          </box>
         </geometry>
       </collision>
       <visual name="visual">
