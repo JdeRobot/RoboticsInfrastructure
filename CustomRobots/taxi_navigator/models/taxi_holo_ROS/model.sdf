@@ -31,12 +31,37 @@
         </geometry>
       </visual>
     </link>
-    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+    <!-- <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
       <commandTopic>taxi_holo/cmd_vel</commandTopic>
       <odometryTopic>taxi_holo/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometryRate>20.0</odometryRate>
       <robotBaseFrame>taxi_holo</robotBaseFrame>
-</plugin>
+    </plugin> -->
+
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <!-- wheels -->
+      <!-- <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint> -->
+      <!-- kinematics -->
+      <!-- <wheel_separation>0.287</wheel_separation>
+      <wheel_radius>0.033</wheel_radius> -->
+      <!-- limits -->
+      <!-- <max_linear_acceleration>1.0</max_linear_acceleration> -->
+      <topic>taxi_holo/cmd_vel</topic>
+      <frame_id>odom</frame_id>
+      <!-- <tf_topic>/tf</tf_topic> -->
+      <odom_publisher_frequency>20.0</odom_publisher_frequency>
+      <child_frame_id>xf1</child_frame_id>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>xf1</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>taxi_holo/odom</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+
   </model>
 </sdf>
