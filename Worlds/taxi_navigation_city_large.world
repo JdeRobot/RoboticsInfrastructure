@@ -3,13 +3,13 @@
 <sdf version="1.9">
   <world name="default">
 
-	<gui fullscreen=1>
-		<camera name="user_camera">
-            <pose >0 0 80 3.14 1.5529944 0</pose>
-            <view_controller>orbit</view_controller>
-            <projection_type>perspective</projection_type>
+	  <gui fullscreen="1">
+		  <camera name="user_camera">
+        <pose >0 0 80 3.14 1.5529944 0</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
 	  	</camera>
-	</gui>
+	  </gui>
 
     <plugin
       filename="gz-sim-physics-system"
