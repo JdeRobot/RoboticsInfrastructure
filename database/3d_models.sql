@@ -90,7 +90,7 @@ COPY public.robot_viewer (id, name, folder_path) FROM stdin;
 8	Turtlebot3	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/turtlebot3/urdf/turtlebot3_waffle.urdf
 9	Typhoon h480 dual cam	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/drone_assets/models/typhoon_h480_dual_cam/typhoon.urdf
 10	Ackermann Logistic Robot	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/ackermannLogisticRobot.urdf
-11	Roomba	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/roomba_robot/models/roombaROS/roomba.glb
+11	Roomba	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/roomba_robot/models/roombaROS/Roomba.glb
 \.
 
 --2	Roomba	../../../../static/RoboticsAcademy/RoboticsInfrastructure/CustomRobots/roomba_robot/models/roombaROS/roombaROS.urdf
@@ -101,7 +101,7 @@ COPY public.robot_viewer (id, name, folder_path) FROM stdin;
 
 COPY public.world_viewer (id, name, folder_path) FROM stdin;
 1	3D Reconstruction	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/3DReconstruction.glb
-2	Autoparking Simple: In Line	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/ASimpleInLine.glb
+2	Autoparking Simple: In Line	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/APSimpleInLine.glb
 3	City Large	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/CityLarge.glb
 4	Follow Person	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/Hospital.glb
 5	Laser Mapping Warehouse	../../../../static/RoboticsAcademy/RoboticsInfrastructure/Worlds/LaserMappingWarehouse.glb
