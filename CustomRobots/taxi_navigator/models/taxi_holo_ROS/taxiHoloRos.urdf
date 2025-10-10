@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<robot name="taxi_holo">
+  <link name="taxi_holo">
+    <inertial>
+      <mass value="750.0"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/taxi_holo_ROS/meshes/taxi_holo.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

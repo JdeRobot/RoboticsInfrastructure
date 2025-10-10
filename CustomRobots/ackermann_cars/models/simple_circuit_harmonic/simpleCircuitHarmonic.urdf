@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<robot name="simple_circuit_harmonic">
+  <link name="simple_circuit_harmonic">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ackermann_cars/models/simple_circuit_harmonic/meshes/simple_line.dae" scale="5 5 5"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="wall">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ackermann_cars/models/simple_circuit_harmonic/meshes/wall.dae" scale="5 5 5"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

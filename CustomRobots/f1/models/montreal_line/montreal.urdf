@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<robot name="montreal">
+  <link name="montreal">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/montreal_line/meshes/montreal.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pared">
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/montreal_line/meshes/montreal_pared.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<robot name="simple_circuit">
+  <link name="simple_circuit">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/simple_line.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pared">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/pared.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

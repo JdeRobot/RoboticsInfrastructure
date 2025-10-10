@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="cereales">
+  <link name="cereales_body">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/cereales/meshes/cereales.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>
