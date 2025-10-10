@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <sdf version="1.9">
 <model name="f1_renault">
-  <!-- <pose>0 0 0 0 0 0</pose> --> 
+  <pose>0 0 0 0 0 0</pose> 
   <static>false</static>
 
     <link name="f1">
@@ -87,106 +87,8 @@
     </axis> -->
     </joint>
 
-    <link name="wheel_left">
-      <pose>0.1 0.15 0.0 0 0 0</pose>
-      <inertial>
-        <mass>0.5</mass>
-        <inertia>
-          <ixx>0.01</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.01</iyy>
-          <iyz>0</iyz>
-          <izz>0.01</izz>
-        </inertia>
-      </inertial>
-      <collision name="collision">
-        <geometry>
-          <cylinder>
-            <radius>0.033</radius>
-            <length>0.02</length>
-          </cylinder>
-        </geometry>
-      </collision>
-      <visual name="visual">
-        <geometry>
-          <cylinder>
-            <radius>0.033</radius>
-            <length>0.02</length>
-          </cylinder>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name="wheel_right">
-      <pose>0.1 -0.15 0.0 0 0 0</pose>
-      <inertial>
-        <mass>0.5</mass>
-        <inertia>
-          <ixx>0.01</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.01</iyy>
-          <iyz>0</iyz>
-          <izz>0.01</izz>
-        </inertia>
-      </inertial>
-      <collision name="collision">
-        <geometry>
-          <cylinder>
-            <radius>0.033</radius>
-            <length>0.02</length>
-          </cylinder>
-        </geometry>
-      </collision>
-      <visual name="visual">
-        <geometry>
-          <cylinder>
-            <radius>0.033</radius>
-            <length>0.02</length>
-          </cylinder>
-        </geometry>
-      </visual>
-    </link>
-
-    <joint type="revolute" name="wheel_left_joint">
-      <parent>f1</parent>
-      <child>wheel_left</child>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-      </axis>
-    </joint>
-
-    <joint type="revolute" name="wheel_right_joint">
-      <parent>f1</parent>
-      <child>wheel_right</child>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-      </axis>
-    </joint>
-
-    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
-      <!-- wheels -->
-      <left_joint>wheel_left_joint</left_joint>
-      <right_joint>wheel_right_joint</right_joint>
-      <!-- kinematics -->
-      <wheel_separation>0.287</wheel_separation>
-      <wheel_radius>0.033</wheel_radius>
-      <!-- limits -->
-      <max_linear_acceleration>1.0</max_linear_acceleration>
-      <topic>F1ROS/cmd_vel</topic>
-      <frame_id>odom</frame_id>
-      <!-- <tf_topic>/tf</tf_topic> -->
-      <odom_publisher_frequency>20.0</odom_publisher_frequency>
-      <child_frame_id>xf1</child_frame_id>
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/F1ROS/cmd_vel</topic>
     </plugin>
 
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">

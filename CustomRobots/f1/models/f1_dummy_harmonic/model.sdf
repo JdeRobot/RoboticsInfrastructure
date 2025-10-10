@@ -24,7 +24,6 @@
         <geometry>
           <mesh>
             <uri>model://f1_dummy_harmonic/meshes/F1Y.dae</uri>
-            <scale>5 5 5</scale>
         </mesh>
       </geometry>
     </visual>

@@ -99,6 +99,21 @@
       <visualize>false</visualize>
     </light>
     
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0.0 0.0 1</normal>
+              <size>1000 1000</size>
+            </plane>
+          </geometry>
+        </collision>
+      </link>
+      <pose>0 0 0 0 0 0</pose>
+    </model>
+
     <include>
       <uri>model://simple_circuit</uri>
 	    <pose>-53.46 11.50 0 0 0 0</pose>
@@ -111,61 +126,73 @@
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_1</name>
       <pose>-0.1 -33 0 0 0 0</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_2</name>
       <pose>-7 -40 0 0 0 -1.67</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_3</name>
       <pose>-13.2 -18.8 0 0 0 -3</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_4</name>
       <pose>-40 -11.5 0 0 0 -1.57</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_5</name>
       <pose>-66.83 -34.15 0 0 0 -1.03</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_6</name>
       <pose>-70.8 -34.2 0 0 0 -1.33</pose>
+      <static>true</static>
     </include>
 	  <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_7</name>
       <pose>-103 14.6 0 0 0 2.47</pose>
+      <static>true</static>
     </include>
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_8</name>
       <pose>-52.76 42.3 0 0 0 2.15</pose>
+      <static>true</static>
     </include>
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_9</name>
       <pose>-33.4 57.3 0 0 0 0</pose>
+      <static>true</static>
     </include>
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_10</name>
       <pose>-3.5 59 0 0 0 0.785</pose>
+      <static>true</static>
     </include>
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_11</name>
       <pose>1 26.2 0 0 0 0</pose>
+      <static>true</static>
     </include>
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_12</name>
       <pose>-1 24.5 0 0 0 0</pose>
+      <static>true</static>
     </include>
 
   </world>
