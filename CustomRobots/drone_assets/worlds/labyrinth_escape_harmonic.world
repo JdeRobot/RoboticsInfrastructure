@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="empty">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin
+			filename="gz-sim-physics-system"
+			name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin
+			filename="gz-sim-user-commands-system"
+			name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin
+			filename="gz-sim-scene-broadcaster-system"
+			name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin
+			filename="gz-sim-sensors-system"
+			name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<gui>
+			<camera name="user_camera">
+				<pose>-4.70385 10.895 16.2659 -0 0.921795 -1.12701</pose>
+			</camera>
+		</gui>
+
+		<!-- Arrows -->
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_1</name>
+			<pose>-18 -8.5 0.1 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_2</name>
+			<pose>-5.5 -8.5 0.1 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_3</name>
+			<pose>7 -8.5 0.1 0 0 1.57</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_4</name>
+			<pose>7 3 0.1 0 0 1.57</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_5</name>
+			<pose>7 14.5 0.1 0 0 3.14</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_6</name>
+			<pose>2.5 14.5 0.1 0 0 3.14</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_7</name>
+			<pose>2.5 7.5 0.1 0 0 3.14</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_8</name>
+			<pose>-3 7.5 0.1 0 0 1.57</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_9</name>
+			<pose>-3 20.5 0.1 0 0 3.14</pose>
+		</include>
+		<include>
+			<uri>model://arrow</uri>
+			<name>arrow_10</name>
+			<pose>-13 20.5 0.1 0 0 3.14</pose>
+		</include>
+
+		<include>
+			<uri>model://simple_labyrinth_green</uri>
+		</include>
+
+		<!-- Grass plane -->
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- JdeRobot Logo -->
+		<include>
+			<name>logo</name>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-26.0 0.0 0.0 0.0 0.0 0.0</pose>
+		</include>
+
+		<include>
+			<uri>model://quadrotor_dual_cam</uri>
+			<name>drone0</name>
+			<pose>-18 -8.5 0.3 0 0 0</pose>
+		</include>
+
+	</world>
+</sdf>

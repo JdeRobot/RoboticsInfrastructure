@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<robot name="f1_renault">
+  <link name="f1">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/f1_renault_laser_no_cam/Renault/Car.obj" scale="0.2 0.2 0.2"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="laser_body">
+    <origin rpy="0.000000 0.000000 0.00000" xyz="0.500000 0.000000 0.072000"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://f1/models/f1_renault_laser_no_cam/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="laser_fix" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="laser_body"/>
+    <parent link="f1"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+</robot>

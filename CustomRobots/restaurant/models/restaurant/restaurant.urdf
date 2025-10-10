@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="cafe">
+  <link name="link">
+    <visual>
+      <geometry>
+        <mesh filename="package://restaurant/models/restaurant/meshes/restaurant.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

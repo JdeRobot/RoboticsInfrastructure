@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<robot name="taxi_holo_ros2">
+  <link name="base_link"/>
+  <joint name="chassis_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="chassis_link"/>
+  </joint>
+  <joint name="hokuyo_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="hokuyo_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="hokuyo_link"/>
+  <link name="chassis_link">
+    <inertial>
+      <origin rpy="0 -0 0" xyz="1e-06 0.07307 0.65096"/>
+      <mass value="1580"/>
+      <inertia ixx="1997.86" ixy="-3e-05" ixz="-1e-06" iyy="442.769" iyz="62.5206" izz="2238.05"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -0 1.57" xyz="0 0.4 0.0"/>
+      <geometry>
+        <mesh filename="package://ackermann_cars/models/taxi_holo_ros2/meshes/taxi_holo.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="bl_axle" type="revolute">
+    <origin rpy="0 -0 0" xyz="-0.875 -1.01364 0.324997"/>
+    <parent link="chassis_link"/>
+    <child link="bl_1"/>
+    <axis xyz="-1 0 0"/>
+    <dynamics friction="12.031606150200002"/>
+  </joint>
+  <link name="bl_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="-0.0377 0 -0"/>
+      <mass value="24.5"/>
+      <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
+    </inertial>
+  </link>
+  <joint name="br_axle" type="revolute">
+    <origin rpy="0 -0 0" xyz="0.875 -1.01364 0.324997"/>
+    <parent link="chassis_link"/>
+    <child link="br_1"/>
+    <axis xyz="-1 0 0"/>
+    <dynamics friction="12.031606150200002"/>
+  </joint>
+  <link name="br_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="-0.0377 0 -0"/>
+      <mass value="24.5"/>
+      <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
+    </inertial>
+  </link>
+  <joint name="l_steer" type="revolute">
+    <origin rpy="0 -0 0" xyz="-0.825 1.51736 0.324997"/>
+    <parent link="chassis_link"/>
+    <child link="l_steer_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.95" upper="0.95"/>
+    <dynamics friction="18.0474092253"/>
+  </joint>
+  <link name="l_steer_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="0.003381 0 0.02162"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="fl_axle" type="revolute">
+    <origin rpy="0 -0 0" xyz="-0.05 0 0"/>
+    <parent link="l_steer_1"/>
+    <child link="fl_1"/>
+    <axis xyz="-1 0 0"/>
+    <dynamics friction="12.031606150200002"/>
+  </joint>
+  <link name="fl_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="-0.0377 0 -0"/>
+      <mass value="24.5"/>
+      <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
+    </inertial>
+  </link>
+  <joint name="r_steer" type="revolute">
+    <origin rpy="0 -0 0" xyz="0.825 1.51736 0.324997"/>
+    <parent link="chassis_link"/>
+    <child link="r_steer_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.95" upper="0.95"/>
+    <dynamics damping="0.01" friction="18.0474092253"/>
+  </joint>
+  <link name="r_steer_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="0.003381 0 0.02162"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="fr_axle" type="revolute">
+    <origin rpy="0 -0 0" xyz="0.05 0 0"/>
+    <parent link="r_steer_1"/>
+    <child link="fr_1"/>
+    <axis xyz="-1 0 0"/>
+    <dynamics friction="12.031606150200002"/>
+  </joint>
+  <link name="fr_1">
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+    <inertial>
+      <origin rpy="0 -0 0" xyz="-0.0377 0 -0"/>
+      <mass value="24.5"/>
+      <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
+    </inertial>
+  </link>
+  <link name="steering_wheel"/>
+  <joint name="steering_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="-0.002 0 0"/>
+    <parent link="chassis_link"/>
+    <child link="steering_wheel"/>
+    <axis xyz="-0.964118 0.000768 0.265556"/>
+    <limit lower="-100" upper="100"/>
+    <dynamics damping="1.0"/>
+  </joint>
+</robot>
