@@ -29,7 +29,15 @@
                         <uri>model://simple_circuit/meshes/pared.stl</uri>
                     </mesh>
                 </geometry>
-            </collision>  
+            </collision>
+	        <visual name="visual">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://simple_circuit/meshes/pared.stl</uri>
+                    </mesh>
+                </geometry>
+            </visual>
 	    </link>
     </model>
 </sdf>
