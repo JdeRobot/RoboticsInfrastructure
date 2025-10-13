@@ -133,6 +133,7 @@
     </model>
     <!-- My city -->
     <include>
+        <pose>0 0 -0.5 0 0 0</pose>
         <uri>model://cityLarge_harmonic</uri>
     </include>
     <!-- My robots -->
