@@ -13,6 +13,7 @@
     <xacro:include filename="accessories/rplidar_s2.urdf" />
     <xacro:include filename="accessories/imu.urdf" />
 
+
     <link name="base_link" />
     <link name="chassis_link">
         <visual>
