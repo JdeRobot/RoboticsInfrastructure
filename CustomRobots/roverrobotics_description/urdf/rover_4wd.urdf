@@ -9,50 +9,50 @@
     <xacro:property name="chassis_mass" value="4.53592" />
 
     <xacro:property name="payload_z_offset" value="0.096" />
-    <xacro:include filename="roverrobotics_description/urdf/accessories/rover_dev_payload.urdf" />
-    <xacro:include filename="roverrobotics_description/urdf/accessories/rplidar_s2.urdf" />
-    <xacro:include filename="roverrobotics_description/urdf/accessories/imu.urdf" />
+    <xacro:include filename="accessories/rover_dev_payload.urdf" />
+    <xacro:include filename="accessories/rplidar_s2.urdf" />
+    <xacro:include filename="accessories/imu.urdf" />
 
     <link name="base_link" />
     <link name="chassis_link">
         <visual>
             <origin xyz="0 0 0" rpy="1.57 -0 1.57" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_chassis.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_chassis.dae"/>
             </geometry>
         </visual>
         <visual>
             <origin xyz="0 ${track_y_offset} 0" rpy="1.57 3.1415 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_track.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_track.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 ${track_y_offset} 0" rpy="1.57 3.1415 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_track.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_track.dae"/>
             </geometry>
         </collision>
 
          <visual>
             <origin xyz="0 ${-track_y_offset} 0" rpy="1.57 3.1415 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_track.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_track.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 ${-track_y_offset} 0" rpy="1.57 3.1415 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_track.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_track.dae"/>
             </geometry>
         </collision>
 
         <collision>
             <origin xyz="0 0 0" rpy="1.57 -0 1.57" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/flipper_chassis.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/flipper_chassis.dae"/>
             </geometry>
         </collision>
 
@@ -74,14 +74,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="-1.57 0 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="-1.57 0 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </collision>
 
@@ -103,14 +103,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="1.57 0 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="1.57 0 0" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </collision>
 
@@ -132,14 +132,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </collision>
 
@@ -161,14 +161,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
             <geometry>
-                <mesh filename="file://roverrobotics_description/meshes/pro_tire.dae"/>
+                <mesh filename="package://roverrobotics_description/meshes/pro_tire.dae"/>
             </geometry>
         </collision>
 
