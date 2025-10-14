@@ -118,8 +118,10 @@ install(
     autoparking/launch
     autoparking/models
     autoparking/worlds
-    autopark_harmonic/worlds
+    # AUTOPARK_HARMONIC
     autopark_harmonic/models
+    autopark_harmonic/params
+    autopark_harmonic/worlds
     # DRONE_ASSETS
     drone_assets/models
     drone_assets/worlds
