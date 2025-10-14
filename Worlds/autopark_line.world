@@ -59,7 +59,6 @@
       <static>false</static>
     </include>
 
-
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_0</name>
