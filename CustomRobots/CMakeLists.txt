@@ -119,6 +119,7 @@ install(
     autoparking/models
     autoparking/worlds
     # AUTOPARK_HARMONIC
+    autopark_harmonic/launch
     autopark_harmonic/models
     autopark_harmonic/params
     autopark_harmonic/worlds
