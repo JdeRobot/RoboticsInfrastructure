@@ -41,7 +41,7 @@ namespace gazebo
         int state, current_wp;
         int turn_dir, linear_dir;
         bool auto_movement, linear_movement;
-        float lv_dt = 0.002; // discrete lineal velocity
+        float lv_dt = 0.001; // discrete lineal velocity
         float av_dt = 0.003; // discrete angular velocity
 
         // variables to use in MoveToWaypoint method
