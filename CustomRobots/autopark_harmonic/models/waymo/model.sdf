@@ -1,835 +1,504 @@
-<?xml version = "1.0"?>
-<sdf version = "1.9">
+<?xml version="1.0"?>
+<sdf version="1.8">
+
+  <model name='prius_autoparking_3laser_harmonic'>
+  <pose>0 0 0.0 0 0 0</pose>
+
+    <link name='base_link' />
+
+    <joint name='chassis_link_joint' type='fixed'>
+      <pose>0.0 0.0 0.0 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>chassis_link</child>
+    </joint>
+
+    <link name='chassis_link'>
+      <inertial>
+        <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
+        <mass>1580</mass>
+        <inertia>
+          <ixx>1997.86</ixx>
+          <ixy>-3e-05</ixy>
+          <ixz>-1e-06</ixz>
+          <iyy>442.769</iyy>
+          <iyz>62.5206</iyz>
+          <izz>2238.05</izz>
+        </inertia>
+      </inertial>
+      <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
+        <pose>0 -0.0801 0 0 0 -3.1416</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser/meshes/hybrid_body.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+    <visual name='chassis_visual'>
+        <pose relative_to='chassis_link'>0 -0.08 0 0 0 -3.1416</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.0109 0.01</scale>
+            <uri>model://prius_autoparking_3laser_harmonic/meshes/hybrid_body.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>           
+
+      <sensor name="front_hokuyo_sensor" type="gpu_ray">
+      <pose relative_to='chassis_link'>-0.024000 2.3900000 0.500000 0.000000 0.000000 1.5708</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>        
+        <update_rate>40</update_rate>
+        <topic>/prius_autoparking/scan_front</topic>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570796</min_angle>
+              <max_angle>1.570796</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.120000</min>
+            <max>30.0</max>
+            <resolution>0.010</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+      </sensor>
+
+      <sensor name="back_hokuyo_sensor" type="gpu_ray">
+      <pose relative_to='base_link'>-0.024000 -2.60000 0.500000 0.000000 0.000000 -1.57080</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>        
+        <update_rate>40</update_rate>
+        <topic>/prius_autoparking/scan_back</topic>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570796</min_angle>
+              <max_angle>1.570796</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.120000</min>
+            <max>30.0</max>
+            <resolution>0.010</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+      </sensor>
     
-    <model name="waymo">
+    <sensor name="side_hokuyo_sensor" type="gpu_ray">
+    <pose relative_to='base_link'>1.100000 0.000000 0.500000 0.000000 0.000000 0.000000</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>        
+        <update_rate>40</update_rate>
+        <topic>/prius_autoparking/scan_side</topic>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570796</min_angle>
+              <max_angle>1.570796</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.120000</min>
+            <max>30.0</max>
+            <resolution>0.010</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+      </sensor>
+    </link>
 
-        <plugin
-            filename="gz-sim-sensors-system"
-            name="gz::sim::systems::Sensors">
-            <render_engine>ogre2</render_engine>
-        </plugin>
-        <plugin
-            filename="gz-sim-physics-system"
-            name="gz::sim::systems::Physics">
-        </plugin>
-        <plugin
-            filename="gz-sim-imu-system"
-            name="gz::sim::systems::Imu">
-        </plugin>
-        <plugin
-            filename="gz-sim-user-commands-system"
-            name="gz::sim::systems::UserCommands">
-        </plugin>
-        <plugin filename="gz-sim-joint-state-publisher-system"
-        name="gz::sim::systems::JointStatePublisher">
-            <joint_name>front_left_steer_joint</joint_name>
-            <joint_name>front_right_steer_joint</joint_name>
-            <joint_name>front_left_wheel_joint</joint_name>
-            <joint_name>front_right_wheel_joint</joint_name>
-            <joint_name>rear_left_wheel_joint</joint_name>
-            <joint_name>rear_right_wheel_joint</joint_name>
-            <topic>/joint_states</topic>
-        </plugin>        
+    <joint name='bl_axle' type='revolute'>
+      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
+      <parent>chassis_link</parent>
+      <child>bl_1</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='bl_1'>
+      <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <mass>24.5</mass>
+        <inertia>
+          <ixx>1.84514</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.04961</iyy>
+          <iyz>0</iyz>
+          <izz>1.04961</izz>
+        </inertia>
+      </inertial>
+      <collision name='bl_1_collision'>
+        <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.3425</radius>
+            <length>.22</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.7</mu>
+              <mu2>1.7</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>  
+      <visual name='back_left_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser_harmonic/meshes/wheel.obj</uri>
+          </mesh>
+        </geometry>   
+        </visual>
+    </link>
 
-        <link name="base_link" >
-            <inertial>
-                <pose> 0 0 0 0 0 0 </pose>
-                <mass> 1 </mass>
-                <inertia>
-                    <ixx>0.001</ixx>
-                    <ixy>0</ixy>
-                    <ixz>0</ixz>
-                    <iyy>0.001</iyy>
-                    <iyz>0</iyz>
-                    <izz>0.001</izz>
-                </inertia>
-            </inertial>
-        </link>
+    <joint name='br_axle' type='revolute'>
+      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
+      <parent>chassis_link</parent>
+      <child>br_1</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='br_1'>
+      <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <mass>24.5</mass>
+        <inertia>
+          <ixx>1.84514</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.04961</iyy>
+          <iyz>0</iyz>
+          <izz>1.04961</izz>
+        </inertia>
+      </inertial>
+      <collision name='br_1_collision'>
+        <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.3425</radius>
+            <length>.22</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.7</mu>
+              <mu2>1.7</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>   
+      <visual name='back_right_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser_harmonic/meshes/wheel.obj</uri>
+          </mesh>
+        </geometry>                  
+      </visual>     
+    </link>
 
-        <joint name="base_chassis_connection" type="fixed">
-            <pose relative_to='base_link'>1.45 0 0 0 0 1.57 </pose>
-            <parent>base_link</parent>
-            <child>chassis</child>
-        </joint>
+    <joint name='l_steer' type='revolute'>
+      <pose relative_to='chassis_link'>-0.825 1.51736 0.324997 0 -0 0</pose>
+      <parent>chassis_link</parent>
+      <child>l_steer_1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.95</lower>
+          <upper>0.95</upper>
+          <effort>1e6</effort>
+          <velocity>1e6</velocity>
+        </limit>
+        <dynamics>
+          <friction>18.0474092253</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='l_steer_1'>
+      <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+    </link>
 
-        <link name='chassis'>
-            <pose relative_to='base_chassis_connection'>0 0 0 0 0 0</pose>
-            
-            <inertial>
-                <pose>0 -0.002982 0.485295 0 -0 1.5708</pose>
-                <mass>1375</mass>
-                <inertia>
-                <ixx>2595.52</ixx>
-                <ixy>0.000189032</ixy>
-                <ixz>-0.949708</ixz>
-                <iyy>657.155</iyy>
-                <iyz>3.48847e-06</iyz>
-                <izz>2749.81</izz>
-                </inertia>
-            </inertial>
+    <joint name='fl_axle' type='revolute'>
+      <pose relative_to='l_steer_1'>-0.05 0 0 0 -0 0</pose>
+      <parent>l_steer_1</parent>
+      <child>fl_1</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='fl_1'>
+      <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <mass>24.5</mass>
+        <inertia>
+          <ixx>1.84514</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.04961</iyy>
+          <iyz>0</iyz>
+          <izz>1.04961</izz>
+        </inertia>
+      </inertial>
+      <collision name='fl_1_collision'>
+        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://autocar/meshes/fl_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.1</mu>
+              <mu2>1.1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='front_left_wheel_visual'>
+        <pose>0.13 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser_harmonic/meshes/wheel.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    
+    <joint name='r_steer' type='revolute'>
+      <pose relative_to='chassis_link'>0.825 1.51736 0.324997 0 -0 0</pose>
+      <parent>chassis_link</parent>
+      <child>r_steer_1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.95</lower>
+          <upper>0.95</upper>
+          <effort>1e6</effort>
+          <velocity>1e6</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.01</damping>
+          <friction>18.0474092253</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='r_steer_1'>
+      <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='fr_axle' type='revolute'>
+      <pose relative_to='r_steer_1'>0.05 0 0 0 -0 0</pose>
+      <parent>r_steer_1</parent>
+      <child>fr_1</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='fr_1'>
+      <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <mass>24.5</mass>
+        <inertia>
+          <ixx>1.84514</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.04961</iyy>
+          <iyz>0</iyz>
+          <izz>1.04961</izz>
+        </inertia>
+      </inertial>
+      <collision name='fr_1_collision'>
+        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://autocar/meshes/fr_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.7</mu>
+              <mu2>1.7</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='front_right_wheel_visual'>
+        <pose>-0.13 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://prius_autoparking_3laser_harmonic/meshes/wheel.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
 
-            <collision name='chassis_collision'>
-                <pose>0 0.05 0.625 0 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.7526 2.1 0.95</size>
-                </box>
-                </geometry>
-            </collision>
+    <!--STEERING WHEEL-->
+    <joint name="steering_joint" type="revolute">
+      <pose relative_to='chassis_link'>-0.01 0.6 0.6 0 0 0</pose>
+      <parent>chassis_link</parent>
+      <child>steering_wheel</child>
+      <axis>
+        <xyz>0.0 -1.0 0.0</xyz>
+        <limit>
+          <lower>-100</lower>
+          <upper>100</upper>
+        </limit>
+        <dynamics>
+          <damping>10.0</damping>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='steering_wheel'>
+      <pose relative_to='steering_joint'>0 0.87 -0.54 0 0 1.5708</pose>
+    </link>
 
-            <collision name='chassis_fixed_joint_lump__front_bumper_collision_1'>
-                <pose>0 -2 0.458488 0 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.33728 0.48 0.566691</size>
-                </box>
-                </geometry>
-            </collision>
+    <!-- Gazebo Harmonic Ackermann Steering Plugin -->
+    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+      <left_joint>fl_axle</left_joint>
+      <left_joint>bl_axle</left_joint>
+      <right_joint>fr_axle</right_joint>
+      <right_joint>br_axle</right_joint>
+      <left_steering_joint>l_steer</left_steering_joint>
+      <right_steering_joint>r_steer</right_steering_joint>
+      <kingpin_width>1.65</kingpin_width>
+      <steering_limit>0.52</steering_limit>
+      <wheel_base>3.351</wheel_base>
+      <wheel_separation>1.65</wheel_separation>
+      <wheel_radius>0.3425</wheel_radius>
+      <min_velocity>-50</min_velocity>
+      <max_velocity>50</max_velocity>
+      <min_acceleration>-50</min_acceleration>
+      <max_acceleration>50</max_acceleration>
+      <topic>/prius_autoparking/cmd_vel</topic>
+    </plugin>
 
-            <collision name='chassis_fixed_joint_lump__hood_collision_2'>
-                <pose>0 -1.90084 0.676305 0.341247 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.59797 0.493107 0.265468</size>
-                </box>
-                </geometry>
-            </collision>
+    <!-- Joint State Publisher -->
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <joint_name>fl_axle</joint_name>
+      <joint_name>fr_axle</joint_name>
+      <joint_name>bl_axle</joint_name>
+      <joint_name>br_axle</joint_name>
+      <joint_name>l_steer</joint_name>
+      <joint_name>r_steer</joint_name>
+      <joint_name>steering_joint</joint_name>
+    </plugin>
 
-            <collision name='chassis_fixed_joint_lump__windshield_collision_3'>
-                <pose>0 -0.875105 1.03227 0.335476 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.16838 1.65425 0.272347</size>
-                </box>
-                </geometry>
-            </collision>
-
-            <collision name='chassis_fixed_joint_lump__top_front_collision_4'>
-                <pose>0 0.161236 1.38604 0.13503 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.27915 0.625988 0.171868</size>
-                </box>
-                </geometry>
-            </collision>
-
-            <collision name='chassis_fixed_joint_lump__top_rear_collision_5'>
-                <pose>0 0.817696 1.36007 -0.068997 0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.28513 0.771189 0.226557</size>
-                </box>
-                </geometry>
-            </collision>
-
-            <collision name='chassis_fixed_joint_lump__rear_window_collision_6'>
-                <pose>0 1.64053 1.17513 -0.262017 0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.26785 1.11634 0.244286</size>
-                </box>
-                </geometry>
-            </collision>
-
-            <collision name='chassis_fixed_joint_lump__trunk_collision_7'>
-                <pose>0 1.63706 0.88818 0 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.78806 1.13899 0.482746</size>
-                </box>
-                </geometry>
-            </collision>
-
-            <collision name='chassis_fixed_joint_lump__back_bumper_collision_8'>
-                <pose>0 2.05445 0.57787 0 -0 0</pose>
-                <geometry>
-                <box>
-                    <size>1.78165 0.512093 0.581427</size>
-                </box>
-                </geometry>
-            </collision>      
- 
-            <visual name='chassis_visual'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <mesh>
-                    <scale>0.01 0.01 0.01</scale>
-                    <uri>meshes/hybrid_body.obj</uri>
-                </mesh>
-                </geometry>
-            </visual>
-            
-            <visual name="lidar_mount_box">
-                <pose>0 0.5 1.6 0 0 0</pose> 
-                <geometry>
-                    <box>
-                    <size>0.4 0.4 0.1</size>
-                    </box>
-                </geometry>
-                <material>
-                    <ambient>0.05 0.05 0.05 1</ambient>
-                    <diffuse>0.05 0.05 0.05 1</diffuse>
-                    <specular>0.7 0.7 0.7 1</specular>
-                    <emissive>0 0 0 0</emissive>
-                </material>
-            </visual>
-
-            <collision name="lidar_mount_box_collision">
-            <pose>0 0.5 1.6 0 0 0</pose>
-            <geometry>
-                <box>
-                <size>0.2 0.2 0.1</size>
-                </box>
-            </geometry>
-            </collision>
-            <sensor name="top_lidar" type="gpu_lidar">
-                <pose relative_to="chassis">0 0 1.7 0 0 0</pose>  
-                <visualize>true</visualize>
-                <lidar>
-                    <scan>
-                    <horizontal>
-                        <samples>720</samples>  
-                        <resolution>1.0</resolution>
-                        <min_angle>-3.14159</min_angle>
-                        <max_angle>3.14159</max_angle>
-                    </horizontal>
-                    <vertical>
-                        <samples>360</samples>
-                        <resolution>1.0</resolution>
-                        <min_angle>-1.57</min_angle>  
-                        <max_angle>+1.57</max_angle>
-                    </vertical>
-                    </scan>
-                    <range>
-                    <min>0.1</min>
-                    <max>150.0</max>  
-                    </range>
-                </lidar>
-                <always_on>true</always_on>
-                <topic>/waymo/lidar</topic>
-            </sensor>
-
-            <visual name="ray_mount_box">
-                <pose>0 -1.7 0.9 0 0 0</pose>  
-                <geometry>
-                    <box>
-                    <size>0.1 0.1 0.2</size>
-                    </box>
-                </geometry>
-                <material>
-                    <ambient>0.05 0.05 0.05 1</ambient>
-                    <diffuse>0.05 0.05 0.05 1</diffuse>
-                    <specular>0.7 0.7 0.7 1</specular>
-                    <emissive>0 0 0 0</emissive>
-                </material>
-            </visual>
-
-            <sensor name="front_ray" type="gpu_lidar">
-                <pose relative_to="chassis">0 -1.8 0.9 0 0 0</pose>  
-                <visualize>true</visualize>
-                <ray>
-                    <scan>
-                    <horizontal>
-                        <samples>360</samples>  
-                        <resolution>1.0</resolution>
-                        <min_angle>-1.57</min_angle>
-                        <max_angle>1.57</max_angle>
-                    </horizontal>
-                    <vertical>
-                        <samples>360</samples>
-                        <resolution>1.0</resolution>
-                        <min_angle>-1.57</min_angle>  
-                        <max_angle>+1.57</max_angle>
-                    </vertical>
-                    </scan>
-                    <range>
-                    <min>0.1</min>
-                    <max>150.0</max>  
-                    </range>
-                </ray>
-                <always_on>true</always_on>
-                <topic>/waymo/ray</topic>
-            </sensor> 
-
-            <visual name="right_side_camera_mount">
-                <pose>0.9 -1.5 0.7 0 0 0</pose>  
-                <geometry>
-                    <box>
-                    <size>0.1 0.1 0.1</size>
-                    </box>
-                </geometry>
-                <material>
-                    <ambient>0.05 0.05 0.05 1</ambient>
-                    <diffuse>0.05 0.05 0.05 1</diffuse>
-                    <specular>0.7 0.7 0.7 1</specular>
-                    <emissive>0 0 0 0</emissive>
-                </material>
-            </visual>
-
-            <sensor name="right_side_camera" type="camera">
-                <pose relative_to="chassis">1 -1.5 0.7 0 0 0</pose>
-                <update_rate>40</update_rate>
-                <visualize>true</visualize>
-                <camera name="camera_right">
-                    <horizontal_fov>1.658</horizontal_fov>
-                    <lens>
-                        <intrinsics>
-                            <fx>329.9</fx>
-                            <fy>329.9</fy>
-                            <cx>359.5</cx>
-                            <cy>539.5</cy>
-                            <s>0</s>
-                        </intrinsics>
-                    </lens>
-                    <distortion>
-                        <k1>0.0</k1>
-                        <k2>0.0</k2>
-                        <k3>0.0</k3>
-                        <p1>0.0</p1>
-                        <p2>0.0</p2>
-                        <center>0.5 0.5</center>
-                    </distortion>
-                    <image>
-                        <width>720</width>
-                        <height>1080</height>
-                        <format>R8G8B8</format>
-                    </image>
-                    <clip>
-                        <near>0.01</near>
-                        <far>300</far>
-                    </clip>
-                    <noise>
-                        <type>gaussian</type>
-                        <mean>0</mean>
-                        <stddev>0.007</stddev>
-                    </noise>
-                </camera>
-                <always_on>true</always_on>
-                <topic>/waymo/camera_right_side</topic>
-                    
-            </sensor>
-
-            <visual name="left_side_camera_mount">
-                <pose>-0.9 -1.5 0.7 0 0 0</pose>  
-                <geometry>
-                    <box>
-                    <size>0.1 0.1 0.1</size>
-                    </box>
-                </geometry>
-                <material>
-                    <ambient>0.05 0.05 0.05 1</ambient>
-                    <diffuse>0.05 0.05 0.05 1</diffuse>
-                    <specular>0.7 0.7 0.7 1</specular>
-                    <emissive>0 0 0 0</emissive>
-                </material>
-            </visual>
-
-            <sensor name="left_side_camera" type="camera">
-                <pose relative_to="chassis">-1 -1.5 0.7 0 0 0</pose>
-                <update_rate>40</update_rate>
-                <visualize>true</visualize>
-                <camera name="camera_left">
-                    <horizontal_fov>1.658</horizontal_fov>
-                    <lens>
-                        <intrinsics>
-                        
-                        <fx>329.9</fx>
-                        <fy>329.9</fy>
-                        
-                        <cx>359.5</cx>
-                        
-                        <cy>539.5</cy>
-                        <s>0</s>
-                        </intrinsics>
-                    </lens>
-                    <distortion>
-                        <k1>0.0</k1>
-                        <k2>0.0</k2>
-                        <k3>0.0</k3>
-                        <p1>0.0</p1>
-                        <p2>0.0</p2>
-                        <center>0.5 0.5</center>
-                    </distortion>
-                    <image>
-                        <width>720</width>
-                        <height>1080</height>
-                        <format>R8G8B8</format>
-                    </image>
-                    <clip>
-                        <near>0.01</near>
-                        <far>300</far>
-                    </clip>
-                    <noise>
-                        <type>gaussian</type>
-                        <mean>0</mean>
-                        <stddev>0.007</stddev>
-                    </noise>
-                </camera>
-                <always_on>true</always_on>
-                <topic>/waymo/camera_left_side</topic>
-                    
-            </sensor>
-
-            <visual name="rear_camera_mount">
-                <pose>0 2.3 0.7 0 0 0</pose>  
-                <geometry>
-                    <box>
-                    <size>0.1 0.1 0.1</size>
-                    </box>
-                </geometry>
-                <material>
-                    <ambient>0.05 0.05 0.05 1</ambient>
-                    <diffuse>0.05 0.05 0.05 1</diffuse>
-                    <specular>0.7 0.7 0.7 1</specular>
-                    <emissive>0 0 0 0</emissive>
-                </material>
-            </visual>
-
-            <sensor name="rear_camera" type="camera">
-                
-                <pose relative_to="base_chassis_connection">0 2.3 0.8 0 0 0</pose>
-                <always_on>1</always_on>
-                <update_rate>40</update_rate>
-                <camera name="camera_rear">
-                <horizontal_fov>1.658</horizontal_fov>
-                <lens>
-                    <intrinsics>
-                    
-                    <fx>329.9</fx>
-                    <fy>329.9</fy>
-                    
-                    <cx>359.5</cx>
-                    
-                    <cy>539.5</cy>
-                    <s>0</s>
-                    </intrinsics>
-                </lens>
-                <distortion>
-                    <k1>0.0</k1>
-                    <k2>0.0</k2>
-                    <k3>0.0</k3>
-                    <p1>0.0</p1>
-                    <p2>0.0</p2>
-                    <center>0.5 0.5</center>
-                </distortion>
-                <image>
-                    <width>720</width>
-                    <height>1080</height>
-                    <format>R8G8B8</format>
-                </image>
-                <clip>
-                    <near>0.01</near>
-                    <far>300</far>
-                </clip>
-                <noise>
-                    <type>gaussian</type>
-                    <mean>0</mean>
-                    <stddev>0.007</stddev>
-                </noise>
-                </camera>
-                <topic>/waymo/camera_rear</topic>                
-            </sensor>
-        </link>
-
-
-        <joint name='front_left_steer_joint' type='revolute'>
-            <pose relative_to='chassis'>0.767 -1.41 0 0 -0 0</pose>
-            <parent>chassis</parent>
-            <child>fl_axle</child>
-            <axis>
-                <xyz>0 0 1</xyz>
-                <limit>
-                    <lower>-0.7</lower>  
-                    <upper>0.7</upper>
-                    <effort>500</effort>  
-                    <velocity>3.0</velocity>
-                </limit>
-                <dynamics>
-                    <damping>0.5</damping>  
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>                    
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='fl_axle'>
-            <pose relative_to='front_left_steer_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>1</mass>
-                <inertia>
-                <ixx>0.004</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.004</iyy>
-                <iyz>0</iyz>
-                <izz>0.004</izz>
-                </inertia>
-            </inertial>
-        </link>
-
-        <joint name='front_left_wheel_joint' type='revolute'>
-            <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
-            <parent>fl_axle</parent>
-            <child>front_left_wheel</child>
-            <axis>
-                <xyz>1 0 0</xyz>
-                <limit>
-                    <lower>-1e+16</lower>
-                    <upper>1e+16</upper>
-                </limit>
-                <dynamics>
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='front_left_wheel'>
-            <pose relative_to='front_left_wheel_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>11</mass>
-                <inertia>
-                    <ixx>0.586312</ixx>
-                    <ixy>0</ixy>
-                    <ixz>0</ixz>
-                    <iyy>0.335529</iyy>
-                    <iyz>0</iyz>
-                    <izz>0.335529</izz>
-                </inertia>
-            </inertial>
-            <collision name='front_left_wheel_collision_collision'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                    <sphere>
-                        <radius>0.31265</radius>
-                    </sphere>
-                </geometry>
-                <surface>
-                    <contact>
-                        <ode>
-                        <kp>1e+08</kp>
-                        <min_depth>0.005</min_depth>
-                        </ode>
-                    </contact>
-                    <friction>
-                        <ode>
-                        <mu>0.9</mu>
-                        <mu2>0.9</mu2>
-                        </ode>
-                    </friction>
-                </surface>
-            </collision>
-            <visual name='front_left_wheel_visual'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                    <mesh>
-                        <scale>0.01 0.01 0.01</scale>
-                        <uri>meshes/wheel.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-
-        <joint name='front_right_steer_joint' type='revolute'>
-            <pose relative_to='chassis'>-0.767 -1.41 0 0 -0 0</pose>
-            <parent>chassis</parent>
-            <child>fr_axle</child>
-            <axis>
-                <xyz>0 0 1</xyz>
-                <limit>
-                    <lower>-0.7</lower>  
-                    <upper>0.7</upper>
-                    <effort>500</effort>  
-                    <velocity>3.0</velocity>
-                </limit>
-                <dynamics>
-                    <damping>0.5</damping>  
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>                    
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='fr_axle'>
-            <pose relative_to='front_right_steer_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>1</mass>
-                <inertia>
-                <ixx>0.004</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.004</iyy>
-                <iyz>0</iyz>
-                <izz>0.004</izz>
-                </inertia>
-            </inertial>
-        </link>
-
-        <joint name='front_right_wheel_joint' type='revolute'>
-            <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
-            <parent>fr_axle</parent>
-            <child>front_right_wheel</child>
-            <axis>
-                <xyz>1 0 0</xyz>
-                <limit>
-                <lower>-1e+16</lower>
-                <upper>1e+16</upper>
-                </limit>
-                <dynamics>
-                <spring_reference>0</spring_reference>
-                <spring_stiffness>0</spring_stiffness>
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='front_right_wheel'>
-            <pose relative_to='front_right_wheel_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>11</mass>
-                <inertia>
-                <ixx>0.586312</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.335529</iyy>
-                <iyz>0</iyz>
-                <izz>0.335529</izz>
-                </inertia>
-            </inertial>
-            <collision name='front_right_wheel_collision_collision'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <sphere>
-                    <radius>0.31265</radius>
-                </sphere>
-                </geometry>
-                <surface>
-                <contact>
-                    <ode>
-                    <kp>1e+08</kp>
-                    <min_depth>0.005</min_depth>
-                    </ode>
-                </contact>
-                <friction>
-                    <ode>
-                    <mu>0.9</mu>
-                    <mu2>0.9</mu2>
-                    </ode>
-                </friction>
-                </surface>
-            </collision>
-            <visual name='front_right_wheel_visual'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <mesh>
-                    <scale>0.01 0.01 0.01</scale>
-                    <uri>meshes/wheel.obj</uri>
-                </mesh>
-                </geometry>
-            </visual>
-        </link>
-
-        <joint name='rear_left_wheel_joint' type='revolute'>
-            <pose relative_to='chassis'>0.793 1.45 0.3 0 -0 0</pose>
-            <parent>chassis</parent>
-            <child>rear_left_wheel</child>
-            <axis>
-                <xyz>1 0 0</xyz>
-                <limit>
-                    <lower>-1e+16</lower>
-                    <upper>1e+16</upper>
-                </limit>
-                <dynamics>
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='rear_left_wheel'>
-            <pose relative_to='rear_left_wheel_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>11</mass>
-                <inertia>
-                <ixx>0.586312</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.335529</iyy>
-                <iyz>0</iyz>
-                <izz>0.335529</izz>
-                </inertia>
-            </inertial>
-            <collision name='rear_left_wheel_collision_collision'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <sphere>
-                    <radius>0.31265</radius>
-                </sphere>
-                </geometry>
-                <surface>
-                    <contact>
-                        <ode>
-                        <kp>1e+08</kp>
-                        <min_depth>0.005</min_depth>
-                        </ode>
-                    </contact>
-                    <friction>
-                        <ode>
-                        <mu>0.9</mu>
-                        <mu2>0.9</mu2>
-                        </ode>
-                    </friction>
-                </surface>
-            </collision>
-            <visual name='rear_left_wheel_visual'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <mesh>
-                    <scale>0.01 0.01 0.01</scale>
-                    <uri>meshes/wheel.obj</uri>
-                </mesh>
-                </geometry>
-            </visual>
-        </link>
-
-        <joint name='rear_right_wheel_joint' type='revolute'>
-            <pose relative_to='chassis'>-0.793 1.45 0.3 0 -0 0</pose>
-            <parent>chassis</parent>
-            <child>rear_right_wheel</child>
-            <axis>
-                <xyz>1 0 0</xyz>
-                <limit>
-                    <lower>-1e+16</lower>
-                    <upper>1e+16</upper>
-                </limit>
-                <dynamics>
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>
-                </dynamics>
-            </axis>
-        </joint>
-
-        <link name='rear_right_wheel'>
-            <pose relative_to='rear_right_wheel_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>11</mass>
-                <inertia>
-                <ixx>0.586312</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.335529</iyy>
-                <iyz>0</iyz>
-                <izz>0.335529</izz>
-                </inertia>
-            </inertial>
-            <collision name='rear_right_wheel_collision_collision'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <sphere>
-                    <radius>0.31265</radius>
-                </sphere>
-                </geometry>
-                <surface>
-                    <contact>
-                        <ode>
-                        <kp>1e+08</kp>
-                        <min_depth>0.005</min_depth>
-                        </ode>
-                    </contact>
-                    <friction>
-                        <ode>
-                        <mu>0.9</mu>
-                        <mu2>0.9</mu2>
-                        </ode>
-                    </friction>
-                </surface>
-            </collision>
-            <visual name='rear_right_wheel_visual'>
-                <pose>0 0 0 0 -0 0</pose>
-                <geometry>
-                <mesh>
-                    <scale>0.01 0.01 0.01</scale>
-                    <uri>meshes/wheel.obj</uri>
-                </mesh>
-                </geometry>
-            </visual>
-        </link>
-        <joint name='steering_joint' type='revolute'>
-            <pose relative_to='chassis'>0.357734 -0.627868 0.988243 -1.3021 0 0</pose>
-            <parent>chassis</parent>
-            <child>steering_wheel</child>
-            <axis>
-                <xyz>0 0 1</xyz>
-                <limit>
-                    <effort>1e+07</effort>
-                    <velocity>1e+06</velocity>
-                    <lower>-1e+16</lower>
-                    <upper>1e+16</upper>
-                </limit>
-                <dynamics>
-                    <spring_reference>0</spring_reference>
-                    <spring_stiffness>0</spring_stiffness>
-                </dynamics>
-            </axis>
-        </joint>
-        <link name='steering_wheel'>
-            <pose relative_to='steering_joint'>0 0 0 0 -0 0</pose>
-            <inertial>
-                <pose>0 0 0 0 -0 0</pose>
-                <mass>1</mass>
-                <inertia>
-                <ixx>0.145833</ixx>
-                <ixy>0</ixy>
-                <ixz>0</ixz>
-                <iyy>0.145833</iyy>
-                <iyz>0</iyz>
-                <izz>0.125</izz>
-                </inertia>
-            </inertial>
-            <visual name='steering_wheel_visual'>
-                <pose>0 0 0 1.3021 -0 0</pose>
-                <geometry>
-                <mesh>
-                    <scale>0.01 0.01 0.01</scale>
-                    <uri>meshes/steering_wheel.obj</uri>
-                </mesh>
-                </geometry>
-            </visual>           
-        </link>
-
-        <plugin
-            filename="gz-sim-ackermann-steering-system"
-            name="gz::sim::systems::AckermannSteering">
-            <left_joint>front_left_wheel_joint</left_joint>
-            <left_joint>rear_left_wheel_joint</left_joint>
-            <right_joint>front_right_wheel_joint</right_joint>
-            <right_joint>rear_right_wheel_joint</right_joint>
-            <left_steering_joint>front_left_steer_joint</left_steering_joint>
-            <right_steering_joint>front_right_steer_joint</right_steering_joint>
-            
-            <kingpin_width>1.2</kingpin_width>
-            <wheel_base>2.8</wheel_base>
-            <wheel_separation>1.56</wheel_separation>
-            <wheel_radius>0.31265</wheel_radius>
-
-            <min_velocity>-5</min_velocity>
-            <max_velocity>5</max_velocity>
-            <min_acceleration>-3</min_acceleration>
-            <max_acceleration>3</max_acceleration>
-
-            <steering_only>false</steering_only>
-            <use_actuator_msg>false</use_actuator_msg>
-            <steering_limit>0.7</steering_limit> 
-            <steer_p_gain>15.0</steer_p_gain>
-            <max_steering_velocity>3.0</max_steering_velocity>
-            
-            <topic>/cmd_vel</topic>
-        </plugin>
-            
-    </model>
+    <!-- Odometry Publisher -->
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_topic>/prius_autoparking/odom</odom_topic>
+      <robot_base_frame>chassis_link</robot_base_frame>
+      <odom_frame>odom</odom_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <dimensions>3</dimensions>
+    </plugin>
+    
+    <!-- Pose Publisher -->
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <publish_collision_pose>false</publish_collision_pose>
+      <publish_visual_pose>false</publish_visual_pose>
+      <publish_nested_model_pose>true</publish_nested_model_pose>
+      <update_frequency>50</update_frequency>
+    </plugin>
+    
+  </model>
 </sdf>
