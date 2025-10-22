@@ -21,7 +21,7 @@
 
     <include>
       <uri>model://waymo</uri>
-      <pose>17 -2 0.1 0 -0.1 -3.12</pose>
+      <pose>17 -5 0.1 0 -0.1 -3.12</pose>
     </include>
 
     <include>
