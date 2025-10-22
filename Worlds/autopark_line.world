@@ -27,35 +27,35 @@
     <include>
       <uri>model://opel</uri>
       <name>opel_1</name>
-      <pose>-11 2 0 -1.55 0 -1.55</pose>
+      <pose>-11 2 0 1.55 0 -1.55</pose>
       <static>false</static>
     </include>
 
     <!--<include>
       <uri>model://opel</uri>
       <name>opel_2</name>
-      <pose>-4 1 0 -1.55 0 -1.55</pose>
+      <pose>-4 1 0 1.55 0 -1.55</pose>
       <static>false</static>
     </include>-->
 
     <include>
       <uri>model://opel</uri>
       <name>opel_3</name>
-      <pose>3 2 0 -1.55 0 -1.55</pose>
+      <pose>3 2 0 1.55 0 -1.55</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>opel_4</name>
-      <pose>10 2 0 -1.55 0 -1.55</pose>
+      <pose>10 2 0 1.55 0 -1.55</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>opel_5</name>
-      <pose>17 2 0 -1.55 0 -1.55</pose>
+      <pose>17 2 0 1.55 0 -1.55</pose>
       <static>false</static>
     </include>
 
