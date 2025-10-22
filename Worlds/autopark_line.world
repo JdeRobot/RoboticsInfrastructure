@@ -27,7 +27,7 @@
     <include>
       <uri>model://opel</uri>
       <name>opel_1</name>
-      <pose>-11 2 0 0 0 -1.55</pose>
+      <pose>-11 2 0 0 -1.55 -1.55</pose>
       <static>false</static>
     </include>
 
