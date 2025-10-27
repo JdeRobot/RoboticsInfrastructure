@@ -138,7 +138,7 @@
     </include>
     <!-- My robots -->
     <include>
-        <pose>0 0 0.1 1.5529944 0 -1.5529944</pose>
+        <pose>0 0 0.1 1.5529944 0 0</pose>
         <uri>model://taxi_holo_ROS_harmonic</uri>
     </include>
 
