@@ -15,7 +15,7 @@
 				<geometry>
 					<mesh>
 						<uri>
-							model://f1_dummy_harmonic/meshes/F1Y.obj
+							model://f1_dummy_harmonic/meshes/F1Y.stl
 						</uri>
 					</mesh>
 				</geometry>
