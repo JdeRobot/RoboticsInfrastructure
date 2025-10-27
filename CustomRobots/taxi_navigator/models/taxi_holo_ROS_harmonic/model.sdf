@@ -33,21 +33,15 @@
     </link>
 
     <!-- VelocityControl plugin: applies Twist directly to the chassis link -->
-    <plugin
-      filename="gz-sim-velocity-control-system"
-      name="gz::sim::systems::VelocityControl">
-
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
       <topic>/taxi_holo/cmd_vel</topic>
-
     </plugin>
 
-    <plugin
-      filename="gz-sim-odometry-publisher-system"
-      name="gz::sim::systems::OdometryPublisher">
-      <odom_topic>/taxi_holo/odom</odom_topic>
-      <robot_base_frame>taxi_holo</robot_base_frame>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
-      <odom_publish_frequency>20</odom_publish_frequency>
+      <robot_base_frame>xf1</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>/taxi_holo/odom</odom_topic>
       <dimensions>3</dimensions>
     </plugin>
 
