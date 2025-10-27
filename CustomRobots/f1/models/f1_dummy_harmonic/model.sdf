@@ -1,34 +1,34 @@
-<?xml version='1.0'?>
+<?xml version="1.0"?>
 <sdf version="1.4">
-<model name="f1">
-  <pose>0 0 0 0 0 0</pose>
-  <static>false</static>
-    <link name="car">
-    	<pose>0 0 0 0 0 0</pose>
-      <!-- <collision name="collision">
-            <geometry>
-              <mesh>
-            		<uri>model://f1_dummy_harmonic/meshes/F1Y.dae</uri>
-          		</mesh>
-          </geometry>
-     </collision> -->
-     <collision name="dummy_collision">
-        <pose>0 1.25 0.3 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>2.0 4.5 0.6</size>  <!-- Approximate car dimensions -->
-          </box>
-        </geometry>
-      </collision>
-      <visual name="visual">
-        <geometry>
-          <mesh>
-            <uri>model://f1_dummy_harmonic/meshes/F1Y.dae</uri>
-        </mesh>
-      </geometry>
-    </visual>
-  </link>
-    
-</model>
+	<model name="f1">
+		<pose>
+			0 0 0 0 0 0
+		</pose>
+		<static>
+			false
+		</static>
+		<link name="car">
+			<pose>
+				0 0 0 0 0 0
+			</pose>
+			<collision name="collision">
+				<geometry>
+					<mesh>
+						<uri>
+							model://f1_dummy_harmonic/meshes/F1Y.stl
+						</uri>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="visual">
+				<geometry>
+					<mesh>
+						<uri>
+							model://f1_dummy_harmonic/meshes/F1Y.dae
+						</uri>
+					</mesh>
+				</geometry>
+			</visual>
+		</link>
+	</model>
 </sdf>
-
