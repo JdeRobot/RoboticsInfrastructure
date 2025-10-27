@@ -133,12 +133,12 @@
     </model>
     <!-- My city -->
     <include>
-        <pose>0 0 -0.5 0 0 -3.14</pose>
+        <pose>0 0 -0.5 0 0 3.14</pose>
         <uri>model://cityLarge_harmonic</uri>
     </include>
     <!-- My robots -->
     <include>
-        <pose>0 0 0.1 1.5529944 0 -1.5529944</pose>
+        <pose>0 0 0.1 1.5529944 0 1.5529944</pose>
         <uri>model://taxi_holo_ROS_harmonic</uri>
     </include>
 
