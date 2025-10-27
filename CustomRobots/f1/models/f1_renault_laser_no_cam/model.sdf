@@ -50,7 +50,7 @@
         <visualize>1</visualize>
         <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
         <update_rate>20.000000</update_rate>
-        <topic>f1/laser/scan</topic>
+        <topic>/f1/laser/scan</topic>
         <frame>base_scan</frame>
         <lidar>
           <scan>
