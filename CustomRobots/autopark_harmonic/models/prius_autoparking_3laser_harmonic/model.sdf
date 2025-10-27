@@ -90,7 +90,7 @@
         <pose>1.000000 -2.60000 0.500000 0.000000 0.000000 -1.57080</pose>
         <update_rate>40</update_rate>
         <topic>/prius_autoparking/scan_front</topic>
-        <!-- <gz_frame_id>base_scan</gz_frame_id> -->
+        <gz_frame_id>chassis_link</gz_frame_id>
         <ray>
           <scan>
             <horizontal>
@@ -142,7 +142,7 @@
         <pose>1.000000 2.60000 0.500000 0.000000 0.000000 1.57080</pose>
         <update_rate>40</update_rate>
         <topic>/prius_autoparking/scan_back</topic>
-        <!-- <gz_frame_id>base_scan</gz_frame_id> -->
+        <gz_frame_id>chassis_link</gz_frame_id>
         <ray>
           <scan>
             <horizontal>
@@ -194,7 +194,7 @@
         <pose>-1.100000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
         <update_rate>40</update_rate>
         <topic>/prius_autoparking/scan_side</topic>
-        <!-- <gz_frame_id>base_scan</gz_frame_id> -->
+        <gz_frame_id>chassis_link</gz_frame_id>
         <ray>
           <scan>
             <horizontal>
