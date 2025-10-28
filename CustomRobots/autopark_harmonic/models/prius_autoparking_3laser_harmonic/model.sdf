@@ -85,12 +85,12 @@
       </sensor> -->
 
       <sensor name="side_hokuyo_sensor" type="ray">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
         <pose>1.000000 -2.60000 0.500000 0.000000 0.000000 -1.57080</pose>
-        <update_rate>40</update_rate>
+        <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_front</topic>
-        <gz_frame_id>chassis_link</gz_frame_id>
+        <frame>chassis_link</frame>
         <ray>
           <scan>
             <horizontal>
@@ -137,12 +137,12 @@
       </sensor> -->
 
       <sensor name="front_hokuyo_sensor" type="ray">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
         <pose>1.000000 2.60000 0.500000 0.000000 0.000000 1.57080</pose>
-        <update_rate>40</update_rate>
+        <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_back</topic>
-        <gz_frame_id>chassis_link</gz_frame_id>
+        <frame>chassis_link</frame>
         <ray>
           <scan>
             <horizontal>
@@ -189,12 +189,12 @@
       </sensor> -->
 
       <sensor name="back_hokuyo_sensor" type="ray">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
         <pose>-1.100000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
-        <update_rate>40</update_rate>
+        <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_side</topic>
-        <gz_frame_id>chassis_link</gz_frame_id>
+        <frame>chassis_link</frame>
         <ray>
           <scan>
             <horizontal>
