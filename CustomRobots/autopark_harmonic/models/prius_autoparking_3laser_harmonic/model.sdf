@@ -84,14 +84,14 @@
         </ray>
       </sensor> -->
 
-      <sensor name="side_hokuyo_sensor" type="ray">
+      <sensor name="side_hokuyo_sensor" type="gpu_lidar">
         <always_on>1</always_on>
         <visualize>1</visualize>
         <pose>1.000000 -2.60000 0.500000 0.000000 0.000000 -1.57080</pose>
         <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_front</topic>
         <frame>chassis_link</frame>
-        <ray>
+        <lidar>
           <scan>
             <horizontal>
               <samples>180</samples>
@@ -102,10 +102,10 @@
           </scan>
           <range>
             <min>0.120000</min>
-            <max>30.0</max>
-            <resolution>0.010</resolution>
+            <max>30.000000</max>
+            <resolution>0.010000</resolution>
           </range>
-        </ray>
+        </lidar>
       </sensor>
 
       <!-- <sensor name="back_hokuyo_sensor" type="gpu_ray">
@@ -136,14 +136,14 @@
         </ray>
       </sensor> -->
 
-      <sensor name="front_hokuyo_sensor" type="ray">
+      <sensor name="front_hokuyo_sensor" type="gpu_lidar">
         <always_on>1</always_on>
         <visualize>1</visualize>
         <pose>1.000000 2.60000 0.500000 0.000000 0.000000 1.57080</pose>
         <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_back</topic>
         <frame>chassis_link</frame>
-        <ray>
+        <lidar>
           <scan>
             <horizontal>
               <samples>180</samples>
@@ -154,10 +154,10 @@
           </scan>
           <range>
             <min>0.120000</min>
-            <max>30.0</max>
-            <resolution>0.010</resolution>
+            <max>30.000000</max>
+            <resolution>0.010000</resolution>
           </range>
-        </ray>
+        </lidar>
       </sensor>
     
     <!-- <sensor name="side_hokuyo_sensor" type="gpu_ray">
@@ -188,14 +188,14 @@
         </ray>
       </sensor> -->
 
-      <sensor name="back_hokuyo_sensor" type="ray">
+      <sensor name="back_hokuyo_sensor" type="gpu_lidar">
         <always_on>1</always_on>
         <visualize>1</visualize>
         <pose>-1.100000 0.000000 0.500000 0.000000 0.000000 3.141600</pose>
         <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_side</topic>
         <frame>chassis_link</frame>
-        <ray>
+        <lidar>
           <scan>
             <horizontal>
               <samples>180</samples>
@@ -205,11 +205,11 @@
             </horizontal>
           </scan>
           <range>
-            <min>2.40000</min>
-            <max>30.0</max>
-            <resolution>0.010</resolution>
+            <min>2.400000</min>
+            <max>30.000000</max>
+            <resolution>0.010000</resolution>
           </range>
-        </ray>
+        </lidar>
       </sensor>
 
     </link>
