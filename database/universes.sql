@@ -160,15 +160,11 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 33	Laser Mapping Warehouse	12	0
 34	Pick And Place World	34	0
 35	Car Junction World	35	0
-<<<<<<< HEAD
-
-=======
 36	Drone Gymkhana World	36	0
 37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
 40	Spa Circuit	40	0
->>>>>>> origin/humble-devel
 \.
 
 
