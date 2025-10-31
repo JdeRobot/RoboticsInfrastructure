@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 4.5.3 LTS commit date:2025-09-08, commit time:12:46, hash:67807e1800cc</authoring_tool>
     </contributor>
-    <created>2025-10-31T12:16:37</created>
-    <modified>2025-10-31T12:16:37</modified>
+    <created>2025-10-31T12:24:52</created>
+    <modified>2025-10-31T12:24:52</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -90,9 +90,7 @@
         <instance_geometry url="#SketchUp_001-mesh" name="SketchUp">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Bricks-material" target="#Bricks-material">
-                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
-              </instance_material>
+              <instance_material symbol="Bricks-material" target="#Bricks-material"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
