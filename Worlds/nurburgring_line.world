@@ -53,7 +53,7 @@
 
     <!-- Coche -->
     <include>
-      <uri>model://f1_renault</uri>
+      <uri>model://f1_renault_laser_no_cam</uri>
       <pose>-74.29 37.74 0 0 0 -0.51</pose>
     </include>
 
