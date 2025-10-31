@@ -37,6 +37,9 @@
                         <uri>model://simple_circuit/meshes/pared.stl</uri>
                     </mesh>
                 </geometry>
+                <material name="black">
+                    <color rgba="0.00 0.00 0.00 1.00"/>
+                </material>
             </visual>
 	    </link>
     </model>
