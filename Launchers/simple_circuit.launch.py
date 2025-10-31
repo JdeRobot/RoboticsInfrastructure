@@ -19,7 +19,7 @@ def generate_launch_description():
     pkg_share = FindPackageShare(package="custom_robots").find("custom_robots")
 
     # Set the path to the world file
-    world_file_name = "spa_circuit.world"
+    world_file_name = "simple_circuit.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
