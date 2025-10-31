@@ -1,7 +1,29 @@
 <?xml version="1.0" ?>
-<sdf version="1.5">
+<sdf version="1.10">
   <world name="default">
-    <gui fullscreen='1'>
+
+    <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
+    <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    
+    <gravity>0 0 -9.8</gravity>
+    <atmosphere type="adiabatic"/>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- <gui fullscreen='1'>
       <camera name='user_camera'>
         <pose>134.98 -157.93 1.7 0.00 0.16 3.132</pose>
         <view_controller>orbit</view_controller>
@@ -15,20 +37,34 @@
           <speed>12</speed>
         </clouds>
       </sky>
-    </scene>
-    <!-- A global light source -->
-    <include>
+    </scene> -->
+
+    <!-- <include>
       <uri>model://sun</uri>
       <name>sun_1</name>
       <pose>0 0 1 0 0 0</pose>
-    </include>
+    </include> -->
+
+    <!-- Circuito -->
     <include>
 	    <uri>model://big_montmelo_line</uri>
 	    <pose>0 0 0 0 0 0</pose>
     </include>
+
+    <!-- Coche -->
     <include>
       <uri>model://f1_renault_camera</uri>
       <pose>134.98 -157.93 0.026 0 0 1.56</pose>
     </include>
+
+    <!-- Luz -->
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
   </world>
 </sdf>
