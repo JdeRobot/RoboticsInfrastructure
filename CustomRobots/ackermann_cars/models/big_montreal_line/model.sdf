@@ -14,7 +14,7 @@
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://big_montreal_line/meshes/montreal.dae</uri>
+          <uri>model://big_montreal_line/meshes/montreal.obj</uri>
           <scale>5 5 5</scale>
         </mesh>
       </geometry>
@@ -24,7 +24,7 @@
     <collision name="collision">
       <geometry>
         <mesh>
-          <uri>model://big_montreal_line/meshes/montreal_pared.dae</uri>
+          <uri>model://big_montreal_line/meshes/montreal_pared.obj</uri>
           <scale>5 5 5</scale>
         </mesh>
       </geometry>
@@ -32,7 +32,7 @@
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://big_montreal_line/meshes/montreal_pared.dae</uri>
+          <uri>model://big_montreal_line/meshes/montreal_pared.obj</uri>
           <scale>5 5 5</scale>
         </mesh>
       </geometry>
