@@ -1,0 +1,102 @@
+<?xml version='1.0'?>
+<sdf version="1.9">
+<model name="f1_renault">
+  <pose>0 0 0 0 0 0</pose> 
+  <static>false</static>
+
+    <link name="f1">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>10</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0.0</ixy>
+          <iyy>1</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>1.0</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
+            <scale>0.2 0.2 0.2</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_laser_no_cam/Renault/Car.obj</uri>
+            <scale>0.2 0.2 0.2</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='laser_body'>
+      <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
+      <visual name="visual_laser">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault_laser_no_cam/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>20.000000</update_rate>
+        <topic>f1/laser/scan</topic>
+        <frame>base_scan</frame>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </link>
+
+    <!-- <velocity_decay>
+      <linear>0.000000</linear>
+      <angular>0.000000</angular>
+    </velocity_decay>
+    <self_collide>0</self_collide>
+    <kinematic>0</kinematic>
+  </link> -->
+  
+    <joint type="fixed" name="laser_fix">
+      <pose>0 0 0 0 0 0</pose>
+      <child>laser_body</child>
+      <parent>f1</parent>
+      <!-- <axis>
+        <xyz>0 0 0</xyz>
+    </axis> -->
+    </joint>
+
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/F1ROS/cmd_vel</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>xf1</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>F1ROS/odom</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+
+</model>
+</sdf>
