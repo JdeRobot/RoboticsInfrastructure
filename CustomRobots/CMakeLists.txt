@@ -83,8 +83,6 @@ install(
     Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
     # F1
     f1/models
-    f1/launch
-    f1/worlds
     f1/params
     # ROOMBA
     roomba_robot/models
