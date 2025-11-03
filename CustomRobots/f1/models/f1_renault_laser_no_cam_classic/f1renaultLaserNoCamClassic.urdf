@@ -8,7 +8,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://f1/models/f1_renault_laser_no_cam/Renault/Car.obj" scale="0.2 0.2 0.2"/>
+        <mesh filename="package://f1/models/f1_renault_laser_no_cam_classic/Renault/Car.obj" scale="0.2 0.2 0.2"/>
       </geometry>
     </visual>
   </link>
@@ -16,7 +16,7 @@
     <origin rpy="0.000000 0.000000 0.00000" xyz="0.500000 0.000000 0.072000"/>
     <visual>
       <geometry>
-        <mesh filename="package://f1/models/f1_renault_laser_no_cam/meshes/hokuyo.dae"/>
+        <mesh filename="package://f1/models/f1_renault_laser_no_cam_classic/meshes/hokuyo.dae"/>
       </geometry>
     </visual>
     <kinematic>0</kinematic>
