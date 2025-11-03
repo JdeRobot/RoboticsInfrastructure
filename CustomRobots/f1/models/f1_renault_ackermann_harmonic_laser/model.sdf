@@ -41,7 +41,7 @@
         <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>5 5 5</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
@@ -62,7 +62,7 @@
         <pose>0 1.51 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>5 5 5</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.obj</uri>
           </mesh>
         </geometry>
