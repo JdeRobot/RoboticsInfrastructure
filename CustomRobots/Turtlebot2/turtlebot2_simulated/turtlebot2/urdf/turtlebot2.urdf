@@ -722,7 +722,7 @@
   <joint name="camera_joint" type="fixed">
     <parent link="base_link"/>
     <child link="camera_link"/>
-    <origin rpy="0 0 0" xyz="0.13 0 0.32"/>
+    <origin rpy="0 -0.32 0" xyz="0.13 0 0.32"/>
   </joint>
   <link name="camera_depth_frame"/>
   <joint name="camera_depth_joint" type="fixed">
