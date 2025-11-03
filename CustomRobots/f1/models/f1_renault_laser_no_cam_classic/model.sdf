@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version="1.9">
+<sdf version="1.7">
 <model name="f1_renault">
   <pose>0 0 0 0 0 0</pose> 
   <static>false</static>
