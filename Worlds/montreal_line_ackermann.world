@@ -54,7 +54,7 @@
     <!-- Coche -->
     <include>
       <uri>model://f1_renault_ackermann_harmonic_laser</uri>
-      <pose>-1005.67 -454.14 0.00 0.00 0.00 1.87</pose>
+      <pose>-200.88 -90.72 0.00 0.00 0.00 1.87</pose>
     </include>
 
     <!-- Luz -->
