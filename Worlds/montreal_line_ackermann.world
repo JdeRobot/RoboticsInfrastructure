@@ -47,7 +47,7 @@
 
     <!-- Circuito -->
     <include>
-	    <uri>model://big_montreal_line</uri>
+	    <uri>model://montreal_line</uri>
 	    <pose>0 0 0 0 0 0</pose>
     </include>
 

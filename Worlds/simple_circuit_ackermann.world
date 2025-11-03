@@ -47,7 +47,7 @@
 
     <!-- Circuito -->
     <include>
-	    <uri>model://big_simple_circuit</uri>
+	    <uri>model://simple_circuit</uri>
 	    <pose>0 0 0 0 0 0</pose>
     </include>
 
