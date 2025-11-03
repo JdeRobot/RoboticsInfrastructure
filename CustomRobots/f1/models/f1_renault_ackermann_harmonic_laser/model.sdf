@@ -125,7 +125,7 @@
         <pose>0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_left.obj</uri>
           </mesh>
         </geometry>
@@ -188,7 +188,7 @@
         <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_right.obj</uri>
           </mesh>
         </geometry>
@@ -238,7 +238,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>4.7 4.7 4.7</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
@@ -350,7 +350,7 @@
         <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.001 0.001 0.001</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fl_1.stl</uri>
           </mesh>
         </geometry>
@@ -371,7 +371,7 @@
         <pose>0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_left.obj</uri>
           </mesh>
         </geometry>
@@ -447,7 +447,7 @@
         <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.001 0.001 0.001</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fr_1.stl</uri>
           </mesh>
         </geometry>
@@ -468,7 +468,7 @@
         <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_right.obj</uri>
           </mesh>
         </geometry>
