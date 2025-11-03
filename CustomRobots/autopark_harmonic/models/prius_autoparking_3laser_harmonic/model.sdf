@@ -142,7 +142,8 @@
         <pose relative_to='base_link'>-0.024000 -2.60000 0.500000 0.000000 0.000000 -1.57080</pose>
         <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_back</topic>
-        <frame>chassis_link</frame>
+        <!-- <frame>chassis_link</frame> -->
+        <frame>base_link</frame>
         <lidar>
           <scan>
             <horizontal>
@@ -194,7 +195,8 @@
         <pose relative_to='base_link'>1.100000 0.000000 0.500000 0.000000 0.000000 0.000000</pose>
         <update_rate>40.000000</update_rate>
         <topic>/prius_autoparking/scan_side</topic>
-        <frame>chassis_link</frame>
+        <!-- <frame>chassis_link</frame> -->
+        <frame>base_link</frame>
         <lidar>
           <scan>
             <horizontal>
