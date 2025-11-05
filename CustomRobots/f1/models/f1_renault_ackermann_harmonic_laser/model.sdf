@@ -41,7 +41,7 @@
         <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
@@ -62,7 +62,7 @@
         <pose>0 1.51 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>0.2 0.2 0.2</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.obj</uri>
           </mesh>
         </geometry>
@@ -125,7 +125,7 @@
         <pose>0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_left.obj</uri>
           </mesh>
         </geometry>
@@ -188,7 +188,7 @@
         <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_right.obj</uri>
           </mesh>
         </geometry>
@@ -371,7 +371,7 @@
         <pose>0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_left.obj</uri>
           </mesh>
         </geometry>
@@ -468,7 +468,7 @@
         <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_right.obj</uri>
           </mesh>
         </geometry>
