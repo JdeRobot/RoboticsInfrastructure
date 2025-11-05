@@ -222,7 +222,7 @@
       </physics>
     </joint>
     <link name='steering_wheel'>
-      <pose relative_to='steering_joint'>0 0.87 -0.54 0 0 1.5708</pose>
+      <pose relative_to='steering_joint'>0 0.174 -0.108 0 0 1.5708</pose>
       <inertial>
         <mass>0.5</mass>
         <inertia>
@@ -238,7 +238,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>4.7 4.7 4.7</scale>
+            <scale>0.94 0.94 0.94</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
@@ -350,7 +350,7 @@
         <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>0.0002 0.0002 0.0002</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fl_1.stl</uri>
           </mesh>
         </geometry>
@@ -447,7 +447,7 @@
         <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>0.0002 0.0002 0.0002</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fr_1.stl</uri>
           </mesh>
         </geometry>
