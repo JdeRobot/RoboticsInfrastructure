@@ -26,7 +26,7 @@
 
     <link name='chassis_link'>
       <inertial>
-        <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
+        <pose>0.0000002 0.014614 0.130192 0 -0 0</pose>
         <mass>1580</mass>
         <inertia>
           <ixx>1997.86</ixx>
@@ -38,7 +38,7 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <pose>0 0.302 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
@@ -59,7 +59,7 @@
       </collision>
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
         <!-- <pose>0 1.51 0 0 -0 1.5708</pose> -->
-        <pose>0 1.51 0 1.5708 -0 1.5708</pose>
+        <pose>0 0.302 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
@@ -72,7 +72,7 @@
 
     <!-- Back Left Wheel -->
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.155 -0.366728 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -122,7 +122,7 @@
       </collision>
       <visual name='bl_1_visual'>
         <!-- <pose>0.875 1.0136 0.1444 0 -0 0</pose> -->
-        <pose>0.875 0.14 -1.0126 0 -0 0</pose>
+        <pose>0.175 0.028 -0.20252 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.02 0.02 0.02</scale>
@@ -135,7 +135,7 @@
 
     <!-- Back Right Wheel -->
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.155 -0.366728 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -199,7 +199,7 @@
 
     <!-- Steering Wheel -->
     <joint name="steering_joint" type="revolute">
-      <pose relative_to='chassis_link'>-0.01 0.6 0.6 0 0 0</pose>
+      <pose relative_to='chassis_link'>-0.002 0.12 0.12 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>steering_wheel</child>
       <axis>
@@ -282,7 +282,7 @@
 
     <!-- Single Steering Joint for both front wheels -->
     <joint name='front_steering' type='revolute'>
-      <pose relative_to='chassis_link'>0 1.51736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0 0.303472 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>front_steering_link</child>
       <axis>
@@ -318,7 +318,7 @@
 
     <!-- Front Left Wheel -->
     <joint name='fl_axle' type='revolute'>
-      <pose relative_to='front_steering_link'>-0.825 0 0 0 -0 0</pose>
+      <pose relative_to='front_steering_link'>-0.165 0 0 0 -0 0</pose>
       <parent>front_steering_link</parent>
       <child>fl_1</child>
       <axis>
@@ -347,7 +347,7 @@
         </inertia>
       </inertial>
       <collision name='fl_1_collision'>
-        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose>0.175 -0.30348 0.02888 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.0002 0.0002 0.0002</scale>
@@ -368,7 +368,7 @@
       </collision>
       <visual name='fl_1_visual'>
         <!-- <pose>0.875 -1.5174 0.1444 0 -0 0</pose> -->
-        <pose>0.875 0.1444 1.5174 0 -0 0</pose>
+        <pose>0.175 0.02888 0.30348 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.02 0.02 0.02</scale>
@@ -415,7 +415,7 @@
 
     <!-- Front Right Wheel -->
     <joint name='fr_axle' type='revolute'>
-      <pose relative_to='front_steering_link'>0.825 0 0 0 -0 0</pose>
+      <pose relative_to='front_steering_link'>0.165 0 0 0 -0 0</pose>
       <parent>front_steering_link</parent>
       <child>fr_1</child>
       <axis>
@@ -432,7 +432,7 @@
     <link name='fr_1'>
       <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>-0.00754 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -444,7 +444,7 @@
         </inertia>
       </inertial>
       <collision name='fr_1_collision'>
-        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose>-0.175 -0.30348 0.02888 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.0002 0.0002 0.0002</scale>
@@ -465,7 +465,7 @@
       </collision>
       <visual name='fr_1_visual'>
         <!-- <pose>-0.875 -1.5174 0.1444 0 -0 0</pose> -->
-        <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
+        <pose>-0.175 0.02888 0.30348 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.02 0.02 0.02</scale>
@@ -479,7 +479,7 @@
 
     <link name="camera_rgb_frame">
       <inertial>
-        <pose>0.069 -0.047 0.107 0 0 0</pose>
+        <pose>0.0138 -0.0094 0.0214 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0.000</ixy>
@@ -491,7 +491,7 @@
         <mass>0.035</mass>
       </inertial>
 
-      <pose>0.069 -0.047 0.107 0 0 0</pose>
+      <pose>0.0138 -0.0094 0.0214 0 0 0</pose>
       <sensor name="camera" type="camera">
         <always_on>true</always_on>
         <visualize>true</visualize>
@@ -523,7 +523,7 @@
     </link>
 
     <link name='laser_body'>
-      <pose relative_to='chassis_link'>0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
+      <pose relative_to='chassis_link'>0.00000 0.34000 0.14000 0.000000 0.000000 1.57000</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -575,7 +575,7 @@
     <joint name="camera_joint" type="fixed">
       <parent>chassis_link</parent>
       <child>camera_link</child>
-      <pose>0.064 -0.065 0.094 0 0 0</pose>
+      <pose>0.0128 -0.013 0.0188 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
@@ -584,7 +584,7 @@
     <joint name="camera_rgb_joint" type="fixed">
       <parent>camera_link</parent>
       <child>camera_rgb_frame</child>
-      <pose>0.005 0.018 0.013 0 0 0</pose>
+      <pose>0.001 0.0036 0.0026 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
