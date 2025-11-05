@@ -185,7 +185,7 @@
       </collision>
       <visual name='br_1_visual'>
         <!-- <pose>-0.875 1.0136 0.1444 0 -0 0</pose> -->
-        <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
+        <pose>-0.175 0.02 -0.20252 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.02 0.02 0.02</scale>
