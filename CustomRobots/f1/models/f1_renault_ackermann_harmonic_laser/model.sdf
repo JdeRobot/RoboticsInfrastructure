@@ -101,12 +101,12 @@
         </inertia>
       </inertial>
       <collision name='bl_1_collision'>
-        <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>0.175 0.20252 0.028 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <radius>.3425</radius>
-            <length>.22</length>
-          </cylinder>
+          <mesh>
+            <scale>0.0002 0.0002 0.0002</scale>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/bl_1.stl</uri>
+          </mesh>
         </geometry>
         <surface>
           <contact>
@@ -164,12 +164,12 @@
         </inertia>
       </inertial>
       <collision name='br_1_collision'>
-        <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>-0.175 0.20252 0.028 0 0 0</pose>
         <geometry>
-          <cylinder>
-            <radius>.3425</radius>
-            <length>.22</length>
-          </cylinder>
+          <mesh>
+            <scale>0.0002 0.0002 0.0002</scale>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/br_1.stl</uri>
+          </mesh>
         </geometry>
         <surface>
           <contact>
@@ -185,7 +185,7 @@
       </collision>
       <visual name='br_1_visual'>
         <!-- <pose>-0.875 1.0136 0.1444 0 -0 0</pose> -->
-        <pose>-0.175 0.02 -0.20252 0 -0 0</pose>
+        <pose>-0.175 0.028 -0.20252 0 -0 0</pose>
         <geometry>
           <mesh>
             <scale>0.02 0.02 0.02</scale>
