@@ -20,12 +20,19 @@
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
       <shadows>true</shadows>
+      <grid>false</grid>
     </scene>
+
+    <include>
+      <uri>model://sun</uri>
+      <name>sun_1</name>
+      <pose>0 0 10 0 0 0</pose>
+    </include>
 
     <!-- Carretera -->
     <include>
       <uri>model://autopark_line</uri>
-      <pose> 0 0 0 0 0 0</pose>
+      <pose> 0 -1 0 0 0 3.14</pose>
     </include>
 
     <include>
@@ -33,252 +40,102 @@
       <pose>-7 2.5 1.0 0 0 -1.54</pose>
     </include>
 
-    <!-- <include>
+    <include>
       <uri>model://opel</uri>
       <name>opel_1</name>
-      <pose>-11 2 0 1.55 0 -1.55</pose>
-      <static>false</static>
-    </include> -->
+      <pose>-20 -3 0 1.57 0 1.57</pose>
+      <static>true</static>
+    </include>
 
-    <!--<include>
+    <include>
       <uri>model://opel</uri>
       <name>opel_2</name>
-      <pose>-4 1 0 1.55 0 -1.55</pose>
-      <static>false</static>
-    </include>-->
+      <pose>-13.5 -3 0 1.57 0 1.57</pose>
+      <static>true</static>
+    </include>
 
-    <!-- <include>
+    <include>
       <uri>model://opel</uri>
       <name>opel_3</name>
-      <pose>3 2 0 1.55 0 -1.55</pose>
-      <static>false</static>
+      <pose>-7 -3 0 1.57 0 1.57</pose>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>opel_4</name>
-      <pose>10 2 0 1.55 0 -1.55</pose>
-      <static>false</static>
+      <pose>0.5 -3 0 1.57 0 1.57</pose>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://opel</uri>
       <name>opel_5</name>
-      <pose>17 2 0 1.55 0 -1.55</pose>
-      <static>false</static>
+      <pose>14 -3 0 1.57 0 1.57</pose>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_0</name>
-      <pose>20 4.2 0 0 0 0</pose>
+      <pose>20 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_1</name>
-      <pose>15 4.2 0 0 0 0</pose>
+      <pose>15 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_2</name>
-      <pose>10 4.2 0 0 0 0</pose>
+      <pose>10 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_3</name>
-      <pose>5 4.2 0 0 0 0</pose>
+      <pose>5 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_4</name>
-      <pose>0 4.2 0 0 0 0</pose>
+      <pose>0 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_5</name>
-      <pose>-5 4.2 0 0 0 0</pose>
+      <pose>-5 -5.2 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_6</name>
-      <pose>-10 4.2 0 0 0 0</pose>
+      <pose>-10 -5.2 0 0 0 3.14</pose>
       <static>false</static>
-    </include> -->
+    </include>
 
-    <!-- Luz -->
-    <light name="sun" type="directional">
-      <pose>0 0 10 0 0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <direction>-0.5 0.1 -0.9</direction>
-      <cast_shadows>true</cast_shadows>
-    </light>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>farola_7</name>
+      <pose>-15 -5.2 0 0 0 3.14</pose>
+      <static>false</static>
+    </include>
 
-    <!-- Cars -->
-    <model name="car1">
-        <pose>-20 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car2">
-        <pose>-13.5 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car3">
-        <pose>-7 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car4">
-        <pose>0.5 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car5">
-        <pose>14 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car6">
-        <pose>21.5 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
-
-    <model name="car7">
-        <pose>29 -3 0 1.57 0 1.57</pose>
-        <static>true</static>
-        <link name="car1">
-            <gravity>true</gravity>
-            <collision name="collision">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </collision>
-            <visual name="visual">
-                <geometry>
-                    <mesh>
-                        <uri>model://opel/meshes/model.obj</uri>
-                    </mesh>
-                </geometry>
-            </visual>
-        </link>
-    </model>
+    <include>
+      <uri>model://lamp_post</uri>
+      <name>farola_8</name>
+      <pose>-20 -5.2 0 0 0 3.14</pose>
+      <static>false</static>
+    </include>
   </world>
 </sdf>
