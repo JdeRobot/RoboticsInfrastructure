@@ -30,7 +30,7 @@
 
     <include>
       <uri>model://prius_autoparking_3laser_harmonic</uri>
-      <pose>10 -2 0.1 0 -0.1 1.55</pose>
+      <pose>-7 2.5 0.02 0 0 -1.54</pose>
     </include>
 
     <!-- <include>
