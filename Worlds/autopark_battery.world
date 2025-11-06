@@ -32,7 +32,7 @@
     <!-- Carretera -->
     <include>
       <uri>model://autopark_battery</uri>
-      <pose> 0 -2 0 0 0 3.14</pose>
+      <pose> 0 -3 0 0 0 3.14</pose>
     </include>
 
     <include>
@@ -127,63 +127,63 @@
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_0</name>
-      <pose>20 -5.2 0 0 0 3.14</pose>
+      <pose>20 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_1</name>
-      <pose>15 -5.2 0 0 0 3.14</pose>
+      <pose>15 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_2</name>
-      <pose>10 -5.2 0 0 0 3.14</pose>
+      <pose>10 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_3</name>
-      <pose>5 -5.2 0 0 0 3.14</pose>
+      <pose>5 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_4</name>
-      <pose>0 -5.2 0 0 0 3.14</pose>
+      <pose>0 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_5</name>
-      <pose>-5 -5.2 0 0 0 3.14</pose>
+      <pose>-5 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_6</name>
-      <pose>-10 -5.2 0 0 0 3.14</pose>
+      <pose>-10 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_7</name>
-      <pose>-15 -5.2 0 0 0 3.14</pose>
+      <pose>-15 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_8</name>
-      <pose>-20 -5.2 0 0 0 3.14</pose>
+      <pose>-20 -6.5 0 0 0 3.14</pose>
       <static>false</static>
     </include>
 
@@ -195,5 +195,6 @@
       <direction>-0.5 0.1 -0.9</direction>
       <cast_shadows>true</cast_shadows>
     </light> -->
+    
   </world>
 </sdf>
