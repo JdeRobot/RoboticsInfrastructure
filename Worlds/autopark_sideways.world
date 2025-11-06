@@ -96,34 +96,6 @@
       <static>true</static>
     </include>
 
-    <!-- <include>
-      <uri>model://opel</uri>
-      <name>opel_9</name>
-      <pose>13 -4 0 1.55 0 0.349</pose>
-      <static>true</static>
-    </include> -->
-
-    <!-- <include>
-      <uri>model://opel</uri>
-      <name>opel_10</name>
-      <pose>18 -4 0 1.55 0 0.349</pose>
-      <static>true</static>
-    </include> -->
-
-    <!-- <include>
-      <uri>model://opel</uri>
-      <name>opel_11</name>
-      <pose>20.5 -4 0 1.55 0 0.349</pose>
-      <static>true</static>
-    </include> -->
-
-    <!-- <include>
-      <uri>model://opel</uri>
-      <name>opel_12</name>
-      <pose>26.2 -4 0 1.55 0 0.349</pose>
-      <static>true</static>
-    </include> -->
-
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_0</name>
@@ -186,15 +158,5 @@
       <pose>-20 -8 0 0 0 3.14</pose>
       <static>false</static>
     </include>
-
-    <!-- Luz -->
-    <!-- <light name="sun" type="directional">
-      <pose>0 0 10 0 0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <direction>-0.5 0.1 -0.9</direction>
-      <cast_shadows>true</cast_shadows>
-    </light> -->
-    
   </world>
 </sdf>
