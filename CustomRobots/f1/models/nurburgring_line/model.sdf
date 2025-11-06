@@ -23,14 +23,14 @@
     <collision name="collision">
       <geometry>
         <mesh>
-          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.stl</uri>
         </mesh>
       </geometry>
     </collision>
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.dae</uri>
+          <uri>model://nurburgring_line/meshes/Nurburgrin_Pared.stl</uri>
         </mesh>
       </geometry>
     </visual>
