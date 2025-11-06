@@ -135,14 +135,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -157,14 +157,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -179,14 +179,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -201,14 +201,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -223,14 +223,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -245,14 +245,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -267,14 +267,14 @@
             <collision name="collision">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </collision>
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>model://opel/meshes/model.dae</uri>
+                        <uri>model://opel/meshes/model.obj</uri>
                     </mesh>
                 </geometry>
             </visual>
