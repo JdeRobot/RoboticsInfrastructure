@@ -51,19 +51,21 @@
         <geometry>
           <mesh>
             <scale>0.01 0.0109 0.01</scale>
-            <uri>model://prius_autoparking_3laser_harmonic/meshes/hybrid_body.obj</uri>
+            <uri>model://prius_autoparking_lidar/meshes/hybrid_body.obj</uri>
           </mesh>
         </geometry>
-      </visual>             
+      </visual>
+
+      <!-- Lidar and platform -->
 
       <sensor name="side_hokuyo_sensor" type="gpu_lidar">
         <always_on>1</always_on>
-        <visualize>1</visualize>
-        <pose relative_to='base_link'>0 0 1.5 0 0 0</pose>
-        <update_rate>40.000000</update_rate>
+        <visualize>true</visualize>
+        <pose relative_to='base_link'>0 -1.25 1.75 0 0 0</pose>
+        <update_rate>10</update_rate>
         <topic>/prius_autoparking/scan</topic>
         <frame>base_link</frame>
-        <lidar>
+        <ray>
           <scan>
             <horizontal>
               <samples>360</samples>
@@ -74,22 +76,50 @@
            <vertical>
                 <samples>180</samples>
                 <resolution>1.000000</resolution>
-                <min_angle>-1.570796</min_angle>
-                <max_angle>1.570796</max_angle>
+                <min_angle>-0.785</min_angle>
+                <max_angle>0.785</max_angle>
             </vertical>
           </scan>
           <range>
-            <min>2.400000</min>
-            <max>30.000000</max>
+            <min>1.400000</min>
+            <max>20.000000</max>
             <resolution>0.010000</resolution>
           </range>
-        </lidar>
+        </ray>
       </sensor>
+      
+      <visual name='lidar_base'>
+        <pose relative_to='base_link'>0 -1.25 1.725 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.05</length>
+              <radius>0.15</radius>
+            </cylinder>
+        </geometry>
+      </visual>
+      <visual name='lidar_connect'>
+        <pose relative_to='base_link'>0 -1.25 1.575 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.25</length>
+              <radius>0.025</radius>
+            </cylinder>
+        </geometry>
+      </visual>
+      <visual name="visual_lidar">
+          <pose relative_to='base_link'>0 -1.25 1.75 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>30 30 30</scale>
+              <uri>model://prius_autoparking_lidar/meshes/hokuyo.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
 
     </link>
 
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.775 -1.63364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -145,7 +175,7 @@
     </link>
 
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.775 -1.63364 0.324997 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
