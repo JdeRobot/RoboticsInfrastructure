@@ -13,8 +13,8 @@
   direction: ROS_TO_GZ
 
 # gz topic published by Sensors plugin (LIDAR)
-- ros_topic_name: "/prius_autoparking/scan"
-  gz_topic_name: "/prius_autoparking/scan"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
+- ros_topic_name: "/prius_autoparking/pc2"
+  gz_topic_name: "/prius_autoparking/pc2"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS

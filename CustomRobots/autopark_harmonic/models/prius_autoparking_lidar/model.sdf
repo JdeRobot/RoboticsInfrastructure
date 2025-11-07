@@ -63,9 +63,9 @@
         <visualize>true</visualize>
         <pose relative_to='base_link'>0 -1.25 1.75 0 0 0</pose>
         <update_rate>10</update_rate>
-        <topic>/prius_autoparking/scan</topic>
+        <topic>/prius_autoparking/pc2</topic>
         <frame>base_link</frame>
-        <ray>
+        <lidar>
           <scan>
             <horizontal>
               <samples>360</samples>
@@ -85,7 +85,12 @@
             <max>20.000000</max>
             <resolution>0.010000</resolution>
           </range>
-        </ray>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
       </sensor>
       
       <visual name='lidar_base'>
