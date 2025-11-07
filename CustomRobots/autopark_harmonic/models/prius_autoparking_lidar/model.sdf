@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.8">
 
-  <model name='prius_autoparking_3laser_harmonic'>
+  <model name='prius_autoparking_lidar'>
   <pose>0 0 0.0 0 0 0</pose>
 
     <link name='base_link' />
@@ -58,7 +58,7 @@
 
       <!-- Lidar and platform -->
 
-      <sensor name="side_hokuyo_sensor" type="gpu_lidar">
+      <sensor name="lidar" type="gpu_lidar">
         <always_on>1</always_on>
         <visualize>true</visualize>
         <pose relative_to='base_link'>0 -1.25 1.75 0 0 0</pose>
@@ -73,11 +73,11 @@
               <min_angle>-3.14</min_angle>
               <max_angle>3.14</max_angle>
             </horizontal>
-           <vertical>
-                <samples>180</samples>
-                <resolution>1.000000</resolution>
-                <min_angle>-0.785</min_angle>
-                <max_angle>0.785</max_angle>
+            <vertical>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-0.785</min_angle>
+              <max_angle>0.785</max_angle>
             </vertical>
           </scan>
           <range>
