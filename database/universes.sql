@@ -160,6 +160,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 39	Autopark_line	39	0
 40	Autopark_battery	40	0
 41	Autopark_sideways	41	0
+42	Autopark Lidar Line	42	0
 \.
 
 
@@ -205,6 +206,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 39	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 40	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 41	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+42	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
