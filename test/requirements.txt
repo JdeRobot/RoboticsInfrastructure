@@ -1,5 +1,5 @@
 annotated-types==0.7.0
-black==22.3.0
+black==24.2.0
 catkin-pkg==1.0.0
 click==8.2.1
 docutils==0.21.2
