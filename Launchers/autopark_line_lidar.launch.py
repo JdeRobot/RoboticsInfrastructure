@@ -30,7 +30,7 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    robot_launch_dir = "/opt/jderobot/Launchers/autopark_line"
+    robot_launch_dir = "/opt/jderobot/Launchers/autopark_line_lidar"
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     x_pose = LaunchConfiguration("x_pose", default="1.0")

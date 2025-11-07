@@ -96,6 +96,10 @@
               <radius>0.15</radius>
             </cylinder>
         </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
       </visual>
       <visual name='lidar_connect'>
         <pose relative_to='base_link'>0 -1.25 1.575 0 0 0</pose>
@@ -105,12 +109,16 @@
               <radius>0.025</radius>
             </cylinder>
         </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
       </visual>
       <visual name="visual_lidar">
-          <pose relative_to='base_link'>0 -1.25 1.75 0 0 0</pose>
+          <pose relative_to='base_link'>0 -1.25 1.725 0 0 0</pose>
           <geometry>
             <mesh>
-              <scale>30 30 30</scale>
+              <scale>28 28 28</scale>
               <uri>model://prius_autoparking_lidar/meshes/hokuyo.dae</uri>
             </mesh>
           </geometry>
