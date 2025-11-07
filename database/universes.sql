@@ -134,7 +134,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 7	Follow Person	10	0
 8	Follow Person Teleop	11	0
 9	Autoparking Simple: In line	7	0
-10	Obstacle Avoidance Default	19	0
+10	Obstacle Avoidance Classic	19	0
 11 	City Large Followcam	9	0
 12 	3d Reconstruction	1	0
 13 	Autoparking Simple: In battery	6	0
@@ -164,6 +164,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
+40	Obstacle Avoidance Harmonic	40	0
 \.
 
 
@@ -192,7 +193,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 17	Nurburgring Ackermann Circuit	/opt/jderobot/Launchers/nurburgring_circuit_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-19	Obstacle Avoidance Default	/opt/jderobot/Launchers/simple_circuit_obstacles_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+19	Obstacle Avoidance Classic	/opt/jderobot/Launchers/simple_circuit_obstacles.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 20	Rescue Default	/opt/jderobot/Launchers/world.json	None	ROS2	drones	{0.0,0.0,0.0,0.0,0.0,0.0}
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -213,6 +214,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
