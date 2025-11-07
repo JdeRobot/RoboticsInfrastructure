@@ -14,7 +14,7 @@
 
 # gz topic published by Sensors plugin (LIDAR)
 - ros_topic_name: "/prius_autoparking/pc2"
-  gz_topic_name: "/prius_autoparking/pc2"
+  gz_topic_name: "/prius_autoparking/pc2/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
