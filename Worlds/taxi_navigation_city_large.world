@@ -21,10 +21,19 @@
     </plugin>
 
     <scene>
-      <background>0.7 0.7 0.7 1</background>
+      <background>0.008 0.008 0.012</background>
       <shadows>true</shadows>
       <grid>false</grid>
     </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>0</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>1 1 1 1</specular>
+      <direction>0 0 -1</direction>
+      <visualize>false</visualize>
+    </light>
 
     <!-- Black Ground Plane -->
     <model name="ground_plane">
