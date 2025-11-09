@@ -36,7 +36,7 @@ def generate_launch_description():
     x_pose = LaunchConfiguration("x_pose", default="1.0")
     y_pose = LaunchConfiguration("y_pose", default="-1.5")
     z_pose = LaunchConfiguration("z_pose", default="7.1")
-    world_file_name = "monaco_line.world"
+    world_file_name = "monaco_circuit.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
@@ -62,12 +62,12 @@ def generate_launch_description():
 
     declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="1.57079")
 
-    # robot_state_publisher_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
-    #     ),
-    #     launch_arguments={"use_sim_time": use_sim_time}.items(),
-    # )
+    robot_state_publisher_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
+        ),
+        launch_arguments={"use_sim_time": use_sim_time}.items(),
+    )
 
     spawn_robot_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -99,7 +99,7 @@ def generate_launch_description():
     ld.add_action(declare_pitch_cmd)
     ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
-    # ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_robot_cmd)
 
     return ld
