@@ -198,7 +198,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	gz	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
