@@ -133,9 +133,14 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 6	Montreal Circuit	16	0
 7	Follow Person	10	0
 8	Follow Person Teleop	11	0
+9	Autoparking Simple: In line	7	0
 10	Obstacle Avoidance Default	19	0
 11 	City Large Followcam	9	0
 12 	3d Reconstruction	1	0
+13 	Autoparking Simple: In battery	6	0
+14 	Autoparking Gas Station: In line	3	0
+15 	Autoparking Gas Station: In battery	2	0
+16 	Autoparking Gas Station: Parking lot	4	0
 17 	Warehouse 1 Ackermann	28	0
 18 	Warehouse 2 Ackermann	30	0
 19	Warehouse 2	29	0
@@ -145,6 +150,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 23 	Montmelo Ackermann Circuit	13	0
 24 	Montreal Ackermann Circuit	15	0
 25 	Simple Ackermann Circuit	22	0
+26	Autoparking Lidar Simple: In line	5	0
 27	Vacuums House Roof	26	0
 28	Restaurant	21	0
 29	Vacuums House Markers	25	0
@@ -172,6 +178,12 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
 0	None	None	None	ROS2	none	{0.0,0.0,0.0,0.0,0.0,0.0}
 1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+2	Autoparking Gas Station: In battery	/opt/jderobot/Launchers/gas_station_battery_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+3	Autoparking Gas Station: In line	/opt/jderobot/Launchers/gas_station_line_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+4	Autoparking Gas Station: Parking lot	/opt/jderobot/Launchers/gas_station_parking_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+5	Autoparking Lidar Simple: In line	/opt/jderobot/Launchers/prius_360_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+6	Autoparking Simple: In battery	/opt/jderobot/Launchers/prius_bateria.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 8	City Large	/opt/jderobot/Launchers/taxi_navigator.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 9	City Large Followcam	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
