@@ -103,14 +103,10 @@ install(
     # ACKERMANN LOGISTIC ROBOT
     ackermann_logistic_robot/models
     # AUTOPARKING CARS
-    autoparking/launch
     autoparking/models
-    autoparking/worlds
     # AUTOPARK_HARMONIC
-    autopark_harmonic/launch
     autopark_harmonic/models
     autopark_harmonic/params
-    autopark_harmonic/worlds
     # DRONE_ASSETS
     drone_assets/models
     drone_assets/worlds
