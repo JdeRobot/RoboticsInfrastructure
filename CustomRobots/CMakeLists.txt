@@ -113,6 +113,7 @@ install(
     drone_assets/bridges
     # GLOBAL_NAVIGATION
     taxi_navigator/models
+    taxi_navigator/params
     # 3D RECONSTRUCTION
     3d_reconstruction/models
     # MARKER VISUAL LOC
