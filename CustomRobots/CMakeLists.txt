@@ -123,10 +123,8 @@ install(
     drone_assets/worlds
     drone_assets/bridges
     # GLOBAL_NAVIGATION
-    taxi_navigator/launch
     taxi_navigator/models
     taxi_navigator/params
-    taxi_navigator/worlds
     # 3D RECONSTRUCTION
     3d_reconstruction/launch
     3d_reconstruction/models
