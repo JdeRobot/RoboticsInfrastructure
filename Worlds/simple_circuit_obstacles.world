@@ -2,10 +2,14 @@
 <sdf version="1.5">
   <world name="default">
     <gui fullscreen='1'>
-      <camera name='user_camera'>
-        <pose >160.45 -26.32 1.65 0 0.31 -1.53</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
+     <camera name="user_camera">
+        <track_visual>
+          <name>f1_renault</name>
+          <static>true</static>
+          <use_model_frame>true</use_model_frame>
+          <xyz>-4 0 2.25</xyz>
+          <inherit_yaw>true</inherit_yaw>
+        </track_visual>
       </camera>
     </gui>
     <!-- A global light source -->
@@ -14,10 +18,10 @@
     </include>
     <include>
       <uri>model://simple_circuit</uri>
-	<pose>-53.46 11.50 0 0 0 0</pose>
+	    <pose>-53.46 11.50 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault_laser_no_cam</uri>
+      <uri>model://f1_renault_laser_no_cam_classic</uri>
       <pose>0.04 0.68 0 0 0 -1.57</pose>
     </include>
     <include>

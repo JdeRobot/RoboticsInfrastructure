@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="characters">
+  <link name="characters_body">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/charactersMario/models/characters.dae" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="blocks">
+  <link name="blocks_body">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/blocks/models/blocks.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

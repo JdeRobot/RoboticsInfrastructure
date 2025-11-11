@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<robot name="opel">
+  <link name="opel">
+    <inertial>
+      <mass value="500"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="camera_center">
+    <origin rpy="0.000000 0.000000 0.000000" xyz="-0.3000 -0.3000 1.400"/>
+    <visual>
+      <geometry>
+        <sphere radius=".01"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <link name="camera_left">
+    <origin rpy="0.000000 0.000000 1.000000" xyz="0.7000 -2.200 0.500"/>
+    <visual>
+      <geometry>
+        <sphere radius=".01"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <link name="camera_right">
+    <origin rpy="0.000000 0.000000 -1.000000" xyz="-0.7000 -2.200 0.500"/>
+    <visual>
+      <geometry>
+        <sphere radius=".01"/>
+      </geometry>
+    </visual>
+    <kinematic>0</kinematic>
+  </link>
+  <joint name="camera_center" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="camera_center"/>
+    <parent link="opel"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="camera_left" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="camera_left"/>
+    <parent link="opel"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="camera_right" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <child link="camera_right"/>
+    <parent link="opel"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+</robot>

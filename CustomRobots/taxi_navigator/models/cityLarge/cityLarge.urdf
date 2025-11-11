@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<robot name="cityLarge">
+  <link name="city">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/cityLarge/meshes/model.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

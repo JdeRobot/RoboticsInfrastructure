@@ -58,15 +58,15 @@ def generate_launch_description():
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist", 
+            "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
             "/odom@nav_msgs/msg/Odometry]gz.msgs.Odometry",
             "/waymo/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             "/waymo/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
         ],
-        parameters=[{'use_sim_time': True}],
+        parameters=[{"use_sim_time": True}],
         output="screen",
     )
-    
+
     # Set the path to the SDF model files.
     gazebo_models_path = os.path.join(pkg_share, "models")
     os.environ["GAZEBO_MODEL_PATH"] = (
