@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.10">
-  <world name="autopark">
+  <world name="default">
     <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
     <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
     <plugin
