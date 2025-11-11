@@ -7,7 +7,7 @@
     <!-- Chassis link -->
     <link name="taxi_holo">
       <inertial>
-        <mass>750.0</mass>
+        <mass>1.0</mass>
         <inertia>
           <ixx>1</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
           <iyy>1</iyy><iyz>0.0</iyz>
