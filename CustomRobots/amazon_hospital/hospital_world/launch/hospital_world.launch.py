@@ -18,12 +18,12 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(pkg_share_dir, "models")
     gazebo_fuel_models_path = os.path.join(pkg_share_dir, "fuel_models")
-    os.environ[
-        "GAZEBO_MODEL_PATH"
-    ] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
-    os.environ[
-        "GAZEBO_MODEL_PATH"
-    ] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_fuel_models_path)}"
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
+    )
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_fuel_models_path)}"
+    )
 
     gazebo_ros = get_package_share_directory("gazebo_ros")
     gazebo_client = launch.actions.IncludeLaunchDescription(

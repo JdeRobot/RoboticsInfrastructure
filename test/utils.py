@@ -1,6 +1,5 @@
 """Utility functions with common usage in tests."""
 
-
 import psutil
 
 

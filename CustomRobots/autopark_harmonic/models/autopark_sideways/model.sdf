@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.10">
+  <model name="road">
+    <static>true</static>
+    <link name="road_link">
+      <pose>0 0 0 0 0 0</pose>
+      <visual name="road_visual">
+        <geometry>
+          <mesh>
+            <uri>model://autopark_sideways/meshes/autopark_sideways.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="road_collision">
+        <geometry>
+          <mesh>
+            <uri>model://autopark_sideways/meshes/autopark_sideways.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
