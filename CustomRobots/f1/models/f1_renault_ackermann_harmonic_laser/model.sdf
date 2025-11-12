@@ -522,7 +522,7 @@
       </sensor>
     </link>
 
-    <link name='laser_body'>
+    <!-- <link name='laser_body'>
       <pose relative_to='chassis_link'>0.00000 0.34000 0.14000 0.000000 0.000000 1.57000</pose>
       <inertial>
         <mass>0.1</mass>
@@ -570,7 +570,7 @@
         <topic>/model/f1_renault_ackermann_harmonic_laser/laser/scan</topic>
       </sensor>
       <self_collide>false</self_collide>
-    </link>
+    </link> -->
     
     <joint name="camera_joint" type="fixed">
       <parent>chassis_link</parent>
@@ -590,14 +590,14 @@
       </axis>
     </joint>
 
-    <joint type="fixed" name="laser_fix">
+    <!-- <joint type="fixed" name="laser_fix">
       <pose>0 0 0 0 0 0</pose>
       <child>laser_body</child>
       <parent>chassis_link</parent>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
-    </joint>
+    </joint> -->
 
     <!-- Gazebo Harmonic Plugins -->
     

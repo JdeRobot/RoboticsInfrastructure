@@ -35,7 +35,7 @@
       </visual>
     </link>
 
-    <link name='laser_body'>
+    <!-- <link name='laser_body'>
       <pose>0.500000 0.000000 0.072000 0.000000 0.000000 0.00000</pose>
       <visual name="visual_laser">
         <geometry>
@@ -67,7 +67,7 @@
           </range>
         </lidar>
       </sensor>
-    </link>
+    </link> -->
 
     <!-- <velocity_decay>
       <linear>0.000000</linear>
@@ -77,14 +77,14 @@
     <kinematic>0</kinematic>
   </link> -->
   
-    <joint type="fixed" name="laser_fix">
+    <!-- <joint type="fixed" name="laser_fix">
       <pose>0 0 0 0 0 0</pose>
       <child>laser_body</child>
       <parent>f1</parent>
-      <!-- <axis>
+      <axis>
         <xyz>0 0 0</xyz>
-    </axis> -->
-    </joint>
+      </axis>
+    </joint> -->
 
     <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
       <topic>/F1ROS/cmd_vel</topic>
