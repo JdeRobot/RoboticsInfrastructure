@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "roombaROS_harmonic"
+    model_folder = "roombaROS"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "roombaROS_harmonic.yaml"
+        get_package_share_directory("custom_robots"), "params", "roombaROS.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
