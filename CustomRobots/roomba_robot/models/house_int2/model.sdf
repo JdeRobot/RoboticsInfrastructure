@@ -12,12 +12,16 @@
             </submesh>
           </mesh>
         </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
-        </material>
+      </visual>
+      <visual name="floor_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/model.dae</uri>
+            <submesh>
+              <name>Plane</name>
+            </submesh>
+          </mesh>
+        </geometry>
       </visual>
       <visual name="encimera_visual">
         <geometry>
@@ -28,15 +32,6 @@
             </submesh>
           </mesh>
         </geometry>
-        <material>
-          <diffuse>1.0 1.0 1.0 1.0</diffuse>
-          <specular>0.0 0.0 0.0 1.0</specular>
-          <pbr>
-            <metal>
-              <albedo_map>meshes/wood.jpg</albedo_map>
-            </metal>
-          </pbr>
-        </material>
       </visual>
       <visual name="barra_visual">
         <geometry>
@@ -47,15 +42,6 @@
             </submesh>
           </mesh>
         </geometry>
-        <material>
-          <diffuse>1.0 1.0 1.0 1.0</diffuse>
-          <specular>0.0 0.0 0.0 1.0</specular>
-          <pbr>
-            <metal>
-              <albedo_map>meshes/wood.jpg</albedo_map>
-            </metal>
-          </pbr>
-        </material>
       </visual>
       <visual name="frigo_visual">
         <geometry>
@@ -66,12 +52,6 @@
             </submesh>
           </mesh>
         </geometry>
-        <material>
-          <script>
-            <name>Gazebo/White</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
-        </material>
       </visual>
       <collision name="house_int2_harmonic_collision">
         <geometry>
@@ -86,5 +66,15 @@
         </surface>
       </collision>
     </link>
+    <include>
+        <uri>model://mesa_comedor</uri>
+        <pose>-2.1 0 0 0 0 1.57</pose>
+        <static>true</static>
+    </include>
+    <include>
+        <uri>model://silla</uri>
+        <pose>-2.1 -0.1 0 0 -0 0</pose>
+        <static>true</static>
+    </include>
   </model>
 </sdf>
