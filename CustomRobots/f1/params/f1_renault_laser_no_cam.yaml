@@ -18,3 +18,10 @@
 #   ros_type_name: "sensor_msgs/msg/LaserScan"
 #   gz_type_name: "gz.msgs.LaserScan"
 #   direction: GZ_TO_ROS
+
+# gz topic published by Sensors plugin (Camera)
+- ros_topic_name: "/cam_f1_left/camera_info"
+  gz_topic_name: "/cam_f1_left/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
