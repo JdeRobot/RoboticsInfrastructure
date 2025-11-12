@@ -264,22 +264,6 @@
                     "$type": "EditorVisibilityComponent",
                     "Id": 17415240968328691967
                 },
-                "Component_[2318932367744128274]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 2318932367744128274,
-                    "m_template": {
-                        "$type": "ROSbotXLDemoSampleComponent",
-                        "goals": [
-                            "Entity_[549827034797]",
-                            "Entity_[545532067501]"
-                        ],
-                        "goalMessageTopic": {
-                            "QoS": {
-                                "Reliability": 1
-                            }
-                        }
-                    }
-                },
                 "Component_[3203687041529654758]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 3203687041529654758
@@ -832,7 +816,7 @@
                             "$type": "ROS2OdometrySensorComponent",
                             "Id": 0,
                             "SensorConfiguration": {
-                                "Visualise": true,
+                                "Visualize": true,
                                 "Publishing Enabled": true,
                                 "Frequency (HZ)": 10.0,
                                 "Publishers": {
@@ -849,6 +833,21 @@
                             }
                         }
                     }
+                },
+                {
+                    "op": "replace",
+                    "path": "/Instances/Instance_[3732164110801]/Entities/Entity_[5438320919269]/Components/ROS2Lidar2DSensorComponent_2/m_template/SensorConfiguration/Frequency (HZ)",
+                    "value": 100.0
+                },
+                {
+                    "op": "replace",
+                    "path": "/Instances/Instance_[3732164110801]/Entities/Entity_[5438320919269]/Components/ROS2Lidar2DSensorComponent_2/m_template/lidarCore/lidarConfiguration/LidarParameters/Points per layer",
+                    "value": 180
+                },
+                {
+                    "op": "replace",
+                    "path": "/Instances/Instance_[3732164110801]/Entities/Entity_[5438320919269]/Components/TransformComponent/Transform Data/Translate/2",
+                    "value": 0.03999999165534973
                 }
             ]
         },
@@ -867,298 +866,18 @@
                 },
                 {
                     "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/0/MaterialAsset/assetId/guid",
-                    "value": "{07918D02-A9A8-5954-8E5D-C2FE080F8010}"
+                    "path": "/Entities/Entity_[729070309458]/Components/Component_[3130608849925615607]/Controller/Configuration/ModelAsset/assetHint",
+                    "value": "o3descene/warehouse.fbx.azmodel"
                 },
                 {
                     "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/0/MaterialAsset/assetHint",
-                    "value": "physx/plastic.physicsmaterial"
+                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ShapeConfiguration/PhysicsAsset/Asset/assetHint",
+                    "value": "o3descene/warehouse.fbx.pxmesh"
                 },
                 {
                     "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/1/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/1/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/1/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/2/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/2/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/2/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/3/MaterialAsset/assetId/guid",
-                    "value": "{0C799856-9E0E-568D-A282-597D13A8556C}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/3/MaterialAsset/assetHint",
-                    "value": "physx/wood.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/4/MaterialAsset/assetId/guid",
-                    "value": "{92A5EC27-1AC1-523E-88BB-9A6278DBD853}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/4/MaterialAsset/assetHint",
-                    "value": "physx/metal.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/5/MaterialAsset/assetId/guid",
-                    "value": "{6D044767-4E3B-5116-A1A7-9C65BCF586A0}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/5/MaterialAsset/assetHint",
-                    "value": "physx/terrain_dirt.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/6/MaterialAsset/assetId/guid",
-                    "value": "{92A5EC27-1AC1-523E-88BB-9A6278DBD853}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/6/MaterialAsset/assetHint",
-                    "value": "physx/metal.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/7/MaterialAsset/assetId/guid",
-                    "value": "{AEFC12E4-B92E-5473-9B09-C6CDEC23EC7E}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/7/MaterialAsset/assetHint",
-                    "value": "physx/concrete.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/8/MaterialAsset/assetId/guid",
-                    "value": "{AEFC12E4-B92E-5473-9B09-C6CDEC23EC7E}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/8/MaterialAsset/assetHint",
-                    "value": "physx/concrete.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/10/MaterialAsset/assetId/guid",
-                    "value": "{92A5EC27-1AC1-523E-88BB-9A6278DBD853}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/10/MaterialAsset/assetHint",
-                    "value": "physx/metal.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/11/MaterialAsset/assetId/guid",
-                    "value": "{92A5EC27-1AC1-523E-88BB-9A6278DBD853}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/11/MaterialAsset/assetHint",
-                    "value": "physx/metal.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/12/MaterialAsset/assetId/guid",
-                    "value": "{92A5EC27-1AC1-523E-88BB-9A6278DBD853}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/12/MaterialAsset/assetHint",
-                    "value": "physx/metal.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/13/MaterialAsset/assetId/guid",
-                    "value": "{AEFC12E4-B92E-5473-9B09-C6CDEC23EC7E}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/13/MaterialAsset/assetHint",
-                    "value": "physx/concrete.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/14/MaterialAsset/assetId/guid",
-                    "value": "{0A945400-0986-5053-9811-D4F349E73B9C}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/14/MaterialAsset/assetHint",
-                    "value": "physx/character.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/15/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/15/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/15/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/16/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/16/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/16/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/17/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/17/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/17/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/18/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/18/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/18/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/19/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/19/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/19/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/20/MaterialAsset/assetId/guid",
-                    "value": "{6D9F8E0A-466E-5774-8974-FC7F0872FD00}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/20/MaterialAsset/assetHint",
-                    "value": "physx/rubber.physicsmaterial"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/21/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/21/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/21/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/22/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/22/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/22/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/23/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/23/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/23/MaterialAsset/assetHint",
-                    "value": ""
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/24/MaterialAsset/assetId/guid",
-                    "value": "{00000000-0000-0000-0000-000000000000}"
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/24/MaterialAsset/assetId/subId",
-                    "value": 0
-                },
-                {
-                    "op": "replace",
-                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ColliderConfiguration/MaterialSlots/Slots/24/MaterialAsset/assetHint",
-                    "value": ""
+                    "path": "/Entities/Entity_[729070309458]/Components/Component_[9485936813148123686]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetHint",
+                    "value": "o3descene/warehouse.fbx.pxmesh"
                 }
             ]
         }
