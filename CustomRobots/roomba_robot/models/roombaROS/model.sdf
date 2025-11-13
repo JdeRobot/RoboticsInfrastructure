@@ -2,29 +2,9 @@
 <sdf version="1.5">
   <model name="roombaROS">
 
-    <!-- <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
-      <ros>
-        <namespace>/gazebo</namespace>
-      </ros>
-      <update_rate>1.0</update_rate>
-    </plugin> -->
-
     <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
 
     <link name="base">
-
-      <!-- <inertial>
-        <pose>0.001453 -0.000453 0.029787 0 0 0</pose>
-        <inertia>
-          <ixx>0.058640</ixx>
-          <ixy>0.000124</ixy>
-          <ixz>0.000615</ixz>
-          <iyy>0.058786</iyy>
-          <iyz>0.000014</iyz>
-          <izz>1.532440</izz>
-        </inertia>
-        <mass>2.234000</mass>
-      </inertial> -->
 
       <inertial>
         <mass>1.0</mass>
@@ -39,7 +19,6 @@
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/create_body.dae</uri>
           </mesh>
         </geometry>
@@ -49,7 +28,6 @@
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/create_body.dae</uri>
           </mesh>
         </geometry>
@@ -59,7 +37,6 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/right_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -69,7 +46,6 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/center_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -79,7 +55,6 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/left_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -238,21 +213,6 @@
         </ray>
       </sensor>
 
-      <!-- <sensor name="right_bumper" type="contact">
-        <always_on>true</always_on>
-        <update_rate>20.0</update_rate>
-        <contact>
-          <collision>right_bumper_collision</collision>
-        </contact>
-        <plugin name="gazebo_ros_right_bumper_controller" filename="libgazebo_ros_bumper.so">
-          <bumperTopicName>/roombaROS/events/right_bumper</bumperTopicName>
-          <ros>
-            <remapping>/bumper_states:=/roombaROS/events/right_bumper</remapping>
-          </ros>
-          <frameName>right_bumper_sensor</frameName>
-        </plugin>
-      </sensor> -->
-
       <sensor name="right_bumper" type="contact">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
@@ -262,21 +222,6 @@
         </contact>
       </sensor>
 
-      <!-- <sensor name="center_bumper" type="contact">
-        <always_on>true</always_on>
-        <update_rate>20.0</update_rate>
-        <contact>
-          <collision>center_bumper_collision</collision>
-        </contact>
-        <plugin name="gazebo_ros_center_bumper_controller" filename="libgazebo_ros_bumper.so">
-          <bumperTopicName>/roombaROS/events/center_bumper</bumperTopicName>
-          <ros>
-            <remapping>/bumper_states:=/roombaROS/events/center_bumper</remapping>
-          </ros>
-          <frameName>center_bumper_sensor</frameName>
-        </plugin>
-      </sensor> -->
-
       <sensor name="center_bumper" type="contact">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
@@ -285,21 +230,6 @@
           <topic>/roombaROS/events/center_bumper</topic>
         </contact>
       </sensor>
-
-      <!-- <sensor name="left_bumper" type="contact">
-        <always_on>true</always_on>
-        <update_rate>20.0</update_rate>
-        <contact>
-          <collision>left_bumper_collision</collision>
-        </contact>
-        <plugin name="gazebo_ros_left_bumper_controller" filename="libgazebo_ros_bumper.so">
-          <bumperTopicName>/roombaROS/events/left_bumper</bumperTopicName>
-          <ros>
-            <remapping>/bumper_states:=/roombaROS/events/left_bumper</remapping>
-          </ros>
-          <frameName>left_bumper_sensor</frameName>
-        </plugin>
-      </sensor> -->
 
       <sensor name="left_bumper" type="contact">
         <always_on>true</always_on>
@@ -457,35 +387,6 @@
         <max_contacts>10</max_contacts>
       </collision>
 
-      <!-- <sensor name='laser' type='ray'>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>180</samples>
-              <resolution>1.000000</resolution>
-              <min_angle>-1.570000</min_angle>
-              <max_angle>1.570000</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.080000</min>
-            <max>10.000000</max>
-            <resolution>0.010000</resolution>
-          </range>
-        </ray>
-        <update_rate>20.000000</update_rate>
-        <always_on>1</always_on>
-        <visualize>1</visualize>
-        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
-          <ros>
-            <remapping>~/out:=/roombaROS/laser/scan</remapping>
-          </ros>
-          <output_type>sensor_msgs/LaserScan</output_type>
-          <frameName>laser</frameName>
-          <update_rate>20.000000</update_rate>
-        </plugin>
-      </sensor> -->
-
       <sensor name='laser' type='gpu_lidar'>
         <lidar>
           <scan>
@@ -542,31 +443,7 @@
     <joint name='joint_laser' type='fixed'>
       <parent>base</parent>
       <child>laser</child>
-      <!-- <axis>
-        <xyz>0.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis> -->
     </joint>
-
-    <!-- <plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>10</updateRate>
-      <leftJoint>right_wheel_joint</leftJoint>
-      <rightJoint>left_wheel_joint</rightJoint>
-      <wheelSeparation>0.5380</wheelSeparation>
-      <wheelDiameter>0.2410</wheelDiameter>
-      <torque>20</torque>
-      <commandTopic>/cmd_vel</commandTopic>
-      <odometryTopic>roombaROS/odom</odometryTopic>
-      <odometryFrame>odom</odometryFrame>
-      <odometryRate>20.0</odometryRate>
-      <robotBaseFrame>base</robotBaseFrame>
-      <publishWheelTF>true</publishWheelTF>
-      <publishWheelJointState>true</publishWheelJointState>
-    </plugin> -->
 
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <left_joint>left_wheel_joint</left_joint>

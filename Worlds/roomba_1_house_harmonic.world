@@ -36,10 +36,6 @@
       <uri>model://house_int2</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
-    	
-    <!-- <include>
-      <uri>model://ground_plane_sincolor</uri>
-    </include> -->
 
     <light type="directional" name="sun">
       <cast_shadows>1</cast_shadows>
