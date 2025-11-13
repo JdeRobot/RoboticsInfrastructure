@@ -39,6 +39,7 @@
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/create_body.dae</uri>
           </mesh>
         </geometry>
@@ -48,6 +49,7 @@
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/create_body.dae</uri>
           </mesh>
         </geometry>
@@ -57,6 +59,7 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/right_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -66,6 +69,7 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/center_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -75,6 +79,7 @@
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/left_bumper.dae</uri>
           </mesh>
         </geometry>
@@ -425,6 +430,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
+            <scale>0.1 0.1 0.1</scale>
             <uri>model://roombaROS/meshes/hokuyo_roomba.dae</uri>
           </mesh>
         </geometry>
