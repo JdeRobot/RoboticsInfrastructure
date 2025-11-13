@@ -37,9 +37,9 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
     	
-    <include>
+    <!-- <include>
       <uri>model://ground_plane_sincolor</uri>
-    </include>
+    </include> -->
 
     <light type="directional" name="sun">
       <cast_shadows>1</cast_shadows>
