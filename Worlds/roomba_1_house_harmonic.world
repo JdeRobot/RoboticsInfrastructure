@@ -27,10 +27,10 @@
       <grid>false</grid>
     </scene>
     
-    <include>
+    <!-- <include>
       <uri>model://roombaROS</uri>
       <pose>-1 1.5 0 0 0 0</pose>
-    </include>
+    </include> -->
     
     <include>
       <uri>model://house_int2</uri>
