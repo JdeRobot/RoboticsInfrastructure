@@ -12,20 +12,7 @@
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ
 
-# gz topic published by Sensors plugin (LIDAR)
-# - ros_topic_name: "/model/f1_renault_ackermann_harmonic_laser/laser/scan"
-#   gz_topic_name: "/model/f1_renault_ackermann_harmonic_laser/laser/scan"
-#   ros_type_name: "sensor_msgs/msg/LaserScan"
-#   gz_type_name: "gz.msgs.LaserScan"
-#   direction: GZ_TO_ROS
-
 # gz topic published by Sensors plugin (Camera)
-- ros_topic_name: "/model/f1_renault_ackermann_harmonic_laser/camera/image_raw"
-  gz_topic_name: "/model/f1_renault_ackermann_harmonic_laser/camera/image_raw"
-  ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "gz.msgs.Image"
-  direction: GZ_TO_ROS
-
 - ros_topic_name: "/model/f1_renault_ackermann_harmonic_laser/camera/camera_info"
   gz_topic_name: "/model/f1_renault_ackermann_harmonic_laser/camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
