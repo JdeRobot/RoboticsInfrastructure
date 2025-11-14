@@ -86,6 +86,7 @@ install(
     f1/params
     # ROOMBA
     roomba_robot/models
+    roomba_robot/params
     # ACKERMAN CAR
     ackermann_cars/models
     # CARS
