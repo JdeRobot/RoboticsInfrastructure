@@ -80,7 +80,7 @@ def generate_launch_description():
     start_gazebo_ros_image_bridge_cmd = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/model/f1_renault_ackermann_harmonic_laser/camera/image_raw"],
+        arguments=["/cam_f1_left/image_raw"],
         output="screen",
     )
 

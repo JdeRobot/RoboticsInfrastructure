@@ -496,10 +496,10 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>30</update_rate>
-        <topic>/model/f1_renault_ackermann_harmonic_laser/camera/image_raw</topic>
+        <topic>/cam_f1_left/image_raw</topic>
         <gz_frame_id>camera_rgb_frame</gz_frame_id>
         <camera name="intel_realsense_r200">
-          <camera_info_topic>/model/f1_renault_ackermann_harmonic_laser/camera/camera_info</camera_info_topic>
+          <camera_info_topic>/cam_f1_left/camera_info</camera_info_topic>
           <horizontal_fov>1.02974</horizontal_fov>
           <image>
             <width>1920</width>
