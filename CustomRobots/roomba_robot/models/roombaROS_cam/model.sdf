@@ -1,14 +1,19 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
   <model name="roombaROS_cam">
-    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+
+    <!-- <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
       <ros>
         <namespace>/gazebo</namespace>
       </ros>
       <update_rate>1.0</update_rate>
-    </plugin>
+    </plugin> -->
+
+    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
+
     <link name="base">
-      <inertial>
+
+      <!-- <inertial>
         <pose>0.001453 -0.000453 0.029787 0 0 0</pose>
         <inertia>
           <ixx>0.058640</ixx>
@@ -19,7 +24,17 @@
           <izz>1.532440</izz>
         </inertia>
         <mass>2.234000</mass>
+      </inertial> -->
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>1</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
+          <iyy>1</iyy><iyz>0.0</iyz>
+          <izz>1</izz>
+        </inertia>
       </inertial>
+
       <collision name="base_collision">
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
@@ -28,6 +43,7 @@
           </mesh>
         </geometry>
       </collision>
+
       <visual name="base_visual">
         <pose>0 0 0.047800 0 0 0</pose>
         <geometry>
@@ -36,6 +52,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <collision name="right_bumper_collision">
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
@@ -44,6 +61,7 @@
           </mesh>
         </geometry>
       </collision>
+
       <collision name="center_bumper_collision">
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
@@ -52,6 +70,7 @@
           </mesh>
         </geometry>
       </collision>
+
       <collision name="left_bumper_collision">
         <pose>-0.01 0 0.03 0 0 0</pose>
         <geometry>
@@ -60,6 +79,7 @@
           </mesh>
         </geometry>
       </collision>
+
       <collision name="front_wheel_collision">
         <pose>0.130000 0 0.017000 0 1.570700 1.570700</pose>
         <geometry>
@@ -79,6 +99,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name="front_wheel_visual">
         <pose>0.130000 0 0.017000 0 1.570700 1.570700</pose>
         <geometry>
@@ -87,6 +108,7 @@
           </sphere>
         </geometry>
       </visual>
+
       <collision name="rear_wheel_collision">
         <pose>-0.13 0 0.017 0 1.5707 1.5707</pose>
         <geometry>
@@ -106,6 +128,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name="rear_wheel_visual">
         <pose>-0.130000 0 0.017000 0 1.570700 1.570700</pose>
         <geometry>
@@ -114,6 +137,7 @@
           </sphere>
         </geometry>
       </visual>
+
       <sensor name="left_cliff_sensor" type="ray">
         <pose>0.070000 0.140000 0.027000 0 1.570790 0</pose>
         <ray>
@@ -132,6 +156,7 @@
           </range>
         </ray>
       </sensor>
+
       <sensor name="leftfront_cliff_sensor" type="ray">
         <pose>0.150000 0.040000 0.027000 0 1.570790 0</pose>
         <ray>
@@ -150,6 +175,7 @@
           </range>
         </ray>
       </sensor>
+
       <sensor name="right_cliff_sensor" type="ray">
         <pose>0.070000 -0.140000 0.027000 0 1.570790 0</pose>
         <ray>
@@ -168,6 +194,7 @@
           </range>
         </ray>
       </sensor>
+
       <sensor name="rightfront_cliff_sensor" type="ray">
         <pose>0.150000 -0.040000 0.027000 0 1.570790 0</pose>
         <ray>
@@ -186,6 +213,7 @@
           </range>
         </ray>
       </sensor>
+
       <sensor name="wall_sensor" type="ray">
         <pose>0.090000 -0.120000 0.059000 0 0 -1.000000</pose>
         <ray>
@@ -204,7 +232,8 @@
           </range>
         </ray>
       </sensor>
-      <sensor name="right_bumper" type="contact">
+
+      <!-- <sensor name="right_bumper" type="contact">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
         <contact>
@@ -217,8 +246,18 @@
           </ros>
           <frameName>right_bumper_sensor</frameName>
         </plugin>
+      </sensor> -->
+
+      <sensor name="right_bumper" type="contact">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <contact>
+          <collision>right_bumper_collision</collision>
+          <topic>/roombaROS/events/right_bumper</topic>
+        </contact>
       </sensor>
-      <sensor name="center_bumper" type="contact">
+
+      <!-- <sensor name="center_bumper" type="contact">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
         <contact>
@@ -231,8 +270,18 @@
           </ros>
           <frameName>center_bumper_sensor</frameName>
         </plugin>
+      </sensor> -->
+
+      <sensor name="center_bumper" type="contact">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <contact>
+          <collision>center_bumper_collision</collision>
+          <topic>/roombaROS/events/center_bumper</topic>
+        </contact>
       </sensor>
-      <sensor name="left_bumper" type="contact">
+
+      <!-- <sensor name="left_bumper" type="contact">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
         <contact>
@@ -245,11 +294,23 @@
           </ros>
           <frameName>left_bumper_sensor</frameName>
         </plugin>
+      </sensor> -->
+
+      <sensor name="left_bumper" type="contact">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <contact>
+          <collision>left_bumper_collision</collision>
+          <topic>/roombaROS/events/left_bumper</topic>
+        </contact>
       </sensor>
+
     </link>
+
 
     <link name="left_wheel">
       <pose>0 0.130000 0.032000 0 0 0</pose>
+
       <inertial>
         <inertia>
           <ixx>0.001000</ixx>
@@ -261,6 +322,7 @@
         </inertia>
         <mass>0.010000</mass>
       </inertial>
+
       <collision name="collision">
         <pose>0 0 0 0 1.570700 1.570700</pose>
         <geometry>
@@ -281,6 +343,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name="visual">
         <pose>0 0 0 0 1.570700 1.570700</pose>
         <geometry>
@@ -290,9 +353,13 @@
           </cylinder>
         </geometry>
       </visual>
+
     </link>
+
+
     <link name="right_wheel">
       <pose>0 -0.130000 0.032000 0 0 0</pose>
+
       <inertial>
         <inertia>
           <ixx>0.001000</ixx>
@@ -304,6 +371,7 @@
         </inertia>
         <mass>0.010000</mass>
       </inertial>
+
       <collision name="collision">
         <pose>0 0 0 0 1.570700 1.570700</pose>
         <geometry>
@@ -324,6 +392,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name="visual">
         <pose>0 0 0 0 1.570700 1.570700</pose>
         <geometry>
@@ -333,10 +402,14 @@
           </cylinder>
         </geometry>
       </visual>
+
     </link>
+
+
     <link name='laser'>
       <pose>0.139000 0.000000 0.0752000 0.000000 0.000000 0.000000</pose>
       <gravity>0</gravity>
+
       <inertial>
         <mass>0.100000</mass>
         <inertia>
@@ -348,6 +421,7 @@
           <izz>1.000000</izz>
         </inertia>
       </inertial>
+
       <visual name='visual'>
         <geometry>
           <mesh>
@@ -355,6 +429,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <collision name='collision-base'>
         <pose>0.000000 0.000000 -0.014500 0.000000 0.000000 0.000000</pose>
         <geometry>
@@ -364,6 +439,7 @@
         </geometry>
         <max_contacts>10</max_contacts>
       </collision>
+
       <collision name='collision-top'>
         <pose>0.000000 0.000000 0.020500 0.000000 0.000000 0.000000</pose>
         <geometry>
@@ -374,7 +450,8 @@
         </geometry>
         <max_contacts>10</max_contacts>
       </collision>
-      <sensor name='laser' type='ray'>
+
+      <!-- <sensor name='laser' type='ray'>
         <ray>
           <scan>
             <horizontal>
@@ -401,8 +478,32 @@
           <frameName>laser</frameName>
           <update_rate>20.000000</update_rate>
         </plugin>
+      </sensor> -->
+
+      <sensor name='laser' type='gpu_lidar'>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+        </lidar>
+        <update_rate>20.000000</update_rate>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <topic>/roombaROS/laser/scan</topic>
+        <gz_frame_id>laser</gz_frame_id>
       </sensor>
-      <sensor name="camera" type="camera">
+
+      <!-- <sensor name="camera" type="camera">
         <pose>0 0 0 0 -1.57 0</pose>
         <visualize>true</visualize>
         <update_rate>10</update_rate>
@@ -421,14 +522,50 @@
         <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
           <frame_name>laser</frame_name>
         </plugin>
+      </sensor> -->
+
+      <sensor name="camera" type="camera">
+        <pose>0 0 0 0 -1.57 0</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <topic>/camera/image_raw</topic>
+        <gz_frame_id>laser</gz_frame_id>
+        <camera name="intel_realsense_r200">
+          <camera_info_topic>/camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.089</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>8.0</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera> 
       </sensor>
+
       <velocity_decay>
         <linear>0.000000</linear>
         <angular>0.000000</angular>
       </velocity_decay>
+
       <self_collide>0</self_collide>
+
       <kinematic>0</kinematic>
+
     </link>
+
+
     <joint name="left_wheel_joint" type="revolute">
       <parent>base</parent>
       <child>left_wheel</child>
@@ -437,6 +574,7 @@
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
     </joint>
+
     <joint name="right_wheel_joint" type="revolute">
       <parent>base</parent>
       <child>right_wheel</child>
@@ -445,38 +583,46 @@
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
     </joint>
+
     <joint name='joint_laser' type='fixed'>
       <parent>base</parent>
       <child>laser</child>
-      <axis>
+      <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
-      </axis>
+      </axis> -->
     </joint>
 
-    <plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
+    <!-- <plugin name="differential_drive_controller" filename="libgazebo_ros_planar_move.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>10</updateRate>
       <leftJoint>right_wheel_joint</leftJoint>
       <rightJoint>left_wheel_joint</rightJoint>
-
       <wheelSeparation>0.5380</wheelSeparation>
       <wheelDiameter>0.2410</wheelDiameter>
-
       <torque>20</torque>
       <commandTopic>/cmd_vel</commandTopic>
-      <!-- topic name published in the cpp file -->
       <odometryTopic>roombaROS/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometryRate>20.0</odometryRate>
-
       <robotBaseFrame>base</robotBaseFrame>
-
       <publishWheelTF>true</publishWheelTF>
       <publishWheelJointState>true</publishWheelJointState>
+    </plugin> -->
+
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/roombaROS/cmd_vel</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>/roombaROS/odom</odom_topic>
+      <dimensions>3</dimensions>
     </plugin>
 
   </model>
