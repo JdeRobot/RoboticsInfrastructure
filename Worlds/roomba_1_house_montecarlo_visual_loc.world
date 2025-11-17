@@ -20,12 +20,12 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
-	<gui fullscreen=1>
-	  <camera name='user_camera'>
-		<pose frame=''>-2.41 5.36 2.04 0.00 0.254 -1.14</pose>
-		<view_controller>orbit</view_controller>
-		<projection_type>perspective</projection_type>
-		</camera>
+	  <gui fullscreen=1>
+	    <camera name='user_camera'>
+		    <pose frame=''>-2.41 5.36 2.04 0.00 0.254 -1.14</pose>
+		    <view_controller>orbit</view_controller>
+		    <projection_type>perspective</projection_type>
+		  </camera>
     </gui>
 
     <scene>
@@ -45,7 +45,7 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-	<include>
+	  <include>
       <uri>model://ground_plane_sincolor</uri>
     </include>
 
