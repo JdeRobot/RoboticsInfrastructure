@@ -107,6 +107,7 @@ def generate_launch_description():
 
     # Add any conditioned actions
     # ld.add_action(start_gazebo_ros_spawner_cmd)
+    ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(start_gazebo_ros_image_bridge_cmd_left)
     ld.add_action(start_gazebo_ros_image_bridge_cmd_right)
     # ld.add_action(start_gazebo_ros_image_bridge_cmd)
