@@ -116,6 +116,7 @@ install(
     taxi_navigator/params
     # 3D RECONSTRUCTION
     3d_reconstruction/models
+    3d_reconstruction/params
     # MARKER VISUAL LOC
     marker_visual_loc/models
     turtlebot3/models

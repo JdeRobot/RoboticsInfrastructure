@@ -179,7 +179,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 
 COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
 0	None	None	None	ROS2	none	{0.0,0.0,0.0,0.0,0.0,0.0}
-1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 2	Autoparking Gas Station: In battery	/opt/jderobot/Launchers/gas_station_battery_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 3	Autoparking Gas Station: In line	/opt/jderobot/Launchers/gas_station_line_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 4	Autoparking Gas Station: Parking lot	/opt/jderobot/Launchers/gas_station_parking_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
