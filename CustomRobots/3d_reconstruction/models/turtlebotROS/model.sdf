@@ -1126,13 +1126,13 @@
     <joint name='joint_laser' type='revolute'>
       <parent>rack</parent>
       <child>laser</child>
-      <axis>
+      <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
-      </axis>
+      </axis> -->
     </joint>
 
     <joint name='pan_joint_left' type='revolute'>
@@ -1165,13 +1165,13 @@
       <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
       <child>camera_bottom_body_left</child>
       <parent>rack</parent>
-      <axis>
+      <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
-      </axis>
+      </axis> -->
     </joint>
 
     <joint name='pan_joint_right' type='revolute'>
@@ -1204,14 +1204,14 @@
       <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
       <child>camera_bottom_body_right</child>
       <parent>rack</parent>
-      <axis>
+      <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
-      </axis>
+      </axis> -->
     </joint>
-    
+
   </model>
 </sdf>
