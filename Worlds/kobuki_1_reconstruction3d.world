@@ -40,9 +40,9 @@
       <visualize>false</visualize>
     </light> -->
 
-    <include>
+    <!-- <include>
       <uri>model://ground_plane_sincolor</uri>
-    </include>
+    </include> -->
     
     <!-- Pioneer2dx model -->
     <include>

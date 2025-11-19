@@ -1247,13 +1247,13 @@
     <joint name='joint_laser' type='revolute'>
         <parent>base_footprint</parent>
         <child>laser</child>
-        <axis>
+        <!-- <axis>
           <xyz>0.000000 0.000000 0.000000</xyz>
           <limit>
             <lower>0.000000</lower>
             <upper>0.000000</upper>
          </limit>
-       </axis>
+       </axis> -->
    </joint>
    <joint name='pan_joint_left' type='revolute'>
         <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
@@ -1283,13 +1283,13 @@
         <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
         <child>camera_bottom_body_left</child>
         <parent>base_footprint</parent>
-        <axis>
+        <!-- <axis>
           <xyz>0.000000 0.000000 0.000000</xyz>
           <limit>
             <lower>0.000000</lower>
             <upper>0.000000</upper>
          </limit>
-       </axis>
+       </axis> -->
    </joint>
     <joint name='pan_joint_right' type='revolute'>
         <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
@@ -1319,13 +1319,13 @@
         <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
         <child>camera_bottom_body_right</child>
         <parent>base_footprint</parent>
-        <axis>
+        <!-- <axis>
           <xyz>0.000000 0.000000 0.000000</xyz>
           <limit>
             <lower>0.000000</lower>
             <upper>0.000000</upper>
          </limit>
-       </axis>
+       </axis> -->
    </joint>
     <plugin name='kobuki_controller' filename='libgazebo_ros_kobuki.so'>
       <publish_tf>1</publish_tf>
