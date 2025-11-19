@@ -7,7 +7,7 @@
         <geometry>
           <mesh>
             <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
@@ -16,7 +16,7 @@
         <geometry>
           <mesh>
             <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
@@ -25,7 +25,7 @@
         <geometry>
           <mesh>
             <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </collision>
