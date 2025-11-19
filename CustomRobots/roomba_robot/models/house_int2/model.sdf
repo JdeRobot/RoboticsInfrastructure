@@ -68,31 +68,31 @@
     </link>
     <include>
         <uri>model://mesa_comedor</uri>
-        <pose>-2.4 0 0 0 0 1.57</pose>
+        <pose>-2.4 0.3 0 0 0 1.57</pose>
         <static>true</static>
     </include>
     <include>
         <name>Silla 1</name>
         <uri>model://silla</uri>
-        <pose>-2.1 -0.4 0 0 -0 0</pose>
+        <pose>-2.1 -0.1 0 0 -0 0</pose>
         <static>true</static>
     </include>
     <include>
         <name>Silla 2</name>
         <uri>model://silla</uri>
-        <pose>-2.1 0.4 0 0 -0 0</pose>
+        <pose>-2.1 0.7 0 0 -0 0</pose>
         <static>true</static>
     </include>
     <include>
         <name>Silla 3</name>
         <uri>model://silla</uri>
-        <pose>-2.7 -0.4 0 0 -0 3.14</pose>
+        <pose>-2.7 -0.1 0 0 -0 3.14</pose>
         <static>true</static>
     </include>
     <include>
         <name>Silla 4</name>
         <uri>model://silla</uri>
-        <pose>-2.7 0.4 0 0 -0 3.14</pose>
+        <pose>-2.7 0.7 0 0 -0 3.14</pose>
         <static>true</static>
     </include>
     <include>
