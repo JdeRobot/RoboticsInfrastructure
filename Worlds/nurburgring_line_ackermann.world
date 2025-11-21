@@ -53,7 +53,7 @@
 
     <!-- Coche -->
     <include>
-      <uri>model://f1_renault_ackermann_harmonic_laser</uri>
+      <uri>model://f1_renault_camera</uri>
       <pose>-74.29 37.74 0 0 0 -2.115</pose>
     </include>
 

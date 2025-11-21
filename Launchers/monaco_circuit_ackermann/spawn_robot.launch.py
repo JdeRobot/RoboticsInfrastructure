@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "f1_renault_ackermann_harmonic_laser"
+    model_folder = "f1_renault_camera"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "f1_renault_ackermann_harmonic_laser.yaml"
+        get_package_share_directory("custom_robots"), "params", "f1_renault_camera.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
