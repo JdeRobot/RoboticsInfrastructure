@@ -94,6 +94,7 @@ install(
     ackermann_cars/models
     ackermann_cars/worlds
     ackermann_cars/launch
+    ackermann_cars/params
     # CARS
     car_junction/models
     car_junction/worlds
