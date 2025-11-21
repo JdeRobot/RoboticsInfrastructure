@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<sdf version="1.5">
+<sdf version="1.9">
 
   <model name="f1_renault_camera">
     <pose>0 0 0.0 0 0 0</pose>
+
 
     <link name='base_link' />
 
@@ -12,7 +13,9 @@
       <child>chassis_link</child>
     </joint>
 
+
     <link name='chassis_link'>
+
       <inertial>
         <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
         <mass>1580</mass>
@@ -25,6 +28,7 @@
           <izz>2238.05</izz>
         </inertia>
       </inertial>
+
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
         <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
@@ -45,6 +49,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
         <pose>0 1.51 0 0 -0 1.5708</pose>
         <geometry>
@@ -54,17 +59,21 @@
           </mesh>
         </geometry>
       </visual>
+
       <!-- <velocity_decay/> -->
       <!--  <gravity>1</gravity> -->
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
       <!--  <gravity>1</gravity> -->
+
     </link>
 
-     <!-- CAMERA -->
+
+    <!-- CAMERA -->
     <link name="camera_f1">
         <pose>0 0 0 0 0 0</pose>
+
         <inertial>
           <mass>2</mass>
             <inertia>
@@ -76,6 +85,7 @@
                 <izz>1.000000</izz>
             </inertia>
         </inertial>
+
         <!-- Visual sphere to debug camera position-->
         <!--<visual name='visual'>
             <pose>0 2.7 0.2 0 0 0</pose>
@@ -85,15 +95,17 @@
                 </sphere>
             </geometry>
         </visual> -->
+
         <velocity_decay>
           <linear>0.000000</linear>
           <angular>0.000000</angular>
         </velocity_decay>
+
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
         <gravity>1</gravity>
 
-        <sensor name='cam_f1_left' type='camera'>
+        <!-- <sensor name='cam_f1_left' type='camera'>
           <pose>0 2.7 0.2 0 0 1.57</pose>
           <update_rate>20.000000</update_rate>
           <camera name='cam'>
@@ -122,51 +134,17 @@
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
           </plugin>
-        </sensor>
+        </sensor> -->
 
-    </link>
-
-    <joint type="fixed" name="camera_f1_joint">
-        <pose>0 2.7 0.2 0 0 1.57</pose>
-        <child>camera_f1</child>
-        <parent>chassis_link</parent>
-    </joint>
-
-    <!-- THIRD PERSON CAMERA -->
-    <link name="camera_float">
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <mass>2</mass>
-            <inertia>
-                <ixx>1.000000</ixx>
-                <ixy>0.000000</ixy>
-                <ixz>0.000000</ixz>
-                <iyy>1.000000</iyy>
-                <iyz>0.000000</iyz>
-                <izz>1.000000</izz>
-            </inertia>
-        </inertial>
-        <!-- Visual sphere to debug camera position-->
-        <!-- <visual name='visual'>
-            <pose>0 -3 2 0 0.1 1.57</pose>
-            <geometry>
-                <sphere>
-                    <radius>.1</radius>
-                </sphere>
-            </geometry>
-        </visual>-->
-        <velocity_decay>
-          <linear>0.000000</linear>
-          <angular>0.000000</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-
-        <sensor name='cam_float' type='camera'>
-          <pose>0 -3 2 0 0.1 1.57</pose>
+        <sensor name="cam_f1_left" type="camera">
+          <pose>0 2.7 0.2 0 0 1.57</pose>
+          <always_on>true</always_on>
+          <visualize>true</visualize>
           <update_rate>20.000000</update_rate>
-          <camera name='cam'>
+          <topic>/cam_f1_left/image_raw</topic>
+          <!-- <gz_frame_id>camera_rgb_frame</gz_frame_id> -->
+          <camera name="cleft">
+            <camera_info_topic>/cam_f1_left/camera_info</camera_info_topic>
             <horizontal_fov>1.570000</horizontal_fov>
             <image>
               <width>640</width>
@@ -177,31 +155,98 @@
               <near>0.100000</near>
               <far>15.000000</far>
             </clip>
-          </camera>
-          <plugin name="floating_camera_controller" filename="libgazebo_ros_camera.so">
-            <alwaysOn>true</alwaysOn>
-            <updateRate>0.0</updateRate>
-            <cameraName>floating_camera</cameraName>
-            <imageTopicName>image_raw</imageTopicName>
-            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-            <frameName>camera_float</frameName>
-            <hackBaseline>0.07</hackBaseline>
-            <distortionK1>0.0</distortionK1>
-            <distortionK2>0.0</distortionK2>
-            <distortionK3>0.0</distortionK3>
-            <distortionT1>0.0</distortionT1>
-            <distortionT2>0.0</distortionT2>
-
-          </plugin>
+            <noise>
+              <type>gaussian</type>
+              <!-- Noise is sampled independently per pixel on each frame.
+                    That pixel's noise value is added to each of its color
+                    channels, which at that point lie in the range [0,1]. -->
+              <mean>0.0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+          </camera> 
         </sensor>
 
     </link>
 
-    <joint type="fixed" name="camera_float_joint">
-        <pose>0 -3 2 0 0.1 1.57</pose>
-        <child>camera_float</child>
-        <parent>chassis_link</parent>
+    <joint type="fixed" name="camera_f1_joint">
+      <pose>0 2.7 0.2 0 0 1.57</pose>
+      <child>camera_f1</child>
+      <parent>chassis_link</parent>
     </joint>
+
+
+    <!-- <link name="camera_float">
+      <pose>0 0 0 0 0 0</pose>
+
+      <inertial>
+        <mass>2</mass>
+          <inertia>
+              <ixx>1.000000</ixx>
+              <ixy>0.000000</ixy>
+              <ixz>0.000000</ixz>
+              <iyy>1.000000</iyy>
+              <iyz>0.000000</iyz>
+              <izz>1.000000</izz>
+          </inertia>
+      </inertial>
+
+      <visual name='visual'>
+        <pose>0 -3 2 0 0.1 1.57</pose>
+          <geometry>
+            <sphere>
+              <radius>.1</radius>
+            </sphere>
+          </geometry>
+      </visual>
+
+      <velocity_decay>
+        <linear>0.000000</linear>
+        <angular>0.000000</angular>
+      </velocity_decay>
+
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+
+      <sensor name='cam_float' type='camera'>
+        <pose>0 -3 2 0 0.1 1.57</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cam'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="floating_camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>floating_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_float</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+
+    </link> -->
+
+
+    <!-- <joint type="fixed" name="camera_float_joint">
+      <pose>0 -3 2 0 0.1 1.57</pose>
+      <child>camera_float</child>
+      <parent>chassis_link</parent>
+    </joint> -->
 
     <joint name='bl_axle' type='revolute'>
       <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
@@ -214,8 +259,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='bl_1'>
       <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>-0.0377 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
@@ -228,6 +276,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
+
       <collision name='bl_1_collision'>
         <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
@@ -248,6 +297,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name='bl_1_visual'>
         <pose>0.875 1.0136 0.1444 0 -0 0</pose>
         <geometry>
@@ -257,9 +307,11 @@
           </mesh>
         </geometry>
       </visual>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
 
     <joint name='br_axle' type='revolute'>
@@ -273,8 +325,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='br_1'>
       <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>-0.0377 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
@@ -287,6 +342,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
+
       <collision name='br_1_collision'>
         <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
         <geometry>
@@ -307,6 +363,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name='br_1_visual'>
         <pose>-0.875 1.0136 0.1444 0 -0 0</pose>
         <geometry>
@@ -316,9 +373,11 @@
           </mesh>
         </geometry>
       </visual>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
 
     <joint name='l_steer' type='revolute'>
@@ -336,8 +395,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='l_steer_1'>
       <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>0.003381 0 0.02162 0 -0 0</pose>
         <mass>1</mass>
@@ -350,9 +412,11 @@
           <izz>1</izz>
         </inertia>
       </inertial>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
 
     <joint name='fl_axle' type='revolute'>
@@ -366,8 +430,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='fl_1'>
       <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>-0.0377 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
@@ -380,6 +447,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
+
       <collision name='fl_1_collision'>
         <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
@@ -400,6 +468,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name='fl_1_visual'>
         <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
@@ -409,9 +478,11 @@
           </mesh>
         </geometry>
       </visual>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
     
     <joint name='r_steer' type='revolute'>
@@ -430,8 +501,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='r_steer_1'>
       <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>0.003381 0 0.02162 0 -0 0</pose>
         <mass>1</mass>
@@ -444,10 +518,14 @@
           <izz>1</izz>
         </inertia>
       </inertial>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
+
+
     <joint name='fr_axle' type='revolute'>
       <pose relative_to='r_steer_1'>0.05 0 0 0 -0 0</pose>
       <parent>r_steer_1</parent>
@@ -459,8 +537,11 @@
         </dynamics>
       </axis>
     </joint>
+
+
     <link name='fr_1'>
       <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
+
       <inertial>
         <pose>-0.0377 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
@@ -473,6 +554,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
+
       <collision name='fr_1_collision'>
         <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
@@ -493,6 +575,7 @@
           </friction>
         </surface>
       </collision>
+
       <visual name='fr_1_visual'>
         <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
         <geometry>
@@ -502,10 +585,13 @@
           </mesh>
         </geometry>
       </visual>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
+
     </link>
+
 
     <!--STEERING WHEEL-->
     <joint name="steering_joint" type="revolute">
@@ -529,8 +615,11 @@
         </ode>
       </physics>
     </joint>
+
+
     <link name='steering_wheel'>
       <pose relative_to='steering_joint'>0 0.87 -0.54 0 0 1.5708</pose>
+
       <visual name='steering_wheel_visual'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -540,22 +629,21 @@
           </mesh>
         </geometry>
       </visual>
+
       <!--  <gravity>1</gravity> -->
       <!-- <velocity_decay/> -->
       <self_collide>1</self_collide>
+
     </link>
 
-    <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
 
+    <!-- <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
       <ros>
         <remapping>cmd_vel:=cmd_vel</remapping>
         <remapping>odom:=odom</remapping>
         <remapping>distance:=distance</remapping>
       </ros>
-
       <update_rate>100.0</update_rate>
-
-      <!-- wheels -->
       <front_left_joint>fl_axle</front_left_joint>
       <front_right_joint>fr_axle</front_right_joint>
       <rear_left_joint>bl_axle</rear_left_joint>
@@ -563,37 +651,92 @@
       <left_steering_joint>l_steer</left_steering_joint>
       <right_steering_joint>r_steer</right_steering_joint>
       <steering_wheel_joint>steering_joint</steering_wheel_joint>
-
-      <!-- Max absolute steer angle for tyre in radians-->
-      <!-- Any cmd_vel angular z greater than this would be capped -->
       <max_steer>0.52</max_steer>
-
-      <!-- Max absolute steering angle of steering wheel -->
-      <!-- Max absolute steering angle of steering wheel -->
       <max_steering_angle>0.64</max_steering_angle>
-
-      <!-- Max absolute linear speed in m/s -->
       <max_speed>50</max_speed>
-
-      <!-- PID tuning -->
       <left_steering_pid_gain>1500 900 450</left_steering_pid_gain>
       <left_steering_i_range>0 0</left_steering_i_range>
       <right_steering_pid_gain>1500 900 450</right_steering_pid_gain>
       <right_steering_i_range>0 0</right_steering_i_range>
       <linear_velocity_pid_gain>1000 100 10</linear_velocity_pid_gain>
       <linear_velocity_i_range>0 0</linear_velocity_i_range>
-      
-      <!-- output -->
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
       <publish_wheel_tf>true</publish_wheel_tf>
       <publish_distance>true</publish_distance>
-
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>chasis_link</robot_base_frame>
+    </plugin> -->
 
+    <!-- Gazebo Harmonic Plugins -->
+    
+    <!-- Ackermann Steering Plugin -->
+    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+      <left_joint>fl_axle</left_joint>
+      <left_joint>bl_axle</left_joint>
+      <right_joint>fr_axle</right_joint>
+      <right_joint>br_axle</right_joint>
+      <left_steering_joint>front_steering</left_steering_joint>
+      <right_steering_joint>front_steering</right_steering_joint>
+      <kingpin_width>1.65</kingpin_width>
+      <steering_limit>0.3</steering_limit>
+      <wheel_base>3.351</wheel_base>
+      <wheel_separation>1.65</wheel_separation>
+      <wheel_radius>0.3425</wheel_radius>
+      <sub_topic>steer_angle</sub_topic>
+      <min_velocity>-50</min_velocity>
+      <max_velocity>50</max_velocity>
+      <min_acceleration>-50</min_acceleration>
+      <max_acceleration>50</max_acceleration>
+      <topic>/F1ROS/cmd_vel</topic>
+    </plugin>
+
+    <!-- Velocity Control Plugin for rear wheels -->
+    <!-- <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <joint_name>bl_axle</joint_name>
+      <joint_name>br_axle</joint_name>
+      <sub_topic>/F1ROS/cmd_vel</sub_topic>
+      <use_actuator_msg>true</use_actuator_msg>
+      <actuator_number>0</actuator_number>
+      <actuator_number>1</actuator_number>
+    </plugin> -->
+
+    <!-- Joint State Publisher -->
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <joint_name>fl_axle</joint_name>
+      <joint_name>fr_axle</joint_name>
+      <joint_name>bl_axle</joint_name>
+      <joint_name>br_axle</joint_name>
+      <joint_name>front_steering</joint_name>
+      <joint_name>steering_joint</joint_name>
+    </plugin>
+
+    <!-- Odometry Publisher -->
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_topic>F1ROS/odom</odom_topic>
+      <robot_base_frame>chassis_link</robot_base_frame>
+      <odom_frame>odom</odom_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <dimensions>3</dimensions>
+    </plugin>
+
+    <!-- Pose Publisher -->
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <publish_collision_pose>false</publish_collision_pose>
+      <publish_visual_pose>false</publish_visual_pose>
+      <publish_nested_model_pose>true</publish_nested_model_pose>
+      <update_frequency>50</update_frequency>
+    </plugin>
+
+    <!-- Joint Position Controller for steering wheel (optional) -->
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>steering_joint</joint_name>
+      <sub_topic>steering_wheel_cmd</sub_topic>
+      <p_gain>10</p_gain>
+      <i_gain>0.1</i_gain>
+      <d_gain>1</d_gain>
     </plugin>
 
   </model>
-
 </sdf>

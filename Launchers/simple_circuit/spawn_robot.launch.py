@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "f1_renault_laser_no_cam"
+    model_folder = "f1_renault"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
