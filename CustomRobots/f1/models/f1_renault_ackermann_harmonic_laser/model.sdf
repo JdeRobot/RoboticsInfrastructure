@@ -527,56 +527,6 @@
       </sensor>
     </link>
 
-    <!-- <link name='laser_body'>
-      <pose relative_to='chassis_link'>0.00000 0.34000 0.14000 0.000000 0.000000 1.57000</pose>
-      <inertial>
-        <mass>0.1</mass>
-        <inertia>
-          <ixx>0.001</ixx>
-          <ixy>0.0</ixy>
-          <iyy>0.001</iyy>
-          <ixz>0.0</ixz>
-          <iyz>0.0</iyz>
-          <izz>0.001</izz>
-        </inertia>
-      </inertial>
-      <visual name="visual_laser">
-        <geometry>
-          <mesh>
-            <uri>model://f1_renault_ackermann_harmonic_laser/meshes/hokuyo.dae</uri>
-          </mesh>
-        </geometry>
-      </visual>
-      <sensor name='laser' type='gpu_ray'>
-        <pose>0 0 0 0 0 0</pose>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>180</samples>
-              <resolution>1.000000</resolution>
-              <min_angle>-1.570000</min_angle>
-              <max_angle>1.570000</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.080000</min>
-            <max>10.000000</max>
-            <resolution>0.010000</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </ray>
-        <update_rate>20.000000</update_rate>
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <topic>/model/f1_renault_ackermann_harmonic_laser/laser/scan</topic>
-      </sensor>
-      <self_collide>false</self_collide>
-    </link> -->
-    
     <joint name="camera_joint" type="fixed">
       <parent>chassis_link</parent>
       <child>camera_link</child>
@@ -594,15 +544,6 @@
         <xyz>0 0 1</xyz>
       </axis>
     </joint>
-
-    <!-- <joint type="fixed" name="laser_fix">
-      <pose>0 0 0 0 0 0</pose>
-      <child>laser_body</child>
-      <parent>chassis_link</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-      </axis>
-    </joint> -->
 
     <!-- Gazebo Harmonic Plugins -->
     
