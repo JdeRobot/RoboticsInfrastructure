@@ -491,7 +491,12 @@
         <mass>0.035</mass>
       </inertial>
 
-      <pose>0.0138 -0.0094 0.0214 0 0 0</pose>
+      <!-- OLD POSE -->
+      <!-- <pose>0.0138 -0.0094 0.0214 0 0 0</pose> -->
+
+      <!-- NEW POSE -->
+      <pose>0 2.7 0.2 0 0 1.57</pose>
+
       <sensor name="camera" type="camera">
         <always_on>true</always_on>
         <visualize>true</visualize>
