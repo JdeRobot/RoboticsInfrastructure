@@ -164,7 +164,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
-40	O3DE World	40	0
+40	O3DE Warehouse	40	0
+41	O3DE FollowLine	41	0
 \.
 
 
@@ -215,6 +216,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 40	O3DE Warehouse	Levels/DemoLevel/DemoLevel.spawnable	None	ROS2	o3de	{0.0,0.0,0.0,0.0,0.0,0.0}
+41	O3DE FollowLine	Levels/FollowLine/FollowLine.spawnable	None	ROS2	o3de	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
