@@ -55,7 +55,7 @@
     <!-- Coche -->
     <include>
       <uri>model://f1_renault_camera</uri>
-      <pose>0 11.4 -1.775 0 0 -1.57</pose>
+      <pose>0 11.4 -1.775 0 0 1.57</pose>
     </include>
 
     <!-- Luz -->
