@@ -296,12 +296,12 @@
             <uri>model://turtlebotROS/meshes/main_body.dae</uri>
           </mesh>
         </geometry>
-        <material>
+        <!-- <material>
           <script>
             <uri>__default__</uri>
             <name>__default__</name>
           </script>
-        </material>
+        </material> -->
       </visual>
 
       <visual name='base_footprint_fixed_joint_lump__camera_link_visual_1'>
@@ -312,12 +312,12 @@
             <uri>model://turtlebotROS/meshes/sensors/kinect.dae</uri>
           </mesh>
         </geometry>
-        <material>
+        <!-- <material>
           <script>
             <uri>__default__</uri>
             <name>__default__</name>
           </script>
-        </material>
+        </material> -->
       </visual>
 
       <visual name='base_footprint_fixed_joint_lump__plate_bottom_link_visual_2'>
@@ -755,12 +755,12 @@
             <uri>model://turtlebotROS/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
-        <material>
+        <!-- <material>
           <script>
             <uri>__default__</uri>
             <name>__default__</name>
           </script>
-        </material>
+        </material> -->
       </visual>
 
       <gravity>1</gravity>
@@ -837,12 +837,12 @@
             <uri>model://turtlebotROS/meshes/wheel.dae</uri>
           </mesh>
         </geometry>
-        <material>
+        <!-- <material>
           <script>
             <uri>__default__</uri>
             <name>__default__</name>
           </script>
-        </material>
+        </material> -->
       </visual>
 
       <gravity>1</gravity>
