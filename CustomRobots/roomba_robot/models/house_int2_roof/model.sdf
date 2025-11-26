@@ -173,12 +173,12 @@
               <size>1.6 0.8 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/BlueTransparent</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_1_link'>
           <pose>0.77 0.37 0.355 0 -0 0</pose>
@@ -187,12 +187,12 @@
               <size>0.06 0.06 0.71</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_2_link'>
           <pose>0.77 -0.37 0.355 0 -0 0</pose>
@@ -201,12 +201,12 @@
               <size>0.06 0.06 0.71</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_3_link'>
           <pose>-0.77 -0.37 0.355 0 -0 0</pose>
@@ -215,12 +215,12 @@
               <size>0.06 0.06 0.71</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_4_link'>
           <pose>-0.77 0.37 0.355 0 -0 0</pose>
@@ -229,12 +229,12 @@
               <size>0.06 0.06 0.71</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -2318,12 +2318,12 @@
               <size>0.45 0.45 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_1_link'>
           <pose>0.205 0.205 0.2 0 -0 0</pose>
@@ -2332,12 +2332,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_2_link'>
           <pose>0.205 -0.205 0.2 0 -0 0</pose>
@@ -2346,12 +2346,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_3_link'>
           <pose>-0.205 -0.205 0.2 0 -0 0</pose>
@@ -2360,12 +2360,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_4_link'>
           <pose>-0.205 0.205 0.2 0 -0 0</pose>
@@ -2374,12 +2374,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_respaldo_link'>
           <pose>0.215 0 0.655 0 -0 0</pose>
@@ -2388,12 +2388,12 @@
               <size>0.02 0.45 0.45</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -2630,12 +2630,12 @@
               <size>0.45 0.45 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_1_link'>
           <pose>0.205 0.205 0.2 0 -0 0</pose>
@@ -2644,12 +2644,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_2_link'>
           <pose>0.205 -0.205 0.2 0 -0 0</pose>
@@ -2658,12 +2658,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_3_link'>
           <pose>-0.205 -0.205 0.2 0 -0 0</pose>
@@ -2672,12 +2672,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_4_link'>
           <pose>-0.205 0.205 0.2 0 -0 0</pose>
@@ -2686,12 +2686,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_respaldo_link'>
           <pose>0.215 0 0.655 0 -0 0</pose>
@@ -2700,12 +2700,12 @@
               <size>0.02 0.45 0.45</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -2942,12 +2942,12 @@
               <size>0.45 0.45 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_1_link'>
           <pose>0.205 0.205 0.2 0 -0 0</pose>
@@ -2956,12 +2956,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_2_link'>
           <pose>0.205 -0.205 0.2 0 -0 0</pose>
@@ -2970,12 +2970,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_3_link'>
           <pose>-0.205 -0.205 0.2 0 -0 0</pose>
@@ -2984,12 +2984,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_4_link'>
           <pose>-0.205 0.205 0.2 0 -0 0</pose>
@@ -2998,12 +2998,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_respaldo_link'>
           <pose>0.215 0 0.655 0 -0 0</pose>
@@ -3012,12 +3012,12 @@
               <size>0.02 0.45 0.45</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -3254,12 +3254,12 @@
               <size>0.45 0.45 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_1_link'>
           <pose>0.205 0.205 0.2 0 -0 0</pose>
@@ -3268,12 +3268,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_2_link'>
           <pose>0.205 -0.205 0.2 0 -0 0</pose>
@@ -3282,12 +3282,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_3_link'>
           <pose>-0.205 -0.205 0.2 0 -0 0</pose>
@@ -3296,12 +3296,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_pata_4_link'>
           <pose>-0.205 0.205 0.2 0 -0 0</pose>
@@ -3310,12 +3310,12 @@
               <size>0.04 0.04 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='silla_link_visual_respaldo_link'>
           <pose>0.215 0 0.655 0 -0 0</pose>
@@ -3324,12 +3324,12 @@
               <size>0.02 0.45 0.45</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -3534,12 +3534,12 @@
               <size>0.9 0.55 0.03</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_1_link'>
           <pose>0.42 0.245 0.2 0 -0 0</pose>
@@ -3548,12 +3548,12 @@
               <size>0.06 0.06 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_2_link'>
           <pose>0.42 -0.245 0.2 0 -0 0</pose>
@@ -3562,12 +3562,12 @@
               <size>0.06 0.06 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_3_link'>
           <pose>-0.42 -0.245 0.2 0 -0 0</pose>
@@ -3576,12 +3576,12 @@
               <size>0.06 0.06 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesa_link_visual_pata_4_link'>
           <pose>-0.42 0.245 0.2 0 -0 0</pose>
@@ -3590,12 +3590,12 @@
               <size>0.06 0.06 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -3764,12 +3764,12 @@
               <size>1.6 0.8 0.35</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_1_link'>
           <pose>0.7 -0.05 0.45 0 -0 0</pose>
@@ -3778,12 +3778,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_2_link'>
           <pose>-0.7 -0.05 0.45 0 -0 0</pose>
@@ -3792,12 +3792,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_respaldo_link'>
           <pose>0 0.25 0.55 0 -0 0</pose>
@@ -3806,12 +3806,12 @@
               <size>1.6 0.3 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -3976,12 +3976,12 @@
               <size>0.9 0.8 0.35</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_1_link'>
           <pose>0.35 -0.05 0.45 0 -0 0</pose>
@@ -3990,12 +3990,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_2_link'>
           <pose>-0.35 -0.05 0.45 0 -0 0</pose>
@@ -4004,12 +4004,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_respaldo_link'>
           <pose>0 0.25 0.55 0 -0 0</pose>
@@ -4018,12 +4018,12 @@
               <size>0.9 0.3 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -4188,12 +4188,12 @@
               <size>0.9 0.8 0.35</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_1_link'>
           <pose>0.35 -0.05 0.45 0 -0 0</pose>
@@ -4202,12 +4202,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_brazo_2_link'>
           <pose>-0.35 -0.05 0.45 0 -0 0</pose>
@@ -4216,12 +4216,12 @@
               <size>0.2 0.7 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='sofa_link_visual_respaldo_link'>
           <pose>0 0.25 0.55 0 -0 0</pose>
@@ -4230,12 +4230,12 @@
               <size>0.9 0.3 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Grey</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -4304,12 +4304,12 @@
               <size>2.1 0.6 0.85</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <gravity>1</gravity>
         <velocity_decay>
@@ -4366,12 +4366,12 @@
               <size>1.8 0.6 1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <gravity>1</gravity>
         <velocity_decay>
@@ -4428,12 +4428,12 @@
               <size>0.6 0.6 1.8</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/White</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <gravity>1</gravity>
         <velocity_decay>
@@ -4714,12 +4714,12 @@
               <size>1 0.35 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_1_link'>
           <pose>0 0 0.41 0 -0 0</pose>
@@ -4728,12 +4728,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_2_link'>
           <pose>0 0 0.83 0 -0 0</pose>
@@ -4742,12 +4742,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_3_link'>
           <pose>0 0 1.25 0 -0 0</pose>
@@ -4756,12 +4756,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_4_link'>
           <pose>0 0 1.67 0 -0 0</pose>
@@ -4770,12 +4770,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_5_link'>
           <pose>0 0 2.09 0 -0 0</pose>
@@ -4784,12 +4784,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_lateral_1_link'>
           <pose>0.51 0 1.05 0 -0 0</pose>
@@ -4798,12 +4798,12 @@
               <size>0.02 0.35 2.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_lateral_2_link'>
           <pose>-0.51 0 1.05 0 -0 0</pose>
@@ -4812,12 +4812,12 @@
               <size>0.02 0.35 2.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -5126,12 +5126,12 @@
               <size>1 0.35 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_1_link'>
           <pose>0 0 0.41 0 -0 0</pose>
@@ -5140,12 +5140,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_2_link'>
           <pose>0 0 0.83 0 -0 0</pose>
@@ -5154,12 +5154,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_3_link'>
           <pose>0 0 1.25 0 -0 0</pose>
@@ -5168,12 +5168,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_4_link'>
           <pose>0 0 1.67 0 -0 0</pose>
@@ -5182,12 +5182,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_basal_5_link'>
           <pose>0 0 2.09 0 -0 0</pose>
@@ -5196,12 +5196,12 @@
               <size>1 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_lateral_1_link'>
           <pose>0.51 0 1.05 0 -0 0</pose>
@@ -5210,12 +5210,12 @@
               <size>0.02 0.35 2.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='estanteria_link_visual_lateral_2_link'>
           <pose>-0.51 0 1.05 0 -0 0</pose>
@@ -5224,12 +5224,12 @@
               <size>0.02 0.35 2.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -5474,12 +5474,12 @@
               <size>0.35 0.35 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_1_link'>
           <pose>0 0 0.19 0 -0 0</pose>
@@ -5488,12 +5488,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_2_link'>
           <pose>0 0 0.39 0 -0 0</pose>
@@ -5502,12 +5502,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_3_link'>
           <pose>0 0 0.59 0 -0 0</pose>
@@ -5516,12 +5516,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_lateral_1_link'>
           <pose>0.185 0 0.3 0 -0 0</pose>
@@ -5530,12 +5530,12 @@
               <size>0.02 0.35 0.6</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_lateral_2_link'>
           <pose>-0.185 0 0.3 0 -0 0</pose>
@@ -5544,12 +5544,12 @@
               <size>0.02 0.35 0.6</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -5658,12 +5658,12 @@
               <size>2.1 1.5 0.4</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/White</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='cama_link_visual_almohada_link'>
           <pose>0.9 0 0.45 0 -0 0</pose>
@@ -5672,12 +5672,12 @@
               <size>0.3 1.5 0.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/White</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -5898,12 +5898,12 @@
               <size>0.35 0.35 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_1_link'>
           <pose>0 0 0.19 0 -0 0</pose>
@@ -5912,12 +5912,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_2_link'>
           <pose>0 0 0.39 0 -0 0</pose>
@@ -5926,12 +5926,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_basal_3_link'>
           <pose>0 0 0.59 0 -0 0</pose>
@@ -5940,12 +5940,12 @@
               <size>0.35 0.35 0.02</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_lateral_1_link'>
           <pose>0.185 0 0.3 0 -0 0</pose>
@@ -5954,12 +5954,12 @@
               <size>0.02 0.35 0.6</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='mesita_link_visual_lateral_2_link'>
           <pose>-0.185 0 0.3 0 -0 0</pose>
@@ -5968,12 +5968,12 @@
               <size>0.02 0.35 0.6</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <name>Gazebo/Wood</name>
-              <!-- <uri>__default__</uri> -->
+              <uri>__default__</uri>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
