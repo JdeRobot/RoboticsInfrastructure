@@ -277,13 +277,13 @@
               <size>4.3 3.8 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof0</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_0'>
           <geometry>
@@ -310,13 +310,13 @@
               <size>3.1 2.5 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof1</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_1'>
           <geometry>
@@ -343,13 +343,13 @@
               <size>3.1 3.3 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof2</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_2'>
           <geometry>
@@ -376,13 +376,13 @@
               <size>4.05 4.6 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof3</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_3'>
           <geometry>
@@ -409,13 +409,13 @@
               <size>3.6 2.6 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof4</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_4'>
           <geometry>
@@ -442,13 +442,13 @@
               <size>3.6 1.2 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof5</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_5'>
           <geometry>
@@ -475,15 +475,15 @@
               <size>1.8 3.8 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
-              <!-- <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Bricks</name> -->
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Bricks</name>
               <uri>model://house_int2_roof/materials/scripts</uri>
               <uri>model://house_int2_roof/materials/textures</uri>
               <name>Roof/Roof6</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Roof_Collision_6'>
           <geometry>
@@ -534,12 +534,12 @@
               <radius>0.2</radius>
             </cylinder>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_0'>
           <geometry>
@@ -577,12 +577,12 @@
               <radius>0.2</radius>
             </sphere>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 0.7 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_1'>
           <geometry>
@@ -619,12 +619,12 @@
               <size>0.5 0.5 0.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Blue</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='Ceiling_Lamp_Visual_2_1'>
           <pose>0 0 -0.05 0 0 0</pose>
@@ -633,12 +633,12 @@
               <size>0.1 0.1 0.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_2'>
           <geometry>
@@ -676,12 +676,12 @@
               <radius>0.2</radius>
             </cylinder>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Yellow</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <visual name='Ceiling_Lamp_Visual_3_1'>
           <pose>0 0 -0.1 0 0 0</pose>
@@ -690,12 +690,12 @@
               <radius>0.1</radius>
             </sphere>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_3'>
           <geometry>
@@ -733,12 +733,12 @@
               <size>0.1 1 0.1</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_4'>
           <geometry>
@@ -775,12 +775,12 @@
               <radius>0.05</radius>
             </sphere>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>0.8 0.8 0.8 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <visual name='Ceiling_Lamp_Visual_5_1'>
           <pose>-1 0 0 0 -0 0</pose>
@@ -789,12 +789,12 @@
               <radius>0.05</radius>
             </sphere>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>0.5 0.5 0.5 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <visual name='Ceiling_Lamp_Visual_5_2'>
           <pose>1 0 0 0 -0 0</pose>
@@ -803,12 +803,12 @@
               <radius>0.05</radius>
             </sphere>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -827,12 +827,12 @@
               <size>0.5 0.5 0.2</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 0.7 1</emissive>
-          </material>
+          </material> -->
         </visual>
         <collision name='Ceiling_Lamp_Collision_6'>
           <geometry>
@@ -887,12 +887,12 @@
               <size>2.6 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -912,12 +912,12 @@
               <size>1.18422 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_14_Collision_0'>
           <geometry>
@@ -944,12 +944,12 @@
               <size>1.41579 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_14_Collision_1'>
           <geometry>
@@ -976,12 +976,12 @@
               <size>1 0.2 0.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_14_Collision_2'>
           <geometry>
@@ -1035,12 +1035,12 @@
               <size>2.60492 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -1077,12 +1077,12 @@
               <size>3.8 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -1102,12 +1102,12 @@
               <size>9.599997 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_2_Collision_0'>
           <geometry>
@@ -1208,12 +1208,12 @@
               <size>0.251208 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_20_Collision_0'>
           <geometry>
@@ -1240,12 +1240,12 @@
               <size>3.24591 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_20_Collision_1'>
           <geometry>
@@ -1272,12 +1272,12 @@
               <size>2.102 0.2 0.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_20_Collision_2'>
           <geometry>
@@ -1304,12 +1304,12 @@
               <size>2.102 0.2 0.7</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_20_Collision_3'>
           <geometry>
@@ -1346,12 +1346,12 @@
               <size>0.194709 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_22_Collision_0'>
           <geometry>
@@ -1378,12 +1378,12 @@
               <size>0.202171 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_22_Collision_1'>
           <geometry>
@@ -1410,12 +1410,12 @@
               <size>1 0.2 0.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_22_Collision_2'>
           <geometry>
@@ -1452,12 +1452,12 @@
               <size>0.241529 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_24_Collision_0'>
           <geometry>
@@ -1484,12 +1484,12 @@
               <size>0.252091 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_24_Collision_1'>
           <geometry>
@@ -1516,12 +1516,12 @@
               <size>3.70638 0.2 0.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_24_Collision_2'>
           <geometry>
@@ -1548,12 +1548,12 @@
               <size>3.70638 0.2 0.7</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_24_Collision_3'>
           <geometry>
@@ -1607,12 +1607,12 @@
               <size>3.2 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -1632,12 +1632,12 @@
               <size>1.27269 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_0'>
           <geometry>
@@ -1664,12 +1664,12 @@
               <size>4.726 0.2 0.7</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_1'>
           <geometry>
@@ -1696,12 +1696,12 @@
               <size>1.38049 0.2 1.8</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_2'>
           <geometry>
@@ -1728,12 +1728,12 @@
               <size>1.14551 0.2 1.8</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_3'>
           <geometry>
@@ -1760,12 +1760,12 @@
               <size>1.4 0.2 0.3</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_4'>
           <geometry>
@@ -1792,12 +1792,12 @@
               <size>0.8 0.2 0.3</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_30_Collision_5'>
           <geometry>
@@ -1834,12 +1834,12 @@
               <size>1.20 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_32_Collision_0'>
           <geometry>
@@ -1957,12 +1957,12 @@
               <size>0.8 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <velocity_decay>
           <linear>0</linear>
@@ -1982,12 +1982,12 @@
               <size>5.42201 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_8_Collision_0'>
           <geometry>
@@ -2014,12 +2014,12 @@
               <size>0.251416 0.2 2.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_8_Collision_1'>
           <geometry>
@@ -2046,12 +2046,12 @@
               <size>2.72728 0.2 0.5</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_8_Collision_2'>
           <geometry>
@@ -2078,12 +2078,12 @@
               <size>2.72728 0.2 0.7</size>
             </box>
           </geometry>
-          <material>
+          <!-- <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
-          </material>
+          </material> -->
         </visual>
         <collision name='Wall_8_Collision_3'>
           <geometry>
