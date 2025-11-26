@@ -176,7 +176,7 @@
           <material>
             <script>
               <name>Gazebo/BlueTransparent</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -190,7 +190,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -204,7 +204,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -218,7 +218,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -232,7 +232,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2321,7 +2321,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2335,7 +2335,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2349,7 +2349,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2363,7 +2363,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2377,7 +2377,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2391,7 +2391,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2633,7 +2633,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2647,7 +2647,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2661,7 +2661,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2675,7 +2675,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2689,7 +2689,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2703,7 +2703,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2945,7 +2945,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2959,7 +2959,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2973,7 +2973,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -2987,7 +2987,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3001,7 +3001,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3015,7 +3015,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3257,7 +3257,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3271,7 +3271,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3285,7 +3285,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3299,7 +3299,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3313,7 +3313,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3327,7 +3327,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3537,7 +3537,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3551,7 +3551,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3565,7 +3565,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3579,7 +3579,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3593,7 +3593,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3767,7 +3767,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3781,7 +3781,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3795,7 +3795,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3809,7 +3809,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3979,7 +3979,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -3993,7 +3993,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4007,7 +4007,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4021,7 +4021,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4191,7 +4191,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4205,7 +4205,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4219,7 +4219,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4233,7 +4233,7 @@
           <material>
             <script>
               <name>Gazebo/Grey</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4307,7 +4307,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4369,7 +4369,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4431,7 +4431,7 @@
           <material>
             <script>
               <name>Gazebo/White</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4717,7 +4717,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4731,7 +4731,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4745,7 +4745,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4759,7 +4759,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4773,7 +4773,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4787,7 +4787,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4801,7 +4801,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -4815,7 +4815,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5129,7 +5129,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5143,7 +5143,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5157,7 +5157,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5171,7 +5171,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5185,7 +5185,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5199,7 +5199,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5213,7 +5213,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5227,7 +5227,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5477,7 +5477,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5491,7 +5491,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5505,7 +5505,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5519,7 +5519,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5533,7 +5533,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5547,7 +5547,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5661,7 +5661,7 @@
           <material>
             <script>
               <name>Gazebo/White</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5675,7 +5675,7 @@
           <material>
             <script>
               <name>Gazebo/White</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5901,7 +5901,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5915,7 +5915,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5929,7 +5929,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5943,7 +5943,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5957,7 +5957,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
@@ -5971,7 +5971,7 @@
           <material>
             <script>
               <name>Gazebo/Wood</name>
-              <uri>__default__</uri>
+              <!-- <uri>__default__</uri> -->
             </script>
           </material>
         </visual>
