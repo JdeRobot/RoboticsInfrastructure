@@ -76,7 +76,7 @@
     </link>
 
     <link name='Roof'>
-      <pose>5 -4 0 0 0 1.57</pose>
+      <pose>5.25 -3.75 0 0 0 1.57</pose>
 
       <visual name='Roof_Visual_0'>
         <pose>2.15 1.8 2.6 0 -0 0</pose>
