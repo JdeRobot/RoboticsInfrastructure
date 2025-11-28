@@ -3,10 +3,6 @@
 <sdf version="1.8">
   <world name="default">
     <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
-    </plugin>
-    <plugin
       filename="gz-sim-user-commands-system"
       name="gz::sim::systems::UserCommands">
     </plugin>
@@ -20,9 +16,6 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
-    <gravity>0 0 -9.8</gravity>
-    <atmosphere type="adiabatic"/>
-
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
@@ -30,18 +23,20 @@
       <grid>true</grid>
     </scene>
 
-    <!-- <light name='point_light1' type='point'>
+    <light name='point_light1' type='point'>
       <pose frame=''>-3.0 -2.0 4.0 0 0 0</pose>
+      <visualize>false</visualize>
     </light>
 
     <light name='point_light2' type='point'>
       <pose frame=''>-3.0 2.0 4.0 0 0 0</pose>
+      <visualize>false</visualize>
     </light>
 
     <light name='point_light3' type='directional'>
       <pose frame=''>0 0 1.0 0 -1.57 0</pose>
       <visualize>false</visualize>
-    </light> -->
+    </light>
 
     <include>
       <uri>model://ground_plane_sincolor</uri>
