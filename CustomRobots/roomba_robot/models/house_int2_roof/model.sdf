@@ -2,7 +2,9 @@
 <sdf version="1.8">
   <model name="house_int2_roof">
     <static>true</static>
+
     <link name="house_int_link">
+
       <visual name="walls_visual">
         <geometry>
           <mesh>
@@ -13,6 +15,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <visual name="floor_visual">
         <geometry>
           <mesh>
@@ -23,6 +26,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <visual name="encimera_visual">
         <geometry>
           <mesh>
@@ -33,6 +37,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <visual name="barra_visual">
         <geometry>
           <mesh>
@@ -43,6 +48,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <visual name="frigo_visual">
         <geometry>
           <mesh>
@@ -53,6 +59,7 @@
           </mesh>
         </geometry>
       </visual>
+
       <collision name="house_int2_roof_collision">
         <geometry>
           <mesh>
@@ -65,7 +72,271 @@
           </contact>
         </surface>
       </collision>
+
     </link>
+
+    <link name='Roof'>
+      <pose>0 0 0 0 -0 0</pose>
+
+      <visual name='Roof_Visual_0'>
+        <pose>2.15 1.8 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.3 3.8 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof0</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_0'>
+        <geometry>
+          <box>
+            <size>4.3 3.8 0.2</size>
+          </box>
+        </geometry>
+        <pose>2.15 1.8 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_1'>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof1</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_1'>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_2'>
+        <pose>3.925 7.85 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.1 3.3 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof2</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_2'>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_3'>
+        <pose>7.5 6 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.05 4.6 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof3</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_3'>
+        <geometry>
+          <box>
+            <size>4.05 4.6 0.2</size>
+          </box>
+        </geometry>
+        <pose>7.5 6 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_4'>
+        <pose>6.1 1.2 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.6 2.6 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof4</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_4'>
+        <geometry>
+          <box>
+            <size>3.6 2.6 0.2</size>
+          </box>
+        </geometry>
+        <pose>6.1 1.2 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_5'>
+        <pose>6.1 3.1 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.6 1.2 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof5</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_5'>
+        <geometry>
+          <box>
+            <size>3.6 1.2 0.2</size>
+          </box>
+        </geometry>
+        <pose>6.1 3.1 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='Roof_Visual_6'>
+        <pose>8.8 1.8 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>1.8 3.8 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Bricks</name>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof6</name>
+          </script>
+        </material> -->
+      </visual>
+
+      <collision name='Roof_Collision_6'>
+        <geometry>
+          <box>
+            <size>1.8 3.8 0.2</size>
+          </box>
+        </geometry>
+        <pose>8.8 1.8 2.6 0 -0 0</pose>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      
+    </link>
+    
+
     <include>
         <uri>model://mesa_comedor</uri>
         <pose>-2.4 0.3 0 0 0 1.57</pose>
