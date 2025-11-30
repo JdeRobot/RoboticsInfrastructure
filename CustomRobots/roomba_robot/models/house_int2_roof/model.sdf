@@ -3,14 +3,15 @@
   <model name="house_int2_roof">
     <static>true</static>
 
-    <!-- Interior de la casa -->
     <link name="house_int_link">
 
       <visual name="walls_visual">
         <geometry>
           <mesh>
             <uri>meshes/model.dae</uri>
-            <submesh><name>walls</name></submesh>
+            <submesh>
+              <name>walls</name>
+            </submesh>
           </mesh>
         </geometry>
       </visual>
@@ -19,7 +20,9 @@
         <geometry>
           <mesh>
             <uri>meshes/model.dae</uri>
-            <submesh><name>Plane</name></submesh>
+            <submesh>
+              <name>Plane</name>
+            </submesh>
           </mesh>
         </geometry>
       </visual>
@@ -28,7 +31,9 @@
         <geometry>
           <mesh>
             <uri>meshes/model.dae</uri>
-            <submesh><name>encimera</name></submesh>
+            <submesh>
+              <name>encimera</name>
+            </submesh>
           </mesh>
         </geometry>
       </visual>
@@ -37,7 +42,9 @@
         <geometry>
           <mesh>
             <uri>meshes/model.dae</uri>
-            <submesh><name>barra</name></submesh>
+            <submesh>
+              <name>barra</name>
+            </submesh>
           </mesh>
         </geometry>
       </visual>
@@ -46,7 +53,9 @@
         <geometry>
           <mesh>
             <uri>meshes/model.dae</uri>
-            <submesh><name>frigo</name></submesh>
+            <submesh>
+              <name>frigo</name>
+            </submesh>
           </mesh>
         </geometry>
       </visual>
@@ -66,269 +75,350 @@
 
     </link>
 
-    <!-- TEJADO -->
-    <link name="Roof">
+    <link name='Roof'>
       <pose>5.5 -3.6 0 0 0 1.57</pose>
 
-      <!-- Roof 0 -->
-      <visual name="Roof_Visual_0">
-        <pose>2.15 1.8 2.6 0 0 0</pose>
-        <geometry><box><size>4.3 3.8 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof0.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_0'>
+        <pose>2.15 1.8 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.3 3.8 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof0</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_0">
-        <geometry><box><size>4.3 3.8 0.2</size></box></geometry>
-        <pose>2.15 1.8 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_0'>
+        <geometry>
+          <box>
+            <size>4.3 3.8 0.2</size>
+          </box>
+        </geometry>
+        <pose>2.15 1.8 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 1 -->
-      <visual name="Roof_Visual_1">
-        <pose>3.925 4.95 2.6 0 0 0</pose>
-        <geometry><box><size>3.1 2.5 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof1.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_1'>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof1</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_1">
-        <geometry><box><size>3.1 2.5 0.2</size></box></geometry>
-        <pose>3.925 4.95 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_1'>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 2 -->
-      <visual name="Roof_Visual_2">
-        <pose>3.925 7.85 2.6 0 0 0</pose>
-        <geometry><box><size>3.1 3.3 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof2.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_2'>
+        <pose>3.925 7.85 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.1 3.3 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof2</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_2">
-        <geometry><box><size>3.1 2.5 0.2</size></box></geometry>
-        <pose>3.925 7.85 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_2'>
+        <geometry>
+          <box>
+            <size>3.1 2.5 0.2</size>
+          </box>
+        </geometry>
+        <pose>3.925 4.95 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 3 -->
-      <visual name="Roof_Visual_3">
-        <pose>7.5 6 2.6 0 0 0</pose>
-        <geometry><box><size>4.05 4.6 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof3.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_3'>
+        <pose>7.5 6 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.05 4.6 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof3</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_3">
-        <geometry><box><size>4.05 4.6 0.2</size></box></geometry>
-        <pose>7.5 6 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_3'>
+        <geometry>
+          <box>
+            <size>4.05 4.6 0.2</size>
+          </box>
+        </geometry>
+        <pose>7.5 6 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 4 -->
-      <visual name="Roof_Visual_4">
-        <pose>6.1 1.2 2.6 0 0 0</pose>
-        <geometry><box><size>3.6 2.6 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof4.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_4'>
+        <pose>6.1 1.2 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.6 2.6 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof4</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_4">
-        <geometry><box><size>3.6 2.6 0.2</size></box></geometry>
-        <pose>6.1 1.2 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_4'>
+        <geometry>
+          <box>
+            <size>3.6 2.6 0.2</size>
+          </box>
+        </geometry>
+        <pose>6.1 1.2 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 5 -->
-      <visual name="Roof_Visual_5">
-        <pose>6.1 3.1 2.6 0 0 0</pose>
-        <geometry><box><size>3.6 1.2 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof5.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_5'>
+        <pose>6.1 3.1 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.6 1.2 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof5</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_5">
-        <geometry><box><size>3.6 1.2 0.2</size></box></geometry>
-        <pose>6.1 3.1 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_5'>
+        <geometry>
+          <box>
+            <size>3.6 1.2 0.2</size>
+          </box>
+        </geometry>
+        <pose>6.1 3.1 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <!-- Roof 6 -->
-      <visual name="Roof_Visual_6">
-        <pose>8.8 1.8 2.6 0 0 0</pose>
-        <geometry><box><size>1.8 3.8 0.2</size></box></geometry>
-        <material>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2_roof/materials/textures/Roof6.png</albedo_map>
-              <metalness>0</metalness>
-              <roughness>1</roughness>
-            </metal>
-          </pbr>
-        </material>
+      <visual name='Roof_Visual_6'>
+        <pose>8.8 1.8 2.6 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>1.8 3.8 0.2</size>
+          </box>
+        </geometry>
+        <!-- <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Bricks</name>
+            <uri>model://house_int2_roof/materials/scripts</uri>
+            <uri>model://house_int2_roof/materials/textures</uri>
+            <name>Roof/Roof6</name>
+          </script>
+        </material> -->
       </visual>
 
-      <collision name="Roof_Collision_6">
-        <geometry><box><size>1.8 3.8 0.2</size></box></geometry>
-        <pose>8.8 1.8 2.6 0 0 0</pose>
+      <collision name='Roof_Collision_6'>
+        <geometry>
+          <box>
+            <size>1.8 3.8 0.2</size>
+          </box>
+        </geometry>
+        <pose>8.8 1.8 2.6 0 -0 0</pose>
         <max_contacts>10</max_contacts>
-        <surface><bounce/><friction><ode/></friction><contact><ode/></contact></surface>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
       </collision>
 
-      <velocity_decay><linear>0</linear><angular>0</angular></velocity_decay>
-      <self_collide>false</self_collide>
-      <kinematic>false</kinematic>
-      <gravity>true</gravity>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
 
     </link>
-
-    <!-- OBJETOS INCLUIDOS -->
-    <include>
-      <uri>model://mesa_comedor</uri>
-      <pose>-2.4 0.3 0 0 0 1.57</pose>
-      <static>true</static>
-    </include>
+    
 
     <include>
-      <name>Silla 1</name>
-      <uri>model://silla</uri>
-      <pose>-2.1 -0.1 0 0 0 0</pose>
-      <static>true</static>
+        <uri>model://mesa_comedor</uri>
+        <pose>-2.4 0.3 0 0 0 1.57</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Silla 2</name>
-      <uri>model://silla</uri>
-      <pose>-2.1 0.7 0 0 0 0</pose>
-      <static>true</static>
+        <name>Silla 1</name>
+        <uri>model://silla</uri>
+        <pose>-2.1 -0.1 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Silla 3</name>
-      <uri>model://silla</uri>
-      <pose>-2.7 -0.1 0 0 0 3.14</pose>
-      <static>true</static>
+        <name>Silla 2</name>
+        <uri>model://silla</uri>
+        <pose>-2.1 0.7 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Silla 4</name>
-      <uri>model://silla</uri>
-      <pose>-2.7 0.7 0 0 0 3.14</pose>
-      <static>true</static>
+        <name>Silla 3</name>
+        <uri>model://silla</uri>
+        <pose>-2.7 -0.1 0 0 -0 3.14</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Mesa salon</name>
-      <uri>model://mesa_salon</uri>
-      <pose>-0.8 4.4 0 0 0 0</pose>
-      <static>true</static>
+        <name>Silla 4</name>
+        <uri>model://silla</uri>
+        <pose>-2.7 0.7 0 0 -0 3.14</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Sofa 1</name>
-      <uri>model://sofa_largo</uri>
-      <pose>-0.8 3.4 0 0 0 3.14</pose>
-      <static>true</static>
+        <name>Mesa salon</name>
+        <uri>model://mesa_salon</uri>
+        <pose>-0.8 4.4 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Sofa 2</name>
-      <uri>model://sofa</uri>
-      <pose>0.5 4.4 0 0 0 -1.57</pose>
-      <static>true</static>
+        <name>Sofa 1</name>
+        <uri>model://sofa_largo</uri>
+        <pose>-0.8 3.4 0 0 -0 3.14</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Sofa 3</name>
-      <uri>model://sofa</uri>
-      <pose>-2.1 4.4 0 0 0 1.57</pose>
-      <static>true</static>
+        <name>Sofa 2</name>
+        <uri>model://sofa</uri>
+        <pose>0.5 4.4 0 0 0 -1.57</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Estanteria 1</name>
-      <uri>model://estanteria</uri>
-      <pose>4.7 4.48 0 0 0 0</pose>
-      <static>true</static>
+        <name>Sofa 3</name>
+        <uri>model://sofa</uri>
+        <pose>-2.1 4.4 0 0 -0 1.57</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Estanteria 2</name>
-      <uri>model://estanteria</uri>
-      <pose>4.7 0.5 0 0 0 0</pose>
-      <static>true</static>
+        <name>Estanteria 1</name>
+        <uri>model://estanteria</uri>
+        <pose>4.7 4.48 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Mesita 1</name>
-      <uri>model://mesita</uri>
-      <pose>2.4 -3.28 0 0 0 0</pose>
-      <static>true</static>
+        <name>Estanteria 2</name>
+        <uri>model://estanteria</uri>
+        <pose>4.7 0.5 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Mesita 2</name>
-      <uri>model://mesita</uri>
-      <pose>4.4 -3.28 0 0 0 0</pose>
-      <static>true</static>
+        <name>Mesita 1</name>
+        <uri>model://mesita</uri>
+        <pose>2.4 -3.28 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
     <include>
-      <name>Cama</name>
-      <uri>model://cama</uri>
-      <pose>3.4 -2.41 0 0 0 -1.57</pose>
-      <static>true</static>
+        <name>Mesita 2</name>
+        <uri>model://mesita</uri>
+        <pose>4.4 -3.28 0 0 -0 0</pose>
+        <static>true</static>
     </include>
-
+    <include>
+        <name>Cama</name>
+        <uri>model://cama</uri>
+        <pose>3.4 -2.41 0 0 0 -1.57</pose>
+        <static>true</static>
+    </include>
   </model>
 </sdf>
-
