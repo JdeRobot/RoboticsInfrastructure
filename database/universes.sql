@@ -169,6 +169,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 42	Autopark_battery	42	0
 43	Autopark_sideways	43	0
 44	Autopark Lidar Line	44	0
+45	Vacuums House Classic	45	0
 \.
 
 
@@ -202,7 +203,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_house.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	gz	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -223,6 +224,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 44	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autopark_line_lidar.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
