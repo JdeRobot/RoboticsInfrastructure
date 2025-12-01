@@ -135,7 +135,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 8	Follow Person Teleop	11	0
 9	Autoparking Simple: In line	7	0
 10	Obstacle Avoidance Classic	19	0
-11 	City Large Followcam	9	0
+11 	City Large Harmonic	9	0
 12 	3d Reconstruction	1	0
 13 	Autoparking Simple: In battery	6	0
 14 	Autoparking Gas Station: In line	3	0
@@ -165,6 +165,10 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
 40	Obstacle Avoidance Harmonic	40	0
+41	Autopark_line	41	0
+42	Autopark_battery	42	0
+43	Autopark_sideways	43	0
+44	Autopark Lidar Line	44	0
 \.
 
 
@@ -182,8 +186,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 5	Autoparking Lidar Simple: In line	/opt/jderobot/Launchers/prius_360_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 6	Autoparking Simple: In battery	/opt/jderobot/Launchers/prius_bateria.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-8	City Large	/opt/jderobot/Launchers/taxi_navigator.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-9	City Large Followcam	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+8	City Large	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+9	City Large Harmonic	/opt/jderobot/Launchers/taxi_navigator.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/global_nav.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -215,6 +219,10 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+44	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autopark_line_lidar.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --

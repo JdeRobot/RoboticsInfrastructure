@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+<model name="opel">
+  <pose>0 0 0.5 0 0 0</pose>
+  <static>true</static>
+
+  <link name="opel">
+      <gravity>0</gravity> <!-- No hace falta gravedad para estático -->
+      <!--
+      <inertial>
+          <mass>500</mass>
+      </inertial>
+      -->
+      <collision name="collision">
+          <geometry>
+              <mesh>
+                  <uri>model://opel/meshes/model.obj</uri>
+              </mesh>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+              <mesh>
+                  <uri>model://opel/meshes/model.obj</uri>
+              </mesh>
+          </geometry>
+      </visual>
+  </link>
+
+  <!-- Plugins de control o sensores no necesarios para estático -->
+  <!-- <plugin name="opelMotors" filename="libopelMotors.so"/> -->
+
+  <!-- Cámaras -->
+  <!--
+  <link name='camera_center'>
+      ...
+      <sensor name='cam_opel_center' type='camera'>
+          ...
+      </sensor>
+      <visual name='visual'>
+          ...
+      </visual>
+      <collision name='collision'>
+          ...
+      </collision>
+  </link>
+
+  <link name='camera_left'> ... </link>
+  <link name='camera_right'> ... </link>
+
+  <plugin name="pose3d" filename="libopelPose3D.so"/>
+  
+  <joint type="revolute" name="camera_center"> ... </joint>
+  <joint type="revolute" name="camera_left"> ... </joint>
+  <joint type="revolute" name="camera_right"> ... </joint>
+  -->
+
+</model>
+</sdf>
