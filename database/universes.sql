@@ -169,6 +169,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 42	Autopark_battery	42	0
 43	Autopark_sideways	43	0
 44	Autopark Lidar Line	44	0
+45	Vacuums House Classic	45	0
 \.
 
 
@@ -223,6 +224,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 44	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autopark_line_lidar.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
