@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<!-- <?xml version="1.0" ?>
 <sdf version="1.10">
   <world name="default">
 
@@ -1510,7 +1510,6 @@
       <pose>4 10 0 0 0 3.14</pose>
     </include> 
 
-    <!-- Luz -->
     <light name="sun" type="directional">
       <pose>0 0 10 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
@@ -1519,5 +1518,91 @@
       <cast_shadows>true</cast_shadows>
     </light>
 
+  </world>
+</sdf> -->
+
+<?xml version="1.0" ?>
+
+<sdf version="1.8">
+  <world name="default">
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+      <grid>true</grid>
+    </scene>
+
+    <light name='point_light1' type='point'>
+      <pose frame=''>-3.0 -2.0 4.0 0 0 0</pose>
+      <visualize>false</visualize>
+    </light>
+
+    <light name='point_light2' type='point'>
+      <pose frame=''>-3.0 2.0 4.0 0 0 0</pose>
+      <visualize>false</visualize>
+    </light>
+
+    <light name='point_light3' type='directional'>
+      <pose frame=''>0 0 1.0 0 -1.57 0</pose>
+      <visualize>false</visualize>
+    </light>
+
+    <include>
+      <uri>model://ground_plane_sincolor</uri>
+    </include>
+    
+    <!-- Pioneer2dx model -->
+    <include>
+      <uri>model://turtlebotROS</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Duck -->
+    <include>
+      <uri>model://duck</uri>
+       <pose>4.7 3 0  1.57 0 1.57</pose>
+    </include>
+
+    <!-- Cereales -->
+    <include>
+      <uri>model://cereales</uri>
+       <pose>5.3 2.3 0 0 0 0</pose>
+    </include>
+
+    <!-- Blocks -->
+    <include>
+      <uri>model://blocks</uri>
+       <pose>4.66 -4 0 0 0 1.57</pose>
+    </include>
+
+    <!-- charactersMario -->
+    <include>
+      <uri>model://charactersMario</uri>
+       <pose>4.1 0.5 0 0 0 -1.57</pose>
+    </include>
+
+    <light type="directional" name="sun">
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <visualize>false</visualize>
+    </light>
+    
   </world>
 </sdf>
