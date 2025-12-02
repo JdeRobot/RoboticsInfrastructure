@@ -1465,7 +1465,7 @@
         <update_rate>20.000000</update_rate>
         <always_on>1</always_on>
         <visualize>1</visualize>
-        <topic>/turtlebotROS/laser/scan</topic>
+        <topic>/scan</topic>
         <gz_frame_id>hokuyo_link</gz_frame_id>
       </sensor>
 
@@ -1584,6 +1584,18 @@
       <cliff_detection_threshold>0.04</cliff_detection_threshold>
       <bumper_name>bumpers</bumper_name>
       <imu_name>imu</imu_name>
+    </plugin>
+
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/cmd_vel</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>/odom</odom_topic>
+      <dimensions>3</dimensions>
     </plugin>
 
   </model>

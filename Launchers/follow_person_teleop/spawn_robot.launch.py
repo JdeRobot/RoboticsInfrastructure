@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "turtlebot3_waffle"
+    model_folder = "turtlebotROS"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "turtlebot3_waffle.yaml"
+        get_package_share_directory("custom_robots"), "params", "turtlebotROS.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
@@ -80,16 +80,16 @@ def generate_launch_description():
     start_gazebo_ros_image_bridge_cmd = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/turtlebot3/camera/image_raw"],
+        arguments=["/depth_camera/image_raw"],
         output="screen",
     )
 
-    start_gazebo_ros_depth_bridge_cmd = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/turtlebot3/camera/depth"],
-        output="screen",
-    )
+    # start_gazebo_ros_depth_bridge_cmd = Node(
+    #     package="ros_gz_image",
+    #     executable="image_bridge",
+    #     arguments=["/turtlebot3/camera/depth"],
+    #     output="screen",
+    # )
 
     ld = LaunchDescription()
 
@@ -102,6 +102,6 @@ def generate_launch_description():
     # ld.add_action(start_gazebo_ros_spawner_cmd)
     ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(start_gazebo_ros_image_bridge_cmd)
-    ld.add_action(start_gazebo_ros_depth_bridge_cmd)
+    # ld.add_action(start_gazebo_ros_depth_bridge_cmd)
 
     return ld
