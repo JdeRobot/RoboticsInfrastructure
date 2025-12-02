@@ -45,7 +45,7 @@
     <!-- Pioneer2dx model -->
     <include>
       <uri>model://turtlebotROS</uri>
-      <pose>0 0 0.1 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
     </include>
 
     <!-- Duck -->
