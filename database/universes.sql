@@ -174,6 +174,10 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 47	Spa Circuit	47	0
 48 	Monaco Ackermann Circuit	48	0
 49 	Monaco Circuit	49	0
+50 	Simple Circuit Classic	50	0
+51 	Montmelo Circuit Classic	51	0
+52 	Montreal Circuit Classic	52	0
+53 	Nurburgring Circuit Classic	53	0
 \.
 
 
@@ -233,6 +237,10 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 47	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 48	Monaco Ackermann Circuit	/opt/jderobot/Launchers/monaco_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+50	Simple Circuit Classic	/opt/jderobot/Launchers/simple_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+51	Montmelo Circuit Classic	/opt/jderobot/Launchers/montmelo_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+52	Montreal Circuit Classic	/opt/jderobot/Launchers/montreal_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+53	Nurburgring Circuit Classic	/opt/jderobot/Launchers/nurburgring_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
