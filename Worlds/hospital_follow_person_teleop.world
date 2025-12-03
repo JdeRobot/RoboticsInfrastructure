@@ -24,13 +24,13 @@
       <shadows>false</shadows>
     </scene>
 
-    <gui fullscreen= 1>
+    <!-- <gui fullscreen=1>
       <camera name='user_camera'>
         <pose>-2 10 1 0 0 0</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
-    </gui>
+    </gui> -->
 
     <physics default="0" name="default_physics" type="ode">
       <ode>
