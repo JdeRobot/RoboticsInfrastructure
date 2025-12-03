@@ -89,6 +89,7 @@ install(
     roomba_robot/params
     # ACKERMAN CAR
     ackermann_cars/models
+    ackermann_cars/params
     # CARS
     car_junction/models
     car_junction/scripts

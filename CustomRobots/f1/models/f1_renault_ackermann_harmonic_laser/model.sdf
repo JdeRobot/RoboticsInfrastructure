@@ -26,7 +26,7 @@
 
     <link name='chassis_link'>
       <inertial>
-        <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
+        <pose>0.0000002 0.014614 0.130192 0 -0 0</pose>
         <mass>1580</mass>
         <inertia>
           <ixx>1997.86</ixx>
@@ -38,10 +38,10 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 1.51 0 0 -0 1.5708</pose>
+        <pose>0 0.302 0 0 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>5 5 5</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.dae</uri>
           </mesh>
         </geometry>
@@ -59,10 +59,10 @@
       </collision>
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
         <!-- <pose>0 1.51 0 0 -0 1.5708</pose> -->
-        <pose>0 1.51 0 1.5708 -0 1.5708</pose>
+        <pose>0 0.302 0 1.5708 -0 1.5708</pose>
         <geometry>
           <mesh>
-            <scale>5 5 5</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/chasis.obj</uri>
           </mesh>
         </geometry>
@@ -72,7 +72,7 @@
 
     <!-- Back Left Wheel -->
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.155 -0.366728 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
@@ -101,12 +101,12 @@
         </inertia>
       </inertial>
       <collision name='bl_1_collision'>
-        <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>0.175 0.20252 0.028 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <radius>.3425</radius>
-            <length>.22</length>
-          </cylinder>
+          <mesh>
+            <scale>0.0002 0.0002 0.0002</scale>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/bl_1.stl</uri>
+          </mesh>
         </geometry>
         <surface>
           <contact>
@@ -122,10 +122,10 @@
       </collision>
       <visual name='bl_1_visual'>
         <!-- <pose>0.875 1.0136 0.1444 0 -0 0</pose> -->
-        <pose>0.875 0.14 -1.0126 0 -0 0</pose>
+        <pose>0.175 0.028 -0.20252 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_left.obj</uri>
           </mesh>
         </geometry>
@@ -135,7 +135,7 @@
 
     <!-- Back Right Wheel -->
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.775 -1.83364 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.155 -0.366728 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
@@ -164,12 +164,12 @@
         </inertia>
       </inertial>
       <collision name='br_1_collision'>
-        <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>-0.175 0.20252 0.028 0 0 0</pose>
         <geometry>
-          <cylinder>
-            <radius>.3425</radius>
-            <length>.22</length>
-          </cylinder>
+          <mesh>
+            <scale>0.0002 0.0002 0.0002</scale>
+            <uri>model://f1_renault_ackermann_harmonic_laser/Renault/br_1.stl</uri>
+          </mesh>
         </geometry>
         <surface>
           <contact>
@@ -185,10 +185,10 @@
       </collision>
       <visual name='br_1_visual'>
         <!-- <pose>-0.875 1.0136 0.1444 0 -0 0</pose> -->
-        <pose>-0.875 0.14 -1.0126 0 -0 0</pose>
+        <pose>-0.175 0.028 -0.20252 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/back_right.obj</uri>
           </mesh>
         </geometry>
@@ -199,7 +199,7 @@
 
     <!-- Steering Wheel -->
     <joint name="steering_joint" type="revolute">
-      <pose relative_to='chassis_link'>-0.01 0.6 0.6 0 0 0</pose>
+      <pose relative_to='chassis_link'>-0.002 0.12 0.12 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>steering_wheel</child>
       <axis>
@@ -222,7 +222,7 @@
       </physics>
     </joint>
     <link name='steering_wheel'>
-      <pose relative_to='steering_joint'>0 0.87 -0.54 0 0 1.5708</pose>
+      <pose relative_to='steering_joint'>0 0.174 -0.108 0 0 1.5708</pose>
       <inertial>
         <mass>0.5</mass>
         <inertia>
@@ -238,7 +238,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <scale>4.7 4.7 4.7</scale>
+            <scale>0.94 0.94 0.94</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/steering_wheel.dae</uri>
           </mesh>
         </geometry>
@@ -282,7 +282,7 @@
 
     <!-- Single Steering Joint for both front wheels -->
     <joint name='front_steering' type='revolute'>
-      <pose relative_to='chassis_link'>0 1.51736 0.324997 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0 0.303472 0.0649994 0 -0 0</pose>
       <parent>chassis_link</parent>
       <child>front_steering_link</child>
       <axis>
@@ -318,7 +318,7 @@
 
     <!-- Front Left Wheel -->
     <joint name='fl_axle' type='revolute'>
-      <pose relative_to='front_steering_link'>-0.825 0 0 0 -0 0</pose>
+      <pose relative_to='front_steering_link'>-0.165 0 0 0 -0 0</pose>
       <parent>front_steering_link</parent>
       <child>fl_1</child>
       <axis>
@@ -347,10 +347,10 @@
         </inertia>
       </inertial>
       <collision name='fl_1_collision'>
-        <pose>0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose>0.175 -0.30348 0.02888 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>0.0002 0.0002 0.0002</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fl_1.stl</uri>
           </mesh>
         </geometry>
@@ -368,10 +368,10 @@
       </collision>
       <visual name='fl_1_visual'>
         <!-- <pose>0.875 -1.5174 0.1444 0 -0 0</pose> -->
-        <pose>0.875 0.1444 1.5174 0 -0 0</pose>
+        <pose>0.175 0.02888 0.30348 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_left.obj</uri>
           </mesh>
         </geometry>
@@ -415,7 +415,7 @@
 
     <!-- Front Right Wheel -->
     <joint name='fr_axle' type='revolute'>
-      <pose relative_to='front_steering_link'>0.825 0 0 0 -0 0</pose>
+      <pose relative_to='front_steering_link'>0.165 0 0 0 -0 0</pose>
       <parent>front_steering_link</parent>
       <child>fr_1</child>
       <axis>
@@ -432,7 +432,7 @@
     <link name='fr_1'>
       <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>-0.00754 0 -0 0 -0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -444,10 +444,10 @@
         </inertia>
       </inertial>
       <collision name='fr_1_collision'>
-        <pose>-0.875 -1.5174 0.1444 0 -0 0</pose>
+        <pose>-0.175 -0.30348 0.02888 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>0.0002 0.0002 0.0002</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/fr_1.stl</uri>
           </mesh>
         </geometry>
@@ -465,70 +465,81 @@
       </collision>
       <visual name='fr_1_visual'>
         <!-- <pose>-0.875 -1.5174 0.1444 0 -0 0</pose> -->
-        <pose>-0.875 0.1444 1.5174 0 -0 0</pose>
+        <pose>-0.175 0.02888 0.30348 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.02 0.02 0.02</scale>
             <uri>model://f1_renault_ackermann_harmonic_laser/Renault/front_right.obj</uri>
           </mesh>
         </geometry>
       </visual>
     </link>
     
-    <link name='laser_body'>
-      <pose relative_to='chassis_link'>0.00000 1.700000 0.7000 0.000000 0.000000 1.57000</pose>
+    <link name="camera_link"/>
+
+    <link name="camera_rgb_frame">
       <inertial>
-        <mass>0.1</mass>
+        <pose>0.0138 -0.0094 0.0214 0 0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
-          <ixy>0.0</ixy>
+          <ixy>0.000</ixy>
+          <ixz>0.000</ixz>
           <iyy>0.001</iyy>
-          <ixz>0.0</ixz>
-          <iyz>0.0</iyz>
+          <iyz>0.000</iyz>
           <izz>0.001</izz>
         </inertia>
+        <mass>0.035</mass>
       </inertial>
-      <visual name="visual_laser">
-        <geometry>
-          <mesh>
-            <uri>model://f1_renault_ackermann_harmonic_laser/meshes/hokuyo.dae</uri>
-          </mesh>
-        </geometry>
-      </visual>
-      <sensor name='laser' type='gpu_ray'>
-        <pose>0 0 0 0 0 0</pose>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>180</samples>
-              <resolution>1.000000</resolution>
-              <min_angle>-1.570000</min_angle>
-              <max_angle>1.570000</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.080000</min>
-            <max>10.000000</max>
-            <resolution>0.010000</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </ray>
-        <update_rate>20.000000</update_rate>
+
+      <!-- OLD POSE -->
+      <!-- <pose>0.0138 -0.0094 0.0214 0 0 0</pose> -->
+
+      <!-- NEW POSE -->
+      <pose>0 2.7 0.2 0 0 1.57</pose>
+
+      <sensor name="camera" type="camera">
         <always_on>true</always_on>
         <visualize>true</visualize>
-        <topic>/model/f1_renault_ackermann_harmonic_laser/laser/scan</topic>
+        <update_rate>30</update_rate>
+        <topic>/cam_f1_left/image_raw</topic>
+        <gz_frame_id>camera_rgb_frame</gz_frame_id>
+        <camera name="intel_realsense_r200">
+          <camera_info_topic>/cam_f1_left/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera> 
       </sensor>
-      <self_collide>false</self_collide>
     </link>
-    
-    <joint type="fixed" name="laser_fix">
-      <pose>0 0 0 0 0 0</pose>
-      <child>laser_body</child>
+
+    <joint name="camera_joint" type="fixed">
       <parent>chassis_link</parent>
+      <child>camera_link</child>
+      <pose>0.0128 -0.013 0.0188 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name="camera_rgb_joint" type="fixed">
+      <parent>camera_link</parent>
+      <child>camera_rgb_frame</child>
+      <pose>0.001 0.0036 0.0026 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
