@@ -586,7 +586,7 @@
         <update_rate>20.000000</update_rate>
         <always_on>1</always_on>
         <visualize>1</visualize>
-        <topic>/turtlebotROS/laser/scan</topic>
+        <topic>/scan</topic>
         <gz_frame_id>hokuyo_link</gz_frame_id>
       </sensor>
 
@@ -769,7 +769,7 @@
         </plugin>
       </sensor> -->
 
-      <sensor name="cam_turtlebot_left" type="camera">
+      <!-- <sensor name="cam_turtlebot_left" type="camera">
         <pose>0.000000 0.000000 0.000000 -1.570000 -0.000000 3.140000</pose>
         <always_on>true</always_on>
         <visualize>true</visualize>
@@ -790,14 +790,11 @@
           </clip>
           <noise>
             <type>gaussian</type>
-            <!-- Noise is sampled independently per pixel on each frame.
-                  That pixel's noise value is added to each of its color
-                  channels, which at that point lie in the range [0,1]. -->
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
         </camera> 
-      </sensor>
+      </sensor> -->
 
       <visual name='visual'>
         <geometry>
@@ -1018,10 +1015,10 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>20.000000</update_rate>
-        <topic>/cam_turtlebot_right/image_raw</topic>
+        <topic>/depth_camera/image_raw</topic>
         <gz_frame_id>camera_link</gz_frame_id>
         <camera name="__default__">
-          <camera_info_topic>/cam_turtlebot_right/camera_info</camera_info_topic>
+          <camera_info_topic>/depth_camera/camera_info</camera_info_topic>
           <horizontal_fov>1.570000</horizontal_fov>
           <image>
             <width>640</width>
@@ -1126,13 +1123,6 @@
     <joint name='joint_laser' type='revolute'>
       <parent>rack</parent>
       <child>laser</child>
-      <!-- <axis>
-        <xyz>0.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis> -->
     </joint>
 
     <joint name='pan_joint_left' type='revolute'>
@@ -1165,13 +1155,6 @@
       <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
       <child>camera_bottom_body_left</child>
       <parent>rack</parent>
-      <!-- <axis>
-        <xyz>0.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis> -->
     </joint>
 
     <joint name='pan_joint_right' type='revolute'>
@@ -1204,14 +1187,35 @@
       <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
       <child>camera_bottom_body_right</child>
       <parent>rack</parent>
-      <!-- <axis>
-        <xyz>0.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis> -->
     </joint>
+
+    <!-- <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <publish_tf>1</publish_tf>
+      <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
+      <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
+      <wheel_separation>.230</wheel_separation>
+      <wheel_diameter>0.070</wheel_diameter>
+      <torque>1.0</torque>
+      <velocity_command_timeout>0.6</velocity_command_timeout>
+      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
+      <cliff_sensor_center_name>cliff_sensor_front</cliff_sensor_center_name>
+      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
+      <cliff_detection_threshold>0.04</cliff_detection_threshold>
+      <bumper_name>bumpers</bumper_name>
+      <imu_name>imu</imu_name>
+    </plugin> -->
+
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/cmd_vel</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>/odom</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
 
   </model>
 </sdf>
