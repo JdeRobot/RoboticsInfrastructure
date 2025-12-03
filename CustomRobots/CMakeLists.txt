@@ -83,27 +83,18 @@ install(
     Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
     # F1
     f1/models
-    f1/launch
-    f1/worlds
     f1/params
     # ROOMBA
     roomba_robot/models
-    roomba_robot/worlds
-    roomba_robot/launch
+    roomba_robot/params
     # ACKERMAN CAR
     ackermann_cars/models
-    ackermann_cars/worlds
-    ackermann_cars/launch
     ackermann_cars/params
     # CARS
     car_junction/models
-    car_junction/worlds
-    car_junction/launch
     car_junction/scripts
     # AMAZON WAREHOUSE ROBOT
-    amazon_robot/launch
     amazon_robot/models
-    amazon_robot/worlds
     amazon_robot/urdf
     amazon_robot/meshes
     # AMAZON HOSPITAL
@@ -111,25 +102,23 @@ install(
     amazon_hospital/hospital_world/launch
     amazon_hospital/hospital_world/worlds
     amazon_hospital/worlds
-    amazon_hospital/launch
     # ACKERMANN LOGISTIC ROBOT
-    ackermann_logistic_robot/launch
     ackermann_logistic_robot/models
-    ackermann_logistic_robot/worlds
     # AUTOPARKING CARS
-    autoparking/launch
     autoparking/models
-    autoparking/worlds
+    # AUTOPARK_HARMONIC
+    autopark_harmonic/models
+    autopark_harmonic/params
     # DRONE_ASSETS
     drone_assets/models
     drone_assets/worlds
     drone_assets/bridges
     # GLOBAL_NAVIGATION
     taxi_navigator/models
+    taxi_navigator/params
     # 3D RECONSTRUCTION
-    3d_reconstruction/launch
     3d_reconstruction/models
-    3d_reconstruction/worlds
+    3d_reconstruction/params
     # MARKER VISUAL LOC
     marker_visual_loc/models
     turtlebot3/models

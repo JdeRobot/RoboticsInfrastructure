@@ -134,9 +134,9 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 7	Follow Person	10	0
 8	Follow Person Teleop	11	0
 9	Autoparking Simple: In line	7	0
-10	Obstacle Avoidance Default	19	0
-11 	City Large Followcam	9	0
-12 	3d Reconstruction	1	0
+10	Obstacle Avoidance Classic	19	0
+11 	City Large Harmonic	9	0
+12 	3d Reconstruction	46	0
 13 	Autoparking Simple: In battery	6	0
 14 	Autoparking Gas Station: In line	3	0
 15 	Autoparking Gas Station: In battery	2	0
@@ -164,9 +164,16 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
-40	Spa Circuit	40	0
-41 	Monaco Ackermann Circuit	41	0
-42 	Monaco Circuit	42	0
+40	Obstacle Avoidance Harmonic	40	0
+41	Autopark_line	41	0
+42	Autopark_battery	42	0
+43	Autopark_sideways	43	0
+44	Autopark Lidar Line	44	0
+45	Vacuums House Classic	45	0
+46 	3d Reconstruction Classic	1	0
+47	Spa Circuit	47	0
+48 	Monaco Ackermann Circuit	48	0
+49 	Monaco Circuit	49	0
 \.
 
 
@@ -177,15 +184,15 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 
 COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
 0	None	None	None	ROS2	none	{0.0,0.0,0.0,0.0,0.0,0.0}
-1	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+1	3d Reconstruction Classic	/opt/jderobot/Launchers/3d_reconstruction_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 2	Autoparking Gas Station: In battery	/opt/jderobot/Launchers/gas_station_battery_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 3	Autoparking Gas Station: In line	/opt/jderobot/Launchers/gas_station_line_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 4	Autoparking Gas Station: Parking lot	/opt/jderobot/Launchers/gas_station_parking_ackermann.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 5	Autoparking Lidar Simple: In line	/opt/jderobot/Launchers/prius_360_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 6	Autoparking Simple: In battery	/opt/jderobot/Launchers/prius_bateria.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-8	City Large	/opt/jderobot/Launchers/taxi_navigator.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-9	City Large Followcam	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+8	City Large	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+9	City Large Harmonic	/opt/jderobot/Launchers/taxi_navigator.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/global_nav.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -195,12 +202,12 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 17	Nurburgring Ackermann Circuit	/opt/jderobot/Launchers/nurburgring_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-19	Obstacle Avoidance Default	/opt/jderobot/Launchers/simple_circuit_obstacles_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+19	Obstacle Avoidance Classic	/opt/jderobot/Launchers/simple_circuit_obstacles.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 20	Rescue Default	/opt/jderobot/Launchers/world.json	None	ROS2	drones	{0.0,0.0,0.0,0.0,0.0,0.0}
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_house.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	gz	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -216,9 +223,16 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-40	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-41	Monaco Ackermann Circuit	/opt/jderobot/Launchers/monaco_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-42	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+44	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autopark_line_lidar.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+47	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+48	Monaco Ackermann Circuit	/opt/jderobot/Launchers/monaco_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
