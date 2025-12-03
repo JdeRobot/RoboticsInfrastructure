@@ -53,10 +53,10 @@
       <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
     </physics>
 
-    <include>
+    <!-- <include>
       <uri>model://ground_plane_sincolor</uri>
       <pose>0 0 -0.1 0 -0 0</pose>
-    </include>
+    </include> -->
 
     <model name="aws_robomaker_hospital_floor_01_floor_1">
       <include>
@@ -1513,7 +1513,7 @@
 
     <include>
       <uri>model://turtlebotROS</uri>
-      <pose>0 10 0 0 0 0</pose>
+      <pose>4 8 0 0 0 1.57</pose>
     </include>
 
     <light name="sun" type="directional">
