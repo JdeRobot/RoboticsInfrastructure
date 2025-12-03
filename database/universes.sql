@@ -200,17 +200,17 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-15	Montreal Ackermann Circuit	/opt/jderobot/Launchers/montreal_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-17	Nurburgring Ackermann Circuit	/opt/jderobot/Launchers/nurburgring_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+15	Montreal Ackermann Circuit	/opt/jderobot/Launchers/montreal_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+17	Nurburgring Ackermann Circuit	/opt/jderobot/Launchers/nurburgring_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 19	Obstacle Avoidance Classic	/opt/jderobot/Launchers/simple_circuit_obstacles.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 20	Rescue Default	/opt/jderobot/Launchers/world.json	None	ROS2	drones	{0.0,0.0,0.0,0.0,0.0,0.0}
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+22	Simple Ackermann Circuit	/opt/jderobot/Launchers/simple_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_house.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	gz	{1,-1.5,0.6,0,0,0}
 26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
