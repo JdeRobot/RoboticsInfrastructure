@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<robot name="monaco_circuit">
+
+<link name="color">
+  <visual>
+    <geometry>
+        <mesh filename="6.0,intensity"/>
+    </geometry>
+    <geometry>
+      <mesh filename="0xffffff,color"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="base_footprint"/>
+
+  <joint name="base_footprint_robot" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="1 -1.5 10" rpy="0 -0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="-0.064 0 -0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="light_black"/>
+    </visual>
+  </link>
+
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin xyz="0.0 0.144 0.023" rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+  </link>
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin xyz="0.0 -0.144 0.023" rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+  </link>
+
+  <joint name="scan_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_scan"/>
+    <origin xyz="-0.064 0 0.122" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_scan">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/lds.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.064 -0.065 0.094" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <geometry>
+       <mesh filename="package://turtlebot3/models/turtlebot3_common/meshes/r200.dae" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="monaco_track">
+    <visual>
+    <origin xyz="0 0 2" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://f1/models/monaco/meshes/monaco.dae" scale="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+
+</robot>
