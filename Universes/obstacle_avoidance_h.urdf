@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<robot name="obstacle_avoidance_h">
+
+
+  <link name="f1">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 -1.57" xyz="0.04 0.68 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_renault/Renault/Car.obj" scale="0.2 0.2 0.2"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin rpy="1.57079632679 0 0" xyz="-53.46 11.50 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/simple_line.obj"/>
+      </geometry>
+    </visual>
+    
+    <visual>
+      <origin rpy="0 0 0" xyz="-53.46 11.50 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/pared.stl"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_1">
+    <visual>
+    <origin rpy="1.67 0 0" xyz="-0.1 -33 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_2">
+    <visual>
+    <origin rpy="1.67 0 -1.67" xyz="-7 -40 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_3">
+    <visual>
+    <origin rpy="1.67 0 -3" xyz="-13.2 -18.8 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_4">
+    <visual>
+    <origin rpy="1.67 0 -1.57" xyz="-40 -11.5 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_5">
+    <visual>
+    <origin rpy="1.67 0 -1.03" xyz="-66.83 -34.15 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_6">
+    <visual>
+    <origin rpy="1.67 0 -1.33" xyz="-70.8 -34.2 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_7">
+    <visual>
+    <origin rpy="1.67 0 2.47" xyz="-103 14.6 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_8">
+    <visual>
+    <origin rpy="1.67 0 2.15" xyz="-52.76 42.3 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_9">
+    <visual>
+    <origin rpy="1.67 0 0" xyz="-33.4 57.3 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_10">
+    <visual>
+    <origin rpy="1.67 0 0.785" xyz="-3.5 59 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_11">
+    <visual>
+    <origin rpy="1.67 0 0" xyz="1 26.2 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="f1_dummy_harmonic_12">
+    <visual>
+    <origin rpy="1.67 0 0" xyz="-1 24.5 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_dummy_harmonic/meshes/F1Y.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

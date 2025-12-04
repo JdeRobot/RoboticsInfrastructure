@@ -1,0 +1,194 @@
+<?xml version="1.0" ?>
+<robot name="autoparking_lincoln_3laser">
+
+  <link name="scene"/>
+
+  <link name="my_road_1">
+    <visual>
+      <origin xyz="5 0 0.01" rpy="0 0 0" />
+      <geometry>
+        <box size="60 15 0.02" />
+      </geometry>
+      <material name="road_gray">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/Road_Albedo.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="my_sidewalk_1">
+    <visual>
+      <origin xyz="5 10 0.02" rpy="0 0 0" />
+      <geometry>
+        <box size="60 7 0.02" />
+      </geometry>
+      <material name="sidewalk_light">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/sidewalk.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="my_sidewalk_2">
+    <visual>
+      <origin xyz="5 -10 0.02" rpy="0 0 0" />
+      <geometry>
+        <box size="60 7 0.02" />
+      </geometry>
+      <material name="sidewalk_light">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/sidewalk.png"/>
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="base_joint" type="fixed">
+    <parent link="scene"/>
+    <child link="lincoln_autoparking" />
+    <origin rpy="0 0 1.57" xyz="-7 2.5 0"/>
+  </joint>
+  
+  <link name="lincoln_autoparking">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 -1.5707963267948966"/>
+      <geometry>
+        <mesh filename="package://autoparking/models/lincoln_autoparking_3laser/meshes/body.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.7874 1.36 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autoparking/models/lincoln_autoparking_3laser/meshes/wheel.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.7874 1.36 0.3" rpy="0 0 3.14"/>
+      <geometry>
+        <mesh filename="package://autoparking/models/lincoln_autoparking_3laser/meshes/wheel.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.7874 -1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autoparking/models/lincoln_autoparking_3laser/meshes/wheel.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.7874 -1.45 0.3" rpy="0 0 3.14"/>
+      <geometry>
+        <mesh filename="package://autoparking/models/lincoln_autoparking_laser/meshes/wheel.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car1">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-20 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car2">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-16.5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car3">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-12 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car4">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-8.5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car5">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car6">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="-1.5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car7">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="6 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car8">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="9.5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car9">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="13 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car10">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="18 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car11">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="20.5 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car12">
+    <visual>
+      <origin rpy="0 0 0.349" xyz="26.2 -4 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+
+</robot>

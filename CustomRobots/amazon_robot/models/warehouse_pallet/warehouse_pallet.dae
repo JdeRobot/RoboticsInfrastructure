@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.93.4 commit date:2021-08-31, commit time:09:23, hash:b7205031cec4</authoring_tool>
+    </contributor>
+    <created>2025-12-02T21:34:57</created>
+    <modified>2025-12-02T21:34:57</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_geometries>
+    <geometry id="cyl_generic-mesh" name="cyl_generic">
+      <mesh>
+        <source id="cyl_generic-mesh-positions">
+          <float_array id="cyl_generic-mesh-positions-array" count="72">0.01999998 0 0 0.01699995 0.00999999 0 0.00999999 0.01699995 0 0 0.01999998 0 -0.00999999 0.01699995 0 -0.01699995 0.00999999 0 -0.01999998 0 0 -0.01699995 -0.00999999 0 -0.00999999 -0.01699995 0 0 -0.01999998 0 0.00999999 -0.01699995 0 0.01699995 -0.00999999 0 0.01999998 0 1.2 0.01699995 0.00999999 1.2 0.00999999 0.01699995 1.2 0 0.01999998 1.2 -0.00999999 0.01699995 1.2 -0.01699995 0.00999999 1.2 -0.01999998 0 1.2 -0.01699995 -0.00999999 1.2 -0.00999999 -0.01699995 1.2 0 -0.01999998 1.2 0.00999999 -0.01699995 1.2 0.01699995 -0.00999999 1.2</float_array>
+          <technique_common>
+            <accessor source="#cyl_generic-mesh-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="cyl_generic-mesh-normals">
+          <float_array id="cyl_generic-mesh-normals-array" count="48">0.9578264 0.2873477 0 0.7071068 0.7071067 0 0.7071067 0.7071069 0 0.2873478 0.9578264 0 -0.2873478 0.9578264 0 -0.7071067 0.7071069 0 -0.7071068 0.7071067 0 -0.9578264 0.2873477 0 -0.9578264 -0.2873477 0 -0.7071068 -0.7071067 0 -0.7071067 -0.7071069 0 -0.2873478 -0.9578264 0 0.2873478 -0.9578264 0 0.7071067 -0.7071069 0 0.7071068 -0.7071067 0 0.9578264 -0.2873477 0</float_array>
+          <technique_common>
+            <accessor source="#cyl_generic-mesh-normals-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="cyl_generic-mesh-vertices">
+          <input semantic="POSITION" source="#cyl_generic-mesh-positions"/>
+        </vertices>
+        <triangles count="24">
+          <input semantic="VERTEX" source="#cyl_generic-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#cyl_generic-mesh-normals" offset="1"/>
+          <p>0 0 1 0 13 0 13 0 12 0 0 0 1 1 2 1 14 1 14 2 13 2 1 2 2 3 3 3 15 3 15 3 14 3 2 3 3 4 4 4 16 4 16 4 15 4 3 4 4 5 5 5 17 5 17 6 16 6 4 6 5 7 6 7 18 7 18 7 17 7 5 7 6 8 7 8 19 8 19 8 18 8 6 8 7 9 8 9 20 9 20 10 19 10 7 10 8 11 9 11 21 11 21 11 20 11 8 11 9 12 10 12 22 12 22 12 21 12 9 12 10 13 11 13 23 13 23 14 22 14 10 14 11 15 0 15 12 15 12 15 23 15 11 15</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="box_generic-mesh" name="box_generic">
+      <mesh>
+        <source id="box_generic-mesh-positions">
+          <float_array id="box_generic-mesh-positions-array" count="24">-0.5 -0.5 0 0.5 -0.5 0 0.5 0.5 0 -0.5 0.5 0 -0.5 -0.5 1 0.5 -0.5 1 0.5 0.5 1 -0.5 0.5 1</float_array>
+          <technique_common>
+            <accessor source="#box_generic-mesh-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="box_generic-mesh-normals">
+          <float_array id="box_generic-mesh-normals-array" count="15">0 0 1 0 -1 0 1 0 0 0 1 0 -1 0 0</float_array>
+          <technique_common>
+            <accessor source="#box_generic-mesh-normals-array" count="5" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="box_generic-mesh-vertices">
+          <input semantic="POSITION" source="#box_generic-mesh-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#box_generic-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#box_generic-mesh-normals" offset="1"/>
+          <p>0 0 1 0 2 0 2 0 3 0 0 0 4 0 5 0 6 0 6 0 7 0 4 0 0 1 1 1 5 1 5 1 4 1 0 1 1 2 2 2 6 2 6 2 5 2 1 2 2 3 3 3 7 3 7 3 6 3 2 3 3 4 0 4 4 4 4 4 7 4 3 4</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="warehouse_pallet" name="warehouse_pallet" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <node id="Object" name="Object" type="NODE">
+          <matrix sid="transform">1.6 0 0 0 0 0.8 0 0 0 0 0.03 0.3 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object"/>
+        </node>
+        <node id="Object_001" name="Object.001" type="NODE">
+          <matrix sid="transform">1.6 0 0 0 0 0.8 0 0 0 0 0.03 0.6 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.001"/>
+        </node>
+        <node id="Object_002" name="Object.002" type="NODE">
+          <matrix sid="transform">1.6 0 0 0 0 0.8 0 0 0 0 0.03 1 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.002"/>
+        </node>
+        <node id="Object_003" name="Object.003" type="NODE">
+          <matrix sid="transform">1.6 0 0 0 0 0.02 0 0.3999928 0 0 0.05 0.3 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.003"/>
+        </node>
+        <node id="Object_004" name="Object.004" type="NODE">
+          <matrix sid="transform">1.6 0 0 0 0 0.02 0 -0.3995085 0 0 0.05 0.3 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.004"/>
+        </node>
+        <node id="Object_005" name="Object.005" type="NODE">
+          <matrix sid="transform">4.44854e-4 0.02 0 0.7962941 -0.7999999 1.11214e-5 0 -1.032e-10 0 0 0.05 0.3 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.005"/>
+        </node>
+        <node id="Object_006" name="Object.006" type="NODE">
+          <matrix sid="transform">-0.0129703 0.01999737 0 -0.7968494 -0.7998949 -3.24257e-4 0 0 0 0 0.05 0.3 0 0 0 1</matrix>
+          <instance_geometry url="#box_generic-mesh" name="Object.006"/>
+        </node>
+        <node id="Object_007" name="Object.007" type="NODE">
+          <matrix sid="transform">1 0 0 0.7 0 1 0 0.38 0 0 1 -0.01995331 0 0 0 1</matrix>
+          <instance_geometry url="#cyl_generic-mesh" name="Object.007"/>
+        </node>
+        <node id="Object_008" name="Object.008" type="NODE">
+          <matrix sid="transform">1 0 0 -0.7 0 1 0 0.38 0 0 1 -0.01995331 0 0 0 1</matrix>
+          <instance_geometry url="#cyl_generic-mesh" name="Object.008"/>
+        </node>
+        <node id="Object_009" name="Object.009" type="NODE">
+          <matrix sid="transform">1 0 0 -0.7 0 1 0 -0.38 0 0 1 -0.01995331 0 0 0 1</matrix>
+          <instance_geometry url="#cyl_generic-mesh" name="Object.009"/>
+        </node>
+        <node id="Object_010" name="Object.010" type="NODE">
+          <matrix sid="transform">1 0 0 0.7 0 1 0 -0.38 0 0 1 -0.01995331 0 0 0 1</matrix>
+          <instance_geometry url="#cyl_generic-mesh" name="Object.010"/>
+        </node>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
