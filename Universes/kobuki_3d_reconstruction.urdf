@@ -1,0 +1,308 @@
+<?xml version="1.0" ?>
+<robot name="3d_reconstruction">
+
+<link name="base_link"/>
+
+<joint name="base_to_base_footprint" type="fixed">
+  <parent link="base_link"/>
+  <child link="base_footprint"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+
+  <!-- ================= BASE ================= -->
+  <link name="base_footprint">
+    <visual>
+      <origin xyz="0.001 0 0.06219"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/main_body.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.118 0 0.2812" rpy="0 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sensors/kinect.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.02364 0 0.1408" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/plate_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.01364 0 0.1976" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/plate_middle.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.01364 0 0.4068" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/plate_top.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.12 0.082 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.055 0.12 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.055 0.12 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.12 -0.082 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.055 -0.12 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.055 -0.12 0.113" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.1024 0.098 0.2374" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sensors/sensor_pole.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.1024 -0.098 0.2374" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sensors/sensor_pole.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0381 0.1505 0.1742" rpy="3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0381 -0.1505 0.1742" rpy="3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.0381 0.1505 0.1742" rpy="3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.0381 -0.1505 0.1742" rpy="3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0381 0.1505 0.3022" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0381 -0.1505 0.3022" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.0381 0.1505 0.3022" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="-0.0381 -0.1505 0.3022" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/stacks/hexagons/pole_top.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- ================= LEFT WHEEL ================= -->
+  <link name="wheel_left_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/wheel.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_footprint"/>
+    <child link="wheel_left_link"/>
+    <origin xyz="0 0.115 0.0352" rpy="-1.5708 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ================= RIGHT WHEEL ================= -->
+  <link name="wheel_right_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/wheel.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_footprint"/>
+    <child link="wheel_right_link"/>
+    <origin xyz="0 -0.115 0.0352" rpy="-1.5708 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ================= LASER ================= -->
+  <link name="laser">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/hokuyo/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_laser" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="laser"/>
+    <origin xyz="0.16 0 0.112"/>
+  </joint>
+
+  <!-- ================= LEFT CAMERA STRUCTURE ================= -->
+  <link name="camera_bottom_body_left">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_bottom.dae" scale="4 3 3"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="camera_left" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="camera_bottom_body_left"/>
+    <origin xyz="-0.03 0.076 0.2324" rpy="-1.57 0 0"/>
+  </joint>
+
+  <link name="camera_column_body_left">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_mid.dae" scale="0.6 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="tilt_joint_left" type="fixed">
+    <parent link="camera_bottom_body_left"/>
+    <child link="camera_column_body_left"/>
+  </joint>
+
+  <link name="camera_top_body_left">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_top.dae" scale="2 2 1.3"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="pan_joint_left" type="fixed">
+    <parent link="camera_column_body_left"/>
+    <child link="camera_top_body_left"/>
+  </joint>
+
+  <!-- ================= RIGHT CAMERA STRUCTURE ================= -->
+  <link name="camera_bottom_body_right">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_bottom.dae" scale="4 3 3"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="camera_right" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="camera_bottom_body_right"/>
+    <origin xyz="-0.03 -0.076 0.2324" rpy="-1.57 0 0"/>
+  </joint>
+
+  <link name="camera_column_body_right">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_mid.dae" scale="0.6 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="tilt_joint_right" type="fixed">
+    <parent link="camera_bottom_body_right"/>
+    <child link="camera_column_body_right"/>
+  </joint>
+
+  <link name="camera_top_body_right">
+    <visual>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/turtlebotROS/meshes/sonyvid30/sonyvid30_top.dae" scale="2 2 1.3"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="pan_joint_right" type="fixed">
+    <parent link="camera_column_body_right"/>
+    <child link="camera_top_body_right"/>
+  </joint>
+
+
+  <link name="duck">
+    <visual>
+      <origin xyz="4.7 3 0" rpy="1.57 0 1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/duck/meshes/duck.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="cereales">
+    <visual>
+      <origin xyz="5.3 2.3 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/cereales/meshes/cereales.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="charactersMario">
+    <visual>
+      <origin xyz="4.1 0.5 0" rpy="0 0 -1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/charactersMario/models/characters.dae" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="blocks">
+    <visual>
+      <origin xyz="4.66 -4 0" rpy="0 0 1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/blocks/models/blocks.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>
