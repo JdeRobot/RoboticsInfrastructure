@@ -13,7 +13,7 @@
           <pose>-1 1.5 0 0 0 0</pose>
         </include>
     	<include>
-    	     <uri>model://house_int2_roof</uri>
+    	     <uri>model://house_int2_roof_classic</uri>
              <pose>0 0 0 0 0 0</pose>
     	</include>
 		<include>
