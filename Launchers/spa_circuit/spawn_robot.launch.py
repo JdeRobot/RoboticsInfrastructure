@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "robot_params.yaml"
+        get_package_share_directory("custom_robots"), "params", "f1_renault_ackermann_harmonic_laser.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
@@ -80,14 +80,7 @@ def generate_launch_description():
     start_gazebo_ros_image_bridge_cmd = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/turtlebot3/camera/image_raw"],
-        output="screen",
-    )
-
-    start_gazebo_ros_depth_bridge_cmd = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/turtlebot3/camera/depth"],
+        arguments=["/model/f1_renault_ackermann_harmonic_laser/camera/image_raw"],
         output="screen",
     )
 
@@ -102,6 +95,5 @@ def generate_launch_description():
     # ld.add_action(start_gazebo_ros_spawner_cmd)
     ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(start_gazebo_ros_image_bridge_cmd)
-    ld.add_action(start_gazebo_ros_depth_bridge_cmd)
 
     return ld

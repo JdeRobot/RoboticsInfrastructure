@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<robot name="rescue_people">
+
+
+  <link name="face1">
+    <visual>
+    <origin xyz="35 -35 0" rpy="0 0 -1.57"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face1/materials/textures/face1.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="face2">
+    <visual>
+    <origin xyz="42 -40 0" rpy="0 0 0.57"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face2/materials/textures/face2.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="face3">
+    <visual>
+    <origin xyz="32 -39 0" rpy="0 0 2.57"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face3/materials/textures/face3.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="face4">
+    <visual>
+    <origin xyz="40 -34 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face4/materials/textures/face4.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="face5">
+    <visual>
+    <origin xyz="25 -35 0" rpy="0 0 1.11"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face5/materials/textures/face5.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="face6">
+    <visual>
+    <origin xyz="37 -31 0" rpy="0 0 -1.0"/>
+      <geometry>
+        <box size="1.5 3 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://drone_assets/models/face6/materials/textures/face6.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="boat_beacon">
+    <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/boat_beacon/meshes/body.dae"/>
+      </geometry>
+    </visual>
+
+    <visual>
+    <origin xyz="0 -0.03 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/boat_beacon/meshes/battery.dae"/>
+      </geometry>
+    </visual>
+
+    <visual>
+    <origin xyz="0 -2.03 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/boat_beacon/meshes/battery.dae"/>
+      </geometry>
+    </visual>
+
+    <visual>
+    <origin xyz="-2.37378 -1.02713 0.318237" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/boat_beacon/meshes/engine.dae"/>
+      </geometry>
+    </visual>
+
+    <visual>
+    <origin xyz="-2.37378 1.02713 0.318237" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/boat_beacon/meshes/engine.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="ocean">
+    <visual>
+    <origin xyz="0 0 -0.02" rpy="0 0 -1.57"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/ocean/meshes/waterlow.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+    <origin xyz="0 0 -0.02" rpy="0 0 -1.57"/>
+      <geometry>
+        <mesh filename="package://drone_assets/models/ocean/waterlow.png"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

@@ -1,11 +1,12 @@
 <?xml version='1.0'?>
-<sdf version="1.4">
+<sdf version="1.9">
 <model name="f1_renault">
   <pose>0 0 0 0 0 0</pose>
   <static>false</static>
+
     <link name="f1">
     	<pose>0 0 0 0 0 0</pose>
-	<inertial>
+	    <inertial>
         <mass>10</mass>
         <inertia>
           <ixx>1</ixx>
@@ -14,71 +15,118 @@
           <ixz>0.0</ixz>
           <iyz>0.0</iyz>
           <izz>1.0</izz>
-      </inertia>
-    </inertial>
-    <collision name="collision">
-        <geometry>
-            <mesh>
-                 <uri>model://f1_renault/Renault/Car.obj</uri>
-                 <scale>0.2 0.2 0.2</scale>
-            </mesh>
-        </geometry>
-    </collision>
-    <visual name="visual">
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
         <geometry>
           <mesh>
             <uri>model://f1_renault/Renault/Car.obj</uri>
             <scale>0.2 0.2 0.2</scale>
-        </mesh>
-      </geometry>
-    </visual>
-    <visual name='left_cam'>
-      <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
-      <geometry>
-        <sphere>
-          <radius>.005</radius>
-        </sphere>
-      </geometry>
-    </visual>
-    <sensor name='cam_f1_left' type='camera'>
-      <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
-      <update_rate>20.000000</update_rate>
-      <camera name='cleft'>
-        <horizontal_fov>1.570000</horizontal_fov>
-        <image>
-          <width>640</width>
-          <height>480</height>
-          <format>R8G8B8</format>
-        </image>
-        <clip>
-          <near>0.100000</near>
-          <far>15.000000</far>
-        </clip>
-      </camera>
-      <plugin name="camera_controller_left" filename="libgazebo_ros_camera.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>0.0</updateRate>
-        <cameraName>F1ROS/cameraL</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_top_body_left</frameName>
-        <hackBaseline>0.07</hackBaseline>
-        <distortionK1>0.0</distortionK1>
-        <distortionK2>0.0</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>0.0</distortionT1>
-        <distortionT2>0.0</distortionT2>
-      </plugin>
-    </sensor>
+          </mesh>
+        </geometry>
+      </collision>
 
-  </link>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://f1_renault/Renault/Car.obj</uri>
+            <scale>0.2 0.2 0.2</scale>
+          </mesh>
+        </geometry>
+      </visual>
 
-  <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <visual name='left_cam'>
+        <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+        <geometry>
+          <sphere>
+            <radius>.005</radius>
+          </sphere>
+        </geometry>
+      </visual>
+
+      <!-- <sensor name='cam_f1_left' type='camera'>
+        <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+        <update_rate>20.000000</update_rate>
+        <camera name='cleft'>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller_left" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>F1ROS/cameraL</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_top_body_left</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor> -->
+
+      <sensor name="cam_f1_left" type="camera">
+        <pose>0.45000 0.040000 0.1000000 0.000000 -0.000000 0.0000000</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>20.000000</update_rate>
+        <topic>/cam_f1_left/image_raw</topic>
+        <!-- <gz_frame_id>camera_rgb_frame</gz_frame_id> -->
+        <camera name="cleft">
+          <camera_info_topic>/cam_f1_left/camera_info</camera_info_topic>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera> 
+      </sensor>
+
+    </link>
+
+    <!-- <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
       <commandTopic>F1ROS/cmd_vel</commandTopic>
       <odometryTopic>F1ROS/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometryRate>20.0</odometryRate>
       <robotBaseFrame>xf1</robotBaseFrame>
-  </plugin>
+    </plugin> -->
+
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/F1ROS/cmd_vel</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>xf1</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>F1ROS/odom</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+
 </model>
 </sdf>

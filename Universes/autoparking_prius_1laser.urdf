@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<robot name="autoparking_prius_1laser">
+
+  <link name="scene"/>
+
+  <link name="my_road_1">
+    <visual>
+      <origin xyz="5 0 0.01" rpy="0 0 0" />
+      <geometry>
+        <box size="60 10 0.02" />
+      </geometry>
+      <material name="road_gray">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/Road_Albedo.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="my_sidewalk_1">
+    <visual>
+      <origin xyz="5 10 0.01" rpy="0 0 0" />
+      <geometry>
+        <box size="60 10 0.02" />
+      </geometry>
+      <material name="sidewalk_light">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/sidewalk.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="my_sidewalk_2">
+    <visual>
+      <origin xyz="5 -10 0.01" rpy="0 0 0" />
+      <geometry>
+        <box size="60 10 0.02" />
+      </geometry>
+      <material name="sidewalk_light">
+        <texture filename="package://autoparking/models/road_and_sidewalk/materials/textures/sidewalk.png"/>
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="base_joint" type="fixed">
+    <parent link="scene"/>
+    <child link="prius_autoparking" />
+    <origin rpy="0 0 1.57" xyz="-7 2.5 0"/>
+  </joint>
+  
+  <link name="prius_autoparking">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.357734 -0.627868 0.988243" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car1">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-20 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car2">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-13.5 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car3">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-7 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car4">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="0.5 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car5">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="14 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car6">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="21.5 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="car7">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="29 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

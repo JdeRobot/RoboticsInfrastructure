@@ -23,14 +23,14 @@
     <collision name="collision">
       <geometry>
         <mesh>
-          <uri>model://montmelo_line/meshes/montmelo_pared.dae</uri>
+          <uri>model://montmelo_line/meshes/pared.stl</uri>
         </mesh>
       </geometry>
     </collision>
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://montmelo_line/meshes/montmelo_pared.dae</uri>
+          <uri>model://montmelo_line/meshes/pared.stl</uri>
         </mesh>
       </geometry>
     </visual>

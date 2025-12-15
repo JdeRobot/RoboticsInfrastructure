@@ -1,0 +1,1195 @@
+<?xml version="1.0" ?>
+<robot name="house_int2">
+  <model name="mesa_comedor">
+    <link name="mesa_link">
+      <origin rpy="0 -0 0" xyz="0.3 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="1.58603e-17 0 0.513571"/>
+        <mass value="70"/>
+        <inertia ixx="1.28229" ixy="0" ixz="5.70179e-17" iyy="3.10629" iyz="0" izz="3.4192"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.725"/>
+        <geometry>
+          <box size="1.6 0.8 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0 0 1 0.5"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.77 0.37 0.355"/>
+        <geometry>
+          <box size="0.06 0.06 0.71"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.77 -0.37 0.355"/>
+        <geometry>
+          <box size="0.06 0.06 0.71"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.77 -0.37 0.355"/>
+        <geometry>
+          <box size="0.06 0.06 0.71"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.77 0.37 0.355"/>
+        <geometry>
+          <box size="0.06 0.06 0.71"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 1.57" xyz="-2.4 0 0"/>
+  </model>
+  <model name="RoCKIn@Home">
+    <link name="Wall_12">
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="2.6 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <origin rpy="0 -0 1.5708" xyz="7.8 1.205 0"/>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_14">
+      <origin rpy="0 -0 3.14159" xyz="6.0996 2.4048 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.20789 0 1.25"/>
+        <geometry>
+          <box size="1.18422 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="1.09211 0 1.25"/>
+        <geometry>
+          <box size="1.41579 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.115785 0 2.25"/>
+        <geometry>
+          <box size="1 0.2 0.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_16">
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="2.60492 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <origin rpy="0 -0 1.5708" xyz="4.39903 1.20277 0"/>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_18">
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="3.8 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <origin rpy="0 -0 1.5708" xyz="0.024876 1.80003 0"/>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_2">
+      <origin rpy="0 -0 0" xyz="5.50266 0 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.649274 0 1.25"/>
+        <geometry>
+          <box size="9.599997 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_20">
+      <origin rpy="0 -0 0" xyz="2.72456 3.60059 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-2.67396 0 1.25"/>
+        <geometry>
+          <box size="0.251208 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="1.1766 0 1.25"/>
+        <geometry>
+          <box size="3.24591 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.49735 0 2.25"/>
+        <geometry>
+          <box size="2.102 0.2 0.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.49735 0 0.35"/>
+        <geometry>
+          <box size="2.102 0.2 0.7"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_22">
+      <origin rpy="0 -0 1.5708" xyz="4.39856 3.00206 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.601085 0 1.25"/>
+        <geometry>
+          <box size="0.194709 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.597355 0 1.25"/>
+        <geometry>
+          <box size="0.202171 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.003731 0 2.25"/>
+        <geometry>
+          <box size="1 0.2 0.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_24">
+      <origin rpy="0 -0 3.14159" xyz="7.42703 8.20242 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.97924 0 1.25"/>
+        <geometry>
+          <box size="0.241529 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="1.97395 0 1.25"/>
+        <geometry>
+          <box size="0.252091 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.005281 0 2.25"/>
+        <geometry>
+          <box size="3.70638 0.2 0.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.005281 0 0.35"/>
+        <geometry>
+          <box size="3.70638 0.2 0.7"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_28">
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="3.2 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <origin rpy="0 -0 3.14159" xyz="3.92571 9.40229 0"/>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_30">
+      <origin rpy="0 0 -1.5708" xyz="2.42541 6.50159 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-2.363 0 1.25"/>
+        <geometry>
+          <box size="1.27269 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.636346 0 0.35"/>
+        <geometry>
+          <box size="4.726 0.2 0.7"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.36359 0 1.6"/>
+        <geometry>
+          <box size="1.38049 0.2 1.8"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="2.42659 0 1.6"/>
+        <geometry>
+          <box size="1.14551 0.2 1.8"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.02665 0 2.35"/>
+        <geometry>
+          <box size="1.4 0.2 0.3"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="1.45383 0 2.35"/>
+        <geometry>
+          <box size="0.8 0.2 0.3"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_32">
+      <origin rpy="0 0 -1.5708" xyz="5.42654 8.80216 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="1.20 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+    </link>
+    <link name="Wall_35">
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="0.8 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <origin rpy="0 -0 1.5708" xyz="5.42451 3.90082 0"/>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="Wall_8">
+      <origin rpy="0 -0 1.5708" xyz="9.42875 4.1026 0"/>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-1.48935 0 1.25"/>
+        <geometry>
+          <box size="5.42201 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="4.07465 0 1.25"/>
+        <geometry>
+          <box size="0.251416 0.2 2.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="2.5853 0 2.25"/>
+        <geometry>
+          <box size="2.72728 0.2 0.5"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="2.5853 0 0.35"/>
+        <geometry>
+          <box size="2.72728 0.2 0.7"/>
+        </geometry>
+        <material name="Gazebo/Grey"/>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 1.57" xyz="5.4 -3.6 0"/>
+  </model>
+  <model name="silla_1">
+    <link name="silla_link">
+      <origin rpy="0 -0 0" xyz="0 0.3 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0.0215 0 0.353"/>
+        <mass value="20"/>
+        <inertia ixx="0.674432" ixy="0" ixz="-0.012986" iyy="0.682753" iyz="0" izz="0.675561"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.415"/>
+        <geometry>
+          <box size="0.45 0.45 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.215 0 0.655"/>
+        <geometry>
+          <box size="0.02 0.45 0.45"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="-2.1 -0.4 0"/>
+  </model>
+  <model name="silla_2">
+    <link name="silla_link">
+      <origin rpy="0 -0 0" xyz="0 0.3 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0.0215 0 0.353"/>
+        <mass value="20"/>
+        <inertia ixx="0.674432" ixy="0" ixz="-0.012986" iyy="0.682753" iyz="0" izz="0.675561"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.415"/>
+        <geometry>
+          <box size="0.45 0.45 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.215 0 0.655"/>
+        <geometry>
+          <box size="0.02 0.45 0.45"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="-2.1 0.4 0"/>
+  </model>
+  <model name="silla_3">
+    <link name="silla_link">
+      <origin rpy="0 -0 0" xyz="0 -0.3 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0.0215 0 0.353"/>
+        <mass value="20"/>
+        <inertia ixx="0.674432" ixy="0" ixz="-0.012986" iyy="0.682753" iyz="0" izz="0.675561"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.415"/>
+        <geometry>
+          <box size="0.45 0.45 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.215 0 0.655"/>
+        <geometry>
+          <box size="0.02 0.45 0.45"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 3.14" xyz="-2.7 -0.4 0"/>
+  </model>
+  <model name="silla_4">
+    <link name="silla_link">
+      <origin rpy="0 -0 0" xyz="0 -0.3 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0.0215 0 0.353"/>
+        <mass value="20"/>
+        <inertia ixx="0.674432" ixy="0" ixz="-0.012986" iyy="0.682753" iyz="0" izz="0.675561"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.415"/>
+        <geometry>
+          <box size="0.45 0.45 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 -0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.205 0.205 0.2"/>
+        <geometry>
+          <box size="0.04 0.04 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.215 0 0.655"/>
+        <geometry>
+          <box size="0.02 0.45 0.45"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 3.14" xyz="-2.7 0.4 0"/>
+  </model>
+  --&gt;
+    
+  <model name="mesa_salon">
+    <link name="mesa_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="1.38778e-17 3.46945e-18 0.3075"/>
+        <mass value="40"/>
+        <inertia ixx="0.666275" ixy="1.92593e-34" ixz="1.70697e-17" iyy="0.899025" iyz="4.26742e-18" izz="0.97285"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.415"/>
+        <geometry>
+          <box size="0.9 0.55 0.03"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.42 0.245 0.2"/>
+        <geometry>
+          <box size="0.06 0.06 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.42 -0.245 0.2"/>
+        <geometry>
+          <box size="0.06 0.06 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.42 -0.245 0.2"/>
+        <geometry>
+          <box size="0.06 0.06 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.42 0.245 0.2"/>
+        <geometry>
+          <box size="0.06 0.06 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="-0.8 4.4 0"/>
+  </model>
+  <model name="sofa_x2_salon">
+    <link name="sofa_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0.0115385 0.257692"/>
+        <mass value="130"/>
+        <inertia ixx="0.7625" ixy="0" ixz="0" iyy="1.67673" iyz="-0.0463462" izz="1.44577"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.175"/>
+        <geometry>
+          <box size="1.6 0.8 0.35"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.7 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.7 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0.25 0.55"/>
+        <geometry>
+          <box size="1.6 0.3 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 3.14" xyz="-0.8 3.4 0"/>
+  </model>
+  <model name="sofa_x1_1_salon">
+    <link name="sofa_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0.01875 0.309375"/>
+        <mass value="80"/>
+        <inertia ixx="0.705859" ixy="0" ixz="0" iyy="0.886172" iyz="-0.0385938" izz="0.709687"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.175"/>
+        <geometry>
+          <box size="0.9 0.8 0.35"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.35 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.35 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0.25 0.55"/>
+        <geometry>
+          <box size="0.9 0.3 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 0 -1.57" xyz="0.5 4.4 0"/>
+  </model>
+  <model name="sofa_x1_2_salon">
+    <link name="sofa_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0.01875 0.309375"/>
+        <mass value="80"/>
+        <inertia ixx="0.705859" ixy="0" ixz="0" iyy="0.886172" iyz="-0.0385938" izz="0.709687"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.175"/>
+        <geometry>
+          <box size="0.9 0.8 0.35"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.35 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.35 -0.05 0.45"/>
+        <geometry>
+          <box size="0.2 0.7 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0.25 0.55"/>
+        <geometry>
+          <box size="0.9 0.3 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 1.57" xyz="-2.1 4.4 0"/>
+  </model>
+  <model name="encimera">
+    <link name="encimera_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 0.425"/>
+        <mass value="500"/>
+        <inertia ixx="5" ixy="0" ixz="0" iyy="5" iyz="0" izz="5"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.425"/>
+        <geometry>
+          <box size="2.1 0.6 0.85"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 1.57" xyz="1.4 0.61 0"/>
+  </model>
+  <model name="barra">
+    <link name="barra_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 0.5"/>
+        <mass value="500"/>
+        <inertia ixx="5" ixy="0" ixz="0" iyy="5" iyz="0" izz="5"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.5"/>
+        <geometry>
+          <box size="1.8 0.6 1"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 1.57" xyz="-0.6 -0.16 0"/>
+  </model>
+  <model name="frigo">
+    <link name="frigo_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 0.9"/>
+        <mass value="500"/>
+        <inertia ixx="5" ixy="0" ixz="0" iyy="5" iyz="0" izz="5"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.9"/>
+        <geometry>
+          <box size="0.6 0.6 1.8"/>
+        </geometry>
+        <material>
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="1.4 -0.75 0"/>
+  </model>
+  <model name="estanteria_1">
+    <link name="estanteria_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 1.046"/>
+        <mass value="100"/>
+        <inertia ixx="3.12544" ixy="0" ixz="0" iyy="4.16584" iyz="0" izz="1.1204"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.01"/>
+        <geometry>
+          <box size="1 0.35 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.41"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.83"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.67"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 2.09"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.51 0 1.05"/>
+        <geometry>
+          <box size="0.02 0.35 2.1"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.51 0 1.05"/>
+        <geometry>
+          <box size="0.02 0.35 2.1"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="4.7 4.48 0"/>
+  </model>
+  <model name="estanteria_2">
+    <link name="estanteria_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 1.046"/>
+        <mass value="100"/>
+        <inertia ixx="3.12544" ixy="0" ixz="0" iyy="4.16584" iyz="0" izz="1.1204"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.01"/>
+        <geometry>
+          <box size="1 0.35 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.41"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.83"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.25"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 1.67"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 2.09"/>
+        <geometry>
+          <box size="1 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.51 0 1.05"/>
+        <geometry>
+          <box size="0.02 0.35 2.1"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.51 0 1.05"/>
+        <geometry>
+          <box size="0.02 0.35 2.1"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="4.7 0.5 0"/>
+  </model>
+  <model name="mesita_1">
+    <link name="mesita_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 0.2975"/>
+        <mass value="80"/>
+        <inertia ixx="0.24835" ixy="0" ixz="0" iyy="0.38525" iyz="0" izz="0.1969"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.01"/>
+        <geometry>
+          <box size="0.35 0.35 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.19"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.39"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.59"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.185 0 0.3"/>
+        <geometry>
+          <box size="0.02 0.35 0.6"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.185 0 0.3"/>
+        <geometry>
+          <box size="0.02 0.35 0.6"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="2.4 -3.28 0"/>
+  </model>
+  <model name="cama">
+    <link name="cama_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0.0176471 0 0.204902"/>
+        <mass value="510"/>
+        <inertia ixx="10.1613" ixy="0" ixz="-0.220588" iyy="10.9554" iyz="0" izz="10.8941"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.2"/>
+        <geometry>
+          <box size="2.1 1.5 0.4"/>
+        </geometry>
+        <material>
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.9 0 0.45"/>
+        <geometry>
+          <box size="0.3 1.5 0.1"/>
+        </geometry>
+        <material>
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 0 -1.57" xyz="3.4 -2.41 0"/>
+  </model>
+  <model name="mesita_2">
+    <link name="mesita_link">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 -0 0" xyz="0 0 0.2975"/>
+        <mass value="80"/>
+        <inertia ixx="0.24835" ixy="0" ixz="0" iyy="0.38525" iyz="0" izz="0.1969"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.01"/>
+        <geometry>
+          <box size="0.35 0.35 0.2"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.19"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.39"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0 0 0.59"/>
+        <geometry>
+          <box size="0.35 0.35 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="0.185 0 0.3"/>
+        <geometry>
+          <box size="0.02 0.35 0.6"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <visual>
+        <origin rpy="0 -0 0" xyz="-0.185 0 0.3"/>
+        <geometry>
+          <box size="0.02 0.35 0.6"/>
+        </geometry>
+        <material>
+          <color rgba="0.55 0.27 0.07 1"/>
+        </material>
+      </visual>
+      <kinematic>0</kinematic>
+    </link>
+    <origin rpy="0 -0 0" xyz="4.4 -3.28 0"/>
+  </model>
+  <material name="Gazebo/Grey">
+    <color rgba=".3 .3 .3 1.0"/>
+  </material>
+</robot>
+

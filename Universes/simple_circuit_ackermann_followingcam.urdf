@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<robot name="simple_circuit">
+
+
+  <link name="f1">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 -1.57" xyz="53.462 -10.734 1.2"/>
+      <geometry>
+        <mesh filename="package://f1/models/f1_renault/Renault/Car.obj" scale="0.2 0.2 0.2"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/simple_line.obj"/>
+      </geometry>
+    </visual>
+    
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <geometry>
+        <mesh filename="package://f1/models/simple_circuit/meshes/pared.stl"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

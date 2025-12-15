@@ -89,6 +89,7 @@ install(
     roomba_robot/params
     # ACKERMAN CAR
     ackermann_cars/models
+    ackermann_cars/params
     # CARS
     car_junction/models
     car_junction/scripts
@@ -117,6 +118,7 @@ install(
     taxi_navigator/params
     # 3D RECONSTRUCTION
     3d_reconstruction/models
+    3d_reconstruction/params
     # MARKER VISUAL LOC
     marker_visual_loc/models
     turtlebot3/models

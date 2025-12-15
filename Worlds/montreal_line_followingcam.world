@@ -31,7 +31,7 @@
 	    <pose>0 0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1_renault</uri>
+      <uri>model://f1_renault_classic</uri>
       <pose>-200.88 -90.72 0.00 0.00 0.00 -2.83</pose>
     </include>
   </world>
