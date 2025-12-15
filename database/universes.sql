@@ -178,6 +178,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 51 	Montmelo Circuit Classic	51	0
 52 	Montreal Circuit Classic	52	0
 53 	Nurburgring Circuit Classic	53	0
+54 	Vacuums House Roof Classic	54	0
 \.
 
 
