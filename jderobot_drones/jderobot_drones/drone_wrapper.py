@@ -1,5 +1,8 @@
 """
-drone_wrapper.py
+Drone wrapper module.
+
+This module provide the Dronewrapper class, which extends the DroneInterfaceBase to integrate drone control, motion references, and sensor
+data handling within the JdeRobot infrastructure.
 """
 
 import asyncio
@@ -28,9 +31,14 @@ from rclpy.qos import (
 
 class DroneWrapper(DroneInterfaceBase):
     """
-    Drone Wrapper
+    Wrapper class that interfaces a drone with the RoboticsInfrastructure.
+
+    This class manages motion references, platform state events,
+    sensor subscriptions, and control commands required to operate
+    a drone within the JdeRobot ecosystem.
     """
 
+    # Default control and safety parameters
     TK_RATE = 0.1
     TK_HEIGHT_MARGIN = 0.25
     LAND_RATE = 0.1
@@ -69,19 +77,25 @@ class DroneWrapper(DroneInterfaceBase):
     def get_position(self) -> List[float]:
         """Get drone position (x, y, z) in m.
 
-        :rtype: List[float]
+        Returns:
+            List[float]: Drone position as [x, y, z].
         """
         return self.position
 
     def get_velocity(self) -> List[float]:
-        """Get drone speed (vx, vy, vz) in m/s.
+        """Get drone position (x, y, z) in m.
 
-        :rtype: List[float]
+        Returns:
+            List[float]: Drone position as [x, y, z].
         """
         return self.speed
 
     def yaw_rate_cb(self, msg: TwistStamped):
-        """Callback to update current Yaw Rate"""
+        """C Callback to update the current yaw rate from localization data.
+
+           Args:
+                msg (TwistStamped): Twist message containing angular velocity.
+        """
         self.yaw_rate = msg.twist.angular.z
 
     def get_yaw_rate(self) -> float:
@@ -176,7 +190,11 @@ class DroneWrapper(DroneInterfaceBase):
             self.get_logger().error("Service call failed")
 
     def takeoff(self, height: float):
-        """Send Takeoff command with height"""
+        """ Command the drone to take off to a target altitude.
+
+            Args:
+                height (float): Target altitude in meters.
+        """
         if (
             self.get_landed_state() == PlatformStatus.TAKING_OFF
             or self.get_landed_state() == PlatformStatus.FLYING
@@ -200,7 +218,7 @@ class DroneWrapper(DroneInterfaceBase):
         asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.TOOK_OFF))
 
     def land(self) -> None:
-        """Send Landing command"""
+        """Command the drone to land safely."""
 
         if (
             self.get_landed_state() == PlatformStatus.LANDED
