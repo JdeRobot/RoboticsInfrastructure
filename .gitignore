@@ -1,0 +1,58 @@
+# ROS 2 Build Artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Gazebo
+.gz/
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*~
+
+# Test outputs
+test_results/
+*.test
+
+# Generated URDF files
+*.urdf.generated
+/tmp/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Colcon
+.colcon/
+
+# Bags
+*.bag
+*.db3
+
+# Shell scripts output
+*.out

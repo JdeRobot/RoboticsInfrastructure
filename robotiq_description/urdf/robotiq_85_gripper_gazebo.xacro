@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="robotiq_85_gripper_gazebo" params="prefix">
+    
+    <gazebo reference="${prefix}robotiq_85_base_link">
+      <material>Gazebo/Grey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_left_knuckle_link">
+      <material>Gazebo/Grey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_right_knuckle_link">
+      <material>Gazebo/Grey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_left_finger_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_right_finger_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_left_finger_tip_link">
+      <material>Gazebo/Black</material>
+      <mu1>1.2</mu1>
+      <mu2>1.2</mu2>
+      <kp>10000000.0</kp>
+      <kd>1.0</kd>
+      <minDepth>0.001</minDepth>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_right_finger_tip_link">
+      <material>Gazebo/Black</material>
+      <mu1>1.2</mu1>
+      <mu2>1.2</mu2>
+      <kp>10000000.0</kp>
+      <kd>1.0</kd>
+      <minDepth>0.001</minDepth>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_left_inner_knuckle_link">
+      <material>Gazebo/Grey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <gazebo reference="${prefix}robotiq_85_right_inner_knuckle_link">
+      <material>Gazebo/Grey</material>
+      <mu1>0.9</mu1>
+      <mu2>0.9</mu2>
+    </gazebo>
+
+    <!-- Gazebo Sim Mimic Joint Plugin -->
+    <!-- This ensures mimic joints follow the main actuated joint -->
+    <gazebo>
+      <plugin filename="gz-sim-joint-state-publisher-system" 
+              name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
