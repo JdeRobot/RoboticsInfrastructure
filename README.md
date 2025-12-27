@@ -1,7 +1,8 @@
 # UR5 + Robotiq 85 Gripper in Gazebo Harmonic
 
 This repository contains packages for simulating a UR5 robot with Robotiq 85 gripper in Gazebo Sim (formerly Ignition Gazebo) version 8 (Harmonic) with ROS 2 Humble, including full MoveIt2 integration for motion planning.
-
+## Demo
+![Simulation Demo](video/sim.mp4)
 ## Packages
 
 - **robotiq_description**: URDF/meshes for Robotiq 85 gripper
