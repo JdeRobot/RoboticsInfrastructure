@@ -2,6 +2,7 @@
 car_junction.launch.py
 
 Entry point for the Car Junction exercise.
+Updated for Gazebo Harmonic compatibility.
 """
 
 import os
@@ -13,11 +14,8 @@ from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     SetEnvironmentVariable,
-    AppendEnvironmentVariable,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, Command
-from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -31,12 +29,37 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
+    # Model paths for Gazebo Harmonic
+    gazebo_models_path = os.path.join(package_dir, "models")
+    car_junction_models = "/opt/jderobot/CustomRobots/car_junction/models"
+    
+    # Build resource path with all model directories
+    existing_path = os.environ.get("GZ_SIM_RESOURCE_PATH", "")
+    resource_paths = [p for p in [existing_path, gazebo_models_path, car_junction_models, worlds_dir] if p]
+    
+    set_gz_resource_path = SetEnvironmentVariable(
+        name="GZ_SIM_RESOURCE_PATH",
+        value=":".join(resource_paths),
+    )
+
+    # Gazebo server (headless simulation)
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": ["-r -s -v4 ", world_path],
+            "gz_args": f"-r -s -v4 {world_path}",
+            "on_exit_shutdown": "true",
+        }.items(),
+    )
+
+    # Gazebo GUI client
+    gazebo_client = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+        ),
+        launch_arguments={
+            "gz_args": "-g -v4",
             "on_exit_shutdown": "true",
         }.items(),
     )
@@ -46,20 +69,15 @@ def generate_launch_description():
         default_value="True",
         description="Whether to start the simulator",
     )
-    world_entity_cmd = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=["-name", "world", "-file", world_path],
-        output="screen",
-    )
 
+    # ROS-Gazebo bridge for Harmonic
     start_ros_gazebo_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
             "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            "/odom@nav_msgs/msg/Odometry]gz.msgs.Odometry",
+            "/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             "/waymo/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             "/waymo/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
         ],
@@ -67,23 +85,19 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Set the path to the SDF model files.
-    gazebo_models_path = os.path.join(pkg_share, "models")
-    os.environ["GAZEBO_MODEL_PATH"] = (
-        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
-    )
-
     start_ros_gazebo_image_bridge = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
+        arguments=["/waymo/camera_front"],
         output="screen",
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
+    ld.add_action(set_gz_resource_path)
+    ld.add_action(declare_use_simulator_cmd)
     ld.add_action(gazebo_server)
-    ld.add_action(world_entity_cmd)
+    ld.add_action(gazebo_client)
     ld.add_action(start_ros_gazebo_bridge)
     ld.add_action(start_ros_gazebo_image_bridge)
 
