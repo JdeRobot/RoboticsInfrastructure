@@ -8,7 +8,7 @@
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://f1/models/monaco/meshes/monaco.dae" scale="1 1 1"/>
+        <mesh filename="package://f1/models/monaco/meshes/monaco_track.dae" scale="1 1 1"/>
       </geometry>
     </visual>
   </link>
