@@ -3,15 +3,6 @@
   <model name="circuito">
     <static>true</static> <!-- Cambia a false si es un objeto dinámico -->
     <link name="link">
-      <visual name="asfalto_visual">
-        <geometry>
-          <mesh>
-            <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>0.2 0.2 0.2</scale>
-          </mesh>
-        </geometry>
-      </visual>
-
       <visual name="barrera_visual">
         <geometry>
           <mesh>
