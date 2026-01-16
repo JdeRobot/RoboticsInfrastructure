@@ -178,6 +178,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 51 	Montmelo Circuit Classic	51	0
 52 	Montreal Circuit Classic	52	0
 53 	Nurburgring Circuit Classic	53	0
+55	Pick And Place Harmonic World	55	0
 54 	Vacuums House Roof Classic	54	0
 \.
 
@@ -242,6 +243,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 51	Montmelo Circuit Classic	/opt/jderobot/Launchers/montmelo_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 52	Montreal Circuit Classic	/opt/jderobot/Launchers/montreal_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 53	Nurburgring Circuit Classic	/opt/jderobot/Launchers/nurburgring_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+55	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic.launch.py	{"rviz":"/opt/jderobot/Launchers/pick_place_harmonic_rviz.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 54	Vacuums House Roof Classic	/opt/jderobot/Launchers/montecarlo_visual_loc_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
