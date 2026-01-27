@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Pick Place Harmonic - RViz + MoveIt Launcher
 Launches ONLY: MoveIt move_group + RViz with motion planning
