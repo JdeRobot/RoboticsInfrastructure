@@ -18,9 +18,15 @@ def generate_launch_description():
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
     
+<<<<<<< HEAD
     # Workspace for gz_ros2_control
     workspace_dir = "/home/dev_ws"
     gz_lib_path = os.path.join(workspace_dir, 'install', 'gz_ros2_control', 'lib')
+=======
+    
+    # Use native gz_ros2_control installation from ROS 2 Humble
+    gz_lib_path = "/opt/ros/humble/lib"
+>>>>>>> d271cd3ff6ab16b3989f49c66dc5c64a77771b10
     
     # Set environment variables for Gazebo Harmonic
     gz_env = {
