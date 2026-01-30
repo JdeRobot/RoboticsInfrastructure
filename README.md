@@ -40,7 +40,7 @@ To create the entry in **database/universes.sql** you need to add the following 
 To know where this is found search for the following line:
 
 ```sql
-COPY public.worlds (id, name, launch_file_path, visualization_config_path, ros_version, visualization, world, start_pose) FROM stdin;
+COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
 ```
 
 And add a new line just below the last entry but above this:
@@ -54,10 +54,9 @@ A world entry in the database must include the following data:
 - ```id```: it must be one more than the one above, it starts at 0.
 - ```name```: name to display on the world list
 - ```launch_file_path```: path to the launcher inside the docker. The Launcher folder is found in **/opt/jderobot/Launchers**.
-- ```visualization_config_path```: path to the launcher inside the docker. The Launcher folder is found in **/opt/jderobot/Launchers/visualization**. If the exercise does not use Gazebo Harmonic you must put **None**.
+- ```tools_config```: path to the launcher inside the docker. The Launcher folder is found in **/opt/jderobot/Launchers/visualization**. If the exercise does not use Gazebo Harmonic you must put **None**.
 - ```ros_version```: must be **ROS2**.
-- ```visualization```: type of visualization, must be one of the following: **console**, **gazebo_gra**, **gazebo_rae**, **gzsim_gra**, **gzsim_rae**, **physic_gra** or **physic_rae**.
-- ```world```: type of world, must be one of the following: **gazebo**, **drones** or **physical**.
+- ```type```: type of world, must be one of the following: **gazebo**, **drones** or **physical**.
 - ```start_pose```: start location of the robot: **{X,Y,Z,Roll,Pitch,Yaw}**. If the robot is not spawn separately, it can be {0,0,0,0,0,0}
 
 ## How to add a new robot: DOES NOT WORK
