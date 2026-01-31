@@ -26,7 +26,7 @@ Robots and tools useful for us and not included in the official ROS or Gazebo pa
 
 - To test the new launcher you will have to create a new RADI (or BTDI in BT Studio) with the Robotics Infrastructure flag (-i) set to your branch name.
 
-### Gazebo Classic **Legacy**
+### Gazebo Classic: **Legacy**
 
 - Add the python ros launcher inside the Launchers directory using a clear and simple name (for example the same as the world or the exercise).
 
