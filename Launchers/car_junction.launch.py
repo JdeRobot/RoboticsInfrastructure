@@ -1,7 +1,23 @@
 Car Junction exercise launch file.
+
+"""
+ROS 2 launch file for the Car Junction simulation.
+
+This launcher is compatible with Gazebo Harmonic and is responsible for:
+- Loading the road_junction world
+- Resolving model paths dynamically (Docker + local workspace)
+- Setting GZ_SIM_RESOURCE_PATH correctly
+- Launching Gazebo server (headless) and GUI client (for VNC)
+- Starting ROS–Gazebo bridges
+
+Entry point is generate_launch_description().
+"""
+
 Updated for Gazebo Harmonic compatibility.
 Verified working on Docker environment.
 """
+
+# Standard ROS 2 launch imports
 
 import os
 
