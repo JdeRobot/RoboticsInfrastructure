@@ -21,6 +21,15 @@ Robots and tools useful for us and not included in the official ROS or Gazebo pa
 - Add the world file inside the Worlds directory using a clear and simple name.
 - You will also need to create a launcher for each world and add it to the database.
 - To test the new world you will have to create a new RADI (or BTDI in BT Studio) with the Robotics Infrastructure flag (-i) set to your branch name.
+- The world name defined inside the .world file must be "default":
+  ```xml
+  <?xml version="1.0" ?>
+  <sdf version="1.10">
+    <world name="default">
+      .....
+    </world>
+  </sdf>
+  ```
 
 ## How to add a new launcher
 
