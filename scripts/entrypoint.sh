@@ -66,6 +66,7 @@ runram="python3 RoboticsApplicationManager/manager/manager/manager.py 0.0.0.0 71
 root="cd /"
 
 # Download latest RAM
+git config --global --add safe.directory /RoboticsApplicationManager
 cd /RoboticsApplicationManager
 git checkout humble-devel
 git pull
