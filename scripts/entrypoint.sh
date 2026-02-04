@@ -65,6 +65,12 @@ fi
 runram="python3 RoboticsApplicationManager/manager/manager/manager.py 0.0.0.0 7163"
 root="cd /"
 
+# Download latest RAM
+cd /RoboticsApplicationManager
+git checkout humble-devel
+git pull
+cd ..
+
 # TEST LOGS
 if [ $log == true ]; then
     DATE_TIME=$(date +%F-%H-%M) # FORMAT year-month-date-hours-mins
