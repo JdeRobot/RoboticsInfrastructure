@@ -146,11 +146,12 @@
         </material>
       </visual>
 
-      <sensor name="front_camera" type="camera">
+      <sensor name="prius_autoparking" type="camera">
         <pose relative_to="base_link">0 -1.8 0.9 0 0 -1.57</pose>
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>20</update_rate>
+        <topic>/prius_autoparking/image_raw</topic>
         <camera name="camera">
           <camera_info_topic>/prius_autoparking/camera_info</camera_info_topic>
           <horizontal_fov>2.094</horizontal_fov>
@@ -186,7 +187,6 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <topic>/prius_autoparking/image_raw</topic>
       </sensor>
 
     </link>
