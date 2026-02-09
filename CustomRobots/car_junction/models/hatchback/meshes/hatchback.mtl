@@ -26,5 +26,5 @@ newmtl Wheels3
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka wheels3.png
-	map_Kd wheels3.png
+	map_Ka Wheels3.png
+	map_Kd Wheels3.png

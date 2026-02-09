@@ -24,9 +24,25 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
+    x = LaunchConfiguration("x")
+    y = LaunchConfiguration("y")
+    z = LaunchConfiguration("z")
+    roll = LaunchConfiguration("R")
+    pitch = LaunchConfiguration("P")
+    yaw = LaunchConfiguration("Y")
+
     package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
+
+    gazebo_models_path = os.path.join(package_dir, "models")
+    gazebo_scripts_path = os.path.join(package_dir, "scripts")
+
+    robot_launch_dir = "/opt/jderobot/Launchers/car_junction"
+
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    x_pose = LaunchConfiguration("x_pose", default="1.0")
+    y_pose = LaunchConfiguration("y_pose", default="-1.5")
+    z_pose = LaunchConfiguration("z_pose", default="7.1")
     world_file_name = "road_junction.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
@@ -41,11 +57,25 @@ def generate_launch_description():
         }.items(),
     )
 
-    declare_use_simulator_cmd = DeclareLaunchArgument(
-        name="use_simulator",
-        default_value="True",
-        description="Whether to start the simulator",
+    declare_x_cmd = DeclareLaunchArgument("x", default_value="1.0")
+
+    declare_y_cmd = DeclareLaunchArgument("y", default_value="-1.5")
+
+    declare_z_cmd = DeclareLaunchArgument("z", default_value="7.1")
+
+    declare_roll_cmd = DeclareLaunchArgument("R", default_value="0.0")
+
+    declare_pitch_cmd = DeclareLaunchArgument("P", default_value="0.0")
+
+    declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="1.57079")
+
+    spawn_robot_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(robot_launch_dir, "spawn_robot.launch.py")
+        ),
+        launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
     )
+
     world_entity_cmd = Node(
         package="ros_gz_sim",
         executable="create",
@@ -53,38 +83,28 @@ def generate_launch_description():
         output="screen",
     )
 
-    start_ros_gazebo_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            "/odom@nav_msgs/msg/Odometry]gz.msgs.Odometry",
-            "/waymo/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
-            "/waymo/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-        ],
-        parameters=[{"use_sim_time": True}],
-        output="screen",
-    )
-
-    # Set the path to the SDF model files.
-    gazebo_models_path = os.path.join(pkg_share, "models")
-    os.environ["GAZEBO_MODEL_PATH"] = (
-        f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
-    )
-
-    start_ros_gazebo_image_bridge = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
-        output="screen",
-    )
+    ld = LaunchDescription()
 
     # Create the launch description and populate
-    ld = LaunchDescription()
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path))
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
+    )
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path
+    )
+    ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
+    # ld.add_action(gazebo_client)
+    ld.add_action(declare_x_cmd)
+    ld.add_action(declare_y_cmd)
+    ld.add_action(declare_z_cmd)
+    ld.add_action(declare_roll_cmd)
+    ld.add_action(declare_pitch_cmd)
+    ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
-    ld.add_action(start_ros_gazebo_bridge)
-    ld.add_action(start_ros_gazebo_image_bridge)
+    # ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(spawn_robot_cmd)
 
     return ld
