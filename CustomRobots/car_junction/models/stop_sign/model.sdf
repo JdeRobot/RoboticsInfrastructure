@@ -16,12 +16,6 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <uri>materials/textures/stop_sign.png</uri>
-            <name>StopSign/Diffuse</name>
-          </script>
-        </material>
-        <material>
           <diffuse>1.0 1.0 1.0 1.0</diffuse>
           <specular>0.0 0.0 0.0 1.0</specular>
           <pbr>
