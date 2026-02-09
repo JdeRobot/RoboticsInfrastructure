@@ -442,69 +442,6 @@
       <uri>model://stop_sign</uri>
       <pose>6 -6 0 0 0 0</pose>
     </include>
-    <include>
-      <static>true</static>
-      <uri>model://stop_sign</uri>
-      <pose>-3 3 0 0 0 3.15</pose>
-    </include>
-
-    <model name="stop_sign">
-      <pose>6 -6 0 0 0 0</pose>
-
-      <link name="pole">
-        <pose>0 0 2.5 0 0 0</pose>
-        <visual name="pole_visual">
-          <geometry>
-            <cylinder>
-              <radius>0.1</radius>
-              <length>5.0</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <diffuse>0.3 0.3 0.3 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-        <collision name="collision">
-          <geometry>
-            <cylinder>
-              <radius>0.1</radius>
-              <length>5.0</length>
-            </cylinder>
-          </geometry>
-        </collision>
-      </link>
-
-      <link name="sign">
-        <pose>0 0 5 1.57 0 1.57</pose>
-        <visual name="disc_visual">
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>0.02</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <diffuse>1 0 0 1</diffuse>
-            <specular>0.5 0.1 0.1 1</specular>
-          </material>
-        </visual>
-        <collision name="disc_collision">
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>0.02</length>
-            </cylinder>
-          </geometry>
-        </collision>
-      </link>
-      <joint name="pole_sign_joint" type="fixed">
-        <parent>pole</parent>
-        <child>sign</child>
-        <pose>0 0 5.05 0 0 0</pose>
-      </joint>
-    </model>
-
 
     <include>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree</uri>

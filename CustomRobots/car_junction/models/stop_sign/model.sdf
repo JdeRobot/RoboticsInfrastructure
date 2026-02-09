@@ -17,9 +17,18 @@
         </geometry>
         <material>
           <script>
-            <uri>materials/textures</uri>
+            <uri>materials/textures/stop_sign.png</uri>
             <name>StopSign/Diffuse</name>
           </script>
+        </material>
+        <material>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://stop_sign/materials/textures/stop_sign.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
     </link>
