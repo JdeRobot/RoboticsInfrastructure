@@ -172,7 +172,7 @@
     </include>
 
     <include>
-      <uri>model://waymo_light</uri>
+      <uri>model://prius_autoparking_camera</uri>
       <pose>2.5 -30 0 0 0 1.57</pose>
     </include>
 

@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "waymo_light"
+    model_folder = "prius_autoparking_camera"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "waymo_light.yaml"
+        get_package_share_directory("custom_robots"), "params", "prius_autoparking_camera.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
@@ -80,7 +80,7 @@ def generate_launch_description():
     start_gazebo_ros_image_bridge_cmd = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/waymo/camera_front"],
+        arguments=["/prius_autoparking/image_raw"],
         output="screen",
     )
 
