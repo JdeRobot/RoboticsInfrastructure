@@ -8,7 +8,7 @@
         <geometry>
           <mesh>
             <uri>model://gas_station/meshes/gas_station.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>1.5 1.5 1.5</scale>
           </mesh>
         </geometry>
       </collision>
@@ -16,7 +16,7 @@
         <geometry>
           <mesh>
             <uri>model://gas_station/meshes/gas_station.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>1.5 1.5 1.5</scale>
           </mesh>
         </geometry>
         <material>
