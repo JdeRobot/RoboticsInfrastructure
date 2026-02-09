@@ -447,6 +447,25 @@
       <pose>6 -6 0 0 0 0</pose>
     </include>
 
+    <!-- Houses -->
+    <include>
+      <uri>model://house_1</uri>
+      <pose>-12 12 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://house_2</uri>
+      <pose>-32 9 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://house_3</uri>
+      <pose>-5.5 -7 0 0 0 1.55</pose>
+    </include>
+    <!-- A gas station -->
+    <include>
+      <uri>model://gas_station</uri>
+      <pose>10 14 0 0 0 1.55</pose>
+    </include>
+
     <include>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree</uri>
       <name>tree_1</name>

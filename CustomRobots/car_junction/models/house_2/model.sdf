@@ -19,16 +19,13 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <uri>model://house_2/materials/scripts</uri>
-            <uri>model://house_2/materials/textures</uri>
-            <uri>model://house_1/materials/textures</uri>
-            <name>House_2/Diffuse</name>
-          </script>
-          <!-- Re-enable when normal maps work again
-          <shader type="normal_map_object_space">
-            <normal_map>model://house_1/materials/textures/House_1_Normal.png</normal_map>
-          </shader-->
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://house_2/materials/textures/house_2.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
     </link>
