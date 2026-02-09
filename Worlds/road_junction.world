@@ -91,6 +91,38 @@
           </material>
         </visual>
       </link>
+      <link name="line-y">
+        <pose>-250 0 0.02 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>490 0.2 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="line2-y">
+        <pose>250 0 0.02 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>490 0.2 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
       <link name="road_link-x">
         <pose>0 0 0.01 0 0 0</pose>
         <collision name="collision">
@@ -110,6 +142,38 @@
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="line-x">
+        <pose>0 -250 0.02 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.2 490 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="line2-x">
+        <pose>0 250 0.02 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size> 0.2 490 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
             <emissive>0 0 0 1</emissive>
           </material>
         </visual>
@@ -519,7 +583,7 @@
 
     <include>
       <uri>model://waymo_light</uri>
-      <pose>3 -30 0 0 0 1.57</pose>
+      <pose>2.5 -30 0 0 0 1.57</pose>
     </include>
 
     <plugin filename="gz-sim-python-system-loader-system" name="gz::sim::systems::PythonSystemLoader">
