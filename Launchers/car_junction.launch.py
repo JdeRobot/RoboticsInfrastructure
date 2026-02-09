@@ -35,6 +35,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     gazebo_models_path = os.path.join(package_dir, "models")
+    gazebo_scripts_path = os.path.join(package_dir, "scripts")
 
     robot_launch_dir = "/opt/jderobot/Launchers/car_junction"
 
@@ -107,8 +108,12 @@ def generate_launch_description():
 
     # Create the launch description and populate
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path))
     set_env_vars_resources = AppendEnvironmentVariable(
         "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
+    )
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path
     )
     ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)

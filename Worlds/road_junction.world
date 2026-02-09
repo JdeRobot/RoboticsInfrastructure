@@ -445,6 +445,7 @@
       <static>true</static>
       <uri>model://stop_sign</uri>
       <pose>6 -6 0 0 0 0</pose>
+      <name>stop_1</name>
     </include>
 
     <!-- Houses -->
@@ -518,11 +519,11 @@
 
     <include>
       <uri>model://waymo_light</uri>
-      <pose>-10 -2 1.5 0.0 0.0 0.0</pose>
+      <pose>3 -30 0 0 0 1.57</pose>
     </include>
 
     <plugin filename="gz-sim-python-system-loader-system" name="gz::sim::systems::PythonSystemLoader">
-      <module_name>scripts.TrafficSystem</module_name>
+      <module_name>TrafficSystem</module_name>
       <world_name>road_junction</world_name>
       <sdf_path>model://hatchback/model.sdf</sdf_path>
     </plugin>
