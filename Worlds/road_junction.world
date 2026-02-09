@@ -173,7 +173,7 @@
 
     <include>
       <uri>model://prius_autoparking_camera</uri>
-      <pose>2.5 -30 0 0 0 1.57</pose>
+      <pose>2.5 -30 0 0 0 0</pose>
     </include>
 
     <plugin filename="gz-sim-python-system-loader-system" name="gz::sim::systems::PythonSystemLoader">

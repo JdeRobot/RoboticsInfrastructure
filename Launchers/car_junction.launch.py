@@ -85,27 +85,6 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    start_ros_gazebo_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            "/odom@nav_msgs/msg/Odometry]gz.msgs.Odometry",
-            "/waymo/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
-            "/waymo/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-        ],
-        parameters=[{"use_sim_time": True}],
-        output="screen",
-    )
-
-    start_ros_gazebo_image_bridge = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/waymo/camera_front@sensor_msgs/msg/Image[gz.msgs.Image"],
-        output="screen",
-    )
-
     # Create the launch description and populate
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path))
