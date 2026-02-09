@@ -20,9 +20,9 @@ class CarSpawner(object):
         self.spawn_interval = 15.0
         self.lifetime = 35.0
         self.spawn_positions = [
-            (-2.5, 20.0, 1.5, -1.57),
-            (20.0, 2.5, 1.5, 3.14),
-            (-20.0, -2.5, 1.5, 0),
+            (-2.5, 20.0, 0.1, -1.57),
+            (20.0, 2.5, 0.1, 3.14),
+            (-20.0, -2.5, 0.1, 0),
         ]
 
     def update(self, info, _ecm):

@@ -198,10 +198,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -221,10 +221,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -244,10 +244,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -267,10 +267,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -290,10 +290,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -313,10 +313,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -336,10 +336,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -359,10 +359,10 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Pedestrian</name>
-            </script>
+            <ambient>0.6 0.5 0.4 1</ambient>
+            <diffuse>0.6 0.5 0.4 1</diffuse>
+            <specular>0.6 0.5 0.4 1</specular>
+            <emissive>0 0 0 1</emissive>
           </material>
         </visual>
       </link>
@@ -423,84 +423,84 @@
         <visual name="d1">
           <geometry>
             <box>
-              <size>0.1 14.1 0.05</size>
+              <size>0.1 14.1 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>0 0 0.05 0 0 0.78</pose>
+          <pose>0 0 0.02 0 0 0.78</pose>
         </visual>
       </link>
       <link name="grid-d2">
         <visual name="d2">
           <geometry>
             <box>
-              <size>0.1 14.1 0.05</size>
+              <size>0.1 14.1 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>0 0 0.05 0 0 -0.78</pose>
+          <pose>0 0 0.02 0 0 -0.78</pose>
         </visual>
       </link>
       <link name="grid-d3">
         <visual name="d3">
           <geometry>
             <box>
-              <size>0.1 7 0.05</size>
+              <size>0.1 7 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>2.5 2.5 0.05 0 0 0.78</pose>
+          <pose>2.5 2.5 0.02 0 0 0.78</pose>
         </visual>
       </link>
       <link name="grid-d4">
         <visual name="d4">
           <geometry>
             <box>
-              <size>0.1 7 0.05</size>
+              <size>0.1 7 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>-2.5 -2.5 0.05 0 0 0.78</pose>
+          <pose>-2.5 -2.5 0.02 0 0 0.78</pose>
         </visual>
       </link>
       <link name="grid-d5">
         <visual name="d5">
           <geometry>
             <box>
-              <size>0.1 7 0.05</size>
+              <size>0.1 7 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>-2.5 2.5 0.05 0 0 -0.78</pose>
+          <pose>-2.5 2.5 0.02 0 0 -0.78</pose>
         </visual>
       </link>
       <link name="grid-d6">
         <visual name="d6">
           <geometry>
             <box>
-              <size>0.1 7 0.05</size>
+              <size>0.1 7 0.01</size>
             </box>
           </geometry>
           <material>
             <diffuse>1 1 0 1</diffuse>
             <specular>0.1 0.1 0 1</specular>
           </material>
-          <pose>2.5 -2.5 0.05 0 0 -0.78</pose>
+          <pose>2.5 -2.5 0.02 0 0 -0.78</pose>
         </visual>
       </link>
     </model>
