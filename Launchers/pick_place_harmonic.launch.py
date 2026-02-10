@@ -9,9 +9,20 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    AppendEnvironmentVariable,
+)
 
 
 def generate_launch_description():
+    package_dir = get_package_share_directory("custom_robots")
+    robotiq_description_pkg = get_package_share_directory("robotiq_description")
+
+    gazebo_models_path = os.path.join(package_dir, "models")
+
     # Get package directory
     try:
         ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
@@ -35,8 +46,18 @@ def generate_launch_description():
         }.items(),
     )
 
-    return LaunchDescription(
-        [
-            warehouse_launch,
-        ]
+    ld = LaunchDescription()
+
+    ld.add_action(
+        SetEnvironmentVariable(
+            "GZ_SIM_RESOURCE_PATH",
+            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+        )
     )
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH",
+        gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+    )
+    ld.add_action(set_env_vars_resources)
+    ld.add_action(warehouse_launch)
+    return ld
