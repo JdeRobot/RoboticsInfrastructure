@@ -19,9 +19,8 @@ def generate_launch_description():
     robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
 
     # Custom gz_ros2_control for Gazebo Harmonic
-    # gz_ros2_control_install = "/opt/jderobot/IndustrialRobots/pick_place_harmonic_exercise/gz_ros2_control/install"
-    # gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
-    gz_lib_path = ""
+    gz_ros2_control_install = "/home/ws/install"
+    gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
 
     warehouse_models_path = os.path.join(robotiq_pkg_share_dir, "world", "models")
     ur5_share_parent = os.path.dirname(pkg_share_dir)
