@@ -149,20 +149,16 @@
       <sensor name="prius_autoparking" type="camera">
         <pose relative_to="base_link">0 0.2 1.45 0 0 1.57</pose>
         <always_on>true</always_on>
-        <visualize>true</visualize>
+        <visualize>false</visualize>
         <update_rate>20</update_rate>
         <topic>/prius_autoparking/image_raw</topic>
         <camera name="camera">
           <camera_info_topic>/prius_autoparking/camera_info</camera_info_topic>
           <horizontal_fov>2.094</horizontal_fov>
           <lens>
-            <intrinsics>
-              <fx>329.9</fx>
-              <fy>329.9</fy>
-              <cx>359.5</cx>
-              <cy>539.5</cy>
-              <s>0</s>
-            </intrinsics>
+            <type>gnomonical</type>
+            <scale_to_hfov>true</scale_to_hfov>
+            <cutoff_angle>1.5707</cutoff_angle>
           </lens>
           <distortion>
             <k1>0.0</k1>

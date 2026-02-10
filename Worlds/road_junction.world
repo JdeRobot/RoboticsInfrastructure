@@ -120,7 +120,7 @@
     </include>
     <include>
       <uri>model://house_3</uri>
-      <pose>-9 -11 0 0 0 1.57</pose>
+      <pose>-11 -11 0 0 0 1.57</pose>
     </include>
     <!-- A gas station -->
     <include>
