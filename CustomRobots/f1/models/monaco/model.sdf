@@ -3,20 +3,20 @@
   <model name="circuito">
     <static>true</static> <!-- Cambia a false si es un objeto dinámico -->
     <link name="link">
-      <visual name="asfalto_visual">
+      <visual name="grass">
         <geometry>
           <mesh>
             <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
 
-      <visual name="barrera_visual">
+      <visual name="track">
         <geometry>
           <mesh>
-            <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <uri>model://monaco/meshes/monaco_track.dae</uri>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
@@ -24,8 +24,8 @@
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://monaco/meshes/monaco.dae</uri>
-            <scale>1 1 1</scale>
+            <uri>model://monaco/meshes/monaco_track.dae</uri>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </collision>

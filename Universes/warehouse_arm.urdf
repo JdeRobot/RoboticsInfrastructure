@@ -1,0 +1,140 @@
+<?xml version="1.0" ?>
+<robot name="warehouse_arm">
+
+  <link name="ground">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="100 100 0.1"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="conveyor_belt">
+    <visual>
+      <origin xyz="0.6 0 0.95" rpy="0 0 1.57"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/conveyor/meshes/conveyor.dae" scale="0.45 0.35 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="ground_logo_big">
+    <visual>
+      <origin xyz="-0.5 0 0.1" rpy="0 -0 1.57"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/ground_logo_big/meshes/ground_logo.dae" scale="1 1 1"/>
+      </geometry>
+      <geometry>
+        <mesh filename="package://pick_place/models/ground_logo_big/materials/textures/ground_logo.png" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="target_table">
+    <visual>
+      <origin xyz="-0.6 0 0.73" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/target_table/meshes/target_table.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="base_robot">
+    <visual>
+      <origin xyz="-0.092656 -0.07431 1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.09" length="0.9"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <link name="yellow_target">
+    <visual>
+      <origin xyz="-0.4 -0.45 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/yellow_target/meshes/yellow_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="green_target">
+    <visual>
+      <origin xyz="-0.4 -0.15 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/green_target/meshes/green_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="red_target">
+    <visual>
+      <origin xyz="-0.4 0.15 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/red_target/meshes/red_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="blue_target">
+    <visual>
+      <origin xyz="-0.4 0.45 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/blue_target/meshes/blue_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="blue_ball">
+    <visual>
+      <origin xyz="0.7 0.1 1.04" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.04"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_cylinder">
+    <visual>
+      <origin xyz="0.5 -0.1 1.07" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.15"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_box">
+    <visual>
+      <origin xyz="0.6 -0.3 1.04" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.1 0.08"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="yellow_box">
+    <visual>
+      <origin xyz="0.6 0.3 1.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.08 0.04 0.1"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+</robot>

@@ -8,6 +8,7 @@
         <geometry>
           <mesh>
             <uri>model://gas_station/meshes/gas_station.dae</uri>
+            <scale>1.5 1.5 1.5</scale>
           </mesh>
         </geometry>
       </collision>
@@ -15,17 +16,17 @@
         <geometry>
           <mesh>
             <uri>model://gas_station/meshes/gas_station.dae</uri>
+            <scale>1.5 1.5 1.5</scale>
           </mesh>
         </geometry>
         <material>
-          <script>
-            <uri>model://gas_station/materials/scripts</uri>
-            <uri>model://gas_station/materials/textures</uri>
-            <name>GasStation/Diffuse</name>
-          </script>
-          <shader type="normal_map_object_space">
-            <normal_map>GasStation_Normal.png</normal_map>
-          </shader>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://gas_station/materials/textures/gas_station.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
     </link>

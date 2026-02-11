@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+<robot name="autopark_line">
+
+  <link name="autopark">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 3.14" xyz="0 -1 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/autopark_line/meshes/autopark_line.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="autopark"/>
+    <child link="prius_autoparking" />
+    <origin rpy="0 0 1.54" xyz="-7 2.5 0"/>
+  </joint>
+  
+  <link name="prius_autoparking">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.357734 -0.627868 0.988243" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/prius/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="opel_1">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-20 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="opel_2">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-13.5 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="opel_3">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-7 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="opel_4">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="0.5 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="opel_5">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="14 -3 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/opel/meshes/model.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_0">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="20 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_1">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="15 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_2">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="10 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_3">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="5 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_4">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="0 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_5">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="-5 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_6">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="-10 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_7">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="-15 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="farola_8">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="-20 -5.2 0"/>
+      <geometry>
+        <mesh filename="package://autopark_harmonic/models/lamp_post/meshes/lamp_post.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

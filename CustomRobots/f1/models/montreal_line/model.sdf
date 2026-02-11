@@ -23,14 +23,14 @@
     <collision name="collision">
       <geometry>
         <mesh>
-          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
+          <uri>model://montreal_line/meshes/pared.stl</uri>
         </mesh>
       </geometry>
     </collision>
     <visual name="visual">
       <geometry>
         <mesh>
-          <uri>model://montreal_line/meshes/montreal_pared.dae</uri>
+          <uri>model://montreal_line/meshes/pared.stl</uri>
         </mesh>
       </geometry>
     </visual>

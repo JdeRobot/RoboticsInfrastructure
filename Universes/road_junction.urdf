@@ -1,0 +1,393 @@
+<?xml version="1.0" ?>
+<robot name="road_junction">
+
+<link name="road">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+      <geometry>
+        <box size="1000 10 0.01"/>
+      </geometry>
+      <material name="asphalt">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+      <geometry>
+        <box size="10 1000 0.01"/>
+      </geometry>
+      <material name="asphalt">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+
+
+    <visual>
+      <origin rpy="0 0 0" xyz="250 6.5 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="-250 6.5 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="250 -6.5 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="-250 -6.5 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 1.57" xyz="6.5 250 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-6.5 250 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 1.57" xyz="6.5 -250 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 1.57" xyz="-6.5 -250 0.01"/>
+      <geometry>
+        <box size="490 3 0.05"/>
+      </geometry>
+      <material name="pedestrian_crossing">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+
+
+    <visual>
+      <origin rpy="0 0 0.78" xyz="0 0 0.05"/>
+      <geometry>
+        <box size="0.1 14.1 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 -0.78" xyz="0 0 0.05"/>
+      <geometry>
+        <box size="0.1 14.1 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0.78" xyz="2.5 2.5 0.05"/>
+      <geometry>
+        <box size="0.1 7 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0.78" xyz="-2.5 2.5 0.05"/>
+      <geometry>
+        <box size="0.1 7 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0.78" xyz="2.5 -2.5 0.05"/>
+      <geometry>
+        <box size="0.1 7 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <visual>
+      <origin rpy="0 0 0.78" xyz="-2.5 -2.5 0.05"/>
+      <geometry>
+        <box size="0.1 7 0.05"/>
+      </geometry>
+      <material name="grid_junction">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+</link>
+
+<link name="World"/>
+
+<link name="stop_pole">
+  <visual>
+  <origin rpy="0 0 0" xyz="0 0 2.5"/>
+    <geometry>
+      <cylinder radius="0.1" length="5"/>
+    </geometry>
+    <material name="sign_post">
+      <color rgba="0.3 0.3 0.3 1"/>
+    </material>
+  </visual>
+</link>
+
+<link name="stop_sign">
+  <visual>
+    <geometry>
+      <cylinder radius="0.5" length="0.1"/>
+    </geometry>
+    <material name="stop_sign">
+      <color rgba="1 0 0 1"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="stop_pole_joint" type="fixed">
+  <parent link="World"/>
+  <child link="stop_pole"/>
+  <origin rpy="0 0 0" xyz="6 -6 0"/>
+</joint>
+
+<joint name="stop_sign_joint" type="fixed">
+  <parent link="stop_pole"/>
+  <child link="stop_sign"/>
+  <origin rpy="1.57 0 1.57" xyz="0 0 5"/>
+</joint>
+
+
+
+<link name="tree_1">
+  <visual>
+  <origin rpy="1.57 0 0" xyz="25 5 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/Pine/Pine.obj" scale="1 1 1"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="tree_2">
+  <visual>
+  <origin rpy="1.57 0 0" xyz="45 5 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/Pine/Pine.obj" scale="1 1 1"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="tree_3">
+  <visual>
+  <origin rpy="1.57 0 0" xyz="65 5 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/Pine/Pine.obj" scale="1 1 1"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="tree_4">
+  <visual>
+  <origin rpy="1.57 0 0" xyz="85 5 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/Pine/Pine.obj" scale="1 1 1"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="lp_1">
+  <visual>
+  <origin rpy="0 0 1.57" xyz="-5 30 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/lamp_post/meshes/lamp_post.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="lp_2">
+  <visual>
+  <origin rpy="0 0 1.57" xyz="-5 50 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/lamp_post/meshes/lamp_post.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="lp_3">
+  <visual>
+  <origin rpy="0 0 1.57" xyz="-5 -30 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/lamp_post/meshes/lamp_post.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="lp_4">
+  <visual>
+  <origin rpy="0 0 1.57" xyz="-5 -50 0.5"/>
+    <geometry>
+      <mesh filename="package://car_junction/models/lamp_post/meshes/lamp_post.dae"/>
+    </geometry>
+  </visual>
+</link>  
+
+
+  <link name="chassis">
+    <visual name="chassis_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/hybrid_body.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual name="lidar_mount_box">
+      <origin xyz="0 0.5 1.6" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.4 0.4 0.1"/>
+      </geometry>
+    </visual>
+
+    <visual name="front_camera_mount">
+      <origin xyz="0 -1.7 0.9" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="front_left_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/wheel.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="front_right_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/wheel.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="rear_left_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/wheel.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="rear_right_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/wheel.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="steering_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.3021 0 0"/>
+      <geometry>
+        <mesh filename="package://car_junction/models/waymo_light/meshes/steering_wheel.obj"
+              scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="chassis_fixed" type="fixed">
+    <parent link="World"/>
+    <child link="chassis"/>
+    <origin xyz="-10 -2 0.25" rpy="0 0 1.57"/>
+  </joint>
+
+  <joint name="front_left_wheel_fixed" type="fixed">
+    <parent link="chassis"/>
+    <child link="front_left_wheel"/>
+    <origin xyz="0.767 -1.41 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="front_right_wheel_fixed" type="fixed">
+    <parent link="chassis"/>
+    <child link="front_right_wheel"/>
+    <origin xyz="-0.767 -1.41 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="rear_left_wheel_fixed" type="fixed">
+    <parent link="chassis"/>
+    <child link="rear_left_wheel"/>
+    <origin xyz="0.793 1.45 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="rear_right_wheel_fixed" type="fixed">
+    <parent link="chassis"/>
+    <child link="rear_right_wheel"/>
+    <origin xyz="-0.793 1.45 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="steering_wheel_fixed" type="fixed">
+    <parent link="chassis"/>
+    <child link="steering_wheel"/>
+    <origin xyz="0.357734 -0.627868 0.988243" rpy="1.3021 0 0"/>
+  </joint>
+
+
+
+</robot>

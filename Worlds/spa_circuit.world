@@ -59,9 +59,14 @@
 
     <!-- Robot -->
     <include>
-      <pose>1 -1.5 -9990 0 0 0</pose>
-      <name>turtlebot3_waffle</name>
-      <uri>model://turtlebot3_waffle</uri>
+      <pose>146 60 -593.20 0 0 0.35</pose>
+      <name>f1_renault_ackermann_harmonic_laser</name>
+      <uri>model://f1_renault_ackermann_harmonic_laser</uri>
+    </include>
+    <include>
+      <pose>142 60 -597.20 0 0 0.35</pose>
+      <name>f1_renault_ackermann_harmonic_laser</name>
+      <uri>model://f1_renault_ackermann_harmonic_laser</uri>
     </include>
   </world>
 </sdf>

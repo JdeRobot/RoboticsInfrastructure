@@ -1,0 +1,1482 @@
+<?xml version="1.0" ?>
+<robot name="hospital_follow_person">
+
+<!-- Person to follow model -->
+
+<link name="PersonToFollow">
+  <visual>
+    <origin xyz="4 10 0.2" rpy="0 0 3.14"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PersonToFollow/meshes/standing.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<!-- Turtlebot2 robot model -->
+
+<link name="base_footprint"/>
+
+<joint name="base_footprint_robot" type="fixed">
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+  <origin xyz="4 12 0.25" rpy="0 0 3.14"/>
+</joint>
+<link name="base_link">
+  <visual>
+    <origin xyz="0 0 0.02" rpy="0 0 3.14"/>
+    <geometry>
+      <mesh filename="package://Turtlebot2/turtlebot2_simulated/kobuki_description/meshes/main_body.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.00 0.115 0"/>
+    <axis xyz="0 0 1"/>
+</joint>
+<link name="wheel_left_link">
+  <visual>
+    <geometry>
+      <mesh filename="package://Turtlebot2/turtlebot2_simulated/kobuki_description/meshes/wheel.dae"/>
+    </geometry>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </visual>
+</link>
+
+<joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.00 -0.115 0"/>
+    <axis xyz="0 0 1"/>
+</joint>
+<link name="wheel_right_link">
+  <visual>
+    <geometry>
+      <mesh filename="package://Turtlebot2/turtlebot2_simulated/kobuki_description/meshes/wheel.dae"/>
+    </geometry>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </visual>
+</link>
+
+<joint name="base_tick1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.08 0.14 0.25"/>
+    <parent link="base_link"/>
+    <child link="base_tick1_link"/>
+</joint>
+<link name="base_tick1_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.35" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+
+<joint name="base_tick2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.09 0.12 0.25"/>
+    <parent link="base_link"/>
+    <child link="base_tick2_link"/>
+</joint>
+<link name="base_tick2_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.35" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+
+<joint name="base_tick3_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.09 -0.12 0.25"/>
+    <parent link="base_link"/>
+    <child link="base_tick3_link"/>
+</joint>
+<link name="base_tick3_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.35" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+
+<joint name="base_tick4_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.08 -0.14 0.25"/>
+    <parent link="base_link"/>
+    <child link="base_tick4_link"/>
+</joint>
+<link name="base_tick4_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.35" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+
+<link name="base_tick5_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.15" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+<joint name="base_tick5_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.15 0.0 0.14"/>
+    <parent link="base_link"/>
+    <child link="base_tick5_link"/>
+</joint>
+
+<joint name="camera_support_tick2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.13 -0.05 0.05"/>
+    <parent link="middle_base_link"/>
+    <child link="camera_support_tick2_link"/>
+</joint>
+<link name="camera_support_tick2_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.005"/>
+      </geometry>
+      <material name="Gray">
+  <color rgba="0.5 0.5 0.5 1"/>
+</material>
+    </visual>
+</link>
+
+<joint name="lower_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.155"/>
+    <parent link="base_link"/>
+    <child link="lower_base_link"/>
+</joint>
+<link name="lower_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.18"/>
+      </geometry>
+      <material name="DarkGray">
+  <color rgba="0.1 0.1 0.1 0.5"/>
+</material>
+    </visual>
+</link>
+
+<joint name="middle_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.208"/>
+    <parent link="base_link"/>
+    <child link="middle_base_link"/>
+</joint>
+<link name="middle_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.18"/>
+      </geometry>
+      <material name="DarkGray">
+  <color rgba="0.1 0.1 0.1 0.5"/>
+</material>
+    </visual>
+</link>
+
+<joint name="upper_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.42"/>
+    <parent link="base_link"/>
+    <child link="upper_base_link"/>
+</joint>
+<link name="upper_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.18"/>
+      </geometry>
+      <material name="DarkGray">
+  <color rgba="0.1 0.1 0.1 0.5"/>
+</material>
+    </visual>
+</link>
+
+<joint name="camera_support_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.13 0 0.0975"/>
+    <parent link="middle_base_link"/>
+    <child link="camera_support_base_link"/>
+</joint>
+<link name="camera_support_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.0175 0.15 0.005"/>
+      </geometry>
+      <material name="DarkGray">
+  <color rgba="0.1 0.1 0.1 0.5"/>
+</material>
+    </visual>
+</link>
+
+<joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin rpy="0 -0.32 0" xyz="0.13 0 0.32"/>
+</joint>
+<link name="camera_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.130 0.022"/>
+      </geometry>
+      <material name="DarkGray">
+  <color rgba="0 0 0 1"/>
+</material>
+    </visual>
+</link>
+
+<joint name="lidar_joint" type="fixed">
+    <parent link="upper_base_link"/>
+    <child link="lidar_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.0275"/>
+</joint>
+<link name="lidar_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.055" radius="0.0508"/>
+        <material>Black</material>
+      </geometry>
+    </visual>
+</link>
+
+<!-- Hospital environment models -->
+
+<link name="aws_robomaker_hospital_floor_01_floor_1">
+  <visual>
+  <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_floor_01_floor/meshes/aws_robomaker_hospital_floor_01_floor_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_floor_01_walls">
+  <visual>
+  <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_floor_01_walls/meshes/aws_robomaker_hospital_floor_01_walls_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_nursesstation_01_1">
+  <visual>
+  <origin xyz="0 1.5 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_nursesstation_01/meshes/aws_robomaker_hospital_nursesstation_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_portal_1">
+  <visual>
+  <origin xyz="-1.50654 19.4813 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_portal/meshes/aws_robomaker_hospital_elevator_01_portal_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_portal_2">
+  <visual>
+  <origin xyz="1.50654 19.4813 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_portal/meshes/aws_robomaker_hospital_elevator_01_portal_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_car_1">
+  <visual>
+  <origin xyz="-1.49587 19.35 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_car/meshes/aws_robomaker_hospital_elevator_01_car_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_car_2">
+  <visual>
+  <origin xyz="1.49587 19.35 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_car/meshes/aws_robomaker_hospital_elevator_01_car_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_door_1">
+  <visual>
+  <origin xyz="-1.51 19.35 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_door/meshes/aws_robomaker_hospital_elevator_01_door_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_elevator_01_door_2">
+  <visual>
+  <origin xyz="1.51 19.35 0.4" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_elevator_01_door/meshes/aws_robomaker_hospital_elevator_01_door_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_1">
+  <visual>
+  <origin xyz="-11.0216 -13.8069 0.2" rpy="0 -0 1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_2">
+  <visual>
+  <origin xyz="11.1417 -21.4039 0.2" rpy="0 -0 -1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_3">
+  <visual>
+  <origin xyz="11.1068 -17.8472 0.2" rpy="0 -0 -1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_4">
+  <visual>
+  <origin xyz="11.1374 -14.1551 0.2" rpy="0 -0 -1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_5">
+  <visual>
+  <origin xyz="-11.0332 -17.61 0.2" rpy="0 -0 1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_half_open_01_6">
+  <visual>
+  <origin xyz="-11.0086 -21.7566 0.2" rpy="0 -0 1.55358"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_half_open_01/meshes/aws_robomaker_hospital_curtain_half_open_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_hospital_curtain_closed_01_1">
+  <visual>
+  <origin xyz="-11.022 -7.27757 0.2" rpy="0 -0 1.57907"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_hospital_curtain_closed_01/meshes/aws_robomaker_hospital_curtain_closed_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_1">
+  <visual>
+    <origin xyz="11.1777 -18.4129 0.2" rpy="0 0 -3.13719"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_2">
+  <visual>
+    <origin xyz="11.1179 -14.6493 0.2" rpy="0 0 -3.13599"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_3">
+  <visual>
+    <origin xyz="-11.2304 -21.1134 0.2" rpy="0 0 -3.11834"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_4">
+  <visual>
+    <origin xyz="-11.0878 -7.00992 0.2" rpy="0 -0 3.1351"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_5">
+  <visual>
+    <origin xyz="-11.0106 8.9505 0.191797" rpy="-0.035019 -0.000392 3.13388"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_6">
+  <visual>
+    <origin xyz="-11.025 7.10335 0.2" rpy="-0.035021 1.8e-05 -3.13762"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_7">
+  <visual>
+    <origin xyz="10.6166 9.06291 0.191797" rpy="-0.03501 0.000885 -3.11285"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_8">
+  <visual>
+    <origin xyz="10.6006 6.90956 0.191797" rpy="-0.035003 0.001133 -3.10576"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="CGMClassic_9">
+  <visual>
+    <origin xyz="11.3613 -21.8867 0.2" rpy="0 0 -3.12292"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/CGMClassic/meshes/CGMClassic.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRack_1">
+  <visual>
+    <origin xyz="9.07005 -10.3582 0.2" rpy="-2e-06 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRack/meshes/StorageRack.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRackCovered_1">
+  <visual>
+    <origin xyz="0.546476 -18.3985 0.2" rpy="0 -0 1.56584"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRackCovered/meshes/StorageRackCovered.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRack_2">
+  <visual>
+    <origin xyz="-2.69866 -22.4178 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRack/meshes/StorageRack.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRackCoverOpen_1">
+  <visual>
+    <origin xyz="9.15016 3.44263 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRackCoverOpen/meshes/StorageRackCoverOpen.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRack_3">
+  <visual>
+    <origin xyz="-10.1178 -10.4694 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRack/meshes/StorageRack.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRack_4">
+  <visual>
+    <origin xyz="-9.91557 3.5644 0.2" rpy="0 0 -0.000273"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRack/meshes/StorageRack.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="StorageRackCovered_2">
+  <visual>
+    <origin xyz="10.294 -10.577 0.2" rpy="0 0 3.13389"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/StorageRackCovered/meshes/StorageRackCovered.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Chair_1">
+  <visual>
+    <origin xyz="-0.603067 -0.77859 0.2" rpy="0 0 -1.54998"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Chair/meshes/Chair.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Chair_2">
+  <visual>
+    <origin xyz="0.626494 -0.743667 0.2" rpy="0 0 -1.53446"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Chair/meshes/Chair.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="WhiteChipChair_1">
+  <visual>
+    <origin xyz="-8.87142 9.15707 0.2" rpy="0 -0.152685 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/WhiteChipChair/meshes/WhiteChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_1">
+  <visual>
+    <origin xyz="-7.9025 6.49258 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_2">
+  <visual>
+    <origin xyz="-7.89464 8.01997 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_3">
+  <visual>
+    <origin xyz="-6.39087 6.45458 0.2" rpy="0 0 -3.13096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_4">
+  <visual>
+    <origin xyz="-6.41405 8.00716 0.2" rpy="0 0 -3.13096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_5">
+  <visual>
+    <origin xyz="-6.32415 6.47504 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_6">
+  <visual>
+    <origin xyz="-6.32415 8.03277 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_7">
+  <visual>
+    <origin xyz="-4.83084 6.47504 0.2" rpy="0 0 -3.13096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_8">
+  <visual>
+    <origin xyz="-4.85665 8.03277 0.2" rpy="0 0 -3.13096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_9">
+  <visual>
+    <origin xyz="8.18933 6.61196 0.2" rpy="0 0 3.13621"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_10">
+  <visual>
+    <origin xyz="8.18939 8.16786 0.2" rpy="0 0 3.13621"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_11">
+  <visual>
+    <origin xyz="6.80281 6.60106 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_12">
+  <visual>
+    <origin xyz="6.80281 8.1542 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_13">
+  <visual>
+    <origin xyz="6.73748 6.5915 0.2" rpy="0 0 3.13621"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_14">
+  <visual>
+    <origin xyz="6.7505 8.15453 0.2" rpy="0 0 3.13621"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_15">
+  <visual>
+    <origin xyz="5.17897 6.59309 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PotatoChipChair_16">
+  <visual>
+    <origin xyz="5.1811 8.14489 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PotatoChipChair/meshes/PotatoChipChair.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="OfficeChairBlack_1">
+  <visual>
+    <origin xyz="1.20234 -6.39435 0.2" rpy="0 0 3.13125"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/OfficeChairBlack/meshes/OfficeChairBlack_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="OfficeChairBlack_2">
+  <visual>
+    <origin xyz="-1.25321 -6.4505 0.2" rpy="0 0 3.13125"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/OfficeChairBlack/meshes/OfficeChairBlack_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Chair_3">
+  <visual>
+    <origin xyz="-1.37633 -0.795802 0.2" rpy="-1e-06 0 -1.54998"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Chair/meshes/Chair.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Chair_4">
+  <visual>
+    <origin xyz="1.30985 -0.727185 0.2" rpy="0 0 -1.53446"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Chair/meshes/Chair.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="TrolleyBed_1">
+  <visual>
+    <origin xyz="4.85934 -4.87229 0.2" rpy="0 -1e-06 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/TrolleyBed/meshes/TrolleyBed.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="SurgicalTrolley_1">
+  <visual>
+    <origin xyz="11.4301 3.56328 0.2" rpy="0 -0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/SurgicalTrolley/meshes/trolley_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="TrolleyBedPatient_1">
+  <visual>
+    <origin xyz="-1.83202 -19.2612 0.2" rpy="0 -0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/TrolleyBedPatient/meshes/TrolleyBedPatient.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="SurgicalTrolley_2">
+  <visual>
+    <origin xyz="-0.411421 -22.2085 0.2" rpy="0 0 -1.58175"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/SurgicalTrolley/meshes/trolley_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="SurgicalTrolley_3">
+  <visual>
+    <origin xyz="3.11747 -19.6565 0.2" rpy="0 -0 1.57031"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/SurgicalTrolley/meshes/trolley_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="SurgicalTrolleyMed_1">
+  <visual>
+    <origin xyz="0.770804 -19.7749 0.2" rpy="0 0 -1.56798"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/SurgicalTrolleyMed/meshes/SurgicalTrolleyMed_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ParkingTrolleyMin_1">
+  <visual>
+    <origin xyz="0.715846 -17.1496 0.2" rpy="-1e-06 -0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ParkingTrolleyMin/meshes/trolleymin.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ParkingTrolleyMax_1">
+  <visual>
+    <origin xyz="7.71054 -25.1326 0.2" rpy="1e-06 -0 -1.59536"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ParkingTrolleyMax/meshes/ParkingTrolleyMax.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="AdjTable_1">
+  <visual>
+    <origin xyz="1.2174 -5.60888 0.2" rpy="0 0 -0.008733"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/AdjTable/meshes/AdjTable.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="AdjTable_2">
+  <visual>
+    <origin xyz="-1.26728 -5.69226 0.2" rpy="0 0 -0.008733"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/AdjTable/meshes/AdjTable.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_CoffeeTable_01_1">
+  <visual>
+    <origin xyz="-10.2383 -29.9144 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_Sofa_01_1">
+  <visual>
+    <origin xyz="-11.077 -30.5544 0.2" rpy="0 0 1.56984"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_Sofa_01/meshes/aws_Sofa_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_TV_02_1">
+  <visual>
+    <origin xyz="-12.4122 -28.4594 1.73211" rpy="0 0 3.13999"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_TV_02/meshes/aws_TV_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_KitchenCabinet_01_1">
+  <visual>
+    <origin xyz="-11.1379 -25.6941 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_KitchenCabinet_01/meshes/aws_KitchenCabinet_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_Refrigerator_01_1">
+  <visual>
+    <origin xyz="-9.28238 -24.5015 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_SofaB_01_1">
+  <visual>
+    <origin xyz="-10.8238 -28.6662 0.2" rpy="0 0 -1.56116"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_SofaB_01_2">
+  <visual>
+    <origin xyz="-9.73697 -28.6538 0.2" rpy="0 0 -1.56077"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_PortraitA_01_1">
+  <visual>
+    <origin xyz="1.14738 -6.92303 1.61115" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_PortraitA_01/meshes/aws_PortraitA_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="aws_robomaker_residential_PortraitD_02_1">
+  <visual>
+    <origin xyz="2.40772 -3.61975 1.74508" rpy="0 0 -1.57619"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/aws_robomaker_residential_PortraitD_02/meshes/aws_PortraitD_01_visual.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MopCart3_1">
+  <visual>
+    <origin xyz="1.07736 -8.59036 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MopCart3/meshes/MopCart3.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Drawer_1">
+  <visual>
+    <origin xyz="3.18472 -6.54185 0.2" rpy="0 0 -1.55907"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Drawer/meshes/Drawer.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Drawer_2">
+  <visual>
+    <origin xyz="3.19085 -5.94838 0.2" rpy="0 0 -1.55907"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Drawer/meshes/Drawer.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Drawer_3">
+  <visual>
+    <origin xyz="-3.02001 -6.54343 0.2" rpy="0 0 1.56555"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Drawer/meshes/Drawer.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Drawer_4">
+  <visual>
+    <origin xyz="-2.99762 -5.94782 0.2" rpy="0 0 1.56555"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Drawer/meshes/Drawer.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart1_1">
+  <visual>
+    <origin xyz="-11.8071 -16.1825 0.2" rpy="0 0 1.56702"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart1/meshes/InstrumentCart1.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart2_1">
+  <visual>
+    <origin xyz="-12.0906 -1.87329 0.251875" rpy="0 0 1.57773"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart2/meshes/InstrumentCart2.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart2_2">
+  <visual>
+    <origin xyz="-11.5231 1.34237 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart2/meshes/InstrumentCart2.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MetalCabinet_1">
+  <visual>
+    <origin xyz="-11.1128 11.6546 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MetalCabinet/meshes/MetalCabinet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MetalCabinet_2">
+  <visual>
+    <origin xyz="-11.1876 4.2888 0.2" rpy="0 0 3.1387"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MetalCabinet/meshes/MetalCabinet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BedTable_1">
+  <visual>
+    <origin xyz="-10.4759 1.39442 0.201184" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BedTable/meshes/BedTable.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BedTable_2">
+  <visual>
+    <origin xyz="-10.5874 -12.5084 0.201189" rpy="0 0 3.11588"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BedTable/meshes/BedTable.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BedsideTable_1">
+  <visual>
+    <origin xyz="-12.1499 -2.63111 0.20018" rpy="0 0 -0.00878"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BedsideTable/meshes/BedsideTable.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="AnesthesiaMachine_1">
+  <visual>
+    <origin xyz="-1.28478 -21.1127 0.2" rpy="0 0 -3.12971"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/AnesthesiaMachine/meshes/AnesthesiaMachine.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Shower_1">
+  <visual>
+    <origin xyz="-1.07422 -16.1332 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Shower/meshes/Shower.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Shower_2">
+  <visual>
+    <origin xyz="0.853327 -16.1492 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Shower/meshes/Shower.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart1_2">
+  <visual>
+    <origin xyz="-11.8071 -16.1825 0.2" rpy="0 0 1.56702"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart1/meshes/InstrumentCart1.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart2_3">
+  <visual>
+    <origin xyz="-0.869537 -17.7436 0.2" rpy="0 0 -0.002595"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart2/meshes/InstrumentCart2.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="KitchenSink_1">
+  <visual>
+    <origin xyz="3.06236 -11.8809 0.198386" rpy="0 0 3.1391"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/KitchenSink/meshes/KitchenSink.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="KitchenSink_2">
+  <visual>
+    <origin xyz="-3.09305 -11.8988 0.198391" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/KitchenSink/meshes/KitchenSink.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_1">
+  <visual>
+    <origin xyz="0.464522 -11.8023 0.205252" rpy="0 0.016801 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_2">
+  <visual>
+    <origin xyz="-0.54552 -11.8033 0.200387" rpy="0 0 -3.139"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_3">
+  <visual>
+    <origin xyz="7.4839 1.42958 0.200387" rpy="0 0 -3.13589"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_4">
+  <visual>
+    <origin xyz="-7.01185 1.4183 0.200387" rpy="0 0 -3.13589"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_5">
+  <visual>
+    <origin xyz="-7.02851 -12.7728 0.200377" rpy="0 0 -3.13589"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Toilet_6">
+  <visual>
+    <origin xyz="7.48696 -12.617 0.200386" rpy="0 0 -3.13589"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Toilet/meshes/Toilet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MetalCabinet_3">
+  <visual>
+    <origin xyz="11.1356 4.33826 0.2" rpy="0 0 3.1387"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MetalCabinet/meshes/MetalCabinet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MetalCabinet_4">
+  <visual>
+    <origin xyz="11.1318 11.6838 0.2" rpy="0 0 -0.023701"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MetalCabinet/meshes/MetalCabinet.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="InstrumentCart1_3">
+  <visual>
+    <origin xyz="-1.83539 -17.5879 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/InstrumentCart1/meshes/InstrumentCart1.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="XRayMachine_1">
+  <visual>
+    <origin xyz="1.79424 -21.3329 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/XRayMachine/meshes/XRayMachine.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="IVStand_1">
+  <visual>
+    <origin xyz="-11.0966 -16.4963 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/IVStand/meshes/IVStand.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BloodPressureMonitor_1">
+  <visual>
+    <origin xyz="-9.96258 -11.9361 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BloodPressureMonitor/meshes/BloodPressureMonitor.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="IVStand_2">
+  <visual>
+    <origin xyz="-2.30593 -20.2447 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/IVStand/meshes/IVStand.obj" scale="0.01 0.01 0.01"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BMWCart_1">
+  <visual>
+    <origin xyz="-10.931 -1.9483 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BMWCart/meshes/Cart_BMW.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BPCart_1">
+  <visual>
+    <origin xyz="-10.1788 11.173 0.203446" rpy="0 0 0.003096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BPCart/meshes/Cart_BP.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BPCart_2">
+  <visual>
+    <origin xyz="12.0072 4.64765 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BPCart/meshes/Cart_BP.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BPCart_3">
+  <visual>
+    <origin xyz="-11.7236 11.4294 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BPCart/meshes/Cart_BP.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="BPCart_4">
+  <visual>
+    <origin xyz="-11.4703 5.05999 0.203446" rpy="0 0 0.003096"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/BPCart/meshes/Cart_BP.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="VendingMachine_1">
+  <visual>
+    <origin xyz="-8.45694 9.63064 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/VendingMachine/meshes/VendingMachine.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="VendingMachine_2">
+  <visual>
+    <origin xyz="8.35378 9.64852 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/VendingMachine/meshes/VendingMachine.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_1">
+  <visual>
+    <origin xyz="-9.61916 -12.5112 0.2" rpy="0 0 -3.12353"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_2">
+  <visual>
+    <origin xyz="0.054597 4.05849 0.2" rpy="0 0 3.12413"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_3">
+  <visual>
+    <origin xyz="-5.38513 1.82526 0.2" rpy="0 0 -1.63757"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_4">
+  <visual>
+    <origin xyz="-0.93616 -18.2252 0.2" rpy="0 0 1.62572"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_5">
+  <visual>
+    <origin xyz="-2.66657 -18.3733 0.2" rpy="-0.002221 -0.006608 -1.24025"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_6">
+  <visual>
+    <origin xyz="-1.29468 -20.4093 0.2" rpy="0 0 -1.51066"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="Scrubs_7">
+  <visual>
+    <origin xyz="-9.75875 -2.67552 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/Scrubs/meshes/Scrubs.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PatientWheelChair_1">
+  <visual>
+    <origin xyz="-5.46091 1.23577 0.2" rpy="0 0 -1.54828"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PatientWheelChair/meshes/PatientWheelChair_visual.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="VisitorKidSit_1">
+  <visual>
+    <origin xyz="-7.69163 6.9857 0.2" rpy="0 0 1.56778"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/VisitorKidSit/meshes/VisitorKidSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="FemaleVisitorSit_1">
+  <visual>
+    <origin xyz="-7.61435 7.50057 0.2" rpy="0 0 1.60052"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/FemaleVisitorSit/meshes/FemaleVisitorSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MaleVisitorSit_1">
+  <visual>
+    <origin xyz="6.41259 8.18749 0.2" rpy="0.000578 0 -1.56624"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MaleVisitorSit/meshes/MaleVisitorSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ElderLadyPatient_1">
+  <visual>
+    <origin xyz="-10.9972 0.231354 0.201654" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ElderLadyPatient/meshes/ElderFemale.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ElderLadyPatient_2">
+  <visual>
+    <origin xyz="-10.8133 -13.5925 0.201657" rpy="0 0 -0.025052"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ElderLadyPatient/meshes/ElderFemale.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ElderMalePatient_1">
+  <visual>
+    <origin xyz="-11.1165 -17.2377 0.201656" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ElderMalePatient/meshes/ElderMalePatient.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="PatientFSit_1">
+  <visual>
+    <origin xyz="-10.8902 9.18683 0.2" rpy="0 0 1.58161"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/PatientFSit/meshes/PatientFSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MaleVisitorOnPhone_1">
+  <visual>
+    <origin xyz="-0.760316 7.58474 0.2" rpy="0 0 -1.14974"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MaleVisitorOnPhone/meshes/MaleVisitorStatic.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="FemaleVisitor_1">
+  <visual>
+    <origin xyz="0.416835 7.44353 0.2" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/FemaleVisitor/meshes/FemaleVisitor.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MaleVisitorSit_2">
+  <visual>
+    <origin xyz="-5.98588 6.41261 0.2" rpy="0 0 1.58808"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MaleVisitorSit/meshes/MaleVisitorSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="MalePatientBed_1">
+  <visual>
+    <origin xyz="11.3771 -7.38891 0.2" rpy="-1e-06 1e-06 3.11598"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/MalePatientBed/meshes/MalePatientBed.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="FemaleVisitorSit_2">
+  <visual>
+    <origin xyz="7.85005 6.59766 0.2" rpy="0 0 -1.5621"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/FemaleVisitorSit/meshes/FemaleVisitorSit.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="ElderMalePatient_2">
+  <visual>
+    <origin xyz="-11.2471 -3.5813 0.2" rpy="0 0 -0.054192"/>
+    <geometry>
+      <mesh filename="package://amazon_hospital/models/ElderMalePatient/meshes/ElderMalePatient.obj"/>
+    </geometry>
+  </visual>
+</link>
+
+</robot>

@@ -7,7 +7,7 @@
     <!-- Chassis link -->
     <link name="taxi_holo">
       <inertial>
-        <mass>750.0</mass>
+        <mass>1.0</mass>
         <inertia>
           <ixx>1</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
           <iyy>1</iyy><iyz>0.0</iyz>
@@ -17,6 +17,7 @@
 
       <!-- collision & visual both use the same mesh -->
       <collision name="collision">
+        <pose>0 0 0 1.57 0 0 </pose>
         <geometry>
           <mesh>
             <uri>model://taxi_holo_ROS_harmonic/meshes/taxi_holo.obj</uri>
@@ -24,6 +25,7 @@
         </geometry>
       </collision>
       <visual name="visual">
+        <pose>0 0 0 1.57 0 0 </pose>
         <geometry>
           <mesh>
             <uri>model://taxi_holo_ROS_harmonic/meshes/taxi_holo.obj</uri>

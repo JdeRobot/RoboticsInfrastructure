@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<robot name="taxi_navigation_city_large">
+
+  <link name="taxi">
+    <visual>
+      <origin xyz="0 0 0.6" rpy="1.57 0 -1.57"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/taxi_holo_ROS_harmonic/meshes/taxi_holo.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="city_large">
+    <visual>
+      <origin xyz="0 0 0.5" rpy="1.57 0 0"/>
+      <geometry>
+        <mesh filename="package://taxi_navigator/models/cityLarge_harmonic/meshes/city_visual.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

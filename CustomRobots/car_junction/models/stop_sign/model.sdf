@@ -5,22 +5,24 @@
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://stop_sign/meshes/stop_sign.dae</uri>
+            <uri>meshes/stop_sign.dae</uri>
           </mesh>
         </geometry>
       </collision>
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://stop_sign/meshes/stop_sign.dae</uri>
+            <uri>meshes/stop_sign.dae</uri>
           </mesh>
         </geometry>
         <material>
-          <script>
-            <uri>model://stop_sign/materials/scripts</uri>
-            <uri>model://stop_sign/materials/textures</uri>
-            <name>StopSign/Diffuse</name>
-          </script>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://stop_sign/materials/textures/stop_sign.png</albedo_map>
+            </metal>
+          </pbr>
         </material>
       </visual>
     </link>
