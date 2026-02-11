@@ -138,6 +138,9 @@ install(
     restaurant/models
     pick_place/models
     pick_place/urdf
+    # ROVER 4WD
+    rover_4wd_description/meshes
+    rover_4wd_description/urdf
   DESTINATION share/${PROJECT_NAME})
 
 # install(
