@@ -6,7 +6,7 @@ import yaml
 
 
 def generate_launch_description():
-    shared_dir = get_package_share_directory("kobuki_launch")
+    shared_dir = get_package_share_directory("custom_robots")
 
     params_file = os.path.join(shared_dir, "config", "kobuki_node_params.yaml")
     with open(params_file, "r") as f:
