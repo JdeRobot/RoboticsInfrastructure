@@ -133,6 +133,7 @@ install(
     rover_4wd_description/meshes
     rover_4wd_description/urdf
     rover_4wd_description/worlds
+    rover_4wd_description/config
   DESTINATION share/${PROJECT_NAME})
 
 # install(
