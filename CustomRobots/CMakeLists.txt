@@ -81,8 +81,8 @@ install(
     Turtlebot2/turtlebot2_simulated/turtlebot2/launch
     Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
     Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
-    Turtlebot2/turtlebot2_physical/kobuki_launch/config
-    Turtlebot2/turtlebot2_physical/kobuki_launch/launch
+    Turtlebot2/Turtlebot2_physical/kobuki_launch/config
+    Turtlebot2/Turtlebot2_physical/kobuki_launch/launch
     # F1
     f1/models
     f1/params
