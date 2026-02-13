@@ -16,15 +16,15 @@ def generate_launch_description():
     package_dir = custom_share
 
     urdf_file = os.path.join(
-        custom_share, "rover_4wd_description", "urdf", "rover_4wd.urdf"
+        custom_share,  "urdf", "rover_4wd.urdf"
     )
 
     world_path = os.path.join(
-        custom_share, "rover_4wd_description", "worlds", "my_warehouse.sdf"
+        custom_share, "worlds", "my_warehouse.sdf"
     )
 
     bridge_yaml = os.path.join(
-        custom_share, "rover_4wd_description", "config", "ros_gz_bridge.yaml"
+        custom_share,  "config", "ros_gz_bridge.yaml"
     )
 
     gazebo_models_path = os.path.join(package_dir, "models")
