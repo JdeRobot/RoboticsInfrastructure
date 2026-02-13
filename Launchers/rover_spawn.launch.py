@@ -2,7 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, AppendEnvironmentVariable
+from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
@@ -28,10 +28,9 @@ def generate_launch_description():
     )
 
     gazebo_models_path = os.path.join(package_dir, "models")
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH",
-        os.path.join(package_dir, "models"),
-    )
+
+
+
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
@@ -87,11 +86,19 @@ def generate_launch_description():
         output="screen",
     )
 
-    return LaunchDescription([
-        set_env_vars_resources,
-        gz_sim_launch,
-        world_entity_cmd,
-        robot_state_publisher_node,
-        gz_spawn_entity,
-        gz_ros2_bridge,
-    ])
+    
+    ld = LaunchDescription()
+
+    ld.add_action(SetEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH",
+        gazebo_models_path
+    ))
+
+    ld.add_action(gz_sim_launch)
+    ld.add_action(world_entity_cmd)
+    ld.add_action(robot_state_publisher_node)
+    ld.add_action(gz_spawn_entity)
+    ld.add_action(gz_ros2_bridge)
+
+    return ld
+
