@@ -4,14 +4,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
             <geometry>
-                <mesh filename="file://$(find custom_robots)/rover_4wd_description/meshes/rplidar_s2.dae"/>
+                <mesh filename="file://$(find custom_robots)/meshes/rplidar_s2.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
             <geometry>
-                <mesh filename="file://$(find custom_robots)/rover_4wd_description/meshes/rplidar_s2.dae"/>
+                <mesh filename="file://$(find custom_robots)/meshes/rplidar_s2.dae"/>
             </geometry>
         </collision>
 
