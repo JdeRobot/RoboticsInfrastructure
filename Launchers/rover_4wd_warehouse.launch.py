@@ -2,7 +2,11 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable, AppendEnvironmentVariable
+from launch.actions import (
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    AppendEnvironmentVariable,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
@@ -15,22 +19,15 @@ def generate_launch_description():
 
     package_dir = custom_share
 
-    urdf_file = os.path.join(
-        custom_share,  "urdf", "rover_4wd.urdf"
-    )
+    urdf_file = os.path.join(custom_share, "urdf", "rover_4wd.urdf")
 
-    world_path = os.path.join(
-        custom_share, "worlds", "my_warehouse.sdf"
-    )
-
-    bridge_yaml = os.path.join(
-        custom_share,  "config", "ros_gz_bridge.yaml"
-    )
+    bridge_yaml = os.path.join(custom_share, "config", "ros_gz_bridge.yaml")
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-
-
+    world_file_name = "rover4wd_warehouse.world"
+    worlds_dir = "/opt/jderobot/Worlds"
+    world_path = os.path.join(worlds_dir, world_file_name)
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
@@ -44,10 +41,9 @@ def generate_launch_description():
         executable="robot_state_publisher",
         name="robot_state_publisher",
         output="screen",
-        parameters=[{
-            "use_sim_time": use_sim_time,
-            "robot_description": robot_description
-        }],
+        parameters=[
+            {"use_sim_time": use_sim_time, "robot_description": robot_description}
+        ],
     )
 
     gz_sim_launch = IncludeLaunchDescription(
@@ -71,10 +67,14 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-topic", "/robot_description",
-            "-name", "rover_4wd",
-            "-allow_renaming", "true",
-            "-z", "0.15",
+            "-topic",
+            "/robot_description",
+            "-name",
+            "rover_4wd",
+            "-allow_renaming",
+            "true",
+            "-z",
+            "0.15",
         ],
         output="screen",
     )
@@ -86,13 +86,9 @@ def generate_launch_description():
         output="screen",
     )
 
-    
     ld = LaunchDescription()
 
-    ld.add_action(SetEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH",
-        gazebo_models_path
-    ))
+    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
 
     set_env_vars_resources = AppendEnvironmentVariable(
         "GZ_SIM_RESOURCE_PATH",
@@ -107,4 +103,3 @@ def generate_launch_description():
     ld.add_action(gz_ros2_bridge)
 
     return ld
-

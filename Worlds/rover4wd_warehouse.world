@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <world name="default">
+    <!-- Plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <!--<physics type="ode" name="fast">
+      <max_step_size>0.004</max_step_size>          
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>-->
+    <physics type="ode" name="fast">
+      <max_step_size>0.002</max_step_size>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+    <!-- Luz -->
+    <light name="sun2" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Suelo -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+
+
+
+
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Base del almacén -->
+    <include>
+      <name>warehouse</name>
+      <pose>0 0 -0.09 0 0 0</pose>
+      <uri>model://open_warehouse</uri>
+    </include>
+
+    <!-- Estanterías pequeñas -->
+    <include>
+      <name>shelf_0</name>
+      <pose>-4.41528 2.30697 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_1</name>
+      <pose>-4.41528 5.30708 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_2</name>
+      <pose>-4.41528 8.34352 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_3</name>
+      <pose>5.60144 8.34352 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_4</name>
+      <pose>5.60144 5.30708 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_6</name>
+      <pose>5.60144 2.30697 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_7</name>
+      <pose>13.3818 -21.2416 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_8</name>
+      <pose>13.3818 -19.0028 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_9</name>
+      <pose>13.3818 -16.4478 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+    <include>
+      <name>shelf_10</name>
+      <pose>13.3818 -14.1028 0 0 0 0</pose>
+      <uri>model://shelf</uri>
+    </include>
+
+    <!-- Estanterías grandes -->
+    <include>
+      <name>shelf_big_0</name>
+      <pose>-13.0718 -8.2974 0 0 0 1.5708</pose>
+      <uri>model://shelf_big_2</uri>
+    </include>
+    <include>
+      <name>shelf_big_1</name>
+      <pose>13.0 15.8265 0 0 0 1.5708</pose>
+      <uri>model://shelf_big_2</uri>
+    </include>
+    <include>
+      <name>shelf_big_3</name>
+      <pose>3.7349 -8.6599 0 0 0 1.5708</pose>
+      <uri>model://shelf_big_2</uri>
+    </include>
+    <include>
+      <name>shelf_big_4</name>
+      <pose>-3.4279 -8.2115 0 0 0 1.5708</pose>
+      <uri>model://shelf_big_2</uri>
+    </include>
+    <include>
+      <name>shelf_big_5</name>
+      <pose>0.0306 -23.2429 0 0 0 0</pose>
+      <uri>model://shelf_big_2</uri>
+    </include>
+
+    <!-- Pallets -->
+    <include>
+      <name>pallet_0</name>
+      <pose>-4.9821 20.319 0 0 0 1.5708</pose>
+      <uri>model://Euro_pallet_w_stacked_boxes</uri>
+    </include>
+    <include>
+      <name>pallet_1</name>
+      <pose>-4.9821 17.319 0 0 0 1.0</pose>
+      <uri>model://Euro_pallet_w_stacked_boxes</uri>
+    </include>
+    <include>
+      <name>pallet_2</name>
+      <pose>4.9821 19.319 0 0 0 0.4</pose>
+      <uri>model://Euro_pallet_w_stacked_boxes</uri>
+    </include>
+    <include>
+      <name>pallet_3</name>
+      <pose>2.9821 21.319 0 0 0 2.5708</pose>
+      <uri>model://Euro_pallet_w_stacked_boxes</uri>
+    </include>
+  </world>
+</sdf>
