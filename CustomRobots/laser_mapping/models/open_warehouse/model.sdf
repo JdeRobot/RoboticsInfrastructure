@@ -11,7 +11,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>meshes/warehouse_colision.stl</uri>
+                        <uri>model://mapping_warehouse/meshes/warehouse_colision.stl</uri>
                     </mesh>
                 </geometry>
             </collision>
@@ -20,7 +20,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>meshes/warehouse.dae</uri>
+                        <uri>model://mapping_warehouse/meshes/warehouse.dae</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -30,7 +30,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>meshes/warehouse.dae</uri>
+                        <uri>model://mapping_warehouse/meshes/warehouse.dae</uri>
                         <submesh>
                             <name>drop1</name>
                             <center>true</center>
