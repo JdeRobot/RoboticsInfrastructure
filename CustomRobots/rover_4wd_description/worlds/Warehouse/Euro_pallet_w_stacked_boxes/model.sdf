@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+    <!--
+    Model: euro_pallet_w_stacked_boxes.
+    A single rigid body (one link) that represents
+      • a Euro-pallet (EN 13698-1 dimensions)
+      • a stack of cardboard boxes on top
+    Collision elements are boxed primitives for efficiency.
+    Friction / contact parameters are added only where they can interact with external bodies.
+    -->
+    <model name="euro_pallet_w_stacked_boxes">
+        <static>false</static>
+
+        <link name="link">
+            <!--
+            Avoid self-collision between the five collision geometries
+            inside this link. Default is false, but set explicitly
+            to document the intention.
+            -->
+            <self_collide>false</self_collide>
+
+            <visual name="visual">
+                <geometry>
+                    <mesh>
+                        <uri>meshes/euro_pallet_w_stacked_boxes.dae</uri>
+                        <scale>1 1 1</scale>
+                    </mesh>
+                </geometry>
+                <pose relative_to="link">0 0 0 0 0 0</pose>
+            </visual>
+
+            <collision name="pallet_top_collision">
+                <geometry>
+                    <box>
+                        <size>1.20 0.8 0.044</size>
+                    </box>
+                </geometry>
+                <pose relative_to="link">0 0 0.122 0 0 0</pose>
+            </collision>
+
+            <collision name="pallet_center_collision">
+                <geometry>
+                    <box>
+                        <size>1.20 0.145 0.10</size>
+                    </box>
+                </geometry>
+                <pose relative_to="link">0 0 0.05 0 0 0</pose>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1.0</mu>
+                            <mu2>1.0</mu2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <kp>10000000</kp>
+                            <kd>1</kd>
+                            <min_depth>0.001</min_depth>
+                            <max_vel>0.1</max_vel>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+
+            <!--
+            Purpose : left stringer (wood on concrete).
+            Same parameters as the central stringer.
+            -->
+            <collision name="pallet_left_collision">
+                <geometry>
+                    <box>
+                        <size>1.20 0.10 0.10</size>
+                    </box>
+                </geometry>
+                <pose relative_to="link">0 0.35 0.05 0 0 0</pose>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1.0</mu>
+                            <mu2>1.0</mu2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <kp>10000000</kp>
+                            <kd>1</kd>
+                            <min_depth>0.001</min_depth>
+                            <max_vel>0.1</max_vel>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+
+            <!--
+            Purpose : right stringer (wood on concrete).
+            Identical friction/contact parameters.
+            -->
+            <collision name="pallet_right_collision">
+                <geometry>
+                    <box>
+                        <size>1.20 0.10 0.10</size>
+                    </box>
+                </geometry>
+                <pose relative_to="link">0 -0.35 0.05 0 0 0</pose>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1.0</mu>
+                            <mu2>1.0</mu2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <kp>10000000</kp>
+                            <kd>1</kd>
+                            <min_depth>0.001</min_depth>
+                            <max_vel>0.1</max_vel>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+
+            <collision name="boxes_collision">
+                <geometry>
+                    <box>
+                        <size>1.20 0.8 1</size>
+                    </box>
+                </geometry>
+                <!--
+                z = euro_pallet.size_z + box.size_z/2 = 0.144 + 1/2 = 0.144 + 0.5 = 0.644 m
+                -->
+                <pose relative_to="link">0 0 0.644 0 0 0</pose>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1.0</mu>
+                            <mu2>1.0</mu2>
+                        </ode>
+                    </friction>
+                    <contact>
+                        <ode>
+                            <kp>10000000</kp>
+                            <kd>1</kd>
+                            <min_depth>0.001</min_depth>
+                            <max_vel>0.1</max_vel>
+                        </ode>
+                    </contact>
+                </surface>
+            </collision>
+
+            <!-- Mass and inertia for the combined pallet + boxes -->
+            <inertial>
+                <mass>200.0</mass>
+                <inertia>
+                    <ixx>16.2417</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>22.9083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>17.3333</izz>
+                </inertia>
+                <!--
+                z = whole_body.size_z/2 = (0.144 + 1)/2 = 0.572 m.
+                -->
+                <pose>0 0 0.572 0 0 0</pose>
+            </inertial>
+        </link>
+
+        <!-- Optional pose-publisher plugin (disabled) -->
+        <!--
+        <plugin filename=" ignition-gazebo-pose-publisher-system"
+                name=" ignition::gazebo::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <publish_collision_pose>false</publish_collision_pose>
+        <publish_visual_pose>false</publish_visual_pose>
+        <publish_nested_model_pose>true</publish_nested_model_pose>
+        <update_frequency>20</update_frequency>
+        </plugin>
+        -->
+    </model>
+</sdf>

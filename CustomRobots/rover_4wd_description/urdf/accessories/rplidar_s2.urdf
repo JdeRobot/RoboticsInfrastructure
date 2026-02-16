@@ -1,0 +1,62 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rplidar_s2">
+    
+    <link name="lidar_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
+            <geometry>
+                <mesh filename="file://$(find custom_robots)/meshes/rplidar_s2.dae"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
+            <geometry>
+                <mesh filename="file://$(find custom_robots)/meshes/rplidar_s2.dae"/>
+            </geometry>
+        </collision>
+
+    </link>
+
+    <joint name="lidar_to_payload" type="fixed">
+        <parent link="payload_link"/>
+        <child link="lidar_link"/>
+        <origin xyz="0.174 0 0.10" rpy="0 0 0"/>
+    </joint>
+
+
+    <gazebo reference="lidar_link">
+        <sensor name="gpu_lidar" type="gpu_lidar">
+            <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.1459</min_angle>
+                        <max_angle>3.1459</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>12</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-0.261799</min_angle>
+                        <max_angle>0.261799</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.3</min>
+                    <max>50</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
+            </lidar>
+            <gz_frame_id>base_link</gz_frame_id>
+            <topic>scan</topic>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+        </sensor>
+    </gazebo>
+
+</robot>
