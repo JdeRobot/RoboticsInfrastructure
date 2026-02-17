@@ -182,6 +182,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 55 	Rover 4wd Warehouse	55	0
 56	Warehouse 1 Harmonic	56	0
 57	Warehouse 2 Harmonic	57	0
+58	Warehouse 1 Ackermann Harmonic	58	0
+59	Warehouse 2 Ackermann Harmonic	59	0
 \.
 
 
@@ -249,7 +251,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 56	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1_amazon_robot_harmonic.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 57	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2_amazon_robot_harmonic.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-
+58	Warehouse 1 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse1_ackermann_logistic_robot_harmonic.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+59	Warehouse 2 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse2_ackermann_logistic_robot_harmonic.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
