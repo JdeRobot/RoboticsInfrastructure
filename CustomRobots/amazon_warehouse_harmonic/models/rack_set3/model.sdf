@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='rack_set2'>
+    <include>
+        <name>rack0</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 0 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack3</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 0 2.0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack4</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 0 4.0 0 0 0 1.57</pose>
+    </include>
+  </model>
+</sdf>

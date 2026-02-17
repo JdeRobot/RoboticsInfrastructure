@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+    <world name="warehouse2">
+        <physics name="8ms" type="ignored">
+            <max_step_size>0.008</max_step_size>
+            <real_time_factor>1.0</real_time_factor>
+        </physics>
+        <plugin
+            filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics">
+        </plugin>
+        <plugin
+            filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands">
+        </plugin>
+        <plugin
+            filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster">
+        </plugin>
+
+        <plugin
+            filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu">
+        </plugin>
+
+        <light type="directional" name="sun">
+            <cast_shadows>false</cast_shadows>
+            <pose>0 0 18 0 0 0</pose>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <attenuation>
+                <range>80</range>
+                <constant>0.01</constant>
+                <linear>0.01</linear>
+                <quadratic>0.001</quadratic>
+            </attenuation>
+            <cast_shadows>1</cast_shadows>
+            <direction>0.1 0.1 -1</direction>
+        </light>
+
+        <model name="ground_plane">
+            <static>true</static>
+            <link name="link">
+                <collision name="collision">
+                    <geometry>
+                        <plane>
+                        <normal>0 0 1</normal>
+                        </plane>
+                    </geometry>
+                </collision>
+                <visual name="visual">
+                <geometry>
+                    <plane>
+                    <normal>0 0 1</normal>
+                    <size>100 100</size>
+                    </plane>
+                </geometry>
+                <material>
+                    <ambient>0.8 0.8 0.8 1</ambient>
+                    <diffuse>0.8 0.8 0.8 1</diffuse>
+                    <specular>0.8 0.8 0.8 1</specular>
+                </material>
+                </visual>
+            </link>
+        </model>
+
+        <include>
+            <name>wall</name>
+            <uri>model://warehouse_walls</uri>
+        </include>
+
+        <include>
+            <name>rack</name>
+            <uri>model://rack_3shelves</uri>
+            <pose>1 -15 0 0 0 1.57</pose>
+        </include>
+
+        <include>
+            <name>racks_set0</name>
+            <uri>model://rack_set6</uri>
+            <pose>-8.5 -6 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set1</name>
+            <uri>model://rack_set6</uri>
+            <pose>-1.5 -6.0 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set2</name>
+            <uri>model://rack_set6</uri>
+            <pose>5.5 -6.0 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set3</name>
+            <uri>model://rack_set6</uri>
+            <pose>-8.5 4.0 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set4</name>
+            <uri>model://rack_set6</uri>
+            <pose>-1.5 4.0 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set5</name>
+            <uri>model://rack_set6</uri>
+            <pose>5.5 4 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set6</name>
+            <uri>model://rack_set3</uri>
+            <pose>-2 11.5 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <name>racks_set7</name>
+            <uri>model://rack_set3</uri>
+            <pose>-2 -15.5 0 0 0 0</pose>
+        </include>
+    </world>
+</sdf>
