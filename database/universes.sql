@@ -180,6 +180,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 53 	Nurburgring Circuit Classic	53	0
 54 	Vacuums House Roof Classic	54	0
 55 	Rover 4wd Warehouse	55	0
+56	Warehouse 1 Harmonic	56	0
 \.
 
 
@@ -245,6 +246,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 53	Nurburgring Circuit Classic	/opt/jderobot/Launchers/nurburgring_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 54	Vacuums House Roof Classic	/opt/jderobot/Launchers/montecarlo_visual_loc_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+56	Warehouse 1 Harmonic	/opt/jderobot/Launchers/amazon_robot_harmonic.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --

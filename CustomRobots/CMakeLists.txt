@@ -94,6 +94,8 @@ install(
     car_junction/models
     car_junction/scripts
     # AMAZON WAREHOUSE ROBOT
+    amazon_warehouse_harmonic/models
+    amazon_warehouse_harmonic/params
     amazon_robot/models
     amazon_robot/urdf
     amazon_robot/meshes
