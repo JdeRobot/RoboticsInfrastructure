@@ -6,8 +6,14 @@ get_curr_version() {
     return 0
 }
 
+get_latest_version() {
+    echo "Latest version: $(pip index versions "$1" 2>/dev/null | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)"
+    return 0
+}
+
 
 # Get the GPU device path based on priority and set DRI_NAME
 echo -e "\n--- Robotics Application Manager info ---"
 get_curr_version
-echo -e "-----------------------------\n"
+get_latest_version
+echo -e "-------------------------------------------\n"
