@@ -7,7 +7,7 @@ get_curr_version() {
 }
 
 get_latest_version() {
-    echo "Latest version: $(pip index versions "$1" 2>/dev/null | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)"
+    echo "Latest version: $(pip index versions show --index-url https://test.pypi.org/simple/ robotics_application_manager 2>/dev/null | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)"
     return 0
 }
 
