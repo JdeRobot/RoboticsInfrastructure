@@ -66,6 +66,7 @@ if [ -d "$DIRECTORY" ]; then
   runram="python3 RoboticsApplicationManager/robotics_application_manager/manager/manager.py 0.0.0.0 7163"
 else
   # TODO: check for updates
+  echo "Robotics Application Manager version: $(pip show robotics_application_manager | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)"
   runram="python3 /ram_entrypoint.py 0.0.0.0 7163"
 fi
 
