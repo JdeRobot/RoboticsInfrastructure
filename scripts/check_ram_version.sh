@@ -13,7 +13,7 @@ get_running_version() {
 }
 
 get_latest_version() {
-    latest=$(pip index versions --retries 1 --index-url https://test.pypi.org/simple/ robotics_application_manager 2>/dev/null | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)
+    latest=$(pip index versions --retries 1 robotics_application_manager 2>/dev/null | egrep -o '([0-9]+\.){2}[0-9]+' | head -n 1)
     echo "Latest version: $latest"
     return 0
 }
@@ -25,7 +25,7 @@ get_curr_version
 get_latest_version
 if [[ "$curr" != "$latest" ]];then
     echo "Upgrading version:"
-    python3 -m pip install --upgrade --retries 1 --index-url https://test.pypi.org/simple/ robotics_application_manager
+    python3 -m pip install --upgrade --retries 1 robotics_application_manager
 else
     echo "Already on latest version"
 fi
