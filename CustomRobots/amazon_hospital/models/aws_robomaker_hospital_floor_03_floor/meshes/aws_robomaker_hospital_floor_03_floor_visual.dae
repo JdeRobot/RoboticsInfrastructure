@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 3.0.1</authoring_tool>
+    </contributor>
+    <created>2025-12-16T01:35:44</created>
+    <modified>2025-12-16T01:35:44</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="aws_robomaker_hospital_floor_01_floor-effect">
+      <profile_COMMON>
+        <newparam sid="aws_robomaker_hospital_floor_01_floor_png-surface">
+          <surface type="2D">
+            <init_from>aws_robomaker_hospital_floor_01_floor_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="aws_robomaker_hospital_floor_01_floor_png-sampler">
+          <sampler2D>
+            <source>aws_robomaker_hospital_floor_01_floor_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0.3 0.3 0.3 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="aws_robomaker_hospital_floor_01_floor_png-sampler" texcoord="ID13"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="aws_robomaker_hospital_floor_01_floor_png" name="aws_robomaker_hospital_floor_01_floor_png">
+      <init_from>aws_robomaker_hospital_floor_01_floor.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="aws_robomaker_hospital_floor_01_floor-material" name="aws_robomaker_hospital_floor_01_floor">
+      <instance_effect url="#aws_robomaker_hospital_floor_01_floor-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="ID8-mesh" name="ID8">
+      <mesh>
+        <source id="ID8-mesh-positions">
+          <float_array id="ID8-mesh-positions-array" count="102">2099.77 -2.27524e-5 1250 2099.77 -2.27524e-5 -1250 1700.17 -2.27524e-5 -1250 1700.17 -2.27524e-5 1250 1900.5 -2.27524e-5 -1250 1900.5 -2.27524e-5 1250 1700.17 -2.27524e-5 -600.0471 1700.17 -2.27524e-5 599.944 1900.5 -2.27524e-5 -600.0471 1900.5 -2.27524e-5 599.944 2099.77 -2.27524e-5 -261.12 2099.77 -2.27524e-5 261.797 1900.5 -2.27524e-5 -261.12 1900.5 -2.27524e-5 261.797 1900.5 -2.27524e-5 -300 1900.5 -2.27524e-5 300 1700.17 -2.27524e-5 -300 1700.17 -2.27524e-5 300 1951.53 17.5474 -293.864 1740.39 17.5474 294.331 1951.53 17.5474 294.219 1740.39 17.5474 -293.977 1740.39 9 294.331 1740.39 9 -293.977 1720.38 9 294.331 1720.38 9 -293.977 1720.38 0 294.331 1720.38 0 -293.977 1700.17 0 294.331 1700.17 0 -293.977 -899.9151 -2.27524e-5 -1250 -899.9151 -2.27524e-5 1250 -1062.314 -2.27524e-5 -1250 -1062.314 -2.27524e-5 1250</float_array>
+          <technique_common>
+            <accessor source="#ID8-mesh-positions-array" count="34" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ID8-mesh-normals">
+          <float_array id="ID8-mesh-normals-array" count="9">0 1 0 -1 0 0 0 1 0</float_array>
+          <technique_common>
+            <accessor source="#ID8-mesh-normals-array" count="3" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ID8-mesh-map-0">
+          <float_array id="ID8-mesh-map-0-array" count="132">0.110425 0.199563 0.148412 0.282085 0.110425 0.282085 0.04475617 0.01011085 0.006970822 0.282085 0.006970822 0.01011085 0.05869787 0.01029706 0.09648317 0.282085 0.05869787 0.282085 0.1623539 0.199591 0.200341 0.282085 0.1623539 0.282085 0.946053 0.753072 0.896105 0.615311 0.945611 0.615179 0.87554 0.753324 0.877102 0.615372 0.877544 0.753318 0.883385 0.753299 0.887635 0.615338 0.888077 0.753284 0.879409 0.753312 0.881078 0.615359 0.88152 0.753305 0.889942 0.753278 0.894239 0.615317 0.894681 0.753263 0.993029 0.989889 0.5 0.302307 0.993029 0.302307 0.5 0.989889 0.4692059 0.302307 0.5 0.302307 0.110425 0.199563 0.148412 0.199563 0.148412 0.282085 0.04475617 0.01011085 0.04475617 0.282085 0.006970822 0.282085 0.05869787 0.01029706 0.09648317 0.01029706 0.09648317 0.282085 0.1623539 0.199591 0.200341 0.199591 0.200341 0.282085 0.946053 0.753072 0.896547 0.753257 0.896105 0.615311 0.87554 0.753324 0.875098 0.615378 0.877102 0.615372 0.883385 0.753299 0.882943 0.615353 0.887635 0.615338 0.879409 0.753312 0.878968 0.615366 0.881078 0.615359 0.889942 0.753278 0.8895 0.615332 0.894239 0.615317 0.993029 0.989889 0.5 0.989889 0.5 0.302307 0.5 0.989889 0.4692059 0.989889 0.4692059 0.302307</float_array>
+          <technique_common>
+            <accessor source="#ID8-mesh-map-0-array" count="66" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ID8-mesh-vertices">
+          <input semantic="POSITION" source="#ID8-mesh-positions"/>
+        </vertices>
+        <triangles material="aws_robomaker_hospital_floor_01_floor-material" count="22">
+          <input semantic="VERTEX" source="#ID8-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#ID8-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#ID8-mesh-map-0" offset="2" set="0"/>
+          <p>16 0 0 8 0 1 6 0 2 10 0 3 4 0 4 12 0 5 5 0 6 11 0 7 13 0 8 7 0 9 15 0 10 17 0 11 18 0 12 19 0 13 20 0 14 23 1 15 19 1 16 21 1 17 25 0 18 22 0 19 23 0 20 27 1 21 24 1 22 25 1 23 29 2 24 26 2 25 27 2 26 2 0 27 31 0 28 3 0 29 30 0 30 33 0 31 31 0 32 16 0 33 14 0 34 8 0 35 10 0 36 1 0 37 4 0 38 5 0 39 0 0 40 11 0 41 7 0 42 9 0 43 15 0 44 18 0 45 21 0 46 19 0 47 23 1 48 22 1 49 19 1 50 25 0 51 24 0 52 22 0 53 27 1 54 26 1 55 24 1 56 29 2 57 28 2 58 26 2 59 2 0 60 30 0 61 31 0 62 30 0 63 32 0 64 33 0 65</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="aws_robomaker_hospital_floor_01_floor_visual" name="aws_robomaker_hospital_floor_01_floor_visual" type="NODE">
+        <matrix sid="transform">1.94707e-9 1.50996e-9 0.01 0 0 -0.01 1.50996e-9 0 0.009999999 -2.94e-16 -1.94707e-9 0 0 0 0 1</matrix>
+        <instance_geometry url="#ID8-mesh" name="aws_robomaker_hospital_floor_01_floor_visual">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="aws_robomaker_hospital_floor_01_floor-material" target="#aws_robomaker_hospital_floor_01_floor-material">
+                <bind_vertex_input semantic="ID13" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
