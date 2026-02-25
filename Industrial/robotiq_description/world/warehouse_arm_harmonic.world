@@ -1,22 +1,14 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
-  <world name="warehouse_arm">
+  <world name="default">
     <!-- Plugins -->
-    <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
@@ -401,7 +393,7 @@
         <inertial>
           <mass>0.01</mass>
           <inertia>
-            <ixx>0.0000064</ixx> <!-- 2/5 * m * r^2 = 0.4 * 0.01 * 0.04^2 -->
+            <ixx>0.0000064</ixx>            <!-- 2/5 * m * r^2 = 0.4 * 0.01 * 0.04^2 -->
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyy>0.0000064</iyy>
@@ -438,7 +430,7 @@
         <inertial>
           <mass>0.01</mass>
           <inertia>
-            <ixx>0.000021</ixx> <!-- 1/12 * m * (3*r^2 + h^2) approx -->
+            <ixx>0.000021</ixx>            <!-- 1/12 * m * (3*r^2 + h^2) approx -->
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyy>0.000021</iyy>
@@ -477,7 +469,7 @@
         <inertial>
           <mass>0.01</mass>
           <inertia>
-             <ixx>0.0000104</ixx> <!-- 1/12 * m * (h^2 + d^2) approx -->
+            <ixx>0.0000104</ixx>            <!-- 1/12 * m * (h^2 + d^2) approx -->
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyy>0.0000084</iyy>
