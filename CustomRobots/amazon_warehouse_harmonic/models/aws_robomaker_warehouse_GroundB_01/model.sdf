@@ -2,6 +2,13 @@
 <sdf version="1.6">
   <model name="aws_robomaker_warehouse_GroundB_01">
     <link name="link">
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>1</ixx><iyy>1</iyy><izz>1</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
       <collision name="collision">
         <geometry>
           <mesh>
