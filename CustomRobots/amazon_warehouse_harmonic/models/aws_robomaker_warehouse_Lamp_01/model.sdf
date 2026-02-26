@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <model name="aws_robomaker_warehouse_Lamp_01">
-    <link name="link">
+    <link name="link_lamp01">
       <inertial>
         <mass>30</mass>
         <inertia>
