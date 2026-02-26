@@ -76,12 +76,12 @@ def generate_launch_description():
         launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
     )
 
-    world_entity_cmd = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=["-name", "world", "-file", world_path],
-        output="screen",
-    )
+    # world_entity_cmd = Node(
+    #     package="ros_gz_sim",
+    #     executable="create",
+    #     arguments=["-name", "world", "-file", world_path],
+    #     output="screen",
+    # )
 
     ld = LaunchDescription()
 
@@ -98,7 +98,7 @@ def generate_launch_description():
     ld.add_action(declare_roll_cmd)
     ld.add_action(declare_pitch_cmd)
     ld.add_action(declare_yaw_cmd)
-    ld.add_action(world_entity_cmd)
+    #ld.add_action(world_entity_cmd)
     # ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_robot_cmd)
 
