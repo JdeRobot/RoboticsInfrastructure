@@ -5,7 +5,7 @@
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://models/aws_robomaker_warehouse_RoofB_01/meshes/aws_robomaker_warehouse_RoofB_01_collision.DAE</uri>
+            <uri>model://aws_robomaker_warehouse_RoofB_01/meshes/aws_robomaker_warehouse_RoofB_01_collision.DAE</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -33,7 +33,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://models/aws_robomaker_warehouse_RoofB_01/meshes/aws_robomaker_warehouse_RoofB_01_visual.DAE</uri>
+            <uri>model://aws_robomaker_warehouse_RoofB_01/meshes/aws_robomaker_warehouse_RoofB_01_visual.DAE</uri>
           </mesh>
         </geometry>
         <meta>
