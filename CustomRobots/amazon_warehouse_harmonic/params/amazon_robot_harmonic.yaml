@@ -13,7 +13,7 @@
   direction: ROS_TO_GZ
 
 # gz topic subscribed to by platform plugin
-- ros_topic_name: "/send_effort"
+- ros_topic_name: "/platform/cmd_vel"
   gz_topic_name: "/platform/cmd_vel"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
