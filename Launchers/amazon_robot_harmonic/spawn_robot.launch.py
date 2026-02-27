@@ -1,17 +1,3 @@
-# Copyright 2019 Open Source Robotics Foundation, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -22,32 +8,62 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    # Get the urdf file
+
     model_folder = "amazon_warehouse_harmonic"
-    urdf_path = os.path.join(
+
+    sdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
         model_folder,
         "model.sdf",
     )
-    
-    bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "amazon_robot_harmonic.yaml"
+
+    x_pose = LaunchConfiguration("x_pose", default="1.0")
+    y_pose = LaunchConfiguration("y_pose", default="-1.5")
+    z_pose = LaunchConfiguration("z_pose", default="0.1")
+    roll = LaunchConfiguration("R", default="0.0")
+    pitch = LaunchConfiguration("P", default="0.0")
+    yaw = LaunchConfiguration("Y", default="0.0")
+
+    spawn_robot_cmd = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=[
+            "-name", "amazon_robot",
+            "-file", sdf_path,
+            "-x", x_pose,
+            "-y", y_pose,
+            "-z", z_pose,
+            "-R", roll,
+            "-P", pitch,
+            "-Y", yaw,
+        ],
+        output="screen",
     )
 
-    start_gazebo_ros_bridge_cmd = Node(
+    bridge_params = os.path.join(
+        get_package_share_directory("custom_robots"),
+        "params",
+        "amazon_robot_harmonic.yaml",
+    )
+
+    bridge_cmd = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=[
-            "--ros-args",
-            "-p",
-            f"config_file:={bridge_params}",
-        ],
+        arguments=["--ros-args", "-p", f"config_file:={bridge_params}"],
         output="screen",
     )
 
     ld = LaunchDescription()
 
-    ld.add_action(start_gazebo_ros_bridge_cmd)
+    ld.add_action(DeclareLaunchArgument("x_pose", default_value="1.0"))
+    ld.add_action(DeclareLaunchArgument("y_pose", default_value="-1.5"))
+    ld.add_action(DeclareLaunchArgument("z_pose", default_value="0.1"))
+    ld.add_action(DeclareLaunchArgument("R", default_value="0.0"))
+    ld.add_action(DeclareLaunchArgument("P", default_value="0.0"))
+    ld.add_action(DeclareLaunchArgument("Y", default_value="0.0"))
+
+    ld.add_action(spawn_robot_cmd)
+    ld.add_action(bridge_cmd)
 
     return ld
