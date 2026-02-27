@@ -9,7 +9,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    model_folder = "amazon_warehouse_harmonic"
+    model_folder = "amazon_robot_harmonic"
 
     sdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
@@ -18,9 +18,9 @@ def generate_launch_description():
         "model.sdf",
     )
 
-    x_pose = LaunchConfiguration("x_pose", default="1.0")
-    y_pose = LaunchConfiguration("y_pose", default="-1.5")
-    z_pose = LaunchConfiguration("z_pose", default="0.1")
+    x_pose = LaunchConfiguration("x_pose", default="0.0")
+    y_pose = LaunchConfiguration("y_pose", default="0.0")
+    z_pose = LaunchConfiguration("z_pose", default="0.5")
     roll = LaunchConfiguration("R", default="0.0")
     pitch = LaunchConfiguration("P", default="0.0")
     yaw = LaunchConfiguration("Y", default="0.0")
