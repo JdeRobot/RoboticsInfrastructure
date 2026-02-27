@@ -47,6 +47,16 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
+    # RAM launches its own GUI client (gz sim -g), so we must NOT launch GUI here
+    # This fixes the first-load issue where two GUIs conflict
+
+    gazebo = ExecuteProcess(
+        cmd=["gz", "sim", "-s", "-r", "-v", "4", world_file],
+        output="screen",
+        additional_env=gz_env,
+        shell=False,
+    )
+
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
