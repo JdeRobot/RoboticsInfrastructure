@@ -1,6 +1,11 @@
+"""
+Pick Place Harmonic - World Launcher
+Configures Gazebo resource paths
+"""
+
 import os
 from launch import LaunchDescription
-from launch.actions import AppendEnvironmentVariable
+from launch.actions import SetEnvironmentVariable, AppendEnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -12,17 +17,20 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    gz_resource_path = (
-        ":" + gazebo_models_path +
-        ":" + ur5_gripper_pkg +
-        ":" + robotiq_description_pkg
+    ld = LaunchDescription()
+
+    ld.add_action(
+        SetEnvironmentVariable(
+            "GZ_SIM_RESOURCE_PATH",
+            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+        )
     )
 
-    append_env = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH",
-        gz_resource_path,
+    ld.add_action(
+        AppendEnvironmentVariable(
+            "GZ_SIM_RESOURCE_PATH",
+            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+        )
     )
 
-    return LaunchDescription([
-        append_env
-    ])
+    return ld

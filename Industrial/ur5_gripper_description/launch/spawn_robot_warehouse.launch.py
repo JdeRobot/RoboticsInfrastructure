@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
+    ExecuteProcess,
     RegisterEventHandler,
     TimerAction,
 )
@@ -16,6 +17,27 @@ import xacro
 def generate_launch_description():
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
+
+    # Custom gz_ros2_control for Gazebo Harmonic
+    gz_ros2_control_install = "/home/ws/install"
+    gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
+
+    warehouse_models_path = os.path.join(robotiq_pkg_share_dir, "world", "models")
+    ur5_share_parent = os.path.dirname(pkg_share_dir)
+    robotiq_share_parent = os.path.dirname(robotiq_pkg_share_dir)
+    resource_path = (
+        ur5_share_parent + ":" + robotiq_share_parent + ":" + warehouse_models_path
+    )
+
+    gz_env = {
+        "GZ_SIM_RESOURCE_PATH": resource_path,
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_lib_path + ":/opt/ros/humble/lib",
+        "LD_LIBRARY_PATH": gz_lib_path
+        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu",
+        "DISPLAY": ":2",
+    }
+
+    print("DEBUG: GZ_SIM_SYSTEM_PLUGIN_PATH = " + gz_env["GZ_SIM_SYSTEM_PLUGIN_PATH"])
 
     declared_arguments = [
         DeclareLaunchArgument("ur_type", default_value="ur5"),
@@ -45,6 +67,10 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
+    )
+
+    world_file = os.path.join(
+        robotiq_pkg_share_dir, "world", "warehouse_arm_harmonic.world"
     )
 
     # RAM launches its own GUI client (gz sim -g), so we must NOT launch GUI here
@@ -80,8 +106,6 @@ def generate_launch_description():
             "-Y",
             "0.0",
         ],
-        respawn=True,
-        respawn_delay=2.0,
         output="screen",
     )
 
@@ -218,13 +242,13 @@ def generate_launch_description():
             on_exit=[load_gripper_controller],
         )
     )
-
     delay_mg = TimerAction(period=10.0, actions=[move_group_node])
     delay_rviz = TimerAction(period=12.0, actions=[rviz_node])
 
     return LaunchDescription(
         declared_arguments
         + [
+            gazebo,
             robot_state_publisher,
             static_tf,
             gz_ros2_bridge_clock,
