@@ -73,7 +73,7 @@
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_6</name>
-			<pose>2.5 14.5 0.1 0 0 4.71</pose>
+			<pose>2.5 14.5 0.1 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
