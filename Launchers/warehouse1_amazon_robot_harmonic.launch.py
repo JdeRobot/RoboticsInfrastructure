@@ -15,6 +15,7 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(package_dir, "models")
 
     robot_launch_dir = "/opt/jderobot/Launchers/amazon_robot_harmonic"
+    gui_config_path = "/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"
 
     x_pose = LaunchConfiguration("x_pose", default="1.0")
     y_pose = LaunchConfiguration("y_pose", default="-1.5")
@@ -25,7 +26,7 @@ def generate_launch_description():
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")),
         launch_arguments={
-            "gz_args": [f"-r -s -v4 {world_path}"],
+            "gz_args": [f"-r -s -v4 --gui-config {gui_config_path} {world_path}"],
             "on_exit_shutdown": "true",
         }.items(),
     )
