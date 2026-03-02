@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.6">
-    <world name="hostpital">
+    <world name="hospital">
         <plugin 
             name="gz::sim::systems::Physics" 
             filename="gz-sim-physics-system"/>
