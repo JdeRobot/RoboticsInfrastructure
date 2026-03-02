@@ -56,11 +56,10 @@
         </light>
 
         <include>
-            <include>
-                <uri>model://aws_robomaker_hospital_floor_01_floor</uri>
-                <static>true</static>
-                <pose>-0.001425 -0.014447 0 0 -0 0</pose>
-            </include>
+            <name>floor</name>
+            <uri>model://aws_robomaker_hospital_floor_01_floor</uri>
+            <static>true</static>
+            <pose>-0.001425 -0.014447 0 0 -0 0</pose>
         </include>
         <include>
             <name>walls</name>
