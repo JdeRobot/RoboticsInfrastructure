@@ -23,6 +23,10 @@
             name="gz::sim::systems::Imu">
         </plugin>
 
+        <scene>
+            <grid>false</grid>
+        </scene>
+
         <light type="directional" name="sun">
             <cast_shadows>false</cast_shadows>
             <pose>0 0 18 0 0 0</pose>
