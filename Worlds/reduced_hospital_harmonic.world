@@ -57,15 +57,15 @@
 
         <include>
             <name>floor</name>
-            <uri>model://aws_robomaker_hospital_floor_01_floor</uri>
+            <uri>model://aws_robomaker_hospital_floor_03_floor</uri>
             <static>true</static>
-            <pose>-0.001425 -0.014447 0 0 -0 0</pose>
+            <pose>-0.001425 -0.014447 0 -1.57 -0 0</pose>
         </include>
         <include>
             <name>walls</name>
-            <uri>model://aws_robomaker_hospital_floor_01_walls</uri>
+            <uri>model://aws_robomaker_hospital_floor_03_walls</uri>
             <static>true</static>
-            <pose>-0.013823 -0.013783 0 0 -0 0</pose>
+            <pose>-0.013823 -0.013783 0 -1.57 -0 0</pose>
         </include>
         <include>
             <name>nursesstation</name>
