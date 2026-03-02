@@ -55,8 +55,8 @@ def generate_launch_description():
         launch_arguments={
             "gz_args": ["-r -s -v4 ", world_path],
             "on_exit_shutdown": "true",
-            "additional_env": gz_env,
         }.items(),
+        additional_env=gz_env,
     )
 
     world_entity_cmd = Node(
