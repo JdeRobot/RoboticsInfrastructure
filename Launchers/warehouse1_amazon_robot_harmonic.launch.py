@@ -37,6 +37,7 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+    ld.add_action(SetEnvironmentVariable("HAL_MODULE", "HAL2"))
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(gazebo_server)
