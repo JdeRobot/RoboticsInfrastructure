@@ -23,6 +23,15 @@
             name="gz::sim::systems::Imu">
         </plugin>
 
+        <gui>
+        <plugin filename="MinimalScene" name="3D View">
+            <engine>ogre2</engine>
+            <scene>
+            <grid>false</grid>
+            </scene>
+        </plugin>
+        </gui>
+
         <light type="directional" name="sun">
             <cast_shadows>false</cast_shadows>
             <pose>0 0 18 0 0 0</pose>
@@ -214,6 +223,16 @@
             <name>pallet5</name>
             <uri>model://rack</uri>
             <pose>3.84  -6.750542 0.001 0 0 0</pose>
+        </include>
+
+        <!-- 
+        Robot model in the world definition so it is restored on full simulation reset.
+        Otherwise, it would be lost after reset.
+        -->
+        <include>
+            <name>amazon_robot</name>
+            <uri>model://amazon_robot_harmonic</uri>
+            <pose>0 0 0.5 0 0 0</pose>
         </include>
     </world>
 </sdf>
