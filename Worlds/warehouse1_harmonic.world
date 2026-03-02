@@ -23,13 +23,19 @@
             name="gz::sim::systems::Imu">
         </plugin>
 
-        <gui>
+        <scene>
+            <grid>false</grid>
+        </scene>
+
+        <gui fullscreen="1">
+        <!-- 3D scene -->
         <plugin filename="MinimalScene" name="3D View">
             <engine>ogre2</engine>
-            <scene>
-            <grid>false</grid>
-            </scene>
+            <scene>scene</scene>
         </plugin>
+
+        <!-- Camera follow / tracking -->
+        <plugin filename="CameraTracking" name="Camera Tracking"/>
         </gui>
 
         <light type="directional" name="sun">
