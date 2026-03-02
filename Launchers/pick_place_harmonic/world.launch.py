@@ -49,15 +49,22 @@ def generate_launch_description():
         "DISPLAY": ":2",
     }
 
-    gazebo_server = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
-        ),
-        launch_arguments={
-            "gz_args": ["-r -s -v4 ", world_path],
-            "on_exit_shutdown": "true",
-            "additional_env": gz_env,
-        }.items(),
+    # gazebo_server = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+    #     ),
+    #     launch_arguments={
+    #         "gz_args": ["-r -s -v4 ", world_path],
+    #         "on_exit_shutdown": "true",
+    #         "additional_env": gz_env,
+    #     }.items(),
+    # )
+
+    gazebo = ExecuteProcess(
+        cmd=["gz", "sim", "-s", "-r", "-v", "4", world_path],
+        output="screen",
+        additional_env=gz_env,
+        shell=False,
     )
 
     world_entity_cmd = Node(
@@ -80,7 +87,7 @@ def generate_launch_description():
         gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
     )
     ld.add_action(set_env_vars_resources)
-    ld.add_action(gazebo_server)
+    ld.add_action(gazebo)
     ld.add_action(world_entity_cmd)
 
     return ld
