@@ -7,7 +7,7 @@
     <link name='base_link' />
 
     <joint name='chassis_link_joint' type='fixed'>
-      <pose>0.0 0.0 0.0 0 0 -1.5707963</pose>
+      <pose>0.0 0.0 0.0 0 0 0</pose>
       <parent>base_link</parent>
       <child>chassis_link</child>
     </joint>
@@ -25,7 +25,7 @@
         </inertia>
       </inertial>
       <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -45,7 +45,7 @@
         </surface>
       </collision>
       <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 -0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
