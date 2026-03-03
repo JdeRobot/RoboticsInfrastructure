@@ -6,6 +6,13 @@
     <parent link="base_link"/>
     <child link="chassis_link"/>
   </joint>
+  <link name="base_link"/>
+
+  <joint name="base_to_chassis" type="fixed">
+    <parent>base_link</parent>
+    <child>chassis_link</child>
+    <origin rpy="0 0 1.5707963" xyz="0 0 0"/>
+  </joint>
   <link name="chassis_link">
     <inertial>
       <origin rpy="0 -0 0" xyz="1e-06 0.07307 0.65096"/>
