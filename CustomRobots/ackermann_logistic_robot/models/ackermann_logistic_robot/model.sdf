@@ -57,13 +57,15 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="bl_axle" type="revolute">
-      <pose relative_to="chassis_link">-0.18 -0.244 0.0 0 0 0</pose>
+    <joint name='bl_axle' type='revolute'>
+      <pose relative_to='chassis_link'>-0.244 0.18 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
-        <dynamics><friction>12.031606150200002</friction></dynamics>
+        <xyz>0 -1 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
       </axis>
     </joint>
 
@@ -196,13 +198,15 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="fl_axle" type="revolute">
-      <pose relative_to="l_steer_1">0 0 0 0 0 0</pose>
+    <joint name='fl_axle' type='revolute'>
+      <pose relative_to='l_steer_1'>0 0 0 0 0 0</pose>
       <parent>l_steer_1</parent>
       <child>fl_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
-        <dynamics><friction>12.031606150200002</friction></dynamics>
+        <xyz>0 -1 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
       </axis>
     </joint>
 
@@ -284,13 +288,15 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="fr_axle" type="revolute">
-      <pose relative_to="r_steer_1">0 0 0 0 0 0</pose>
-      <parent>r_steer_1</parent>
-      <child>fr_1</child>
+    <joint name='fl_axle' type='revolute'>
+      <pose relative_to='l_steer_1'>0 0 0 0 0 0</pose>
+      <parent>l_steer_1</parent>
+      <child>fl_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
-        <dynamics><friction>12.031606150200002</friction></dynamics>
+        <xyz>0 -1 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
       </axis>
     </joint>
 
