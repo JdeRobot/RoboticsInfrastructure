@@ -1,3 +1,10 @@
+"""
+ROS - Gazebo bridge launcher for the holonomic logistic robot (Harmonic).
+
+Starts ros_gz_bridge parameter_bridge using the
+holonomic_logistic_robot_harmonic.yaml configuration file
+from the custom_robots package.
+"""
 import os
 
 from ament_index_python.packages import get_package_share_directory

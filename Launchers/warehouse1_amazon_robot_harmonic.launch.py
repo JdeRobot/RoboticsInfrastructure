@@ -1,3 +1,14 @@
+"""
+Gazebo Harmonic world launcher for warehouse1 (holonomic).
+
+Runs gz_sim with:
+    RoboticsInfrastructure/Worlds/warehouse1_harmonic.world
+
+The robot is hardcoded at the end of the world file, so it is spawned
+as part of the world itself.
+
+Extends GZ_SIM_RESOURCE_PATH with custom_robots models.
+"""
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -5,7 +16,6 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable, AppendEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-
 
 def generate_launch_description():
 
@@ -16,10 +26,6 @@ def generate_launch_description():
 
     robot_launch_dir = "/opt/jderobot/Launchers/amazon_robot_harmonic"
     gui_config_path = "/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"
-
-    x_pose = LaunchConfiguration("x_pose", default="0.0")
-    y_pose = LaunchConfiguration("y_pose", default="0.0")
-    z_pose = LaunchConfiguration("z_pose", default="0.5")
 
     world_path = os.path.join("/opt/jderobot/Worlds", "warehouse1_harmonic.world")
 
@@ -32,12 +38,10 @@ def generate_launch_description():
     )
 
     spawn_robot_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(robot_launch_dir, "spawn_robot.launch.py")),
-        launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
+        PythonLaunchDescriptionSource(os.path.join(robot_launch_dir, "spawn_robot.launch.py"))
     )
 
     ld = LaunchDescription()
-    ld.add_action(SetEnvironmentVariable("HAL_MODULE", "HAL2"))
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(gazebo_server)
