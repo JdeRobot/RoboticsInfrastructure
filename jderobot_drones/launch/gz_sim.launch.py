@@ -1,6 +1,4 @@
-"""
-gz_sim.launch.py
-"""
+"""Launch file for Gazebo Sim (gz_sim)."""
 
 from __future__ import annotations
 
@@ -16,7 +14,7 @@ from launch_ros.actions import Node, SetParameter
 
 
 def generate_launch_description():
-    """Entrypoint"""
+    """Return the launch description for gz_sim."""
     launch_description = LaunchDescription(
         [
             DeclareLaunchArgument("namespace", description="Namespace to use"),
