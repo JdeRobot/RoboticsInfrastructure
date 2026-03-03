@@ -446,6 +446,7 @@
     <link name="lift_link">
       <pose>-0.0 0.0 0.0 0 0 0</pose>
       <visual name="lift_visual">
+          <pose>0 0 0 0 0 -1.5707963</pose>
           <geometry>
               <mesh>
                   <uri>model://ackermann_logistic_robot/meshes/platform.dae</uri>
@@ -465,6 +466,7 @@
           <mass>0.1</mass>
       </inertial>
       <collision name="lift_collision">
+          <pose>0 0 0 0 0 -1.5707963</pose>
           <geometry>
               <box>
                   <size>0.2805 0.2 0.03</size>
