@@ -5,14 +5,14 @@
       <visual name="visual">
 	    <geometry>
           <mesh>
-            <uri>model://models/aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
+            <uri>model://aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
           </mesh>
         </geometry>
       </visual>
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://models/aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
+            <uri>model://aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
           </mesh>
         </geometry>
         <surface>
