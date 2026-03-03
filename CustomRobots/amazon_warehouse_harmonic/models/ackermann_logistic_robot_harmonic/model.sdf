@@ -5,8 +5,10 @@
 
     <link name='base_link' />
 
+    <canonical_link>chassis_link</canonical_link>
+
     <joint name='chassis_link_joint' type='fixed'>
-      <pose>0 0 0 0 0 0.07927201638</pose>
+      <pose>0.0 0.0 0.0 0 0 0</pose>
       <parent>base_link</parent>
       <child>chassis_link</child>
     </joint>
@@ -450,36 +452,31 @@
       </collision>
     </link>
 
-    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
-      <!-- Rear wheels -->
-      <left_joint>bl_axle</left_joint>
-      <right_joint>br_axle</right_joint>
+  <plugin filename="gz-sim-ackermann-steering-system"
+          name="gz::sim::systems::AckermannSteering">
 
-      <!-- Front wheels -->
-      <left_joint>fl_axle</left_joint>
-      <right_joint>fr_axle</right_joint>
+    <left_joint>bl_axle</left_joint>
+    <right_joint>br_axle</right_joint>
+    <left_joint>fl_axle</left_joint>
+    <right_joint>fr_axle</right_joint>
+    <left_steering_joint>l_steer</left_steering_joint>
+    <right_steering_joint>r_steer</right_steering_joint>
 
-      <!-- Steering joints -->
-      <left_steering_joint>l_steer</left_steering_joint>
-      <right_steering_joint>r_steer</right_steering_joint>
+    <kingpin_width>0.472</kingpin_width>
+    <steering_limit>0.95</steering_limit>
+    <wheel_base>0.488</wheel_base>
+    <wheel_separation>0.072</wheel_separation>
+    <wheel_radius>0.072</wheel_radius>
 
-      <!-- Vehicle geometry -->
-      <kingpin_width>0.472</kingpin_width>
-      <steering_limit>0.95</steering_limit>
-      <wheel_base>0.488</wheel_base> 
-      <wheel_separation>0.072</wheel_separation> 
-      <wheel_radius>0.072</wheel_radius>
+    <topic>/amazon_robot/cmd_vel</topic>
 
-      <!-- Topics -->
-      <sub_topic>/steer_angle</sub_topic>
-      <topic>/cmd_vel</topic>
+    <odom_topic>/amazon_robot/odom</odom_topic>
+    <tf_topic>/amazon_robot/tf</tf_topic>
+    <frame_id>odom</frame_id>
+    <child_frame_id>chassis_link</child_frame_id>
 
-      <!-- Velocity & acceleration limits -->
-      <min_velocity>-50</min_velocity>
-      <max_velocity>50</max_velocity>
-      <min_acceleration>-50</min_acceleration>
-      <max_acceleration>50</max_acceleration>
-    </plugin>
+    <odom_publish_frequency>100</odom_publish_frequency>
+  </plugin>
 
     <plugin
       filename="gz-sim-joint-controller-system"
