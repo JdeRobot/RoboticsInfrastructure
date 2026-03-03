@@ -1,6 +1,4 @@
-"""
-as2_default_classic_gazebo.launch.py
-"""
+"""Launch file for Aerostack2 default classic Gazebo."""
 
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -15,10 +13,7 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    """
-    Launch micro_xrce and aerostack2 nodes
-    """
-
+    """Launch micro_xrce and aerostack2 nodes."""
     # If needed
     #    rviz_config = os.path.join(os.getcwd(), 'swarm_config.rviz')
     #    print(f'{os.path.isfile(rviz_config)=}')
@@ -79,7 +74,7 @@ def generate_launch_description():
             "plugin_config_file": sim_config + "/pid_speed_controller.yaml",
         }.items(),
     )
-    behaviors = IncludeLaunchDescription(
+    _behaviors = IncludeLaunchDescription(  # noqa: F841
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
