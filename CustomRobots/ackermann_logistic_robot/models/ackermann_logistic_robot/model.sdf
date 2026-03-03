@@ -1,30 +1,31 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
-
   <model name="ackermann_logistic_robot">
     <pose>0 0 0.0 0 0 0</pose>
 
-    <link name='base_link' />
+    <link name="base_link"/>
 
-    <joint name='chassis_link_joint' type='fixed'>
+    <joint name="chassis_link_joint" type="fixed">
       <pose>0.0 0.0 0.0 0 0 0</pose>
       <parent>base_link</parent>
       <child>chassis_link</child>
     </joint>
-    <link name='chassis_link'>
+
+    <link name="chassis_link">
       <inertial>
-        <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
+        <pose>0.07307 -1e-06 0.65096 0 0 0</pose>
         <mass>1580</mass>
         <inertia>
-          <ixx>1997.86</ixx>
-          <ixy>-3e-05</ixy>
-          <ixz>-1e-06</ixz>
-          <iyy>442.769</iyy>
-          <iyz>62.5206</iyz>
+          <ixx>442.769</ixx>
+          <ixy>3e-05</ixy>
+          <ixz>62.5206</ixz>
+          <iyy>1997.86</iyy>
+          <iyz>1e-06</iyz>
           <izz>2238.05</izz>
         </inertia>
       </inertial>
-      <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
+
+      <collision name="chassis_link_fixed_joint_lump__chassis_link_collision">
         <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
@@ -33,9 +34,7 @@
           </mesh>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
+          <contact><ode/></contact>
           <friction>
             <ode>
               <mu>0.2</mu>
@@ -44,8 +43,9 @@
           </friction>
         </surface>
       </collision>
-      <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 0 0.0 0 -0 -1.5707963</pose>
+
+      <visual name="chassis_link_fixed_joint_lump__chassis_link_visual">
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -53,29 +53,24 @@
           </mesh>
         </geometry>
       </visual>
-      <!-- <velocity_decay/> -->
-      <!--  <gravity>1</gravity> -->
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
-      <self_collide>1</self_collide>
-      <!--  <gravity>1</gravity> -->
+
+      <self_collide>0</self_collide>
     </link>
 
-    <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.18 -0.244 0.0 0 -0 0</pose>
+    <joint name="bl_axle" type="revolute">
+      <pose relative_to="chassis_link">-0.18 -0.244 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
         <xyz>-1 0 0</xyz>
-        <dynamics>
-          <friction>12.031606150200002</friction>
-        </dynamics>
+        <dynamics><friction>12.031606150200002</friction></dynamics>
       </axis>
     </joint>
-    <link name='bl_1'>
-      <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
+
+    <link name="bl_1">
+      <pose relative_to="bl_axle">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0 0 -0 0 -0 0</pose>
+        <pose>-0.0 0 -0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -86,8 +81,8 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name='bl_1_collision'>
-        <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
+      <collision name="bl_1_collision">
+        <pose relative_to="bl_axle">0 0 0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -95,9 +90,7 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
+          <contact><ode/></contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -106,8 +99,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name='bl_1_visual'>
-        <pose>0.0 0.0 0.0 0 -0 0</pose>
+      <visual name="bl_1_visual">
+        <pose>0.0 0.0 0.0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -115,26 +108,23 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
-    <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.18 -0.244 0.0 0 -0 0</pose>
+    <joint name="br_axle" type="revolute">
+      <pose relative_to="chassis_link">0.18 -0.244 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
         <xyz>-1 0 0</xyz>
-        <dynamics>
-          <friction>12.031606150200002</friction>
-        </dynamics>
+        <dynamics><friction>12.031606150200002</friction></dynamics>
       </axis>
     </joint>
-    <link name='br_1'>
-      <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
+
+    <link name="br_1">
+      <pose relative_to="br_axle">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>-0.0377 0 -0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -145,8 +135,8 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name='br_1_collision'>
-        <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
+      <collision name="br_1_collision">
+        <pose relative_to="br_axle">0 0 0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -154,9 +144,7 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
+          <contact><ode/></contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -165,8 +153,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name='br_1_visual'>
-        <pose>0.0 0.0 0.0 0 -0 0</pose>
+      <visual name="br_1_visual">
+        <pose>0.0 0.0 0.0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -174,13 +162,11 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
-    <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.236 0.244 0.0 0 -0 0</pose>
+    <joint name="l_steer" type="revolute">
+      <pose relative_to="chassis_link">-0.236 0.244 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -189,15 +175,14 @@
           <lower>-0.95</lower>
           <upper>0.95</upper>
         </limit>
-        <dynamics>
-          <friction>18.0474092253</friction>
-        </dynamics>
+        <dynamics><friction>18.0474092253</friction></dynamics>
       </axis>
     </joint>
-    <link name='l_steer_1'>
-      <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
+
+    <link name="l_steer_1">
+      <pose relative_to="l_steer">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <pose>0.003381 0 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -208,25 +193,23 @@
           <izz>1</izz>
         </inertia>
       </inertial>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
-    <joint name='fl_axle' type='revolute'>
-      <pose relative_to='l_steer_1'>0 0 0 0 -0 0</pose>
+
+    <joint name="fl_axle" type="revolute">
+      <pose relative_to="l_steer_1">0 0 0 0 0 0</pose>
       <parent>l_steer_1</parent>
       <child>fl_1</child>
       <axis>
         <xyz>-1 0 0</xyz>
-        <dynamics>
-          <friction>12.031606150200002</friction>
-        </dynamics>
+        <dynamics><friction>12.031606150200002</friction></dynamics>
       </axis>
     </joint>
-    <link name='fl_1'>
-      <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
+
+    <link name="fl_1">
+      <pose relative_to="fl_axle">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>-0.0377 0 -0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -237,7 +220,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name='fl_1_collision'>
+      <collision name="fl_1_collision">
         <pose>0.0 -0.0 0.0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
@@ -246,9 +229,7 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
+          <contact><ode/></contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -257,8 +238,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name='fl_1_visual'>
-        <pose>0.0 -0.0 0.0 0 -0 0</pose>
+      <visual name="fl_1_visual">
+        <pose>0.0 -0.0 0.0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -266,13 +247,11 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
-    <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.236 0.244 0.0 0 -0 0</pose>
+    <joint name="r_steer" type="revolute">
+      <pose relative_to="chassis_link">0.236 0.244 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -287,10 +266,11 @@
         </dynamics>
       </axis>
     </joint>
-    <link name='r_steer_1'>
-      <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
+
+    <link name="r_steer_1">
+      <pose relative_to="r_steer">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <pose>0.003381 0 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -301,25 +281,23 @@
           <izz>1</izz>
         </inertia>
       </inertial>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
-    <joint name='fr_axle' type='revolute'>
-      <pose relative_to='r_steer_1'>0 0 0 0 -0 0</pose>
+
+    <joint name="fr_axle" type="revolute">
+      <pose relative_to="r_steer_1">0 0 0 0 0 0</pose>
       <parent>r_steer_1</parent>
       <child>fr_1</child>
       <axis>
         <xyz>-1 0 0</xyz>
-        <dynamics>
-          <friction>12.031606150200002</friction>
-        </dynamics>
+        <dynamics><friction>12.031606150200002</friction></dynamics>
       </axis>
     </joint>
-    <link name='fr_1'>
-      <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
+
+    <link name="fr_1">
+      <pose relative_to="fr_axle">0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>-0.0377 0 -0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
           <ixx>1.84514</ixx>
@@ -330,7 +308,7 @@
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name='fr_1_collision'>
+      <collision name="fr_1_collision">
         <pose>-0.0 -0.0 0.0 0 1.5708 0</pose>
         <geometry>
           <cylinder>
@@ -339,9 +317,7 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
+          <contact><ode/></contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -350,8 +326,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name='fr_1_visual'>
-        <pose>-0.0 -0.0 0.0 0 -0 0</pose>
+      <visual name="fr_1_visual">
+        <pose>-0.0 -0.0 0.0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -359,53 +335,35 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
-    <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
+    <plugin name="ackermann_drive" filename="libgazebo_ros_ackermann_drive.so">
       <ros>
         <remapping>cmd_vel:=/amazon_robot/cmd_vel</remapping>
         <remapping>odom:=/amazon_robot/odom</remapping>
         <remapping>distance:=distance</remapping>
       </ros>
-
       <update_rate>100.0</update_rate>
-
-      <!-- wheels -->
       <front_left_joint>fl_axle</front_left_joint>
       <front_right_joint>fr_axle</front_right_joint>
       <rear_left_joint>bl_axle</rear_left_joint>
       <rear_right_joint>br_axle</rear_right_joint>
       <left_steering_joint>l_steer</left_steering_joint>
       <right_steering_joint>r_steer</right_steering_joint>
-
-      <!-- Max absolute steer angle for tyre in radians-->
-      <!-- Any cmd_vel angular z greater than this would be capped -->
       <max_steer>0.52</max_steer>
-
-      <!-- Max absolute steering angle of steering wheel -->
-      <!-- Max absolute steering angle of steering wheel -->
       <max_steering_angle>0.64</max_steering_angle>
-
-      <!-- Max absolute linear speed in m/s -->
       <max_speed>50</max_speed>
-
-      <!-- PID tuning -->
       <left_steering_pid_gain>1500 900 450</left_steering_pid_gain>
       <left_steering_i_range>0 0</left_steering_i_range>
       <right_steering_pid_gain>1500 900 450</right_steering_pid_gain>
       <right_steering_i_range>0 0</right_steering_i_range>
       <linear_velocity_pid_gain>1000 100 10</linear_velocity_pid_gain>
       <linear_velocity_i_range>0 0</linear_velocity_i_range>
-      
-      <!-- output -->
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
       <publish_wheel_tf>true</publish_wheel_tf>
       <publish_distance>true</publish_distance>
-
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_link</robot_base_frame>
     </plugin>
@@ -414,88 +372,89 @@
       <parent>base_link</parent>
       <child>lift_link</child>
       <axis>
-          <xyz>0 0 1</xyz>
-          <limit>
-              <lower>0.18</lower>
-              <upper>0.35</upper>
-              <effort>20</effort>
-              <velocity>0.6</velocity>
-          </limit>
-          <dynamics>
-              <damping>0.1</damping>
-              <friction>0</friction>
-              <spring_reference>0</spring_reference>
-              <spring_stiffness>0</spring_stiffness>
-          </dynamics>
-          <use_parent_model_frame>1</use_parent_model_frame>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0.18</lower>
+          <upper>0.35</upper>
+          <effort>20</effort>
+          <velocity>0.6</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
       <physics>
+        <provide_feedback>1</provide_feedback>
+        <ode>
           <provide_feedback>1</provide_feedback>
-          <ode>
-              <provide_feedback>1</provide_feedback>
-              <implicit_spring_damper>1</implicit_spring_damper>
-              <cfm_damping>1</cfm_damping>
-              <limit>
-                  <cfm>0</cfm>
-                  <erp>0.2</erp>
-              </limit>
-          </ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
       </physics>
-      <!-- <axis><use_parent_model_frame>true</use_parent_model_frame><xyz>0 0 1</xyz></axis><limit effort="6" lower="0.00" upper="0.100" velocity="50"/> -->
     </joint>
+
     <link name="lift_link">
       <pose>-0.0 0.0 0.0 0 0 0</pose>
+
       <visual name="lift_visual">
-          <pose>0 0 0 0 0 -1.5707963</pose>
-          <geometry>
-              <mesh>
-                  <uri>model://ackermann_logistic_robot/meshes/platform.dae</uri>
-                  <scale>0.5 0.5 0.5</scale>
-              </mesh>
-          </geometry>
+        <pose>0 0 0 0 0 -1.5707963</pose>
+        <geometry>
+          <mesh>
+            <uri>model://ackermann_logistic_robot/meshes/platform.dae</uri>
+            <scale>0.5 0.5 0.5</scale>
+          </mesh>
+        </geometry>
       </visual>
+
       <inertial>
-          <inertia>
-              <ixx>0.001</ixx>
-              <ixy>0.000</ixy>
-              <ixz>0.000</ixz>
-              <iyy>0.001</iyy>
-              <iyz>0.000</iyz>
-              <izz>0.001</izz>
-          </inertia>
-          <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0.000</ixy>
+          <ixz>0.000</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0.000</iyz>
+          <izz>0.001</izz>
+        </inertia>
+        <mass>0.1</mass>
       </inertial>
+
       <collision name="lift_collision">
-          <pose>0 0 0 0 0 -1.5707963</pose>
-          <geometry>
-              <box>
-                  <size>0.2805 0.2 0.03</size>
-              </box>
-          </geometry>
-          <surface>
-              <friction>
-                  <ode>
-                      <mu>1000000</mu>
-                      <mu2>100000</mu2>
-                      <fdir1>0 0 0</fdir1>
-                      <slip1>0.0</slip1>
-                      <slip2>0.0</slip2>
-                  </ode>
-              </friction>
-              <contact>
-                  <ode>
-                      <soft_cfm>0</soft_cfm>
-                      <soft_erp>0.2</soft_erp>
-                      <kp>1e+5</kp>
-                      <kd>1</kd>
-                      <max_vel>0.01</max_vel>
-                      <min_depth>0.001</min_depth>
-                  </ode>
-              </contact>
-          </surface>
+        <pose>0 0 0 0 0 -1.5707963</pose>
+        <geometry>
+          <box>
+            <size>0.2805 0.2 0.03</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1000000</mu>
+              <mu2>100000</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
       </collision>
     </link>
-
-
   </model>
 </sdf>
