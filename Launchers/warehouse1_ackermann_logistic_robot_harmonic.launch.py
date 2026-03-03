@@ -27,7 +27,7 @@ def generate_launch_description():
     robot_launch_dir = "/opt/jderobot/Launchers/ackermann_logistic_robot_harmonic"
     gui_config_path = "/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"
 
-    world_path = os.path.join("/opt/jderobot/Worlds", "warehouse2_ackerman.world")
+    world_path = os.path.join("/opt/jderobot/Worlds", "warehouse1_ackerman.world")
 
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")),

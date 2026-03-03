@@ -24,10 +24,10 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    robot_launch_dir = "/opt/jderobot/Launchers/amazon_robot_harmonic"
+    robot_launch_dir = "/opt/jderobot/Launchers/ackermann_logistic_robot_harmonic"
     gui_config_path = "/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"
 
-    world_path = os.path.join("/opt/jderobot/Worlds", "warehouse2_harmonic.world")
+    world_path = os.path.join("/opt/jderobot/Worlds", "warehouse2_ackerman.world")
 
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")),
