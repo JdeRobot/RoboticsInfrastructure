@@ -2,13 +2,14 @@
 <robot name="ackermann_logistic_robot">
   <link name="base_link"/>
 
-  <joint name="chassis_link_joint" type="fixed">
-    <origin rpy="0 0 -1.5707963" xyz="0.0 0.0 0.0"/>
-    <parent link="base_link"/>
-    <child link="chassis_link"/>
+  <joint name='chassis_link_joint' type='fixed'>
+    <pose>0.0 0.0 0.0 0 0 0</pose>
+    <parent>base_link</parent>
+    <child>chassis_link</child>
   </joint>
 
   <link name="chassis_link">
+    <pose>0 0 0 0 0 -1.5707963</pose>
     <inertial>
       <origin rpy="0 -0 0" xyz="1e-06 0.07307 0.65096"/>
       <mass value="1580"/>
