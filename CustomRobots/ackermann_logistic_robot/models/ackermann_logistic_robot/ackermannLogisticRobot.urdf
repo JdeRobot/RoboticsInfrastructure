@@ -1,18 +1,13 @@
 <?xml version="1.0" ?>
 <robot name="ackermann_logistic_robot">
   <link name="base_link"/>
+
   <joint name="chassis_link_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <origin rpy="0 0 -1.5707963" xyz="0.0 0.0 0.0"/>
     <parent link="base_link"/>
     <child link="chassis_link"/>
   </joint>
-  <link name="base_link"/>
 
-  <joint name="base_to_chassis" type="fixed">
-    <parent>base_link</parent>
-    <child>chassis_link</child>
-    <origin rpy="0 0 1.5707963" xyz="0 0 0"/>
-  </joint>
   <link name="chassis_link">
     <inertial>
       <origin rpy="0 -0 0" xyz="1e-06 0.07307 0.65096"/>
@@ -24,9 +19,9 @@
       <geometry>
         <sphere radius="0.25"/>
       </geometry>
-	    <material name="half_transparent">
-                <color rgba="0 0 0 0"/>
-            </material>
+      <material name="half_transparent">
+        <color rgba="0 0 0 0"/>
+      </material>
     </visual>
     <visual>
       <origin rpy="0 -0 0" xyz="0 0 0.0"/>
@@ -35,6 +30,7 @@
       </geometry>
     </visual>
   </link>
+
   <joint name="bl_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="-0.18 -0.244 0.0"/>
     <parent link="chassis_link"/>
@@ -42,6 +38,7 @@
     <axis xyz="-1 0 0"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="bl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -56,6 +53,7 @@
       </geometry>
     </visual>
   </link>
+
   <joint name="br_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="0.18 -0.244 0.0"/>
     <parent link="chassis_link"/>
@@ -63,6 +61,7 @@
     <axis xyz="-1 0 0"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="br_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -77,6 +76,7 @@
       </geometry>
     </visual>
   </link>
+
   <joint name="l_steer" type="revolute">
     <origin rpy="0 -0 0" xyz="-0.236 0.244 0.0"/>
     <parent link="chassis_link"/>
@@ -85,6 +85,7 @@
     <limit lower="-0.95" upper="0.95"/>
     <dynamics friction="18.0474092253"/>
   </joint>
+
   <link name="l_steer_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -93,6 +94,7 @@
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
     </inertial>
   </link>
+
   <joint name="fl_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <parent link="l_steer_1"/>
@@ -100,6 +102,7 @@
     <axis xyz="-1 0 0"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="fl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -114,6 +117,7 @@
       </geometry>
     </visual>
   </link>
+
   <joint name="r_steer" type="revolute">
     <origin rpy="0 -0 0" xyz="0.236 0.244 0.0"/>
     <parent link="chassis_link"/>
@@ -122,6 +126,7 @@
     <limit lower="-0.95" upper="0.95"/>
     <dynamics damping="0.01" friction="18.0474092253"/>
   </joint>
+
   <link name="r_steer_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -130,6 +135,7 @@
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
     </inertial>
   </link>
+
   <joint name="fr_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <parent link="r_steer_1"/>
@@ -137,6 +143,7 @@
     <axis xyz="-1 0 0"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="fr_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -151,6 +158,7 @@
       </geometry>
     </visual>
   </link>
+
   <joint name="lift_joint" type="prismatic">
     <parent link="base_link"/>
     <child link="lift_link"/>
@@ -159,6 +167,7 @@
     <dynamics damping="0.1" friction="0" spring_reference="0" spring_stiffness="0"/>
     <origin xyz="0 0 1"/>
   </joint>
+
   <link name="lift_link">
     <origin rpy="0 0 0" xyz="-0.0 0.0 0.0"/>
     <visual>
