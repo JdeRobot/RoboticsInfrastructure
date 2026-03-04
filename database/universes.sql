@@ -37,7 +37,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.universes (
     id bigint NOT NULL,
-    name character varying (100) NOT NULL,
+    name character varying(100) NOT NULL,
     world_id bigint NOT NULL,
     robot_id bigint NOT NULL
 );
@@ -182,6 +182,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 54 	Vacuums House Roof Classic	54	0
 55 	Rover 4wd Warehouse	55	0
 56	Pick And Place Harmonic World	56	0
+57 	Package delivery	57	0
 \.
 
 --
@@ -247,6 +248,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 54	Vacuums House Roof Classic	/opt/jderobot/Launchers/montecarlo_visual_loc_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --

@@ -1,6 +1,4 @@
-"""
-as2_default_gazebo_sim.launch.py
-"""
+"""Launch file for Aerostack2 default Gazebo simulation."""
 
 import os
 
@@ -13,10 +11,7 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    """
-    Launch aerostack2 nodes
-    """
-
+    """Launch aerostack2 nodes."""
     as2_sim_config = os.path.join(
         get_package_share_directory("jderobot_drones"),
         "sim_config/gzsim/as2_config.yaml",
@@ -65,7 +60,7 @@ def generate_launch_description():
             "config_file": as2_sim_config,
         }.items(),
     )
-    behaviors = IncludeLaunchDescription(
+    _behaviors = IncludeLaunchDescription(  # noqa: F841
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
