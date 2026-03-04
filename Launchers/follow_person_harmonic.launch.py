@@ -14,7 +14,7 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(package_dir, "models")
 
     world_file_name = "reduced_hospital_harmonic.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     gazebo_server = IncludeLaunchDescription(
