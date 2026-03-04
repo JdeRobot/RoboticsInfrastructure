@@ -3,15 +3,15 @@
   <model name="ackermann_logistic_robot">
     <pose>0 0 0.0 0 0 0</pose>
 
-    <link name="base_link"/>
+    <link name='base_link' />
 
-    <joint name="chassis_link_joint" type="fixed">
+    <joint name='chassis_link_joint' type='fixed'>
       <pose>0.0 0.0 0.0 0 0 0</pose>
       <parent>base_link</parent>
       <child>chassis_link</child>
     </joint>
 
-    <link name="chassis_link">
+    <link name='chassis_link'>
       <inertial>
         <pose>0.07307 -1e-06 0.65096 0 0 0</pose>
         <mass>1580</mass>
@@ -25,7 +25,7 @@
         </inertia>
       </inertial>
 
-      <collision name="chassis_link_fixed_joint_lump__chassis_link_collision">
+      <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
         <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
@@ -34,7 +34,9 @@
           </mesh>
         </geometry>
         <surface>
-          <contact><ode/></contact>
+          <contact>
+            <ode />
+          </contact>
           <friction>
             <ode>
               <mu>0.2</mu>
@@ -44,7 +46,7 @@
         </surface>
       </collision>
 
-      <visual name="chassis_link_fixed_joint_lump__chassis_link_visual">
+      <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
         <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
@@ -53,8 +55,7 @@
           </mesh>
         </geometry>
       </visual>
-
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
 
     <joint name='bl_axle' type='revolute'>
@@ -62,29 +63,28 @@
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
-        <xyz>0 -1 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
           <friction>12.031606150200002</friction>
         </dynamics>
       </axis>
     </joint>
-
-    <link name="bl_1">
-      <pose relative_to="bl_axle">0 0 0 0 0 0</pose>
+    <link name='bl_1'>
+      <pose relative_to='bl_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0 0 -0 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name="bl_1_collision">
-        <pose relative_to="bl_axle">0 0 0 0 1.5708 0</pose>
+      <collision name='bl_1_collision'>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -92,7 +92,9 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact><ode/></contact>
+          <contact>
+            <ode />
+          </contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -101,8 +103,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name="bl_1_visual">
-        <pose>0.0 0.0 0.0 0 0 -1.5707963</pose>
+      <visual name='bl_1_visual'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -113,32 +115,33 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="br_axle" type="revolute">
-      <pose relative_to="chassis_link">0.18 -0.244 0.0 0 0 0</pose>
+    <joint name='br_axle' type='revolute'>
+      <pose relative_to='chassis_link'>-0.244 -0.18 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
-        <dynamics><friction>12.031606150200002</friction></dynamics>
+        <xyz>0 1 0</xyz>
+        <dynamics>
+          <friction>12.031606150200002</friction>
+        </dynamics>
       </axis>
     </joint>
-
-    <link name="br_1">
-      <pose relative_to="br_axle">0 0 0 0 0 0</pose>
+    <link name='br_1'>
+      <pose relative_to='br_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name="br_1_collision">
-        <pose relative_to="br_axle">0 0 0 0 1.5708 0</pose>
+      <collision name='br_1_collision'>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -146,7 +149,9 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact><ode/></contact>
+          <contact>
+            <ode />
+          </contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -155,8 +160,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name="br_1_visual">
-        <pose>0.0 0.0 0.0 0 0 -1.5707963</pose>
+      <visual name='br_1_visual'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -167,8 +172,8 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="l_steer" type="revolute">
-      <pose relative_to="chassis_link">-0.236 0.244 0.0 0 0 0</pose>
+    <joint name='l_steer' type='revolute'>
+      <pose relative_to='chassis_link'>0.244 0.236 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -177,14 +182,15 @@
           <lower>-0.95</lower>
           <upper>0.95</upper>
         </limit>
-        <dynamics><friction>18.0474092253</friction></dynamics>
+        <dynamics>
+          <friction>18.0474092253</friction>
+        </dynamics>
       </axis>
     </joint>
-
-    <link name="l_steer_1">
-      <pose relative_to="l_steer">0 0 0 0 0 0</pose>
+    <link name='l_steer_1'>
+      <pose relative_to='l_steer'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 0 0</pose>
+        <pose>0 -0.003381 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -203,29 +209,28 @@
       <parent>l_steer_1</parent>
       <child>fl_1</child>
       <axis>
-        <xyz>0 -1 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
           <friction>12.031606150200002</friction>
         </dynamics>
       </axis>
     </joint>
-
-    <link name="fl_1">
-      <pose relative_to="fl_axle">0 0 0 0 0 0</pose>
+    <link name='fl_1'>
+      <pose relative_to='fl_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name="fl_1_collision">
-        <pose>0.0 -0.0 0.0 0 1.5708 0</pose>
+      <collision name='fl_1_collision'>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -233,7 +238,9 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact><ode/></contact>
+          <contact>
+            <ode />
+          </contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -242,8 +249,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name="fl_1_visual">
-        <pose>0.0 -0.0 0.0 0 0 -1.5707963</pose>
+      <visual name='fl_1_visual'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -254,8 +261,8 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name="r_steer" type="revolute">
-      <pose relative_to="chassis_link">0.236 0.244 0.0 0 0 0</pose>
+    <joint name='r_steer' type='revolute'>
+      <pose relative_to='chassis_link'>0.244 -0.236 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -270,11 +277,10 @@
         </dynamics>
       </axis>
     </joint>
-
-    <link name="r_steer_1">
-      <pose relative_to="r_steer">0 0 0 0 0 0</pose>
+    <link name='r_steer_1'>
+      <pose relative_to='r_steer'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 0 0</pose>
+        <pose>0 -0.003381 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -288,34 +294,33 @@
       <self_collide>0</self_collide>
     </link>
 
-    <joint name='fl_axle' type='revolute'>
-      <pose relative_to='l_steer_1'>0 0 0 0 0 0</pose>
-      <parent>l_steer_1</parent>
-      <child>fl_1</child>
+    <joint name='fr_axle' type='revolute'>
+      <pose relative_to='r_steer_1'>0 0 0 0 0 0</pose>
+      <parent>r_steer_1</parent>
+      <child>fr_1</child>
       <axis>
-        <xyz>0 -1 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
           <friction>12.031606150200002</friction>
         </dynamics>
       </axis>
     </joint>
-
-    <link name="fr_1">
-      <pose relative_to="fr_axle">0 0 0 0 0 0</pose>
+    <link name='fr_1'>
+      <pose relative_to='fr_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
-      <collision name="fr_1_collision">
-        <pose>-0.0 -0.0 0.0 0 1.5708 0</pose>
+      <collision name='fr_1_collision'>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -323,7 +328,9 @@
           </cylinder>
         </geometry>
         <surface>
-          <contact><ode/></contact>
+          <contact>
+            <ode />
+          </contact>
           <friction>
             <ode>
               <mu>1e+6</mu>
@@ -332,8 +339,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name="fr_1_visual">
-        <pose>-0.0 -0.0 0.0 0 0 -1.5707963</pose>
+      <visual name='fr_1_visual'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -344,7 +351,7 @@
       <self_collide>0</self_collide>
     </link>
 
-    <plugin name="ackermann_drive" filename="libgazebo_ros_ackermann_drive.so">
+    <plugin name='ackermann_drive' filename='libgazebo_ros_ackermann_drive.so'>
       <ros>
         <remapping>cmd_vel:=/amazon_robot/cmd_vel</remapping>
         <remapping>odom:=/amazon_robot/odom</remapping>
@@ -406,10 +413,9 @@
         </ode>
       </physics>
     </joint>
-
+    
     <link name="lift_link">
-      <pose>-0.0 0.0 0.0 0 0 0</pose>
-
+      <pose>0 0 0.0 0 0 0</pose>
       <visual name="lift_visual">
         <pose>0 0 0 0 0 -1.5707963</pose>
         <geometry>
@@ -419,7 +425,6 @@
           </mesh>
         </geometry>
       </visual>
-
       <inertial>
         <inertia>
           <ixx>0.001</ixx>
@@ -431,7 +436,6 @@
         </inertia>
         <mass>0.1</mass>
       </inertial>
-
       <collision name="lift_collision">
         <pose>0 0 0 0 0 -1.5707963</pose>
         <geometry>
@@ -462,5 +466,6 @@
         </surface>
       </collision>
     </link>
+
   </model>
 </sdf>
