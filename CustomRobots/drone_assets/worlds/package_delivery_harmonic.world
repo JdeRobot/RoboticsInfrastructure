@@ -224,11 +224,11 @@
 			<pose>-0.276098 -9.481944 0.023266 0 0 0</pose>
 		</model>
 
-		<!-- <include>
-			<uri>model://quadrotor_dual_cam</uri>
+		<include>
+			<uri>model://quadrotor_dual_cam_gripper</uri>
 			<name>drone0</name>
 			<pose>-1.0 -4.0 0.3 0 0 1.5729</pose>
-		</include> -->
+		</include>
 
 	</world>
 </sdf>

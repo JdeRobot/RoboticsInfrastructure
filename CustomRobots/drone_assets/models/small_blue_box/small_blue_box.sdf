@@ -1,0 +1,143 @@
+<?xml version='1.0' ?>
+<sdf version="1.6">
+  <model name="small_box_blue">
+    <static>false</static>
+    <link name="link">
+      <pose>0 0 0.013357 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0.1066 0 0 0</pose>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.00573484</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.010472300</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.006559560</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/blueboxsmall.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/BlueBoxSmall_Albedo.jpg</albedo_map>
+              <normal_map>materials/textures/BlueBoxSmall_Normal.jpg</normal_map>
+              <roughness_map>materials/textures/BlueBoxSmall_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="Box017">
+        <pose>0.0384546 0.0 0.192538 1.5708 0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.0120423 0.0701356 0.0183633</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box016">
+        <pose>0.0 0.0 0.222694 0.0 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.0120423 0.0701356 0.00954892</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box015">
+        <pose>-0.0384549 0.0 0.192538 1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.0120423 0.0701356 0.0183633</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box014">
+        <pose>0.085798 0.0 0.186198 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0196 0.0145054 0.0187445</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box013">
+        <pose>-0.0857982 0.0 0.186198 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.0196 0.0145054 0.0187445</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box012">
+        <pose>0.0 0.0 0.174798 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.24471 0.0145054 0.0187445</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box011">
+        <pose>0.0646884 0.0 0.187166 -1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.100294 0.0209238 0.0347767</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box010">
+        <pose>-0.064688 0.0 0.187166 1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.100294 0.0209238 0.0347767</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box009">
+        <pose>0.0635274 0.000153558 0.000536935 -1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.0170663 0.0209238 0.0686768</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box008">
+        <pose>-0.0635271 0.00015357 0.000536935 1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.0170663 0.0209238 0.0686768</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box007">
+        <pose>0.0646884 0.0 -0.00296984 -1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.100294 0.0209238 0.0347767</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box006">
+        <pose>-0.064688 0.0 -0.00296984 1.5708 0.0 -1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.100294 0.0209238 0.0347767</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="Box005">
+        <pose>0.0 0.0 0.0919035 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.253798 0.102344 0.175273</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
