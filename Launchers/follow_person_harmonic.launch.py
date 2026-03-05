@@ -14,7 +14,7 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(package_dir, "models")
 
     world_file_name = "reduced_hospital_harmonic.world"
-    worlds_dir = "opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     gazebo_server = IncludeLaunchDescription(
@@ -30,7 +30,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    ld.add_action(AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    ld.add_action(AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", f":{gazebo_models_path}"))
     ld.add_action(gazebo_server)
 
     return ld
