@@ -43,11 +43,9 @@
       </visual>
     </link>
 
-    <!--
     <plugin name="personplugin" filename="libpersonplugin.so"/>
-    -->
 
-    <static>true</static>
+    <static>false</static>
       
   </model>
 </sdf>
