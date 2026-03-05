@@ -636,6 +636,7 @@
           </bind_material>
         </instance_geometry>
       </node>
+      <!--
       <node id="aws_robomaker_hospital_floor_01_bumprail_visual" name="aws_robomaker_hospital_floor_01_bumprail_visual" type="NODE">
         <matrix sid="transform">1.94707e-9 1.50996e-9 0.01 0 0 -0.01 1.50996e-9 -2.27524e-7 0.009999999 -2.94e-16 -1.94707e-9 -2.27524e-7 0 0 0 1</matrix>
         <instance_geometry url="#ID97_001-mesh" name="aws_robomaker_hospital_floor_01_bumprail_visual">
@@ -648,6 +649,7 @@
           </bind_material>
         </instance_geometry>
       </node>
+      -->
       <node id="aws_robomaker_hospital_floor_01_handrail_visual" name="aws_robomaker_hospital_floor_01_handrail_visual" type="NODE">
         <matrix sid="transform">1.94707e-9 1.50996e-9 0.01 0 0 -0.01 1.50996e-9 0 0.009999999 -2.94e-16 -1.94707e-9 0 0 0 0 1</matrix>
         <instance_geometry url="#ID88_001-mesh" name="aws_robomaker_hospital_floor_01_handrail_visual">
