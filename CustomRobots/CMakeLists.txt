@@ -18,10 +18,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-find_package(gz-sim REQUIRED)
-find_package(gz-sim-physics REQUIRED)
-find_package(gz-math REQUIRED)
-
 # ===========================================================================
 # find dependencies
 set(PROJECT_DEPENDENCIES
@@ -48,8 +44,7 @@ endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
-add_library(personplugin SHARED amazon_hospital/src/person_h.cpp)
-#add_library(personplugin amazon_hospital/src/person.cpp)
+add_library(personplugin amazon_hospital/src/person.cpp)
 target_include_directories(
   personplugin
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -60,14 +55,6 @@ ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
 # Causes the visibility macros to use dllexport rather than dllimport, which is
 # appropriate when building the dll but not consuming it.
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
-target_link_libraries(personplugin
-  PUBLIC
-    gz-sim::gz-sim
-    gz-sim-physics::gz-sim-physics
-    gz-math::gz-math6
-)
-ament_target_dependencies(personplugin rclcpp)
 
 install(
   TARGETS personplugin
