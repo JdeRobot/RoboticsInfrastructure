@@ -374,8 +374,8 @@
         <xyz>0 0 1</xyz>
         <limit>
           <lower>0.0</lower>
-          <upper>0.18</upper>
-          <effort>20</effort>
+          <upper>0.25</upper>
+          <effort>100</effort>
           <velocity>0.5</velocity>
         </limit>
         <dynamics>
@@ -440,10 +440,7 @@
             <ode>
               <soft_cfm>0</soft_cfm>
               <soft_erp>0.2</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
+              <kp>1e+7</kp> <kd>100</kd>  <max_vel>0.001</max_vel> <min_depth>0.005</min_depth> 
             </ode>
           </contact>
         </surface>
