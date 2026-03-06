@@ -14,6 +14,8 @@
 
   <build_depend>urdf</build_depend>
   <build_depend>xacro</build_depend>
+  <build_depend>gz-sim</build_depend>
+  <build_depend>gz-plugin</build_depend>
 
   <exec_depend>ament_index_python</exec_depend>
   <exec_depend>control_msgs</exec_depend>
@@ -45,6 +47,8 @@
   <exec_depend>ros-humble-ros-gzharmonic-bridge</exec_depend>
   <exec_depend>ros-humble-ros-gzharmonic-sim</exec_depend>
   <exec_depend>ros-humble-ros-gzharmonic-image</exec_depend>
+  <exec_depend>gz-sim</exec_depend>
+  <exec_depend>gz-plugin</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

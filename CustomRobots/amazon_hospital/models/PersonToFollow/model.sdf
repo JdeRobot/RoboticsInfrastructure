@@ -43,7 +43,7 @@
       </visual>
     </link>
 
-    <plugin name="personplugin" filename="libpersonplugin.so"/>
+    <plugin filename="libperson_h.so" name="PersonController"/>
 
     <static>false</static>
       
