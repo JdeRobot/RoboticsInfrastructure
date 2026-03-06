@@ -746,8 +746,8 @@
             <pose>1.30985 -0.727185 -0 0 0 -1.53446</pose>
         </include>
         <include>
-          <uri>model://PersonToFollow</uri>
-          <pose>4 10 0 0 0 3.14</pose>
+            <uri>model://PersonToFollow</uri>
+            <pose>4 10 0 0 0 3.14</pose>
         </include>
         <include>
             <name>follow_person_harmonic</name>
