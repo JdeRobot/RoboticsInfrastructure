@@ -25,7 +25,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": [f"-r -s -v4 {world_path}"],
+            "gz_args": [f"-r -v4 --gui-config {gui_config_path} {world_path}"],
             "on_exit_shutdown": "true",
         }.items(),
     )

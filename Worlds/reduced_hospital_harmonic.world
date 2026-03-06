@@ -750,7 +750,7 @@
             <pose>4 10 0 0 0 3.14</pose>
         </include>
         <include>
-            <name>follow_person_harmonic</name>
+            <name>robot</name>
             <uri>model://turtlebot2_harmonic</uri>
             <pose>1.0 -1.5 7.1 0.0 0.0 1.57079</pose>
         </include>
