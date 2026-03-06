@@ -374,8 +374,8 @@
         <xyz>0 0 1</xyz>
         <limit>
           <lower>0.0</lower>
-          <upper>0.18</upper>
-          <effort>20</effort>
+          <upper>0.25</upper>
+          <effort>100</effort>
           <velocity>0.5</velocity>
         </limit>
         <dynamics>
@@ -440,46 +440,38 @@
             <ode>
               <soft_cfm>0</soft_cfm>
               <soft_erp>0.2</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
+              <kp>1e+7</kp> <kd>100</kd>  <max_vel>0.001</max_vel> <min_depth>0.005</min_depth> 
             </ode>
           </contact>
         </surface>
       </collision>
     </link>
 
-    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
-      <!-- Rear wheels -->
-      <left_joint>bl_axle</left_joint>
-      <right_joint>br_axle</right_joint>
+  <plugin filename="gz-sim-ackermann-steering-system"
+          name="gz::sim::systems::AckermannSteering">
 
-      <!-- Front wheels -->
-      <left_joint>fl_axle</left_joint>
-      <right_joint>fr_axle</right_joint>
+    <left_joint>bl_axle</left_joint>
+    <right_joint>br_axle</right_joint>
+    <left_joint>fl_axle</left_joint>
+    <right_joint>fr_axle</right_joint>
+    <left_steering_joint>l_steer</left_steering_joint>
+    <right_steering_joint>r_steer</right_steering_joint>
 
-      <!-- Steering joints -->
-      <left_steering_joint>l_steer</left_steering_joint>
-      <right_steering_joint>r_steer</right_steering_joint>
+    <kingpin_width>0.472</kingpin_width>
+    <steering_limit>0.64</steering_limit>
+    <wheel_base>0.488</wheel_base>
+    <wheel_separation>0.36</wheel_separation>
+    <wheel_radius>0.072</wheel_radius>
 
-      <!-- Vehicle geometry -->
-      <kingpin_width>0.472</kingpin_width>
-      <steering_limit>0.95</steering_limit>
-      <wheel_base>0.488</wheel_base> 
-      <wheel_separation>0.072</wheel_separation> 
-      <wheel_radius>0.072</wheel_radius>
+    <topic>/cmd_vel</topic>
 
-      <!-- Topics -->
-      <sub_topic>/steer_angle</sub_topic>
-      <topic>/cmd_vel</topic>
+    <odom_topic>/model/amazon_robot/odometry</odom_topic>
+    <tf_topic>/model/amazon_robot/tf</tf_topic>
+    <frame_id>odom</frame_id>
+    <child_frame_id>base_link</child_frame_id>
 
-      <!-- Velocity & acceleration limits -->
-      <min_velocity>-50</min_velocity>
-      <max_velocity>50</max_velocity>
-      <min_acceleration>-50</min_acceleration>
-      <max_acceleration>50</max_acceleration>
-    </plugin>
+    <odom_publish_frequency>100</odom_publish_frequency>
+  </plugin>
 
     <plugin
       filename="gz-sim-joint-controller-system"
@@ -493,8 +485,8 @@
       <i_gain>0.0</i_gain>
       <d_gain>0.1</d_gain>
       
-      <cmd_max>20</cmd_max>
-      <cmd_min>-20</cmd_min>
+      <cmd_max>100</cmd_max>
+      <cmd_min>-100</cmd_min>
       
       <disable_braking>0</disable_braking>
     </plugin>

@@ -1,6 +1,6 @@
 # gz topic published by DiffDrive plugin
 - ros_topic_name: "/amazon_robot/odom"
-  gz_topic_name: "/odom"
+  gz_topic_name: "/model/amazon_robot/odometry"
   ros_type_name: "nav_msgs/msg/Odometry"
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
@@ -13,7 +13,7 @@
   direction: ROS_TO_GZ
 
 # gz topic subscribed to by platform plugin
-- ros_topic_name: "/send_effort"
+- ros_topic_name: "/platform/cmd_vel"
   gz_topic_name: "/platform/cmd_vel"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"

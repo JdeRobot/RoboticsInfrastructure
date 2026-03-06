@@ -226,8 +226,8 @@
         -->
         <include>
             <name>amazon_robot</name>
-            <uri>model://amazon_robot_harmonic</uri>
-            <pose>0 0 0.5 0 0 0</pose>
+            <uri>model://ackermann_logistic_robot_harmonic</uri>
+            <pose>0 0 0.5 0 0 -1.5</pose>
         </include>
     </world>
 </sdf>
