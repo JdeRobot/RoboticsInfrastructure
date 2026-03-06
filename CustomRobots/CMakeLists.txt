@@ -73,6 +73,9 @@ ament_environment_hooks("hooks/resource_paths.sh")
 
 install(
   DIRECTORY
+    # FOLLOW PERSON ROBOT
+    follow_person_harmonic/turtlebot2_harmonic/models
+    follow_person_harmonic/params
     # TURTLEBOT
     Turtlebot2/turtlebot2_simulated/kobuki_description/launch
     Turtlebot2/turtlebot2_simulated/kobuki_description/meshes

@@ -13,6 +13,9 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
+    robot_launch_dir = "/opt/jderobot/Launchers/follow_person"
+    gui_config_path = "/opt/jderobot/Launchers/visualization/follow_person.config"
+
     world_file_name = "reduced_hospital_harmonic.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
@@ -22,9 +25,13 @@ def generate_launch_description():
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": [f"-r -s -v4 {world_path}"],
+            "gz_args": [f"-r -s -v4 --gui-config {gui_config_path} {world_path}"],
             "on_exit_shutdown": "true",
         }.items(),
+    )
+
+    spawn_robot_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(robot_launch_dir, "spawn_robot.launch.py"))
     )
 
     ld = LaunchDescription()
@@ -32,5 +39,6 @@ def generate_launch_description():
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
     ld.add_action(AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", f":{gazebo_models_path}"))
     ld.add_action(gazebo_server)
+    ld.add_action(spawn_robot_cmd)
 
     return ld
