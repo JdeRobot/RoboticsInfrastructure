@@ -14,6 +14,7 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(package_dir, "models")
 
     robot_launch_dir = "/opt/jderobot/Launchers/follow_person"
+    gui_config_path = "/opt/jderobot/Launchers/visualization/follow_person.config"
 
     world_file_name = "reduced_hospital_harmonic.world"
     worlds_dir = "/opt/jderobot/Worlds"
@@ -24,7 +25,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": [f"-r -v4 {world_path}"],
+            "gz_args": [f"-r -v4 --gui_config {gui_config_path} {world_path}"],
             "on_exit_shutdown": "true",
         }.items(),
     )
