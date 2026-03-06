@@ -1016,6 +1016,7 @@
         filename="gz-sim-sensors-system"
         name="gz::sim::systems::Sensors">
         <render_engine>ogre2</render_engine>
+        <use_existing_scene>true</use_existing_scene>
         <wait_for_scene>true</wait_for_scene>
     </plugin>
 
