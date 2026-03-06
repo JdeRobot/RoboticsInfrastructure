@@ -18,9 +18,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-find_package(gz-sim REQUIRED)
-find_package(gz-plugin REQUIRED)
-
 # ===========================================================================
 # find dependencies
 set(PROJECT_DEPENDENCIES
@@ -38,21 +35,6 @@ set(PROJECT_DEPENDENCIES
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
-
-# ============================================================================
-# Person plugin Harmonic
-
-add_library(person_h SHARED amazon_hospital/src/person_h.cpp)
-
-target_link_libraries(person_h
-  gz-sim::gz-sim
-  gz-plugin::gz-plugin
-)
-
-install(
-  TARGETS person_h
-  LIBRARY DESTINATION lib
-)
 
 # ============================================================================
 # Person plugin
