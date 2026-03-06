@@ -1512,7 +1512,7 @@
     </include>
 
     <include>
-      <uri>model://turtlebotROS</uri>
+      <uri>model://turtlebot2_harmonic</uri>
       <pose>0 10 0 0 0 0</pose>
     </include>
 

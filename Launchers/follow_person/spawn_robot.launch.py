@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the urdf file
-    model_folder = "turtlebotROS"
+    model_folder = "turtlebot2_harmonic"
     urdf_path = os.path.join(
         get_package_share_directory("custom_robots"),
         "models",
@@ -63,7 +63,7 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "turtlebotROS.yaml"
+        get_package_share_directory("custom_robots"), "params", "turtlebot2_harmonic.yaml"
     )
 
     start_gazebo_ros_bridge_cmd = Node(
