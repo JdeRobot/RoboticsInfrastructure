@@ -981,11 +981,6 @@
     </joint>
 
     <plugin
-        filename="gz-sim-physics-system"
-        name="gz::sim::systems::Physics">
-    </plugin>
-
-    <plugin
         filename="gz-sim-imu-system"
         name="gz::sim::systems::Imu">
     </plugin>
@@ -1011,14 +1006,6 @@
       <odom_topic>/odom</odom_topic>
       <dimensions>3</dimensions>
     </plugin>
-
-    <!--gz-sim-user-commands-systemgz-sim-scene-broadcaster-systemplugin
-        filename="gz-sim-sensors-system"
-        name="gz::sim::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-        <use_existing_scene>true</use_existing_scene>
-        <wait_for_scene>true</wait_for_scene>
-    </plugin-->
 
   </model>
 </sdf>
