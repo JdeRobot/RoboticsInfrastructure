@@ -25,7 +25,10 @@ setup(
     zip_safe=True,
     maintainer="JdeRobot",
     maintainer_email="pawanw17@gmail.com",
-    description="Jde Robot drones package to integrate Aerostack2 and pixhawk with Robotics Academy",
+    description=(
+        "Jde Robot drones package to integrate Aerostack2 and Pixhawk "
+        "with Robotics Academy"
+    ),
     license="MIT",
     tests_require=["pytest"],
     entry_points={

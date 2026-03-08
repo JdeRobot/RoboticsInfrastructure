@@ -1,7 +1,7 @@
-<?xml version='1.0'?>
-<sdf version='1.7'>
-  <model name='package_box_01'>
-    <link name='main'>
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="package_box_01">
+    <link name="main">
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -15,7 +15,7 @@
       </inertial>
       <pose>0 0 0.055 0 -0 0</pose>
       <gravity>1</gravity>
-      <visual name='main_visual'>
+      <visual name="main_visual">
         <geometry>
           <box>
             <size>0.14 0.12 0.11</size>
@@ -27,12 +27,12 @@
           <specular>0.1 0.1 0.1 1.0</specular>
           <pbr>
             <metal>
-                <albedo_map>model://package_box_01/materials/textures/package_box_01.png</albedo_map>
+              <albedo_map>model://package_box_01/materials/textures/brown.png</albedo_map>
             </metal>
           </pbr>
         </material>
       </visual>
-      <collision name='main_collision'>
+      <collision name="main_collision">
         <geometry>
           <box>
             <size>0.14 0.12 0.11</size>

@@ -62,7 +62,14 @@ if [ $webserver == true ]; then
     runserver="python3 /RoboticsAcademy/manage.py runserver 0.0.0.0:7164"
 fi
 
-runram="python3 RoboticsApplicationManager/manager/manager/manager.py 0.0.0.0 7163"
+if [ -d "/RoboticsApplicationManager" ]; then
+  runram="python3 RoboticsApplicationManager/robotics_application_manager/manager/manager.py 0.0.0.0 7163"
+else
+  # TODO: check for updates
+  source check_ram_version.sh
+  runram="python3 /ram_entrypoint.py 0.0.0.0 7163"
+fi
+
 root="cd /"
 
 # TEST LOGS
