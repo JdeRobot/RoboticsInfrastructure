@@ -465,8 +465,7 @@
       </physics>
     </joint>
 
-    <!--diff
-        drive plugin-->
+    <!--PLUGINs-->
     <plugin
       filename="gz-sim-diff-drive-system"
       name="gz::sim::systems::DiffDrive">
@@ -474,8 +473,15 @@
       <right_joint>right_wheel_joint</right_joint>
       <wheel_separation>0.576</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
-      <odom_publish_frequency>1</odom_publish_frequency>
       <topic>cmd_vel</topic>
+    </plugin>
+
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
     </plugin>
 
     <plugin
@@ -485,14 +491,11 @@
       <topic>/platform/cmd_vel</topic>
       <initial_position>0.0</initial_position>
       <use_force_commands>true</use_force_commands>
-      
       <p_gain>5.0</p_gain>
       <i_gain>0.0</i_gain>
       <d_gain>0.1</d_gain>
-      
       <cmd_max>20</cmd_max>
       <cmd_min>-20</cmd_min>
-      
       <disable_braking>0</disable_braking>
     </plugin>
 

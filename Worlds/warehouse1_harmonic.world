@@ -87,12 +87,6 @@
         </include>
 
         <include>
-            <name>aws_robomaker_warehouse_Lamp_01_005</name>
-            <uri>model://aws_robomaker_warehouse_Lamp_01</uri>
-            <pose>0 0 5 0 0 0</pose>
-        </include>
-
-        <include>
             <name>aws_robomaker_warehouse_Bucket_01_020</name>
             <uri>model://aws_robomaker_warehouse_Bucket_01</uri>
             <pose>0.433449 9.631706 0 0 0 -1.563161</pose>
