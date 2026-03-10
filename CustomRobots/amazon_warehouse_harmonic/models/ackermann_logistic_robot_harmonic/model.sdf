@@ -447,31 +447,37 @@
       </collision>
     </link>
 
-  <plugin filename="gz-sim-ackermann-steering-system"
-          name="gz::sim::systems::AckermannSteering">
+<plugin filename="gz-sim-ackermann-steering-system"
+            name="gz::sim::systems::AckermannSteering">
+      <left_joint>bl_axle</left_joint>
+      <right_joint>br_axle</right_joint>
+      <left_joint>fl_axle</left_joint>
+      <right_joint>fr_axle</right_joint>
+      <left_steering_joint>l_steer</left_steering_joint>
+      <right_steering_joint>r_steer</right_steering_joint>
 
-    <left_joint>bl_axle</left_joint>
-    <right_joint>br_axle</right_joint>
-    <left_joint>fl_axle</left_joint>
-    <right_joint>fr_axle</right_joint>
-    <left_steering_joint>l_steer</left_steering_joint>
-    <right_steering_joint>r_steer</right_steering_joint>
+      <kingpin_width>0.472</kingpin_width>
+      <steering_limit>0.64</steering_limit>
+      <wheel_base>0.488</wheel_base>
+      <wheel_separation>0.36</wheel_separation>
+      <wheel_radius>0.072</wheel_radius>
 
-    <kingpin_width>0.472</kingpin_width>
-    <steering_limit>0.64</steering_limit>
-    <wheel_base>0.488</wheel_base>
-    <wheel_separation>0.36</wheel_separation>
-    <wheel_radius>0.072</wheel_radius>
+      <topic>/cmd_vel</topic>
 
-    <topic>/cmd_vel</topic>
+      <odom_topic>/model/amazon_robot/odometry_noisy</odom_topic>
+      <tf_topic>/model/amazon_robot/tf_noisy</tf_topic>
+      <odom_publish_frequency>0</odom_publish_frequency>
+    </plugin>
 
-    <odom_topic>/model/amazon_robot/odometry</odom_topic>
-    <tf_topic>/model/amazon_robot/tf</tf_topic>
-    <frame_id>odom</frame_id>
-    <child_frame_id>base_link</child_frame_id>
-
-    <odom_publish_frequency>100</odom_publish_frequency>
-  </plugin>
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/amazon_robot/odometry</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
 
     <plugin
       filename="gz-sim-joint-controller-system"
@@ -480,14 +486,11 @@
       <topic>/platform/cmd_vel</topic>
       <initial_position>0.0</initial_position>
       <use_force_commands>true</use_force_commands>
-      
       <p_gain>5.0</p_gain>
       <i_gain>0.0</i_gain>
       <d_gain>0.1</d_gain>
-      
       <cmd_max>100</cmd_max>
       <cmd_min>-100</cmd_min>
-      
       <disable_braking>0</disable_braking>
     </plugin>
 
