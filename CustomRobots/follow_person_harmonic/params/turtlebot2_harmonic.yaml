@@ -1,46 +1,45 @@
-# gz topic published by DiffDrive plugin
-- ros_topic_name: "/odom"
-  gz_topic_name: "/odom"
+# gz topic published by DiffDrive plugin del robot
+- ros_topic_name: "/robot_follow_person/odom"
+  gz_topic_name: "/model/robot_follow_person/odometry"
   ros_type_name: "nav_msgs/msg/Odometry"
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
 
-# gz topic subscribed to by DiffDrive plugin
-- ros_topic_name: "/cmd_vel"
-  gz_topic_name: "/cmd_vel"
+# gz topic para enviar velocidad al robot
+- ros_topic_name: "/robot_follow_person/cmd_vel"
+  gz_topic_name: "/model/robot_follow_person/cmd_vel"
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ
 
-# gz topic published by Sensors plugin (LIDAR)
-- ros_topic_name: "/scan"
-  gz_topic_name: "/scan"
+# gz topic publicado por LIDAR del robot
+- ros_topic_name: "/robot_follow_person/scan"
+  gz_topic_name: "/model/robot_follow_person/scan"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-# gz topic published by Sensors plugin (Camera)
-- ros_topic_name: "/depth_camera/camera_info"
-  gz_topic_name: "/depth_camera/camera_info"
+# gz topic publicado por la cámara del robot
+- ros_topic_name: "/robot_follow_person/depth_camera/camera_info"
+  gz_topic_name: "/model/robot_follow_person/depth_camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/depth_camera/image_raw"
-  gz_topic_name: "/depth_camera/image"
+- ros_topic_name: "/robot_follow_person/depth_camera/image_raw"
+  gz_topic_name: "/model/robot_follow_person/depth_camera/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/depth_camera/depth_image"
-  gz_topic_name: "/depth_camera/depth_image"
+- ros_topic_name: "/robot_follow_person/depth_camera/depth_image"
+  gz_topic_name: "/model/robot_follow_person/depth_camera/depth_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/depth_camera/points"
-  gz_topic_name: "/depth_camera/points"
+- ros_topic_name: "/robot_follow_person/depth_camera/points"
+  gz_topic_name: "/model/robot_follow_person/depth_camera/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
-  

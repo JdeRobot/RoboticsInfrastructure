@@ -36,7 +36,7 @@ def generate_launch_description():
     image_bridge_cmd = Node(
         package="ros_gz_image",
         executable="image_bridge",
-        arguments=["/depth_camera/image_raw"],
+        arguments=["/robot_follow_person/depth_camera/image_raw"],
         output="screen",
     )
 
