@@ -24,7 +24,6 @@
           <izz>2238.05</izz>
         </inertia>
       </inertial>
-
       <collision name='chassis_link_collision'>
         <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
@@ -45,7 +44,6 @@
           </friction>
         </surface>
       </collision>
-
       <visual name='chassis_link_visual'>
         <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
@@ -69,7 +67,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='bl_1'>
       <pose relative_to='bl_axle'>0 0 0 0 0 0</pose>
       <inertial>
@@ -127,7 +124,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='br_1'>
       <pose relative_to='br_axle'>0 0 0 0 0 0</pose>
       <inertial>
@@ -191,7 +187,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='l_steer_1'>
       <pose relative_to='l_steer'>0 0 0 0 0 0</pose>
       <inertial>
@@ -220,7 +215,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='fl_1'>
       <pose relative_to='fl_axle'>0 0 0 0 0 0</pose>
       <inertial>
@@ -285,7 +279,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='r_steer_1'>
       <pose relative_to='r_steer'>0 0 0 0 0 0</pose>
       <inertial>
@@ -314,7 +307,6 @@
         </dynamics>
       </axis>
     </joint>
-
     <link name='fr_1'>
       <pose relative_to='fr_axle'>0 0 0 0 0 0</pose>
       <inertial>
@@ -367,20 +359,34 @@
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
-          <lower>0.18</lower>
-          <upper>0.35</upper>
+          <lower>0.0</lower>
+          <upper>0.25</upper>
           <effort>100</effort>
           <velocity>0.5</velocity>
         </limit>
         <dynamics>
           <damping>0.1</damping>
           <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
         </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+          <provide_feedback>1</provide_feedback>
+          <ode>
+            <implicit_spring_damper>1</implicit_spring_damper>
+            <cfm_damping>1</cfm_damping>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+      </physics>
     </joint>
-    
+
     <link name="lift_link">
-      <pose relative_to='base_link'>0 0 0 0 0 0</pose>
+      <pose relative_to='chassis_link'>0.0 0.0 0.165 0 0 0</pose>
       <inertial>
         <inertia>
           <ixx>0.001</ixx>
@@ -411,12 +417,17 @@
         <surface>
           <friction>
             <ode>
-              <mu>1e6</mu>
-              <mu2>1e5</mu2>
+              <mu>1000000</mu>
+              <mu2>100000</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
             </ode>
           </friction>
           <contact>
             <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
               <kp>1e+7</kp>
               <kd>100</kd>
               <max_vel>0.001</max_vel>
@@ -454,24 +465,19 @@
     <plugin filename="gz-sim-joint-controller-system" name="gz::sim::systems::JointController">
       <joint_name>lift_joint</joint_name>
       <topic>/platform/cmd_vel</topic>
-      <initial_position>0.18</initial_position>
+      <initial_position>0.0</initial_position>
       <use_force_commands>true</use_force_commands>
-      <p_gain>1000.0</p_gain>
-      <i_gain>10.0</i_gain>
-      <d_gain>10.0</d_gain>
+      <p_gain>5.0</p_gain>
+      <i_gain>0.0</i_gain>
+      <d_gain>0.1</d_gain>
       <cmd_max>100</cmd_max>
       <cmd_min>-100</cmd_min>
+      <disable_braking>0</disable_braking>
     </plugin>
 
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
       <topic>/robot/joint_state</topic>
       <joint_name>lift_joint</joint_name>
-      <joint_name>bl_axle</joint_name>
-      <joint_name>br_axle</joint_name>
-      <joint_name>fl_axle</joint_name>
-      <joint_name>fr_axle</joint_name>
-      <joint_name>l_steer</joint_name>
-      <joint_name>r_steer</joint_name>
     </plugin>
   </model>
 </sdf>
