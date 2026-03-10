@@ -473,8 +473,8 @@
       <right_joint>right_wheel_joint</right_joint>
       <wheel_separation>0.576</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
-      <topic>/amazon_robot/cmd_vel</topic>
-      </plugin>
+      <topic>/cmd_vel</topic>
+    </plugin>
 
     <plugin
       filename="gz-sim-odometry-publisher-system"
@@ -482,20 +482,8 @@
       <odom_frame>odom</odom_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
-      <odom_topic>/amazon_robot/odom</odom_topic>
+      <odom_topic>/model/amazon_robot/odometry</odom_topic>
       <dimensions>3</dimensions>
-    </plugin>
-
-    <plugin
-      filename="gz-sim-pose-publisher-system"
-      name="gz::sim::systems::PosePublisher">
-      <publish_link_pose>true</publish_link_pose>
-      <publish_collision_pose>false</publish_collision_pose>
-      <publish_visual_pose>false</publish_visual_pose>
-      <publish_nested_model_pose>true</publish_nested_model_pose>
-      <use_pose_vector_msg>true</use_pose_vector_msg>
-      <update_frequency>50</update_frequency>
-      <topic>/amazon_robot/ground_truth_pose</topic>
     </plugin>
 
     <plugin
@@ -510,7 +498,6 @@
       <d_gain>0.1</d_gain>
       <cmd_max>20</cmd_max>
       <cmd_min>-20</cmd_min>
-      <disable_braking>0</disable_braking>
     </plugin>
 
     <plugin
