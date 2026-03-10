@@ -474,6 +474,7 @@
       <wheel_separation>0.576</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
       <topic>/cmd_vel</topic>
+      <odom_publish_frequency>0</odom_publish_frequency>
     </plugin>
 
     <plugin
