@@ -43,3 +43,10 @@
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
+
+  # Service to set the pose of the teleoperated person
+- ros_service_name: "/set_person_pose"
+  gz_service_name: "/world/hospital/set_pose"
+  ros_type_name: "gazebo_msgs/srv/SetEntityState"
+  gz_type_name: "gz.msgs.Entity"
+  direction: ROS_TO_GZ
