@@ -752,7 +752,7 @@
         <include>
             <name>robot</name>
             <uri>model://turtlebot2_harmonic</uri>
-            <pose>-1.0 10.0 0.1 0.0 0.0 0</pose>
+            <pose reset="true">-1.0 10.0 0.1 0.0 0.0 0</pose>
         </include>
     </world>
 </sdf>
