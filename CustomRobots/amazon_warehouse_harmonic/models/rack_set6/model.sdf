@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='rack_set6'>
+    <include>
+        <name>rack0</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 0 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>palle1</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 1.5 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack2</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 3.0 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack3</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 0 2.0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack4</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 1.5 2.0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+        <name>rack5</name>
+        <uri>model://rack_3shelves</uri>
+        <pose> 3.0 2.0 0 0 0 1.57</pose>
+    </include>
+  </model>
+</sdf>

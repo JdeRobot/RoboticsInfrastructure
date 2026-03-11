@@ -44,12 +44,12 @@
     </physics>
 
     <include>
-      <uri>model://amazon_robot</uri>
+      <uri>model://amazon_robot_classic</uri>
         <pose>0 0 0.1 0 0 0</pose>
     </include>
 
     <include>
-          <uri>model://warehouse_pallet</uri>
+          <uri>model://warehouse_pallet_classic</uri>
           <name>warehouse_pallet_0</name>
           <pose>1 -15 0 0 0 0</pose>
     </include>
@@ -57,7 +57,7 @@
     <population name="pallet_population0">
           <model name="pallet_set0">
               <include>
-                  <uri>model://warehouse_pallet</uri>
+                  <uri>model://warehouse_pallet_classic</uri>
                   <pose>0 0 0 0 0 0</pose>
               </include>
           </model>
@@ -74,7 +74,7 @@
         <population name="pallet_population1">
             <model name="pallet_set1">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -91,7 +91,7 @@
         <population name="pallet_population2">
             <model name="pallet_set2">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -109,7 +109,7 @@
         <population name="pallet_population3">
             <model name="pallet_set3">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -126,7 +126,7 @@
         <population name="pallet_population4">
             <model name="pallet_set4">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -143,7 +143,7 @@
         <population name="pallet_population5">
             <model name="pallet_set5">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -160,7 +160,7 @@
         <population name="pallet_population6">
             <model name="pallet_set6">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -177,7 +177,7 @@
         <population name="pallet_population7">
             <model name="pallet_set7">
                 <include>
-                    <uri>model://warehouse_pallet</uri>
+                    <uri>model://warehouse_pallet_classic</uri>
                     <pose>0 0 0 0 0 0</pose>
                 </include>
             </model>
@@ -191,7 +191,7 @@
         </population>
 
         <include>
-            <uri>model://warehouse_walls</uri>
+            <uri>model://warehouse_walls_classic</uri>
         </include>
   </world>
 </sdf>

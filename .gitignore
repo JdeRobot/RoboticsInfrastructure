@@ -9,3 +9,6 @@ __pycache__/
 build
 install
 test/__pycache__/
+
+# Logs
+*.log

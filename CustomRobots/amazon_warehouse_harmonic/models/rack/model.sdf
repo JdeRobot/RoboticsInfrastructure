@@ -1,0 +1,351 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='rack'>
+    <link name="surface">
+      <inertial>
+          <mass>0.1</mass>
+          <inertia>
+              <ixx>0.00001</ixx>
+              <ixy>0.000</ixy>
+              <ixz>0.000</ixz>
+              <iyy>0.00001</iyy>
+              <iyz>0.000</iyz>
+              <izz>0.00001</izz>
+          </inertia>
+      </inertial>
+      <visual name='surface_visual'>
+        <pose relative_to=''>0 0 0.45 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2 0.8 0.03</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.35 0.2 1</ambient>
+          <diffuse>0.55 0.35 0.2 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='surface_collision'>
+        <pose relative_to=''>0 0 0.45 0 0 0</pose>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <geometry>
+          <box>
+            <size>2 0.82 0.03</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1000000</mu>
+              <mu2>1000000</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1e13</kp>
+              <kd>1</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='left_holding_visual'>
+        <pose relative_to=''>0 0.4 0.45 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.98 0.02 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+
+      <visual name='right_holding_visual'>
+        <pose relative_to=''>0 -0.4 0.45 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.98 0.02 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+
+      
+      <visual name='front_holding_visual'>
+        <pose relative_to=''>1.0 0 0.45 0 0 1.57</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.02 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      
+      <visual name='back_holding_visual'>
+        <pose relative_to=''>-1.0 0 0.45 0 0 1.57</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.02 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+
+      <visual name='front_left_leg_visual'>
+        <pose relative_to=''>0.99 0.4 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='front_left_leg_collision'>
+        <pose relative_to=''>0.99 0.4 0.5 0 0 0</pose>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>1</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='front_right_leg_visual'>
+        <pose relative_to=''>0.99 -0.4 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='front_right_leg_collision'>
+        <pose relative_to=''>0.99 -0.4 0.5 0 0 0</pose>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>1</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>      
+
+      <visual name='back_left_leg_visual'>
+        <pose relative_to=''>-0.99 0.4 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='back_left_leg_collision'>
+        <pose relative_to=''>-0.99 0.4 0.5 0 0 0</pose>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>1</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name='back_right_leg_visual'>
+        <pose relative_to=''>-0.99 -0.4 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <roughness>0.8</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='back_right_leg_collision'>
+        <pose relative_to=''>-0.99 -0.4 0.5 0 0 0</pose>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+          </bounce>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>1</kd>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+  </model>
+</sdf>
