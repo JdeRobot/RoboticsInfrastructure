@@ -747,7 +747,7 @@
         </include>
         <include>
             <name>person2control</name>
-            <uri>model://PersonToControl</uri>
+            <uri>model://PersonToControl_harmonic</uri>
             <pose>4 10 0 0 0 3.14</pose>
         </include>
         <include>

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
-  <model name="PersonToControl">
+  <model name="PersonToControl_harmonic">
     <link name="link">
       <inertial>
         <pose>0 -0.1 0.95 0 0 0</pose>
@@ -28,7 +28,7 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToControl/meshes/standing.dae</uri>
+            <uri>model://PersonToControl_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -37,14 +37,13 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToControl/meshes/standing.dae</uri>
+            <uri>model://PersonToControl_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </visual>
     </link>
 
-    <gazebo>
-      <static>false</static>
-    </gazebo>
+    <static>false</static>
+
   </model>
 </sdf>

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
-  <model name="PersonToFollow">
+  <model name="PersonToFollow_harmonic">
     <link name="link">
       <inertial>
         <pose>0 -0.1 0.95 0 0 0</pose>
@@ -28,7 +28,7 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToFollow/meshes/standing.dae</uri>
+            <uri>model://PersonToFollow_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -37,17 +37,15 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToFollow/meshes/standing.dae</uri>
+            <uri>model://PersonToFollow_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </visual>
     </link>
 
-    <!--
-    <plugin name="personplugin" filename="libpersonplugin.so"/>
-    -->
+    <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"/>
 
-    <static>true</static>
+    <static>false</static>
       
   </model>
 </sdf>
