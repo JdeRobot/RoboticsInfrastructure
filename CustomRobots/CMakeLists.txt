@@ -4,7 +4,7 @@ project(custom_robots)
 set(RI_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
+  set(CMAKE_C_STANDARD 99)
 endif()
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -51,7 +51,7 @@ ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
 
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
-add_library(personplugin_harmonic SHARED follow_person_harmonic/src/person_harmonic.cpp)
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(
   personplugin_harmonic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -59,10 +59,10 @@ target_include_directories(
 
 ament_target_dependencies(personplugin_harmonic "rclcpp" "pluginlib")
 target_link_libraries(personplugin_harmonic
-  Threads::Threads
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
-  gz-math7::gz-math7)
+  gz-math7::gz-math7
+  Threads::Threads)
 
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
@@ -138,7 +138,9 @@ if(BUILD_TESTING)
   # ament_lint_auto_find_test_dependencies()
 
   # find_package(launch_testing_ament_cmake REQUIRED)
+  # # Use file(GLOB...) to find all test files matching the pattern
   # file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test*.py")
+  # # Loop through each test file and add it as a launch test
   # foreach(test_file ${TEST_FILES})
   #   add_launch_test(${test_file} TIMEOUT 90)
   # endforeach()
