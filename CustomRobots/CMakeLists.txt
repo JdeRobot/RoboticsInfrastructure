@@ -15,6 +15,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# Esto evita que se vuelva a crear el target JsonCpp::JsonCpp
+set(JSONCPP_FOUND TRUE CACHE BOOL "" FORCE)
+set(JsonCpp_FOUND TRUE CACHE BOOL "" FORCE)
+set(JsonCpp_INCLUDE_DIRS "/usr/include/jsoncpp" CACHE PATH "" FORCE)
+set(JsonCpp_LIBRARIES "jsoncpp" CACHE STRING "" FORCE)
+
 set(PROJECT_DEPENDENCIES
     ament_cmake
     sensor_msgs
@@ -30,12 +36,6 @@ set(PROJECT_DEPENDENCIES
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
-
-# Evita redefinir JsonCpp
-set(JSONCPP_FOUND TRUE CACHE BOOL "" FORCE)
-set(JsonCpp_FOUND TRUE CACHE BOOL "" FORCE)
-set(JsonCpp_INCLUDE_DIRS "/usr/include/jsoncpp" CACHE PATH "" FORCE)
-set(JsonCpp_LIBRARIES "jsoncpp" CACHE STRING "" FORCE)
 
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
