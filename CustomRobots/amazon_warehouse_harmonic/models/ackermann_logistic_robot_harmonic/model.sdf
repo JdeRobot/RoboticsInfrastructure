@@ -10,21 +10,22 @@
       <parent>base_link</parent>
       <child>chassis_link</child>
     </joint>
+
     <link name='chassis_link'>
       <inertial>
-        <pose>1e-06 0.07307 0.65096 0 -0 0</pose>
+        <pose>0.07307 -1e-06 0.65096 0 0 0</pose>
         <mass>1580</mass>
         <inertia>
-          <ixx>1997.86</ixx>
-          <ixy>-3e-05</ixy>
-          <ixz>-1e-06</ixz>
-          <iyy>442.769</iyy>
-          <iyz>62.5206</iyz>
+          <ixx>442.769</ixx>
+          <ixy>3e-05</ixy>
+          <ixz>62.5206</ixz>
+          <iyy>1997.86</iyy>
+          <iyz>1e-06</iyz>
           <izz>2238.05</izz>
         </inertia>
       </inertial>
-      <collision name='chassis_link_fixed_joint_lump__chassis_link_collision'>
-        <pose>0 0 0.0 0 -0 0</pose>
+      <collision name='chassis_link_collision'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -43,8 +44,8 @@
           </friction>
         </surface>
       </collision>
-      <visual name='chassis_link_fixed_joint_lump__chassis_link_visual'>
-        <pose>0 0 0.0 0 -0 0</pose>
+      <visual name='chassis_link_visual'>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -52,41 +53,36 @@
           </mesh>
         </geometry>
       </visual>
-      <!-- <velocity_decay/> -->
-      <!--  <gravity>1</gravity> -->
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>1</self_collide>
-      <!--  <gravity>1</gravity> -->
     </link>
 
     <joint name='bl_axle' type='revolute'>
-      <pose relative_to='chassis_link'>-0.18 -0.244 0.0 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.244 0.18 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>bl_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
-          <friction>12.031606150200002</friction>
+          <friction>12.0316061502</friction>
         </dynamics>
       </axis>
     </joint>
     <link name='bl_1'>
-      <pose relative_to='bl_axle'>0 0 0 0 -0 0</pose>
+      <pose relative_to='bl_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0 0 -0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
       <collision name='bl_1_collision'>
-        <pose relative_to='bl_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -106,7 +102,7 @@
         </surface>
       </collision>
       <visual name='bl_1_visual'>
-        <pose>0.0 0.0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -114,38 +110,36 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
     <joint name='br_axle' type='revolute'>
-      <pose relative_to='chassis_link'>0.18 -0.244 0.0 0 -0 0</pose>
+      <pose relative_to='chassis_link'>-0.244 -0.18 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>br_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
-          <friction>12.031606150200002</friction>
+          <friction>12.0316061502</friction>
         </dynamics>
       </axis>
     </joint>
     <link name='br_1'>
-      <pose relative_to='br_axle'>0 0 0 0 -0 0</pose>
+      <pose relative_to='br_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
       <collision name='br_1_collision'>
-        <pose relative_to='br_axle'>0 0 0 0 1.5708 0</pose>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -165,7 +159,7 @@
         </surface>
       </collision>
       <visual name='br_1_visual'>
-        <pose>0.0 0.0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -173,13 +167,11 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
     <joint name='l_steer' type='revolute'>
-      <pose relative_to='chassis_link'>-0.236 0.244 0.0 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.244 0.236 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>l_steer_1</child>
       <axis>
@@ -196,9 +188,9 @@
       </axis>
     </joint>
     <link name='l_steer_1'>
-      <pose relative_to='l_steer'>0 0 0 0 -0 0</pose>
+      <pose relative_to='l_steer'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <pose>0 -0.003381 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -209,37 +201,36 @@
           <izz>1</izz>
         </inertia>
       </inertial>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
+
     <joint name='fl_axle' type='revolute'>
-      <pose relative_to='l_steer_1'>0 0 0 0 -0 0</pose>
+      <pose relative_to='l_steer_1'>0 0 0 0 0 0</pose>
       <parent>l_steer_1</parent>
       <child>fl_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
-          <friction>12.031606150200002</friction>
+          <friction>12.0316061502</friction>
         </dynamics>
       </axis>
     </joint>
     <link name='fl_1'>
-      <pose relative_to='fl_axle'>0 0 0 0 -0 0</pose>
+      <pose relative_to='fl_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
       <collision name='fl_1_collision'>
-        <pose>0.0 -0.0 0.0 0 1.5708 0</pose>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -259,7 +250,7 @@
         </surface>
       </collision>
       <visual name='fl_1_visual'>
-        <pose>0.0 -0.0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -267,13 +258,11 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
     <joint name='r_steer' type='revolute'>
-      <pose relative_to='chassis_link'>0.236 0.244 0.0 0 -0 0</pose>
+      <pose relative_to='chassis_link'>0.244 -0.236 0.0 0 0 0</pose>
       <parent>chassis_link</parent>
       <child>r_steer_1</child>
       <axis>
@@ -291,9 +280,9 @@
       </axis>
     </joint>
     <link name='r_steer_1'>
-      <pose relative_to='r_steer'>0 0 0 0 -0 0</pose>
+      <pose relative_to='r_steer'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.003381 0 0.02162 0 -0 0</pose>
+        <pose>0 -0.003381 0.02162 0 0 0</pose>
         <mass>1</mass>
         <inertia>
           <ixx>1</ixx>
@@ -304,37 +293,36 @@
           <izz>1</izz>
         </inertia>
       </inertial>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
+
     <joint name='fr_axle' type='revolute'>
-      <pose relative_to='r_steer_1'>0 0 0 0 -0 0</pose>
+      <pose relative_to='r_steer_1'>0 0 0 0 0 0</pose>
       <parent>r_steer_1</parent>
       <child>fr_1</child>
       <axis>
-        <xyz>-1 0 0</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
-          <friction>12.031606150200002</friction>
+          <friction>12.0316061502</friction>
         </dynamics>
       </axis>
     </joint>
     <link name='fr_1'>
-      <pose relative_to='fr_axle'>0 0 0 0 -0 0</pose>
+      <pose relative_to='fr_axle'>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>-0.0377 0 -0 0 -0 0</pose>
+        <pose>0 0.0377 0 0 0 0</pose>
         <mass>24.5</mass>
         <inertia>
-          <ixx>1.84514</ixx>
+          <ixx>1.04961</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1.04961</iyy>
+          <iyy>1.84514</iyy>
           <iyz>0</iyz>
           <izz>1.04961</izz>
         </inertia>
       </inertial>
       <collision name='fr_1_collision'>
-        <pose>-0.0 -0.0 0.0 0 1.5708 0</pose>
+        <pose>0 0 0 1.5707963 0 0</pose>
         <geometry>
           <cylinder>
             <radius>.072</radius>
@@ -354,7 +342,7 @@
         </surface>
       </collision>
       <visual name='fr_1_visual'>
-        <pose>-0.0 -0.0 0.0 0 -0 0</pose>
+        <pose>0 0 0.0 0 0 -1.5707963</pose>
         <geometry>
           <mesh>
             <scale>0.5 0.5 0.5</scale>
@@ -362,8 +350,6 @@
           </mesh>
         </geometry>
       </visual>
-      <!--  <gravity>1</gravity> -->
-      <!-- <velocity_decay/> -->
       <self_collide>0</self_collide>
     </link>
 
@@ -397,18 +383,10 @@
             </limit>
           </ode>
       </physics>
-      <!-- <axis><use_parent_model_frame>true</use_parent_model_frame><xyz>0 0 1</xyz></axis><limit effort="6" lower="0.00" upper="0.100" velocity="50"/> -->
     </joint>
+
     <link name="lift_link">
-      <pose relative_to='chassis_link'>0.0 0.0 0.165 0 -0 0</pose>
-      <visual name="lift_visual">
-        <geometry>
-          <mesh>
-            <uri>model://ackermann_logistic_robot_harmonic/meshes/platform.dae</uri>
-            <scale>0.5 0.5 0.5</scale>
-          </mesh>
-      </geometry>
-      </visual>
+      <pose relative_to='chassis_link'>0.0 0.0 0.165 0 0 0</pose>
       <inertial>
         <inertia>
           <ixx>0.001</ixx>
@@ -420,7 +398,17 @@
         </inertia>
         <mass>0.1</mass>
       </inertial>
+      <visual name="lift_visual">
+        <pose>0 0 0 0 0 -1.5707963</pose>
+        <geometry>
+          <mesh>
+            <uri>model://ackermann_logistic_robot_harmonic/meshes/platform.dae</uri>
+            <scale>0.5 0.5 0.5</scale>
+          </mesh>
+        </geometry>
+      </visual>
       <collision name="lift_collision">
+        <pose>0 0 0 0 0 -1.5707963</pose>
         <geometry>
           <box>
             <size>0.2805 0.2 0.03</size>
@@ -440,60 +428,54 @@
             <ode>
               <soft_cfm>0</soft_cfm>
               <soft_erp>0.2</soft_erp>
-              <kp>1e+7</kp> <kd>100</kd>  <max_vel>0.001</max_vel> <min_depth>0.005</min_depth> 
+              <kp>1e+7</kp>
+              <kd>100</kd>
+              <max_vel>0.001</max_vel>
+              <min_depth>0.005</min_depth>
             </ode>
           </contact>
         </surface>
       </collision>
     </link>
 
-  <plugin filename="gz-sim-ackermann-steering-system"
-          name="gz::sim::systems::AckermannSteering">
+    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+      <left_joint>bl_axle</left_joint>
+      <right_joint>br_axle</right_joint>
+      <left_steering_joint>l_steer</left_steering_joint>
+      <right_steering_joint>r_steer</right_steering_joint>
+      <kingpin_width>0.472</kingpin_width>
+      <steering_limit>0.64</steering_limit>
+      <wheel_base>0.488</wheel_base>
+      <wheel_separation>0.36</wheel_separation>
+      <wheel_radius>0.072</wheel_radius>
+      <topic>/cmd_vel</topic>
+      <odom_topic>/model/amazon_robot/odometry_noisy</odom_topic>
+      <tf_topic>/model/amazon_robot/tf_noisy</tf_topic>
+      <odom_publish_frequency>50</odom_publish_frequency>
+    </plugin>
 
-    <left_joint>bl_axle</left_joint>
-    <right_joint>br_axle</right_joint>
-    <left_joint>fl_axle</left_joint>
-    <right_joint>fr_axle</right_joint>
-    <left_steering_joint>l_steer</left_steering_joint>
-    <right_steering_joint>r_steer</right_steering_joint>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/amazon_robot/odometry</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
 
-    <kingpin_width>0.472</kingpin_width>
-    <steering_limit>0.64</steering_limit>
-    <wheel_base>0.488</wheel_base>
-    <wheel_separation>0.36</wheel_separation>
-    <wheel_radius>0.072</wheel_radius>
-
-    <topic>/cmd_vel</topic>
-
-    <odom_topic>/model/amazon_robot/odometry</odom_topic>
-    <tf_topic>/model/amazon_robot/tf</tf_topic>
-    <frame_id>odom</frame_id>
-    <child_frame_id>base_link</child_frame_id>
-
-    <odom_publish_frequency>100</odom_publish_frequency>
-  </plugin>
-
-    <plugin
-      filename="gz-sim-joint-controller-system"
-      name="gz::sim::systems::JointController">
+    <plugin filename="gz-sim-joint-controller-system" name="gz::sim::systems::JointController">
       <joint_name>lift_joint</joint_name>
       <topic>/platform/cmd_vel</topic>
       <initial_position>0.0</initial_position>
       <use_force_commands>true</use_force_commands>
-      
       <p_gain>5.0</p_gain>
       <i_gain>0.0</i_gain>
       <d_gain>0.1</d_gain>
-      
       <cmd_max>100</cmd_max>
       <cmd_min>-100</cmd_min>
-      
       <disable_braking>0</disable_braking>
     </plugin>
 
-    <plugin
-      filename="gz-sim-joint-state-publisher-system"
-      name="gz::sim::systems::JointStatePublisher">
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
       <topic>/robot/joint_state</topic>
       <joint_name>lift_joint</joint_name>
     </plugin>
