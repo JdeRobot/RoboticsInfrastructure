@@ -15,11 +15,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Esto evita que se vuelva a crear el target JsonCpp::JsonCpp
-set(JSONCPP_FOUND TRUE CACHE BOOL "" FORCE)
-set(JsonCpp_FOUND TRUE CACHE BOOL "" FORCE)
-set(JsonCpp_INCLUDE_DIRS "/usr/include/jsoncpp" CACHE PATH "" FORCE)
-set(JsonCpp_LIBRARIES "jsoncpp" CACHE STRING "" FORCE)
+# Antes de cualquier find_package que pueda usar JsonCpp
+if(TARGET JsonCpp::JsonCpp)
+  message(STATUS "JsonCpp::JsonCpp ya existe, no se redefine")
+else()
+  find_package(JsonCpp REQUIRED)
+endif()
 
 set(PROJECT_DEPENDENCIES
     ament_cmake
