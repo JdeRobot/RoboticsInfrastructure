@@ -38,6 +38,8 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
+find_package(JsonCpp REQUIRED)
+
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
@@ -69,7 +71,8 @@ target_link_libraries(personplugin_harmonic
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
   gz-math7::gz-math7
-  Threads::Threads)
+  Threads::Threads
+  JsonCpp::JsonCpp)
 
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
