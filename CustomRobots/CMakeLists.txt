@@ -31,6 +31,12 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
+# Evita redefinir JsonCpp
+set(JSONCPP_FOUND TRUE CACHE BOOL "" FORCE)
+set(JsonCpp_FOUND TRUE CACHE BOOL "" FORCE)
+set(JsonCpp_INCLUDE_DIRS "/usr/include/jsoncpp" CACHE PATH "" FORCE)
+set(JsonCpp_LIBRARIES "jsoncpp" CACHE STRING "" FORCE)
+
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
