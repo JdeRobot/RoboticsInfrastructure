@@ -22,11 +22,11 @@ namespace gz_link_attacher
 
 class LinkAttacher :
   public System,
-  public ISystemConfigure
+  public ISystemConfigure,
+  public ISystemPreUpdate
 {
 
 public:
-
   void Configure(
       const Entity &_entity,
       const std::shared_ptr<const sdf::Element> &,
@@ -37,7 +37,7 @@ public:
     worldEntity = _entity;
 
     if (!rclcpp::ok())
-      rclcpp::init(0,nullptr);
+      rclcpp::init(0, nullptr);
 
     node = std::make_shared<rclcpp::Node>("gz_link_attacher");
 
@@ -60,7 +60,14 @@ public:
           std::placeholders::_2));
 
     RCLCPP_INFO(node->get_logger(),"GZ Link Attacher Loaded");
+  }
 
+  void PreUpdate(
+    const UpdateInfo &,
+    EntityComponentManager &) override
+  {
+    if (node)
+      rclcpp::spin_some(node);
   }
 
 private:
@@ -76,7 +83,6 @@ private:
 
   std::string jointName;
 
-  /////////////////////////////////////////////////////////////
 
   Entity FindLink(
       EntityComponentManager &_ecm,
@@ -105,8 +111,6 @@ private:
     return result;
   }
 
-  /////////////////////////////////////////////////////////////
-
   void Attach(
     const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
     std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
@@ -119,9 +123,6 @@ private:
       return;
     }
 
-    // Aquí normalmente crearíamos el joint
-    // pero para primera versión solo confirmamos
-
     jointName =
       req->model1_name + "_" +
       req->link1_name + "_" +
@@ -130,12 +131,18 @@ private:
 
     attached=true;
 
+    RCLCPP_INFO(
+      node->get_logger(),
+      "Attach requested: %s %s -> %s %s",
+      req->model1_name.c_str(),
+      req->link1_name.c_str(),
+      req->model2_name.c_str(),
+      req->link2_name.c_str());
+
     res->success=true;
     res->message="Attached";
 
   }
-
-  /////////////////////////////////////////////////////////////
 
   void Detach(
     const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request> req,
@@ -151,6 +158,10 @@ private:
 
     attached=false;
 
+    RCLCPP_INFO(
+      node->get_logger(),
+      "Detach requested");
+
     res->success=true;
     res->message="Detached";
 
@@ -163,5 +174,6 @@ private:
 GZ_ADD_PLUGIN(
   gz_link_attacher::LinkAttacher,
   gz::sim::System,
-  gz::sim::ISystemConfigure
+  gz::sim::ISystemConfigure,
+  gz::sim::ISystemPreUpdate
 )
