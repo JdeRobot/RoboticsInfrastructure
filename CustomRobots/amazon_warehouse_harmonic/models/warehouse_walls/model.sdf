@@ -1,0 +1,456 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="warehouse_walls">
+    <static>true</static>
+
+    <link name="wall0_link0">
+      <pose>-10 0 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>20 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>20 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall1_link0">
+      <pose>8 -10 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+
+    <link name="wall1_link1">
+      <pose>4 -13.5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall1_link2">
+      <pose>0 -17 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+
+    <link name="wall1_link3">
+      <pose>-4 -13.5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall1_link4">
+      <pose>-6 -10 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall2_link0">
+      <pose>8 10 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+
+    <link name="wall2_link1">
+      <pose>4 13.5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall2_link2">
+      <pose>0 17 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+
+    <link name="wall2_link3">
+      <pose>-4 13.5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>7 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall2_link4">
+      <pose>-6 10 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>8 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall3_link0">
+      <pose>12 0 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>20 0.2 2.8</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>20 0.2 2.8</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall4_link0">
+      <pose>10 -5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>6 0.2 0.6</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>6 0.2 0.6</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="wall4_link1">
+      <pose>10 5 0 0 0 1.57</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>6 0.2 0.6</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>6 0.2 0.6</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://warehouse_walls/materials/textures/grey_wall.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="green_area">
+      <pose>0 13.5 0 0.001 0 0</pose>
+      <visual name='visual'>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>8 7</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>0 0.5 0 1</ambient>
+          <diffuse>0 0.5 0 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>0 0 0 0</emissive>
+        </material>
+      </visual>
+    </link>
+    <link name="red_area">
+      <pose>0 -13.5 0.001 0 0 0</pose>
+      <visual name='visual'>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>8 7</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>0.75 0 0 1</ambient>
+          <diffuse>0.75 0 0 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>0 0 0 0</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <link name="resting_area">
+      <pose>11 0 0.001 0 0 1.57</pose>
+      <visual name='visual_resting_area'>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>20 2</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>1 0.35 0 1</ambient>
+          <diffuse>1 0.35 0 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>0 0 0 0</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

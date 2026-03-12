@@ -95,11 +95,13 @@ install(
     ackermann_cars/params
     car_junction/models
     car_junction/scripts
+    # AMAZON WAREHOUSE ROBOT
+    amazon_robot_classic/models
+    amazon_robot_classic/urdf
+    amazon_robot_classic/meshes
     amazon_warehouse_harmonic/models
     amazon_warehouse_harmonic/params
-    amazon_robot/models
-    amazon_robot/urdf
-    amazon_robot/meshes
+    # AMAZON HOSPITAL
     amazon_hospital/models
     amazon_hospital/hospital_world/launch
     amazon_hospital/hospital_world/worlds
