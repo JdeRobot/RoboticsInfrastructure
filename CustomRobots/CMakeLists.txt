@@ -66,12 +66,12 @@ target_link_libraries(personplugin_harmonic
 
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
-#install(
-#  TARGETS personplugin personplugin_harmonic
-#  EXPORT export_${PROJECT_NAME}
-#  ARCHIVE DESTINATION lib
-#  LIBRARY DESTINATION lib
-#  RUNTIME DESTINATION bin)
+install(
+  TARGETS personplugin_harmonic #personplugin
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 
 ament_environment_hooks("hooks/resource_paths.dsv.in")
 ament_environment_hooks("hooks/resource_paths.sh")
