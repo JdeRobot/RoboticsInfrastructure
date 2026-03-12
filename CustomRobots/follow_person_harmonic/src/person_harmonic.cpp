@@ -22,9 +22,6 @@
 #include <unistd.h>
 #include <err.h>
 
-/**
- * SOCKET FUNCTIONS description (teleop)
- **/
 int create_socket(void);
 void close_socket(int fd);
 void set_ip_port(struct sockaddr_in & addr, const char * ip, int port);
@@ -42,10 +39,10 @@ namespace person_plugin
     public gz::sim::System,
     public gz::sim::ISystemConfigure,
     public gz::sim::ISystemPreUpdate,
-    public gz::sim::ISystemPostUpdate
+    public gz::sim::ISystemPostUpdate,
+    public gz::sim::ISystemReset
   {
     private:
-      // ===== Movement state =====
       int current_wp{0};
       int turn_dir{0};
       int linear_dir{0};
@@ -53,33 +50,33 @@ namespace person_plugin
       bool auto_movement{true};
       bool linear_movement{true};
 
-      float lv_dt{0.001f};   // discrete linear velocity
-      float av_dt{0.003f};   // discrete angular velocity
+      bool start_stopped{false};
+      bool started{true};
 
-      // variables to use in MoveToWaypoint method
+      bool initial_auto_movement{true};
+
+      float lv_dt{0.001f};
+      float av_dt{0.003f};
+
       bool orientation_reached{false};
       bool direction_chosen{false};
 
-      // ===== Gazebo Harmonic entities =====
       gz::sim::Model model{gz::sim::kNullEntity};
 
-      // Cached pose read from PostUpdate
       gz::math::Pose3d currentPose{0, 0, 0, 0, 0, 0};
       bool poseInitialized{false};
 
-      // waypoints where (px, py, next_waypoint)
-      std::vector<std::tuple<float, float, int>> wp;
+      gz::math::Pose3d initialPose{0, 0, 0, 0, 0, 0};
+      bool initialPoseInitialized{false};
 
-      // quadrants vector to know the correct direction of turn
+      std::vector<std::tuple<float, float, int>> wp;
       std::vector<std::tuple<float, float>> quadrants;
 
-      // ===== UDP server =====
       int sockfd{-1};
       struct sockaddr_in addr{};
       std::thread server_thread;
       std::atomic<bool> running{false};
 
-      // Protect shared state between server thread and sim thread
       std::mutex mtx;
 
     private:
@@ -119,7 +116,6 @@ namespace person_plugin
 
       float GetAngle(float rx, float ry)
       {
-        // Preservo tu lógica original para mantener el comportamiento
         std::lock_guard<std::mutex> lock(this->mtx);
         float px = static_cast<float>(this->currentPose.Pos().X());
         float py = static_cast<float>(this->currentPose.Pos().Y());
@@ -146,7 +142,6 @@ namespace person_plugin
               return static_cast<int>(i);
           }
 
-          // borde numérico: yaw == PI
           if (std::abs(yaw - PI) < 1e-6)
             return 1;
 
@@ -193,7 +188,6 @@ namespace person_plugin
           pose = this->currentPose;
         }
 
-        // 1) choose turning direction once
         if (!direction_chosen)
         {
           direction_chosen = true;
@@ -201,7 +195,6 @@ namespace person_plugin
                      static_cast<float>(pose.Rot().Yaw()));
         }
 
-        // 2) rotate until desired yaw
         if (!orientation_reached)
         {
           pose.Rot() = gz::math::Quaterniond(
@@ -210,7 +203,6 @@ namespace person_plugin
           if (std::abs(angle - pose.Rot().Yaw()) < 0.005f)
             orientation_reached = true;
         }
-        // 3) move forward
         else
         {
           pose.Pos().X() += -lv_dt * (0 * std::cos(pose.Rot().Yaw()) -
@@ -219,7 +211,6 @@ namespace person_plugin
                                       1 * std::cos(pose.Rot().Yaw()));
         }
 
-        // Command new pose in Harmonic
         this->model.SetWorldPoseCmd(_ecm, pose);
 
         {
@@ -252,6 +243,13 @@ namespace person_plugin
 
           if (msg[0] == 'U')
           {
+            if (this->start_stopped && !this->started && this->auto_movement)
+            {
+              this->started = true;
+              continue;
+            }
+
+            this->started = true;
             auto_movement = false;
 
             if (msg[1] == 'V')
@@ -278,6 +276,7 @@ namespace person_plugin
           }
           else if (msg[0] == 'A')
           {
+            this->started = true;
             current_wp = GetNearestWaypoint(this->wp);
             auto_movement = true;
             orientation_reached = false;
@@ -295,7 +294,6 @@ namespace person_plugin
 
         if (this->sockfd >= 0)
         {
-          // desbloquea recvfrom al cerrar
           close_socket(this->sockfd);
           this->sockfd = -1;
         }
@@ -305,7 +303,7 @@ namespace person_plugin
       }
 
       void Configure(const gz::sim::Entity &_entity,
-                     const std::shared_ptr<const sdf::Element> & /*_sdf*/,
+                     const std::shared_ptr<const sdf::Element> &_sdf,
                      gz::sim::EntityComponentManager &_ecm,
                      gz::sim::EventManager & /*_eventMgr*/) override
       {
@@ -319,10 +317,11 @@ namespace person_plugin
 
         this->currentPose = gz::sim::worldPose(this->model.Entity(), _ecm);
         this->poseInitialized = true;
+        this->initialPose = this->currentPose;
+        this->initialPoseInitialized = true;
 
         std::cout << "Initial Position Person [" << this->currentPose << "]\n";
 
-        // WayPoints
         this->current_wp = 0;
         this->wp = {
           std::make_tuple(4, 6, 1),
@@ -348,14 +347,24 @@ namespace person_plugin
           std::make_tuple(-PI / 2.0f, 0.0f)
         };
 
-        this->auto_movement = true;
+        if (_sdf && _sdf->HasElement("auto_movement"))
+          this->auto_movement = _sdf->Get<bool>("auto_movement");
+        else
+          this->auto_movement = true;
+
+        if (_sdf && _sdf->HasElement("start_stopped"))
+          this->start_stopped = _sdf->Get<bool>("start_stopped");
+        else
+          this->start_stopped = false;
+
+        this->initial_auto_movement = this->auto_movement;
         this->linear_movement = true;
         this->linear_dir = 0;
         this->turn_dir = 0;
         this->orientation_reached = false;
         this->direction_chosen = false;
+        this->started = !this->start_stopped;
 
-        // UDP server
         this->sockfd = create_socket();
         set_ip_port(this->addr, IP.c_str(), PORT);
         make_bind(this->sockfd, this->addr);
@@ -370,6 +379,7 @@ namespace person_plugin
         if (_info.paused || !this->poseInitialized || !this->model.Valid(_ecm))
           return;
 
+        bool localStarted;
         bool localAuto;
         bool localLinearMovement;
         int localCurrentWp;
@@ -378,12 +388,16 @@ namespace person_plugin
 
         {
           std::lock_guard<std::mutex> lock(this->mtx);
+          localStarted = this->started;
           localAuto = this->auto_movement;
           localLinearMovement = this->linear_movement;
           localCurrentWp = this->current_wp;
           localLinearDir = this->linear_dir;
           localTurnDir = this->turn_dir;
         }
+
+        if (!localStarted)
+          return;
 
         if (localAuto)
         {
@@ -437,6 +451,28 @@ namespace person_plugin
         this->currentPose = pose;
         this->poseInitialized = true;
       }
+
+      void Reset(const gz::sim::UpdateInfo & /*_info*/,
+                 gz::sim::EntityComponentManager &_ecm) override
+      {
+        if (!this->model.Valid(_ecm) || !this->initialPoseInitialized)
+          return;
+
+        {
+          std::lock_guard<std::mutex> lock(this->mtx);
+          this->currentPose = this->initialPose;
+          this->current_wp = 0;
+          this->turn_dir = 0;
+          this->linear_dir = 0;
+          this->auto_movement = this->initial_auto_movement;
+          this->linear_movement = true;
+          this->orientation_reached = false;
+          this->direction_chosen = false;
+          this->started = !this->start_stopped;
+        }
+
+        this->model.SetWorldPoseCmd(_ecm, this->initialPose);
+      }
   };
 }
 
@@ -445,14 +481,11 @@ GZ_ADD_PLUGIN(
   gz::sim::System,
   person_plugin::Person::ISystemConfigure,
   person_plugin::Person::ISystemPreUpdate,
-  person_plugin::Person::ISystemPostUpdate
+  person_plugin::Person::ISystemPostUpdate,
+  person_plugin::Person::ISystemReset
 )
 
 GZ_ADD_PLUGIN_ALIAS(person_plugin::Person, "person_plugin::Person")
-
-/**
- * SOCKETS FUNCTIONS Definitions
- **/
 
 int create_socket(void)
 {
