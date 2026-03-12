@@ -201,8 +201,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 8	City Large	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 9	City Large Harmonic	/opt/jderobot/Launchers/taxi_navigator.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/global_nav.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-10	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py None    ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py  None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -249,6 +249,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+58	Follow Person Harmonic	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+59	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --
