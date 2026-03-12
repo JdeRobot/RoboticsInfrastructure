@@ -15,10 +15,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
-find_package(gz-math7 REQUIRED)
-
 set(PROJECT_DEPENDENCIES
     ament_cmake
     sensor_msgs
@@ -27,7 +23,7 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    gazebo
+    #gazebo
     pluginlib
     Threads)
 
@@ -35,21 +31,25 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
+find_package(gz-sim8 REQUIRED)
+find_package(gz-plugin2 REQUIRED)
+find_package(gz-math7 REQUIRED)
+
 if(CMAKE_USE_PTHREADS_INIT)
   set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
 endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(
-  personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+#add_library(personplugin amazon_hospital/src/person.cpp)
+#target_include_directories(
+#  personplugin
+#  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#         $<INSTALL_INTERFACE:include>)
 
-ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
+#ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
 
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
+#target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(
@@ -65,14 +65,14 @@ target_link_libraries(personplugin_harmonic
   Threads::Threads)
 
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
+"""
 install(
   TARGETS personplugin personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-
+"""
 ament_environment_hooks("hooks/resource_paths.dsv.in")
 ament_environment_hooks("hooks/resource_paths.sh")
 
@@ -146,7 +146,7 @@ if(BUILD_TESTING)
   # endforeach()
 endif()
 
-ament_export_libraries(personplugin personplugin_harmonic)
+ament_export_libraries( personplugin_harmonic) #personplugin
 
 ament_export_targets(export_${PROJECT_NAME})
 
