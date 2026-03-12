@@ -43,9 +43,11 @@
       </visual>
     </link>
 
-    <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"/>
+  <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so">
+    <auto_movement>false</auto_movement>
+  </plugin>
 
-    <static>false</static>
+  <static>false</static>
 
   </model>
 </sdf>
