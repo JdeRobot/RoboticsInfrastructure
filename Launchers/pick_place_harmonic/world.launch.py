@@ -12,22 +12,28 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    package_dir = get_package_share_directory("custom_robots")
+    # ROS packages
+    custom_robots_pkg = get_package_share_directory("custom_robots")
     robotiq_description_pkg = get_package_share_directory("robotiq_description")
     ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
-    robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
 
+    # World file
     world_path = os.path.join(
-        robotiq_pkg_share_dir,
+        robotiq_description_pkg,
         "world",
         "warehouse_arm_harmonic.world"
     )
 
-    gazebo_models_path = os.path.join(package_dir, "models")
+    # Model paths
+    custom_models = os.path.join(custom_robots_pkg, "models")
+    robotiq_models = os.path.join(robotiq_description_pkg, "world", "models")
 
     ld = LaunchDescription()
 
-    # Plugin path (important for gz_link_attacher)
+    ################################################
+    # Plugin path (for gz_link_attacher)
+    ################################################
+
     ld.add_action(
         AppendEnvironmentVariable(
             "GZ_SIM_SYSTEM_PLUGIN_PATH",
@@ -35,28 +41,37 @@ def generate_launch_description():
         )
     )
 
-    # Resource paths
+    ################################################
+    # Resource paths (models)
+    ################################################
+
     ld.add_action(
         SetEnvironmentVariable(
             "GZ_SIM_RESOURCE_PATH",
-            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+            custom_models
         )
     )
 
     ld.add_action(
         AppendEnvironmentVariable(
             "GZ_SIM_RESOURCE_PATH",
-            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+            robotiq_models
         )
     )
 
+    ################################################
     # Launch Gazebo
+    ################################################
+
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-s", "-r", "-v", "4", world_path],
         output="screen",
     )
 
-    # Spawn world entity
+    ################################################
+    # Spawn world
+    ################################################
+
     world_entity_cmd = Node(
         package="ros_gz_sim",
         executable="create",
