@@ -205,7 +205,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 8	City Large	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 9	City Large Harmonic	/opt/jderobot/Launchers/taxi_navigator.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/global_nav.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py None    ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
+10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py  None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 13	Montmelo Ackermann Circuit	/opt/jderobot/Launchers/montmelo_circuit_ackermann.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
