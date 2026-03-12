@@ -15,13 +15,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Antes de cualquier find_package que pueda usar JsonCpp
-if(TARGET JsonCpp::JsonCpp)
-  message(STATUS "JsonCpp::JsonCpp ya existe, no se redefine")
-else()
-  find_package(JsonCpp REQUIRED)
-endif()
-
 set(PROJECT_DEPENDENCIES
     ament_cmake
     sensor_msgs
@@ -37,8 +30,6 @@ set(PROJECT_DEPENDENCIES
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
-
-find_package(JsonCpp REQUIRED)
 
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
@@ -71,8 +62,7 @@ target_link_libraries(personplugin_harmonic
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
   gz-math7::gz-math7
-  Threads::Threads
-  JsonCpp::JsonCpp)
+  Threads::Threads)
 
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
