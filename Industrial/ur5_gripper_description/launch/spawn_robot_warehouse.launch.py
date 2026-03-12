@@ -31,9 +31,14 @@ def generate_launch_description():
 
     gz_env = {
         "GZ_SIM_RESOURCE_PATH": resource_path,
-        "GZ_SIM_SYSTEM_PLUGIN_PATH": "/home/ws/install/gz_link_attacher/lib:" + gz_lib_path + ":/opt/ros/humble/lib",
-        "LD_LIBRARY_PATH": gz_lib_path
-        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu",
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": "/home/ws/install/gz_link_attacher/lib:"
+            + gz_lib_path
+            + ":/opt/ros/humble/lib:"
+            + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", ""),
+        "LD_LIBRARY_PATH": "/home/ws/install/gz_link_attacher/lib:"
+            + gz_lib_path
+            + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
+            + os.environ.get("LD_LIBRARY_PATH", ""),
         "DISPLAY": ":2",
     }
 
