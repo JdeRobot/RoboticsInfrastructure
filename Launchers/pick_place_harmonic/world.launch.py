@@ -4,90 +4,91 @@ Configures Gazebo resource paths
 """
 
 import os
-
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, AppendEnvironmentVariable
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    IncludeLaunchDescription,
+    SetEnvironmentVariable,
+    AppendEnvironmentVariable,
+)
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
 
-    ################################################
-    # Packages
-    ################################################
-
-    custom_robots_pkg = get_package_share_directory("custom_robots")
+    package_dir = get_package_share_directory("custom_robots")
     robotiq_description_pkg = get_package_share_directory("robotiq_description")
+    ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
+    robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
+    ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
-    ################################################
-    # World file
-    ################################################
+    warehouse_models_path = os.path.join(robotiq_pkg_share_dir, "world", "models")
+    ur5_share_parent = os.path.dirname(ur5_gripper_pkg)
+    robotiq_share_parent = os.path.dirname(robotiq_pkg_share_dir)
 
     world_path = os.path.join(
-        robotiq_description_pkg,
-        "world",
-        "warehouse_arm_harmonic.world"
+        robotiq_pkg_share_dir, "world", "warehouse_arm_harmonic.world"
     )
 
-    ################################################
-    # Model paths
-    ################################################
+    gazebo_models_path = os.path.join(package_dir, "models")
 
-    custom_models = os.path.join(custom_robots_pkg, "models")
-    robotiq_models = os.path.join(robotiq_description_pkg, "world", "models")
+    gz_ros2_control_install = "/home/ws/install"
+    gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
 
-    ################################################
-    # Plugin path
-    ################################################
-
-    plugin_path = "/home/ws/install/gz_link_attacher/lib"
-
-    ld = LaunchDescription()
-
-    ################################################
-    # Add Gazebo system plugin path
-    ################################################
-
-    ld.add_action(
-        AppendEnvironmentVariable(
-            "GZ_SIM_SYSTEM_PLUGIN_PATH",
-            plugin_path
-        )
+    resource_path = (
+        ur5_share_parent + ":" + robotiq_share_parent + ":" + warehouse_models_path
     )
 
-    ################################################
-    # Add model resource paths
-    ################################################
+    gz_env = {
+        "GZ_SIM_RESOURCE_PATH": resource_path,
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_lib_path + ":/opt/ros/humble/lib",
+        "LD_LIBRARY_PATH": gz_lib_path
+        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu",
+        "DISPLAY": ":2",
+    }
 
-    ld.add_action(
-        AppendEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            robotiq_models
-        )
-    )
-
-    ld.add_action(
-        AppendEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            custom_models
-        )
-    )
-
-    ################################################
-    # Launch Gazebo
-    ################################################
+    # gazebo_server = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+    #     ),
+    #     launch_arguments={
+    #         "gz_args": ["-r -s -v4 ", world_path],
+    #         "on_exit_shutdown": "true",
+    #         "additional_env": gz_env,
+    #     }.items(),
+    # )
 
     gazebo = ExecuteProcess(
-        cmd=[
-            "gz",
-            "sim",
-            "-r",
-            "-v", "4",
-            world_path
-        ],
+        cmd=["gz", "sim", "-s", "-r", "-v", "4", world_path],
+        output="screen",
+        additional_env=gz_env,
+        shell=False,
+    )
+
+    world_entity_cmd = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=["-name", "world", "-file", world_path],
         output="screen",
     )
 
+    ld = LaunchDescription()
+
+    ld.add_action(
+        SetEnvironmentVariable(
+            "GZ_SIM_RESOURCE_PATH",
+            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+        )
+    )
+    set_env_vars_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH",
+        gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+    )
+    ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo)
+    ld.add_action(world_entity_cmd)
 
     return ld
