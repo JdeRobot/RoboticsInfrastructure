@@ -43,6 +43,8 @@
       </visual>
     </link>
 
+    <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"/>
+
     <static>false</static>
 
   </model>
