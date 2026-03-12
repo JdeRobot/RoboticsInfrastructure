@@ -187,6 +187,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 59	Warehouse 2 Harmonic	59	0
 60	Warehouse 1 Ackermann Harmonic	60	0
 61	Warehouse 2 Ackermann Harmonic	61	0
+62	Follow Person Harmonic	62	0
+63	Follow Person Teleop Harmonic	63	0
 \.
 
 --
