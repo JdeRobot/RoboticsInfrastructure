@@ -15,6 +15,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+find_package(gz-sim8 REQUIRED)
+find_package(gz-plugin2 REQUIRED)
+find_package(gz-math7 REQUIRED)
+
 set(PROJECT_DEPENDENCIES
     ament_cmake
     sensor_msgs
@@ -30,10 +34,6 @@ set(PROJECT_DEPENDENCIES
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
-
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
-find_package(gz-math7 REQUIRED)
 
 if(CMAKE_USE_PTHREADS_INIT)
   set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
