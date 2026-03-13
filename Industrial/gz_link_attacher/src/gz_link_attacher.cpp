@@ -52,7 +52,8 @@ void Configure(
         &LinkAttacher::Attach,
         this,
         std::placeholders::_1,
-        std::placeholders::_2));
+        std::placeholders::_2,
+        std::placeholders::_3));
 
   detachService =
     node->create_service<linkattacher_msgs::srv::DetachLink>(
@@ -61,7 +62,8 @@ void Configure(
         &LinkAttacher::Detach,
         this,
         std::placeholders::_1,
-        std::placeholders::_2));
+        std::placeholders::_2,
+        std::placeholders::_3));
 
   std::cout << "[LinkAttacher] READY" << std::endl;
 }
