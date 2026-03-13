@@ -27,7 +27,6 @@ class LinkAttacher :
 
 public:
 
-
   void Configure(
       const Entity &_entity,
       const std::shared_ptr<const sdf::Element> &,
@@ -176,10 +175,12 @@ private:
 
     std::cout << "[LinkAttacher] Creating DetachableJoint component" << std::endl;
 
-    _ecm.CreateComponent(
-      parentLink,
-      components::DetachableJoint({childLink})
-    );
+    components::DetachableJoint joint;
+
+    joint.Data().parent = parentLink;
+    joint.Data().child = childLink;
+
+    _ecm.CreateComponent(parentLink, joint);
 
     std::cout << "[LinkAttacher] SUCCESS: Joint created" << std::endl;
   }
