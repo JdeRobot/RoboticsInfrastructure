@@ -45,6 +45,9 @@ void Configure(
 
   node = std::make_shared<rclcpp::Node>("gz_link_attacher");
 
+  executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
+  executor->add_node(node);
+
   attachService =
     node->create_service<linkattacher_msgs::srv::AttachLink>(
       "ATTACHLINK",
@@ -74,7 +77,7 @@ void PreUpdate(
 {
 
   if(node)
-    rclcpp::spin_some(node);
+    executor->spin_some();
 
   if(attachRequested)
   {
@@ -243,6 +246,7 @@ void Detach(
 private:
 
 rclcpp::Node::SharedPtr node;
+rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Service<linkattacher_msgs::srv::AttachLink>::SharedPtr attachService;
 rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
