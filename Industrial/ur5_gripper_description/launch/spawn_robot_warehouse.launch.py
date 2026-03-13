@@ -12,7 +12,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import xacro
-
+from launch.actions import SetEnvironmentVariable
 
 def generate_launch_description():
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
@@ -31,11 +31,10 @@ def generate_launch_description():
 
     gz_env = {
         "GZ_SIM_RESOURCE_PATH": resource_path,
-        "GZ_SIM_SYSTEM_PLUGIN_PATH": (
-            "/home/ws/install/gz_link_attacher/lib:"
-            + "/opt/ros/humble/lib:"
-            + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", "")
-        ),
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": "/home/ws/install/gz_link_attacher/lib:"
+            + gz_lib_path
+            + ":/opt/ros/humble/lib:"
+            + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", ""),
         "LD_LIBRARY_PATH": "/home/ws/install/gz_link_attacher/lib:"
             + gz_lib_path
             + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
@@ -81,6 +80,12 @@ def generate_launch_description():
 
     # RAM launches its own GUI client (gz sim -g), so we must NOT launch GUI here
     # This fixes the first-load issue where two GUIs conflict
+
+    set_plugin_path = SetEnvironmentVariable(
+        name="GZ_SIM_SYSTEM_PLUGIN_PATH",
+        value="/home/ws/install/gz_link_attacher/lib:"
+        + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", "")
+    )
 
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-s", "-r", "-v", "4", world_file],
@@ -254,6 +259,7 @@ def generate_launch_description():
     return LaunchDescription(
         declared_arguments
         + [
+            set_plugin_path,
             gazebo,
             robot_state_publisher,
             static_tf,
