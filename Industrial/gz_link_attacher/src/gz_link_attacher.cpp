@@ -27,7 +27,6 @@ class LinkAttacher :
 
 public:
 
-/////////////////////////////////////////////////
 void Configure(
   const Entity &_entity,
   const std::shared_ptr<const sdf::Element> &,
@@ -67,7 +66,6 @@ void Configure(
   std::cout << "[LinkAttacher] READY" << std::endl;
 }
 
-/////////////////////////////////////////////////
 void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
@@ -98,7 +96,6 @@ void PreUpdate(
 
 private:
 
-/////////////////////////////////////////////////
 Entity FindLink(
   EntityComponentManager &_ecm,
   const std::string &modelName,
@@ -153,60 +150,57 @@ Entity FindLink(
   return result;
 }
 
-/////////////////////////////////////////////////
 void CreateJoint(EntityComponentManager &_ecm)
 {
 
-  std::cout<<"[LinkAttacher] Creating joint"<<std::endl;
+  std::cout << "[LinkAttacher] Creating joint" << std::endl;
 
-  Entity parentLink = FindLink(_ecm,model1,link1);
-  Entity childLink  = FindLink(_ecm,model2,link2);
+  Entity parentLink = FindLink(_ecm, model1, link1);
+  Entity childLink  = FindLink(_ecm, model2, link2);
 
-  if(parentLink==kNullEntity || childLink==kNullEntity)
+  if(parentLink == kNullEntity || childLink == kNullEntity)
   {
-    std::cout<<"[LinkAttacher] ERROR links not found"<<std::endl;
+    std::cout << "[LinkAttacher] ERROR links not found" << std::endl;
     return;
   }
 
-  components::DetachableJoint joint;
+  Entity jointEntity = _ecm.CreateEntity();
 
+  components::DetachableJoint joint;
   joint.Data().parentLink = parentLink;
   joint.Data().childLink  = childLink;
 
-  _ecm.CreateComponent(parentLink,joint);
+  _ecm.CreateComponent(jointEntity, joint);
 
-  std::cout<<"[LinkAttacher] Joint created successfully"<<std::endl;
+  std::cout << "[LinkAttacher] Joint created successfully" << std::endl;
 }
 
-/////////////////////////////////////////////////
 void RemoveJoint(EntityComponentManager &_ecm)
 {
 
-  Entity parentLink = FindLink(_ecm,model1,link1);
+  Entity jointEntity{kNullEntity};
 
-  if(parentLink==kNullEntity)
+  _ecm.Each<components::DetachableJoint>(
+    [&](const Entity &_entity,
+        const components::DetachableJoint *)
+    {
+
+      jointEntity = _entity;
+      return false;
+
+    });
+
+  if(jointEntity == kNullEntity)
   {
-    std::cout<<"[LinkAttacher] Parent link not found"<<std::endl;
+    std::cout<<"[LinkAttacher] No joint found to remove"<<std::endl;
     return;
   }
 
-  auto joint =
-    _ecm.Component<components::DetachableJoint>(parentLink);
+  _ecm.RemoveComponent<components::DetachableJoint>(jointEntity);
 
-  if(joint)
-  {
-    _ecm.RemoveComponent<components::DetachableJoint>(parentLink);
-
-    std::cout<<"[LinkAttacher] Joint removed"<<std::endl;
-  }
-  else
-  {
-    std::cout<<"[LinkAttacher] No joint to remove"<<std::endl;
-  }
-
+  std::cout<<"[LinkAttacher] Joint removed"<<std::endl;
 }
 
-/////////////////////////////////////////////////
 void Attach(
   const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
   std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
@@ -227,7 +221,6 @@ void Attach(
 
 }
 
-/////////////////////////////////////////////////
 void Detach(
   const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
   std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
@@ -242,7 +235,6 @@ void Detach(
 
 }
 
-/////////////////////////////////////////////////
 
 private:
 
