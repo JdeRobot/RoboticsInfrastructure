@@ -48,12 +48,11 @@ namespace person_plugin
       int linear_dir{0};
 
       bool auto_movement{true};
+      bool auto_paused{true};
       bool linear_movement{true};
 
-      bool start_stopped{false};
-      bool started{true};
-
       bool initial_auto_movement{true};
+      bool initial_auto_paused{true};
 
       float lv_dt{0.001f};
       float av_dt{0.003f};
@@ -82,28 +81,30 @@ namespace person_plugin
     private:
       float GetDistanceEuclidean(float rx, float ry)
       {
-        std::lock_guard<std::mutex> lock(this->mtx);
+        gz::math::Pose3d pose;
+        {
+          std::lock_guard<std::mutex> lock(this->mtx);
+          pose = this->currentPose;
+        }
+
         return std::sqrt(
-          std::pow(this->currentPose.Pos().X() - rx, 2.0) +
-          std::pow(this->currentPose.Pos().Y() - ry, 2.0));
+          std::pow(pose.Pos().X() - rx, 2.0) +
+          std::pow(pose.Pos().Y() - ry, 2.0));
       }
 
-      float GetDistanceEuclidean(std::tuple<float, float, int> & waypoint)
+      float GetDistanceEuclidean(const std::tuple<float, float, int> & waypoint)
       {
-        float wx = std::get<0>(waypoint);
-        float wy = std::get<1>(waypoint);
-        return GetDistanceEuclidean(wx, wy);
+        return GetDistanceEuclidean(std::get<0>(waypoint), std::get<1>(waypoint));
       }
 
-      int GetNearestWaypoint(std::vector<std::tuple<float, float, int>> & waypoints)
+      int GetNearestWaypoint(const std::vector<std::tuple<float, float, int>> & waypoints)
       {
-        float current_dist;
         int nearest_index = 0;
         float min_dist = GetDistanceEuclidean(waypoints[0]);
 
-        for (size_t i = 0; i < waypoints.size(); i++)
+        for (size_t i = 1; i < waypoints.size(); ++i)
         {
-          current_dist = GetDistanceEuclidean(waypoints[i]);
+          float current_dist = GetDistanceEuclidean(waypoints[i]);
           if (current_dist < min_dist)
           {
             min_dist = current_dist;
@@ -116,9 +117,14 @@ namespace person_plugin
 
       float GetAngle(float rx, float ry)
       {
-        std::lock_guard<std::mutex> lock(this->mtx);
-        float px = static_cast<float>(this->currentPose.Pos().X());
-        float py = static_cast<float>(this->currentPose.Pos().Y());
+        gz::math::Pose3d pose;
+        {
+          std::lock_guard<std::mutex> lock(this->mtx);
+          pose = this->currentPose;
+        }
+
+        float px = static_cast<float>(pose.Pos().X());
+        float py = static_cast<float>(pose.Pos().Y());
 
         float angle = std::atan2(std::abs(rx - px), std::abs(ry - py));
 
@@ -133,13 +139,16 @@ namespace person_plugin
 
       int GetBestTurnDirection(float desired_yaw, float actual_yaw)
       {
-        auto get_quadrant = [](float yaw,
-                               const std::vector<std::tuple<float, float>> & quadrants) -> int
+        auto get_quadrant =
+          [](float yaw, const std::vector<std::tuple<float, float>> & quadrants) -> int
         {
-          for (std::size_t i = 0; i < QUADRANTS; i++)
+          for (std::size_t i = 0; i < QUADRANTS; ++i)
           {
-            if (yaw >= std::get<0>(quadrants[i]) && yaw < std::get<1>(quadrants[i]))
+            if (yaw >= std::get<0>(quadrants[i]) &&
+                yaw < std::get<1>(quadrants[i]))
+            {
               return static_cast<int>(i);
+            }
           }
 
           if (std::abs(yaw - PI) < 1e-6)
@@ -154,28 +163,27 @@ namespace person_plugin
         if (actual_quadrant == desired_quadrant)
           return (desired_yaw > actual_yaw) ? 1 : -1;
 
-        int n1, n2;
-        float dist1, dist2;
+        int n1 =
+          (desired_quadrant > actual_quadrant) ?
+          desired_quadrant - actual_quadrant :
+          QUADRANTS - std::abs((desired_quadrant - actual_quadrant) % QUADRANTS);
 
-        n1 = (desired_quadrant > actual_quadrant) ?
-              desired_quadrant - actual_quadrant :
-              QUADRANTS - std::abs((desired_quadrant - actual_quadrant) % QUADRANTS);
-        n2 = QUADRANTS - n1;
+        int n2 = QUADRANTS - n1;
 
-        dist1 = std::get<1>(quadrants[actual_quadrant]) - actual_yaw;
-        for (int i = 0; i < (n1 - 1); i++)
+        float dist1 = std::get<1>(this->quadrants[actual_quadrant]) - actual_yaw;
+        for (int i = 0; i < (n1 - 1); ++i)
           dist1 += PI / 2.0f;
-        dist1 += desired_yaw - std::get<0>(quadrants[desired_quadrant]);
+        dist1 += desired_yaw - std::get<0>(this->quadrants[desired_quadrant]);
 
-        dist2 = actual_yaw - std::get<0>(quadrants[actual_quadrant]);
-        for (int i = 0; i < (n2 - 1); i++)
+        float dist2 = actual_yaw - std::get<0>(this->quadrants[actual_quadrant]);
+        for (int i = 0; i < (n2 - 1); ++i)
           dist2 += PI / 2.0f;
-        dist2 += std::get<1>(quadrants[desired_quadrant]) - desired_yaw;
+        dist2 += std::get<1>(this->quadrants[desired_quadrant]) - desired_yaw;
 
         return (dist1 <= dist2) ? 1 : -1;
       }
 
-      bool MoveToWaypoint(std::tuple<float, float, int> & waypoint,
+      bool MoveToWaypoint(const std::tuple<float, float, int> & waypoint,
                           gz::sim::EntityComponentManager &_ecm)
       {
         float rx = std::get<0>(waypoint);
@@ -188,27 +196,32 @@ namespace person_plugin
           pose = this->currentPose;
         }
 
-        if (!direction_chosen)
+        if (!this->direction_chosen)
         {
-          direction_chosen = true;
-          turn_dir = GetBestTurnDirection(angle,
-                     static_cast<float>(pose.Rot().Yaw()));
+          this->direction_chosen = true;
+          this->turn_dir = GetBestTurnDirection(
+            angle,
+            static_cast<float>(pose.Rot().Yaw()));
         }
 
-        if (!orientation_reached)
+        if (!this->orientation_reached)
         {
           pose.Rot() = gz::math::Quaterniond(
-            0, 0, pose.Rot().Yaw() + turn_dir * av_dt);
+            0,
+            0,
+            pose.Rot().Yaw() + this->turn_dir * this->av_dt);
 
           if (std::abs(angle - pose.Rot().Yaw()) < 0.005f)
-            orientation_reached = true;
+            this->orientation_reached = true;
         }
         else
         {
-          pose.Pos().X() += -lv_dt * (0 * std::cos(pose.Rot().Yaw()) -
-                                      1 * std::sin(pose.Rot().Yaw()));
-          pose.Pos().Y() += -lv_dt * (0 * std::sin(pose.Rot().Yaw()) +
-                                      1 * std::cos(pose.Rot().Yaw()));
+          pose.Pos().X() += -this->lv_dt *
+                            (0 * std::cos(pose.Rot().Yaw()) -
+                             1 * std::sin(pose.Rot().Yaw()));
+          pose.Pos().Y() += -this->lv_dt *
+                            (0 * std::sin(pose.Rot().Yaw()) +
+                             1 * std::cos(pose.Rot().Yaw()));
         }
 
         this->model.SetWorldPoseCmd(_ecm, pose);
@@ -218,10 +231,10 @@ namespace person_plugin
           this->currentPose = pose;
         }
 
-        if (orientation_reached && GetDistanceEuclidean(rx, ry) < 0.1f)
+        if (this->orientation_reached && GetDistanceEuclidean(rx, ry) < 0.1f)
         {
-          orientation_reached = false;
-          direction_chosen = false;
+          this->orientation_reached = false;
+          this->direction_chosen = false;
           return true;
         }
 
@@ -239,48 +252,73 @@ namespace person_plugin
           if (ret != 0)
             continue;
 
+          if (msg[0] == 'A')
+          {
+            int nearest = GetNearestWaypoint(this->wp);
+
+            std::lock_guard<std::mutex> lock(this->mtx);
+
+            if (this->auto_movement)
+            {
+              this->auto_movement = false;
+              this->auto_paused = false;
+              this->linear_movement = true;
+              this->linear_dir = 0;
+              this->turn_dir = 0;
+              this->orientation_reached = false;
+              this->direction_chosen = false;
+            }
+            else
+            {
+              this->current_wp = nearest;
+              this->auto_movement = true;
+              this->auto_paused = false;
+              this->linear_movement = true;
+              this->linear_dir = 0;
+              this->turn_dir = 0;
+              this->orientation_reached = false;
+              this->direction_chosen = false;
+            }
+
+            continue;
+          }
+
+          if (msg[0] != 'U')
+            continue;
+
           std::lock_guard<std::mutex> lock(this->mtx);
 
-          if (msg[0] == 'U')
+          if (this->auto_movement)
           {
-            if (this->start_stopped && !this->started && this->auto_movement)
-            {
-              this->started = true;
+            if (msg[1] == 'S')
               continue;
-            }
 
-            this->started = true;
-            auto_movement = false;
-
-            if (msg[1] == 'V')
-            {
-              linear_movement = true;
-              if (msg[2] == 'F')
-                linear_dir = 1;
-              else if (msg[2] == 'B')
-                linear_dir = -1;
-            }
-            else if (msg[1] == 'A')
-            {
-              linear_movement = false;
-              if (msg[2] == 'R')
-                turn_dir = -1;
-              else if (msg[2] == 'L')
-                turn_dir = 1;
-            }
-            else if (msg[1] == 'S')
-            {
-              linear_dir = 0;
-              turn_dir = 0;
-            }
+            this->auto_paused = !this->auto_paused;
+            this->linear_dir = 0;
+            this->turn_dir = 0;
+            continue;
           }
-          else if (msg[0] == 'A')
+
+          if (msg[1] == 'V')
           {
-            this->started = true;
-            current_wp = GetNearestWaypoint(this->wp);
-            auto_movement = true;
-            orientation_reached = false;
-            direction_chosen = false;
+            this->linear_movement = true;
+            if (msg[2] == 'F')
+              this->linear_dir = 1;
+            else if (msg[2] == 'B')
+              this->linear_dir = -1;
+          }
+          else if (msg[1] == 'A')
+          {
+            this->linear_movement = false;
+            if (msg[2] == 'R')
+              this->turn_dir = -1;
+            else if (msg[2] == 'L')
+              this->turn_dir = 1;
+          }
+          else if (msg[1] == 'S')
+          {
+            this->linear_dir = 0;
+            this->turn_dir = 0;
           }
         }
       }
@@ -320,8 +358,6 @@ namespace person_plugin
         this->initialPose = this->currentPose;
         this->initialPoseInitialized = true;
 
-        std::cout << "Initial Position Person [" << this->currentPose << "]\n";
-
         this->current_wp = 0;
         this->wp = {
           std::make_tuple(4, 6, 1),
@@ -352,18 +388,15 @@ namespace person_plugin
         else
           this->auto_movement = true;
 
-        if (_sdf && _sdf->HasElement("start_stopped"))
-          this->start_stopped = _sdf->Get<bool>("start_stopped");
-        else
-          this->start_stopped = false;
-
+        this->auto_paused = this->auto_movement;
         this->initial_auto_movement = this->auto_movement;
+        this->initial_auto_paused = this->auto_paused;
+
         this->linear_movement = true;
         this->linear_dir = 0;
         this->turn_dir = 0;
         this->orientation_reached = false;
         this->direction_chosen = false;
-        this->started = !this->start_stopped;
 
         this->sockfd = create_socket();
         set_ip_port(this->addr, IP.c_str(), PORT);
@@ -379,8 +412,8 @@ namespace person_plugin
         if (_info.paused || !this->poseInitialized || !this->model.Valid(_ecm))
           return;
 
-        bool localStarted;
         bool localAuto;
+        bool localAutoPaused;
         bool localLinearMovement;
         int localCurrentWp;
         int localLinearDir;
@@ -388,54 +421,56 @@ namespace person_plugin
 
         {
           std::lock_guard<std::mutex> lock(this->mtx);
-          localStarted = this->started;
           localAuto = this->auto_movement;
+          localAutoPaused = this->auto_paused;
           localLinearMovement = this->linear_movement;
           localCurrentWp = this->current_wp;
           localLinearDir = this->linear_dir;
           localTurnDir = this->turn_dir;
         }
 
-        if (!localStarted)
-          return;
-
         if (localAuto)
         {
+          if (localAutoPaused)
+            return;
+
           if (MoveToWaypoint(this->wp[localCurrentWp], _ecm))
           {
             std::lock_guard<std::mutex> lock(this->mtx);
             this->current_wp = std::get<2>(this->wp[this->current_wp]);
           }
+
+          return;
+        }
+
+        gz::math::Pose3d pose;
+        {
+          std::lock_guard<std::mutex> lock(this->mtx);
+          pose = this->currentPose;
+        }
+
+        if (localLinearMovement)
+        {
+          pose.Pos().X() += -(localLinearDir) * this->lv_dt *
+                            (0 * std::cos(pose.Rot().Yaw()) -
+                             1 * std::sin(pose.Rot().Yaw()));
+          pose.Pos().Y() += -(localLinearDir) * this->lv_dt *
+                            (0 * std::sin(pose.Rot().Yaw()) +
+                             1 * std::cos(pose.Rot().Yaw()));
         }
         else
         {
-          gz::math::Pose3d pose;
-          {
-            std::lock_guard<std::mutex> lock(this->mtx);
-            pose = this->currentPose;
-          }
+          pose.Rot() = gz::math::Quaterniond(
+            0,
+            0,
+            pose.Rot().Yaw() + localTurnDir * this->av_dt);
+        }
 
-          if (localLinearMovement)
-          {
-            pose.Pos().X() += -(localLinearDir) * lv_dt *
-                              (0 * std::cos(pose.Rot().Yaw()) -
-                               1 * std::sin(pose.Rot().Yaw()));
-            pose.Pos().Y() += -(localLinearDir) * lv_dt *
-                              (0 * std::sin(pose.Rot().Yaw()) +
-                               1 * std::cos(pose.Rot().Yaw()));
-          }
-          else
-          {
-            pose.Rot() = gz::math::Quaterniond(
-              0, 0, pose.Rot().Yaw() + localTurnDir * av_dt);
-          }
+        this->model.SetWorldPoseCmd(_ecm, pose);
 
-          this->model.SetWorldPoseCmd(_ecm, pose);
-
-          {
-            std::lock_guard<std::mutex> lock(this->mtx);
-            this->currentPose = pose;
-          }
+        {
+          std::lock_guard<std::mutex> lock(this->mtx);
+          this->currentPose = pose;
         }
       }
 
@@ -465,10 +500,10 @@ namespace person_plugin
           this->turn_dir = 0;
           this->linear_dir = 0;
           this->auto_movement = this->initial_auto_movement;
+          this->auto_paused = this->initial_auto_paused;
           this->linear_movement = true;
           this->orientation_reached = false;
           this->direction_chosen = false;
-          this->started = !this->start_stopped;
         }
 
         this->model.SetWorldPoseCmd(_ecm, this->initialPose);
