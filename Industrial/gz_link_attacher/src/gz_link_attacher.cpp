@@ -6,7 +6,6 @@
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/Joint.hh>
 #include <gz/sim/components/JointType.hh>
-#include <gz/sim/components/JointChild.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -200,10 +199,6 @@ private:
 
     _ecm.CreateComponent(
       jointEntity,
-      components::JointChild(childLink));
-
-    _ecm.CreateComponent(
-      jointEntity,
       components::JointType(sdf::JointType::FIXED));
 
     RCLCPP_INFO(
@@ -213,7 +208,6 @@ private:
       link1.c_str(),
       model2.c_str(),
       link2.c_str());
-
   }
 
 /*  REMOVE JOINT  */
