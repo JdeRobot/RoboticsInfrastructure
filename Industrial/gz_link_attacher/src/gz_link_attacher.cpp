@@ -202,9 +202,11 @@ void RemoveJoint(EntityComponentManager &_ecm)
 }
 
 void Attach(
+  const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
   std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
 {
+  (void)request_header;
 
   std::cout<<"[LinkAttacher] ATTACH REQUEST"<<std::endl;
 
@@ -218,13 +220,14 @@ void Attach(
 
   res->success=true;
   res->message="Attach scheduled";
-
 }
 
 void Detach(
+  const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
   std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
 {
+  (void)request_header;
 
   std::cout<<"[LinkAttacher] DETACH REQUEST"<<std::endl;
 
@@ -232,7 +235,6 @@ void Detach(
 
   res->success=true;
   res->message="Detach scheduled";
-
 }
 
 
