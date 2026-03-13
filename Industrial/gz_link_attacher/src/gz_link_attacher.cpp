@@ -177,8 +177,8 @@ private:
 
     components::DetachableJoint joint;
 
-    joint.Data().parent = parentLink;
-    joint.Data().child = childLink;
+    joint.Data().parentLink = parentLink;
+    joint.Data().childLink = childLink;
 
     _ecm.CreateComponent(parentLink, joint);
 
