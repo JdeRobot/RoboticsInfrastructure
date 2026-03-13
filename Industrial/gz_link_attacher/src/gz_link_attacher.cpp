@@ -44,6 +44,13 @@ public:
 
     node = std::make_shared<rclcpp::Node>("gz_link_attacher");
 
+    executor.add_node(node);
+
+    spinThread = std::thread([this]()
+    {
+      executor.spin();
+    });
+
     attachService =
       node->create_service<linkattacher_msgs::srv::AttachLink>(
         "ATTACHLINK",
@@ -72,9 +79,6 @@ public:
     EntityComponentManager &_ecm) override
   {
 
-    if (node)
-      rclcpp::spin_some(node);
-
     if (attachRequested)
     {
       CreateJoint(_ecm);
@@ -94,6 +98,9 @@ public:
 private:
 
   rclcpp::Node::SharedPtr node;
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  std::thread spinThread;
 
   rclcpp::Service<linkattacher_msgs::srv::AttachLink>::SharedPtr attachService;
   rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
@@ -202,12 +209,10 @@ private:
 
     attachRequested = true;
 
-    RCLCPP_INFO(node->get_logger(),
-      "Attach request received");
+    RCLCPP_INFO(node->get_logger(),"Attach request received");
 
     res->success = true;
     res->message = "Attach scheduled";
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -219,12 +224,10 @@ private:
 
     detachRequested = true;
 
-    RCLCPP_INFO(node->get_logger(),
-      "Detach request received");
+    RCLCPP_INFO(node->get_logger(),"Detach request received");
 
     res->success = true;
     res->message = "Detach scheduled";
-
   }
 
 };
