@@ -1,13 +1,10 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Link.hh>
-#include <gz/sim/Util.hh>
 
-#include <gz/sim/components/Joint.hh>
-#include <gz/sim/components/JointType.hh>
-#include <gz/sim/components/JointChild.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
+#include <gz/sim/components/DetachableJoint.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -29,8 +26,6 @@ class LinkAttacher :
 {
 
 public:
-
-///////////////////////////////////////////////////////////////
 
   void Configure(
       const Entity &_entity,
@@ -67,7 +62,6 @@ public:
     RCLCPP_INFO(node->get_logger(),"GZ Link Attacher Loaded");
   }
 
-///////////////////////////////////////////////////////////////
 
   void PreUpdate(
     const UpdateInfo &,
@@ -91,8 +85,6 @@ public:
 
   }
 
-///////////////////////////////////////////////////////////////
-
 private:
 
   rclcpp::Node::SharedPtr node;
@@ -101,7 +93,6 @@ private:
   rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
 
   Entity worldEntity{kNullEntity};
-  Entity jointEntity{kNullEntity};
 
   bool attachRequested=false;
   bool detachRequested=false;
@@ -111,7 +102,6 @@ private:
   std::string model2;
   std::string link2;
 
-///////////////////////////////////////////////////////////////
 
   Entity FindLink(
       EntityComponentManager &_ecm,
@@ -138,70 +128,50 @@ private:
     return result;
   }
 
-///////////////////////////////////////////////////////////////
 
   void CreateJoint(EntityComponentManager &_ecm)
   {
 
-    if (jointEntity != kNullEntity)
-    {
-      RCLCPP_WARN(node->get_logger(),"Joint already exists");
-      return;
-    }
+    Entity parentLink = FindLink(_ecm, link1);
+    Entity childLink = FindLink(_ecm, link2);
 
-    Entity link1Entity = FindLink(_ecm, link1);
-    Entity link2Entity = FindLink(_ecm, link2);
-
-    if (link1Entity == kNullEntity || link2Entity == kNullEntity)
+    if (parentLink == kNullEntity || childLink == kNullEntity)
     {
       RCLCPP_ERROR(node->get_logger(),"Links not found");
       return;
     }
 
-    jointEntity = _ecm.CreateEntity();
-
     _ecm.CreateComponent(
-      jointEntity,
-      components::Joint());
+      parentLink,
+      components::DetachableJoint({childLink})
+    );
 
-    _ecm.CreateComponent(
-      jointEntity,
-      components::Name("dynamic_attach_joint"));
-
-    _ecm.CreateComponent(
-      jointEntity,
-      components::ParentEntity(link1Entity));
-
-    _ecm.CreateComponent(
-      jointEntity,
-      components::JointChild(link2Entity));
-
-    _ecm.CreateComponent(
-      jointEntity,
-      components::JointType(sdf::JointType::FIXED));
-
-    RCLCPP_INFO(node->get_logger(),"Joint created between %s and %s",
-                link1.c_str(), link2.c_str());
-
+    RCLCPP_INFO(node->get_logger(),
+      "Attached %s to %s",
+      link2.c_str(),
+      link1.c_str());
   }
 
-///////////////////////////////////////////////////////////////
 
   void RemoveJoint(EntityComponentManager &_ecm)
   {
 
-    if (jointEntity == kNullEntity)
+    Entity parentLink = FindLink(_ecm, link1);
+
+    if (parentLink == kNullEntity)
       return;
 
-    _ecm.RequestRemoveEntity(jointEntity);
+    auto joint =
+      _ecm.Component<components::DetachableJoint>(parentLink);
 
-    jointEntity = kNullEntity;
-
-    RCLCPP_INFO(node->get_logger(),"Joint removed");
+    if (joint)
+    {
+      _ecm.RemoveComponent<components::DetachableJoint>(parentLink);
+      RCLCPP_INFO(node->get_logger(),"Detached");
+    }
 
   }
 
-///////////////////////////////////////////////////////////////
 
   void Attach(
     const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
@@ -220,7 +190,6 @@ private:
 
   }
 
-///////////////////////////////////////////////////////////////
 
   void Detach(
     const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
