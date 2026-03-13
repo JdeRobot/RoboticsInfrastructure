@@ -5,6 +5,7 @@
 
 #include <gz/sim/components/Joint.hh>
 #include <gz/sim/components/JointType.hh>
+#include <gz/sim/components/JointChild.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
 
@@ -114,21 +115,19 @@ private:
 
   Entity FindLink(
       EntityComponentManager &_ecm,
-      const std::string &modelName,
       const std::string &linkName)
   {
 
-    Entity linkEntity{kNullEntity};
+    Entity result{kNullEntity};
 
-    _ecm.Each<components::Name, components::ParentEntity>(
+    _ecm.Each<components::Name>(
       [&](const Entity &_entity,
-          const components::Name *_name,
-          const components::ParentEntity *_parent)
+          const components::Name *_name)
       {
 
         if (_name->Data()==linkName)
         {
-          linkEntity=_entity;
+          result=_entity;
           return false;
         }
 
@@ -136,7 +135,7 @@ private:
 
       });
 
-    return linkEntity;
+    return result;
   }
 
 ///////////////////////////////////////////////////////////////
@@ -144,8 +143,14 @@ private:
   void CreateJoint(EntityComponentManager &_ecm)
   {
 
-    Entity link1Entity = FindLink(_ecm, model1, link1);
-    Entity link2Entity = FindLink(_ecm, model2, link2);
+    if (jointEntity != kNullEntity)
+    {
+      RCLCPP_WARN(node->get_logger(),"Joint already exists");
+      return;
+    }
+
+    Entity link1Entity = FindLink(_ecm, link1);
+    Entity link2Entity = FindLink(_ecm, link2);
 
     if (link1Entity == kNullEntity || link2Entity == kNullEntity)
     {
@@ -169,9 +174,14 @@ private:
 
     _ecm.CreateComponent(
       jointEntity,
+      components::JointChild(link2Entity));
+
+    _ecm.CreateComponent(
+      jointEntity,
       components::JointType(sdf::JointType::FIXED));
 
-    RCLCPP_INFO(node->get_logger(),"Joint created");
+    RCLCPP_INFO(node->get_logger(),"Joint created between %s and %s",
+                link1.c_str(), link2.c_str());
 
   }
 
