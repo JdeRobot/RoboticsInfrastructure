@@ -350,6 +350,8 @@ std::string link1;
 std::string model2;
 std::string link2;
 
+Entity activeJoint{kNullEntity};
+
 };
 
 }
