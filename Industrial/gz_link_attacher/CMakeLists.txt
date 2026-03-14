@@ -49,8 +49,8 @@ install(
 )
 
 install(
-  FILES $<TARGET_FILE:gz_link_attacher>
-  DESTINATION /home/drones_ws/install/as2_gazebo_assets/lib
+  TARGETS gz_link_attacher
+  LIBRARY DESTINATION /home/drones_ws/install/as2_gazebo_assets/lib
 )
 
 ############################
