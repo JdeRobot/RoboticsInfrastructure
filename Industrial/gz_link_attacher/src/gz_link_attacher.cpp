@@ -16,6 +16,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <mutex>
 
 using namespace gz;
 using namespace sim;
@@ -31,13 +32,28 @@ class LinkAttacher :
 
 public:
 
+LinkAttacher()
+{
+  std::cout << "\n==============================" << std::endl;
+  std::cout << "[LinkAttacher] Constructor called" << std::endl;
+  std::cout << "==============================\n" << std::endl;
+}
+
 ~LinkAttacher()
 {
+  std::cout << "[LinkAttacher] Destructor called" << std::endl;
+
   if (executor)
+  {
+    std::cout << "[LinkAttacher] Stopping executor" << std::endl;
     executor->cancel();
+  }
 
   if (rosThread.joinable())
+  {
+    std::cout << "[LinkAttacher] Joining ROS thread" << std::endl;
     rosThread.join();
+  }
 }
 
 void Configure(
@@ -47,19 +63,34 @@ void Configure(
   EventManager &) override
 {
 
-  std::cout << "[LinkAttacher] Configure()" << std::endl;
+  std::cout << "\n[LinkAttacher] Configure() START\n";
 
   worldEntity = _entity;
 
+  std::cout << "[LinkAttacher] World entity: " << worldEntity << std::endl;
+
   if (!rclcpp::ok())
   {
-    rclcpp::init(0,nullptr);
+    std::cout << "[LinkAttacher] Initializing ROS2..." << std::endl;
+
+    int argc = 0;
+    char **argv = nullptr;
+    rclcpp::init(argc, argv);
   }
+
+  std::cout << "[LinkAttacher] Creating ROS node" << std::endl;
 
   node = std::make_shared<rclcpp::Node>("gz_link_attacher");
 
+  std::cout << "[LinkAttacher] Node created: " << node->get_name() << std::endl;
+
   executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
+
+  std::cout << "[LinkAttacher] Adding node to executor" << std::endl;
+
   executor->add_node(node);
+
+  std::cout << "[LinkAttacher] Creating ATTACH service" << std::endl;
 
   attachService =
     node->create_service<linkattacher_msgs::srv::AttachLink>(
@@ -71,6 +102,10 @@ void Configure(
         std::placeholders::_2,
         std::placeholders::_3));
 
+  std::cout << "[LinkAttacher] ATTACH service created" << std::endl;
+
+  std::cout << "[LinkAttacher] Creating DETACH service" << std::endl;
+
   detachService =
     node->create_service<linkattacher_msgs::srv::DetachLink>(
       "/DETACHLINK",
@@ -81,17 +116,25 @@ void Configure(
         std::placeholders::_2,
         std::placeholders::_3));
 
-  std::cout << "[LinkAttacher] READY" << std::endl;
+  std::cout << "[LinkAttacher] DETACH service created" << std::endl;
 
-  // ROS thread
+  std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
+
   rosThread = std::thread([this]()
   {
+    std::cout << "[LinkAttacher] ROS thread started" << std::endl;
+
     while (rclcpp::ok())
     {
       executor->spin_some();
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+
+    std::cout << "[LinkAttacher] ROS thread exiting" << std::endl;
   });
+
+  std::cout << "[LinkAttacher] Configure() END\n" << std::endl;
 }
 
 void PreUpdate(
@@ -99,9 +142,19 @@ void PreUpdate(
   EntityComponentManager &_ecm) override
 {
 
+  if(!initialized)
+  {
+    std::cout << "[LinkAttacher] First PreUpdate() detected" << std::endl;
+    initialized = true;
+  }
+
   if(attachRequested)
   {
-    std::cout << "[LinkAttacher] Processing attach request" << std::endl;
+    std::cout << "\n[LinkAttacher] Processing attach request" << std::endl;
+    std::cout << "[LinkAttacher] model1=" << model1
+              << " link1=" << link1 << std::endl;
+    std::cout << "[LinkAttacher] model2=" << model2
+              << " link2=" << link2 << std::endl;
 
     CreateJoint(_ecm);
 
@@ -127,6 +180,8 @@ Entity FindLink(
   const std::string &linkName)
 {
 
+  std::cout << "[LinkAttacher] Searching model: " << modelName << std::endl;
+
   Entity modelEntity{kNullEntity};
 
   _ecm.Each<components::Name>(
@@ -135,6 +190,7 @@ Entity FindLink(
 
       if(_name->Data()==modelName)
       {
+        std::cout << "[LinkAttacher] Model found entity=" << _entity << std::endl;
         modelEntity=_entity;
         return false;
       }
@@ -149,6 +205,8 @@ Entity FindLink(
     return kNullEntity;
   }
 
+  std::cout << "[LinkAttacher] Searching link: " << linkName << std::endl;
+
   Entity result{kNullEntity};
 
   _ecm.Each<components::Name,components::ParentEntity>(
@@ -159,6 +217,7 @@ Entity FindLink(
 
       if(_name->Data()==linkName && _parent->Data()==modelEntity)
       {
+        std::cout << "[LinkAttacher] Link found entity=" << _entity << std::endl;
         result=_entity;
         return false;
       }
@@ -169,7 +228,8 @@ Entity FindLink(
 
   if(result==kNullEntity)
   {
-    std::cout<<"[LinkAttacher] LINK NOT FOUND: "<<modelName<<"::"<<linkName<<std::endl;
+    std::cout<<"[LinkAttacher] LINK NOT FOUND: "
+             <<modelName<<"::"<<linkName<<std::endl;
   }
 
   return result;
@@ -178,30 +238,36 @@ Entity FindLink(
 void CreateJoint(EntityComponentManager &_ecm)
 {
 
-  std::cout << "[LinkAttacher] Creating joint" << std::endl;
+  std::cout << "[LinkAttacher] CreateJoint()" << std::endl;
 
   Entity parentLink = FindLink(_ecm, model1, link1);
   Entity childLink  = FindLink(_ecm, model2, link2);
 
   if(parentLink == kNullEntity || childLink == kNullEntity)
   {
-    std::cout << "[LinkAttacher] ERROR links not found" << std::endl;
+    std::cout << "[LinkAttacher] ERROR: link entities invalid" << std::endl;
     return;
   }
 
   Entity jointEntity = _ecm.CreateEntity();
 
+  std::cout << "[LinkAttacher] Joint entity created: "
+            << jointEntity << std::endl;
+
   components::DetachableJoint joint;
+
   joint.Data().parentLink = parentLink;
   joint.Data().childLink  = childLink;
 
   _ecm.CreateComponent(jointEntity, joint);
 
-  std::cout << "[LinkAttacher] Joint created successfully" << std::endl;
+  std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
 }
 
 void RemoveJoint(EntityComponentManager &_ecm)
 {
+
+  std::cout << "[LinkAttacher] RemoveJoint()" << std::endl;
 
   Entity jointEntity{kNullEntity};
 
@@ -209,6 +275,9 @@ void RemoveJoint(EntityComponentManager &_ecm)
     [&](const Entity &_entity,
         const components::DetachableJoint *)
     {
+
+      std::cout << "[LinkAttacher] Found detachable joint entity="
+                << _entity << std::endl;
 
       jointEntity = _entity;
       return false;
@@ -232,7 +301,13 @@ void Attach(
   std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
 {
 
-  std::cout<<"[LinkAttacher] ATTACH REQUEST"<<std::endl;
+  std::cout<<"\n==============================="<<std::endl;
+  std::cout<<"[LinkAttacher] ATTACH REQUEST RECEIVED"<<std::endl;
+
+  std::cout<<"model1="<<req->model1_name<<std::endl;
+  std::cout<<"link1="<<req->link1_name<<std::endl;
+  std::cout<<"model2="<<req->model2_name<<std::endl;
+  std::cout<<"link2="<<req->link2_name<<std::endl;
 
   model1=req->model1_name;
   link1=req->link1_name;
@@ -244,6 +319,9 @@ void Attach(
 
   res->success=true;
   res->message="Attach scheduled";
+
+  std::cout<<"[LinkAttacher] Response sent"<<std::endl;
+  std::cout<<"===============================\n"<<std::endl;
 }
 
 void Detach(
@@ -252,12 +330,14 @@ void Detach(
   std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
 {
 
-  std::cout<<"[LinkAttacher] DETACH REQUEST"<<std::endl;
+  std::cout<<"\n[LinkAttacher] DETACH REQUEST RECEIVED"<<std::endl;
 
   detachRequested=true;
 
   res->success=true;
   res->message="Detach scheduled";
+
+  std::cout<<"[LinkAttacher] Detach response sent"<<std::endl;
 }
 
 private:
@@ -274,6 +354,7 @@ Entity worldEntity{kNullEntity};
 
 bool attachRequested=false;
 bool detachRequested=false;
+bool initialized=false;
 
 std::string model1;
 std::string link1;
