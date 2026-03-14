@@ -250,6 +250,7 @@ void CreateJoint(EntityComponentManager &_ecm)
   }
 
   Entity jointEntity = _ecm.CreateEntity();
+  activeJoint = jointEntity;
 
   std::cout << "[LinkAttacher] Joint entity created: "
             << jointEntity << std::endl;
@@ -269,31 +270,18 @@ void RemoveJoint(EntityComponentManager &_ecm)
 
   std::cout << "[LinkAttacher] RemoveJoint()" << std::endl;
 
-  Entity jointEntity{kNullEntity};
-
-  _ecm.Each<components::DetachableJoint>(
-    [&](const Entity &_entity,
-        const components::DetachableJoint *)
-    {
-
-      std::cout << "[LinkAttacher] Found detachable joint entity="
-                << _entity << std::endl;
-
-      jointEntity = _entity;
-      return false;
-
-    });
-
-  if(jointEntity == kNullEntity)
+  if(activeJoint == kNullEntity)
   {
-    std::cout<<"[LinkAttacher] No joint found to remove"<<std::endl;
+    std::cout << "[LinkAttacher] No active joint" << std::endl;
     return;
   }
 
-  _ecm.RemoveComponent<components::DetachableJoint>(jointEntity);
-  _ecm.RequestRemoveEntity(jointEntity);
+  _ecm.RemoveComponent<components::DetachableJoint>(activeJoint);
+  _ecm.RequestRemoveEntity(activeJoint);
 
-  std::cout<<"[LinkAttacher] Joint removed"<<std::endl;
+  std::cout << "[LinkAttacher] Active joint removed" << std::endl;
+
+  activeJoint = kNullEntity;
 }
 
 void Attach(
