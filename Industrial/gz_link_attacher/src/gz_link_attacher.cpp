@@ -259,8 +259,13 @@ void CreateJoint(EntityComponentManager &_ecm)
 
   joint.Data().parentLink = parentLink;
   joint.Data().childLink  = childLink;
+  joint.Data().type = "fixed";
+  joint.Data().name = "link_attacher_joint";
 
   _ecm.CreateComponent(jointEntity, joint);
+
+  _ecm.CreateComponent(jointEntity,
+    components::Name("link_attacher_joint"));
 
   std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
 }
@@ -276,10 +281,9 @@ void RemoveJoint(EntityComponentManager &_ecm)
     return;
   }
 
-  _ecm.RemoveComponent<components::DetachableJoint>(activeJoint);
   _ecm.RequestRemoveEntity(activeJoint);
 
-  std::cout << "[LinkAttacher] Active joint removed" << std::endl;
+  std::cout << "[LinkAttacher] Joint entity removed" << std::endl;
 
   activeJoint = kNullEntity;
 }
