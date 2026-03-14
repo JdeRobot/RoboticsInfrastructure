@@ -13,6 +13,10 @@
 #include <linkattacher_msgs/srv/attach_link.hpp>
 #include <linkattacher_msgs/srv/detach_link.hpp>
 
+#include <thread>
+#include <chrono>
+#include <iostream>
+
 using namespace gz;
 using namespace sim;
 
@@ -26,6 +30,15 @@ class LinkAttacher :
 {
 
 public:
+
+~LinkAttacher()
+{
+  if (executor)
+    executor->cancel();
+
+  if (rosThread.joinable())
+    rosThread.join();
+}
 
 void Configure(
   const Entity &_entity,
@@ -50,7 +63,7 @@ void Configure(
 
   attachService =
     node->create_service<linkattacher_msgs::srv::AttachLink>(
-      "ATTACHLINK",
+      "/ATTACHLINK",
       std::bind(
         &LinkAttacher::Attach,
         this,
@@ -60,7 +73,7 @@ void Configure(
 
   detachService =
     node->create_service<linkattacher_msgs::srv::DetachLink>(
-      "DETACHLINK",
+      "/DETACHLINK",
       std::bind(
         &LinkAttacher::Detach,
         this,
@@ -69,15 +82,22 @@ void Configure(
         std::placeholders::_3));
 
   std::cout << "[LinkAttacher] READY" << std::endl;
+
+  // ROS thread
+  rosThread = std::thread([this]()
+  {
+    while (rclcpp::ok())
+    {
+      executor->spin_some();
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+  });
 }
 
 void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
-
-  if(node)
-    executor->spin_some();
 
   if(attachRequested)
   {
@@ -207,11 +227,10 @@ void RemoveJoint(EntityComponentManager &_ecm)
 }
 
 void Attach(
-  const std::shared_ptr<rmw_request_id_t> request_header,
+  const std::shared_ptr<rmw_request_id_t>,
   const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
   std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
 {
-  (void)request_header;
 
   std::cout<<"[LinkAttacher] ATTACH REQUEST"<<std::endl;
 
@@ -228,11 +247,10 @@ void Attach(
 }
 
 void Detach(
-  const std::shared_ptr<rmw_request_id_t> request_header,
+  const std::shared_ptr<rmw_request_id_t>,
   const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
   std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
 {
-  (void)request_header;
 
   std::cout<<"[LinkAttacher] DETACH REQUEST"<<std::endl;
 
@@ -242,7 +260,6 @@ void Detach(
   res->message="Detach scheduled";
 }
 
-
 private:
 
 rclcpp::Node::SharedPtr node;
@@ -250,6 +267,8 @@ rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Service<linkattacher_msgs::srv::AttachLink>::SharedPtr attachService;
 rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
+
+std::thread rosThread;
 
 Entity worldEntity{kNullEntity};
 
