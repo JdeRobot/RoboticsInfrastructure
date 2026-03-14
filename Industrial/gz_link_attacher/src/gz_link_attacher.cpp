@@ -291,6 +291,7 @@ void RemoveJoint(EntityComponentManager &_ecm)
   }
 
   _ecm.RemoveComponent<components::DetachableJoint>(jointEntity);
+  _ecm.RequestRemoveEntity(jointEntity);
 
   std::cout<<"[LinkAttacher] Joint removed"<<std::endl;
 }
