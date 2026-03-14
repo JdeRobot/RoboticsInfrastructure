@@ -48,9 +48,12 @@ install(
   LIBRARY DESTINATION lib
 )
 
-install(
-  TARGETS gz_link_attacher
-  LIBRARY DESTINATION /home/drones_ws/install/as2_gazebo_assets/lib
+############################
+# Environment hook
+############################
+
+ament_environment_hooks(
+  env-hooks/gz_link_attacher.sh
 )
 
 ############################
@@ -58,6 +61,7 @@ install(
 ############################
 
 ament_export_libraries(gz_link_attacher)
+
 ament_export_dependencies(
   gz-sim8
   gz-plugin2
