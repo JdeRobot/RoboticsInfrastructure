@@ -40,7 +40,7 @@ ament_target_dependencies(gz_link_attacher
 )
 
 ############################
-# Install
+# Install plugin
 ############################
 
 install(
@@ -49,11 +49,12 @@ install(
 )
 
 ############################
-# Environment hook
+# Environment hook (.dsv)
 ############################
 
-ament_environment_hooks(
-  env-hooks/gz_link_attacher.sh
+install(
+  FILES env-hooks/gz_link_attacher.dsv
+  DESTINATION share/${PROJECT_NAME}/environment
 )
 
 ############################
