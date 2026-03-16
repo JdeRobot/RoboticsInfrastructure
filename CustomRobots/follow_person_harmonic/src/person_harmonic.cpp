@@ -348,7 +348,7 @@ namespace person_plugin
           std::make_tuple(-4, 9.9, 6),
           std::make_tuple(0.9, 9.9, 7),
         };
-        """
+        /*
         this->wp = {
           std::make_tuple(4, 6, 1),
           std::make_tuple(5, 3, 2),
@@ -365,7 +365,7 @@ namespace person_plugin
           std::make_tuple(3, 13, 13),
           std::make_tuple(4, 10, 0),
         };
-        """
+        */
 
         this->quadrants = {
           std::make_tuple(0.0f, PI / 2.0f),
