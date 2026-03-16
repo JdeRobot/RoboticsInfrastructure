@@ -342,8 +342,8 @@ namespace person_plugin
         this->wp = {
           std::make_tuple(4.3, 4.7, 1),
           std::make_tuple(4.8, -0.2, 2),
-          std::make_tuple(4, -8.3, 3),
-          std::make_tuple(-4.5, -8.3, 4),
+          std::make_tuple(4, -9, 3),
+          std::make_tuple(-4.5, -9, 4),
           std::make_tuple(-4.15, -0.75, 5),
           std::make_tuple(-4, 9.9, 6),
           std::make_tuple(0.9, 9.9, 7),
