@@ -259,13 +259,8 @@ void CreateJoint(EntityComponentManager &_ecm)
 
   joint.Data().parentLink = parentLink;
   joint.Data().childLink  = childLink;
-  joint.Data().type = "fixed";
-  joint.Data().name = "link_attacher_joint";
 
   _ecm.CreateComponent(jointEntity, joint);
-
-  _ecm.CreateComponent(jointEntity,
-    components::Name("link_attacher_joint"));
 
   std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
 }
