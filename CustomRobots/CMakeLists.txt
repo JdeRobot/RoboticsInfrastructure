@@ -33,7 +33,7 @@ endforeach()
 
 # -------------------
 # Classic
-add_library(personplugin amazon_hospital/src/person.cpp EXCLUDE_FROM_ALL)
+add_library(personplugin EXCLUDE_FROM_ALL amazon_hospital/src/person.cpp)
 target_include_directories(personplugin
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
@@ -43,7 +43,7 @@ target_link_libraries(personplugin
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 # Harmonic / Ignition
-add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp EXCLUDE_FROM_ALL)
+add_library(personplugin_harmonic EXCLUDE_FROM_ALL follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(personplugin_harmonic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
