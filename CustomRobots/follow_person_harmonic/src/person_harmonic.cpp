@@ -342,30 +342,12 @@ namespace person_plugin
         this->wp = {
           std::make_tuple(4.3, 4.7, 1),
           std::make_tuple(4.8, -0.2, 2),
-          std::make_tuple(4, -9, 3),
-          std::make_tuple(-4.5, -9, 4),
+          std::make_tuple(4, -9.8, 3),
+          std::make_tuple(-4.5, -9.8, 4),
           std::make_tuple(-4.15, -0.75, 5),
           std::make_tuple(-4, 9.9, 6),
           std::make_tuple(0.9, 9.9, 7),
         };
-        /*
-        this->wp = {
-          std::make_tuple(4, 6, 1),
-          std::make_tuple(5, 3, 2),
-          std::make_tuple(5, -14.5, 3),
-          std::make_tuple(-5, -14.5, 4),
-          std::make_tuple(-5, -25, 5),
-          std::make_tuple(5, -25, 6),
-          std::make_tuple(5, -14.5, 7),
-          std::make_tuple(-5, -14.5, 8),
-          std::make_tuple(-5, -1, 9),
-          std::make_tuple(-4, 2, 10),
-          std::make_tuple(-4, 5, 11),
-          std::make_tuple(-2.5, 13, 12),
-          std::make_tuple(3, 13, 13),
-          std::make_tuple(4, 10, 0),
-        };
-        */
 
         this->quadrants = {
           std::make_tuple(0.0f, PI / 2.0f),
