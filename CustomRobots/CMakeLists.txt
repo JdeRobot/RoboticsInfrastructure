@@ -31,28 +31,25 @@ foreach(dep ${PROJECT_DEPENDENCIES})
 endforeach()
 
 # -------------------
-# Classic
-# Separamos las librerías de Classic para no chocar con Harmonic
-find_package(gazebo REQUIRED)   # Classic
-include_directories(${GAZEBO_INCLUDE_DIRS})
+# Classic (personplugin)
+# Compilamos primero como objeto para evitar conflictos de JSON
+add_library(personplugin_obj OBJECT amazon_hospital/src/person.cpp)
 
-add_library(personplugin amazon_hospital/src/person.cpp EXCLUDE_FROM_ALL)
+# Creamos la librería final linkeando solo Threads
+add_library(personplugin STATIC $<TARGET_OBJECTS:personplugin_obj>)
+target_link_libraries(personplugin Threads::Threads)
 target_include_directories(personplugin
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(personplugin "rclcpp" "pluginlib")
-target_link_libraries(personplugin
-  ${GAZEBO_LIBRARIES}
-  Threads::Threads)
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 # -------------------
-# Harmonic / Ignition
+# Harmonic / Ignition (personplugin_harmonic)
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
 
-add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp EXCLUDE_FROM_ALL)
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(personplugin_harmonic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
@@ -64,12 +61,15 @@ target_link_libraries(personplugin_harmonic
   Threads::Threads)
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
+# -------------------
+# Instalación de ambos plugins
 install(
-  TARGETS personplugin personplugin_harmonic #personplugin
+  TARGETS personplugin personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
+
 
 ament_environment_hooks("hooks/resource_paths.dsv.in")
 ament_environment_hooks("hooks/resource_paths.sh")
