@@ -31,43 +31,49 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
+# -------------------
+# Classic
+find_package(gazebo REQUIRED)
+include_directories(${GAZEBO_INCLUDE_DIRS})
+
+# Compilamos objetos primero para evitar conflictos con JsonCpp
+add_library(personplugin_obj OBJECT amazon_hospital/src/person.cpp)
+target_include_directories(personplugin_obj
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
+target_compile_definitions(personplugin_obj PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
+
+# Ahora creamos la librería final Classic
+add_library(personplugin STATIC $<TARGET_OBJECTS:personplugin_obj>)
+target_link_libraries(personplugin Threads::Threads)
+target_include_directories(personplugin
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
+
+ament_target_dependencies(personplugin "rclcpp" "pluginlib" "gazebo")
+
+# -------------------
+# Harmonic / Ignition
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
 
-if(CMAKE_USE_PTHREADS_INIT)
-  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-endif()
-
-include_directories(${GAZEBO_INCLUDE_DIRS})
-
-#add_library(personplugin amazon_hospital/src/person.cpp)
-#target_include_directories(
-#  personplugin
-#  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#         $<INSTALL_INTERFACE:include>)
-
-#ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
-
-#target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
 add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
-target_include_directories(
-  personplugin_harmonic
+target_include_directories(personplugin_harmonic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
-
 ament_target_dependencies(personplugin_harmonic "rclcpp" "pluginlib")
 target_link_libraries(personplugin_harmonic
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
   gz-math7::gz-math7
   Threads::Threads)
-
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
+# -------------------
+# Instalación de librerías
 install(
-  TARGETS personplugin_harmonic #personplugin
+  TARGETS personplugin personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
