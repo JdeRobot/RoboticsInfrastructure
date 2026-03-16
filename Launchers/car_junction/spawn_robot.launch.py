@@ -63,7 +63,9 @@ def generate_launch_description():
     # )
 
     bridge_params = os.path.join(
-        get_package_share_directory("custom_robots"), "params", "prius_autoparking_camera.yaml"
+        get_package_share_directory("custom_robots"),
+        "params",
+        "prius_autoparking_camera.yaml",
     )
 
     start_gazebo_ros_bridge_cmd = Node(

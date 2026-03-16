@@ -19,9 +19,10 @@ from launch_ros.actions import Node
 def generate_launch_description():
     custom_robots_share = get_package_share_directory("custom_robots")
     bridges_path = os.path.join(custom_robots_share, "bridges", "rescue_people.yaml")
-    world_path = os.path.join(
-        custom_robots_share, "worlds", "rescue_people_harmonic.world"
-    )
+
+    world_file_name = "rescue_people_harmonic.world"
+    worlds_dir = "/opt/jderobot/Worlds"
+    world_path = os.path.join(worlds_dir, world_file_name)
 
     ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############
     declare_use_simulator_cmd = DeclareLaunchArgument(

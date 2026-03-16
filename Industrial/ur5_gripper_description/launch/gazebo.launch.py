@@ -3,11 +3,22 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler, SetEnvironmentVariable
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+    SetEnvironmentVariable,
+)
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
@@ -19,20 +30,20 @@ def generate_launch_description():
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     # Go up from install/ur5_gripper_description/share/ur5_gripper_description to install/
     workspace_dir = os.path.dirname(os.path.dirname(os.path.dirname(pkg_share_dir)))
-    
+
     # Prepare environment variables for Gazebo
-    gz_lib_path = os.path.join(workspace_dir, 'gz_ros2_control', 'lib')
-    ur_share = os.path.join(workspace_dir, 'ur5_gripper_description', 'share')
-    robotiq_share = os.path.join(workspace_dir, 'robotiq_description', 'share')
-    
+    gz_lib_path = os.path.join(workspace_dir, "gz_ros2_control", "lib")
+    ur_share = os.path.join(workspace_dir, "ur5_gripper_description", "share")
+    robotiq_share = os.path.join(workspace_dir, "robotiq_description", "share")
+
     gz_env = {
-        'GZ_SIM_RESOURCE_PATH': f"{ur_share}:{robotiq_share}:{os.environ.get('GZ_SIM_RESOURCE_PATH', '')}",
-        'GZ_SIM_SYSTEM_PLUGIN_PATH': f"{gz_lib_path}:{os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', '')}",
-        'LD_LIBRARY_PATH': f"{gz_lib_path}:{os.environ.get('LD_LIBRARY_PATH', '')}"
+        "GZ_SIM_RESOURCE_PATH": f"{ur_share}:{robotiq_share}:{os.environ.get('GZ_SIM_RESOURCE_PATH', '')}",
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": f"{gz_lib_path}:{os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', '')}",
+        "LD_LIBRARY_PATH": f"{gz_lib_path}:{os.environ.get('LD_LIBRARY_PATH', '')}",
     }
     # Declare arguments
     declared_arguments = []
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "ur_type",
@@ -41,7 +52,7 @@ def generate_launch_description():
             choices=["ur3", "ur3e", "ur5", "ur5e", "ur10", "ur10e", "ur16e"],
         )
     )
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "prefix",
@@ -49,7 +60,7 @@ def generate_launch_description():
             description="Prefix of the joint names",
         )
     )
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "launch_rviz",
@@ -57,7 +68,7 @@ def generate_launch_description():
             description="Launch RViz?",
         )
     )
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "gz_args",
@@ -76,15 +87,15 @@ def generate_launch_description():
     xacro_file = os.path.join(
         get_package_share_directory("ur5_gripper_description"),
         "urdf",
-        "ur5_robotiq85_gripper.urdf.xacro"
+        "ur5_robotiq85_gripper.urdf.xacro",
     )
-    
+
     controllers_file = os.path.join(
         get_package_share_directory("ur5_gripper_description"),
         "config",
-        "ur5_controllers.yaml"
+        "ur5_controllers.yaml",
     )
-    
+
     # Process xacro directly to avoid Command() stderr issues
     robot_description_content = xacro.process_file(
         xacro_file,
@@ -96,9 +107,9 @@ def generate_launch_description():
             "sim_gazebo": "false",
             "sim_gz": "true",
             "simulation_controllers": controllers_file,
-        }
+        },
     ).toxml()
-    
+
     robot_description = {"robot_description": robot_description_content}
 
     # Node for robot state publisher
@@ -106,10 +117,7 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
-        parameters=[
-            robot_description,
-            {"use_sim_time": True}
-        ],
+        parameters=[robot_description, {"use_sim_time": True}],
     )
 
     # Gazebo Sim (Harmonic) - with environment variables
@@ -118,23 +126,22 @@ def generate_launch_description():
         f'export GZ_SIM_SYSTEM_PLUGIN_PATH="{gz_env["GZ_SIM_SYSTEM_PLUGIN_PATH"]}" && '
         f'export GZ_SIM_RESOURCE_PATH="{gz_env["GZ_SIM_RESOURCE_PATH"]}" && '
         f'export LD_LIBRARY_PATH="{gz_env["LD_LIBRARY_PATH"]}" && '
-        'gz sim -r -v 4 empty.sdf'
+        "gz sim -r -v 4 empty.sdf"
     )
-    
-    gazebo = ExecuteProcess(
-        cmd=['bash', '-c', gz_cmd],
-        output='screen',
-        shell=False
-    )
+
+    gazebo = ExecuteProcess(cmd=["bash", "-c", gz_cmd], output="screen", shell=False)
 
     # Spawn robot
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-topic", "robot_description",
-            "-name", "ur5_robotiq",
-            "-allow_renaming", "true",
+            "-topic",
+            "robot_description",
+            "-name",
+            "ur5_robotiq",
+            "-allow_renaming",
+            "true",
         ],
         output="screen",
     )
@@ -152,7 +159,11 @@ def generate_launch_description():
     load_joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
         output="screen",
         parameters=[{"use_sim_time": True}],
     )
@@ -165,7 +176,7 @@ def generate_launch_description():
         output="screen",
         parameters=[{"use_sim_time": True}],
     )
-    
+
     # Load gripper controller
     load_gripper_controller = Node(
         package="controller_manager",
@@ -179,7 +190,7 @@ def generate_launch_description():
     rviz_config_file = PathJoinSubstitution(
         [FindPackageShare("ur5_gripper_description"), "rviz", "view_robot.rviz"]
     )
-    
+
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -198,13 +209,15 @@ def generate_launch_description():
         )
     )
 
-    delay_joint_trajectory_controller_after_joint_state_broadcaster = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=load_joint_state_broadcaster,
-            on_exit=[load_joint_trajectory_controller],
+    delay_joint_trajectory_controller_after_joint_state_broadcaster = (
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=load_joint_state_broadcaster,
+                on_exit=[load_joint_trajectory_controller],
+            )
         )
     )
-    
+
     delay_gripper_controller_after_joint_trajectory = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=load_joint_trajectory_controller,

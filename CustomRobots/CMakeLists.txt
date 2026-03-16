@@ -94,9 +94,11 @@ install(
     car_junction/models
     car_junction/scripts
     # AMAZON WAREHOUSE ROBOT
-    amazon_robot/models
-    amazon_robot/urdf
-    amazon_robot/meshes
+    amazon_robot_classic/models
+    amazon_robot_classic/urdf
+    amazon_robot_classic/meshes
+    amazon_warehouse_harmonic/models
+    amazon_warehouse_harmonic/params
     # AMAZON HOSPITAL
     amazon_hospital/models
     amazon_hospital/hospital_world/launch
@@ -111,7 +113,6 @@ install(
     autopark_harmonic/params
     # DRONE_ASSETS
     drone_assets/models
-    drone_assets/worlds
     drone_assets/bridges
     # GLOBAL_NAVIGATION
     taxi_navigator/models

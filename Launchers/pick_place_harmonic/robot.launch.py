@@ -20,9 +20,7 @@ def generate_launch_description():
         raise
 
     warehouse_launch_file = os.path.join(
-        ur5_gripper_pkg,
-        "launch",
-        "spawn_robot_warehouse.launch.py"
+        ur5_gripper_pkg, "launch", "spawn_robot_warehouse.launch.py"
     )
 
     print(f"Including launch file: {warehouse_launch_file}")
@@ -34,6 +32,4 @@ def generate_launch_description():
         }.items(),
     )
 
-    return LaunchDescription([
-        warehouse_launch
-    ])
+    return LaunchDescription([warehouse_launch])

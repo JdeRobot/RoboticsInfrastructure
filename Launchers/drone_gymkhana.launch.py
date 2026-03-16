@@ -17,9 +17,10 @@ def generate_launch_description():
     custom_robots_share = get_package_share_directory("custom_robots")
     # same bridges file as rescue_people exercise
     bridges_path = os.path.join(custom_robots_share, "bridges", "rescue_people.yaml")
-    world_path = os.path.join(
-        custom_robots_share, "worlds", "drone_gymkhana_harmonic.world"
-    )
+
+    world_file_name = "drone_gymkhana_harmonic.world"
+    worlds_dir = "/opt/jderobot/Worlds"
+    world_path = os.path.join(worlds_dir, world_file_name)
 
     # YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE #
     declare_use_simulator_cmd = DeclareLaunchArgument(

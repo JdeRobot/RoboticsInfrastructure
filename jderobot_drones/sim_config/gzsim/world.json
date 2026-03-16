@@ -1,5 +1,5 @@
 {
-    "world_name": "empty",
+    "world_name": "default",
     "drones": [
         {
             "model_type": "quadrotor_base",
