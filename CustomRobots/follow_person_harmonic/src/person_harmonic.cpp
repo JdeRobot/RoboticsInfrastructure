@@ -340,6 +340,16 @@ namespace person_plugin
 
         this->current_wp = 0;
         this->wp = {
+          std::make_tuple(4.3, 4.7, 1),
+          std::make_tuple(4.8, -0.2, 2),
+          std::make_tuple(3.83, -7.9, 3),
+          std::make_tuple(-4.2, -7.9, 4),
+          std::make_tuple(-4.15, -0.75, 5),
+          std::make_tuple(-4, 9.9, 6),
+          std::make_tuple(0.9, 9.9, 7),
+        };
+        """
+        this->wp = {
           std::make_tuple(4, 6, 1),
           std::make_tuple(5, 3, 2),
           std::make_tuple(5, -14.5, 3),
@@ -355,6 +365,7 @@ namespace person_plugin
           std::make_tuple(3, 13, 13),
           std::make_tuple(4, 10, 0),
         };
+        """
 
         this->quadrants = {
           std::make_tuple(0.0f, PI / 2.0f),
@@ -466,11 +477,6 @@ namespace person_plugin
         std::lock_guard<std::mutex> lock(this->mtx);
         this->currentPose = pose;
         this->poseInitialized = true;
-
-          // ---- TRAZA DE POSICION ----
-        std::cout << "PERSON_POSE "
-            << pose.Pos().X() << " "
-            << pose.Pos().Y() << std::endl;
       }
 
       void Reset(const gz::sim::UpdateInfo & /*_info*/,
