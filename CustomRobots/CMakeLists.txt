@@ -23,27 +23,36 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    #gazebo
     pluginlib
     Threads)
 
-foreach(dependency ${PROJECT_DEPENDENCIES})
-  find_package(${dependency} REQUIRED)
+foreach(dep ${PROJECT_DEPENDENCIES})
+  find_package(${dep} REQUIRED)
 endforeach()
 
 # -------------------
 # Classic
-add_library(personplugin EXCLUDE_FROM_ALL amazon_hospital/src/person.cpp)
+# Separamos las librerías de Classic para no chocar con Harmonic
+find_package(gazebo REQUIRED)   # Classic
+include_directories(${GAZEBO_INCLUDE_DIRS})
+
+add_library(personplugin amazon_hospital/src/person.cpp EXCLUDE_FROM_ALL)
 target_include_directories(personplugin
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(personplugin "rclcpp" "pluginlib")
 target_link_libraries(personplugin
   ${GAZEBO_LIBRARIES}
   Threads::Threads)
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
+# -------------------
 # Harmonic / Ignition
-add_library(personplugin_harmonic EXCLUDE_FROM_ALL follow_person_harmonic/src/person_harmonic.cpp)
+find_package(gz-sim8 REQUIRED)
+find_package(gz-plugin2 REQUIRED)
+find_package(gz-math7 REQUIRED)
+
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp EXCLUDE_FROM_ALL)
 target_include_directories(personplugin_harmonic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
@@ -56,7 +65,7 @@ target_link_libraries(personplugin_harmonic
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 install(
-  TARGETS personplugin personplugin_harmonic
+  TARGETS personplugin personplugin_harmonic #personplugin
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -137,7 +146,8 @@ if(BUILD_TESTING)
   # endforeach()
 endif()
 
-ament_export_libraries(personplugin personplugin_harmonic)
+ament_export_libraries(personplugin_harmonic) #personplugin
+
 ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()
