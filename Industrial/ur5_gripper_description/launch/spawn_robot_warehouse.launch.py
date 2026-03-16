@@ -12,6 +12,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import xacro
+from launch.actions import SetEnvironmentVariable
 
 
 def generate_launch_description():
@@ -31,9 +32,15 @@ def generate_launch_description():
 
     gz_env = {
         "GZ_SIM_RESOURCE_PATH": resource_path,
-        "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_lib_path + ":/opt/ros/humble/lib",
-        "LD_LIBRARY_PATH": gz_lib_path
-        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu",
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": (
+            "/home/ws/install/gz_link_attacher/lib:"
+            + gz_lib_path
+            + ":/opt/ros/humble/lib"
+        ),
+        "LD_LIBRARY_PATH": "/home/ws/install/gz_link_attacher/lib:"
+        + gz_lib_path
+        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
+        + os.environ.get("LD_LIBRARY_PATH", ""),
         "DISPLAY": ":2",
     }
 
