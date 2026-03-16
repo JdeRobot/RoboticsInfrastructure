@@ -346,7 +346,7 @@ namespace person_plugin
           std::make_tuple(-4.5, -9.8, 4),
           std::make_tuple(-4.15, -0.75, 5),
           std::make_tuple(-4, 9.9, 6),
-          std::make_tuple(0.9, 9.9, 7),
+          std::make_tuple(3.9, 9.9, 7),
         };
 
         this->quadrants = {

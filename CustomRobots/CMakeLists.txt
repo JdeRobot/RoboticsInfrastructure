@@ -31,6 +31,28 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
+# -------------------
+# Classic Plugin
+# -------------------
+find_package(gazebo REQUIRED)
+
+add_library(personplugin amazon_hospital/src/person.cpp)
+target_include_directories(
+  personplugin
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>
+)
+ament_target_dependencies(personplugin "rclcpp" "pluginlib" "gazebo")
+target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
+
+target_link_libraries(personplugin
+  ${GAZEBO_LIBRARIES}      # Solo las de Classic
+  Threads::Threads
+)
+
+# -------------------
+# Harmonic Plugin
+# -------------------
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
@@ -40,16 +62,6 @@ if(CMAKE_USE_PTHREADS_INIT)
 endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
-
-#add_library(personplugin amazon_hospital/src/person.cpp)
-#target_include_directories(
-#  personplugin
-#  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#         $<INSTALL_INTERFACE:include>)
-
-#ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
-
-#target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(
@@ -67,7 +79,7 @@ target_link_libraries(personplugin_harmonic
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 install(
-  TARGETS personplugin_harmonic #personplugin
+  TARGETS personplugin personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -148,8 +160,7 @@ if(BUILD_TESTING)
   # endforeach()
 endif()
 
-ament_export_libraries(personplugin_harmonic) #personplugin
-
+ament_export_libraries(personplugin personplugin_harmonic)
 ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()
