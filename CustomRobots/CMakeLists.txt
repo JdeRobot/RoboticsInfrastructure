@@ -32,50 +32,27 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
 endforeach()
 
 # -------------------
-# Classic Plugin
-# -------------------
-find_package(gazebo REQUIRED)
-
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(
-  personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>
-)
-ament_target_dependencies(personplugin "rclcpp" "pluginlib" "gazebo")
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
-target_link_libraries(personplugin
-  ${GAZEBO_LIBRARIES}      # Solo las de Classic
-  Threads::Threads
-)
-
-# -------------------
-# Harmonic Plugin
-# -------------------
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
-find_package(gz-math7 REQUIRED)
-
-if(CMAKE_USE_PTHREADS_INIT)
-  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-endif()
-
-include_directories(${GAZEBO_INCLUDE_DIRS})
-
-add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
-target_include_directories(
-  personplugin_harmonic
+# Classic
+add_library(personplugin_classic amazon_hospital/src/person.cpp EXCLUDE_FROM_ALL)
+target_include_directories(personplugin_classic
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
+target_link_libraries(personplugin_classic
+  ${GAZEBO_LIBRARIES}
+  Threads::Threads)
+target_compile_definitions(personplugin_classic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
+# Harmonic / Ignition
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp EXCLUDE_FROM_ALL)
+target_include_directories(personplugin_harmonic
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(personplugin_harmonic "rclcpp" "pluginlib")
 target_link_libraries(personplugin_harmonic
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
   gz-math7::gz-math7
   Threads::Threads)
-
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
 install(
