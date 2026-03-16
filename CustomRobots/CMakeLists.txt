@@ -30,46 +30,59 @@ foreach(dep ${PROJECT_DEPENDENCIES})
   find_package(${dep} REQUIRED)
 endforeach()
 
-# -------------------
-# Classic (personplugin)
-# Compilamos primero como objeto para evitar conflictos de JSON
-add_library(personplugin_obj OBJECT amazon_hospital/src/person.cpp)
+# --------------------------
+# Gazebo Classic (para personplugin)
+find_package(gazebo REQUIRED)  # <- necesario para Classic
 
-# Creamos la librería final linkeando solo Threads
-add_library(personplugin STATIC $<TARGET_OBJECTS:personplugin_obj>)
-target_link_libraries(personplugin Threads::Threads)
+if(CMAKE_USE_PTHREADS_INIT)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
+endif()
+
+# --------------------------
+# Plugin Classic
+add_library(personplugin amazon_hospital/src/person.cpp)
 target_include_directories(personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+    ${GAZEBO_INCLUDE_DIRS}           # <- incluye headers de Gazebo Classic
+)
+target_link_libraries(personplugin
+  ${GAZEBO_LIBRARIES}                # <- linka librerías de Gazebo Classic
+  Threads::Threads
+)
 target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
-# -------------------
-# Harmonic / Ignition (personplugin_harmonic)
+# --------------------------
+# Plugin Harmonic / Ignition
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
 
 add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
 target_include_directories(personplugin_harmonic
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 ament_target_dependencies(personplugin_harmonic "rclcpp" "pluginlib")
 target_link_libraries(personplugin_harmonic
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
   gz-math7::gz-math7
-  Threads::Threads)
+  Threads::Threads
+)
 target_compile_definitions(personplugin_harmonic PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
 
-# -------------------
-# Instalación de ambos plugins
+# --------------------------
+# Instalación de los plugins
 install(
   TARGETS personplugin personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
-
+  RUNTIME DESTINATION bin
+)
 
 ament_environment_hooks("hooks/resource_paths.dsv.in")
 ament_environment_hooks("hooks/resource_paths.sh")
