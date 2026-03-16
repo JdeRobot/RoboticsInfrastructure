@@ -466,6 +466,11 @@ namespace person_plugin
         std::lock_guard<std::mutex> lock(this->mtx);
         this->currentPose = pose;
         this->poseInitialized = true;
+
+          // ---- TRAZA DE POSICION ----
+        std::cout << "PERSON_POSE "
+            << pose.Pos().X() << " "
+            << pose.Pos().Y() << std::endl;
       }
 
       void Reset(const gz::sim::UpdateInfo & /*_info*/,
