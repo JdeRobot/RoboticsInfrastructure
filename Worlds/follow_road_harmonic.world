@@ -1,25 +1,17 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
-  <world name="empty">
+  <world name="default">
     <physics name="4ms" type="ignored">
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
-    <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
@@ -44,13 +36,13 @@
       </camera>
     </gui>
 
-		<!-- Building -->
+    <!-- Building -->
     <include>
       <uri>model://osrf_first_office</uri>
       <name>osrf_first_office</name>
       <pose>2.7431375980377197 -5.286156177520752 0 0 0 -0.73836601026213899</pose>
     </include>
-    
+
     <!-- Grass Plane -->
     <include>
       <uri>model://grass_plane</uri>
@@ -176,9 +168,9 @@
     </include>
 
     <include>
-        <uri>model://quadrotor_dual_cam</uri>
-        <name>drone0</name>
-        <pose>17.96 0.0 0.3 0 0 -2.0</pose>
+      <uri>model://quadrotor_dual_cam</uri>
+      <name>drone0</name>
+      <pose>17.96 0.0 0.3 0 0 -2.0</pose>
     </include>
 
   </world>
