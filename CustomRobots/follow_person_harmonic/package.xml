@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
 <package format="3">
-  <name>follow_person_harmonic</name>
+  <name>personplugin_harmonic</name>  <!-- coincidir con CMake -->
   <version>0.0.1</version>
   <description>Plugin harmonic para seguimiento de personas</description>
   <maintainer email="you@example.com">Tu Nombre</maintainer>
