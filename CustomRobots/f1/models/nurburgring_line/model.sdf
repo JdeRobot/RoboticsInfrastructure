@@ -1,39 +1,32 @@
 <?xml version='1.0'?>
 <sdf version="1.4">
-<model name="nurburgring">
-  <static>true</static>
-  <link name="nurburgring">
-    <pose>0 0 0 0 0 0</pose>
-    <collision name="collision">
-      <geometry>
-        <plane>
-          <size> 200 200</size>
-        </plane>
-      </geometry>
-    </collision>
-    <visual name="visual">
-      <geometry>
-        <mesh>
-          <uri>model://nurburgring_line/meshes/Circuito_Nurburgrin.dae</uri>
-        </mesh>
-      </geometry>
-    </visual>
-  </link>
-  <link name="pared">
-    <collision name="collision">
-      <geometry>
-        <mesh>
-          <uri>model://nurburgring_line/meshes/pared.stl</uri>
-        </mesh>
-      </geometry>
-    </collision>
-    <visual name="visual">
-      <geometry>
-        <mesh>
-          <uri>model://nurburgring_line/meshes/pared.stl</uri>
-        </mesh>
-      </geometry>
-    </visual>
-  </link>
-</model>
+  <model name="nurburgring">
+    <static>true</static>
+    <link name="nurburgring">
+      <pose>0 0 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <plane>
+            <size> 200 200</size>
+          </plane>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://nurburgring_line/meshes/Circuito_Nurburgrin.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <link name="pared">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://nurburgring_line/meshes/pared.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
 </sdf>
