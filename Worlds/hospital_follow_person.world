@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<sdf version="1.10">
+<sdf version="1.7">
   <world name="default">
 
     <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
@@ -1274,7 +1274,7 @@
       </include>
     </model>
 
-    <model name="aws_robomaker_warehouse_ClutteringC_01_1">
+    <!--model name="aws_robomaker_warehouse_ClutteringC_01_1">
       <include>
         <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
         <static>true</static>
@@ -1288,7 +1288,7 @@
         <static>true</static>
         <pose>10.8233 15.2153 0 0 -0 0</pose>
       </include>
-    </model>
+    </model-->
 
     <model name="StorageRack_3">
       <include>
