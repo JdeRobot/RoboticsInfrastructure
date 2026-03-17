@@ -3,27 +3,19 @@
 <sdf version="1.9">
   <world name="default">
 
-    <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
     <scene>
       <shadows>false</shadows>
-       <grid>false</grid>
+      <grid>false</grid>
     </scene>
 
     <light type="directional" name="sun">
@@ -99,7 +91,7 @@
       <cast_shadows>false</cast_shadows>
       <visualize>false</visualize>
     </light>
-    
+
     <model name='ground_plane'>
       <static>true</static>
       <link name='link'>
@@ -116,8 +108,8 @@
     </model>
 
     <include>
-      <uri>model://simple_circuit</uri>
-	    <pose>-53.46 11.50 0 0 0 0</pose>
+      <uri>model://simple_circuit_walled</uri>
+      <pose>-53.46 11.50 0 0 0 0</pose>
     </include>
     <include>
       <uri>model://f1_renault_laser_no_cam</uri>
@@ -129,37 +121,37 @@
       <pose>-0.1 -33 0 0 0 0</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_2</name>
       <pose>-7 -40 0 0 0 -1.67</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_3</name>
       <pose>-13.2 -18.8 0 0 0 -3</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_4</name>
       <pose>-40 -11.5 0 0 0 -1.57</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_5</name>
       <pose>-66.83 -34.15 0 0 0 -1.03</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_6</name>
       <pose>-70.8 -34.2 0 0 0 -1.33</pose>
       <static>true</static>
     </include>
-	  <include>
+    <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_7</name>
       <pose>-103 14.6 0 0 0 2.47</pose>
