@@ -11,6 +11,9 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
+    <plugin
+      filename="libgz_link_attacher.so"
+      name="gz_link_attacher::LinkAttacher"/>
 
     <!-- Scene -->
     <scene>
