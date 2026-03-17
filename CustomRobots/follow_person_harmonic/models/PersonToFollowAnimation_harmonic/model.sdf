@@ -1,0 +1,58 @@
+<sdf version="1.9">
+  <actor name="PersonToFollowAnimation_harmonic">
+    <skin>
+      <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
+      <scale>1.0</scale>
+    </skin>
+    <animation name='walk'>
+      <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
+    </animation>
+    <script>
+      <loop>true</loop>
+      <delay_start>0.000000</delay_start>
+      <auto_start>true</auto_start>
+      <trajectory id="0" type="walk" tension="0.6">
+        <waypoint>
+          <time>0</time>
+          <pose>0 0 1.05 0 0 0</pose> 
+        </waypoint>
+        <waypoint>
+          <time>6</time>
+          <pose>3.0 0 1.05 0 0 0</pose>
+        </waypoint>
+        <waypoint>
+          <time>9</time>
+          <pose>4.0 1.0 1.05 0 0 1.57</pose>    <!--turn-->
+        </waypoint>
+        <waypoint>
+          <time>21</time>
+          <pose>4.0 7.0 1.05 0 0 1.57</pose>
+        </waypoint>
+        <waypoint>
+          <time>26</time>
+          <pose>3.0 8.0 1.05 0 0 3.14</pose>  <!--turn-->
+        </waypoint>
+        <waypoint>
+          <time>64</time>
+          <pose>-16.0 8.0 1.05 0 0 3.14</pose>  
+        </waypoint>
+        <waypoint>
+          <time>69</time>
+          <pose>-17.0 7.0 1.05 0 0 4.71</pose> <!--turn-->
+        </waypoint>
+        <waypoint>
+          <time>83</time>
+          <pose>-17.0 1.0 1.05 0 0 4.71</pose>
+        </waypoint>
+        <waypoint>
+          <time>88</time>
+          <pose>-16.0 0.0 1.05 0 0 6.28</pose> <!--turn-->
+        </waypoint>
+        <waypoint>
+          <time>120</time>
+          <pose>0.0 0.0 1.05 0 0 6.28</pose> <!--turn-->
+        </waypoint>
+      </trajectory>
+    </script>
+  </actor>
+</sdf>
