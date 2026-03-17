@@ -69,12 +69,12 @@ def generate_launch_description():
     #     launch_arguments={"use_sim_time": use_sim_time}.items(),
     # )
 
-    spawn_robot_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(robot_launch_dir, "spawn_robot.launch.py")
-        ),
-        launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
-    )
+    #spawn_robot_cmd = IncludeLaunchDescription(
+    #    PythonLaunchDescriptionSource(
+     #       os.path.join(robot_launch_dir, "spawn_robot.launch.py")
+     #   ),
+     #   launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
+    #)
 
     world_entity_cmd = Node(
         package="ros_gz_sim",
@@ -92,14 +92,14 @@ def generate_launch_description():
     ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
     # ld.add_action(gazebo_client)
-    ld.add_action(declare_x_cmd)
-    ld.add_action(declare_y_cmd)
-    ld.add_action(declare_z_cmd)
-    ld.add_action(declare_roll_cmd)
-    ld.add_action(declare_pitch_cmd)
-    ld.add_action(declare_yaw_cmd)
+    #ld.add_action(declare_x_cmd)
+    #ld.add_action(declare_y_cmd)
+    #ld.add_action(declare_z_cmd)
+    #ld.add_action(declare_roll_cmd)
+    #ld.add_action(declare_pitch_cmd)
+    #ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
     # ld.add_action(robot_state_publisher_cmd)
-    ld.add_action(spawn_robot_cmd)
+    #ld.add_action(spawn_robot_cmd)
 
     return ld

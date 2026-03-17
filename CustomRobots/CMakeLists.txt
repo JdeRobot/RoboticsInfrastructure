@@ -31,22 +31,43 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
-# -------------------
-# Llamar al CMake de Harmonic
+# =====================================================
+# HARMONIC
+# =====================================================
 add_subdirectory(follow_person_harmonic)
 
-# -------------------
-# Classic plugin
+# =====================================================
+# CLASSIC
+# =====================================================
 find_package(gazebo REQUIRED)
-include_directories(${GAZEBO_INCLUDE_DIRS})
 
-add_library(personplugin amazon_hospital/src/person.cpp)
+include_directories(
+  ${GAZEBO_INCLUDE_DIRS}
+)
+
+add_library(personplugin
+  amazon_hospital/src/person.cpp
+)
+
 target_include_directories(personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/amazon_hospital/include>
-         $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(personplugin "rclcpp" "pluginlib")
-target_link_libraries(personplugin ${GAZEBO_LIBRARIES} Threads::Threads)
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/amazon_hospital/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+ament_target_dependencies(personplugin
+  rclcpp
+  pluginlib
+)
+
+target_link_libraries(personplugin
+  ${GAZEBO_LIBRARIES}
+  Threads::Threads
+)
+
+target_compile_definitions(personplugin
+  PRIVATE PERSONPLUGIN_BUILDING_LIBRARY
+)
 
 # -------------------
 # Instalar ambos plugins

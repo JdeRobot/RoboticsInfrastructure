@@ -1511,10 +1511,10 @@
       <pose>4 10 0 0 0 3.14</pose>
     </include>
 
-    <include>
+    <!--include>
       <uri>model://turtlebot2_harmonic</uri>
       <pose>0 10 0 0 0 0</pose>
-    </include>
+    </include-->
 
     <light name="sun" type="directional">
       <pose>0 0 10 0 0 0</pose>
