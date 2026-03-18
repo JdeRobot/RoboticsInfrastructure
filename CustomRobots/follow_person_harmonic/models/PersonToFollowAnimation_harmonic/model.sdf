@@ -9,8 +9,8 @@
     </animation>
     <script>
       <loop>true</loop>
-      <delay_start>0.000000</delay_start>
-      <auto_start>false</auto_start>
+      <delay_start>5.000000</delay_start>
+      <auto_start>true</auto_start>
       <trajectory id="0" type="walk" tension="0.6">
         <waypoint>
           <time>0</time>
