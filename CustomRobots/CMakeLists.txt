@@ -154,7 +154,7 @@ if(BUILD_TESTING)
   # endforeach()
 endif()
 
-ament_export_libraries(personplugin_harmonic) #personplugin
+ament_export_libraries(personplugin) #personplugin_harmonic
 
 ament_export_targets(export_${PROJECT_NAME})
 
