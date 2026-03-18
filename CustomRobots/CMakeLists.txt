@@ -72,7 +72,7 @@ target_compile_definitions(personplugin
 # -------------------
 # Instalar ambos plugins
 install(
-  TARGETS personplugin personplugin_harmonic
+  TARGETS personplugin #personplugin_harmonic
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
