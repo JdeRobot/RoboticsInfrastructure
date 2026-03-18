@@ -34,7 +34,7 @@ endforeach()
 # =====================================================
 # HARMONIC
 # =====================================================
-add_subdirectory(follow_person_harmonic)
+#add_subdirectory(follow_person_harmonic)
 
 # =====================================================
 # CLASSIC
