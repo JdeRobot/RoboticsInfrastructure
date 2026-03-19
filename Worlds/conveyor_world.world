@@ -5,8 +5,18 @@
     <!-- Plugins básicos -->
     <plugin filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics"/>
+
     <plugin filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster"/>
+
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <light type="directional" name="sun">
+      <pose>0 0 10 0 0 0</pose>
+    </light>
 
     <!-- Suelo -->
     <include>
@@ -15,7 +25,7 @@
 
     <!-- Cinta -->
     <include>
-      <uri>model://conveyor</uri>
+      <uri>model://conveyor_belt</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
 
