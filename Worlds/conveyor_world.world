@@ -2,11 +2,9 @@
 <sdf version="1.10">
   <world name="conveyor_world">
 
-    <!-- Física -->
     <plugin filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics"/>
 
-    <!-- Render -->
     <plugin filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster"/>
 
@@ -15,21 +13,54 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
-    <!-- Luz -->
     <light type="directional" name="sun">
       <pose>0 0 10 0 0 0</pose>
     </light>
 
-    <!-- Suelo -->
-    <include>
-      <uri>model://ground_plane</uri>
-    </include>
+    <!-- suelo simple -->
+    <model name="ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
 
-    <!-- Cinta -->
-    <include>
-      <uri>model://conveyor_belt</uri>
-      <pose>0 0 0.05 0 0 0</pose> <!-- pequeño offset para evitar colisión -->
-    </include>
+    <!-- conveyor simple -->
+    <model name="conveyor">
+      <static>true</static>
+      <pose>0 0 0.05 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 0.5 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 0.5 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
 
   </world>
 </sdf>
