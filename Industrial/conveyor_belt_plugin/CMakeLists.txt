@@ -47,7 +47,7 @@ install(
 ############################
 
 install(
-  FILES env-hooks/conveyor_plugin.dsv
+  FILES env-hooks/conveyor_belt.dsv
   DESTINATION share/${PROJECT_NAME}/environment
 )
 
