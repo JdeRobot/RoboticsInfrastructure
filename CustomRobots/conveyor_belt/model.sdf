@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.10">
 
-  <model name="conveyor">
+  <model name="conveyor_belt">
 
     <static>true</static>
 
@@ -11,7 +11,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://conveyor/meshes/conveyor_belt.dae</uri>
+            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -37,6 +37,12 @@
       </collision>
 
     </link>
+
+    <!-- PLUGIN -->
+    <plugin filename="libconveyor_belt_plugin.so"
+            name="conveyor_plugin">
+      <velocity>0.2</velocity>
+    </plugin>
 
   </model>
 
