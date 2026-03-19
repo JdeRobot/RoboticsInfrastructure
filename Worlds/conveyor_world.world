@@ -1,11 +1,12 @@
 <?xml version="1.0" ?>
 <sdf version="1.10">
-  <world name="default">
+  <world name="conveyor_world">
 
-    <!-- Plugins básicos -->
+    <!-- Física -->
     <plugin filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics"/>
 
+    <!-- Render -->
     <plugin filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster"/>
 
@@ -14,6 +15,7 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
+    <!-- Luz -->
     <light type="directional" name="sun">
       <pose>0 0 10 0 0 0</pose>
     </light>
@@ -26,7 +28,7 @@
     <!-- Cinta -->
     <include>
       <uri>model://conveyor_belt</uri>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0.05 0 0 0</pose> <!-- pequeño offset para evitar colisión -->
     </include>
 
   </world>
