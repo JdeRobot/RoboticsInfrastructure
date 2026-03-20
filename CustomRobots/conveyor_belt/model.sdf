@@ -39,8 +39,7 @@
     </link>
 
     <!-- PLUGIN -->
-    <plugin filename="libconveyor_belt_plugin.so"
-            name="conveyor_plugin">
+    <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
       <velocity>0.2</velocity>
     </plugin>
 

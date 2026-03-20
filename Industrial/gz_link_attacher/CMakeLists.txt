@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
-project(gz_link_attacher)
+project(conveyor_belt_plugin)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
-endif()
-
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 ############################
@@ -20,42 +16,40 @@ find_package(std_msgs REQUIRED)
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 
-find_package(linkattacher_msgs REQUIRED)
-
 ############################
-# Plugin library
+# Plugin
 ############################
 
-add_library(gz_link_attacher SHARED
-  src/gz_link_attacher.cpp
+add_library(conveyor_plugin SHARED
+  src/conveyor_plugin.cpp
 )
 
-target_link_libraries(gz_link_attacher
+target_link_libraries(conveyor_plugin
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
 )
 
-ament_target_dependencies(gz_link_attacher
+ament_target_dependencies(conveyor_plugin
   rclcpp
   std_msgs
   linkattacher_msgs
 )
 
 ############################
-# Install plugin
+# Install
 ############################
 
 install(
-  TARGETS gz_link_attacher
+  TARGETS conveyor_plugin
   LIBRARY DESTINATION lib
 )
 
 ############################
-# Environment hook (.dsv)
+# Env hook
 ############################
 
 install(
-  FILES env-hooks/gz_link_attacher.dsv
+  FILES env-hooks/conveyor_belt.dsv
   DESTINATION share/${PROJECT_NAME}/environment
 )
 
@@ -63,7 +57,7 @@ install(
 # Export
 ############################
 
-ament_export_libraries(gz_link_attacher)
+ament_export_libraries(conveyor_plugin)
 
 ament_export_dependencies(
   gz-sim8
