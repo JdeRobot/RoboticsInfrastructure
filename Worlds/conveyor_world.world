@@ -1,64 +1,38 @@
 <?xml version="1.0" ?>
-<sdf version="1.10">
-  <world name="conveyor_world">
+<sdf version="1.8">
+  <world name="default">
 
-    <plugin filename="gz-sim-physics-system"
-            name="gz::sim::systems::Physics"/>
-
-    <plugin filename="gz-sim-scene-broadcaster-system"
-            name="gz::sim::systems::SceneBroadcaster"/>
-
-    <plugin filename="gz-sim-sensors-system"
-            name="gz::sim::systems::Sensors">
+    <!-- Basic plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
+    <!-- Light -->
     <light type="directional" name="sun">
       <pose>0 0 10 0 0 0</pose>
     </light>
 
-    <!-- suelo simple -->
-    <model name="ground">
+    <!-- Floor -->
+    <model name="ground_plane">
       <static>true</static>
       <link name="link">
         <collision name="collision">
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>10 10</size>
+              <size>100 100</size>
             </plane>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <plane>
-              <normal>0 0 1</normal>
-              <size>10 10</size>
+              <size>100 100</size>
             </plane>
           </geometry>
         </visual>
-      </link>
-    </model>
-
-    <!-- conveyor simple -->
-    <model name="conveyor">
-      <static>true</static>
-      <pose>0 0 0.05 0 0 0</pose>
-      <link name="link">
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>1 0.5 0.1</size>
-            </box>
-          </geometry>
-        </visual>
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>1 0.5 0.1</size>
-            </box>
-          </geometry>
-        </collision>
       </link>
     </model>
 
