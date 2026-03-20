@@ -8,8 +8,11 @@ def generate_launch_description():
 
     world_path = "/opt/jderobot/Worlds/conveyor_world.world"
 
+    resource_path = "/home/ws/src/CustomRobots:/opt/jderobot/Worlds"
+
     gz_env = {
         "DISPLAY": ":2",
+        "GZ_SIM_RESOURCE_PATH": resource_path,
     }
 
     gazebo = ExecuteProcess(
@@ -28,6 +31,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetEnvironmentVariable("DISPLAY", ":2"),
+        SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", resource_path),  # 🔴 CLAVE
         gazebo,
         world_entity_cmd,
     ])
