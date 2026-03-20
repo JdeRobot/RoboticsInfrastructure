@@ -2,21 +2,13 @@
 
 <sdf version="1.9">
   <world name="default">
-    <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
@@ -28,7 +20,7 @@
       <direction>0 0 -1</direction>
       <visualize>false</visualize>
     </light>
-    
+
     <model name='ground_plane'>
       <static>true</static>
       <link name='link'>
@@ -43,13 +35,13 @@
       </link>
       <pose>0 0 0 0 0 0</pose>
     </model>
-    
+
     <include>
       <name>turtlebot3_waffle</name>
-      <uri>model://turtlebot3_waffle</uri>
+      <uri>model://turtlebot3_noisy_med</uri>
       <pose>0 0 0 0 -0 0</pose>
     </include>
-    
+
     <include>
       <name>small_mapping_warehouse</name>
       <uri>model://small_mapping_warehouse</uri>

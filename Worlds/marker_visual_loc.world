@@ -3,21 +3,13 @@
 <sdf version="1.9">
   <world name="default">
 
-    <plugin
-      filename="gz-sim-physics-system"
-      name="gz::sim::systems::Physics">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
@@ -98,7 +90,7 @@
       <cast_shadows>false</cast_shadows>
       <visualize>false</visualize>
     </light>
-    
+
     <include>
       <name>Lake House</name>
       <uri>model://Lake House</uri>
@@ -193,8 +185,8 @@
       <name>Sky</name>
       <uri>model://Sky</uri>
     </include>
-    
-  <!-- April Tags -->
+
+    <!-- April Tags -->
     <include>
       <pose>0 0 -6.5 0 0 0</pose>
       <name>posAprilTags</name>
@@ -205,7 +197,7 @@
     <include>
       <pose>1 -1.5 0.6 0 0 0</pose>
       <name>turtlebot3_waffle</name>
-      <uri>model://turtlebot3_waffle</uri>
+      <uri>model://turtlebot3_noisy_low</uri>
     </include>
 
   </world>

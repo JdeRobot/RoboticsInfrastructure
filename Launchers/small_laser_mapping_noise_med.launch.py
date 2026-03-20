@@ -30,14 +30,14 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    robot_launch_dir = "/opt/jderobot/Launchers/marker_visual_loc"
+    robot_launch_dir = "/opt/jderobot/Launchers/laser_mapping"
     robot_model_dir = os.path.join(package_dir, "models/turtlebot3_waffle")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    x_pose = LaunchConfiguration("x_pose", default="14.25")
-    y_pose = LaunchConfiguration("y_pose", default="-10.75")
+    x_pose = LaunchConfiguration("x_pose", default="0")
+    y_pose = LaunchConfiguration("y_pose", default="0")
     z_pose = LaunchConfiguration("z_pose", default="0.0")
-    world_file_name = "laser_mapping.world"
+    world_file_name = "small_laser_mapping_noise_med.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
@@ -51,9 +51,9 @@ def generate_launch_description():
         }.items(),
     )
 
-    declare_x_cmd = DeclareLaunchArgument("x", default_value="14.25")
+    declare_x_cmd = DeclareLaunchArgument("x", default_value="0")
 
-    declare_y_cmd = DeclareLaunchArgument("y", default_value="-10.75")
+    declare_y_cmd = DeclareLaunchArgument("y", default_value="0")
 
     declare_z_cmd = DeclareLaunchArgument("z", default_value="0.0")
 

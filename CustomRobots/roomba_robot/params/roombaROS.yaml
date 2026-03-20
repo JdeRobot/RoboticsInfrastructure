@@ -5,6 +5,11 @@
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
 
+- ros_topic_name: "odom_noisy"
+  gz_topic_name: "/roombaROS/odom_noisy"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "gz.msgs.Odometry"
+  direction: GZ_TO_ROS
 
 # gz topic subscribed to by DiffDrive plugin
 - ros_topic_name: "cmd_vel"
