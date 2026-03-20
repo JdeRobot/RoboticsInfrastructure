@@ -3,7 +3,7 @@
 
   <model name="conveyor_belt">
 
-    <static>true</static>
+    <static>false</static>
 
     <link name="belt">
 
@@ -40,6 +40,7 @@
 
     <!-- PLUGIN -->
     <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
+      <link_name>belt</link_name>
       <velocity>0.2</velocity>
     </plugin>
 
