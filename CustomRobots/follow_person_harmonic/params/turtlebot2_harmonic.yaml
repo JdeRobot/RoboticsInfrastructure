@@ -43,3 +43,8 @@
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
+
+- ros_service_name: "/world/default/set_pose"
+  gz_service_name: "/world/default/set_pose"
+  ros_type_name: "ros_gz_interfaces/srv/SetEntityPose"
+  gz_type_name: "gz.msgs.EntityPose"
