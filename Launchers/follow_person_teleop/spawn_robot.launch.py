@@ -29,7 +29,11 @@ def generate_launch_description():
     bridge_cmd = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_params}"],
+        arguments=[
+            '/world/default/set_pose@ros_gz_interfaces/srv/SetEntityPose',
+            '--ros-args', 
+            '-p', f'config_file:={bridge_params}'
+        ],
         output="screen",
     )
 
