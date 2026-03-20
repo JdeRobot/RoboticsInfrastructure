@@ -10,15 +10,10 @@ endif()
 ############################
 
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
-find_package(gz-sim8 QUIET)
-find_package(gz-plugin2 QUIET)
-
-
-if(NOT gz-sim8_FOUND)
-  message(WARNING "gz-sim8 not found, skipping conveyor plugin")
-  return()
-endif()
+find_package(gz-sim8 REQUIRED)
+find_package(gz-plugin2 REQUIRED)
 
 ############################
 # Plugin
@@ -31,6 +26,10 @@ add_library(conveyor_plugin SHARED
 target_link_libraries(conveyor_plugin
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
+)
+
+ament_target_dependencies(conveyor_plugin
+  rclcpp
 )
 
 ############################
