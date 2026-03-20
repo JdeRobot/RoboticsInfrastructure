@@ -6,7 +6,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    world_path = "/opt/jderobot/Worlds/mi_mundo.world"
+    world_path = "/opt/jderobot/Worlds/conveyor_world.world"
 
     gz_env = {
         "DISPLAY": ":2",
