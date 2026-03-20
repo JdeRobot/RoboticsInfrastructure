@@ -189,8 +189,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 61	Warehouse 2 Ackermann Harmonic	61	0
 62	Laser Mapping Warehouse Medium Noise	62	0
 63	Laser Mapping Warehouse High Noise	63	0
-64	Small Laser Mapping Warehouse Medium Noise	62	0
-65	Small Laser Mapping Warehouse High Noise	63	0
+64	Small Laser Mapping Warehouse Medium Noise	64	0
+65	Small Laser Mapping Warehouse High Noise	65	0
 \.
 
 --
