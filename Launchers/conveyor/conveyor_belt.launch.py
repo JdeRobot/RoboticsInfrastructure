@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -14,4 +15,14 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription([world])
+    spawner = Node(
+        package="custom_robots",
+        executable="spawn_box.py",
+        name="box_spawner",
+        output="screen"
+    )
+
+    return LaunchDescription([
+        world,
+        spawner
+    ])

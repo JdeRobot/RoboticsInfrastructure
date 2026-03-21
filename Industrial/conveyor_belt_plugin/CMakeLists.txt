@@ -62,3 +62,10 @@ ament_export_dependencies(
 )
 
 ament_package()
+
+
+install(
+  PROGRAMS
+    conveyor_belt/spawn_box.py
+  DESTINATION lib/${PROJECT_NAME}
+)

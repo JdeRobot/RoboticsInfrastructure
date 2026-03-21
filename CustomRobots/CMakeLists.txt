@@ -168,6 +168,12 @@ install(
 #         ${RI_ROOT_DIR}/Launchers/rescue_people.launch.py
 #   DESTINATION share/${PROJECT_NAME}/launch)
 
+install(
+  PROGRAMS
+    conveyor_belt/spawn_box.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   # find_package(ament_lint_auto REQUIRED)
   # ament_lint_auto_find_test_dependencies()
