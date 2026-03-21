@@ -7,7 +7,6 @@
 
     <link name="belt">
 
-      <!-- VISUAL -->
       <visual name="visual">
         <geometry>
           <mesh>
@@ -17,11 +16,13 @@
         </geometry>
       </visual>
 
-      <!-- COLISIÓN -->
       <collision name="collision">
+
+        <pose>0 0 0.75 0 0 0</pose>
+
         <geometry>
           <box>
-            <size>0.425 1.2 0.1</size>
+            <size>0.425 1.2 0.02</size>
           </box>
         </geometry>
 
@@ -38,7 +39,6 @@
 
     </link>
 
-    <!-- PLUGIN -->
     <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
       <link_name>belt</link_name>
       <velocity>0.2</velocity>
