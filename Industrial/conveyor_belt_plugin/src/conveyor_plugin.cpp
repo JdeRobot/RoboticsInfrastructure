@@ -36,13 +36,12 @@ public:
 
   void PreUpdate(
     const gz::sim::UpdateInfo &,
-    gz::sim::EntityComponentManager &) override
+    gz::sim::EntityComponentManager &ecm) override
   {
-    if (!this->link.Valid())
+    if (!this->link.Valid(ecm))
       return;
 
-    // 🔥 ESTA ES LA CLAVE
-    this->link.SetLinearVel({0, this->velocity, 0});
+    this->link.SetLinearVelocity(ecm, {0, this->velocity, 0});
   }
 };
 
