@@ -58,7 +58,7 @@
     <!-- CINTA -->
     <include>
       <uri>model://conveyor_belt</uri>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0.75 0 0 0</pose>
     </include>
 
     <!-- CAJA DE PRUEBA -->
