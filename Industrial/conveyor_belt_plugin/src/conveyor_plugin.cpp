@@ -1,7 +1,6 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Link.hh>
-#include <gz/sim/Util.hh>
 #include <gz/plugin/Register.hh>
 
 namespace conveyor
@@ -15,7 +14,7 @@ class ConveyorPlugin :
 public:
 
   gz::sim::Model model{gz::sim::kNullEntity};
-  gz::sim::Entity linkEntity{gz::sim::kNullEntity};
+  gz::sim::Link link{gz::sim::kNullEntity};
   double velocity{0.2};
 
   void Configure(
@@ -29,31 +28,21 @@ public:
     std::string linkName = sdf->Get<std::string>("link_name");
     this->velocity = sdf->Get<double>("velocity");
 
-    this->linkEntity = this->model.LinkByName(ecm, linkName);
+    auto linkEntity = this->model.LinkByName(ecm, linkName);
+    this->link = gz::sim::Link(linkEntity);
 
     std::cout << "[ConveyorPlugin] Loaded, link: " << linkName << std::endl;
   }
 
   void PreUpdate(
     const gz::sim::UpdateInfo &,
-    gz::sim::EntityComponentManager &ecm) override
+    gz::sim::EntityComponentManager &) override
   {
-    if (this->linkEntity == gz::sim::kNullEntity)
+    if (!this->link.Valid())
       return;
 
-    auto velComp =
-      ecm.Component<gz::sim::components::LinearVelocity>(this->linkEntity);
-
-    if (!velComp)
-    {
-      ecm.CreateComponent(
-        this->linkEntity,
-        gz::sim::components::LinearVelocity({0, this->velocity, 0}));
-    }
-    else
-    {
-      velComp->Data() = {0, this->velocity, 0};
-    }
+    // 🔥 ESTA ES LA CLAVE
+    this->link.SetLinearVel({0, this->velocity, 0});
   }
 };
 
