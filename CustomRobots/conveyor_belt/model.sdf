@@ -2,6 +2,8 @@
 
   <model name="conveyor_belt">
 
+    <static>false</static>
+
     <link name="visual_link">
       <visual name="visual">
         <geometry>
@@ -37,6 +39,11 @@
       </collision>
 
     </link>
+
+    <joint name="visual_joint" type="fixed">
+      <parent>belt</parent>
+      <child>visual_link</child>
+    </joint>
 
     <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
       <link_name>belt</link_name>
