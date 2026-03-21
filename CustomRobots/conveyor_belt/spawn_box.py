@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 import subprocess
@@ -20,7 +22,7 @@ class BoxSpawner(Node):
             "-name", name,
             "-x", "0.0",
             "-y", "0.2",
-            "-z", "1.0",
+            "-z", "5.0",
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
         ]
 
