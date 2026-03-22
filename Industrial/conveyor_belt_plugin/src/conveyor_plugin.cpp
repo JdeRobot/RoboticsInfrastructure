@@ -41,8 +41,7 @@ public:
     if (!this->joint.Valid(ecm))
       return;
 
-    // 🔥 CONTROL DE VELOCIDAD DEL JOINT (CLAVE)
-    this->joint.SetVelocity(ecm, 0, this->velocity);
+    this->joint.SetVelocity(ecm, {this->velocity});
   }
 };
 
