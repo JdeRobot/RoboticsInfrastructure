@@ -8,6 +8,14 @@
 
       <inertial>
         <mass>0.3</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
       </inertial>
 
       <collision name="collision">
@@ -20,8 +28,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>0.1</mu>
-              <mu2>0.1</mu2>
+              <mu>10.0</mu>
+              <mu2>10.0</mu2>
             </ode>
           </friction>
         </surface>
