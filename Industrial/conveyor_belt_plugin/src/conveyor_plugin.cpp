@@ -1,6 +1,7 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Joint.hh>
+#include <gz/sim/components/JointVelocityCmd.hh>
 #include <gz/plugin/Register.hh>
 
 namespace conveyor
@@ -14,9 +15,9 @@ class ConveyorPlugin :
 public:
 
   gz::sim::Model model{gz::sim::kNullEntity};
-  gz::sim::Joint joint{gz::sim::kNullEntity};
+  gz::sim::Entity joint{gz::sim::kNullEntity};
 
-  double velocity{0.2};
+  double velocity{0.3};
 
   //////////////////////////////////////
   void Configure(
@@ -27,17 +28,15 @@ public:
   {
     this->model = gz::sim::Model(entity);
 
-    auto jointEntity = this->model.JointByName(ecm, "belt_joint");
+    this->joint = this->model.JointByName(ecm, "belt_joint");
 
-    if (jointEntity == gz::sim::kNullEntity)
+    if (this->joint == gz::sim::kNullEntity)
     {
       std::cout << "Joint NOT FOUND\n";
       return;
     }
 
-    this->joint = gz::sim::Joint(jointEntity);
-
-    std::cout << "[ConveyorPlugin] READY\n";
+    std::cout << "Conveyor READY\n";
   }
 
   //////////////////////////////////////
@@ -45,10 +44,22 @@ public:
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
   {
-    if (!this->joint.Valid(ecm))
+    if (this->joint == gz::sim::kNullEntity)
       return;
 
-    this->joint.SetVelocity(ecm, {this->velocity});
+    auto vel = ecm.Component<gz::sim::components::JointVelocityCmd>(this->joint);
+
+    if (!vel)
+    {
+      ecm.CreateComponent(
+        this->joint,
+        gz::sim::components::JointVelocityCmd({this->velocity})
+      );
+    }
+    else
+    {
+      vel->Data()[0] = this->velocity;
+    }
   }
 };
 
