@@ -3,6 +3,7 @@
 #include <gz/sim/Joint.hh>
 #include <gz/sim/components/JointVelocityCmd.hh>
 #include <gz/plugin/Register.hh>
+#include <iostream>
 
 namespace conveyor
 {
@@ -19,16 +20,18 @@ public:
 
   double velocity{0.3};
 
-  //////////////////////////////////////
   void Configure(
     const gz::sim::Entity &entity,
-    const std::shared_ptr<const sdf::Element> &,
+    const std::shared_ptr<const sdf::Element> &_sdf,
     gz::sim::EntityComponentManager &ecm,
     gz::sim::EventManager &) override
   {
     this->model = gz::sim::Model(entity);
 
     this->joint = this->model.JointByName(ecm, "belt_joint");
+
+    if (_sdf && _sdf->HasElement("velocity"))
+      this->velocity = _sdf->Get<double>("velocity");
 
     if (this->joint == gz::sim::kNullEntity)
     {
@@ -39,7 +42,6 @@ public:
     std::cout << "Conveyor READY\n";
   }
 
-  //////////////////////////////////////
   void PreUpdate(
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
@@ -47,9 +49,10 @@ public:
     if (this->joint == gz::sim::kNullEntity)
       return;
 
-    auto vel = ecm.Component<gz::sim::components::JointVelocityCmd>(this->joint);
+    auto velComp =
+      ecm.Component<gz::sim::components::JointVelocityCmd>(this->joint);
 
-    if (!vel)
+    if (!velComp)
     {
       ecm.CreateComponent(
         this->joint,
@@ -58,8 +61,11 @@ public:
     }
     else
     {
-      vel->Data()[0] = this->velocity;
+      velComp->Data()[0] = this->velocity;
     }
+
+    // DEBUG
+    std::cout << "VEL: " << this->velocity << std::endl;
   }
 };
 
