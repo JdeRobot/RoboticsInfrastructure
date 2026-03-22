@@ -38,10 +38,10 @@ public:
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
   {
-    if (!this->joint.Valid(ecm))
+    if (!this->link.Valid(ecm))
       return;
 
-    this->joint.SetVelocity(ecm, {this->velocity});
+    this->link.SetLinearVelocity(ecm, {0, this->velocity, 0});
   }
 };
 
