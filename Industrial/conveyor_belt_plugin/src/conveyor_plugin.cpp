@@ -16,7 +16,7 @@ public:
   gz::sim::Model model{gz::sim::kNullEntity};
   gz::sim::Joint joint{gz::sim::kNullEntity};
 
-  double velocity{0.5};
+  double velocity{0.2};
 
   //////////////////////////////////////
   void Configure(
@@ -29,9 +29,15 @@ public:
 
     auto jointEntity = this->model.JointByName(ecm, "belt_joint");
 
+    if (jointEntity == gz::sim::kNullEntity)
+    {
+      std::cout << "Joint NOT FOUND\n";
+      return;
+    }
+
     this->joint = gz::sim::Joint(jointEntity);
 
-    std::cout << "[ConveyorPlugin] READY" << std::endl;
+    std::cout << "[ConveyorPlugin] READY\n";
   }
 
   //////////////////////////////////////
