@@ -43,38 +43,14 @@
           </geometry>
 
           <surface>
-            <contact>
-              <collide_without_contact>false</collide_without_contact>
-            </contact>
-
             <friction>
               <ode>
-                <mu>100.0</mu>
-                <mu2>100.0</mu2>
+                <mu>100</mu>
+                <mu2>100</mu2>
               </ode>
-
-              <torsional>
-                <coefficient>1000.0</coefficient>
-                <patch_radius>0.1</patch_radius>
-              </torsional>
-
             </friction>
           </surface>
         </collision>
-
-        <visual name="hidden_visual">
-          <geometry>
-            <box>
-              <size>0.425 1.2 0.00001</size>
-            </box>
-          </geometry>
-
-          <material>
-            <ambient>0 0 0 0</ambient>
-            <diffuse>0 0 0 0</diffuse>
-          </material>
-        </visual>
-
       </link>
 
     </model>
