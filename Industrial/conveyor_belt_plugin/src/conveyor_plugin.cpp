@@ -1,6 +1,6 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
+#include <gz/sim/Joint.hh>
 #include <gz/plugin/Register.hh>
 #include <iostream>
 
@@ -15,7 +15,7 @@ class ConveyorPlugin :
 public:
 
   gz::sim::Model model{gz::sim::kNullEntity};
-  gz::sim::Link link{gz::sim::kNullEntity};
+  gz::sim::Joint joint{gz::sim::kNullEntity};
 
   double velocity{0.5};
 
@@ -28,11 +28,11 @@ public:
   {
     this->model = gz::sim::Model(entity);
 
-    auto linkEntity = this->model.LinkByName(ecm, "belt");
+    auto jointEntity = this->model.JointByName(ecm, "belt_joint");
 
-    this->link = gz::sim::Link(linkEntity);
+    this->joint = gz::sim::Joint(jointEntity);
 
-    std::cout << "[ConveyorPlugin] READY" << std::endl;
+    std::cout << "[ConveyorPlugin] JOINT READY" << std::endl;
   }
 
   ////////////////////////////////////////
@@ -40,10 +40,10 @@ public:
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
   {
-    if (!this->link.Valid(ecm))
+    if (!this->joint.Valid(ecm))
       return;
 
-    this->link.SetLinearVelocity(ecm, {0, this->velocity, 0});
+    this->joint.SetVelocity(ecm, {this->velocity});
   }
 };
 

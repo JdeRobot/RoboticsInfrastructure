@@ -1,4 +1,6 @@
+<?xml version="1.0" ?>
 <sdf version="1.10">
+
   <model name="conveyor_belt">
 
     <model name="fixed">
@@ -18,8 +20,10 @@
     <model name="moving">
 
       <static>false</static>
+      <allow_auto_disable>0</allow_auto_disable>
 
-      <pose>0 0 0.5 0 0 0</pose>
+      <!-- altura correcta -->
+      <pose>0 0 0.74 0 0 0</pose>
 
       <link name="belt">
 
@@ -35,7 +39,7 @@
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.425 1.2 0.001</size>
+              <size>0.425 1.2 0.00001</size>
             </box>
           </geometry>
 
@@ -56,8 +60,8 @@
               </torsional>
 
             </friction>
-
           </surface>
+
         </collision>
 
       </link>
@@ -78,9 +82,9 @@
     </joint>
 
     <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
-      <joint_name>belt_joint</joint_name>
-      <velocity>0.2</velocity>
+      <velocity>0.5</velocity>
     </plugin>
 
   </model>
+
 </sdf>
