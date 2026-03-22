@@ -1,6 +1,6 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
-#include <gz/sim/Joint.hh>
+#include <gz/sim/Link.hh>
 #include <gz/plugin/Register.hh>
 
 namespace conveyor
@@ -14,24 +14,21 @@ class ConveyorPlugin :
 public:
 
   gz::sim::Model model{gz::sim::kNullEntity};
-  gz::sim::Joint joint{gz::sim::kNullEntity};
-  double velocity{0.2};
+  gz::sim::Link link{gz::sim::kNullEntity};
+  double velocity{0.5};
 
   void Configure(
     const gz::sim::Entity &entity,
-    const std::shared_ptr<const sdf::Element> &sdf,
+    const std::shared_ptr<const sdf::Element> &,
     gz::sim::EntityComponentManager &ecm,
     gz::sim::EventManager &) override
   {
     this->model = gz::sim::Model(entity);
 
-    std::string jointName = sdf->Get<std::string>("joint_name");
-    this->velocity = sdf->Get<double>("velocity");
+    auto linkEntity = this->model.LinkByName(ecm, "belt");
+    this->link = gz::sim::Link(linkEntity);
 
-    auto jointEntity = this->model.JointByName(ecm, jointName);
-    this->joint = gz::sim::Joint(jointEntity);
-
-    std::cout << "[ConveyorPlugin] Using joint: " << jointName << std::endl;
+    std::cout << "[ConveyorPlugin] READY" << std::endl;
   }
 
   void PreUpdate(
