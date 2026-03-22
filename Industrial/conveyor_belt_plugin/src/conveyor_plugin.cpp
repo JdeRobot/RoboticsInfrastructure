@@ -14,22 +14,16 @@ class ConveyorPlugin :
 {
 public:
 
-  gz::sim::Model model{gz::sim::kNullEntity};
-  gz::sim::Link belt;
-
   double velocity{0.5};
 
   //////////////////////////////////////
   void Configure(
-    const gz::sim::Entity &entity,
+    const gz::sim::Entity &,
     const std::shared_ptr<const sdf::Element> &,
-    gz::sim::EntityComponentManager &ecm,
+    gz::sim::EntityComponentManager &,
     gz::sim::EventManager &) override
   {
-    this->model = gz::sim::Model(entity);
-
-    auto linkEntity = this->model.LinkByName(ecm, "belt");
-    this->belt = gz::sim::Link(linkEntity);
+    std::cout << "[ConveyorPlugin] RUNNING" << std::endl;
   }
 
   //////////////////////////////////////
@@ -37,12 +31,11 @@ public:
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
   {
-    // recorrer entidades con colisión (objetos)
-    ecm.Each<gz::sim::components::Collision>(
+    ecm.Each<gz::sim::components::Link>(
       [&](const gz::sim::Entity &entity,
-          const gz::sim::components::Collision *) -> bool
+          const gz::sim::components::Link *) -> bool
       {
-        // aplicar velocidad en Y
+        // aplicar velocidad (simula cinta)
         ecm.CreateComponent(
           entity,
           gz::sim::components::LinearVelocity({0, this->velocity, 0})
