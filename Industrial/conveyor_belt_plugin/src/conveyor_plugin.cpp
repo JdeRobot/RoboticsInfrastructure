@@ -1,6 +1,4 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
 #include <gz/sim/components/LinearVelocity.hh>
 #include <gz/plugin/Register.hh>
 
@@ -31,16 +29,14 @@ public:
     const gz::sim::UpdateInfo &,
     gz::sim::EntityComponentManager &ecm) override
   {
-    ecm.Each<gz::sim::components::Link>(
+    ecm.Each<gz::sim::components::LinearVelocity>(
       [&](const gz::sim::Entity &entity,
-          const gz::sim::components::Link *) -> bool
+          gz::sim::components::LinearVelocity *vel) -> bool
       {
-        // aplicar velocidad (simula cinta)
-        ecm.CreateComponent(
-          entity,
-          gz::sim::components::LinearVelocity({0, this->velocity, 0})
-        );
-
+        if (vel)
+        {
+          vel->Data() = {0, this->velocity, 0};
+        }
         return true;
       });
   }
