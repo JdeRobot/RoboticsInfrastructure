@@ -12,9 +12,6 @@
           <ixx>0.0001</ixx>
           <iyy>0.0001</iyy>
           <izz>0.0001</izz>
-          <ixy>0.0</ixy>
-          <ixz>0.0</ixz>
-          <iyz>0.0</iyz>
         </inertia>
       </inertial>
 
@@ -28,8 +25,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>100.0</mu>
-              <mu2>100.0</mu2>
+              <mu>50.0</mu>
+              <mu2>50.0</mu2>
             </ode>
           </friction>
         </surface>
