@@ -86,7 +86,7 @@ public:
             ang = this->angular_speed;
         }
 
-        double yaw = pose.Rot().Yaw();
+        double yaw = pose.Rot().Yaw()+ M_PI_2;
 
         // Mover hacia adelante según yaw actual
         pose.Pos().X() += lin * std::cos(yaw);
