@@ -31,31 +31,19 @@ public:
   {
     this->model = gz::sim::Model(entity);
 
-    ecm.Each<gz::sim::components::Joint, gz::sim::components::Name>(
-      [&](const gz::sim::Entity &_entity,
-          const gz::sim::components::Joint *,
-          const gz::sim::components::Name *_name)
-      {
-        if (_name->Data() == "belt_joint")
-        {
-          this->joint = _entity;
-          return false;
-        }
-        return true;
-      });
+    // 🔥 AHORA SÍ FUNCIONA
+    this->joint = this->model.JointByName(ecm, "belt_joint");
 
     if (_sdf && _sdf->HasElement("velocity"))
       this->velocity = _sdf->Get<double>("velocity");
 
-    std::cout << "Buscando joint..." << std::endl;
-
     if (this->joint == gz::sim::kNullEntity)
     {
-      std::cout << "Joint NOT FOUND\n";
+      std::cout << "❌ Joint NOT FOUND\n";
       return;
     }
 
-    std::cout << "Conveyor READY\n";
+    std::cout << "✅ Conveyor READY\n";
   }
 
   void PreUpdate(
@@ -65,6 +53,7 @@ public:
     if (this->joint == gz::sim::kNullEntity)
       return;
 
+    // VELOCIDAD
     auto velComp =
       ecm.Component<gz::sim::components::JointVelocityCmd>(this->joint);
 
@@ -79,6 +68,7 @@ public:
       velComp->Data()[0] = this->velocity;
     }
 
+    // FUERZA (CLAVE)
     auto forceComp =
       ecm.Component<gz::sim::components::JointForceCmd>(this->joint);
 
