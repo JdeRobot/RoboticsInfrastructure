@@ -74,8 +74,8 @@ public:
         double yaw = pose.Rot().Yaw();
 
         // Mover hacia adelante o atrás según linear.x
-        pose.Pos().X() += speed * std::cos(yaw);
-        pose.Pos().Y() += speed * std::sin(yaw);
+        pose.Pos().Y() += speed * std::cos(yaw);
+        pose.Pos().X() += speed * std::sin(yaw);
 
         this->model.SetWorldPoseCmd(_ecm, pose);
     }
