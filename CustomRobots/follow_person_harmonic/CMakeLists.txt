@@ -4,7 +4,7 @@ project(personplugin_harmonic)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)   # si vas a publicar o suscribirte a Twist u otro mensaje
-find_package(gz-sim7 REQUIRED)
+find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 find_package(gz-math7 REQUIRED)
 find_package(Threads REQUIRED)

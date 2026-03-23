@@ -1,98 +1,68 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
+#include <gz/sim/Util.hh>
 #include <gz/plugin/Register.hh>
+#include <gz/transport/Node.hh>
 #include <gz/math/Pose3.hh>
 
-#include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/twist.hpp>
-
-#include <memory>
-#include <mutex>
+#include <iostream>
 
 namespace person_plugin
 {
-class Person :
-  public gz::sim::System,
-  public gz::sim::ISystemConfigure,
-  public gz::sim::ISystemPreUpdate
-{
-private:
-  gz::sim::Model model{gz::sim::kNullEntity};
-  std::mutex mtx;
-  double forward_vel{0.0};
-  double lateral_vel{0.0};
-  double angular_vel{0.0};
-
-  std::shared_ptr<rclcpp::Node> node;
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr sub;
-
-public:
-  // ---------------------------------------------------------
-  void Configure(const gz::sim::Entity &_entity,
-                 const std::shared_ptr<const sdf::Element> &,
-                 gz::sim::EntityComponentManager &_ecm,
-                 gz::sim::EventManager &) override
+  class Person:
+    public gz::sim::System,
+    public gz::sim::ISystemConfigure,
+    public gz::sim::ISystemPreUpdate
   {
-    this->model = gz::sim::Model(_entity);
+    private:
+      gz::sim::Model model{gz::sim::kNullEntity};
+      gz::transport::Node node;
+      double linear_speed{0.0}; // velocidad recibida del topic
 
-    if (!this->model.Valid(_ecm))
-    {
-      std::cerr << "[Person] Invalid model\n";
-      return;
-    }
-
-    // Crear nodo ROS 2
-    if (!rclcpp::ok())
-      rclcpp::init(0, nullptr);
-
-    this->node = std::make_shared<rclcpp::Node>("person_control_node");
-
-    // Suscribirse al topic de velocidad
-    this->sub = this->node->create_subscription<geometry_msgs::msg::Twist>(
-      "/person/cmd_vel", 10,
-      [this](geometry_msgs::msg::Twist::SharedPtr msg)
+    public:
+      void Configure(const gz::sim::Entity &_entity,
+                     const std::shared_ptr<const sdf::Element> &,
+                     gz::sim::EntityComponentManager &_ecm,
+                     gz::sim::EventManager &) override
       {
-        std::lock_guard<std::mutex> lock(this->mtx);
-        this->forward_vel = msg->linear.x;
-        this->lateral_vel = msg->linear.y;
-        this->angular_vel = msg->angular.z;
-      });
+        this->model = gz::sim::Model(_entity);
 
-    std::cout << "[Person] Plugin loaded and subscribed to /person/cmd_vel\n";
-  }
+        if (!this->model.Valid(_ecm))
+        {
+          std::cerr << "[Person] Invalid model\n";
+          return;
+        }
 
-  // ---------------------------------------------------------
-  void PreUpdate(const gz::sim::UpdateInfo &_info,
-                 gz::sim::EntityComponentManager &_ecm) override
-  {
-    if (_info.paused || !this->model.Valid(_ecm))
-      return;
+        // Suscribirse al topic /cmd_vel
+        this->node.Subscribe("/cmd_vel", &Person::OnCmdVel, this);
 
-    auto pose = gz::sim::worldPose(this->model.Entity(), _ecm);
+        std::cout << "[Person] Plugin loaded\n";
+      }
 
-    // Lock para leer velocidad
-    double fwd, lat, ang;
-    {
-      std::lock_guard<std::mutex> lock(this->mtx);
-      fwd = this->forward_vel;
-      lat = this->lateral_vel;
-      ang = this->angular_vel;
-    }
+      // Callback que guarda la velocidad lineal
+      void OnCmdVel(const gz::msgs::Twist &_msg)
+      {
+        this->linear_speed = _msg.linear().x();
+      }
 
-    double yaw = pose.Rot().Yaw();
+      void PreUpdate(const gz::sim::UpdateInfo &_info,
+                     gz::sim::EntityComponentManager &_ecm) override
+      {
+        if (_info.paused || !this->model.Valid(_ecm))
+          return;
 
-    // Aplicar velocidad: fwd hacia adelante del robot, lat hacia la derecha
-    pose.Pos().X() += fwd * std::cos(yaw) - lat * std::sin(yaw);
-    pose.Pos().Y() += fwd * std::sin(yaw) + lat * std::cos(yaw);
+        // Leer pose actual del mundo
+        auto pose = gz::sim::worldPose(this->model.Entity(), _ecm);
+        double yaw = pose.Rot().Yaw();
 
-    pose.Rot() = gz::math::Quaterniond(0, 0, yaw + ang);
+        // Mover hacia adelante según linear_speed
+        pose.Pos().X() += this->linear_speed * std::cos(yaw);
+        pose.Pos().Y() += this->linear_speed * std::sin(yaw);
 
-    this->model.SetWorldPoseCmd(_ecm, pose);
-
-    // Spin del nodo (no bloqueante)
-    rclcpp::spin_some(this->node);
-  }
-};
+        // Aplicar nueva pose
+        this->model.SetWorldPoseCmd(_ecm, pose);
+      }
+  };
 }
 
 // Registrar el plugin

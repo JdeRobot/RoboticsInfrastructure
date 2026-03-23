@@ -8,7 +8,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>rclcpp</depend>
   <depend>pluginlib</depend>
-  <depend>gz-sim7</depend>
+  <depend>gz-sim8</depend>
   <depend>gz-plugin2</depend>
   <depend>gz-math7</depend>
 </package>
