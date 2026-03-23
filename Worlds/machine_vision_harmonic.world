@@ -1,0 +1,193 @@
+<sdf version="1.7">
+  <world name="machine_vision">
+
+    <!-- LIGHT -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- GROUND -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- CONVEYOR -->
+    <model name="conveyor">
+      <static>true</static>
+      <pose>0.6 0 0 0 0 1.57</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.4 0.8 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.4 0.8 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- TABLE -->
+    <model name="table">
+      <static>true</static>
+      <pose>-0.8 0 0 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.73 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.6 0.8 0.06</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <pose>0 0 0.73 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.6 0.8 0.06</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- OBJECTS FOR VISION -->
+
+    <!-- SPHERES -->
+    <model name="red_sphere">
+      <pose>0.45 -0.25 1.01 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <sphere><radius>0.03</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_sphere">
+      <pose>0.45 0.25 1.01 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <sphere><radius>0.03</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_sphere">
+      <pose>0.45 0.1 1.01 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <sphere><radius>0.03</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- CYLINDERS -->
+    <model name="blue_cylinder">
+      <pose>0.65 -0.25 1.01 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.03</radius>
+              <length>0.07</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="red_cylinder">
+      <pose>0.65 0.1 1.01 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.03</radius>
+              <length>0.07</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- CAMERA -->
+    <model name="camera">
+      <pose>1.2 0 2 0 1.2 3.14</pose>
+      <link name="link">
+        <sensor name="camera" type="camera">
+          <camera>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+          </camera>
+          <always_on>true</always_on>
+          <update_rate>30</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+    <!-- PHYSICS -->
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+
+  </world>
+</sdf>
