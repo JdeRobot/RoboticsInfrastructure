@@ -4,6 +4,7 @@
 #include <gz/plugin/Register.hh>
 #include <gz/transport/Node.hh>
 #include <gz/math/Pose3.hh>
+#include <gz/msgs/twist.pb.h>
 
 #include <iostream>
 
@@ -34,7 +35,7 @@ namespace person_plugin
         }
 
         // Suscribirse al topic /cmd_vel
-        this->node.Subscribe("/cmd_vel", &Person::OnCmdVel, this);
+        this->node.Subscribe("/person/cmd_vel", &Person::OnCmdVel, this);
 
         std::cout << "[Person] Plugin loaded\n";
       }
