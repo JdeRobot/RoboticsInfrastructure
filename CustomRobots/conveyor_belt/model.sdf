@@ -3,11 +3,20 @@
 
   <model name="conveyor_belt">
 
-    <static>true</static>
+    <static>false</static>
 
     <link name="belt">
 
       <pose>0 0 0.74 0 0 0</pose>
+
+      <inertial>
+        <mass>100.0</mass>
+        <inertia>
+          <ixx>10</ixx>
+          <iyy>10</iyy>
+          <izz>10</izz>
+        </inertia>
+      </inertial>
 
       <visual name="visual">
         <geometry>
@@ -20,11 +29,20 @@
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.425 1.2 0.02</size>
+            <size>0.425 1.2 0.05</size>
           </box>
         </geometry>
 
         <surface>
+
+          <contact>
+            <ode>
+              <kp>1000000</kp>
+              <kd>10</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
 
           <friction>
             <ode>
