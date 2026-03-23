@@ -23,10 +23,18 @@
         </geometry>
 
         <surface>
+          <contact>
+            <ode>
+              <kp>1000000</kp>
+              <kd>50</kd>
+              <min_depth>0.002</min_depth>
+            </ode>
+          </contact>
+
           <friction>
             <ode>
-              <mu>50.0</mu>
-              <mu2>50.0</mu2>
+              <mu>5.0</mu>
+              <mu2>5.0</mu2>
             </ode>
           </friction>
         </surface>
