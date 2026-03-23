@@ -46,8 +46,6 @@ public:
 
         // Suscribirse al topic
         this->node.Subscribe("/person/cmd_vel", &Person::OnCmdVel, this);
-
-        gzmsg << "[Person] Plugin loaded. Listening to /person/cmd_vel\n";
     }
 
     // ============================================
@@ -59,9 +57,6 @@ public:
 
         this->linear_speed  = _msg.linear().x();
         this->angular_speed = _msg.angular().z();
-
-        gzmsg << "[Person] lin: " << this->linear_speed
-              << " | ang: " << this->angular_speed << std::endl;
     }
 
     // ============================================
@@ -79,6 +74,7 @@ public:
 
         gz::math::Pose3d pose = poseComp->Data();
 
+        // Bloque de velocidades
         double lin, ang;
         {
             std::lock_guard<std::mutex> lock(this->mtx);
@@ -86,15 +82,17 @@ public:
             ang = this->angular_speed;
         }
 
-        double yaw = pose.Rot().Yaw()+ M_PI_2;
+        // Rotación incremental
+        pose.Rot() = pose.Rot() * gz::math::Quaterniond(0, 0, ang);
 
-        // Mover hacia adelante según yaw actual
-        pose.Pos().X() += lin * std::cos(yaw);
-        pose.Pos().Y() += lin * std::sin(yaw);
+        // Vector frontal corregido para que el “frente” sea el lado izquierdo de tu modelo
+        gz::math::Quaterniond front_offset(0, 0, -M_PI_2); // -90º
+        gz::math::Vector3d forward = (pose.Rot() * front_offset).RotateVector(gz::math::Vector3d(lin, 0, 0));
 
-        // Girar según velocidad angular
-        pose.Rot() = gz::math::Quaterniond(0, 0, yaw + ang);
+        // Mover en la dirección corregida
+        pose.Pos() += forward;
 
+        // Aplicar pose
         this->model.SetWorldPoseCmd(_ecm, pose);
     }
 };
