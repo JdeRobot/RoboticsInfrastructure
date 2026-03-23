@@ -89,8 +89,8 @@ public:
         double yaw = pose.Rot().Yaw();
 
         // Mover hacia adelante según yaw actual
-        pose.Pos().X() += lin * std::cos(yaw);
-        pose.Pos().Y() += lin * std::sin(yaw);
+        pose.Pos().Y() += lin * std::cos(yaw);
+        pose.Pos().X() += lin * std::sin(yaw);
 
         // Girar según velocidad angular
         pose.Rot() = gz::math::Quaterniond(0, 0, yaw + ang);
