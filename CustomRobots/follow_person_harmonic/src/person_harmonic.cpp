@@ -73,40 +73,28 @@ public:
         if (_info.paused || !this->model.Valid(_ecm))
             return;
 
-        // Obtener pose
-        auto poseComp =
-            _ecm.Component<gz::sim::components::Pose>(this->model.Entity());
-
+        auto poseComp = _ecm.Component<gz::sim::components::Pose>(this->model.Entity());
         if (!poseComp)
             return;
 
         gz::math::Pose3d pose = poseComp->Data();
 
-        // Tiempo delta (clave)
-        double dt = std::chrono::duration<double>(_info.dt).count();
-
-        double speed, ang_speed;
+        double lin, ang;
         {
             std::lock_guard<std::mutex> lock(this->mtx);
-            speed     = this->linear_speed;
-            ang_speed = this->angular_speed;
+            lin = this->linear_speed;
+            ang = this->angular_speed;
         }
 
-        // ============================================
-        // ROTACIÓN
-        // ============================================
         double yaw = pose.Rot().Yaw();
-        yaw += ang_speed * dt;
 
-        pose.Rot() = gz::math::Quaterniond(0, 0, yaw);
+        // Actualizar posición lineal
+        pose.Pos().X() += -lin * std::sin(yaw);
+        pose.Pos().Y() += -lin * std::cos(yaw);
 
-        // ============================================
-        // MOVIMIENTO (forward correcto)
-        // ============================================
-        pose.Pos().X() += -speed * std::sin(yaw) * dt;
-        pose.Pos().Y() += -speed * std::cos(yaw) * dt;
+        // Actualizar rotación
+        pose.Rot() = gz::math::Quaterniond(0, 0, yaw + ang);
 
-        // Aplicar
         this->model.SetWorldPoseCmd(_ecm, pose);
     }
 };
