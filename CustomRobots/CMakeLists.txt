@@ -28,13 +28,17 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    gazebo
+    #gazebo
     pluginlib
     Threads)
 
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
+
+add_subdirectory(follow_person_harmonic)
+
+find_package(gazebo)
 
 # ============================================================================
 # Person plugin
