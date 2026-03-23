@@ -54,7 +54,7 @@ public:
     }
 
     void PreUpdate(const gz::sim::UpdateInfo &_info,
-                gz::sim::EntityComponentManager &_ecm) override
+                   gz::sim::EntityComponentManager &_ecm) override
     {
         if (_info.paused || !this->model.Valid(_ecm))
             return;
@@ -73,10 +73,9 @@ public:
 
         double yaw = pose.Rot().Yaw();
 
-        double dt = std::chrono::duration<double>(_info.dt).count();
-
-        pose.Pos().X() += speed * std::cos(yaw) * dt;
-        pose.Pos().Y() += speed * std::sin(yaw) * dt;
+        // Mover hacia adelante o atrás según linear.x
+        pose.Pos().X() += speed * std::cos(yaw);
+        pose.Pos().Y() += speed * std::sin(yaw);
 
         this->model.SetWorldPoseCmd(_ecm, pose);
     }
