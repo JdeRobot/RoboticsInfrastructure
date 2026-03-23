@@ -53,14 +53,10 @@ namespace person_plugin
           return;
 
         // Leer pose actual del mundo
-        auto pose = gz::sim::worldPose(this->model.Entity(), _ecm);
+        auto pose = this->model.WorldPose(_ecm);
         double yaw = pose.Rot().Yaw();
-
-        // Mover hacia adelante según linear_speed
         pose.Pos().X() += this->linear_speed * std::cos(yaw);
         pose.Pos().Y() += this->linear_speed * std::sin(yaw);
-
-        // Aplicar nueva pose
         this->model.SetWorldPoseCmd(_ecm, pose);
       }
   };
