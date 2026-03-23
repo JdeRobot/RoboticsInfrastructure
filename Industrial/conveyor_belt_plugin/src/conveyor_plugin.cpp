@@ -31,10 +31,23 @@ public:
   {
     this->model = gz::sim::Model(entity);
 
-    this->joint = this->model.JointByName(ecm, "belt_joint");
+    ecm.Each<gz::sim::components::Joint, gz::sim::components::Name>(
+      [&](const gz::sim::Entity &_entity,
+          const gz::sim::components::Joint *,
+          const gz::sim::components::Name *_name)
+      {
+        if (_name->Data() == "belt_joint")
+        {
+          this->joint = _entity;
+          return false;
+        }
+        return true;
+      });
 
     if (_sdf && _sdf->HasElement("velocity"))
       this->velocity = _sdf->Get<double>("velocity");
+
+    std::cout << "Buscando joint..." << std::endl;
 
     if (this->joint == gz::sim::kNullEntity)
     {
