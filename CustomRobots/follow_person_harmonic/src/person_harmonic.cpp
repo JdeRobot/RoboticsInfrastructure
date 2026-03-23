@@ -4,7 +4,6 @@
 #include <gz/plugin/Register.hh>
 
 #include <gz/math/Pose3.hh>
-#include <gz/math/Quaternion.hh>
 
 #include <mutex>
 #include <iostream>
@@ -18,37 +17,43 @@ namespace person_plugin
   {
     private:
       gz::sim::Model model{gz::sim::kNullEntity};
-      gz::math::Pose3d currentPose{0, 0, 0, 0, 0, 0};
-      bool poseInitialized{false};
+      gz::math::Pose3d currentPose;
 
-      double linear_speed{0.01};  // velocidad constante
+      bool poseInitialized{false};
+      double linear_speed{0.01};
+
       std::mutex mtx;
 
     public:
-      Person() = default;
-
       void Configure(const gz::sim::Entity &_entity,
-                     const std::shared_ptr<const sdf::Element> & /*_sdf*/,
+                     const std::shared_ptr<const sdf::Element> &,
                      gz::sim::EntityComponentManager &_ecm,
-                     gz::sim::EventManager & /*_eventMgr*/) override
+                     gz::sim::EventManager &) override
       {
         this->model = gz::sim::Model(_entity);
 
         if (!this->model.Valid(_ecm))
         {
-          std::cerr << "[Person] Plugin must be attached to a model.\n";
+          std::cerr << "[Person] Invalid model\n";
           return;
         }
 
-        this->currentPose = gz::sim::worldPose(this->model.Entity(), _ecm);
-        this->poseInitialized = true;
+        // ❌ NO coger pose aquí (todavía no es fiable)
       }
 
       void PreUpdate(const gz::sim::UpdateInfo &_info,
                      gz::sim::EntityComponentManager &_ecm) override
       {
-        if (_info.paused || !this->poseInitialized || !this->model.Valid(_ecm))
+        if (_info.paused || !this->model.Valid(_ecm))
           return;
+
+        // ✅ Inicializar pose correctamente UNA vez
+        if (!this->poseInitialized)
+        {
+          this->currentPose = gz::sim::worldPose(this->model.Entity(), _ecm);
+          this->poseInitialized = true;
+          return;  // importante: no mover aún
+        }
 
         gz::math::Pose3d pose;
         {
@@ -56,17 +61,15 @@ namespace person_plugin
           pose = this->currentPose;
         }
 
-        // orientación actual
         double yaw = pose.Rot().Yaw();
 
-        // movimiento hacia delante
+        // movimiento forward
         pose.Pos().X() += this->linear_speed * std::cos(yaw);
         pose.Pos().Y() += this->linear_speed * std::sin(yaw);
 
-        // aplicar en Harmonic
+        // aplicar movimiento
         this->model.SetWorldPoseCmd(_ecm, pose);
 
-        // guardar
         {
           std::lock_guard<std::mutex> lock(this->mtx);
           this->currentPose = pose;
