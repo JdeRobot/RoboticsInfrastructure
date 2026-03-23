@@ -44,12 +44,12 @@ public:
     }
 
     void PreUpdate(const gz::sim::UpdateInfo &_info,
-                   gz::sim::EntityComponentManager &_ecm) override
+                  gz::sim::EntityComponentManager &_ecm) override
     {
         if (_info.paused || !this->model.Valid(_ecm))
             return;
 
-        // Obtener la pose actual desde ECM
+        // Obtener pose actual
         auto poseComp = _ecm.Component<gz::sim::components::Pose>(this->model.Entity());
         if (!poseComp)
             return;
@@ -57,9 +57,19 @@ public:
         auto pose = poseComp->Data();
         double yaw = pose.Rot().Yaw();
 
-        // Actualizar posición
-        pose.Pos().X() += this->linear_speed * std::cos(yaw);
-        pose.Pos().Y() += this->linear_speed * std::sin(yaw);
+        // Si linear_speed es positivo → mover hacia delante
+        if (this->linear_speed > 0.0)
+        {
+            pose.Pos().X() += this->linear_speed * std::cos(yaw);
+            pose.Pos().Y() += this->linear_speed * std::sin(yaw);
+        }
+        // Si linear_speed es negativo → mover hacia atrás
+        else if (this->linear_speed < 0.0)
+        {
+            pose.Pos().X() += this->linear_speed * std::cos(yaw);  // linear_speed negativo
+            pose.Pos().Y() += this->linear_speed * std::sin(yaw);
+        }
+        // Si linear_speed == 0 → no hacer nada
 
         // Aplicar nueva pose
         this->model.SetWorldPoseCmd(_ecm, pose);
