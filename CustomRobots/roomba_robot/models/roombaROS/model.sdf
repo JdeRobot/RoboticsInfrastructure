@@ -463,7 +463,7 @@
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_topic>/roombaROS/odom_noisy</odom_topic>
       <robot_base_frame>base</robot_base_frame>
-      <odom_frame>odom</odom_frame>
+      <odom_frame>odom_noisy</odom_frame>
       <odom_publish_frequency>20</odom_publish_frequency>
       <dimensions>3</dimensions>
       <gaussian_noise>0.01</gaussian_noise>
