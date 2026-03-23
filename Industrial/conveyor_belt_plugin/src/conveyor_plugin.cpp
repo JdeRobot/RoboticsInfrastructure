@@ -1,7 +1,10 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Joint.hh>
+
 #include <gz/sim/components/JointVelocityCmd.hh>
+#include <gz/sim/components/JointForceCmd.hh>
+
 #include <gz/plugin/Register.hh>
 #include <iostream>
 
@@ -18,7 +21,7 @@ public:
   gz::sim::Model model{gz::sim::kNullEntity};
   gz::sim::Entity joint{gz::sim::kNullEntity};
 
-  double velocity{0.3};
+  double velocity{0.5};
 
   void Configure(
     const gz::sim::Entity &entity,
@@ -56,16 +59,26 @@ public:
     {
       ecm.CreateComponent(
         this->joint,
-        gz::sim::components::JointVelocityCmd({this->velocity})
-      );
+        gz::sim::components::JointVelocityCmd({this->velocity}));
     }
     else
     {
       velComp->Data()[0] = this->velocity;
     }
 
-    // DEBUG
-    std::cout << "VEL: " << this->velocity << std::endl;
+    auto forceComp =
+      ecm.Component<gz::sim::components::JointForceCmd>(this->joint);
+
+    if (!forceComp)
+    {
+      ecm.CreateComponent(
+        this->joint,
+        gz::sim::components::JointForceCmd({200.0}));
+    }
+    else
+    {
+      forceComp->Data()[0] = 200.0;
+    }
   }
 };
 
