@@ -3,9 +3,9 @@
 #include <gz/transport/Node.hh>
 #include <gz/msgs/twist.pb.h>
 #include <gz/sim/components/Pose.hh>
+#include <gz/sim/components/Name.hh>
 
 #include <gz/math/Quaternion.hh>
-
 #include <iostream>
 #include <mutex>
 
@@ -18,7 +18,6 @@ class Person :
 {
 private:
     gz::sim::Entity entity{gz::sim::kNullEntity};
-
     gz::transport::Node node;
 
     double linear_speed{0.0};
@@ -30,19 +29,12 @@ public:
     // ============================================
     // CONFIGURE
     // ============================================
-    void Configure(const gz::sim::Entity &_entity,
+    void Configure(const gz::sim::Entity &,
                    const std::shared_ptr<const sdf::Element> &,
                    gz::sim::EntityComponentManager &,
                    gz::sim::EventManager &) override
     {
-        this->entity = _entity;
-
-        if (this->entity == gz::sim::kNullEntity)
-        {
-            std::cerr << "[Person] Invalid entity\n";
-            return;
-        }
-
+        // Nos suscribimos al topic como antes
         this->node.Subscribe("/person/cmd_vel", &Person::OnCmdVel, this);
     }
 
@@ -52,7 +44,6 @@ public:
     void OnCmdVel(const gz::msgs::Twist &_msg)
     {
         std::lock_guard<std::mutex> lock(this->mtx);
-
         this->linear_speed  = _msg.linear().x();
         this->angular_speed = _msg.angular().z();
     }
@@ -63,8 +54,18 @@ public:
     void PreUpdate(const gz::sim::UpdateInfo &_info,
                    gz::sim::EntityComponentManager &_ecm) override
     {
-        if (_info.paused || this->entity == gz::sim::kNullEntity)
+        if (_info.paused)
             return;
+
+        // Si no tenemos la entidad del actor, la buscamos por nombre
+        if (this->entity == gz::sim::kNullEntity)
+        {
+            this->entity = _ecm.EntityByComponents(
+                gz::sim::components::Name("PersonToControlActor_harmonic"));
+
+            if (this->entity == gz::sim::kNullEntity)
+                return; // seguimos esperando a que se cree el actor
+        }
 
         auto poseComp = _ecm.Component<gz::sim::components::Pose>(this->entity);
         if (!poseComp)
@@ -72,6 +73,7 @@ public:
 
         gz::math::Pose3d pose = poseComp->Data();
 
+        // Bloque de velocidades
         double lin, ang;
         {
             std::lock_guard<std::mutex> lock(this->mtx);
@@ -79,16 +81,17 @@ public:
             ang = this->angular_speed;
         }
 
+        // Rotación incremental
         pose.Rot() = pose.Rot() * gz::math::Quaterniond(0, 0, ang);
 
+        // Vector frontal corregido para que el frente sea el lado izquierdo del modelo
         gz::math::Quaterniond front_offset(0, 0, -M_PI_2);
+        gz::math::Vector3d forward = (pose.Rot() * front_offset).RotateVector(gz::math::Vector3d(lin, 0, 0));
 
-        gz::math::Vector3d forward =
-            (pose.Rot() * front_offset).RotateVector(
-                gz::math::Vector3d(lin, 0, 0));
-
+        // Mover en la dirección corregida
         pose.Pos() += forward;
 
+        // Aplicar pose
         _ecm.SetComponentData<gz::sim::components::Pose>(this->entity, pose);
     }
 };
