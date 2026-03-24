@@ -556,14 +556,13 @@
 
     </plugin>
 
-    <plugin filename="libodom_with_covariance_plugin.so" name="gz::sim::systems::OdometryPublisherDevel">
-      <odom_topic>turtlebot3/odom_noisy</odom_topic>
-      <odom_covariance_topic>turtlebot3/odom_with_covariance</odom_covariance_topic>
-      <robot_base_frame>base_footprint</robot_base_frame>
-      <odom_frame>odom_noisy</odom_frame>
-      <odom_publish_frequency>50</odom_publish_frequency>
-      <dimensions>2</dimensions>
-      <gaussian_noise>0.01</gaussian_noise>
+    <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
+      <linear_noise_std_dev>0.01</linear_noise_std_dev>
+      <angular_noise_std_dev>0.01</angular_noise_std_dev>
+      <ros_topic>turtlebot3/odom_noisy</ros_topic>
+      <gz_cmd_vel_topic>turtlebot3/cmd_vel</gz_cmd_vel_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
     </plugin>
   
   </model>
