@@ -9,9 +9,7 @@ from launch.actions import ExecuteProcess, SetEnvironmentVariable
 
 def generate_launch_description():
 
-    base_dir = os.path.dirname(__file__)
-
-    world_path = os.path.join(base_dir, "machine_vision_harmonic.world")
+    world_path = "/opt/jderobot/Worlds/machine_vision_harmonic.world"
 
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-r", "-v", "4", world_path],
