@@ -1,7 +1,6 @@
 <sdf version='1.7'>
   <world name='default'>
 
-    <!-- LUZ -->
     <light name='sun' type='directional'>
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
@@ -10,7 +9,6 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
-    <!-- SUELO -->
     <model name='ground_plane'>
       <static>true</static>
       <link name='link'>
@@ -33,14 +31,11 @@
       </link>
     </model>
 
-    <!-- CINTA (ROBOT BASE) -->
     <model name='conveyor'>
       <static>true</static>
-      <pose>0.335211 0.377742 0 0 0 0</pose>
+      <pose>0.6 0 0 0 0 1.57</pose>
 
       <link name='link'>
-        <pose>0 0 0 0 0 0</pose>
-
         <visual name='visual'>
           <pose>0 0 0.95 0 0 0</pose>
           <geometry>
@@ -59,14 +54,12 @@
             </box>
           </geometry>
         </collision>
-
       </link>
     </model>
 
-    <!-- MESA -->
     <model name='target_table'>
       <static>true</static>
-      <pose>-0.877342 -1.1194 0 0 0 0</pose>
+      <pose>-0.6 0 0 0 0 1.57</pose>
 
       <link name='link'>
         <visual name='visual'>
@@ -80,14 +73,56 @@
       </link>
     </model>
 
-    <!-- OBJETOS (IGUALES QUE CLASSIC) -->
+    <model name='target_4x4'>
+      <static>true</static>
+      <pose>-0.5 0 0.76 0 0 0</pose>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 0 0.0075 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.25 0.25 0.25</scale>
+              <uri>model://target_4x4/meshes/target_4x4.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name='unit_box'>
+      <static>true</static>
+      <pose>-0.7 -0.435456 0.927284 0 0 0</pose>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.4 0.04449 0.5</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name='unit_cylinder'>
+      <static>true</static>
+      <pose>-0.3 0.38 0.897305 0 0 0</pose>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.170141</radius>
+              <length>0.4</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
     <model name='blue_sphere'>
       <pose>0.45 0.25 1.01 0 0 0</pose>
       <link name='link'>
         <visual name='visual'>
-          <geometry>
-            <sphere><radius>0.03</radius></sphere>
-          </geometry>
+          <geometry><sphere><radius>0.03</radius></sphere></geometry>
         </visual>
       </link>
     </model>
@@ -96,9 +131,7 @@
       <pose>0.45 -0.25 1.01 0 0 0</pose>
       <link name='link'>
         <visual name='visual'>
-          <geometry>
-            <sphere><radius>0.03</radius></sphere>
-          </geometry>
+          <geometry><sphere><radius>0.03</radius></sphere></geometry>
         </visual>
       </link>
     </model>
@@ -107,9 +140,7 @@
       <pose>0.45 0.09 1.01 0 0 0</pose>
       <link name='link'>
         <visual name='visual'>
-          <geometry>
-            <sphere><radius>0.03</radius></sphere>
-          </geometry>
+          <geometry><sphere><radius>0.03</radius></sphere></geometry>
         </visual>
       </link>
     </model>
@@ -118,14 +149,11 @@
       <pose>0.45 -0.09 1.01 0 0 0</pose>
       <link name='link'>
         <visual name='visual'>
-          <geometry>
-            <sphere><radius>0.03</radius></sphere>
-          </geometry>
+          <geometry><sphere><radius>0.03</radius></sphere></geometry>
         </visual>
       </link>
     </model>
 
-    <!-- CILINDROS -->
     <model name='blue_cylinder'>
       <pose>0.65 -0.25 1.01 0 0 0</pose>
       <link name='link'>
@@ -140,7 +168,6 @@
       </link>
     </model>
 
-    <!-- PLUGIN LINK ATTACHER (CORRECTO PARA HARMONIC) -->
     <plugin filename="libgz-sim-link-attacher-system.so"
             name="gz::sim::systems::LinkAttacher"/>
 
