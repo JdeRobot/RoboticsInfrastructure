@@ -16,7 +16,7 @@ def generate_launch_description():
     robot_launch_dir = "/opt/jderobot/Launchers/follow_person"
     gui_config_path = "/opt/jderobot/Launchers/visualization/follow_person.config"
 
-    world_file_name = "reduced_hospital_actor_person_tp_harmonic.world"
+    world_file_name = "reduced_hospital_harmonic_tp.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
