@@ -17,7 +17,5 @@
         </waypoint>
       </trajectory>
     </script>
-
-    <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"/>
   </actor>
 </sdf>

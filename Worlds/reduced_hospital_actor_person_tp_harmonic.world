@@ -756,5 +756,6 @@
             <uri>model://turtlebot2_harmonic</uri>
             <pose>-1.0 10.0 0.1 0.0 0.0 0</pose>
         </include>
+        <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"/>
     </world>
 </sdf>
