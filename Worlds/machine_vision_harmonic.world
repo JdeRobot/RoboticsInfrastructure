@@ -168,7 +168,7 @@
       </link>
       <static>1</static>
       <allow_auto_disable>1</allow_auto_disable>
-      <pose>0.6 0 0 1.57 0 0</pose>
+      <pose>0.6 0 0 0 0 1.57</pose>
     </model>
     <model name='ground_logo_corner'>
       <static>1</static>
@@ -648,7 +648,7 @@
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <box>
-              <size>0.25 0.25 0.02</size>
+              <size>0.5 0.5 0.02</size>
             </box>
           </geometry>
           <surface>
@@ -940,7 +940,7 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <size>1 1 0.999999</size>
+              <<size>0.4 0.04 0.5</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -1015,7 +1015,7 @@
         <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>0.499999</radius>
+              <radius>0.17</radius>
               <length>1</length>
             </cylinder>
           </geometry>
@@ -1495,6 +1495,12 @@
       </link>
       <pose>0.65 -0.25 1.01 0 -0 0</pose>
     </model>
+
+
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
 
 
     <plugin filename="libgz_link_attacher.so"
