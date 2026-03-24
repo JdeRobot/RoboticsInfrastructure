@@ -18,10 +18,12 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    ld.add_action(
-        SetEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            os.environ.get("GZ_SIM_RESOURCE_PATH", "")
+    SetEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH",
+        os.path.join(
+            os.environ.get("GZ_SIM_RESOURCE_PATH", ""),
+            "/opt/ros/humble/share",
+            "/usr/share/gz",
         )
     )
 

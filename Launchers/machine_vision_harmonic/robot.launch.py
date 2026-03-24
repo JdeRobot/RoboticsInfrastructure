@@ -15,7 +15,6 @@ def generate_launch_description():
 
     pkg_path = get_package_share_directory(PACKAGE_NAME + "_gazebo")
 
-    # URDF (como en classic)
     xacro_file = os.path.join(pkg_path, "urdf", "ur5.urdf.xacro")
 
     doc = xacro.parse(open(xacro_file))
@@ -23,7 +22,6 @@ def generate_launch_description():
 
     robot_description = {"robot_description": doc.toxml()}
 
-    # Robot State Publisher
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -31,25 +29,28 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    # Static TF
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         arguments=["0", "0", "0", "0", "0", "0", "world", "base_link"],
     )
 
-    # Spawn robot en GZ (adaptado a harmonic)
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=[
             "-name", "ur5",
-            "-topic", "robot_description"
+            "-topic", "robot_description",
+            "-x", "0",
+            "-y", "0",
+            "-z", "0",
+            "-R", "0",
+            "-P", "1.57",
+            "-Y", "0",
         ],
         output="screen",
     )
 
-    # Controllers (mínimos)
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",

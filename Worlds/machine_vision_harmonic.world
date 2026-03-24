@@ -994,8 +994,8 @@
         <collision name='collision'>
           <geometry>
             <cylinder>
-              <radius>0.17</radius>
-              <length>1</length>
+              <radius>0.08</radius>
+              <length>0.4</length>
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -1015,8 +1015,8 @@
         <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>0.17</radius>
-              <length>1</length>
+              <radius>0.08</radius>
+              <length>0.04</length>
             </cylinder>
           </geometry>
           <material>
