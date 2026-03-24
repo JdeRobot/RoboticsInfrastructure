@@ -1,0 +1,7 @@
+<sdf version="1.9">
+  <actor name="PersonToControlActor_harmonic">
+    <skin>
+      <filename>model://PersonToControlActor_harmonic/meshes/standing.dae</filename>
+    </skin>
+  </actor>
+</sdf>
