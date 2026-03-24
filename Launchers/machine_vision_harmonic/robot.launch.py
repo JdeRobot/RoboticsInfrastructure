@@ -15,21 +15,15 @@ import xacro
 
 
 def generate_launch_description():
+
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
-    robotiq_pkg_share_dir = get_package_share_directory("robotiq_description")
 
     gz_ros2_control_install = "/home/ws/install"
     gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
 
-    warehouse_models_path = os.path.join(robotiq_pkg_share_dir, "world", "models")
-    ur5_share_parent = os.path.dirname(pkg_share_dir)
-    robotiq_share_parent = os.path.dirname(robotiq_pkg_share_dir)
+    machine_vision_models_path = "/opt/jderobot/Worlds/models"
 
-    resource_path = (
-        ur5_share_parent + ":" +
-        robotiq_share_parent + ":" +
-        warehouse_models_path
-    )
+    resource_path = machine_vision_models_path
 
     gz_env = {
         "GZ_SIM_RESOURCE_PATH": resource_path,
@@ -42,14 +36,11 @@ def generate_launch_description():
         + gz_lib_path
         + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
         + os.environ.get("LD_LIBRARY_PATH", ""),
-        "DISPLAY": os.environ.get("DISPLAY", ":0"),
     }
 
     declared_arguments = [
-        DeclareLaunchArgument("ur_type", default_value="ur5"),
         DeclareLaunchArgument("launch_rviz", default_value="true"),
     ]
-
 
     xacro_file = os.path.join(pkg_share_dir, "urdf", "ur5_robotiq85_gripper.urdf.xacro")
     controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
@@ -61,7 +52,6 @@ def generate_launch_description():
             "name": "ur",
             "prefix": "",
             "use_fake_hardware": "false",
-            "sim_gazebo": "false",
             "sim_gz": "true",
             "simulation_controllers": controllers_file,
         },
@@ -72,34 +62,30 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
+        output="screen",
     )
 
-
     world_file = "/opt/jderobot/Worlds/machine_vision_harmonic.world"
+
+    env = os.environ.copy()
+    env.update(gz_env)
 
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-r", "-v", "4", world_file],
         output="screen",
-        additional_env=gz_env,
-        shell=False,
+        additional_env=env,
     )
-
 
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=[
             "-topic", "robot_description",
-            "-name", "ur5_robotiq",
-            "-allow_renaming", "true",
+            "-name", "ur5",
             "-x", "0.0",
             "-y", "0.0",
-            "-z", "0.0",
-            "-R", "0.0",
-            "-P", "0.0",
-            "-Y", "0.0",
+            "-z", "0.75",
         ],
         output="screen",
     )
@@ -108,103 +94,73 @@ def generate_launch_description():
         package="tf2_ros",
         executable="static_transform_publisher",
         arguments=["0", "0", "0", "0", "0", "0", "world", "base_link"],
-        output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
-    gz_ros2_bridge_clock = Node(
+    bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
-        output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
-
-    load_joint_state_broadcaster = Node(
+    jsb = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-        output="screen",
+        arguments=["joint_state_broadcaster"],
     )
 
-    load_joint_trajectory_controller = Node(
+    jtc = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
-        output="screen",
+        arguments=["joint_trajectory_controller"],
     )
 
-    load_gripper_controller = Node(
+    gripper = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["gripper_controller", "-c", "/controller_manager"],
-        output="screen",
+        arguments=["gripper_controller"],
     )
 
+    moveit_pkg = get_package_share_directory("ur5_gripper_moveit_config")
 
-    moveit_config_package = "ur5_gripper_moveit_config"
-    moveit_pkg = get_package_share_directory(moveit_config_package)
-
-    ompl_planning_yaml = os.path.join(moveit_pkg, "config", "ompl_planning.yaml")
-    kinematics_yaml = os.path.join(moveit_pkg, "config", "kinematics.yaml")
-    srdf_file = os.path.join(moveit_pkg, "srdf", "ur5_robotiq.srdf")
-    moveit_controllers = os.path.join(moveit_pkg, "config", "controllers.yaml")
-
-    with open(srdf_file, "r") as f:
-        robot_description_semantic = {"robot_description_semantic": f.read()}
-
-    move_group_node = Node(
+    move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            kinematics_yaml,
-            ompl_planning_yaml,
-            moveit_controllers,
-            {"use_sim_time": True},
-        ],
+        parameters=[robot_description, {"use_sim_time": True}],
         condition=IfCondition(LaunchConfiguration("launch_rviz")),
     )
 
-    rviz_node = Node(
+    rviz = Node(
         package="rviz2",
         executable="rviz2",
         arguments=["-d", os.path.join(moveit_pkg, "rviz", "moveit.rviz")],
         condition=IfCondition(LaunchConfiguration("launch_rviz")),
     )
 
-
     delay_spawn = TimerAction(period=5.0, actions=[spawn_entity])
 
     delay_jsb = RegisterEventHandler(
-        OnProcessExit(target_action=spawn_entity, on_exit=[load_joint_state_broadcaster])
+        OnProcessExit(target_action=spawn_entity, on_exit=[jsb])
     )
 
     delay_jtc = RegisterEventHandler(
-        OnProcessExit(target_action=load_joint_state_broadcaster, on_exit=[load_joint_trajectory_controller])
+        OnProcessExit(target_action=jsb, on_exit=[jtc])
     )
 
-    delay_gc = RegisterEventHandler(
-        OnProcessExit(target_action=load_joint_trajectory_controller, on_exit=[load_gripper_controller])
+    delay_gripper = RegisterEventHandler(
+        OnProcessExit(target_action=jtc, on_exit=[gripper])
     )
-
-    delay_mg = TimerAction(period=10.0, actions=[move_group_node])
-    delay_rviz = TimerAction(period=12.0, actions=[rviz_node])
 
     return LaunchDescription(
         declared_arguments + [
             gazebo,
             robot_state_publisher,
             static_tf,
-            gz_ros2_bridge_clock,
+            bridge,
             delay_spawn,
             delay_jsb,
             delay_jtc,
-            delay_gc,
-            delay_mg,
-            delay_rviz,
+            delay_gripper,
+            move_group,
+            rviz,
         ]
     )
