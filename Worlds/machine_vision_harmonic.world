@@ -2,6 +2,7 @@
 <sdf version="1.8">
   <world name="default">
 
+    <!-- SYSTEMS -->
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
     <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
@@ -9,22 +10,26 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
+    <!-- LINK ATTACHER -->
     <plugin filename="libgz_link_attacher.so"
             name="gz_link_attacher::LinkAttacher"/>
 
+    <!-- SCENE -->
     <scene>
-      <ambient>0.4 0.4 0.4 1</ambient>
+      <ambient>0.6 0.6 0.6 1</ambient>
       <background>0.7 0.7 0.7 1</background>
       <shadows>true</shadows>
       <grid>false</grid>
     </scene>
 
+    <!-- LIGHT -->
     <light name="sun" type="directional">
       <pose>0 0 10 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
+    <!-- GROUND -->
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -37,10 +42,15 @@
           <geometry>
             <plane><normal>0 0 1</normal><size>100 100</size></plane>
           </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
         </visual>
       </link>
     </model>
 
+    <!-- LOGO -->
     <model name="ground_logo_big">
       <static>true</static>
       <pose>-0.5 0 0 0 0 1.57</pose>
@@ -56,6 +66,7 @@
       </link>
     </model>
 
+    <!-- CONVEYOR -->
     <model name="conveyor">
       <static>true</static>
       <pose>0.6 0 0 0 0 1.57</pose>
@@ -72,6 +83,7 @@
       </link>
     </model>
 
+    <!-- TABLE -->
     <model name="target_table">
       <static>true</static>
       <pose>-0.6 0 0 0 0 1.57</pose>
@@ -87,6 +99,7 @@
       </link>
     </model>
 
+    <!-- PANEL -->
     <model name="target_4x4">
       <static>true</static>
       <pose>-0.5 0 0.76 0 0 0</pose>
@@ -103,19 +116,23 @@
       </link>
     </model>
 
+    <!-- CAJA -->
     <model name="unit_box">
       <pose>-0.7 -0.435456 0.927284 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <geometry>
-            <box>
-              <size>0.4 0.04449 0.5</size>
-            </box>
+            <box><size>0.4 0.04449 0.5</size></box>
           </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+          </material>
         </visual>
       </link>
     </model>
 
+    <!-- CILINDRO GRANDE -->
     <model name="unit_cylinder">
       <pose>-0.3 0.38 0.897305 0 0 0</pose>
       <link name="link">
@@ -126,15 +143,21 @@
               <length>0.4</length>
             </cylinder>
           </geometry>
+          <material>
+            <ambient>0.6 0.6 0.6 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+          </material>
         </visual>
       </link>
     </model>
 
+    <!-- ESFERAS -->
     <model name="blue_sphere">
       <pose>0.45 0.25 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
+        <visual>
           <geometry><sphere><radius>0.03</radius></sphere></geometry>
+          <material><ambient>0 0 1 1</ambient><diffuse>0 0 1 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -142,8 +165,9 @@
     <model name="red_sphere">
       <pose>0.45 -0.25 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
+        <visual>
           <geometry><sphere><radius>0.03</radius></sphere></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -151,8 +175,9 @@
     <model name="green_sphere">
       <pose>0.45 0.09 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
+        <visual>
           <geometry><sphere><radius>0.03</radius></sphere></geometry>
+          <material><ambient>0 1 0 1</ambient><diffuse>0 1 0 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -160,19 +185,20 @@
     <model name="purple_sphere">
       <pose>0.45 -0.09 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
+        <visual>
           <geometry><sphere><radius>0.03</radius></sphere></geometry>
+          <material><ambient>0.5 0 0.5 1</ambient><diffuse>0.5 0 0.5 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- CILINDROS PEQUEÑOS -->
     <model name="blue_cylinder">
       <pose>0.65 -0.25 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
-          <geometry>
-            <cylinder><radius>0.03</radius><length>0.07</length></cylinder>
-          </geometry>
+        <visual>
+          <geometry><cylinder><radius>0.03</radius><length>0.07</length></cylinder></geometry>
+          <material><ambient>0 0 1 1</ambient><diffuse>0 0 1 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -180,10 +206,9 @@
     <model name="green_cylinder">
       <pose>0.65 -0.09 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
-          <geometry>
-            <cylinder><radius>0.03</radius><length>0.05</length></cylinder>
-          </geometry>
+        <visual>
+          <geometry><cylinder><radius>0.03</radius><length>0.05</length></cylinder></geometry>
+          <material><ambient>0 1 0 1</ambient><diffuse>0 1 0 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -191,10 +216,9 @@
     <model name="red_cylinder">
       <pose>0.65 0.09 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
-          <geometry>
-            <cylinder><radius>0.02</radius><length>0.06</length></cylinder>
-          </geometry>
+        <visual>
+          <geometry><cylinder><radius>0.02</radius><length>0.06</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
         </visual>
       </link>
     </model>
@@ -202,10 +226,9 @@
     <model name="purple_cylinder">
       <pose>0.65 0.25 1.01 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
-          <geometry>
-            <cylinder><radius>0.02</radius><length>0.06</length></cylinder>
-          </geometry>
+        <visual>
+          <geometry><cylinder><radius>0.02</radius><length>0.06</length></cylinder></geometry>
+          <material><ambient>0.5 0 0.5 1</ambient><diffuse>0.5 0 0.5 1</diffuse></material>
         </visual>
       </link>
     </model>
