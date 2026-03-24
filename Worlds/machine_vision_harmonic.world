@@ -940,7 +940,7 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <<size>0.4 0.04 0.5</size>
+              <size>0.4 0.04 0.5</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -960,7 +960,7 @@
         <visual name='visual'>
           <geometry>
             <box>
-              <size>1 1 0.999999</size>
+              <size>0.4 0.04 0.5</size>
             </box>
           </geometry>
           <material>
@@ -1497,7 +1497,7 @@
     </model>
 
 
-    <plugin filename="gz-sim-sensors-system"
+    <plugin filename="gz-sim-sensors-system.so"
             name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
