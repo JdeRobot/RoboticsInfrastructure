@@ -1,6 +1,6 @@
 #include "gz_noisy_odometry/NoisyOdometryPlugin.hpp"
-#include <gz/sim/components/Pose.hpp>
-#include <gz/plugin/Register.hpp>
+#include <gz/sim/components/Pose.hh>
+#include <gz/plugin/Register.hh>
 #include <tf2/LinearMath/Quaternion.h>
 
 GZ_ADD_PLUGIN(
@@ -23,7 +23,6 @@ namespace custom_plugins
     model_ = gz::sim::Model(_entity);
     if (!model_.Valid(_ecm)) return;
 
-    // Parámetros del SDF
     gaussian_noise_coeff_ = _sdf->Get<double>("gaussian_noise", 0.05).first;
     ros_topic_ = _sdf->Get<std::string>("ros_topic", "/turtlebot3/odom_noisy").first;
     gz_cmd_vel_topic_ = _sdf->Get<std::string>("gz_cmd_vel_topic", "/turtlebot3/cmd_vel").first;
@@ -74,28 +73,22 @@ namespace custom_plugins
       w_cmd = current_w_;
     }
 
-    // MATEMÁTICA HÍBRIDA: Integración Estocástica Proporcional
-    // El ruido es proporcional a la velocidad y escalado por sqrt(dt) para un Random Walk correcto
-    double linear_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::sqrt(dt) * std::abs(v_cmd);
-    double angular_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::sqrt(dt) * std::abs(w_cmd);
+    double linear_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::abs(v_cmd);
+    double angular_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::abs(w_cmd);
 
-    double v_noisy = v_cmd + (linear_noise / dt);
-    double w_noisy = w_cmd + (angular_noise / dt);
+    double v_noisy = v_cmd + linear_noise;
+    double w_noisy = w_cmd + angular_noise;
 
-    // Actualización de orientación (Yaw)
-    double yaw_prev = noisy_pose_internal_.Rot().Yaw();
-    double yaw_new = yaw_prev + (w_noisy * dt);
-    
-    // Actualización de posición (Cinemática Diferencial)
-    double distance = v_noisy * dt;
-    noisy_pose_internal_.Pos().X() += distance * std::cos(yaw_prev + (w_noisy * dt / 2.0));
-    noisy_pose_internal_.Pos().Y() += distance * std::sin(yaw_prev + (w_noisy * dt / 2.0));
-    
-    gz::math::Quaterniond q_new;
-    q_new.SetFromEuler(0, 0, yaw_new);
-    noisy_pose_internal_.Rot() = q_new;
+    double angle = w_noisy * dt;
+    gz::math::Vector3d axis(0, 0, 1);
+    gz::math::Quaterniond deltaOrientation(std::cos(angle / 2.0), 0, 0, std::sin(angle / 2.0));
 
-    // Publicación en ROS 2
+    noisy_pose_internal_.Rot() = noisy_pose_internal_.Rot() * deltaOrientation;
+    noisy_pose_internal_.Rot().Normalize();
+
+    gz::math::Vector3d deltaPos(v_noisy * dt, 0, 0);
+    noisy_pose_internal_.Pos() += noisy_pose_internal_.Rot().RotateVector(deltaPos);
+
     nav_msgs::msg::Odometry odom_msg;
     odom_msg.header.stamp = ros_node_->now();
     odom_msg.header.frame_id = frame_id_;
@@ -103,13 +96,12 @@ namespace custom_plugins
 
     odom_msg.pose.pose.position.x = noisy_pose_internal_.Pos().X();
     odom_msg.pose.pose.position.y = noisy_pose_internal_.Pos().Y();
-    
-    tf2::Quaternion q;
-    q.setRPY(0, 0, yaw_new);
-    odom_msg.pose.pose.orientation.x = q.x();
-    odom_msg.pose.pose.orientation.y = q.y();
-    odom_msg.pose.pose.orientation.z = q.z();
-    odom_msg.pose.pose.orientation.w = q.w();
+    odom_msg.pose.pose.position.z = noisy_pose_internal_.Pos().Z();
+
+    odom_msg.pose.pose.orientation.x = noisy_pose_internal_.Rot().X();
+    odom_msg.pose.pose.orientation.y = noisy_pose_internal_.Rot().Y();
+    odom_msg.pose.pose.orientation.z = noisy_pose_internal_.Rot().Z();
+    odom_msg.pose.pose.orientation.w = noisy_pose_internal_.Rot().W();
 
     odom_msg.twist.twist.linear.x = v_noisy;
     odom_msg.twist.twist.angular.z = w_noisy;
