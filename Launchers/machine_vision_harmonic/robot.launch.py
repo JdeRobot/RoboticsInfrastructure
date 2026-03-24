@@ -1,18 +1,19 @@
 """
-Machine Vision Harmonic - Robot Launcher
+Machine Vision Harmonic - Robot Launcher (FIXED)
 """
 
 import os
 import xacro
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
 
     PACKAGE_NAME = "ros2srrc_ur5"
-
     pkg_path = get_package_share_directory(PACKAGE_NAME + "_gazebo")
 
     xacro_file = os.path.join(pkg_path, "urdf", "ur5.urdf.xacro")
@@ -44,7 +45,7 @@ def generate_launch_description():
             "-x", "0",
             "-y", "0",
             "-z", "0",
-            "-R", "1.57",
+            "-R", "0",
             "-P", "0",
             "-Y", "0",
         ],
@@ -63,10 +64,16 @@ def generate_launch_description():
         arguments=["joint_trajectory_controller"],
     )
 
+    delay_controllers = RegisterEventHandler(
+        OnProcessExit(
+            target_action=spawn_entity,
+            on_exit=[joint_state_broadcaster, joint_trajectory_controller],
+        )
+    )
+
     return LaunchDescription([
         robot_state_publisher,
         static_tf,
         spawn_entity,
-        joint_state_broadcaster,
-        joint_trajectory_controller,
+        delay_controllers,
     ])
