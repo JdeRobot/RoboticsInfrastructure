@@ -87,7 +87,9 @@ def generate_launch_description():
 
     # Create the launch description and populate
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    ld.add_action(SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path))
+    ld.add_action(
+        SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path)
+    )
     set_env_vars_resources = AppendEnvironmentVariable(
         "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
     )

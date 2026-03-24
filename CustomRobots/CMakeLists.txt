@@ -109,7 +109,6 @@ install(
     autopark_harmonic/models
     autopark_harmonic/params
     drone_assets/models
-    drone_assets/worlds
     drone_assets/bridges
     taxi_navigator/models
     taxi_navigator/params

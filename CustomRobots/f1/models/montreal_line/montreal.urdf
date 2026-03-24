@@ -8,11 +8,4 @@
       </geometry>
     </visual>
   </link>
-  <link name="pared">
-    <visual>
-      <geometry>
-        <mesh filename="package://f1/models/montreal_line/meshes/montreal_pared.dae"/>
-      </geometry>
-    </visual>
-  </link>
 </robot>

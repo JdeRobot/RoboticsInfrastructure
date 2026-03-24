@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="turtlebot3_waffle">  
-  <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+  <model name="turtlebot3_waffle">
+    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
 
     <link name="base_footprint"/>
 
@@ -96,7 +96,7 @@
       </sensor>
     </link>
 
-    <link name="base_scan">    
+    <link name="base_scan">
       <inertial>
         <pose>-0.052 0 0.111 0 0 0</pose>
         <inertia>
@@ -239,7 +239,7 @@
         </inertia>
         <mass>0.1</mass>
       </inertial>
-    
+
       <collision name="wheel_right_collision">
         <pose>0.0 -0.144 0.023 -1.57 0 0</pose>
         <geometry>
@@ -400,10 +400,10 @@
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
-        </camera> 
+        </camera>
       </sensor>
     </link>
-    
+
     <link name="camera_depth_frame">
       <inertial>
         <pose>0.069 -0.047 0.107 0 0 0</pose>
@@ -439,7 +439,7 @@
           </clip>
         </camera>
       </sensor>
-    </link>   
+    </link>
 
     <joint name="base_joint" type="fixed">
       <parent>base_footprint</parent>
@@ -488,7 +488,7 @@
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
-    </joint>    
+    </joint>
 
     <joint name="lidar_joint" type="fixed">
       <parent>base_link</parent>
@@ -524,7 +524,7 @@
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
-    </joint>  
+    </joint>
 
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <!-- wheels -->
@@ -547,18 +547,14 @@
 
     </plugin>
 
-    <plugin filename="ignition-gazebo-odometry-publisher-system" name="ignition::gazebo::systems::OdometryPublisher">
-      <odom_frame>odom</odom_frame>
-
-      <robot_base_frame>base_footprint</robot_base_frame>
-
-      <odom_publish_frequency>50</odom_publish_frequency>
-
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_topic>turtlebot3/odom</odom_topic>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_frame>odom</odom_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
       <dimensions>3</dimensions>
-
     </plugin>
   </model>
 
-  
+
 </sdf>

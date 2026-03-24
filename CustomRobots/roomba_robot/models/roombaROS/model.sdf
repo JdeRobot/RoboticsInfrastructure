@@ -9,8 +9,11 @@
       <inertial>
         <mass>1.0</mass>
         <inertia>
-          <ixx>1</ixx><ixy>0.0</ixy><ixz>0.0</ixz>
-          <iyy>1</iyy><iyz>0.0</iyz>
+          <ixx>1</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>1</iyy>
+          <iyz>0.0</iyz>
           <izz>1</izz>
         </inertia>
       </inertial>
@@ -294,7 +297,7 @@
 
     <link name="right_wheel">
       <pose>0 -0.130000 0.032000 0 0 0</pose>
-      
+
       <inertial>
         <inertia>
           <ixx>0.001000</ixx>
@@ -455,6 +458,15 @@
       <odom_publish_frequency>20.0</odom_publish_frequency>
       <odom_topic>/roombaROS/odom</odom_topic>
       <dimensions>3</dimensions>
+    </plugin>
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_topic>/roombaROS/odom_noisy</odom_topic>
+      <robot_base_frame>base</robot_base_frame>
+      <odom_frame>odom_noisy</odom_frame>
+      <odom_publish_frequency>20</odom_publish_frequency>
+      <dimensions>3</dimensions>
+      <gaussian_noise>0.01</gaussian_noise>
     </plugin>
 
   </model>
