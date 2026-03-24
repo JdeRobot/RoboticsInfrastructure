@@ -1,17 +1,17 @@
 #ifndef NOISY_ODOMETRY_PLUGIN_HPP_
 #define NOISY_ODOMETRY_PLUGIN_HPP_
 
-#include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/transport/Node.hh>
+#include <gz/sim/System.hpp>
+#include <gz/sim/Model.hpp>
+#include <gz/transport/Node.hpp>
 #include <gz/msgs/twist.pb.h>
-#include <gz/math/Pose3.hh>
+#include <gz/math/Pose3.hpp>
+#include <gz/math/Rand.hpp>
 
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 
 #include <mutex>
-#include <random>
 #include <string>
 #include <memory>
 
@@ -49,16 +49,14 @@ namespace custom_plugins
     std::string child_frame_id_;
 
     bool initialized_{false};
-    gz::math::Pose3d current_pose_;
+    gz::math::Pose3d noisy_pose_internal_; // Nuestra "realidad" ruidosa acumulada
+    std::chrono::steady_clock::duration last_update_time_{0};
 
     double current_v_{0.0};
     double current_w_{0.0};
 
     std::mutex mutex_;
-
-    std::default_random_engine generator_;
-    std::normal_distribution<double> linear_noise_dist_;
-    std::normal_distribution<double> angular_noise_dist_;
+    double gaussian_noise_coeff_{0.0};
   };
 } 
 

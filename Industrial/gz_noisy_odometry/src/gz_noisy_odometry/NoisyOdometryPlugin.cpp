@@ -1,6 +1,6 @@
 #include "gz_noisy_odometry/NoisyOdometryPlugin.hpp"
-#include <gz/sim/components/Pose.hh>
-#include <gz/plugin/Register.hh>
+#include <gz/sim/components/Pose.hpp>
+#include <gz/plugin/Register.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 
 GZ_ADD_PLUGIN(
@@ -13,9 +13,7 @@ GZ_ADD_PLUGIN_ALIAS(custom_plugins::NoisyOdometryPlugin, "custom_plugins::NoisyO
 
 namespace custom_plugins
 {
-  NoisyOdometryPlugin::NoisyOdometryPlugin() : generator_(std::random_device{}())
-  {
-  }
+  NoisyOdometryPlugin::NoisyOdometryPlugin() {}
 
   void NoisyOdometryPlugin::Configure(const gz::sim::Entity &_entity,
                                       const std::shared_ptr<const sdf::Element> &_sdf,
@@ -23,35 +21,22 @@ namespace custom_plugins
                                       gz::sim::EventManager &)
   {
     model_ = gz::sim::Model(_entity);
+    if (!model_.Valid(_ecm)) return;
 
-    if (!model_.Valid(_ecm))
-    {
-      return;
-    }
-
-    double linear_std_dev = _sdf->Get<double>("linear_noise_std_dev", 0.05).first;
-    double angular_std_dev = _sdf->Get<double>("angular_noise_std_dev", 0.05).first;
-
-    linear_noise_dist_ = std::normal_distribution<double>(0.0, linear_std_dev);
-    angular_noise_dist_ = std::normal_distribution<double>(0.0, angular_std_dev);
-
-    ros_topic_ = _sdf->Get<std::string>("ros_topic", "/noisy_odom").first;
-    gz_cmd_vel_topic_ = _sdf->Get<std::string>("gz_cmd_vel_topic", "/cmd_vel").first;
+    // Parámetros del SDF
+    gaussian_noise_coeff_ = _sdf->Get<double>("gaussian_noise", 0.05).first;
+    ros_topic_ = _sdf->Get<std::string>("ros_topic", "/turtlebot3/odom_noisy").first;
+    gz_cmd_vel_topic_ = _sdf->Get<std::string>("gz_cmd_vel_topic", "/turtlebot3/cmd_vel").first;
     frame_id_ = _sdf->Get<std::string>("frame_id", "odom").first;
-    child_frame_id_ = _sdf->Get<std::string>("child_frame_id", "base_link").first;
+    child_frame_id_ = _sdf->Get<std::string>("child_frame_id", "base_footprint").first;
 
     gz_node_.Subscribe(gz_cmd_vel_topic_, &NoisyOdometryPlugin::OnCmdVel, this);
 
-    if (!rclcpp::ok())
-    {
-      rclcpp::init(0, nullptr);
-    }
-
-    ros_node_ = rclcpp::Node::make_shared("noisy_odometry_node_" + model_.Name(_ecm));
+    if (!rclcpp::ok()) rclcpp::init(0, nullptr);
+    ros_node_ = rclcpp::Node::make_shared("noisy_odom_node_" + model_.Name(_ecm));
     
-    rclcpp::QoS qos(rclcpp::KeepLast(10));
+    rclcpp::QoS qos(10);
     qos.transient_local();
-    
     ros_pub_ = ros_node_->create_publisher<nav_msgs::msg::Odometry>(ros_topic_, qos);
   }
 
@@ -65,28 +50,22 @@ namespace custom_plugins
   void NoisyOdometryPlugin::PostUpdate(const gz::sim::UpdateInfo &_info,
                                        const gz::sim::EntityComponentManager &_ecm)
   {
-    if (_info.paused)
-    {
-      return;
-    }
+    if (_info.paused) return;
 
     if (!initialized_)
     {
       auto poseComp = _ecm.Component<gz::sim::components::Pose>(model_.Entity());
-      if (poseComp)
-      {
-        current_pose_ = poseComp->Data();
+      if (poseComp) {
+        noisy_pose_internal_ = poseComp->Data();
+        last_update_time_ = _info.simTime;
         initialized_ = true;
       }
       return;
     }
 
-    double dt = std::chrono::duration<double>(_info.dt).count();
-    
-    if (dt <= 0.0)
-    {
-      return;
-    }
+    double dt = std::chrono::duration<double>(_info.simTime - last_update_time_).count();
+    if (dt <= 0.0) return;
+    last_update_time_ = _info.simTime;
 
     double v_cmd, w_cmd;
     {
@@ -95,32 +74,38 @@ namespace custom_plugins
       w_cmd = current_w_;
     }
 
-    double v_noisy = v_cmd + linear_noise_dist_(generator_);
-    double w_noisy = w_cmd + angular_noise_dist_(generator_);
+    // MATEMÁTICA HÍBRIDA: Integración Estocástica Proporcional
+    // El ruido es proporcional a la velocidad y escalado por sqrt(dt) para un Random Walk correcto
+    double linear_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::sqrt(dt) * std::abs(v_cmd);
+    double angular_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::sqrt(dt) * std::abs(w_cmd);
 
-    double yaw = current_pose_.Yaw();
-    double dx = v_noisy * cos(yaw + (w_noisy * dt / 2.0)) * dt;
-    double dy = v_noisy * sin(yaw + (w_noisy * dt / 2.0)) * dt;
-    double dyaw = w_noisy * dt;
+    double v_noisy = v_cmd + (linear_noise / dt);
+    double w_noisy = w_cmd + (angular_noise / dt);
 
-    current_pose_.Pos().X() += dx;
-    current_pose_.Pos().Y() += dy;
+    // Actualización de orientación (Yaw)
+    double yaw_prev = noisy_pose_internal_.Rot().Yaw();
+    double yaw_new = yaw_prev + (w_noisy * dt);
     
-    gz::math::Quaterniond new_rot;
-    new_rot.SetFromEuler(0.0, 0.0, yaw + dyaw);
-    current_pose_.Rot() = new_rot;
+    // Actualización de posición (Cinemática Diferencial)
+    double distance = v_noisy * dt;
+    noisy_pose_internal_.Pos().X() += distance * std::cos(yaw_prev + (w_noisy * dt / 2.0));
+    noisy_pose_internal_.Pos().Y() += distance * std::sin(yaw_prev + (w_noisy * dt / 2.0));
+    
+    gz::math::Quaterniond q_new;
+    q_new.SetFromEuler(0, 0, yaw_new);
+    noisy_pose_internal_.Rot() = q_new;
 
+    // Publicación en ROS 2
     nav_msgs::msg::Odometry odom_msg;
     odom_msg.header.stamp = ros_node_->now();
     odom_msg.header.frame_id = frame_id_;
     odom_msg.child_frame_id = child_frame_id_;
 
-    odom_msg.pose.pose.position.x = current_pose_.Pos().X();
-    odom_msg.pose.pose.position.y = current_pose_.Pos().Y();
-    odom_msg.pose.pose.position.z = current_pose_.Pos().Z();
-
+    odom_msg.pose.pose.position.x = noisy_pose_internal_.Pos().X();
+    odom_msg.pose.pose.position.y = noisy_pose_internal_.Pos().Y();
+    
     tf2::Quaternion q;
-    q.setRPY(0.0, 0.0, current_pose_.Yaw());
+    q.setRPY(0, 0, yaw_new);
     odom_msg.pose.pose.orientation.x = q.x();
     odom_msg.pose.pose.orientation.y = q.y();
     odom_msg.pose.pose.orientation.z = q.z();
