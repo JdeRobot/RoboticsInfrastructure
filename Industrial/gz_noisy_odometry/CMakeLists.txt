@@ -17,7 +17,7 @@ find_package(gz-msgs10 REQUIRED)
 find_package(gz-math7 REQUIRED)
 
 add_library(NoisyOdometryPlugin SHARED
-  src/NoisyOdometryPlugin.cpp
+  src/gz_noisy_odometry/NoisyOdometryPlugin.cpp
 )
 
 target_include_directories(NoisyOdometryPlugin PUBLIC
