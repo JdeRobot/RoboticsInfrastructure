@@ -3,5 +3,19 @@
     <skin>
       <filename>model://PersonToControlActor_harmonic/meshes/standing.dae</filename>
     </skin>
+    <script>
+      <loop>false</loop>
+      <auto_start>false</auto_start>
+      <trajectory id="0" type="walk">
+        <waypoint>
+          <time>0</time>
+          <pose>0 0 0 0 0 0</pose>
+        </waypoint>
+        <waypoint>
+          <time>1</time>
+          <pose>0 0 0 0 0 0</pose>
+        </waypoint>
+      </trajectory>
+    </script>
   </actor>
 </sdf>
