@@ -34,7 +34,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -314,12 +314,6 @@ void OdometryPublisher::Configure(
 {
   this->dataPtr->model = Model(_entity);
   //! [Configure]
-
-  std::cout << "\n[ODOM_WITH_COVARIANCE_PLUGIN] CUSTOM PLUGIN LOADED\n" << std::endl;
-  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] odom_topic: " << this->dataPtr->odomTopic << std::endl;
-  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] odom_covariance_topic: " << this->dataPtr->odomCovarianceTopic << std::endl;
-  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] gaussian_noise: " << this->dataPtr->gaussianNoise << std::endl;
-  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] dimensions: " << this->dataPtr->dimensions << std::endl;
 
   if (!this->dataPtr->model.Valid(_ecm)) {
     gzerr << "OdometryPublisher system plugin should be attached to a model"
@@ -654,9 +648,10 @@ void OdometryPublisherPrivate::UpdateOdometry(
   updatedPose.Pos() += deltaPositionRot;  // Update position
   updatedPose.Rot() = q_integrated;  // Update rotation
 
+  // Update odometry pose
   odometry_cov_msg.mutable_pose()->mutable_position()->set_x(updatedPose.Pos().X());
   odometry_cov_msg.mutable_pose()->mutable_position()->set_y(updatedPose.Pos().Y());
-
+  
   odometry_msg.mutable_pose()->mutable_position()->set_x(updatedPose.Pos().X());
   odometry_msg.mutable_pose()->mutable_position()->set_y(updatedPose.Pos().Y());
 
