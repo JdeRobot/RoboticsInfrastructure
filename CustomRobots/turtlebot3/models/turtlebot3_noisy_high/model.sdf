@@ -563,7 +563,7 @@
       <odom_frame>odom_noisy</odom_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
       <dimensions>2</dimensions>
-      <gaussian_noise>6</gaussian_noise>
+      <gaussian_noise>0.01</gaussian_noise>
     </plugin>
   
   </model>
