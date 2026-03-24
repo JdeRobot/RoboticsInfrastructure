@@ -315,6 +315,12 @@ void OdometryPublisher::Configure(
   this->dataPtr->model = Model(_entity);
   //! [Configure]
 
+  std::cout << "\n[ODOM_WITH_COVARIANCE_PLUGIN] CUSTOM PLUGIN LOADED\n" << std::endl;
+  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] odom_topic: " << this->dataPtr->odomTopic << std::endl;
+  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] odom_covariance_topic: " << this->dataPtr->odomCovarianceTopic << std::endl;
+  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] gaussian_noise: " << this->dataPtr->gaussianNoise << std::endl;
+  std::cout << "[ODOM_WITH_COVARIANCE_PLUGIN] dimensions: " << this->dataPtr->dimensions << std::endl;
+
   if (!this->dataPtr->model.Valid(_ecm)) {
     gzerr << "OdometryPublisher system plugin should be attached to a model"
           << " entity. Failed to initialize." << std::endl;
@@ -648,13 +654,19 @@ void OdometryPublisherPrivate::UpdateOdometry(
   updatedPose.Pos() += deltaPositionRot;  // Update position
   updatedPose.Rot() = q_integrated;  // Update rotation
 
-  // Update odometry pose
   odometry_cov_msg.mutable_pose()->mutable_position()->set_x(updatedPose.Pos().X());
   odometry_cov_msg.mutable_pose()->mutable_position()->set_y(updatedPose.Pos().Y());
+
+  odometry_msg.mutable_pose()->mutable_position()->set_x(updatedPose.Pos().X());
+  odometry_msg.mutable_pose()->mutable_position()->set_y(updatedPose.Pos().Y());
+
   if (this->dimensions == 3) {
     odometry_cov_msg.mutable_pose()->mutable_position()->set_z(updatedPose.Pos().Z());
+    odometry_msg.mutable_pose()->mutable_position()->set_z(updatedPose.Pos().Z());
   }
+
   msgs::Set(odometry_cov_msg.mutable_pose()->mutable_orientation(), updatedPose.Rot());
+  msgs::Set(odometry_msg.mutable_pose()->mutable_orientation(), updatedPose.Rot());
 
   math::Pose3d lastUpdatePoseOdom = updatedPose;
   this->lastUpdatePoseOdom = updatedPose;
