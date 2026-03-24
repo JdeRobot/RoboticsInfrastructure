@@ -20,7 +20,7 @@ namespace custom_plugins
   void NoisyOdometryPlugin::Configure(const gz::sim::Entity &_entity,
                                       const std::shared_ptr<const sdf::Element> &_sdf,
                                       gz::sim::EntityComponentManager &_ecm,
-                                      gz::sim::EventManager &/*_eventMgr*/)
+                                      gz::sim::EventManager &)
   {
     model_ = gz::sim::Model(_entity);
 

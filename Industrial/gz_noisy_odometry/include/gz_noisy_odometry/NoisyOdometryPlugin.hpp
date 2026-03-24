@@ -19,8 +19,8 @@ namespace custom_plugins
 {
   class NoisyOdometryPlugin : 
     public gz::sim::System,
-    public gz::sim::systems::ISystemConfigure,
-    public gz::sim::systems::ISystemPostUpdate
+    public gz::sim::ISystemConfigure,
+    public gz::sim::ISystemPostUpdate
   {
   public:
     NoisyOdometryPlugin();
