@@ -37,8 +37,9 @@
             <pose>0 0 0.741 0 0 0.0</pose>
 
             <link name="belt_moving">
+                <kinematic>true</kinematic>
                 <inertial>
-                    <mass>100.0</mass>
+                    <mass>1.0</mass>
                     <inertia>
                         <ixx>0.0</ixx>
                         <ixy>0.0</ixy>
@@ -55,16 +56,23 @@
                         </box>
                     </geometry>
                     <surface>
-                        <friction>
-                            <ode>
-                                <mu>100.0</mu>
-                                <mu2>100.0</mu2>
-                            </ode>
-                            <torsional>
-                                <coefficient>1000.0</coefficient>
-                                <patch_radius>0.1</patch_radius>
-                            </torsional>
-                        </friction>
+                      <contact>
+                        <ode>
+                          <kp>100000</kp>
+                          <kd>100</kd>
+                        </ode>
+                      </contact>
+
+                      <friction>
+                        <ode>
+                          <mu>1.0</mu>
+                          <mu2>1.0</mu2>
+                        </ode>
+                        <torsional>
+                          <coefficient>1000.0</coefficient>
+                          <patch_radius>0.1</patch_radius>
+                        </torsional>
+                      </friction>
                     </surface>
                 </collision>
             </link>
