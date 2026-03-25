@@ -1,7 +1,5 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
-
+#include <gz/sim/components/Name.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
 
 #include <gz/plugin/Register.hh>
@@ -18,31 +16,41 @@ class ConveyorPlugin :
 {
 public:
 
-  gz::sim::Model model{gz::sim::kNullEntity};
   gz::sim::Entity beltLink{gz::sim::kNullEntity};
-
-  double velocity{0.5};
+  double velocity{0.2};
 
   void Configure(
-    const gz::sim::Entity &entity,
+    const gz::sim::Entity &,
     const std::shared_ptr<const sdf::Element> &_sdf,
     gz::sim::EntityComponentManager &ecm,
     gz::sim::EventManager &) override
   {
-    this->model = gz::sim::Model(entity);
-
-    this->beltLink = this->model.LinkByName(ecm, "belt");
+    std::cout << "[Conveyor] Configure START\n";
 
     if (_sdf && _sdf->HasElement("velocity"))
       this->velocity = _sdf->Get<double>("velocity");
 
+    ecm.Each<gz::sim::components::Name>(
+      [&](const gz::sim::Entity &_entity,
+          const gz::sim::components::Name *_name)
+      {
+        if (_name->Data() == "belt_moving")
+        {
+          this->beltLink = _entity;
+          std::cout << "[Conveyor] belt_moving FOUND: "
+                    << _entity << std::endl;
+          return false;
+        }
+        return true;
+      });
+
     if (this->beltLink == gz::sim::kNullEntity)
     {
-      std::cout << "Belt link NOT FOUND\n";
+      std::cout << "[Conveyor] belt_moving NOT FOUND\n";
       return;
     }
 
-    std::cout << "Conveyor READY (using LinearVelocityCmd)\n";
+    std::cout << "[Conveyor] READY\n";
   }
 
   void PreUpdate(
@@ -71,7 +79,6 @@ public:
   }
 };
 
-}
 
 
 GZ_ADD_PLUGIN(
