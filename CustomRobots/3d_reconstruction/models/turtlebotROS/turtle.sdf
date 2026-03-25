@@ -1038,7 +1038,7 @@
         </plugin>
       </sensor> -->
 
-      <!-- <sensor name="cam_turtlebot_left" type="camera">
+      <sensor name="cam_turtlebot_left" type="camera">
         <pose>0.000000 0.000000 0.000000 -1.570000 -0.000000 3.140000</pose>
         <always_on>true</always_on>
         <visualize>true</visualize>
@@ -1063,7 +1063,7 @@
             <stddev>0.007</stddev>
           </noise>
         </camera> 
-      </sensor> -->
+      </sensor>
 
       <visual name='visual'>
         <geometry>
@@ -1284,10 +1284,10 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>20.000000</update_rate>
-        <topic>/depth_camera/image_raw</topic>
+        <topic>/cam_turtlebot_right/image_raw</topic>
         <gz_frame_id>camera_link</gz_frame_id>
         <camera name="__default__">
-          <camera_info_topic>/depth_camera/camera_info</camera_info_topic>
+          <camera_info_topic>/cam_turtlebot_right/camera_info</camera_info_topic>
           <horizontal_fov>1.570000</horizontal_fov>
           <image>
             <width>640</width>
