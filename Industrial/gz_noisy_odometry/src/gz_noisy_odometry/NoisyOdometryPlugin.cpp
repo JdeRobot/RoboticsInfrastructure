@@ -3,6 +3,8 @@
 #include <gz/plugin/Register.hh>
 #include <tf2/LinearMath/Quaternion.h>
 
+#include <cmath>
+
 GZ_ADD_PLUGIN(
     custom_plugins::NoisyOdometryPlugin,
     gz::sim::System,
@@ -14,6 +16,13 @@ GZ_ADD_PLUGIN_ALIAS(custom_plugins::NoisyOdometryPlugin, "custom_plugins::NoisyO
 namespace custom_plugins
 {
   NoisyOdometryPlugin::NoisyOdometryPlugin() {}
+
+  double NoisyOdometryPlugin::NormalizeAngle(double _angle) const
+  {
+    while (_angle > M_PI) _angle -= 2.0 * M_PI;
+    while (_angle < -M_PI) _angle += 2.0 * M_PI;
+    return _angle;
+  }
 
   void NoisyOdometryPlugin::Configure(const gz::sim::Entity &_entity,
                                       const std::shared_ptr<const sdf::Element> &_sdf,
@@ -29,11 +38,18 @@ namespace custom_plugins
     frame_id_ = _sdf->Get<std::string>("frame_id", "odom").first;
     child_frame_id_ = _sdf->Get<std::string>("child_frame_id", "base_footprint").first;
 
+    // If the SDF does not provide the odometry motion-model coefficients
+    // explicitly, derive reasonable defaults from the legacy noise parameter.
+    alpha1_ = _sdf->Get<double>("alpha1", gaussian_noise_coeff_).first;
+    alpha2_ = _sdf->Get<double>("alpha2", gaussian_noise_coeff_).first;
+    alpha3_ = _sdf->Get<double>("alpha3", gaussian_noise_coeff_).first;
+    alpha4_ = _sdf->Get<double>("alpha4", gaussian_noise_coeff_).first;
+
     gz_node_.Subscribe(gz_cmd_vel_topic_, &NoisyOdometryPlugin::OnCmdVel, this);
 
     if (!rclcpp::ok()) rclcpp::init(0, nullptr);
     ros_node_ = rclcpp::Node::make_shared("noisy_odom_node_" + model_.Name(_ecm));
-    
+
     rclcpp::QoS qos(10);
     qos.transient_local();
     ros_pub_ = ros_node_->create_publisher<nav_msgs::msg::Odometry>(ros_topic_, qos);
@@ -51,43 +67,91 @@ namespace custom_plugins
   {
     if (_info.paused) return;
 
+    auto poseComp = _ecm.Component<gz::sim::components::Pose>(model_.Entity());
+    if (!poseComp) return;
+
+    const gz::math::Pose3d current_true_pose = poseComp->Data();
+
     if (!initialized_)
     {
-      auto poseComp = _ecm.Component<gz::sim::components::Pose>(model_.Entity());
-      if (poseComp) {
-        noisy_pose_internal_ = poseComp->Data();
-        last_update_time_ = _info.simTime;
-        initialized_ = true;
-      }
+      // The noisy odometry starts aligned with the true pose only once.
+      // After that, it evolves independently by integrating noisy motion
+      // increments, so drift accumulates naturally over time.
+      noisy_pose_internal_ = current_true_pose;
+      last_true_pose_ = current_true_pose;
+      last_update_time_ = _info.simTime;
+      initialized_ = true;
       return;
     }
 
-    double dt = std::chrono::duration<double>(_info.simTime - last_update_time_).count();
+    const double dt =
+      std::chrono::duration<double>(_info.simTime - last_update_time_).count();
+
     if (dt <= 0.0) return;
     last_update_time_ = _info.simTime;
 
-    double v_cmd, w_cmd;
-    {
-      std::lock_guard<std::mutex> lock(mutex_);
-      v_cmd = current_v_;
-      w_cmd = current_w_;
-    }
+    // Compute the true relative motion between the last and current simulator pose.
+    // This gives a physically meaningful motion increment without publishing the
+    // simulator pose directly.
+    const gz::math::Vector3d delta_world =
+      current_true_pose.Pos() - last_true_pose_.Pos();
 
-    double linear_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::abs(v_cmd);
-    double angular_noise = gaussian_noise_coeff_ * gz::math::Rand::DblNormal(0, 1) * std::abs(w_cmd);
+    const double previous_true_yaw = last_true_pose_.Rot().Yaw();
+    const double current_true_yaw = current_true_pose.Rot().Yaw();
 
-    double v_noisy = v_cmd + linear_noise;
-    double w_noisy = w_cmd + angular_noise;
+    // Express the translation increment in the previous robot frame so the
+    // odometry model operates in the body frame, as usual in planar robotics.
+    const gz::math::Vector3d delta_body =
+      last_true_pose_.Rot().RotateVectorReverse(delta_world);
 
-    double angle = w_noisy * dt;
-    gz::math::Vector3d axis(0, 0, 1);
-    gz::math::Quaterniond deltaOrientation(std::cos(angle / 2.0), 0, 0, std::sin(angle / 2.0));
+    const double trans = std::sqrt(
+      delta_body.X() * delta_body.X() + delta_body.Y() * delta_body.Y());
 
-    noisy_pose_internal_.Rot() = noisy_pose_internal_.Rot() * deltaOrientation;
+    const double rot1 =
+      (trans > 1e-9) ? NormalizeAngle(std::atan2(delta_body.Y(), delta_body.X())) : 0.0;
+
+    const double delta_yaw = NormalizeAngle(current_true_yaw - previous_true_yaw);
+    const double rot2 = NormalizeAngle(delta_yaw - rot1);
+
+    // Odometry motion model:
+    //   - rotation uncertainty grows with both rotation and translation
+    //   - translation uncertainty grows with both translation and turning
+    //
+    // This is more robust than injecting noise directly on cmd_vel, and still
+    // preserves the expected long-term drift because only noisy increments are
+    // integrated into the internal odometric state.
+    const double sigma_rot1 =
+      alpha1_ * std::abs(rot1) + alpha2_ * std::abs(trans);
+    const double sigma_trans =
+      alpha3_ * std::abs(trans) + alpha4_ * (std::abs(rot1) + std::abs(rot2));
+    const double sigma_rot2 =
+      alpha1_ * std::abs(rot2) + alpha2_ * std::abs(trans);
+
+    const double rot1_noisy = rot1 + gz::math::Rand::DblNormal(0.0, sigma_rot1);
+    const double trans_noisy = trans + gz::math::Rand::DblNormal(0.0, sigma_trans);
+    const double rot2_noisy = rot2 + gz::math::Rand::DblNormal(0.0, sigma_rot2);
+
+    // Integrate the noisy relative motion over the internal odometry state.
+    // This is the key point that makes the estimate drift over time instead of
+    // snapping back to the true simulator pose.
+    const double current_noisy_yaw = noisy_pose_internal_.Rot().Yaw();
+    const double heading_after_rot1 = current_noisy_yaw + rot1_noisy;
+    const double new_noisy_yaw =
+      NormalizeAngle(current_noisy_yaw + rot1_noisy + rot2_noisy);
+
+    noisy_pose_internal_.Pos().X(
+      noisy_pose_internal_.Pos().X() + trans_noisy * std::cos(heading_after_rot1));
+    noisy_pose_internal_.Pos().Y(
+      noisy_pose_internal_.Pos().Y() + trans_noisy * std::sin(heading_after_rot1));
+    noisy_pose_internal_.Pos().Z(current_true_pose.Pos().Z());
+
+    noisy_pose_internal_.Rot() = gz::math::Quaterniond(0.0, 0.0, new_noisy_yaw);
     noisy_pose_internal_.Rot().Normalize();
 
-    gz::math::Vector3d deltaPos(v_noisy * dt, 0, 0);
-    noisy_pose_internal_.Pos() += noisy_pose_internal_.Rot().RotateVector(deltaPos);
+    // The published twist is consistent with the noisy increment that has just
+    // been integrated. This keeps the message self-consistent.
+    last_noisy_linear_velocity_ = trans_noisy / dt;
+    last_noisy_angular_velocity_ = NormalizeAngle(rot1_noisy + rot2_noisy) / dt;
 
     nav_msgs::msg::Odometry odom_msg;
     odom_msg.header.stamp = ros_node_->now();
@@ -103,9 +167,41 @@ namespace custom_plugins
     odom_msg.pose.pose.orientation.z = noisy_pose_internal_.Rot().Z();
     odom_msg.pose.pose.orientation.w = noisy_pose_internal_.Rot().W();
 
-    odom_msg.twist.twist.linear.x = v_noisy;
-    odom_msg.twist.twist.angular.z = w_noisy;
+    odom_msg.twist.twist.linear.x = last_noisy_linear_velocity_;
+    odom_msg.twist.twist.linear.y = 0.0;
+    odom_msg.twist.twist.linear.z = 0.0;
+
+    odom_msg.twist.twist.angular.x = 0.0;
+    odom_msg.twist.twist.angular.y = 0.0;
+    odom_msg.twist.twist.angular.z = last_noisy_angular_velocity_;
+
+    // Fill the most relevant covariance entries with values consistent with the
+    // motion model. The message remains simple, but no longer pretends to have
+    // perfect certainty.
+    const double pose_var_xy = sigma_trans * sigma_trans;
+    const double pose_var_yaw =
+      (sigma_rot1 * sigma_rot1) + (sigma_rot2 * sigma_rot2);
+
+    const double twist_var_v = pose_var_xy / (dt * dt);
+    const double twist_var_w = pose_var_yaw / (dt * dt);
+
+    odom_msg.pose.covariance[0] = pose_var_xy;
+    odom_msg.pose.covariance[7] = pose_var_xy;
+    odom_msg.pose.covariance[14] = 1e-9;
+    odom_msg.pose.covariance[21] = 1e-9;
+    odom_msg.pose.covariance[28] = 1e-9;
+    odom_msg.pose.covariance[35] = pose_var_yaw;
+
+    odom_msg.twist.covariance[0] = twist_var_v;
+    odom_msg.twist.covariance[7] = 1e-9;
+    odom_msg.twist.covariance[14] = 1e-9;
+    odom_msg.twist.covariance[21] = 1e-9;
+    odom_msg.twist.covariance[28] = 1e-9;
+    odom_msg.twist.covariance[35] = twist_var_w;
 
     ros_pub_->publish(odom_msg);
+
+    // Store the true pose only to extract the next real motion increment.
+    last_true_pose_ = current_true_pose;
   }
 }
