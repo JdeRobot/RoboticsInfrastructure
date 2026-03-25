@@ -52,7 +52,7 @@
                 <collision name="belt_collision">
                     <geometry>
                         <box>
-                            <size>0.425 1.2 0.00001</size>
+                            <size>0.425 1.2 0.01</size>
                         </box>
                     </geometry>
                     <surface>
@@ -78,7 +78,7 @@
             </link>
 
         </model>
-
+        <!--
         <joint name="belt_joint" type="prismatic">
             <parent>conveyorbelt_fixed::belt_visual</parent>
             <child>conveyorbelt_moving::belt_moving</child>
@@ -89,10 +89,10 @@
                     <upper>0.01</upper>
                 </limit>
             </axis>
-        </joint>
+        </joint>-->
 
         <plugin filename="libconveyor_plugin.so" name="conveyor_plugin">
-          <velocity>0.5</velocity>
+          <velocity>0.1</velocity>
         </plugin>
 
     </model>
