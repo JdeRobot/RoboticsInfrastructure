@@ -25,8 +25,10 @@
         <surface>
           <contact>
             <ode>
-              <kp>1000000</kp>
+              <kp>100000</kp>
               <kd>50</kd>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
               <min_depth>0.002</min_depth>
             </ode>
           </contact>
