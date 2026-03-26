@@ -1,6 +1,7 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/components/Name.hh>
-#include <gz/sim/components/LinearVelocityCmd.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/components/JointVelocityCmd.hh>
+#include <gz/sim/components/JointForceCmd.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -16,68 +17,73 @@ class ConveyorPlugin :
 {
 public:
 
-  ::gz::sim::Entity beltLink{::gz::sim::kNullEntity};
-  double velocity{0.2};
+  ::gz::sim::Model model{::gz::sim::kNullEntity};
+  ::gz::sim::Entity joint{::gz::sim::kNullEntity};
+
+  double velocity{0.1};
 
   void Configure(
-    const ::gz::sim::Entity &,
+    const ::gz::sim::Entity &entity,
     const std::shared_ptr<const sdf::Element> &_sdf,
     ::gz::sim::EntityComponentManager &ecm,
     ::gz::sim::EventManager &) override
   {
-    std::cout << "[Conveyor] Configure START\n";
+    this->model = ::gz::sim::Model(entity);
+
+    this->joint = this->model.JointByName(ecm, "belt_joint");
 
     if (_sdf && _sdf->HasElement("velocity"))
       this->velocity = _sdf->Get<double>("velocity");
 
-    ecm.Each<::gz::sim::components::Name>(
-      [&](const ::gz::sim::Entity &_entity,
-          const ::gz::sim::components::Name *_name)
-      {
-        if (_name->Data() == "belt_moving")
-        {
-          this->beltLink = _entity;
-          std::cout << "[Conveyor] belt_moving FOUND\n";
-          return false;
-        }
-        return true;
-      });
-
-    if (this->beltLink == ::gz::sim::kNullEntity)
+    if (this->joint == ::gz::sim::kNullEntity)
     {
-      std::cout << "[Conveyor] belt_moving NOT FOUND\n";
+      std::cout << "[Conveyor] ❌ joint NOT FOUND\n";
       return;
     }
 
-    std::cout << "[Conveyor] READY\n";
+    std::cout << "[Conveyor] ✅ READY (Joint control)\n";
   }
 
   void PreUpdate(
     const ::gz::sim::UpdateInfo &,
     ::gz::sim::EntityComponentManager &ecm) override
   {
-    if (this->beltLink == ::gz::sim::kNullEntity)
+    if (this->joint == ::gz::sim::kNullEntity)
       return;
 
+    // Velocidad
     auto velComp =
-      ecm.Component<::gz::sim::components::LinearVelocityCmd>(this->beltLink);
+      ecm.Component<::gz::sim::components::JointVelocityCmd>(this->joint);
 
     if (!velComp)
     {
       ecm.CreateComponent(
-        this->beltLink,
-        ::gz::sim::components::LinearVelocityCmd(
-          {0.0, this->velocity, 0.0}));
+        this->joint,
+        ::gz::sim::components::JointVelocityCmd({this->velocity}));
     }
     else
     {
-      velComp->Data()[1] = this->velocity;
+      velComp->Data()[0] = this->velocity;
+    }
+
+    // Fuerza (importante)
+    auto forceComp =
+      ecm.Component<::gz::sim::components::JointForceCmd>(this->joint);
+
+    if (!forceComp)
+    {
+      ecm.CreateComponent(
+        this->joint,
+        ::gz::sim::components::JointForceCmd({50.0}));
+    }
+    else
+    {
+      forceComp->Data()[0] = 50.0;
     }
   }
 };
 
 }
-
 
 GZ_ADD_PLUGIN(
   conveyor::ConveyorPlugin,
