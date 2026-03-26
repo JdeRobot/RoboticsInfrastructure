@@ -1,6 +1,6 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/components/Name.hh>
-#include <gz/sim/components/WorldPose.hh>
+#include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
 
 #include <gz/plugin/Register.hh>
