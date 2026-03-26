@@ -18,7 +18,7 @@
         <mass>2.234000</mass>
       </inertial>
 
-	    <collision name="tag1_collision">
+      <collision name="tag1_collision">
         <pose>0 0 0.44 0 0 0</pose>
         <geometry>
           <box>
@@ -121,7 +121,7 @@
         <geometry>
           <box>
             <size>0.288000 0.315000 0.006401</size>
-         </box>
+          </box>
         </geometry>
       </collision>
 
@@ -715,11 +715,11 @@
         <angular>0.000000</angular>
       </velocity_decay>
 
-        <self_collide>0</self_collide>
+      <self_collide>0</self_collide>
 
-        <kinematic>0</kinematic>
+      <kinematic>0</kinematic>
 
-        <gravity>1</gravity>
+      <gravity>1</gravity>
 
     </link>
 
@@ -796,7 +796,7 @@
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
-        </camera> 
+        </camera>
       </sensor>
 
       <visual name='visual'>
@@ -898,9 +898,9 @@
       </velocity_decay>
 
       <self_collide>0</self_collide>
-      
+
       <kinematic>0</kinematic>
-        
+
       <gravity>1</gravity>
 
     </link>
@@ -927,62 +927,62 @@
             <uri>model://turtlebotJde2cam/meshes/sonyvid30/sonyvid30_mid.dae</uri>
             <scale>0.600000 1.000000 1.000000</scale>
            /mesh>
-        </geometry>
-      </visual>
+          </geometry>
+        </visual>
 
-      <collision name='collision'>
-        <geometry>
-          <box>
-            <size>0.100000 0.100000 0.100000</size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>100000.000000</mu>
-              <mu2>100000.000000</mu2>
-              <slip1>0.000000</slip1>
-              <slip2>0.000000</slip2>
-            </ode>
-          </friction>
-          <bounce/>
-          <contact>
-            <ode/>
-          </contact>
-        </surface>
-        <max_contacts>10</max_contacts>
-      </collision>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.100000 0.100000 0.100000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100000.000000</mu>
+                <mu2>100000.000000</mu2>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce/>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
 
-      <velocity_decay>
-        <linear>0.000000</linear>
-        <angular>0.000000</angular>
-      </velocity_decay>
+        <velocity_decay>
+          <linear>0.000000</linear>
+          <angular>0.000000</angular>
+        </velocity_decay>
 
-      <self_collide>0</self_collide>
+        <self_collide>0</self_collide>
 
-      <kinematic>0</kinematic>
+        <kinematic>0</kinematic>
 
-      <gravity>1</gravity>
+        <gravity>1</gravity>
 
-    </link>
+      </link>
 
 
-    <link name='camera_top_body_right'>
-      <pose>-0.050000 -0.076000 0.242400 -1.570000 -0.000000 3.140000</pose>
+      <link name='camera_top_body_right'>
+        <pose>-0.050000 -0.076000 0.242400 -1.570000 -0.000000 3.140000</pose>
 
-      <inertial>
-      <mass>0.500000</mass>
-        <inertia>
-          <ixx>1.000000</ixx>
-          <ixy>0.000000</ixy>
-          <ixz>0.000000</ixz>
-          <iyy>1.000000</iyy>
-          <iyz>0.000000</iyz>
-          <izz>1.000000</izz>
-        </inertia>
-      </inertial>
+        <inertial>
+          <mass>0.500000</mass>
+          <inertia>
+            <ixx>1.000000</ixx>
+            <ixy>0.000000</ixy>
+            <ixz>0.000000</ixz>
+            <iyy>1.000000</iyy>
+            <iyz>0.000000</iyz>
+            <izz>1.000000</izz>
+          </inertia>
+        </inertial>
 
-      <!-- <sensor name='cam_turtlebot_right' type='camera'>
+        <!-- <sensor name='cam_turtlebot_right' type='camera'>
         <pose>0.000000 0.000000 0.000000 -1.570000 -0.000000 3.140000</pose>
         <update_rate>20.000000</update_rate>
         <camera name='__default__'>
@@ -1013,205 +1013,205 @@
         </plugin>
       </sensor> -->
 
-      <sensor name="cam_turtlebot_right" type="camera">
-        <pose>0.000000 0.000000 0.000000 -1.570000 -0.000000 3.140000</pose>
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <update_rate>20.000000</update_rate>
-        <topic>/cam_turtlebot_right/image_raw</topic>
-        <gz_frame_id>camera_link</gz_frame_id>
-        <camera name="__default__">
-          <camera_info_topic>/cam_turtlebot_right/camera_info</camera_info_topic>
-          <horizontal_fov>1.570000</horizontal_fov>
-          <image>
-            <width>640</width>
-            <height>480</height>
-            <format>R8G8B8</format>
-          </image>
-          <clip>
-            <near>0.300000</near>
-            <far>15.000000</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <!-- Noise is sampled independently per pixel on each frame.
+        <sensor name="cam_turtlebot_right" type="camera">
+          <pose>0.000000 0.000000 0.000000 -1.570000 -0.000000 3.140000</pose>
+          <always_on>true</always_on>
+          <visualize>true</visualize>
+          <update_rate>20.000000</update_rate>
+          <topic>/cam_turtlebot_right/image_raw</topic>
+          <gz_frame_id>camera_link</gz_frame_id>
+          <camera name="__default__">
+            <camera_info_topic>/cam_turtlebot_right/camera_info</camera_info_topic>
+            <horizontal_fov>1.570000</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.300000</near>
+              <far>15.000000</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <!-- Noise is sampled independently per pixel on each frame.
                   That pixel's noise value is added to each of its color
                   channels, which at that point lie in the range [0,1]. -->
-            <mean>0.0</mean>
-            <stddev>0.007</stddev>
-          </noise>
-        </camera> 
-      </sensor>
+              <mean>0.0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+          </camera>
+        </sensor>
 
-      <visual name='visual'>
-        <geometry>
-          <mesh>
-            <uri>model://turtlebotJde2cam/meshes/sonyvid30/sonyvid30_top.dae</uri>
-            <scale>2.000000 2.000000 1.300000</scale>
-          </mesh>
-        </geometry>
-      </visual>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://turtlebotJde2cam/meshes/sonyvid30/sonyvid30_top.dae</uri>
+              <scale>2.000000 2.000000 1.300000</scale>
+            </mesh>
+          </geometry>
+        </visual>
 
-      <collision name='collision'>
-        <geometry>
-          <box>
-            <size>0.100000 0.100000 0.100000</size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>100000.000000</mu>
-              <mu2>100000.000000</mu2>
-              <slip1>0.000000</slip1>
-              <slip2>0.000000</slip2>
-            </ode>
-          </friction>
-          <bounce/>
-          <contact>
-            <ode/>
-          </contact>
-        </surface>
-        <max_contacts>10</max_contacts>
-      </collision>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.100000 0.100000 0.100000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100000.000000</mu>
+                <mu2>100000.000000</mu2>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce/>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
 
-      <velocity_decay>
-        <linear>0.000000</linear>
-        <angular>0.000000</angular>
-      </velocity_decay>
+        <velocity_decay>
+          <linear>0.000000</linear>
+          <angular>0.000000</angular>
+        </velocity_decay>
 
-      <self_collide>0</self_collide>
+        <self_collide>0</self_collide>
 
-      <kinematic>0</kinematic>
+        <kinematic>0</kinematic>
 
-      <gravity>1</gravity>
+        <gravity>1</gravity>
 
-    </link>
+      </link>
 
-    <include>
-      <uri>model://createROS</uri>
-    </include>
+      <include>
+        <uri>model://createROS</uri>
+      </include>
 
-    <include>
-      <uri>model://kinect</uri>
-      <pose>-0.087098 0 0.303857 0 0 0</pose>
-    </include>
+      <include>
+        <uri>model://kinect</uri>
+        <pose>-0.087098 0 0.303857 0 0 0</pose>
+      </include>
 
-    <joint name="create_rack" type="revolute">
-      <parent>kobukiJde_ros::base_footprint</parent>
-      <child>rack</child>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>0</upper>
-        </limit>
-        <use_parent_model_frame>true</use_parent_model_frame>
-      </axis>
-    </joint>
+      <joint name="create_rack" type="revolute">
+        <parent>kobukiJde_ros::base_footprint</parent>
+        <child>rack</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <use_parent_model_frame>true</use_parent_model_frame>
+        </axis>
+      </joint>
 
-    <joint name="kinect_rack" type="revolute">
-      <parent>kinect::link</parent>
-      <child>rack</child>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>0</upper>
-        </limit>
-        <use_parent_model_frame>true</use_parent_model_frame>
-      </axis>
-    </joint>
+      <joint name="kinect_rack" type="revolute">
+        <parent>kinect::link</parent>
+        <child>rack</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <use_parent_model_frame>true</use_parent_model_frame>
+        </axis>
+      </joint>
 
-    <joint name='joint_laser' type='revolute'>
-      <parent>rack</parent>
-      <child>laser</child>
-      <!-- <axis>
+      <joint name='joint_laser' type='revolute'>
+        <parent>rack</parent>
+        <child>laser</child>
+        <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
       </axis> -->
-    </joint>
+      </joint>
 
-    <joint name='pan_joint_left' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_bottom_body_left</child>
-      <parent>camera_column_body_left</parent>
-      <axis>
-        <xyz>0.000000 1.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis>
-    </joint>
+      <joint name='pan_joint_left' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_bottom_body_left</child>
+        <parent>camera_column_body_left</parent>
+        <axis>
+          <xyz>0.000000 1.000000 0.000000</xyz>
+          <limit>
+            <lower>0.000000</lower>
+            <upper>0.000000</upper>
+          </limit>
+        </axis>
+      </joint>
 
-    <joint name='tilt_joint_left' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_column_body_left</child>
-      <parent>camera_top_body_left</parent>
-      <axis>
-        <xyz>1.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis>
-    </joint>
+      <joint name='tilt_joint_left' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_column_body_left</child>
+        <parent>camera_top_body_left</parent>
+        <axis>
+          <xyz>1.000000 0.000000 0.000000</xyz>
+          <limit>
+            <lower>0.000000</lower>
+            <upper>0.000000</upper>
+          </limit>
+        </axis>
+      </joint>
 
-    <joint name='camera_left' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_bottom_body_left</child>
-      <parent>rack</parent>
-      <!-- <axis>
+      <joint name='camera_left' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_bottom_body_left</child>
+        <parent>rack</parent>
+        <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
       </axis> -->
-    </joint>
+      </joint>
 
-    <joint name='pan_joint_right' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_bottom_body_right</child>
-      <parent>camera_column_body_right</parent>
-      <axis>
-        <xyz>0.000000 1.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis>
-    </joint>
+      <joint name='pan_joint_right' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_bottom_body_right</child>
+        <parent>camera_column_body_right</parent>
+        <axis>
+          <xyz>0.000000 1.000000 0.000000</xyz>
+          <limit>
+            <lower>0.000000</lower>
+            <upper>0.000000</upper>
+          </limit>
+        </axis>
+      </joint>
 
-    <joint name='tilt_joint_right' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_column_body_right</child>
-      <parent>camera_top_body_right</parent>
-      <axis>
-        <xyz>1.000000 0.000000 0.000000</xyz>
-        <limit>
-          <lower>0.000000</lower>
-          <upper>0.000000</upper>
-        </limit>
-      </axis>
-    </joint>
+      <joint name='tilt_joint_right' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_column_body_right</child>
+        <parent>camera_top_body_right</parent>
+        <axis>
+          <xyz>1.000000 0.000000 0.000000</xyz>
+          <limit>
+            <lower>0.000000</lower>
+            <upper>0.000000</upper>
+          </limit>
+        </axis>
+      </joint>
 
-    <joint name='camera_right' type='revolute'>
-      <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
-      <child>camera_bottom_body_right</child>
-      <parent>rack</parent>
-      <!-- <axis>
+      <joint name='camera_right' type='revolute'>
+        <pose>0.000000 0.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        <child>camera_bottom_body_right</child>
+        <parent>rack</parent>
+        <!-- <axis>
         <xyz>0.000000 0.000000 0.000000</xyz>
         <limit>
           <lower>0.000000</lower>
           <upper>0.000000</upper>
         </limit>
       </axis> -->
-    </joint>
+      </joint>
 
-  </model>
-</sdf>
+    </model>
+  </sdf>

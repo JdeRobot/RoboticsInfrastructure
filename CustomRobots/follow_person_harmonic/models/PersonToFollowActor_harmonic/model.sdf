@@ -1,0 +1,54 @@
+<sdf version="1.9">
+  <actor name="PersonToFollowActor_harmonic">
+    <skin>
+      <filename>model://PersonToFollowActor_harmonic/meshes/standing.dae</filename>
+    </skin>
+    <script>
+      <loop>true</loop>
+      <delay_start>5.000000</delay_start>
+      <auto_start>true</auto_start>
+      <trajectory id="0" type="walk" tension="1.0">
+        <waypoint>
+          <time>0</time>
+          <pose>0 0 0 0 0 0</pose>
+        </waypoint>
+        <waypoint>
+          <time>10</time>
+          <pose>0 0 0 0 0 0</pose>
+        </waypoint>
+        <waypoint>
+          <time>25</time>
+          <pose>1.0 -7.5 0 0 0 0</pose>
+        </waypoint>
+        <waypoint>
+          <time>33</time>
+          <pose>1.0 -8.0 0 0 0 -1.57</pose>
+        </waypoint>
+        <waypoint>
+          <time>47</time>
+          <pose>-8.0 -8.0 0 0 0 -1.57</pose>
+        </waypoint>
+        <waypoint>
+          <time>50</time>
+          <pose>-8.0 -8.0 0 0 0 -3.14</pose>
+        </waypoint>
+        <waypoint>
+          <time>66</time>
+          <pose>-8.0 0.0 0 0 0 -3.14</pose>
+        </waypoint>
+        <waypoint>
+          <time>69</time>
+          <pose>-8.0 0.0 0 0 0 -4.71</pose>
+        </waypoint>
+        <waypoint>
+          <time>85</time>
+          <pose>0.0 0.0 0 0 0 -4.71</pose>
+        </waypoint>
+        <waypoint>
+          <time>88</time>
+          <pose>0.0 0.0 0 0 0 0</pose>
+        </waypoint>
+      </trajectory>
+    </script>
+  </actor>
+</sdf>

@@ -44,7 +44,7 @@
     </link>
 
     <gazebo>
-      <static>true</static>
+      <static>false</static>
     </gazebo>
   </model>
 </sdf>

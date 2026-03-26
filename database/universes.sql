@@ -191,6 +191,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 63	Laser Mapping Warehouse High Noise	63	0
 64	Small Laser Mapping Warehouse Medium Noise	64	0
 65	Small Laser Mapping Warehouse High Noise	65	0
+66	Follow Person Harmonic	66	0
+67	Follow Person Teleop Harmonic	67	0
 \.
 
 --
@@ -265,6 +267,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 63	Laser Mapping Warehouse High Noise	/opt/jderobot/Launchers/laser_mapping_noise_high.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 64	Small Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 65	Small Laser Mapping Warehouse High Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_high.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+66	Follow Person Harmonic	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+67	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
 --

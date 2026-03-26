@@ -1,0 +1,14 @@
+<package format="3">
+  <name>personplugin_harmonic</name>  <!-- coincidir con CMake -->
+  <version>0.0.1</version>
+  <description>Plugin harmonic para seguimiento de personas</description>
+  <maintainer email="you@example.com">Tu Nombre</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>pluginlib</depend>
+  <depend>gz-sim8</depend>
+  <depend>gz-plugin2</depend>
+  <depend>gz-math7</depend>
+</package>
