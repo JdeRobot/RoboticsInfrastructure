@@ -5,11 +5,9 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
 
-add_compile_options(-Wall -Wextra -Wpedantic)
-
-# =========================
+############################
 # Dependencies
-# =========================
+############################
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -17,37 +15,46 @@ find_package(rclcpp REQUIRED)
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 
-# =========================
+############################
 # Plugin
-# =========================
+############################
 
-add_library(conveyor_system SHARED
-  src/conveyor_system.cpp
+add_library(conveyor_plugin SHARED
+  src/conveyor_plugin.cpp
 )
 
-target_link_libraries(conveyor_system
+target_link_libraries(conveyor_plugin
   gz-sim8::gz-sim8
   gz-plugin2::gz-plugin2
 )
 
-ament_target_dependencies(conveyor_system
+ament_target_dependencies(conveyor_plugin
   rclcpp
 )
 
-# =========================
+############################
 # Install
-# =========================
+############################
 
 install(
-  TARGETS conveyor_system
+  TARGETS conveyor_plugin
   LIBRARY DESTINATION lib
 )
 
-# =========================
-# Export
-# =========================
+############################
+# Env hook
+############################
 
-ament_export_libraries(conveyor_system)
+install(
+  FILES env-hooks/conveyor_belt.dsv
+  DESTINATION share/${PROJECT_NAME}/environment
+)
+
+############################
+# Export
+############################
+
+ament_export_libraries(conveyor_plugin)
 
 ament_export_dependencies(
   gz-sim8
