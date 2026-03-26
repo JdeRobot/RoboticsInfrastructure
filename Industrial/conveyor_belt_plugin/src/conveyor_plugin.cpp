@@ -1,8 +1,8 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/Pose.hh>
-#include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Model.hh>
+#include <gz/sim/components/LinearVelocity.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -27,7 +27,7 @@ public:
   double min_y{-1.0}, max_y{1.0};
   double min_z{0.6}, max_z{1.0};
 
-  gz::math::Vector3d dir_vec{0, 1, 0};
+  gz::math::Vector3d dir_vec{0, 0.3, 0};
 
   void Configure(
     const gz::sim::Entity &,
@@ -35,38 +35,29 @@ public:
     gz::sim::EntityComponentManager &,
     gz::sim::EventManager &) override
   {
-    if (_sdf && _sdf->HasElement("velocity"))
+    if (_sdf->HasElement("velocity"))
       velocity = _sdf->Get<double>("velocity");
 
-    if (_sdf && _sdf->HasElement("direction"))
+    if (_sdf->HasElement("direction"))
       direction = _sdf->Get<std::string>("direction");
 
-    if (_sdf && _sdf->HasElement("region"))
+    if (_sdf->HasElement("region"))
     {
       auto region = _sdf->FindElement("region");
 
-      if (region)
-      {
-        if (region->HasElement("min_x")) min_x = region->Get<double>("min_x");
-        if (region->HasElement("max_x")) max_x = region->Get<double>("max_x");
-        if (region->HasElement("min_y")) min_y = region->Get<double>("min_y");
-        if (region->HasElement("max_y")) max_y = region->Get<double>("max_y");
-        if (region->HasElement("min_z")) min_z = region->Get<double>("min_z");
-        if (region->HasElement("max_z")) max_z = region->Get<double>("max_z");
-      }
+      min_x = region->Get<double>("min_x");
+      max_x = region->Get<double>("max_x");
+      min_y = region->Get<double>("min_y");
+      max_y = region->Get<double>("max_y");
+      min_z = region->Get<double>("min_z");
+      max_z = region->Get<double>("max_z");
     }
 
-    gz::math::Vector3d base_dir{0, 1, 0};
-
-    if (direction == "x") base_dir = {1, 0, 0};
-    else if (direction == "y") base_dir = {0, 1, 0};
-    else if (direction == "z") base_dir = {0, 0, 1};
-
-    dir_vec = base_dir * velocity;
+    if (direction == "x") dir_vec = {velocity, 0, 0};
+    else if (direction == "y") dir_vec = {0, velocity, 0};
+    else if (direction == "z") dir_vec = {0, 0, velocity};
 
     std::cout << "[Conveyor PRO] READY\n";
-    std::cout << "Velocity: " << velocity << std::endl;
-    std::cout << "Direction: " << direction << std::endl;
   }
 
   void PreUpdate(
@@ -75,38 +66,40 @@ public:
   {
     ecm.Each<
       gz::sim::components::Model,
-      gz::sim::components::Pose,
-      gz::sim::components::Name>(
+      gz::sim::components::Pose>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Model *,
-          const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Name *_name)
+          const gz::sim::components::Pose *_pose)
       {
-        const std::string &name = _name->Data();
-
-        if (name.find("box") == std::string::npos)
-          return true;
-
         auto pos = _pose->Data().Pos();
 
         if (pos.X() < min_x || pos.X() > max_x) return true;
         if (pos.Y() < min_y || pos.Y() > max_y) return true;
         if (pos.Z() < min_z || pos.Z() > max_z) return true;
 
+        auto nameComp =
+          ecm.Component<gz::sim::components::Name>(_entity);
+
+        if (nameComp)
+        {
+          const std::string &name = nameComp->Data();
+
+          if (name.find("box") == std::string::npos)
+            return true;
+        }
+
         auto vel =
-          ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+          ecm.Component<gz::sim::components::LinearVelocity>(_entity);
 
         if (!vel)
         {
           ecm.CreateComponent(
             _entity,
-            gz::sim::components::LinearVelocityCmd(dir_vec));
+            gz::sim::components::LinearVelocity(dir_vec));
         }
         else
         {
-          vel->SetData(
-            dir_vec,
-            [](const auto &, const auto &){ return false; });
+          vel->Data() = dir_vec;
         }
 
         return true;
