@@ -99,7 +99,11 @@ public:
         }
         else
         {
-          vel->Data() = dir_vec;
+          auto currentVel = vel->Data();
+          currentVel.X() = dir_vec.X();
+          currentVel.Y() = dir_vec.Y();
+
+          vel->SetData(currentVel, [](const auto &, const auto &){ return false; });
         }
 
         return true;

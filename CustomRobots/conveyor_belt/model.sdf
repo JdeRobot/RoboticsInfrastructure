@@ -7,7 +7,7 @@
 
     <link name="belt">
 
-      <pose>0 0 0.75 0 0 0</pose>
+      <pose>0 0 0.70 0 0 0</pose>
 
       <visual name="visual">
         <geometry>

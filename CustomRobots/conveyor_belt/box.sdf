@@ -33,8 +33,8 @@
 
           <friction>
             <ode>
-              <mu>1.0</mu>
-              <mu2>1.0</mu2>
+              <mu>5.0</mu>
+              <mu2>5.0</mu2>
             </ode>
           </friction>
         </surface>
