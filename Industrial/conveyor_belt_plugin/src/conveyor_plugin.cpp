@@ -17,12 +17,7 @@ class ConveyorSurfacePlugin :
 {
 public:
 
-  double velocity{0.2};
-
-  double minX{-0.3}, maxX{0.3};
-  double minY{-0.7}, maxY{0.7};
-  double beltZ{0.75};
-  double tol{0.1};
+  double velocity{0.3};
 
   void Configure(
     const ::gz::sim::Entity &,
@@ -31,9 +26,9 @@ public:
     ::gz::sim::EventManager &) override
   {
     if (_sdf && _sdf->HasElement("velocity"))
-      this->velocity = _sdf->Get<double>("velocity");
+      velocity = _sdf->Get<double>("velocity");
 
-    std::cout << "[ConveyorSurface] READY\n";
+    std::cout << "[Conveyor] READY\n";
   }
 
   void PreUpdate(
@@ -42,23 +37,27 @@ public:
   {
     ecm.Each<
       ::gz::sim::components::Name,
-      ::gz::sim::components::WorldPose>(
+      ::gz::sim::components::Pose>(
       [&](const ::gz::sim::Entity &_entity,
           const ::gz::sim::components::Name *_name,
-          const ::gz::sim::components::WorldPose *_pose)
+          const ::gz::sim::components::Pose *_pose)
       {
-        const std::string &n = _name->Data();
+        const std::string &name = _name->Data();
 
-        if (n.find("box") == std::string::npos)
+        // Solo cajas
+        if (name.find("box") == std::string::npos)
           return true;
 
         auto p = _pose->Data().Pos();
 
-        if (p.X() < minX || p.X() > maxX ||
-            p.Y() < minY || p.Y() > maxY)
+        // Zona de la cinta
+        if (p.Z() < 0.7 || p.Z() > 0.9)
           return true;
 
-        if (std::abs(p.Z() - beltZ) > tol)
+        if (p.X() < -0.3 || p.X() > 0.3)
+          return true;
+
+        if (p.Y() < -0.7 || p.Y() > 0.7)
           return true;
 
         auto vel =

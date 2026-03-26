@@ -2,30 +2,30 @@
 <sdf version="1.8">
 
   <model name="conveyor_belt">
+
     <static>true</static>
 
-    <link name="visual">
+    <link name="belt">
+
+      <pose>0 0 0.75 0 0 0</pose>
+
       <visual name="visual">
         <geometry>
-          <mesh>
-            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
-          </mesh>
+          <box>
+            <size>0.6 1.4 0.1</size>
+          </box>
         </geometry>
 
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient>
+          <ambient>0.4 0.4 0.4 1</ambient>
           <diffuse>0.6 0.6 0.6 1</diffuse>
         </material>
       </visual>
-    </link>
-
-    <link name="belt_surface">
-      <pose>0 0 0.75 0 0 0</pose>
 
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.5 1.2 0.02</size>
+            <size>0.6 1.4 0.1</size>
           </box>
         </geometry>
 
@@ -45,10 +45,11 @@
           </friction>
         </surface>
       </collision>
+
     </link>
 
     <plugin filename="libconveyor_plugin.so" name="conveyor_surface">
-      <velocity>0.2</velocity>
+      <velocity>0.3</velocity>
     </plugin>
 
   </model>
