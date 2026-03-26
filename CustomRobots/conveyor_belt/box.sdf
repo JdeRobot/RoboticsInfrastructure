@@ -3,56 +3,53 @@
 
   <model name="box">
 
-    <link name="box">
+    <link name="link">
+
+      <pose>0 0 0 0 0 0</pose>
 
       <inertial>
-        <mass>0.1</mass>
+        <mass>0.2</mass>
         <inertia>
-          <ixx>0.000015</ixx>
-          <iyy>0.000015</iyy>
-          <izz>0.000015</izz>
-          <ixy>0.0</ixy>
-          <ixz>0.0</ixz>
-          <iyz>0.0</iyz>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
 
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.03 0.03 0.03</size>
+            <size>0.05 0.05 0.05</size>
           </box>
         </geometry>
 
         <surface>
-
-          <friction>
-            <ode>
-              <mu>100.0</mu>
-              <mu2>100.0</mu2>
-            </ode>
-          </friction>
-
           <contact>
             <ode>
               <kp>100000</kp>
-              <kd>50</kd>
+              <kd>100</kd>
             </ode>
           </contact>
 
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
         </surface>
       </collision>
 
       <visual name="visual">
         <geometry>
           <box>
-            <size>0.03 0.03 0.03</size>
+            <size>0.05 0.05 0.05</size>
           </box>
         </geometry>
 
         <material>
-          <ambient>1 0.5 0 1</ambient>
-          <diffuse>1 0.5 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
         </material>
       </visual>
 
