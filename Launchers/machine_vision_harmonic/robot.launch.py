@@ -1,9 +1,6 @@
-"""
-Machine Vision Harmonic - Robot Launcher (FIXED)
-"""
-
 import os
 import xacro
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import RegisterEventHandler
@@ -13,15 +10,22 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    PACKAGE_NAME = "ros2srrc_ur5"
-    pkg_path = get_package_share_directory(PACKAGE_NAME + "_gazebo")
+    pkg_path = get_package_share_directory("ur5_gripper_description")
 
-    xacro_file = os.path.join(pkg_path, "urdf", "ur5.urdf.xacro")
+    xacro_file = os.path.join(
+        pkg_path,
+        "urdf",
+        "ur5_robotiq_2f85_with_cams.urdf.xacro"
+    )
 
     doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc)
+    xacro.process_doc(doc, mappings={
+        "hmi": "true"
+    })
 
-    robot_description = {"robot_description": doc.toxml()}
+    robot_description = {
+        "robot_description": doc.toxml()
+    }
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
@@ -30,10 +34,12 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    static_tf = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        arguments=["0", "0", "0", "0", "0", "0", "world", "base_link"],
+    clock_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+        parameters=[{"use_sim_time": True}],
+        output="screen",
     )
 
     spawn_entity = Node(
@@ -44,15 +50,11 @@ def generate_launch_description():
             "-topic", "robot_description",
             "-x", "0",
             "-y", "0",
-            "-z", "0",
-            "-R", "0",
-            "-P", "0",
-            "-Y", "0",
+            "-z", "0.01",
         ],
         output="screen",
     )
 
-    # Controllers
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
@@ -74,7 +76,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_state_publisher,
-        static_tf,
+        clock_bridge,
         spawn_entity,
         delay_controllers,
     ])
