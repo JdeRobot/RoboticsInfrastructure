@@ -1,4 +1,5 @@
 #include <gz/sim/System.hh>
+#include <gz/sim/Entity.hh>
 #include <gz/sim/components/Joint.hh>
 #include <gz/sim/components/JointVelocityCmd.hh>
 #include <gz/sim/components/Name.hh>
@@ -17,67 +18,59 @@ class ConveyorJointPlugin :
 {
 public:
 
-  gz::sim::Entity jointEntity{kNullEntity};
+  gz::sim::Entity jointEntity{gz::sim::kNullEntity};
 
-  double velocity{0.5};
-  double power{100.0};
+  double velocity{0.3};
 
   void Configure(
     const gz::sim::Entity &_entity,
     const std::shared_ptr<const sdf::Element> &_sdf,
-    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::EntityComponentManager &ecm,
     gz::sim::EventManager &) override
   {
-    std::cout << "[ConveyorJointPlugin] INIT\n";
-
-    if (_sdf->HasElement("velocity"))
+    if (_sdf && _sdf->HasElement("velocity"))
       velocity = _sdf->Get<double>("velocity");
 
-    if (_sdf->HasElement("power"))
-      power = _sdf->Get<double>("power");
-
-    _ecm.Each<gz::sim::components::Joint,
-              gz::sim::components::Name>(
-      [&](const gz::sim::Entity &_entity,
+    ecm.Each<gz::sim::components::Joint,
+             gz::sim::components::Name>(
+      [&](const gz::sim::Entity &_ent,
           const gz::sim::components::Joint *,
           const gz::sim::components::Name *_name)
       {
         if (_name->Data() == "belt_joint")
         {
-          jointEntity = _entity;
+          jointEntity = _ent;
           std::cout << "[Conveyor] Joint encontrado\n";
           return false;
         }
         return true;
       });
 
-    if (jointEntity == kNullEntity)
+    if (jointEntity == gz::sim::kNullEntity)
     {
-      std::cout << "[Conveyor] ERROR: joint no encontrado\n";
+      std::cout << "[Conveyor ERROR] No se encontró belt_joint\n";
     }
   }
 
   void PreUpdate(
     const gz::sim::UpdateInfo &,
-    gz::sim::EntityComponentManager &_ecm) override
+    gz::sim::EntityComponentManager &ecm) override
   {
-    if (jointEntity == kNullEntity)
+    if (jointEntity == gz::sim::kNullEntity)
       return;
 
-    double vel = velocity * (power / 100.0);
+    auto velComp =
+      ecm.Component<gz::sim::components::JointVelocityCmd>(jointEntity);
 
-    auto comp =
-      _ecm.Component<gz::sim::components::JointVelocityCmd>(jointEntity);
-
-    if (!comp)
+    if (!velComp)
     {
-      _ecm.CreateComponent(
+      ecm.CreateComponent(
         jointEntity,
-        gz::sim::components::JointVelocityCmd({vel}));
+        gz::sim::components::JointVelocityCmd({velocity}));
     }
     else
     {
-      comp->Data()[0] = vel;
+      velComp->Data()[0] = velocity;
     }
   }
 };
