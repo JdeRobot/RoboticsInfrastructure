@@ -2,24 +2,16 @@
 <sdf version="1.8">
 
   <model name="conveyor_belt">
+    <static>true</static>
 
-    <link name="belt_visual">
+    <link name="visual">
       <visual name="visual">
-        <geometry>
-          <mesh>
-            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
-          </mesh>
-        </geometry>
-      </visual>
-
-      <collision name="collision">
         <geometry>
           <box>
             <size>0.6 1.4 0.1</size>
           </box>
         </geometry>
-        <pose>0 0 0.05 0 0 0</pose>
-      </collision>
+      </visual>
     </link>
 
     <link name="belt_surface">

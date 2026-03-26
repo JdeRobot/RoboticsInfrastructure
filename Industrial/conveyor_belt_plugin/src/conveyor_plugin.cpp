@@ -2,9 +2,6 @@
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
-#include <gz/sim/components/LinearVelocity.hh>
-#include <gz/sim/components/Pose.hh>
-#include <gz/sim/components/CanonicalLink.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -21,12 +18,12 @@ class ConveyorSurfacePlugin :
 {
 public:
 
-  double velocity{0.1};
+  double velocity{0.2};
 
   double minX{-0.25}, maxX{0.25};
   double minY{-0.6},  maxY{0.6};
   double beltZ{0.75};
-  double zTolerance{0.05}; 
+  double tol{0.05};
 
   void Configure(
     const ::gz::sim::Entity &,
@@ -45,29 +42,29 @@ public:
     ::gz::sim::EntityComponentManager &ecm) override
   {
     ecm.Each<::gz::sim::components::Name,
-             ::gz::sim::components::WorldPose>(
+             ::gz::sim::components::Pose>(
       [&](const ::gz::sim::Entity &_entity,
           const ::gz::sim::components::Name *_name,
-          const ::gz::sim::components::WorldPose *_pose)
+          const ::gz::sim::components::Pose *_pose)
       {
         const std::string &n = _name->Data();
 
         if (n.find("box") == std::string::npos)
           return true;
 
-        const auto &p = _pose->Data().Pos();
+        auto p = _pose->Data().Pos();
 
         if (p.X() < minX || p.X() > maxX ||
             p.Y() < minY || p.Y() > maxY)
           return true;
 
-        if (std::abs(p.Z() - beltZ) > zTolerance)
+        if (std::abs(p.Z() - beltZ) > tol)
           return true;
 
-        auto velCmd =
+        auto vel =
           ecm.Component<::gz::sim::components::LinearVelocityCmd>(_entity);
 
-        if (!velCmd)
+        if (!vel)
         {
           ecm.CreateComponent(
             _entity,
@@ -76,9 +73,7 @@ public:
         }
         else
         {
-          velCmd->Data()[0] = 0.0;
-          velCmd->Data()[1] = this->velocity;
-          velCmd->Data()[2] = 0.0;
+          vel->Data()[1] = this->velocity;
         }
 
         return true;
@@ -87,7 +82,6 @@ public:
 };
 
 }
-
 
 GZ_ADD_PLUGIN(
   conveyor::ConveyorSurfacePlugin,
