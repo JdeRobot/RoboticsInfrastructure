@@ -1,45 +1,24 @@
 #!/usr/bin/env python3
 
-import rclpy
-from rclpy.node import Node
 import subprocess
 import time
 
-class BoxSpawner(Node):
+i = 0
 
-    def __init__(self):
-        super().__init__('box_spawner')
+while True:
+    name = f"box_{i}"
 
-        time.sleep(3)
-        self.timer = self.create_timer(3.0, self.spawn_box)
-        self.counter = 0
+    cmd = [
+        "ros2", "run", "ros_gz_sim", "create",
+        "-name", name,
+        "-x", "0.0",
+        "-y", "0.0",
+        "-z", "1.0",
+        "-file", "model://box"
+    ]
 
-    def spawn_box(self):
+    subprocess.run(cmd)
+    print(f"Spawned {name}")
 
-        name = f"box_{self.counter}"
-
-        cmd = [
-            "ros2", "run", "ros_gz_sim", "create",
-            "-name", name,
-            "-x", "0.0",
-            "-y", "0.0",
-            "-z", "0.9",
-            "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
-        ]
-
-        subprocess.run(cmd, check=True)
-
-        self.get_logger().info(f"Spawned {name}")
-        self.counter += 1
-
-
-def main():
-    rclpy.init()
-    node = BoxSpawner()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()
+    i += 1
+    time.sleep(2)
