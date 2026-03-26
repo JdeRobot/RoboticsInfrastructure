@@ -6,6 +6,7 @@ from gz.msgs10.entity_factory_pb2 import EntityFactory
 from ament_index_python.packages import get_package_share_directory
 from gz.msgs10.entity_pb2 import Entity
 from gz.msgs10.boolean_pb2 import Boolean
+from gz.msgs10.empty_pb2 import Empty
 from gz.transport13 import Node
 import numpy as np
 
@@ -69,6 +70,8 @@ class CarSpawner(object):
                 )
                 del self.active_models[name]
                 print(f"Removed {name}")
+                
+                self.node.request(f"/world/{self.world}/update", Empty(), Empty, Empty, 1000)
 
 
 def etoq(yaw, pitch, roll):
