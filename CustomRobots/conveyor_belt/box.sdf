@@ -44,8 +44,14 @@
             <size>0.05 0.05 0.05</size>
           </box>
         </geometry>
+
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
       </visual>
 
     </link>
+
   </model>
 </sdf>

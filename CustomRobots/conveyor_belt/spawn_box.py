@@ -10,7 +10,7 @@ class BoxSpawner(Node):
     def __init__(self):
         super().__init__('box_spawner')
 
-        time.sleep(3)  # esperar a Gazebo
+        time.sleep(3)
         self.timer = self.create_timer(3.0, self.spawn_box)
         self.counter = 0
 
@@ -23,18 +23,13 @@ class BoxSpawner(Node):
             "-name", name,
             "-x", "0.0",
             "-y", "0.0",
-            "-z", "0.8",
+            "-z", "0.78",
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
         ]
 
-        self.get_logger().info(f"Running: {' '.join(cmd)}")
+        subprocess.run(cmd, check=True)
 
-        try:
-            subprocess.run(cmd, check=True)
-            self.get_logger().info(f"Spawned {name}")
-        except Exception as e:
-            self.get_logger().error(str(e))
-
+        self.get_logger().info(f"Spawned {name}")
         self.counter += 1
 
 

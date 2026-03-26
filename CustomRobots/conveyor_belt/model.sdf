@@ -7,10 +7,15 @@
     <link name="visual">
       <visual name="visual">
         <geometry>
-          <box>
-            <size>0.6 1.4 0.1</size>
-          </box>
+          <mesh>
+            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
+          </mesh>
         </geometry>
+
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.6 0.6 0.6 1</diffuse>
+        </material>
       </visual>
     </link>
 
