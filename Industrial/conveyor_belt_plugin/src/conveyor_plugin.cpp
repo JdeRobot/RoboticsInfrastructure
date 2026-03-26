@@ -3,7 +3,7 @@
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/LinearVelocity.hh>
-#include <gz/sim/components/WorldPose.hh>
+#include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/CanonicalLink.hh>
 
 #include <gz/plugin/Register.hh>
