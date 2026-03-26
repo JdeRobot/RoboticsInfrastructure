@@ -17,8 +17,10 @@
 
     <gravity>0 0 -9.8</gravity>
 
-    <physics type="ignored">
+    <physics name="default" type="ode">
       <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
     </physics>
 
     <scene>

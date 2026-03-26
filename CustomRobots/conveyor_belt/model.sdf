@@ -3,11 +3,11 @@
 
   <model name="conveyor_belt">
 
-    <static>true</static>
+    <static>false</static>
 
-    <link name="belt">
+    <link name="base_link">
 
-      <pose>0 0 0.70 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
 
       <visual name="visual">
         <geometry>
@@ -17,6 +17,20 @@
           </mesh>
         </geometry>
       </visual>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.6 1.4 0.7</size>
+          </box>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <link name="belt_link">
+
+      <pose>0 0 0.70 0 0 0</pose>
 
       <collision name="collision">
         <geometry>
@@ -42,20 +56,43 @@
         </surface>
       </collision>
 
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.6 1.4 0.05</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>0 0 0 1</ambient>
+          <diffuse>0 0 0 1</diffuse>
+        </material>
+      </visual>
+
     </link>
 
-    <plugin filename="libconveyor_plugin.so" name="conveyor_system">
-      <velocity>0.3</velocity>
-      <direction>y</direction>
+    <joint name="belt_joint" type="prismatic">
 
-      <region>
-        <min_x>-0.3</min_x>
-        <max_x>0.3</max_x>
-        <min_y>-0.7</min_y>
-        <max_y>0.7</max_y>
-        <min_z>0.7</min_z>
-        <max_z>1.0</max_z>
-      </region>
+      <parent>base_link</parent>
+      <child>belt_link</child>
+
+      <axis>
+        <xyz>0 1 0</xyz>
+
+        <limit>
+          <lower>0</lower>
+          <upper>1</upper>
+        </limit>
+      </axis>
+
+    </joint>
+
+    <plugin filename="libconveyor_plugin.so"
+            name="conveyor::ConveyorJointPlugin">
+
+      <velocity>0.3</velocity>
+      <power>100</power>
+
     </plugin>
 
   </model>
