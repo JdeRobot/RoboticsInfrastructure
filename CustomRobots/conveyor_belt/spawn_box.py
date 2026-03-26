@@ -26,7 +26,9 @@ class BoxSpawner(Node):
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
         ]
 
-        subprocess.Popen(cmd)
+        self.get_logger().info(f"Running: {' '.join(cmd)}")
+        
+        subprocess.run(cmd, check=True)
 
         self.get_logger().info(f"Spawned {name}")
         self.counter += 1
