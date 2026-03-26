@@ -20,7 +20,7 @@ def generate_launch_description():
 
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc, mappings={
-        "hmi": "true"
+        "hmi": "false"
     })
 
     robot_description = {
