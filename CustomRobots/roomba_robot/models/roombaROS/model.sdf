@@ -461,15 +461,15 @@
     </plugin>
 
     <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
-      <ros_topic>/roombaROS/odom_noisy</ros_topic>
+      <ros_topic>/odom_noisy</ros_topic>
       <gz_cmd_vel_topic>/roombaROS/cmd_vel</gz_cmd_vel_topic>
       <frame_id>odom</frame_id>
       <child_frame_id>base</child_frame_id>
 
-      <alpha1>0.005</alpha1>
-      <alpha2>0.005</alpha2>
-      <alpha3>0.0025</alpha3>
-      <alpha4>0.0025</alpha4>
+      <alpha1>0.01</alpha1>
+      <alpha2>0.01</alpha2>
+      <alpha3>0.005</alpha3>
+      <alpha4>0.005</alpha4>
     </plugin>
 
   </model>
