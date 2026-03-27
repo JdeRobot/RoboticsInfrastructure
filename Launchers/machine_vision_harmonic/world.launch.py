@@ -28,10 +28,13 @@ def generate_launch_description():
     gz_ros2_control_install = "/home/ws/install"
     gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
 
+    custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
+
     resource_path = (
         ur5_share_parent + ":" +
         robotiq_share_parent + ":" +
-        warehouse_models_path
+        warehouse_models_path + ":" +
+        custom_models_path
     )
 
     gz_env = {
