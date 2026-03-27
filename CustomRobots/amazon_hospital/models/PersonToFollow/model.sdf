@@ -45,9 +45,8 @@
 
     <plugin name="personplugin" filename="libpersonplugin.so"/>
 
-    <gazebo>
-      <static>true</static>
-    </gazebo>
+    <static>false</static>
+      
   </model>
 </sdf>
 

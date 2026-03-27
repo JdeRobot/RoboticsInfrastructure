@@ -5,7 +5,6 @@
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-
 # gz topic published by Sensors plugin (Camera)
 - ros_topic_name: "/cam_turtlebot_left/camera_info"
   gz_topic_name: "/cam_turtlebot_left/camera_info"

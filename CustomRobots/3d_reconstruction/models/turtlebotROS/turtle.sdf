@@ -876,14 +876,14 @@
 
       <inertial>
         <mass>0.500000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
+        <inertia>
+          <ixx>1.000000</ixx>
+          <ixy>0.000000</ixy>
+          <ixz>0.000000</ixz>
+          <iyy>1.000000</iyy>
+          <iyz>0.000000</iyz>
+          <izz>1.000000</izz>
+        </inertia>
       </inertial>
 
       <visual name='visual'>
@@ -1065,7 +1065,7 @@
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
-        </camera> 
+        </camera>
       </sensor>
 
       <visual name='visual'>
@@ -1309,7 +1309,7 @@
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
-        </camera> 
+        </camera>
       </sensor>
 
       <visual name='visual'>

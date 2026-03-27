@@ -28,13 +28,17 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    gazebo
+    #gazebo
     pluginlib
     Threads)
 
 foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
+
+add_subdirectory(follow_person_harmonic)
+
+find_package(gazebo)
 
 # ============================================================================
 # Person plugin
@@ -70,10 +74,10 @@ ament_environment_hooks("hooks/resource_paths.sh")
 
 # ============================================================================
 # Resources
-
 install(
   DIRECTORY
-    # TURTLEBOT
+    follow_person_harmonic/models
+    follow_person_harmonic/params
     Turtlebot2/turtlebot2_simulated/kobuki_description/launch
     Turtlebot2/turtlebot2_simulated/kobuki_description/meshes
     Turtlebot2/turtlebot2_simulated/kobuki_description/rviz
@@ -81,16 +85,12 @@ install(
     Turtlebot2/turtlebot2_simulated/turtlebot2/launch
     Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
     Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
-    # F1
     f1/models
     f1/params
-    # ROOMBA
     roomba_robot/models
     roomba_robot/params
-    # ACKERMAN CAR
     ackermann_cars/models
     ackermann_cars/params
-    # CARS
     car_junction/models
     car_junction/scripts
     # AMAZON WAREHOUSE ROBOT
@@ -104,33 +104,24 @@ install(
     amazon_hospital/hospital_world/launch
     amazon_hospital/hospital_world/worlds
     amazon_hospital/worlds
-    # ACKERMANN LOGISTIC ROBOT
     ackermann_logistic_robot/models
-    # AUTOPARKING CARS
     autoparking/models
-    # AUTOPARK_HARMONIC
     autopark_harmonic/models
     autopark_harmonic/params
-    # DRONE_ASSETS
     drone_assets/models
     drone_assets/bridges
-    # GLOBAL_NAVIGATION
     taxi_navigator/models
     taxi_navigator/params
-    # 3D RECONSTRUCTION
     3d_reconstruction/models
     3d_reconstruction/params
-    # MARKER VISUAL LOC
     marker_visual_loc/models
     turtlebot3/models
     turtlebot3/urdf
     turtlebot3/params
-    # LASER MAPPING LOC
     laser_mapping/models
     restaurant/models
     pick_place/models
     pick_place/urdf
-    # ROVER 4WD
     rover_4wd_description/meshes
     rover_4wd_description/urdf
     rover_4wd_description/config
