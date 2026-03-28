@@ -1,7 +1,8 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Entity.hh>
+
 #include <gz/sim/components/Joint.hh>
-#include <gz/sim/components/JointVelocityCmd.hh>
+#include <gz/sim/components/JointForceCmd.hh>
 #include <gz/sim/components/Name.hh>
 
 #include <gz/plugin/Register.hh>
@@ -20,16 +21,16 @@ public:
 
   gz::sim::Entity jointEntity{gz::sim::kNullEntity};
 
-  double velocity{0.3};
-
+  double force{5.0};
+  
   void Configure(
-    const gz::sim::Entity &_entity,
+    const gz::sim::Entity &,
     const std::shared_ptr<const sdf::Element> &_sdf,
     gz::sim::EntityComponentManager &ecm,
     gz::sim::EventManager &) override
   {
-    if (_sdf && _sdf->HasElement("velocity"))
-      velocity = _sdf->Get<double>("velocity");
+    if (_sdf && _sdf->HasElement("force"))
+      force = _sdf->Get<double>("force");
 
     ecm.Each<gz::sim::components::Joint,
              gz::sim::components::Name>(
@@ -48,29 +49,32 @@ public:
 
     if (jointEntity == gz::sim::kNullEntity)
     {
-      std::cout << "[Conveyor ERROR] No se encontró belt_joint\n";
+      std::cout << "[ERROR] No se encontró belt_joint\n";
     }
   }
 
   void PreUpdate(
-    const gz::sim::UpdateInfo &,
+    const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &ecm) override
   {
+    if (_info.paused)
+      return;
+
     if (jointEntity == gz::sim::kNullEntity)
       return;
 
-    auto velComp =
-      ecm.Component<gz::sim::components::JointVelocityCmd>(jointEntity);
+    auto forceComp =
+      ecm.Component<gz::sim::components::JointForceCmd>(jointEntity);
 
-    if (!velComp)
+    if (!forceComp)
     {
       ecm.CreateComponent(
         jointEntity,
-        gz::sim::components::JointVelocityCmd({velocity}));
+        gz::sim::components::JointForceCmd({force}));
     }
     else
     {
-      velComp->Data()[0] = velocity;
+      forceComp->Data()[0] = force;
     }
   }
 };
