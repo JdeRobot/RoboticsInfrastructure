@@ -16,10 +16,13 @@ def generate_launch_description():
     ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
 
     robotiq_pkg_share_dir = robotiq_description_pkg
+
     warehouse_models_path = os.path.join(robotiq_pkg_share_dir, "world", "models")
 
     ur5_share_parent = os.path.dirname(ur5_gripper_pkg)
     robotiq_share_parent = os.path.dirname(robotiq_pkg_share_dir)
+
+    custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
 
     world_path = "/opt/jderobot/Worlds/machine_vision_harmonic.world"
 
@@ -28,29 +31,18 @@ def generate_launch_description():
     gz_ros2_control_install = "/home/ws/install"
     gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
 
-    custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
-
     resource_path = (
         ur5_share_parent + ":" +
         robotiq_share_parent + ":" +
         warehouse_models_path + ":" +
-        custom_models_path + ":" +
-        get_package_share_directory("ros2srrc_ur5_gazebo")
+        custom_models_path
     )
 
     gz_env = {
         "GZ_SIM_RESOURCE_PATH": resource_path,
-        "GZ_SIM_SYSTEM_PLUGIN_PATH": (
-            "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins:"
-            "/usr/lib/x86_64-linux-gnu/gz-sim-8/systems:"
-            + gz_lib_path +
-            ":/opt/ros/humble/lib"
-        ),
-        "LD_LIBRARY_PATH": (
-            "/usr/lib/x86_64-linux-gnu:"
-            + gz_lib_path +
-            ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu"
-        ),
+        "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_lib_path + ":/opt/ros/humble/lib",
+        "LD_LIBRARY_PATH": gz_lib_path
+        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu",
         "DISPLAY": os.environ.get("DISPLAY", ":0"),
     }
 
