@@ -1,7 +1,49 @@
 <?xml version="1.0"?>
 <robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur5_robotiq85_gripper.urdf.xacro"/>
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="sim_gz" default="true"/>
+  <xacro:arg name="simulation_controllers" default=""/>
+
+  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
+
+  <xacro:ur
+    name="ur"
+    ur_type="ur5"
+    prefix=""
+    use_fake_hardware="false"
+    sim_gazebo="false"
+    sim_gz="true"
+    simulation_controllers="$(arg simulation_controllers)"
+  />
+
+  <link name="robotiq_coupler">
+    <visual>
+      <geometry>
+        <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="robotiq_coupler_joint" type="fixed">
+    <parent link="tool0"/>
+    <child link="robotiq_coupler"/>
+    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2}"/>
+  </joint>
+
+  <xacro:robotiq_85_gripper parent="robotiq_coupler">
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
+  </xacro:robotiq_85_gripper>
+
+  <xacro:robotiq_85_ros2_control
+    name="robotiq"
+    sim_gz="true"
+    use_fake_hardware="false"/>
 
   <link name="camera_base_link">
     <visual>
