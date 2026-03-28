@@ -1,14 +1,12 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Entity.hh>
 
+#include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
-#include <gz/sim/components/Link.hh>
-#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
-#include <gz/msgs/wrench.pb.h>
 
 #include <iostream>
 
@@ -39,7 +37,7 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    std::cout << "[Conveyor] 🔧 Configurando plugin...\n";
+    std::cout << "[Conveyor] Configurando plugin...\n";
 
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
@@ -69,7 +67,7 @@ public:
     else if (direction_ == "y") dir_vec_ = {0,1,0};
     else if (direction_ == "z") dir_vec_ = {0,0,1};
 
-    std::cout << "[Conveyor] Plugin cargado correctamente\n";
+    std::cout << "[Conveyor] Plugin cargado\n";
 
     if (debug_)
     {
@@ -89,17 +87,15 @@ public:
     static int counter = 0;
     counter++;
 
-    if (debug_ && counter % 300 == 0)
+    if (debug_ && counter % 200 == 0)
       std::cout << "[DEBUG] Update activo\n";
 
     _ecm.Each<
       gz::sim::components::Pose,
-      gz::sim::components::Name,
-      gz::sim::components::Link>(
+      gz::sim::components::Name>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Name *_name,
-          const gz::sim::components::Link *)->bool
+          const gz::sim::components::Name *_name)->bool
       {
         auto pos = _pose->Data().Pos();
 
@@ -108,57 +104,45 @@ public:
           pos.Y() > min_y_ && pos.Y() < max_y_ &&
           pos.Z() > min_z_ && pos.Z() < max_z_;
 
-        auto wrenchComp =
-          _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(_entity);
+        auto velComp =
+          _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
 
         if (inside)
         {
           if (debug_ && counter % 200 == 0)
           {
             std::cout << "[Conveyor] Dentro: "
-                      << _name->Data() << "\n";
+                      << _name->Data()
+                      << " Pos: " << pos << "\n";
           }
 
-          gz::math::Vector3d forceVec = dir_vec_ * (velocity_ * 100.0);
+          gz::math::Vector3d newVel =
+            velComp ? velComp->Data() : gz::math::Vector3d(0,0,0);
 
-          gz::msgs::Wrench wrenchMsg;
-          wrenchMsg.mutable_force()->set_x(forceVec.X());
-          wrenchMsg.mutable_force()->set_y(forceVec.Y());
-          wrenchMsg.mutable_force()->set_z(0.0);
+          if (direction_ == "x") newVel.X() = velocity_;
+          if (direction_ == "y") newVel.Y() = velocity_;
 
-          wrenchMsg.mutable_torque()->set_x(0.0);
-          wrenchMsg.mutable_torque()->set_y(0.0);
-          wrenchMsg.mutable_torque()->set_z(0.0);
-
-          if (!wrenchComp)
+          if (!velComp)
           {
             _ecm.CreateComponent(
               _entity,
-              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg)
-            );
+              gz::sim::components::LinearVelocityCmd(newVel));
           }
           else
           {
-            *wrenchComp =
-              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg);
+            velComp->Data() = newVel;
           }
         }
         else
         {
-          if (wrenchComp)
+          if (velComp)
           {
-            gz::msgs::Wrench wrenchMsg;
+            auto vel = velComp->Data();
 
-            wrenchMsg.mutable_force()->set_x(0.0);
-            wrenchMsg.mutable_force()->set_y(0.0);
-            wrenchMsg.mutable_force()->set_z(0.0);
+            if (direction_ == "x") vel.X() = 0;
+            if (direction_ == "y") vel.Y() = 0;
 
-            wrenchMsg.mutable_torque()->set_x(0.0);
-            wrenchMsg.mutable_torque()->set_y(0.0);
-            wrenchMsg.mutable_torque()->set_z(0.0);
-
-            *wrenchComp =
-              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg);
+            velComp->Data() = vel;
 
             if (debug_ && counter % 200 == 0)
             {
