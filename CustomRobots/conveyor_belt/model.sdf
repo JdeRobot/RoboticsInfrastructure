@@ -3,7 +3,7 @@
 
   <model name="conveyor_belt">
 
-    <static>true</static>
+    <static>false</static>
 
     <link name="link">
 
@@ -20,7 +20,7 @@
 
         <geometry>
           <box>
-            <size>0.5 1.2 0.01</size>
+            <size>0.5 1.2 0.05</size>
           </box>
         </geometry>
 
@@ -56,8 +56,9 @@
         <max_x>0.25</max_x>
         <min_y>-0.6</min_y>
         <max_y>0.6</max_y>
-        <min_z>0.74</min_z>
-        <max_z>0.85</max_z>
+
+        <min_z>0.75</min_z>
+        <max_z>0.80</max_z>
       </region>
 
     </plugin>

@@ -3,6 +3,7 @@
 
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
+#include <gz/sim/components/Link.hh>
 #include <gz/sim/components/ExternalWorldWrenchCmd.hh>
 
 #include <gz/plugin/Register.hh>
@@ -38,7 +39,7 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    std::cout << "[Conveyor] Configurando plugin...\n";
+    std::cout << "[Conveyor] 🔧 Configurando plugin...\n";
 
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
@@ -93,10 +94,12 @@ public:
 
     _ecm.Each<
       gz::sim::components::Pose,
-      gz::sim::components::Name>(
+      gz::sim::components::Name,
+      gz::sim::components::Link>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Name *_name)->bool
+          const gz::sim::components::Name *_name,
+          const gz::sim::components::Link *)->bool
       {
         auto pos = _pose->Data().Pos();
 
@@ -116,7 +119,7 @@ public:
                       << _name->Data() << "\n";
           }
 
-          gz::math::Vector3d forceVec = dir_vec_ * (velocity_ * 20.0);
+          gz::math::Vector3d forceVec = dir_vec_ * (velocity_ * 100.0);
 
           gz::msgs::Wrench wrenchMsg;
           wrenchMsg.mutable_force()->set_x(forceVec.X());
@@ -170,7 +173,7 @@ public:
   }
 };
 
-} 
+}
 
 GZ_ADD_PLUGIN(
   conveyor::ConveyorSystem,
