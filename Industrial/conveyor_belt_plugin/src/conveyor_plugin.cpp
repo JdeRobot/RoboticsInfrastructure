@@ -1,89 +1,111 @@
 #include <gz/sim/System.hh>
+#include <gz/sim/Model.hh>
 #include <gz/sim/Entity.hh>
+#include <gz/sim/Util.hh>
 
-#include <gz/sim/components/Joint.hh>
-#include <gz/sim/components/JointForceCmd.hh>
+#include <gz/sim/components/LinearVelocity.hh>
+#include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
 
 #include <gz/plugin/Register.hh>
+
+#include <gz/math/Vector3.hh>
 
 #include <iostream>
 
 namespace conveyor
 {
 
-class ConveyorJointPlugin :
+class ConveyorSystem:
   public gz::sim::System,
   public gz::sim::ISystemConfigure,
   public gz::sim::ISystemPreUpdate
 {
 public:
 
-  gz::sim::Entity jointEntity{gz::sim::kNullEntity};
+  double velocity_{0.0};
+  std::string direction_{"x"};
 
-  double force{5.0};
-  
+  double min_x_, max_x_;
+  double min_y_, max_y_;
+  double min_z_, max_z_;
+
+  gz::math::Vector3d dir_vec_{0,0,0};
+
+  gz::sim::Entity modelEntity_{gz::sim::kNullEntity};
+
   void Configure(
-    const gz::sim::Entity &,
-    const std::shared_ptr<const sdf::Element> &_sdf,
-    gz::sim::EntityComponentManager &ecm,
-    gz::sim::EventManager &) override
+      const gz::sim::Entity &_entity,
+      const std::shared_ptr<const sdf::Element> &_sdf,
+      gz::sim::EntityComponentManager &/*_ecm*/,
+      gz::sim::EventManager &/*_eventMgr*/) override
   {
-    if (_sdf && _sdf->HasElement("force"))
-      force = _sdf->Get<double>("force");
+    modelEntity_ = _entity;
 
-    ecm.Each<gz::sim::components::Joint,
-             gz::sim::components::Name>(
-      [&](const gz::sim::Entity &_ent,
-          const gz::sim::components::Joint *,
-          const gz::sim::components::Name *_name)
-      {
-        if (_name->Data() == "belt_joint")
-        {
-          jointEntity = _ent;
-          std::cout << "[Conveyor] Joint encontrado\n";
-          return false;
-        }
-        return true;
-      });
+    if (_sdf->HasElement("velocity"))
+      velocity_ = _sdf->Get<double>("velocity");
 
-    if (jointEntity == gz::sim::kNullEntity)
-    {
-      std::cout << "[ERROR] No se encontró belt_joint\n";
-    }
+    if (_sdf->HasElement("direction"))
+      direction_ = _sdf->Get<std::string>("direction");
+
+    auto region = _sdf->GetElement("region");
+
+    min_x_ = region->Get<double>("min_x");
+    max_x_ = region->Get<double>("max_x");
+    min_y_ = region->Get<double>("min_y");
+    max_y_ = region->Get<double>("max_y");
+    min_z_ = region->Get<double>("min_z");
+    max_z_ = region->Get<double>("max_z");
+
+    if (direction_ == "x") dir_vec_ = {1,0,0};
+    else if (direction_ == "y") dir_vec_ = {0,1,0};
+    else if (direction_ == "z") dir_vec_ = {0,0,1};
+
+    std::cout << "[Conveyor] Plugin cargado correctamente\n";
   }
 
   void PreUpdate(
-    const gz::sim::UpdateInfo &_info,
-    gz::sim::EntityComponentManager &ecm) override
+      const gz::sim::UpdateInfo &/*_info*/,
+      gz::sim::EntityComponentManager &_ecm) override
   {
-    if (_info.paused)
-      return;
+    _ecm.Each<gz::sim::components::Pose>(
+      [&](const gz::sim::Entity &_entity,
+          const gz::sim::components::Pose *_pose)->bool
+      {
+        auto pos = _pose->Data().Pos();
 
-    if (jointEntity == gz::sim::kNullEntity)
-      return;
+        if (pos.X() > min_x_ && pos.X() < max_x_ &&
+            pos.Y() > min_y_ && pos.Y() < max_y_ &&
+            pos.Z() > min_z_ && pos.Z() < max_z_)
+        {
+          auto velComp =
+            _ecm.Component<gz::sim::components::LinearVelocity>(_entity);
 
-    auto forceComp =
-      ecm.Component<gz::sim::components::JointForceCmd>(jointEntity);
+          if (!velComp)
+          {
+            _ecm.CreateComponent(
+              _entity,
+              gz::sim::components::LinearVelocity(
+                dir_vec_ * velocity_));
+          }
+          else
+          {
+            velComp->Data() = dir_vec_ * velocity_;
+          }
+        }
 
-    if (!forceComp)
-    {
-      ecm.CreateComponent(
-        jointEntity,
-        gz::sim::components::JointForceCmd({force}));
-    }
-    else
-    {
-      forceComp->Data()[0] = force;
-    }
+        return true;
+      });
   }
 };
 
 }
 
 GZ_ADD_PLUGIN(
-  conveyor::ConveyorJointPlugin,
+  conveyor::ConveyorSystem,
   gz::sim::System,
-  gz::sim::ISystemConfigure,
-  gz::sim::ISystemPreUpdate
+  conveyor::ConveyorSystem::ISystemConfigure,
+  conveyor::ConveyorSystem::ISystemPreUpdate
 )
+
+GZ_ADD_PLUGIN_ALIAS(conveyor::ConveyorSystem, "conveyor::ConveyorSystem")
