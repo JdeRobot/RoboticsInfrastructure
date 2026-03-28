@@ -1,9 +1,9 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Entity.hh>
 
-#include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
+#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
@@ -37,7 +37,7 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    std::cout << "[Conveyor] Configurando plugin...\n";
+    std::cout << "[Conveyor] 🔧 Configurando...\n";
 
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
@@ -87,7 +87,7 @@ public:
     static int counter = 0;
     counter++;
 
-    if (debug_ && counter % 200 == 0)
+    if (debug_ && counter % 300 == 0)
       std::cout << "[DEBUG] Update activo\n";
 
     _ecm.Each<
@@ -104,45 +104,39 @@ public:
           pos.Y() > min_y_ && pos.Y() < max_y_ &&
           pos.Z() > min_z_ && pos.Z() < max_z_;
 
-        auto velComp =
-          _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+        auto wrenchComp =
+          _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(_entity);
 
         if (inside)
         {
           if (debug_ && counter % 200 == 0)
           {
             std::cout << "[Conveyor] Dentro: "
-                      << _name->Data()
-                      << " Pos: " << pos << "\n";
+                      << _name->Data() << "\n";
           }
 
-          gz::math::Vector3d newVel =
-            velComp ? velComp->Data() : gz::math::Vector3d(0,0,0);
+          gz::math::Vector3d force = dir_vec_ * (velocity_ * 20.0);
 
-          if (direction_ == "x") newVel.X() = velocity_;
-          if (direction_ == "y") newVel.Y() = velocity_;
-
-          if (!velComp)
+          if (!wrenchComp)
           {
             _ecm.CreateComponent(
               _entity,
-              gz::sim::components::LinearVelocityCmd(newVel));
+              gz::sim::components::ExternalWorldWrenchCmd(
+                force,
+                gz::math::Vector3d(0,0,0)
+              )
+            );
           }
           else
           {
-            velComp->Data() = newVel;
+            wrenchComp->Data().force = force;
           }
         }
         else
         {
-          if (velComp)
+          if (wrenchComp)
           {
-            auto vel = velComp->Data();
-
-            if (direction_ == "x") vel.X() = 0;
-            if (direction_ == "y") vel.Y() = 0;
-
-            velComp->Data() = vel;
+            wrenchComp->Data().force = {0,0,0};
 
             if (debug_ && counter % 200 == 0)
             {
