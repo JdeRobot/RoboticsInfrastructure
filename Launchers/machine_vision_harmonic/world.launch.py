@@ -34,7 +34,8 @@ def generate_launch_description():
         ur5_share_parent + ":" +
         robotiq_share_parent + ":" +
         warehouse_models_path + ":" +
-        custom_models_path
+        custom_models_path + ":" +
+        get_package_share_directory("ros2srrc_ur5_gazebo")
     )
 
     gz_env = {
