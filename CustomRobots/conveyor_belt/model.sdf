@@ -3,7 +3,7 @@
 
   <model name="conveyor_belt">
 
-    <static>false</static>
+    <static>true</static>
 
     <link name="link">
 
@@ -34,8 +34,8 @@
 
           <friction>
             <ode>
-              <mu>1.0</mu>
-              <mu2>1.0</mu2>
+              <mu>100.0</mu>
+              <mu2>100.0</mu2>
             </ode>
           </friction>
         </surface>
