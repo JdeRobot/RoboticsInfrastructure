@@ -16,11 +16,11 @@
       </visual>
 
       <collision name="collision">
-        <pose>0 0 0.65 0 0 0</pose>
+        <pose>0 0 0.75 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.5 1.2 0.01</size>
+            <size>0.5 1.2 0</size>
           </box>
         </geometry>
 
