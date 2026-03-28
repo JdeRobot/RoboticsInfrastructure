@@ -1,88 +1,83 @@
 <?xml version="1.0"?>
-<robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="ur5" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:arg name="name" default="ur"/>
-  <xacro:arg name="ur_type" default="ur5"/>
-  <xacro:arg name="prefix" default=""/>
-  <xacro:arg name="use_fake_hardware" default="false"/>
-  <xacro:arg name="sim_gz" default="true"/>
-  <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:arg name="hmi" default="false"/>
+  <xacro:arg name="EE" default="true"/>
+  <xacro:arg name="EE_name" default="robotiq_2f85"/>
 
-  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro"/>
-  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
-  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
+  <xacro:property name="EE" value="$(arg EE)"/>
+  <xacro:property name="EE_name" value="$(arg EE_name)"/>
 
-  <xacro:ur
-    name="ur"
-    ur_type="ur5"
-    prefix=""
-    use_fake_hardware="false"
-    sim_gazebo="false"
-    sim_gz="true"
-    simulation_controllers="$(arg simulation_controllers)"
+
+  <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_macro.urdf.xacro"/>
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>	
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>	
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>	
+
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
+
+
+  <xacro:ur5 
+    bringup="false"
+    robot_ip="0.0.0.0"
+    EE="$(arg EE)"
+    EE_name="$(arg EE_name)"
+    script_filename="none"
+    input_recipe_filename="none"
+    output_recipe_filename="none"
   />
 
-  <link name="robotiq_coupler">
+  <xacro:robotiq_2f85 
+    bringup="false"
+    parent_link="tool0"
+  />
+
+
+  <link name="world"/>
+
+  <link name="robot_stand">
     <visual>
       <geometry>
-        <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
+        <box size="0.2 0.2 1.0"/>
       </geometry>
     </visual>
-  </link>
-
-  <joint name="robotiq_coupler_joint" type="fixed">
-    <parent link="tool0"/>
-    <child link="robotiq_coupler"/>
-    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2}"/>
-  </joint>
-
-  <xacro:robotiq_85_gripper parent="robotiq_coupler">
-    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
-  </xacro:robotiq_85_gripper>
-
-  <xacro:robotiq_85_ros2_control
-    name="robotiq"
-    sim_gz="true"
-    use_fake_hardware="false"/>
-
-  <link name="camera_base_link">
-    <visual>
+    <collision>
       <geometry>
-        <box size="0.05 0.05 0.05"/>
+        <box size="0.2 0.2 1.0"/>
       </geometry>
-    </visual>
+    </collision>
+    <inertial>
+      <mass value="100"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
   </link>
 
-  <joint name="camera_base_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="camera_base_link"/>
-    <origin xyz="0.4 0 1.2"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="robot_stand"/>
+    <origin xyz="0 0 0.5"/>
   </joint>
 
-  <gazebo reference="camera_base_link">
-    <sensor name="camera_base" type="camera">
-      <update_rate>30</update_rate>
-    </sensor>
-  </gazebo>
-
-  <link name="camera_hand_link">
-    <visual>
-      <geometry>
-        <box size="0.04 0.04 0.04"/>
-      </geometry>
-    </visual>
-  </link>
-
-  <joint name="camera_hand_joint" type="fixed">
-    <parent link="tool0"/>
-    <child link="camera_hand_link"/>
-    <origin xyz="0.05 0 0.1"/>
+  <joint name="stand_joint" type="fixed">
+    <parent link="robot_stand"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.52"/>
   </joint>
 
-  <gazebo reference="camera_hand_link">
-    <sensor name="camera_hand" type="camera">
-      <update_rate>30</update_rate>
-    </sensor>
+
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control">
+      <robot_sim_type>gz_ros2_control/GazeboSimSystem</robot_sim_type>
+
+      <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
+      <parameters>$(find ros2srrc_endeffectors)/$(arg EE_name)/config/controller.yaml</parameters>
+    </plugin>
   </gazebo>
 
 </robot>
