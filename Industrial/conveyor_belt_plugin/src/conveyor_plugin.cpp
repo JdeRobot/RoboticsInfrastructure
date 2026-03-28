@@ -1,14 +1,12 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Entity.hh>
-#include <gz/sim/Util.hh>
 
-#include <gz/sim/components/LinearVelocity.hh>
+#include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
 
 #include <gz/plugin/Register.hh>
-
 #include <gz/math/Vector3.hh>
 
 #include <iostream>
@@ -32,7 +30,7 @@ public:
 
   gz::math::Vector3d dir_vec_{0,0,0};
 
-  gz::sim::Entity modelEntity_{gz::sim::kNullEntity};
+  bool debug_{true};
 
   void Configure(
       const gz::sim::Entity &_entity,
@@ -40,15 +38,22 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    modelEntity_ = _entity;
-
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
 
     if (_sdf->HasElement("direction"))
       direction_ = _sdf->Get<std::string>("direction");
 
+    if (_sdf->HasElement("debug"))
+      debug_ = _sdf->Get<bool>("debug");
+
     auto region = _sdf->FindElement("region");
+
+    if (!region)
+    {
+      std::cerr << "[Conveyor][ERROR] No region defined\n";
+      return;
+    }
 
     min_x_ = region->Get<double>("min_x");
     max_x_ = region->Get<double>("max_x");
@@ -61,32 +66,64 @@ public:
     else if (direction_ == "y") dir_vec_ = {0,1,0};
     else if (direction_ == "z") dir_vec_ = {0,0,1};
 
-    std::cout << "[Conveyor] Plugin cargado correctamente\n";
+    std::cout << "[Conveyor] Plugin cargado\n";
+
+    if (debug_)
+    {
+      std::cout << "[Conveyor][DEBUG] velocity: " << velocity_ << std::endl;
+      std::cout << "[Conveyor][DEBUG] direction: " << direction_ << std::endl;
+      std::cout << "[Conveyor][DEBUG] region: "
+                << "X(" << min_x_ << "," << max_x_ << ") "
+                << "Y(" << min_y_ << "," << max_y_ << ") "
+                << "Z(" << min_z_ << "," << max_z_ << ")"
+                << std::endl;
+    }
   }
 
   void PreUpdate(
       const gz::sim::UpdateInfo &/*_info*/,
       gz::sim::EntityComponentManager &_ecm) override
   {
-    _ecm.Each<gz::sim::components::Pose>(
+    static int counter = 0;
+    counter++;
+
+    if (debug_ && counter % 200 == 0)
+      std::cout << "[Conveyor][DEBUG] Update loop activo\n";
+
+    _ecm.Each<
+      gz::sim::components::Pose,
+      gz::sim::components::Name>(
       [&](const gz::sim::Entity &_entity,
-          const gz::sim::components::Pose *_pose)->bool
+          const gz::sim::components::Pose *_pose,
+          const gz::sim::components::Name *_name)->bool
       {
         auto pos = _pose->Data().Pos();
 
+        if (debug_ && counter % 500 == 0)
+        {
+          std::cout << "[Entity] " << _name->Data()
+                    << " Pos: " << pos << std::endl;
+        }
+
+        // comprobar si está en la región
         if (pos.X() > min_x_ && pos.X() < max_x_ &&
             pos.Y() > min_y_ && pos.Y() < max_y_ &&
             pos.Z() > min_z_ && pos.Z() < max_z_)
         {
+          if (debug_)
+          {
+            std::cout << "[Conveyor] Dentro de región: "
+                      << _name->Data() << std::endl;
+          }
+
           auto velComp =
-            _ecm.Component<gz::sim::components::LinearVelocity>(_entity);
+            _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
 
           if (!velComp)
           {
             _ecm.CreateComponent(
               _entity,
-              gz::sim::components::LinearVelocity(
-                dir_vec_ * velocity_));
+              gz::sim::components::LinearVelocityCmd(dir_vec_ * velocity_));
           }
           else
           {
