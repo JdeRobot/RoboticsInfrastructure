@@ -98,7 +98,7 @@ public:
           const gz::sim::components::Name *_name)->bool
       {
         auto pos = _pose->Data().Pos();
-n
+
         if (debug_ && counter % 500 == 0)
         {
           std::cout << "[Entity] " << _name->Data()
