@@ -16,7 +16,4 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(base_dir, "robot.launch.py"))
     )
 
-    return LaunchDescription([
-        world_launch,
-        robot_launch
-    ])
+    return LaunchDescription([world_launch, robot_launch])
