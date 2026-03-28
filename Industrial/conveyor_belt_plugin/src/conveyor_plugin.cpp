@@ -7,6 +7,7 @@
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
+#include <gz/msgs/wrench.pb.h>
 
 #include <iostream>
 
@@ -37,7 +38,7 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    std::cout << "[Conveyor] 🔧 Configurando...\n";
+    std::cout << "[Conveyor] Configurando plugin...\n";
 
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
@@ -67,7 +68,7 @@ public:
     else if (direction_ == "y") dir_vec_ = {0,1,0};
     else if (direction_ == "z") dir_vec_ = {0,0,1};
 
-    std::cout << "[Conveyor] Plugin cargado\n";
+    std::cout << "[Conveyor] Plugin cargado correctamente\n";
 
     if (debug_)
     {
@@ -115,28 +116,46 @@ public:
                       << _name->Data() << "\n";
           }
 
-          gz::math::Vector3d force = dir_vec_ * (velocity_ * 20.0);
+          gz::math::Vector3d forceVec = dir_vec_ * (velocity_ * 20.0);
+
+          gz::msgs::Wrench wrenchMsg;
+          wrenchMsg.mutable_force()->set_x(forceVec.X());
+          wrenchMsg.mutable_force()->set_y(forceVec.Y());
+          wrenchMsg.mutable_force()->set_z(0.0);
+
+          wrenchMsg.mutable_torque()->set_x(0.0);
+          wrenchMsg.mutable_torque()->set_y(0.0);
+          wrenchMsg.mutable_torque()->set_z(0.0);
 
           if (!wrenchComp)
           {
             _ecm.CreateComponent(
               _entity,
-              gz::sim::components::ExternalWorldWrenchCmd(
-                force,
-                gz::math::Vector3d(0,0,0)
-              )
+              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg)
             );
           }
           else
           {
-            wrenchComp->Data().force = force;
+            *wrenchComp =
+              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg);
           }
         }
         else
         {
           if (wrenchComp)
           {
-            wrenchComp->Data().force = {0,0,0};
+            gz::msgs::Wrench wrenchMsg;
+
+            wrenchMsg.mutable_force()->set_x(0.0);
+            wrenchMsg.mutable_force()->set_y(0.0);
+            wrenchMsg.mutable_force()->set_z(0.0);
+
+            wrenchMsg.mutable_torque()->set_x(0.0);
+            wrenchMsg.mutable_torque()->set_y(0.0);
+            wrenchMsg.mutable_torque()->set_z(0.0);
+
+            *wrenchComp =
+              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg);
 
             if (debug_ && counter % 200 == 0)
             {
@@ -151,7 +170,7 @@ public:
   }
 };
 
-}
+} 
 
 GZ_ADD_PLUGIN(
   conveyor::ConveyorSystem,
