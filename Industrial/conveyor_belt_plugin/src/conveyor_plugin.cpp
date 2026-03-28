@@ -1,5 +1,4 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
 #include <gz/sim/Entity.hh>
 
 #include <gz/sim/components/LinearVelocityCmd.hh>
@@ -30,14 +29,16 @@ public:
 
   gz::math::Vector3d dir_vec_{0,0,0};
 
-  bool debug_{true};
+  bool debug_{false};
 
   void Configure(
-      const gz::sim::Entity &_entity,
+      const gz::sim::Entity &/*_entity*/,
       const std::shared_ptr<const sdf::Element> &_sdf,
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
+    std::cout << "[Conveyor] Configurando plugin...\n";
+
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
 
@@ -51,7 +52,7 @@ public:
 
     if (!region)
     {
-      std::cerr << "[Conveyor][ERROR] No region defined\n";
+      std::cerr << "[Conveyor][ERROR] No region definida\n";
       return;
     }
 
@@ -70,13 +71,12 @@ public:
 
     if (debug_)
     {
-      std::cout << "[Conveyor][DEBUG] velocity: " << velocity_ << std::endl;
-      std::cout << "[Conveyor][DEBUG] direction: " << direction_ << std::endl;
-      std::cout << "[Conveyor][DEBUG] region: "
+      std::cout << "[DEBUG] velocity: " << velocity_ << "\n";
+      std::cout << "[DEBUG] direction: " << direction_ << "\n";
+      std::cout << "[DEBUG] region: "
                 << "X(" << min_x_ << "," << max_x_ << ") "
                 << "Y(" << min_y_ << "," << max_y_ << ") "
-                << "Z(" << min_z_ << "," << max_z_ << ")"
-                << std::endl;
+                << "Z(" << min_z_ << "," << max_z_ << ")\n";
     }
   }
 
@@ -88,7 +88,7 @@ public:
     counter++;
 
     if (debug_ && counter % 200 == 0)
-      std::cout << "[Conveyor][DEBUG] Update loop activo\n";
+      std::cout << "[DEBUG] Update activo\n";
 
     _ecm.Each<
       gz::sim::components::Pose,
@@ -99,35 +99,56 @@ public:
       {
         auto pos = _pose->Data().Pos();
 
-        if (debug_ && counter % 500 == 0)
-        {
-          std::cout << "[Entity] " << _name->Data()
-                    << " Pos: " << pos << std::endl;
-        }
+        bool inside =
+          pos.X() > min_x_ && pos.X() < max_x_ &&
+          pos.Y() > min_y_ && pos.Y() < max_y_ &&
+          pos.Z() > min_z_ && pos.Z() < max_z_;
 
-        // comprobar si está en la región
-        if (pos.X() > min_x_ && pos.X() < max_x_ &&
-            pos.Y() > min_y_ && pos.Y() < max_y_ &&
-            pos.Z() > min_z_ && pos.Z() < max_z_)
+        auto velComp =
+          _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+
+        if (inside)
         {
-          if (debug_)
+          if (debug_ && counter % 200 == 0)
           {
-            std::cout << "[Conveyor] Dentro de región: "
-                      << _name->Data() << std::endl;
+            std::cout << "[Conveyor] Dentro: "
+                      << _name->Data()
+                      << " Pos: " << pos << "\n";
           }
 
-          auto velComp =
-            _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+          gz::math::Vector3d newVel =
+            velComp ? velComp->Data() : gz::math::Vector3d(0,0,0);
+
+          if (direction_ == "x") newVel.X() = velocity_;
+          if (direction_ == "y") newVel.Y() = velocity_;
 
           if (!velComp)
           {
             _ecm.CreateComponent(
               _entity,
-              gz::sim::components::LinearVelocityCmd(dir_vec_ * velocity_));
+              gz::sim::components::LinearVelocityCmd(newVel));
           }
           else
           {
-            velComp->Data() = dir_vec_ * velocity_;
+            velComp->Data() = newVel;
+          }
+        }
+        else
+        {
+          if (velComp)
+          {
+            auto vel = velComp->Data();
+
+            if (direction_ == "x") vel.X() = 0;
+            if (direction_ == "y") vel.Y() = 0;
+
+            velComp->Data() = vel;
+
+            if (debug_ && counter % 200 == 0)
+            {
+              std::cout << "[Conveyor] Fuera: "
+                        << _name->Data() << "\n";
+            }
           }
         }
 
