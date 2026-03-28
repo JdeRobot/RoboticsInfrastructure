@@ -48,7 +48,7 @@ public:
     if (_sdf->HasElement("direction"))
       direction_ = _sdf->Get<std::string>("direction");
 
-    auto region = _sdf->GetElement("region");
+    auto region = _sdf->FindElement("region");
 
     min_x_ = region->Get<double>("min_x");
     max_x_ = region->Get<double>("max_x");
