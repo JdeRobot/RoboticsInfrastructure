@@ -20,37 +20,18 @@
       <collision name='base_footprint_fixed_joint_lump__base_collision'>
         <pose frame=''>0 0 0.06969 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.10938</length>
-            <radius>0.178</radius>
-          </cylinder>
-        </geometry>
-      </collision>
-
-      <collision name='base_footprint_fixed_joint_lump__camera_link_collision_1'>
-        <pose frame=''>-0.118 0 0.2812 0 -0 0</pose>
-        <geometry>
           <box>
-            <size>0.07271 0.27794 0.073</size>
+            <size>0.356 0.356 0.10938</size>
           </box>
         </geometry>
-        <surface>
-          <contact>
-            <ode/>
-          </contact>
-          <friction>
-            <ode/>
-          </friction>
-        </surface>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__caster_back_link_collision_2'>
         <pose frame=''>-0.135 0 0.0192 -1.5708 0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0176</length>
-            <radius>0.017</radius>
-          </cylinder>
+          <box>
+            <size>0.034 0.0176 0.0176</size>
+          </box>
         </geometry>
         <surface>
           <contact>
@@ -73,10 +54,9 @@
       <collision name='base_footprint_fixed_joint_lump__caster_front_link_collision_3'>
         <pose frame=''>0.115 0 0.0172 -1.5708 0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0176</length>
-            <radius>0.017</radius>
-          </cylinder>
+          <box>
+            <size>0.034 0.0176 0.0176</size>
+          </box>
         </geometry>
         <surface>
           <contact>
@@ -99,190 +79,171 @@
       <collision name='base_footprint_fixed_joint_lump__plate_bottom_link_collision_4'>
         <pose frame=''>0 0 0.1408 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.006</length>
-            <radius>0.17</radius>
-          </cylinder>
+          <box>
+            <size>0.34 0.34 0.006</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__plate_middle_link_collision_5'>
         <pose frame=''>0 0 0.1976 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.006</length>
-            <radius>0.17</radius>
-          </cylinder>
+          <box>
+            <size>0.34 0.34 0.006</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__plate_top_link_collision_6'>
         <pose frame=''>0 0 0.4068 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.006</length>
-            <radius>0.17</radius>
-          </cylinder>
+          <box>
+            <size>0.34 0.34 0.006</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_0_link_collision_7'>
         <pose frame=''>0.12 0.082 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_1_link_collision_8'>
         <pose frame=''>0.055 0.12 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_2_link_collision_9'>
         <pose frame=''>-0.055 0.12 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_3_link_collision_10'>
         <pose frame=''>0.12 -0.082 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_4_link_collision_11'>
         <pose frame=''>0.055 -0.12 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_bottom_5_link_collision_12'>
         <pose frame=''>-0.055 -0.12 0.113 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0492</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0492</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_kinect_0_link_collision_13'>
         <pose frame=''>-0.1024 0.098 0.2474 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0936</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0936</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_kinect_1_link_collision_14'>
         <pose frame=''>-0.1024 -0.098 0.2474 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0936</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0936</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_middle_0_link_collision_15'>
         <pose frame=''>0.0381 0.1505 0.1742 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0608</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0608</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_middle_1_link_collision_16'>
         <pose frame=''>0.0381 -0.1505 0.1742 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0608</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0608</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_middle_2_link_collision_17'>
         <pose frame=''>-0.0381 0.1505 0.1742 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0608</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0608</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_middle_3_link_collision_18'>
         <pose frame=''>-0.0381 -0.1505 0.1742 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.0608</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.0608</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_top_0_link_collision_19'>
         <pose frame=''>0.0381 0.1505 0.3022 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.2032</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.2032</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_top_1_link_collision_20'>
         <pose frame=''>0.0381 -0.1505 0.3022 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.2032</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.2032</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_top_2_link_collision_21'>
         <pose frame=''>-0.0381 0.1505 0.3022 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.2032</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.2032</size>
+          </box>
         </geometry>
       </collision>
 
       <collision name='base_footprint_fixed_joint_lump__pole_top_3_link_collision_22'>
         <pose frame=''>-0.0381 -0.1505 0.3022 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <length>0.2032</length>
-            <radius>0.006</radius>
-          </cylinder>
+          <box>
+            <size>0.012 0.012 0.2032</size>
+          </box>
         </geometry>
       </collision>
 
