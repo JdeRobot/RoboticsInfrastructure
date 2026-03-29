@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <model name="aws_robomaker_hospital_floor_03_floor">
     <link name="link">
-      <pose>0 0 0.005 0 0 0</pose>
+      <pose>0 0 0.005 1.57 0 0</pose>
       <visual name="visual">
         <geometry>
           <box>
@@ -11,7 +11,7 @@
         </geometry>
       </visual>
       <collision name="collision">
-        <pose>518.73 0 0.005 0 0 0</pose>
+        <pose>518.73 0 0.005 1.57 0 0</pose>
         <geometry>
           <box>
             <size>3162 2500 0.01</size>
