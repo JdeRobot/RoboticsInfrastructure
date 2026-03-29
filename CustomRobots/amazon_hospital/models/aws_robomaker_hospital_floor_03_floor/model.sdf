@@ -11,9 +11,9 @@
       </visual>
       <collision name="collision">
         <geometry>
-          <mesh>
-            <uri>model://aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
-          </mesh>
+          <box>
+            <size>3162 2500 0.1</size> <!-- X, Y (grosor), Z -->
+          </box>
         </geometry>
         <surface>
           <friction>

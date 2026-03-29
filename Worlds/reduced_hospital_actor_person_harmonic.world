@@ -749,7 +749,7 @@
         <include>
             <name>person2follow</name>
             <uri>model://PersonToFollowActor_harmonic</uri>
-            <pose>4 9 0 0 0 0</pose>
+            <pose>4 9 0.1 0 0 0</pose>
         </include>
         <include>
             <name>robot_follow_person</name>
