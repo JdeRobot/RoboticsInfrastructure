@@ -3,11 +3,12 @@
 
   <model name="conveyor_belt">
 
-    <static>false</static>
+    <static>true</static>
 
     <link name="link">
 
       <visual name="visual">
+        <pose>0 0 0.78 0 0 0</pose>
         <geometry>
           <mesh>
             <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
