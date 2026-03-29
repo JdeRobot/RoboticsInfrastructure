@@ -10,7 +10,7 @@ class BoxSpawner(Node):
     def __init__(self):
         super().__init__('box_spawner')
 
-        time.sleep(5)
+        time.sleep(10)
         self.timer = self.create_timer(3.0, self.spawn_box)
         self.counter = 0
 
@@ -23,7 +23,7 @@ class BoxSpawner(Node):
             "-name", name,
             "-x", "0.0",
             "-y", "0.0",
-            "-z", "0.75",
+            "-z", "0.8",
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
         ]
 
