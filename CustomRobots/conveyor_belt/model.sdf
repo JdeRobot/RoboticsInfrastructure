@@ -57,8 +57,8 @@
         <min_y>-0.6</min_y>
         <max_y>0.6</max_y>
 
-        <min_z>0.6</min_z>
-        <max_z>0.7</max_z>
+        <min_z>0.80</min_z>
+        <max_z>0.90</max_z>
       </region>
 
     </plugin>
