@@ -10,10 +10,11 @@
         </geometry>
       </visual>
       <collision name="collision">
+        <pose>518.73 0 0.005 0 0 0</pose>
         <geometry>
-          <mesh>
-            <uri>model://aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
-          </mesh>
+          <box>
+            <size>3162 2500 0.01</size>
+          </box>
         </geometry>
         <surface>
           <friction>
