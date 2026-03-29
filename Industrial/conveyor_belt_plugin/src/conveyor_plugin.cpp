@@ -1,13 +1,15 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/Entity.hh>
 
-#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
+#include <gz/sim/components/LinearVelocityCmd.hh>
+#include <gz/sim/components/LinearVelocity.hh>
 #include <gz/sim/components/Pose.hh>
-#include <gz/sim/components/Link.hh>
+#include <gz/sim/components/Name.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
-#include <gz/msgs/wrench.pb.h>
+
+#include <iostream>
 
 namespace conveyor
 {
@@ -19,8 +21,8 @@ class ConveyorSystem:
 {
 public:
 
-  double force_{5.0};
-  std::string direction_{"y"};
+  double velocity_{0.0};
+  std::string direction_{"x"};
 
   double min_x_, max_x_;
   double min_y_, max_y_;
@@ -28,19 +30,30 @@ public:
 
   gz::math::Vector3d dir_vec_{0,0,0};
 
+  bool debug_{true};
+
   void Configure(
       const gz::sim::Entity &/*_entity*/,
       const std::shared_ptr<const sdf::Element> &_sdf,
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    double velocity = _sdf->Get<double>("velocity");
+    if (_sdf->HasElement("velocity"))
+      velocity_ = _sdf->Get<double>("velocity");
 
-    force_ = velocity * 15.0;
+    if (_sdf->HasElement("direction"))
+      direction_ = _sdf->Get<std::string>("direction");
 
-    direction_ = _sdf->Get<std::string>("direction");
+    if (_sdf->HasElement("debug"))
+      debug_ = _sdf->Get<bool>("debug");
 
     auto region = _sdf->FindElement("region");
+
+    if (!region)
+    {
+      std::cerr << "[Conveyor][ERROR] No region defined\n";
+      return;
+    }
 
     min_x_ = region->Get<double>("min_x");
     max_x_ = region->Get<double>("max_x");
@@ -51,6 +64,9 @@ public:
 
     if (direction_ == "x") dir_vec_ = {1,0,0};
     else if (direction_ == "y") dir_vec_ = {0,1,0};
+    else if (direction_ == "z") dir_vec_ = {0,0,1};
+
+    std::cout << "[Conveyor] Plugin cargado\n";
   }
 
   void PreUpdate(
@@ -59,11 +75,14 @@ public:
   {
     _ecm.Each<
       gz::sim::components::Pose,
-      gz::sim::components::Link>(
+      gz::sim::components::Name>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Link *)->bool
+          const gz::sim::components::Name *_name)->bool
       {
+        if (_name->Data().find("box") == std::string::npos)
+          return true;
+
         auto pos = _pose->Data().Pos();
 
         bool inside =
@@ -71,27 +90,37 @@ public:
           pos.Y() > min_y_ && pos.Y() < max_y_ &&
           pos.Z() > min_z_ && pos.Z() < max_z_;
 
+        auto velRealComp =
+          _ecm.Component<gz::sim::components::LinearVelocity>(_entity);
+
+        gz::math::Vector3d currentVel =
+          velRealComp ? velRealComp->Data() : gz::math::Vector3d(0,0,0);
+
+        auto velCmdComp =
+          _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+
+        gz::math::Vector3d newVel = currentVel;
+
         if (inside)
         {
-          gz::msgs::Wrench wrench;
+          newVel += dir_vec_ * velocity_;
+        }
+        else
+        {
+          newVel -= dir_vec_ * velocity_ * 0.5;
+        }
 
-          wrench.mutable_force()->set_x(dir_vec_.X() * force_);
-          wrench.mutable_force()->set_y(dir_vec_.Y() * force_);
-          wrench.mutable_force()->set_z(0);
+        newVel.Z() = currentVel.Z();
 
-          auto wrenchComp =
-            _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(_entity);
-
-          if (!wrenchComp)
-          {
-            _ecm.CreateComponent(
-              _entity,
-              gz::sim::components::ExternalWorldWrenchCmd(wrench));
-          }
-          else
-          {
-            wrenchComp->Data() = wrench;
-          }
+        if (!velCmdComp)
+        {
+          _ecm.CreateComponent(
+            _entity,
+            gz::sim::components::LinearVelocityCmd(newVel));
+        }
+        else
+        {
+          velCmdComp->Data() = newVel;
         }
 
         return true;
