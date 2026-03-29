@@ -6,15 +6,15 @@
       <visual name="visual">
         <geometry>
           <box>
-            <size>3162 2500 0.01</size>
+            <size>300 250 0.01</size>
           </box>
         </geometry>
       </visual>
       <collision name="collision">
-        <pose>518.73 0 0.005 1.57 0 0</pose>
+        <pose>0 0 0.005 1.57 0 0</pose>
         <geometry>
           <box>
-            <size>3162 2500 0.01</size>
+            <size>300 250 0.01</size>
           </box>
         </geometry>
         <surface>
