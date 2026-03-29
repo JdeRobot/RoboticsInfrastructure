@@ -1,5 +1,5 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/components/JointVelocityCmd.hh>
+#include <gz/sim/components/JointForceCmd.hh>
 #include <gz/sim/components/JointPosition.hh>
 #include <gz/sim/components/Name.hh>
 
@@ -28,11 +28,16 @@ public:
       gz::sim::EntityComponentManager &_ecm,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
+    std::cout << "\n[Conveyor][INIT] Configuring plugin...\n";
+
     if (_sdf->HasElement("velocity"))
       velocity_ = _sdf->Get<double>("velocity");
 
     if (_sdf->HasElement("debug"))
       debug_ = _sdf->Get<bool>("debug");
+
+    std::cout << "[Conveyor][INIT] velocity: " << velocity_ << std::endl;
+    std::cout << "[Conveyor][INIT] debug: " << debug_ << std::endl;
 
     _ecm.Each<gz::sim::components::Name>(
       [&](const gz::sim::Entity &_entity,
@@ -42,9 +47,7 @@ public:
         {
           joint_ = _entity;
 
-          if (debug_)
-            std::cout << "[Conveyor][OK] Joint encontrado\n";
-
+          std::cout << "[Conveyor][OK] Joint encontrado: belt_joint\n";
           return false;
         }
         return true;
@@ -57,41 +60,66 @@ public:
   }
 
   void PreUpdate(
-      const gz::sim::UpdateInfo &/*_info*/,
+      const gz::sim::UpdateInfo &_info,
       gz::sim::EntityComponentManager &_ecm) override
   {
-    if (joint_ == gz::sim::kNullEntity)
+    if (_info.paused)
       return;
 
-    auto velComp =
-      _ecm.Component<gz::sim::components::JointVelocityCmd>(joint_);
-
-    if (!velComp)
+    if (joint_ == gz::sim::kNullEntity)
     {
-      _ecm.CreateComponent(
-        joint_,
-        gz::sim::components::JointVelocityCmd({velocity_}));
-    }
-    else
-    {
-      velComp->Data()[0] = velocity_;
+      std::cerr << "[Conveyor][ERROR] Joint inválido en PreUpdate\n";
+      return;
     }
 
     auto posComp =
       _ecm.Component<gz::sim::components::JointPosition>(joint_);
 
     if (!posComp)
-      return;
+    {
+      std::cerr << "[Conveyor][WARN] JointPosition no disponible\n";
+    }
+    else if (debug_)
+    {
+      double pos = posComp->Data()[0];
+      std::cout << "[Conveyor][DEBUG] Posición joint: " << pos << std::endl;
+    }
 
-    double pos = posComp->Data()[0];
+    double force = velocity_ * 50.0;
 
-    if (pos > 0.019)
+    auto forceComp =
+      _ecm.Component<gz::sim::components::JointForceCmd>(joint_);
+
+    if (!forceComp)
     {
       if (debug_)
+        std::cout << "[Conveyor][DEBUG] Creando JointForceCmd\n";
+
+      _ecm.CreateComponent(
+        joint_,
+        gz::sim::components::JointForceCmd({force}));
+    }
+    else
+    {
+      forceComp->Data()[0] = force;
+    }
+
+    if (debug_)
+    {
+      std::cout << "[Conveyor][DEBUG] Fuerza aplicada: " << force << std::endl;
+    }
+
+    if (posComp)
+    {
+      double pos = posComp->Data()[0];
+
+      if (pos > 0.019)
+      {
         std::cout << "[Conveyor][DEBUG] Reset posición belt\n";
 
-      _ecm.SetComponentData<gz::sim::components::JointPosition>(
-        joint_, {0.0});
+        _ecm.SetComponentData<gz::sim::components::JointPosition>(
+          joint_, {0.0});
+      }
     }
   }
 };
