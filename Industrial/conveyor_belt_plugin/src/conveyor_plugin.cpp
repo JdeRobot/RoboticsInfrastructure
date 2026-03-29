@@ -4,11 +4,10 @@
 #include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
+#include <gz/sim/components/Link.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
-
-#include <iostream>
 
 namespace conveyor
 {
@@ -29,8 +28,6 @@ public:
 
   gz::math::Vector3d dir_vec_{0,0,0};
 
-  bool debug_{true};
-
   void Configure(
       const gz::sim::Entity &/*_entity*/,
       const std::shared_ptr<const sdf::Element> &_sdf,
@@ -39,9 +36,6 @@ public:
   {
     velocity_ = _sdf->Get<double>("velocity");
     direction_ = _sdf->Get<std::string>("direction");
-
-    if (_sdf->HasElement("debug"))
-      debug_ = _sdf->Get<bool>("debug");
 
     auto region = _sdf->FindElement("region");
 
@@ -54,8 +48,6 @@ public:
 
     if (direction_ == "x") dir_vec_ = {1,0,0};
     else if (direction_ == "y") dir_vec_ = {0,1,0};
-
-    std::cout << "[Conveyor] Plugin cargado\n";
   }
 
   void PreUpdate(
@@ -64,10 +56,12 @@ public:
   {
     _ecm.Each<
       gz::sim::components::Pose,
-      gz::sim::components::Name>(
+      gz::sim::components::Name,
+      gz::sim::components::Link>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Name *_name)->bool
+          const gz::sim::components::Name *_name,
+          const gz::sim::components::Link *)->bool
       {
         auto pos = _pose->Data().Pos();
 
@@ -78,6 +72,9 @@ public:
 
         auto velComp =
           _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
+
+        if (!velComp && !inside)
+          return true;
 
         if (inside)
         {
@@ -99,36 +96,23 @@ public:
           }
         }
 
-        if (direction_ == "y" && velocity_ < 0)
-        {
-          if (pos.Y() < min_y_)
-          {
-            if (debug_)
-              std::cout << "[Conveyor] Eliminando: " << _name->Data() << std::endl;
+        bool remove = false;
 
-            _ecm.RequestRemoveEntity(_entity);
-          }
-        }
+        if (direction_ == "y" && velocity_ < 0)
+          remove = pos.Y() < (min_y_ - 0.05);
+
         else if (direction_ == "y" && velocity_ > 0)
-        {
-          if (pos.Y() > max_y_)
-          {
-            _ecm.RequestRemoveEntity(_entity);
-          }
-        }
+          remove = pos.Y() > (max_y_ + 0.05);
+
         else if (direction_ == "x" && velocity_ < 0)
-        {
-          if (pos.X() < min_x_)
-          {
-            _ecm.RequestRemoveEntity(_entity);
-          }
-        }
+          remove = pos.X() < (min_x_ - 0.05);
+
         else if (direction_ == "x" && velocity_ > 0)
+          remove = pos.X() > (max_x_ + 0.05);
+
+        if (remove && velComp)
         {
-          if (pos.X() > max_x_)
-          {
-            _ecm.RequestRemoveEntity(_entity);
-          }
+          _ecm.RequestRemoveEntity(_entity);
         }
 
         return true;
