@@ -10,7 +10,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
+            <uri>meshes/conveyor_belt.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -20,7 +20,7 @@
 
         <geometry>
           <box>
-            <size>0.5 1.2 0</size>
+            <size>0.5 1.2 0.00001</size>
           </box>
         </geometry>
 
@@ -34,8 +34,8 @@
 
           <friction>
             <ode>
-              <mu>100.0</mu>
-              <mu2>100.0</mu2>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
             </ode>
           </friction>
         </surface>
@@ -55,8 +55,8 @@
         <max_x>0.25</max_x>
         <min_y>-0.6</min_y>
         <max_y>0.6</max_y>
-        <min_z>0.7</min_z>
-        <max_z>1.0</max_z>
+        <min_z>0.75</min_z>
+        <max_z>0.85</max_z>
       </region>
 
     </plugin>
