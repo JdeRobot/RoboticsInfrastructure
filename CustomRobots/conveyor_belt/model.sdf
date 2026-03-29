@@ -10,7 +10,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>meshes/conveyor_belt.dae</uri>
+            <uri>model://conveyor_belt/meshes/conveyor_belt.dae</uri>
           </mesh>
         </geometry>
       </visual>
