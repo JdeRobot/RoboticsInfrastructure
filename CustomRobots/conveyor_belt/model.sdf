@@ -69,7 +69,7 @@
       </axis>
     </joint>
 
-    <plugin filename="libconveyor_system.so"
+    <plugin filename="libconveyor_plugin.so"
             name="conveyor::ConveyorSystem">
 
       <velocity>0.2</velocity>
