@@ -2,7 +2,6 @@
 #include <gz/sim/components/JointVelocityCmd.hh>
 #include <gz/sim/components/JointPosition.hh>
 #include <gz/sim/components/Name.hh>
-#include <gz/sim/Util.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -24,7 +23,7 @@ public:
   gz::sim::Entity joint_{gz::sim::kNullEntity};
 
   void Configure(
-      const gz::sim::Entity &_entity,
+      const gz::sim::Entity &/*_entity*/,
       const std::shared_ptr<const sdf::Element> &_sdf,
       gz::sim::EntityComponentManager &_ecm,
       gz::sim::EventManager &/*_eventMgr*/) override
@@ -35,15 +34,25 @@ public:
     if (_sdf->HasElement("debug"))
       debug_ = _sdf->Get<bool>("debug");
 
-    joint_ = gz::sim::model::JointByName(_ecm, _entity, "belt_joint");
+    _ecm.Each<gz::sim::components::Name>(
+      [&](const gz::sim::Entity &_entity,
+          const gz::sim::components::Name *_name)->bool
+      {
+        if (_name->Data() == "belt_joint")
+        {
+          joint_ = _entity;
+
+          if (debug_)
+            std::cout << "[Conveyor][OK] Joint encontrado\n";
+
+          return false;
+        }
+        return true;
+      });
 
     if (joint_ == gz::sim::kNullEntity)
     {
       std::cerr << "[Conveyor][ERROR] Joint NO encontrado\n";
-    }
-    else if (debug_)
-    {
-      std::cout << "[Conveyor][OK] Joint encontrado\n";
     }
   }
 
@@ -79,11 +88,10 @@ public:
     if (pos > 0.019)
     {
       if (debug_)
-        std::cout << "[Conveyor] Reset belt position\n";
+        std::cout << "[Conveyor][DEBUG] Reset posición belt\n";
 
-      _ecm.SetComponentData(
-        joint_,
-        gz::sim::components::JointPosition({0.0}));
+      _ecm.SetComponentData<gz::sim::components::JointPosition>(
+        joint_, {0.0});
     }
   }
 };
