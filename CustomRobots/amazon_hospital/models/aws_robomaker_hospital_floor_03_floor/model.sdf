@@ -10,6 +10,7 @@
         </geometry>
       </visual>
       <collision name="collision">
+      <pose>0 0 0 1.57 0 0</pose> 
         <geometry>
           <box>
             <size>100 100 0.01</size>
