@@ -27,15 +27,15 @@
 
           <contact>
             <ode>
-              <kp>1000000</kp>
-              <kd>1000</kd>
+              <kp>100000</kp>
+              <kd>10</kd>
             </ode>
           </contact>
 
           <friction>
             <ode>
-              <mu>20.0</mu>
-              <mu2>20.0</mu2>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
             </ode>
           </friction>
 
