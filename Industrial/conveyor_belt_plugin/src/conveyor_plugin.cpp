@@ -9,6 +9,8 @@
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
 
+#include <string>
+
 namespace conveyor
 {
 
@@ -63,6 +65,11 @@ public:
           const gz::sim::components::Name *_name,
           const gz::sim::components::Link *)->bool
       {
+        const std::string &name = _name->Data();
+
+        if (name.find("box") == std::string::npos)
+          return true;
+
         auto pos = _pose->Data().Pos();
 
         bool inside =
@@ -72,9 +79,6 @@ public:
 
         auto velComp =
           _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
-
-        if (!velComp && !inside)
-          return true;
 
         if (inside)
         {
@@ -110,7 +114,7 @@ public:
         else if (direction_ == "x" && velocity_ > 0)
           remove = pos.X() > (max_x_ + 0.05);
 
-        if (remove && velComp)
+        if (remove)
         {
           _ecm.RequestRemoveEntity(_entity);
         }
