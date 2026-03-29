@@ -68,7 +68,7 @@
             <static>true</static>
             <pose>-0.013823 -0.013783 0 -1.57 -0 0</pose>
         </include>
-        <!--include>
+        <include>
             <name>nursesstation</name>
             <uri>model://aws_robomaker_hospital_nursesstation_01</uri>
             <static>true</static>
@@ -745,7 +745,7 @@
             <uri>model://Chair</uri>
             <static>true</static>
             <pose>1.30985 -0.727185 -0 0 0 -1.53446</pose>
-        </include-->
+        </include>
         <include>
             <name>person2follow</name>
             <uri>model://PersonToFollowActor_harmonic</uri>
@@ -754,7 +754,7 @@
         <include>
             <name>robot_follow_person</name>
             <uri>model://turtlebot2_harmonic</uri>
-            <pose>-1.0 10.0 1.0 0.0 0.0 0</pose>
+            <pose>-1.0 10.0 0.5 0.0 0.0 0</pose>
         </include>
     </world>
 </sdf>
