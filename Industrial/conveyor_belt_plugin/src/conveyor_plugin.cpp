@@ -4,12 +4,11 @@
 #include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/Name.hh>
-#include <gz/sim/components/Link.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
 
-#include <string>
+#include <iostream>
 
 namespace conveyor
 {
@@ -30,16 +29,30 @@ public:
 
   gz::math::Vector3d dir_vec_{0,0,0};
 
+  bool debug_{true};
+
   void Configure(
       const gz::sim::Entity &/*_entity*/,
       const std::shared_ptr<const sdf::Element> &_sdf,
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    velocity_ = _sdf->Get<double>("velocity");
-    direction_ = _sdf->Get<std::string>("direction");
+    if (_sdf->HasElement("velocity"))
+      velocity_ = _sdf->Get<double>("velocity");
+
+    if (_sdf->HasElement("direction"))
+      direction_ = _sdf->Get<std::string>("direction");
+
+    if (_sdf->HasElement("debug"))
+      debug_ = _sdf->Get<bool>("debug");
 
     auto region = _sdf->FindElement("region");
+
+    if (!region)
+    {
+      std::cerr << "[Conveyor][ERROR] No region defined\n";
+      return;
+    }
 
     min_x_ = region->Get<double>("min_x");
     max_x_ = region->Get<double>("max_x");
@@ -50,6 +63,9 @@ public:
 
     if (direction_ == "x") dir_vec_ = {1,0,0};
     else if (direction_ == "y") dir_vec_ = {0,1,0};
+    else if (direction_ == "z") dir_vec_ = {0,0,1};
+
+    std::cout << "[Conveyor] Plugin cargado\n";
   }
 
   void PreUpdate(
@@ -58,18 +74,11 @@ public:
   {
     _ecm.Each<
       gz::sim::components::Pose,
-      gz::sim::components::Name,
-      gz::sim::components::Link>(
+      gz::sim::components::Name>(
       [&](const gz::sim::Entity &_entity,
           const gz::sim::components::Pose *_pose,
-          const gz::sim::components::Name *_name,
-          const gz::sim::components::Link *)->bool
+          const gz::sim::components::Name *_name)->bool
       {
-        const std::string &name = _name->Data();
-
-        if (name.find("box") == std::string::npos)
-          return true;
-
         auto pos = _pose->Data().Pos();
 
         bool inside =
@@ -99,24 +108,17 @@ public:
             velComp->Data() = vel;
           }
         }
-
-        bool remove = false;
-
-        if (direction_ == "y" && velocity_ < 0)
-          remove = pos.Y() < (min_y_ - 0.05);
-
-        else if (direction_ == "y" && velocity_ > 0)
-          remove = pos.Y() > (max_y_ + 0.05);
-
-        else if (direction_ == "x" && velocity_ < 0)
-          remove = pos.X() < (min_x_ - 0.05);
-
-        else if (direction_ == "x" && velocity_ > 0)
-          remove = pos.X() > (max_x_ + 0.05);
-
-        if (remove)
+        else
         {
-          _ecm.RequestRemoveEntity(_entity);
+          if (velComp)
+          {
+            auto vel = velComp->Data();
+
+            if (direction_ == "x") vel.X() = 0;
+            if (direction_ == "y") vel.Y() = 0;
+
+            velComp->Data() = vel;
+          }
         }
 
         return true;
