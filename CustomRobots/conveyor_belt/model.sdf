@@ -16,19 +16,20 @@
       </visual>
 
       <collision name="collision">
-        <pose>0 0 0.78 0 0 0</pose>
+        <pose>0 0 0.8 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.5 1.2 0.05</size>
+            <size>0.5 1.2 0.1</size>
           </box>
         </geometry>
 
         <surface>
           <contact>
             <ode>
-              <kp>1000000</kp>
-              <kd>1000</kd>
+              <kp>100000</kp>
+              <kd>100</kd>
+              <min_depth>0.001</min_depth>
             </ode>
           </contact>
 
