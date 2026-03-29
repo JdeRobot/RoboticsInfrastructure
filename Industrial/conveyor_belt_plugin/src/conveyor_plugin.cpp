@@ -27,8 +27,6 @@ public:
   double min_y_, max_y_;
   double min_z_, max_z_;
 
-  gz::math::Vector3d dir_vec_{0,0,0};
-
   bool debug_{true};
 
   void Configure(
@@ -61,17 +59,15 @@ public:
     min_z_ = region->Get<double>("min_z");
     max_z_ = region->Get<double>("max_z");
 
-    if (direction_ == "x") dir_vec_ = {1,0,0};
-    else if (direction_ == "y") dir_vec_ = {0,1,0};
-    else if (direction_ == "z") dir_vec_ = {0,0,1};
-
     std::cout << "[Conveyor] Plugin cargado\n";
   }
 
   void PreUpdate(
-      const gz::sim::UpdateInfo &/*_info*/,
+      const gz::sim::UpdateInfo &_info,
       gz::sim::EntityComponentManager &_ecm) override
   {
+    double dt = _info.dt.count() / 1e9;
+
     _ecm.Each<
       gz::sim::components::Pose,
       gz::sim::components::Name>(
@@ -89,36 +85,35 @@ public:
         auto velComp =
           _ecm.Component<gz::sim::components::LinearVelocityCmd>(_entity);
 
+        gz::math::Vector3d vel =
+          velComp ? velComp->Data() : gz::math::Vector3d(0,0,0);
+
         if (inside)
         {
-          gz::math::Vector3d vel =
-            velComp ? velComp->Data() : gz::math::Vector3d(0,0,0);
+          if (direction_ == "x")
+            vel.X() += velocity_ * dt;
 
-          if (direction_ == "x") vel.X() = velocity_;
-          if (direction_ == "y") vel.Y() = velocity_;
-
-          if (!velComp)
-          {
-            _ecm.CreateComponent(
-              _entity,
-              gz::sim::components::LinearVelocityCmd(vel));
-          }
-          else
-          {
-            velComp->Data() = vel;
-          }
+          if (direction_ == "y")
+            vel.Y() += velocity_ * dt;
         }
         else
         {
-          if (velComp)
-          {
-            auto vel = velComp->Data();
+          if (direction_ == "x")
+            vel.X() *= 0.9;
 
-            if (direction_ == "x") vel.X() = 0;
-            if (direction_ == "y") vel.Y() = 0;
+          if (direction_ == "y")
+            vel.Y() *= 0.9;
+        }
 
-            velComp->Data() = vel;
-          }
+        if (!velComp)
+        {
+          _ecm.CreateComponent(
+            _entity,
+            gz::sim::components::LinearVelocityCmd(vel));
+        }
+        else
+        {
+          velComp->Data() = vel;
         }
 
         return true;
