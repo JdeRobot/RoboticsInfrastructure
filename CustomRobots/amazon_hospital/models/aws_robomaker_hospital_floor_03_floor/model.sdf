@@ -12,9 +12,10 @@
       <collision name="collision">
         <geometry>
           <box>
-            <size>3162 2500 0.1</size> <!-- X, Y (grosor), Z -->
+            <size>3162 2500 0.1</size>
           </box>
         </geometry>
+        <pose>0 0 0.05 0 0 0</pose>
         <surface>
           <friction>
             <ode>
