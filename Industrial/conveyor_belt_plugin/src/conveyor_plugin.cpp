@@ -60,6 +60,7 @@ public:
   }
 
   void PreUpdate(
+    std::cout << "[DEBUG] PreUpdate ENTER" << std::endl;
       const gz::sim::UpdateInfo &_info,
       gz::sim::EntityComponentManager &_ecm) override
   {

@@ -14,7 +14,7 @@
         </inertia>
       </inertial>
 
-      <gravity>false</gravity>
+      <gravity>true</gravity>
 
       <collision name="collision">
         <geometry>
