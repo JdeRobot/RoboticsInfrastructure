@@ -37,22 +37,13 @@ public:
       gz::sim::EntityComponentManager &/*_ecm*/,
       gz::sim::EventManager &/*_eventMgr*/) override
   {
-    if (_sdf->HasElement("velocity"))
-      velocity_ = _sdf->Get<double>("velocity");
-
-    if (_sdf->HasElement("direction"))
-      direction_ = _sdf->Get<std::string>("direction");
+    velocity_ = _sdf->Get<double>("velocity");
+    direction_ = _sdf->Get<std::string>("direction");
 
     if (_sdf->HasElement("debug"))
       debug_ = _sdf->Get<bool>("debug");
 
     auto region = _sdf->FindElement("region");
-
-    if (!region)
-    {
-      std::cerr << "[Conveyor][ERROR] No region defined\n";
-      return;
-    }
 
     min_x_ = region->Get<double>("min_x");
     max_x_ = region->Get<double>("max_x");
@@ -63,7 +54,6 @@ public:
 
     if (direction_ == "x") dir_vec_ = {1,0,0};
     else if (direction_ == "y") dir_vec_ = {0,1,0};
-    else if (direction_ == "z") dir_vec_ = {0,0,1};
 
     std::cout << "[Conveyor] Plugin cargado\n";
   }
@@ -108,16 +98,36 @@ public:
             velComp->Data() = vel;
           }
         }
-        else
+
+        if (direction_ == "y" && velocity_ < 0)
         {
-          if (velComp)
+          if (pos.Y() < min_y_)
           {
-            auto vel = velComp->Data();
+            if (debug_)
+              std::cout << "[Conveyor] Eliminando: " << _name->Data() << std::endl;
 
-            if (direction_ == "x") vel.X() = 0;
-            if (direction_ == "y") vel.Y() = 0;
-
-            velComp->Data() = vel;
+            _ecm.RequestRemoveEntity(_entity);
+          }
+        }
+        else if (direction_ == "y" && velocity_ > 0)
+        {
+          if (pos.Y() > max_y_)
+          {
+            _ecm.RequestRemoveEntity(_entity);
+          }
+        }
+        else if (direction_ == "x" && velocity_ < 0)
+        {
+          if (pos.X() < min_x_)
+          {
+            _ecm.RequestRemoveEntity(_entity);
+          }
+        }
+        else if (direction_ == "x" && velocity_ > 0)
+        {
+          if (pos.X() > max_x_)
+          {
+            _ecm.RequestRemoveEntity(_entity);
           }
         }
 
