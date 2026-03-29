@@ -40,18 +40,25 @@ public:
     std::cout << "[Conveyor][INIT] debug: " << debug_ << std::endl;
 
     _ecm.Each<gz::sim::components::Name>(
-      [&](const gz::sim::Entity &_entity,
-          const gz::sim::components::Name *_name)->bool
+    [&](const gz::sim::Entity &_entity,
+        const gz::sim::components::Name *_name)->bool
+    {
+      if (_name->Data() == "belt_joint")
       {
-        if (_name->Data() == "belt_joint")
-        {
-          joint_ = _entity;
+        joint_ = _entity;
 
-          std::cout << "[Conveyor][OK] Joint encontrado: belt_joint\n";
-          return false;
-        }
-        return true;
-      });
+        std::cout << "[Conveyor][OK] Joint encontrado\n";
+
+        _ecm.CreateComponent(
+          joint_,
+          gz::sim::components::JointForceCmd({0.1}));
+
+        std::cout << "[Conveyor][INIT] Fuerza inicial aplicada\n";
+
+        return false;
+      }
+      return true;
+    });
 
     if (joint_ == gz::sim::kNullEntity)
     {
@@ -60,10 +67,12 @@ public:
   }
 
   void PreUpdate(
-    std::cout << "[DEBUG] PreUpdate ENTER" << std::endl;
       const gz::sim::UpdateInfo &_info,
       gz::sim::EntityComponentManager &_ecm) override
   {
+
+    std::cout << "[DEBUG] PreUpdate ENTER" << std::endl;
+    
     if (_info.paused)
       return;
 

@@ -10,8 +10,8 @@ class BoxSpawner(Node):
     def __init__(self):
         super().__init__('box_spawner')
 
-        time.sleep(10)
-        self.timer = self.create_timer(3.0, self.spawn_box)
+        time.sleep(5)
+        self.timer = self.create_timer(10.0, self.spawn_box)
         self.counter = 0
 
     def spawn_box(self):
