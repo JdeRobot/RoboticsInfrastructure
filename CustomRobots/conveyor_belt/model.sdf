@@ -20,7 +20,7 @@
 
         <geometry>
           <box>
-            <size>0.5 1.2 0.00001</size>
+            <size>0.5 1.2 0.05</size>
           </box>
         </geometry>
 
@@ -47,16 +47,18 @@
     <plugin filename="libconveyor_plugin.so"
             name="conveyor::ConveyorSystem">
 
-      <velocity>0.3</velocity>
+      <velocity>-0.3</velocity>
       <direction>y</direction>
+      <debug>true</debug>
 
       <region>
         <min_x>-0.25</min_x>
         <max_x>0.25</max_x>
         <min_y>-0.6</min_y>
         <max_y>0.6</max_y>
-        <min_z>0.75</min_z>
-        <max_z>0.85</max_z>
+
+        <min_z>0.80</min_z>
+        <max_z>0.90</max_z>
       </region>
 
     </plugin>
