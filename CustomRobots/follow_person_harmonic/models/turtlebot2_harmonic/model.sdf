@@ -484,16 +484,16 @@
 
       <velocity_decay/>
 
-      <sensor name='camera' type='camera'>
+      <sensor name='camera' type='rgbd_camera'>
         <always_on>1</always_on>
-        <update_rate>10</update_rate>
+        <update_rate>5</update_rate>
         <topic>/depth_camera</topic>
         <camera name='__default__'>
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <format>B8G8R8</format>
-            <width>320</width>
-            <height>240</height>
+            <width>160</width>
+            <height>120</height>
           </image>
           <clip>
             <near>0.05</near>
