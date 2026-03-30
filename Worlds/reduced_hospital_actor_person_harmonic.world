@@ -68,7 +68,7 @@
             <static>true</static>
             <pose>-0.013823 -0.013783 0 -1.57 -0 0</pose>
         </include>
-        <!--include>
+        <include>
             <name>nursesstation</name>
             <uri>model://aws_robomaker_hospital_nursesstation_01</uri>
             <static>true</static>
@@ -175,7 +175,7 @@
             <uri>model://PotatoChipChair</uri>
             <static>true</static>
             <pose>-7.9025 6.49258 0 0 -0 0</pose>
-        </include-->
+        </include>
         <include>
             <name>PotatoChipChair2</name>
             <uri>model://PotatoChipChair</uri>
