@@ -1,135 +1,94 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/components/JointForceCmd.hh>
-#include <gz/sim/components/JointPosition.hh>
 #include <gz/sim/components/Name.hh>
+#include <gz/sim/components/Model.hh>
+#include <gz/sim/components/Link.hh>
+#include <gz/sim/components/Pose.hh>
+#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
 
 #include <gz/plugin/Register.hh>
+#include <gz/math/Vector3.hh>
+#include <gz/msgs/wrench.pb.h>
 
-#include <iostream>
-
-namespace conveyor
+namespace box_mover
 {
 
-class ConveyorSystem:
+class BoxMoverPlugin:
   public gz::sim::System,
-  public gz::sim::ISystemConfigure,
   public gz::sim::ISystemPreUpdate
 {
 public:
 
-  double velocity_{0.2};
-  bool debug_{true};
-
-  gz::sim::Entity joint_{gz::sim::kNullEntity};
-
-  void Configure(
-      const gz::sim::Entity &/*_entity*/,
-      const std::shared_ptr<const sdf::Element> &_sdf,
-      gz::sim::EntityComponentManager &_ecm,
-      gz::sim::EventManager &/*_eventMgr*/) override
+  void PreUpdate(
+    const gz::sim::UpdateInfo &,
+    gz::sim::EntityComponentManager &_ecm) override
   {
-    std::cout << "\n[Conveyor][INIT] Configuring plugin...\n";
-
-    if (_sdf->HasElement("velocity"))
-      velocity_ = _sdf->Get<double>("velocity");
-
-    if (_sdf->HasElement("debug"))
-      debug_ = _sdf->Get<bool>("debug");
-
-    std::cout << "[Conveyor][INIT] velocity: " << velocity_ << std::endl;
-    std::cout << "[Conveyor][INIT] debug: " << debug_ << std::endl;
-
-    _ecm.Each<gz::sim::components::Name>(
-    [&](const gz::sim::Entity &_entity,
-        const gz::sim::components::Name *_name)->bool
-    {
-      if (_name->Data() == "belt_joint")
+    _ecm.Each<
+      gz::sim::components::Model,
+      gz::sim::components::Name,
+      gz::sim::components::Pose>(
+      [&](const gz::sim::Entity &_entity,
+          const gz::sim::components::Model *,
+          const gz::sim::components::Name *_name,
+          const gz::sim::components::Pose *_pose)->bool
       {
-        joint_ = _entity;
+        std::string name = _name->Data();
 
-        std::cout << "[Conveyor][OK] Joint encontrado\n";
+        // 🔥 solo cajas
+        if (name.find("box_") == std::string::npos)
+          return true;
 
-        _ecm.CreateComponent(
-          joint_,
-          gz::sim::components::JointForceCmd({0.1}));
+        auto pos = _pose->Data().Pos();
 
-        std::cout << "[Conveyor][INIT] Fuerza inicial aplicada\n";
+        // 🔥 REGIÓN DE LA CINTA (AJUSTA ESTO)
+        bool inside =
+          pos.X() > -0.25 && pos.X() < 0.25 &&
+          pos.Y() > -0.6  && pos.Y() < 0.6 &&
+          pos.Z() > 0  && pos.Z() < 0.80;
 
-        return false;
-      }
-      return true;
-    });
+        if (!inside)
+          return true;
 
-    if (joint_ == gz::sim::kNullEntity)
-    {
-      std::cerr << "[Conveyor][ERROR] Joint NO encontrado\n";
-    }
+        // 🔥 aplicar fuerza solo dentro
+        auto links = _ecm.ChildrenByComponents(
+          _entity, gz::sim::components::Link());
+
+        for (auto link : links)
+        {
+          ApplyForce(_ecm, link);
+        }
+
+        return true;
+      });
   }
 
-  void PreUpdate(
-      const gz::sim::UpdateInfo &_info,
-      gz::sim::EntityComponentManager &_ecm) override
+  void ApplyForce(
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::Entity entity)
   {
+    gz::math::Vector3d force(0, -0.5, 0);
 
-    std::cout << "[DEBUG] PreUpdate ENTER" << std::endl;
-    
-    if (_info.paused)
-      return;
+    gz::msgs::Wrench wrenchMsg;
 
-    if (joint_ == gz::sim::kNullEntity)
+    wrenchMsg.mutable_force()->set_x(force.X());
+    wrenchMsg.mutable_force()->set_y(force.Y());
+    wrenchMsg.mutable_force()->set_z(0);
+
+    wrenchMsg.mutable_torque()->set_x(0);
+    wrenchMsg.mutable_torque()->set_y(0);
+    wrenchMsg.mutable_torque()->set_z(0);
+
+    auto comp =
+      _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(entity);
+
+    if (!comp)
     {
-      std::cerr << "[Conveyor][ERROR] Joint inválido en PreUpdate\n";
-      return;
-    }
-
-    auto posComp =
-      _ecm.Component<gz::sim::components::JointPosition>(joint_);
-
-    if (!posComp)
-    {
-      std::cerr << "[Conveyor][WARN] JointPosition no disponible\n";
-    }
-    else if (debug_)
-    {
-      double pos = posComp->Data()[0];
-      std::cout << "[Conveyor][DEBUG] Posición joint: " << pos << std::endl;
-    }
-
-    double force = velocity_ * 50.0;
-
-    auto forceComp =
-      _ecm.Component<gz::sim::components::JointForceCmd>(joint_);
-
-    if (!forceComp)
-    {
-      if (debug_)
-        std::cout << "[Conveyor][DEBUG] Creando JointForceCmd\n";
-
       _ecm.CreateComponent(
-        joint_,
-        gz::sim::components::JointForceCmd({force}));
+        entity,
+        gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg));
     }
     else
     {
-      forceComp->Data()[0] = force;
-    }
-
-    if (debug_)
-    {
-      std::cout << "[Conveyor][DEBUG] Fuerza aplicada: " << force << std::endl;
-    }
-
-    if (posComp)
-    {
-      double pos = posComp->Data()[0];
-
-      if (pos > 0.019)
-      {
-        std::cout << "[Conveyor][DEBUG] Reset posición belt\n";
-
-        _ecm.SetComponentData<gz::sim::components::JointPosition>(
-          joint_, {0.0});
-      }
+      comp->Data() = wrenchMsg;
     }
   }
 };
@@ -137,10 +96,8 @@ public:
 }
 
 GZ_ADD_PLUGIN(
-  conveyor::ConveyorSystem,
+  box_mover::BoxMoverPlugin,
   gz::sim::System,
-  conveyor::ConveyorSystem::ISystemConfigure,
-  conveyor::ConveyorSystem::ISystemPreUpdate
-)
+  box_mover::BoxMoverPlugin::ISystemPreUpdate)
 
-GZ_ADD_PLUGIN_ALIAS(conveyor::ConveyorSystem, "conveyor::ConveyorSystem")
+GZ_ADD_PLUGIN_ALIAS(box_mover::BoxMoverPlugin, "box_mover::BoxMoverPlugin")
