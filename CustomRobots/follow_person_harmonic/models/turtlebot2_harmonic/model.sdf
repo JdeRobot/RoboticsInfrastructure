@@ -484,16 +484,16 @@
 
       <velocity_decay/>
 
-      <!--sensor name='camera' type='rgbd_camera'>
+      <sensor name='camera' type='rgbd_camera'>
         <always_on>1</always_on>
-        <update_rate>20</update_rate>
+        <update_rate>10</update_rate>
         <topic>/depth_camera</topic>
         <camera name='__default__'>
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <format>B8G8R8</format>
-            <width>640</width>
-            <height>480</height>
+            <width>320</width>
+            <height>240</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -501,7 +501,7 @@
           </clip>
         </camera>
         <pose frame=''>-0.118 0 0.2812 0 -0 0</pose>
-      </sensor-->
+      </sensor>
 
       <velocity_decay/>
 
@@ -509,7 +509,7 @@
 
       <velocity_decay/>
 
-      <sensor name='cliff_sensor_front' type='ray'>
+      <!--sensor name='cliff_sensor_front' type='ray'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
         <visualize>1</visualize>
@@ -577,7 +577,7 @@
           </range>
         </ray>
         <pose frame=''>0.085 -0.13601 0.0316 3.14159 1.57079 3.14159</pose>
-      </sensor>
+      </sensor-->
 
       <gravity>1</gravity>
 
@@ -906,7 +906,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>360</samples>
+              <samples>180</samples>
               <resolution>1.000000</resolution>
               <min_angle>-3.140000</min_angle>
               <max_angle>3.140000</max_angle>
