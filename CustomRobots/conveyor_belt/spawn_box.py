@@ -26,7 +26,7 @@ class BoxSpawner(Node):
             "-name", name,
             "-x", str(x_random),
             "-y", "0.58",
-            "-z", "0.78",
+            "-z", "0.8",
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
         ]
 
