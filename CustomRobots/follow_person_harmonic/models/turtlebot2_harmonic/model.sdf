@@ -486,14 +486,14 @@
 
       <sensor name='camera' type='camera'>
         <always_on>1</always_on>
-        <update_rate>20</update_rate>
+        <update_rate>10</update_rate>
         <topic>/camera</topic>
         <camera name='__default__'>
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <format>B8G8R8</format>
-            <width>640</width>
-            <height>480</height>
+            <width>320</width>
+            <height>240</height>
           </image>
           <clip>
             <near>0.05</near>
