@@ -492,8 +492,8 @@
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <format>B8G8R8</format>
-            <width>640</width>
-            <height>480</height>
+            <width>320</width>
+            <height>240</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -906,7 +906,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>360</samples>
+              <samples>180</samples>
               <resolution>1.000000</resolution>
               <min_angle>-3.140000</min_angle>
               <max_angle>3.140000</max_angle>
@@ -918,7 +918,7 @@
             <resolution>0.010000</resolution>
           </range>
         </ray>
-        <update_rate>20.000000</update_rate>
+        <update_rate>10.000000</update_rate>
         <always_on>1</always_on>
         <visualize>0</visualize>
         <topic>/scan</topic>
