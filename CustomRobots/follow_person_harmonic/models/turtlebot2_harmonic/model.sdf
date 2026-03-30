@@ -36,8 +36,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
+              <kp>1000</kp>
+              <kd>10</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -61,8 +61,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
+              <kp>1000</kp>
+              <kd>10</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -675,8 +675,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
+              <kp>1000</kp>
+              <kd>10</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -757,8 +757,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
+              <kp>1000</kp>
+              <kd>10</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -906,7 +906,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>180</samples>
+              <samples>90</samples>
               <resolution>1.000000</resolution>
               <min_angle>-3.140000</min_angle>
               <max_angle>3.140000</max_angle>
