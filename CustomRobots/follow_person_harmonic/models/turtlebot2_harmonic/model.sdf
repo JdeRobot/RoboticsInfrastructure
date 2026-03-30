@@ -484,7 +484,7 @@
 
       <velocity_decay/>
 
-      <sensor name='camera' type='rgbd_camera'>
+      <sensor name='camera' type='camera'>
         <always_on>1</always_on>
         <update_rate>10</update_rate>
         <topic>/depth_camera</topic>
