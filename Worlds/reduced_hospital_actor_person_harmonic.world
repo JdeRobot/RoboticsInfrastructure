@@ -175,7 +175,7 @@
             <uri>model://PotatoChipChair</uri>
             <static>true</static>
             <pose>-7.9025 6.49258 0 0 -0 0</pose>
-        </include>
+        </include-->
         <include>
             <name>PotatoChipChair2</name>
             <uri>model://PotatoChipChair</uri>
@@ -637,7 +637,7 @@
             <uri>model://MalePatientBed</uri>
             <static>true</static>
             <pose>11.3771 -7.38891 0.001658 -1e-06 1e-06 3.11598</pose>
-        </include-->
+        </include>
         <include>
             <name>StorageRackCoverOpen</name>
             <uri>model://StorageRackCoverOpen</uri>
