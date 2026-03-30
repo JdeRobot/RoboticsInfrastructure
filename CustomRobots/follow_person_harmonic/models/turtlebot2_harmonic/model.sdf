@@ -26,7 +26,7 @@
         </geometry>
       </collision>
 
-      <!--collision name='base_footprint_fixed_joint_lump__caster_back_link_collision_2'>
+      <collision name='base_footprint_fixed_joint_lump__caster_back_link_collision_2'>
         <pose frame=''>-0.135 0 0.0192 -1.5708 0 0</pose>
         <geometry>
           <box>
@@ -36,8 +36,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1000</kp>
-              <kd>10</kd>
+              <kp>1e+06</kp>
+              <kd>100</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -61,8 +61,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1000</kp>
-              <kd>10</kd>
+              <kp>1e+06</kp>
+              <kd>100</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -245,7 +245,7 @@
             <size>0.012 0.012 0.2032</size>
           </box>
         </geometry>
-      </collision-->
+      </collision>
 
       <visual name='base_footprint_fixed_joint_lump__base_link_visual'>
         <pose frame=''>0.001 0 0.06219 0 -0 0</pose>
@@ -471,20 +471,20 @@
 
       <velocity_decay/>
 
-      <!--sensor name='bumpers' type='contact'>
+      <sensor name='bumpers' type='contact'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <contact>
           <collision>base_footprint_fixed_joint_lump__base_collision</collision>
           <topic>__default_topic__</topic>
         </contact>
         <pose frame=''>0 0 0.0102 0 -0 0</pose>
-      </sensor-->
+      </sensor>
 
       <velocity_decay/>
 
-      <sensor name='camera' type='rgbd_camera'>
+      <!--sensor name='camera' type='rgbd_camera'>
         <always_on>1</always_on>
         <update_rate>20</update_rate>
         <topic>/depth_camera</topic>
@@ -492,8 +492,8 @@
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <format>B8G8R8</format>
-            <width>320</width>
-            <height>240</height>
+            <width>640</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -501,7 +501,7 @@
           </clip>
         </camera>
         <pose frame=''>-0.118 0 0.2812 0 -0 0</pose>
-      </sensor>
+      </sensor-->
 
       <velocity_decay/>
 
@@ -509,10 +509,10 @@
 
       <velocity_decay/>
 
-      <!--sensor name='cliff_sensor_front' type='ray'>
+      <sensor name='cliff_sensor_front' type='ray'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <ray>
           <scan>
             <horizontal>
@@ -536,7 +536,7 @@
       <sensor name='cliff_sensor_left' type='ray'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <ray>
           <scan>
             <horizontal>
@@ -560,7 +560,7 @@
       <sensor name='cliff_sensor_right' type='ray'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <ray>
           <scan>
             <horizontal>
@@ -577,7 +577,7 @@
           </range>
         </ray>
         <pose frame=''>0.085 -0.13601 0.0316 3.14159 1.57079 3.14159</pose>
-      </sensor-->
+      </sensor>
 
       <gravity>1</gravity>
 
@@ -675,8 +675,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1000</kp>
-              <kd>10</kd>
+              <kp>1e+06</kp>
+              <kd>100</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -757,8 +757,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>1000</kp>
-              <kd>10</kd>
+              <kp>1e+06</kp>
+              <kd>100</kd>
               <max_vel>1</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
@@ -895,7 +895,7 @@
         </ray>
         <update_rate>20.000000</update_rate>
         <always_on>1</always_on>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
           <topicName>/turtlebot2_harmonic/laser/scan</topicName>
           <frameName>hokuyo_link</frameName>
@@ -906,7 +906,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>90</samples>
+              <samples>360</samples>
               <resolution>1.000000</resolution>
               <min_angle>-3.140000</min_angle>
               <max_angle>3.140000</max_angle>
@@ -918,9 +918,9 @@
             <resolution>0.010000</resolution>
           </range>
         </ray>
-        <update_rate>10.000000</update_rate>
+        <update_rate>20.000000</update_rate>
         <always_on>1</always_on>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <topic>/scan</topic>
       </sensor>
 
