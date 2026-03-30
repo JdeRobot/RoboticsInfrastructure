@@ -7,7 +7,7 @@
 
     <link name="link">
 
-      <pose>0 0 0.7 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
 
       <inertial>
         <mass>1000.0</mass>
@@ -18,7 +18,6 @@
         </inertia>
       </inertial>
 
-      <!-- 🔥 CORREGIDO: mover mesh -->
       <visual name="visual">
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -28,28 +27,12 @@
         </geometry>
       </visual>
 
-      <!-- DEBUG -->
-      <visual name="collision_debug">
-        <pose>0 0 0.7 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.5 1.2 0.08</size>
-          </box>
-        </geometry>
-        <material>
-          <ambient>0 1 0 0.3</ambient>
-          <diffuse>0 1 0 0.3</diffuse>
-        </material>
-        <transparency>0.5</transparency>
-      </visual>
-
-      <!-- COLLISION (NO TOCAR) -->
       <collision name="collision">
-        <pose>0 0 0.7 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.5 1.2 0.08</size>
+            <size>0.5 1.2 1.48</size>
           </box>
         </geometry>
 

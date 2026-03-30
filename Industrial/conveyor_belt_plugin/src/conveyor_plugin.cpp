@@ -33,22 +33,19 @@ public:
       {
         std::string name = _name->Data();
 
-        // 🔥 solo cajas
         if (name.find("box_") == std::string::npos)
           return true;
 
         auto pos = _pose->Data().Pos();
 
-        // 🔥 REGIÓN DE LA CINTA (AJUSTA ESTO)
         bool inside =
           pos.X() > -0.25 && pos.X() < 0.25 &&
           pos.Y() > -0.6  && pos.Y() < 0.6 &&
-          pos.Z() > 0  && pos.Z() < 0.80;
+          pos.Z() > 0.6 && pos.Z() < 0.90;
 
         if (!inside)
           return true;
 
-        // 🔥 aplicar fuerza solo dentro
         auto links = _ecm.ChildrenByComponents(
           _entity, gz::sim::components::Link());
 
