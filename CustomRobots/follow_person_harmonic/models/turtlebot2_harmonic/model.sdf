@@ -484,13 +484,9 @@
 
       <velocity_decay/>
 
-      <sensor name='camera_rgb' type='camera'>
-        <always_on>1</always_on>
-        <update_rate>20</update_rate>
-        <pose frame=''>0 0 0.3 0 0 0</pose>
-
-        <camera name='__default__'>
-          <horizontal_fov>1.0472</horizontal_fov>
+      <sensor name="camera" type="camera">
+        <camera>
+          <horizontal_fov>1.047</horizontal_fov>
           <image>
             <width>640</width>
             <height>480</height>
@@ -501,15 +497,10 @@
             <far>8</far>
           </clip>
         </camera>
-
-        <plugin filename="gz-sim-camera-system" name="gz::sim::systems::Camera">
-          <image_topic>/camera/image_raw</image_topic>
-          <camera_name>camera_rgb</camera_name>
-          <width>640</width>
-          <height>480</height>
-          <format>R8G8B8</format>
-          <horizontal_fov>1.0472</horizontal_fov>
-        </plugin>
+        <always_on>1</always_on>
+        <update_rate>20</update_rate>
+        <visualize>true</visualize>
+        <topic>camera/image_raw</topic>
       </sensor>
 
       <velocity_decay/>
