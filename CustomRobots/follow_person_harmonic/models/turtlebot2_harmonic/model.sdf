@@ -26,7 +26,7 @@
         </geometry>
       </collision>
 
-      <collision name='base_footprint_fixed_joint_lump__caster_back_link_collision_2'>
+      <!--collision name='base_footprint_fixed_joint_lump__caster_back_link_collision_2'>
         <pose frame=''>-0.135 0 0.0192 -1.5708 0 0</pose>
         <geometry>
           <box>
@@ -103,7 +103,7 @@
         </geometry>
       </collision>
 
-      <!--collision name='base_footprint_fixed_joint_lump__pole_bottom_0_link_collision_7'>
+      <collision name='base_footprint_fixed_joint_lump__pole_bottom_0_link_collision_7'>
         <pose frame=''>0.12 0.082 0.113 0 -0 0</pose>
         <geometry>
           <box>
@@ -471,7 +471,7 @@
 
       <velocity_decay/>
 
-      <sensor name='bumpers' type='contact'>
+      <!--sensor name='bumpers' type='contact'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
         <visualize>0</visualize>
@@ -480,7 +480,7 @@
           <topic>__default_topic__</topic>
         </contact>
         <pose frame=''>0 0 0.0102 0 -0 0</pose>
-      </sensor>
+      </sensor-->
 
       <velocity_decay/>
 
@@ -509,7 +509,7 @@
 
       <velocity_decay/>
 
-      <sensor name='cliff_sensor_front' type='ray'>
+      <!--sensor name='cliff_sensor_front' type='ray'>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
         <visualize>0</visualize>
@@ -577,7 +577,7 @@
           </range>
         </ray>
         <pose frame=''>0.085 -0.13601 0.0316 3.14159 1.57079 3.14159</pose>
-      </sensor>
+      </sensor-->
 
       <gravity>1</gravity>
 
