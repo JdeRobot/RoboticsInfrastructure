@@ -6,14 +6,14 @@
       <visual name="visual">
 	    <geometry>
           <box>
-            <size>30 50 0.01</size>
+            <size>25 40 0.01</size>
           </box>
         </geometry>
       </visual>
       <collision name="collision">
         <geometry>
           <box>
-            <size>30 50 0.01</size>
+            <size>25 40 0.01</size>
           </box>
         </geometry>
         <surface>
@@ -26,14 +26,12 @@
         </surface>
       </collision>   
       <material>
-        <diffuse>1 1 1 1</diffuse>
-        <ambient>1 1 1 1</ambient>
-        <pbr>
-          <metal>
-            <albedo_map>model://aws_robomaker_hospital_floor_03_floor/materials/textures/aws_robomaker_hospital_floor_01_floor.png</albedo_map>
-          </metal>
-        </pbr>
-      </material> 
+        <script>
+          <uri>model://aws_robomaker_hospital_floor_03_floor/materials/scripts</uri>
+          <uri>model://aws_robomaker_hospital_floor_03_floor/materials/textures</uri>
+          <name>HospitalFloor</name>
+        </script>
+      </material>
 </link>
   <static>1</static>
   </model>
