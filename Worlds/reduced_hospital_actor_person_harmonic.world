@@ -637,7 +637,7 @@
             <uri>model://MalePatientBed</uri>
             <static>true</static>
             <pose>11.3771 -7.38891 0.001658 -1e-06 1e-06 3.11598</pose>
-        </include>
+        </include-->
         <include>
             <name>StorageRackCoverOpen</name>
             <uri>model://StorageRackCoverOpen</uri>
@@ -745,7 +745,7 @@
             <uri>model://Chair</uri>
             <static>true</static>
             <pose>1.30985 -0.727185 -0 0 0 -1.53446</pose>
-        </include-->
+        </include>
         <include>
             <name>person2follow</name>
             <uri>model://PersonToFollowActor_harmonic</uri>
