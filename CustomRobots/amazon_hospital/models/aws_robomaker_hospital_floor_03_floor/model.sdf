@@ -4,10 +4,10 @@
     <link name="link">
       <pose>0 0 0 1.57 0 0</pose> 
       <visual name="visual">
-	    <geometry>
-          <box>
-            <size>25 40 0.01</size>
-          </box>
+        <geometry>
+          <mesh>
+            <uri>model://aws_robomaker_hospital_floor_03_floor/meshes/aws_robomaker_hospital_floor_03_floor_visual.dae</uri>
+          </mesh>
         </geometry>
       </visual>
       <collision name="collision">
@@ -25,13 +25,6 @@
           </friction>
         </surface>
       </collision>   
-      <material>
-        <script>
-          <uri>model://aws_robomaker_hospital_floor_03_floor/materials/scripts</uri>
-          <uri>model://aws_robomaker_hospital_floor_03_floor/materials/textures</uri>
-          <name>HospitalFloor</name>
-        </script>
-      </material>
 </link>
   <static>1</static>
   </model>
