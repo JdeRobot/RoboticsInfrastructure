@@ -491,9 +491,9 @@
         <camera name='__default__'>
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
-            <format>R8G8B8</format>
-            <width>320</width>
-            <height>240</height>
+            <format>L8</format>
+            <width>640</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.05</near>
