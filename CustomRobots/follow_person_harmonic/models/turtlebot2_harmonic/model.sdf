@@ -497,7 +497,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>5</far>
+            <far>8</far>
           </clip>
         </camera>
         <pose frame=''>-0.118 0 0.2812 0 -0 0</pose>
