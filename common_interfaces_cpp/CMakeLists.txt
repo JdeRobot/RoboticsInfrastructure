@@ -34,11 +34,11 @@ ament_target_dependencies(${PROJECT_NAME} ${DEPENDENCIES})
 
 # Install the library so other packages in the workspace can use it
 install(TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
-
 # Export all listed dependencies for downstream packages
 ament_export_dependencies(${DEPENDENCIES})
 ament_export_targets(${PROJECT_NAME} HAS_LIBRARY_TARGET)
