@@ -489,7 +489,8 @@
         <update_rate>5</update_rate>
         <topic>/depth_camera/image</topic>
         <camera name='__default__'>
-          <horizontal_fov>0.8</horizontal_fov>
+          <horizontal_fov>1.0472</horizontal_fov>
+          
           <image>
             <format>B8G8R8</format>
             <width>640</width>
