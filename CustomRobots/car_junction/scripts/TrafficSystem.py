@@ -71,7 +71,7 @@ class CarSpawner(object):
                 del self.active_models[name]
                 print(f"Removed {name}")
                 
-                self.node.request(f"/world/{self.world}/update", Empty(), Empty, Empty, 1000)
+                self.node.request(f"/world/{self.world}/step", Empty(), Empty, Empty, 1000)
 
 
 def etoq(yaw, pitch, roll):

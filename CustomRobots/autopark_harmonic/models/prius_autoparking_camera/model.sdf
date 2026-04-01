@@ -177,6 +177,9 @@
             <near>0.01</near>
             <far>200</far>
           </clip>
+          <render>
+            <clear_every_frame>true</clear_every_frame>
+          </render>
           <noise>
             <type>gaussian</type>
             <mean>0</mean>
