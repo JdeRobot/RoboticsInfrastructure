@@ -19,14 +19,11 @@
       </inertial>
 
       <collision name="collision">
-        <!-- Ajusta si hace falta -->
-        <pose>0 0 0 1.57 0 0</pose>
 
         <geometry>
-          <cylinder>
-            <radius>0.02</radius>
-            <length>0.12</length>
-          </cylinder>
+          <box>
+            <size>0.04 0.12 0.04</size>
+          </box>
         </geometry>
 
         <surface>

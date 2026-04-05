@@ -5,6 +5,7 @@ from rclpy.node import Node
 import subprocess
 import time
 import random
+import math
 
 class sausageSpawner(Node):
 
@@ -20,6 +21,7 @@ class sausageSpawner(Node):
         name = f"box_{self.counter}"
 
         x_random = random.uniform(-0.18, 0.18)
+        yaw = random.uniform(-2*math.pi, 2*math.pi)
 
         cmd = [
             "ros2", "run", "ros_gz_sim", "create",
@@ -27,6 +29,9 @@ class sausageSpawner(Node):
             "-x", str(x_random),
             "-y", "0.58",
             "-z", "0.8",
+            "-R", "0", 
+            "-P", "0", 
+            "-Y", str(yaw),
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/sausage.sdf"
         ]
 

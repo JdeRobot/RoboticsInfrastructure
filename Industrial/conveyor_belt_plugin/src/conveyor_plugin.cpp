@@ -4,6 +4,8 @@
 #include <gz/sim/components/Link.hh>
 #include <gz/sim/components/Pose.hh>
 #include <gz/sim/components/ExternalWorldWrenchCmd.hh>
+#include <gz/sim/components/LinearVelocity.hh>
+#include <gz/sim/components/LinearVelocityCmd.hh>
 
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
@@ -43,15 +45,16 @@ public:
           pos.Y() > -0.6  && pos.Y() < 0.6 &&
           pos.Z() > 0.6 && pos.Z() < 0.90;
 
-        if (!inside)
-          return true;
-
         auto links = _ecm.ChildrenByComponents(
           _entity, gz::sim::components::Link());
 
         for (auto link : links)
         {
-          ApplyForce(_ecm, link);
+          if (inside)
+          {
+            ApplyForce(_ecm, link);
+            StabilizeMotion(_ecm, link);
+          }
         }
 
         return true;
@@ -86,6 +89,35 @@ public:
     else
     {
       comp->Data() = wrenchMsg;
+    }
+  }
+
+  void StabilizeMotion(
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::Entity entity)
+  {
+    auto velComp =
+      _ecm.Component<gz::sim::components::LinearVelocity>(entity);
+
+    if (!velComp)
+      return;
+
+    auto vel = velComp->Data();
+
+    vel.X() = 0;
+
+    auto cmdComp =
+      _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
+
+    if (!cmdComp)
+    {
+      _ecm.CreateComponent(
+        entity,
+        gz::sim::components::LinearVelocityCmd(vel));
+    }
+    else
+    {
+      cmdComp->Data() = vel;
     }
   }
 };
