@@ -170,7 +170,7 @@ install(
 
 install(
   PROGRAMS
-    conveyor_belt/spawn_box.py
+    conveyor_belt/spawn_sausage.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

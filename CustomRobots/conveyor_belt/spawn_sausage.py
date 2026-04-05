@@ -6,16 +6,16 @@ import subprocess
 import time
 import random
 
-class BoxSpawner(Node):
+class sausageSpawner(Node):
 
     def __init__(self):
-        super().__init__('box_spawner')
+        super().__init__('sausage_spawner')
 
         time.sleep(5)
-        self.timer = self.create_timer(7.0, self.spawn_box)
+        self.timer = self.create_timer(7.0, self.spawn_sausage)
         self.counter = 0
 
-    def spawn_box(self):
+    def spawn_sausage(self):
 
         name = f"box_{self.counter}"
 
@@ -27,7 +27,7 @@ class BoxSpawner(Node):
             "-x", str(x_random),
             "-y", "0.58",
             "-z", "0.8",
-            "-file", "/home/ws/src/CustomRobots/conveyor_belt/box.sdf"
+            "-file", "/home/ws/src/CustomRobots/conveyor_belt/sausage.sdf"
         ]
 
         subprocess.run(cmd)
@@ -38,7 +38,7 @@ class BoxSpawner(Node):
 
 def main():
     rclpy.init()
-    node = BoxSpawner()
+    node = sausageSpawner()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()

@@ -17,7 +17,7 @@ def generate_launch_description():
 
     spawner = Node(
         package="custom_robots",
-        executable="spawn_box.py",
+        executable="spawn_sausage.py",
         name="box_spawner",
         output="screen"
     )
