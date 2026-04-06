@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "rclcpp/rclcpp.hpp"
-#include "gazebo_msgs/msg/contacts_state.hpp"
+#include "ros_gz_interfaces/msg/contacts.hpp"
 
 /* ### AUXILIARY FUNCTIONS ### */
 
@@ -21,7 +21,7 @@ public:
     std::string to_string() const;
 };
 
-BumperData contactsToBumperData(const std::vector<gazebo_msgs::msg::ContactsState>& contacts);
+BumperData contactsToBumperData(const std::vector<ros_gz_interfaces::msg::Contacts>& contacts);
 
 /* ### HAL INTERFACE ### */
 class BumperNode : public rclcpp::Node {
@@ -30,13 +30,13 @@ public:
     BumperData getBumperData() const;
 
 private:
-    void right_callback(const gazebo_msgs::msg::ContactsState::SharedPtr contact);
-    void center_callback(const gazebo_msgs::msg::ContactsState::SharedPtr contact);
-    void left_callback(const gazebo_msgs::msg::ContactsState::SharedPtr contact);
+    void right_callback(const ros_gz_interfaces::msg::Contacts::SharedPtr contact);
+    void center_callback(const ros_gz_interfaces::msg::Contacts::SharedPtr contact);
+    void left_callback(const ros_gz_interfaces::msg::Contacts::SharedPtr contact);
 
     std::vector<std::string> topics;
-    std::vector<rclcpp::Subscription<gazebo_msgs::msg::ContactsState>::SharedPtr> subs_;
-    std::vector<gazebo_msgs::msg::ContactsState> contact_states_;
+    std::vector<rclcpp::Subscription<ros_gz_interfaces::msg::Contacts>::SharedPtr> subs_;
+    std::vector<ros_gz_interfaces::msg::Contacts> contact_states_;
 };
 
 #endif
