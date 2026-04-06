@@ -62,14 +62,14 @@
         </material>
       </visual>
 
-      <collision name="plate_0_collision">
+      <!--collision name="plate_0_collision">
         <pose>-0.043340 0 0.084757 0 0 0</pose>
         <geometry>
           <box>
             <size>0.233502 0.314845 0.006401</size>
           </box>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="plate_0_visual">
         <pose>-0.043340 0 0.084757 0 0 0</pose>
@@ -80,14 +80,14 @@
         </geometry>
       </visual>
 
-      <collision name="plate_1_collision">
+      <!--collision name="plate_1_collision">
         <pose>-0.002660 0 0.141907 0 0 0</pose>
         <geometry>
           <box>
             <size>0.314856 0.314856 0.006401</size>
           </box>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="plate_1_visual">
         <pose>-0.002660 0 0.141907 0 0 0</pose>
@@ -98,14 +98,14 @@
         </geometry>
       </visual>
 
-      <collision name="plate_2_collision">
+      <!--collision name="plate_2_collision">
         <pose>-0.002660 0 0.199108 0 0 0</pose>
         <geometry>
           <box>
             <size>0.314856 0.314856 0.006401</size>
           </box>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="plate_2_visual">
         <pose>-0.002660 0 0.199108 0 0 0</pose>
@@ -116,14 +116,14 @@
         </geometry>
       </visual>
 
-      <collision name="plate_3_collision">
+      <!--collision name="plate_3_collision">
         <pose>-0.015820 0 0.405457 0 0 0</pose>
         <geometry>
           <box>
             <size>0.288000 0.315000 0.006401</size>
           </box>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="plate_3_visual">
         <pose>-0.015820 0 0.405457 0 0 0</pose>
@@ -134,7 +134,7 @@
         </geometry>
       </visual>
 
-      <collision name="spacer_0_collision">
+      <!--collision name="spacer_0_collision">
         <pose>-0.002540 0.111468 0.079992 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -142,7 +142,7 @@
             <length>0.003175</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="spacer_0_visual">
         <pose>-0.002540 0.111468 0.079992 0 0 0</pose>
@@ -153,7 +153,7 @@
         </geometry>
       </visual>
 
-      <collision name="spacer_1_collision">
+      <!--collision name="spacer_1_collision">
         <pose>-0.002540 -0.111468 0.079992 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -161,7 +161,7 @@
             <length>0.003175</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="spacer_1_visual">
         <pose>-0.002540 -0.111468 0.079992 0 0 0</pose>
@@ -172,7 +172,7 @@
         </geometry>
       </visual>
 
-      <collision name="spacer_2_collision">
+      <!--collision name="spacer_2_collision">
         <pose>-0.072390 -0.111468 0.079992 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -180,7 +180,7 @@
             <length>0.003175</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="spacer_2_visual">
         <pose>-0.072390 -0.111468 0.079992 0 0 0</pose>
@@ -191,7 +191,7 @@
         </geometry>
       </visual>
 
-      <collision name="spacer_3_collision">
+      <!--collision name="spacer_3_collision">
         <pose>-0.072390 0.111468 0.079992 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -199,7 +199,7 @@
             <length>0.003175</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="spacer_3_visual">
         <pose>-0.072390 0.111468 0.079992 0 0 0</pose>
@@ -210,7 +210,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_0_collision">
+      <!--collision name="standoff_2in_0_collision">
         <pose>0.067640 0.131420 0.087980 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -218,7 +218,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_0_visual">
         <pose>0.067640 0.131420 0.087980 0 0 0</pose>
@@ -229,7 +229,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_1_collision">
+      <!--collision name="standoff_2in_1_collision">
         <pose>0.067640 -0.131420 0.087980 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -237,7 +237,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_1_visual">
         <pose>0.067640 -0.131420 0.087980 0 0 0</pose>
@@ -248,7 +248,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_2_collision">
+      <!--collision name="standoff_2in_2_collision">
         <pose>-0.052832 -0.131420 0.087980 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -256,7 +256,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_2_visual">
         <pose>-0.052832 -0.131420 0.087980 0 0 0</pose>
@@ -267,7 +267,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_3_collision">
+      <!--collision name="standoff_2in_3_collision">
         <pose>-0.052832 0.131420 0.087980 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -275,7 +275,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_3_visual">
         <pose>-0.052832 0.131420 0.087980 0 0 0</pose>
@@ -286,7 +286,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_4_collision">
+      <!--collision name="standoff_2in_4_collision">
         <pose>0.067640 0.131420 0.145130 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -305,7 +305,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_5_collision">
+      <!--collision name="standoff_2in_5_collision">
         <pose>0.067640 -0.131420 0.145130 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -324,7 +324,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_6_collision">
+      <!--collision name="standoff_2in_6_collision">
         <pose>-0.052832 -0.131420 0.145130 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -332,7 +332,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_6_visual">
         <pose>-0.052832 -0.131420 0.145130 0 0 0</pose>
@@ -343,7 +343,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_2in_7_collision">
+      <!--collision name="standoff_2in_7_collision">
         <pose>-0.052832 0.131420 0.145130 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -351,7 +351,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_7_visual">
         <pose>-0.052832 0.131420 0.145130 0 0 0</pose>
@@ -362,7 +362,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_8in_0_collision">
+      <!--collision name="standoff_8in_0_collision">
         <pose>0.067640 0.131420 0.202280 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -370,7 +370,7 @@
             <length>0.203200</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_8in_0_visual">
         <pose>0.067640 0.131420 0.202280 0 0 0</pose>
@@ -381,7 +381,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_8in_1_collision">
+      <!--collision name="standoff_8in_1_collision">
         <pose>0.067640 -0.131420 0.202280 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -389,7 +389,7 @@
             <length>0.203200</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_8in_1_visual">
         <pose>0.067640 -0.131420 0.202280 0 0 0</pose>
@@ -400,7 +400,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_8in_2_collision">
+      <!--collision name="standoff_8in_2_collision">
         <pose>-0.052832 -0.131420 0.202280 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -408,7 +408,7 @@
             <length>0.203200</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_8in_2_visual">
         <pose>-0.052832 -0.131420 0.202280 0 0 0</pose>
@@ -419,7 +419,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_8in_3_collision">
+      <!--collision name="standoff_8in_3_collision">
         <pose>-0.052832 0.131420 0.202280 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -427,7 +427,7 @@
             <length>0.203200</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_8in_3_visual">
         <pose>-0.052832 0.131420 0.202280 0 0 0</pose>
@@ -438,7 +438,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_kinect_0_collision">
+      <!--collision name="standoff_kinect_0_collision">
         <pose>-0.105098 0.098000 0.202308 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -446,7 +446,7 @@
             <length>0.008585</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_kinect_0_visual">
         <pose>-0.105098 0.098000 0.202308 0 0 0</pose>
@@ -457,7 +457,7 @@
         </geometry>
       </visual>
 
-      <collision name="standoff_kinect_1_collision">
+      <!--collision name="standoff_kinect_1_collision">
         <pose>-0.105098 -0.098000 0.202308 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -465,7 +465,7 @@
             <length>0.008585</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_kinect_1_visual">
         <pose>-0.105098 -0.098000 0.202308 0 0 0</pose>
@@ -567,7 +567,7 @@
         </plugin>
       </sensor> -->
 
-      <sensor name='laser' type='ray'>
+      <!--sensor name='laser' type='ray'>
         <ray>
           <scan>
             <horizontal>
@@ -588,7 +588,7 @@
         <visualize>1</visualize>
         <topic>/turtlebotROS/laser/scan</topic>
         <gz_frame_id>hokuyo_link</gz_frame_id>
-      </sensor>
+      </sensor-->
 
       <velocity_decay>
         <linear>0.000000</linear>
