@@ -1,4 +1,4 @@
-#include "common_interfaces_cpp/odometry.hpp"
+#include "common_interfaces_cpp/hal/odometry.hpp"
 #include <sstream>
 #include <cmath>
 
