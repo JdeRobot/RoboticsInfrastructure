@@ -294,7 +294,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_4_visual">
         <pose>0.067640 0.131420 0.145130 0 0 0</pose>
@@ -313,7 +313,7 @@
             <length>0.063500</length>
           </cylinder>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual name="standoff_2in_5_visual">
         <pose>0.067640 -0.131420 0.145130 0 0 0</pose>
@@ -926,7 +926,7 @@
           <mesh>
             <uri>model://turtlebotJde2cam/meshes/sonyvid30/sonyvid30_mid.dae</uri>
             <scale>0.600000 1.000000 1.000000</scale>
-           /mesh>
+           </mesh>
           </geometry>
         </visual>
 
