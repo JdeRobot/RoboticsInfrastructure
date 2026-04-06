@@ -14,6 +14,7 @@ set(ros2_dependencies
   gazebo_msgs
   rosgraph_msgs
   cv_bridge
+  ros_gz_interfaces
 )
 
 # Find ament_cmake (required for the build system itself)
