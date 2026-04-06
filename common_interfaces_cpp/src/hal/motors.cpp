@@ -1,4 +1,4 @@
-#include "common_interfaces_cpp/motors.hpp"
+#include "common_interfaces_cpp/hal/motors.hpp"
 
 MotorsNode::MotorsNode(const std::string& topic, double maxV, double maxW) 
     : Node("motors_node") {
