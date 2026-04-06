@@ -46,6 +46,14 @@ std::shared_ptr<Image> imageMsg2Image(const sensor_msgs::msg::Image& img) {
     return image;
 }
 
+cv::Mat depthToRGB8(const cv::Mat& gray_img_buff, const std::string& encoding) {
+    cv::Mat color_img;
+    if (!gray_img_buff.empty()) {
+        cv::cvtColor(gray_img_buff, color_img, cv::COLOR_GRAY2BGR);
+    }
+    return color_img;
+}
+
 CameraNode::CameraNode(const std::string& topic) 
     : Node("camera_node") {
     sub_ = this->create_subscription<sensor_msgs::msg::Image>(
