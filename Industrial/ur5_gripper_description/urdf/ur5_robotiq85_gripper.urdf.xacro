@@ -104,5 +104,11 @@
     sim_gz="true"
     use_fake_hardware="false"
   />
+
+  <gazebo>
+  <plugin filename="gz_ros2_control-system"
+          name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+  </plugin>
+</gazebo>
   
 </robot>
