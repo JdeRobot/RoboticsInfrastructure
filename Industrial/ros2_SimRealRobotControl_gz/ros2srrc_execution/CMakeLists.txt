@@ -127,18 +127,6 @@ install(
   DESTINATION 
     share/${PROJECT_NAME}
 )
-install(PROGRAMS
-  
-  python/RobotState.py
-  python/SpawnObject.py
-  python/ExecuteProgram.py
-  
-  python/testClients/test_Move.py
-  python/testClients/test_RobMove.py
-  python/testClients/test_PG.py
-  python/testClients/test_VG.py
 
-  DESTINATION lib/${PROJECT_NAME} 
-)
 
 ament_package()
