@@ -147,17 +147,27 @@ def generate_launch_description():
     load_joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=[
+            "joint_trajectory_controller",
+            "--param-file",
+            controllers_file,
+            "-c",
+            "/controller_manager"
+        ],
         output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
-    load_gripper_controller = Node(
+    load_joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["gripper_controller", "-c", "/controller_manager"],
+        arguments=[
+            "joint_trajectory_controller",
+            "--param-file",
+            controllers_file,
+            "-c",
+            "/controller_manager"
+        ],
         output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
     moveit_config_package = "ur5_gripper_moveit_config"
