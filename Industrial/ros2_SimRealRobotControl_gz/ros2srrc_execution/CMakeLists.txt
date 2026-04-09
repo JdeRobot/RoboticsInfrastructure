@@ -44,8 +44,6 @@ find_package(std_msgs REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
-# REQUIRED to -> ABB:
-find_package(abb_robot_msgs REQUIRED)
 
 # REQUIRED to -> Robotiq:
 find_package(ros2_robotiqgripper REQUIRED)
@@ -105,7 +103,6 @@ ament_target_dependencies(
   std_msgs
   rclcpp_action
   ros2srrc_data
-  abb_robot_msgs
   yaml-cpp
   ament_index_cpp
 )
