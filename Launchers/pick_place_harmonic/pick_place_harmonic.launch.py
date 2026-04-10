@@ -29,16 +29,6 @@ def generate_launch_description():
         )
     )
 
-    moveit_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("ur5_gripper_moveit_config"),
-                "launch",
-                "move_group.launch.py"
-            )
-        )
-    )
-
     robmove_node = Node(
         package="ros2srrc_execution",
         executable="robmove",
@@ -71,12 +61,6 @@ def generate_launch_description():
         ],
     )
 
-
-    delayed_moveit = TimerAction(
-        period=5.0,
-        actions=[moveit_launch]
-    )
-
     delayed_interfaces = TimerAction(
         period=8.0,
         actions=[robmove_node, robpose_node, move_node]
@@ -85,6 +69,5 @@ def generate_launch_description():
     return LaunchDescription([
         world_launch,
         robot_launch,
-        delayed_moveit,
         delayed_interfaces
     ])
