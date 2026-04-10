@@ -6,6 +6,9 @@ Pick Place Harmonic - Main Launcher (FULL)
 
 import os
 
+os.environ["AMENT_PREFIX_PATH"] = "/home/ws/install:" + os.environ.get("AMENT_PREFIX_PATH", "")
+os.environ["CMAKE_PREFIX_PATH"] = "/home/ws/install:" + os.environ.get("CMAKE_PREFIX_PATH", "")
+
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
