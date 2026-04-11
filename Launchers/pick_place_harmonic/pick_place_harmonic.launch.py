@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 """
-Pick Place Harmonic - FULL (Classic-like MoveIt integration)
+Pick Place Harmonic - FIXED (with correct XACRO → URDF)
 """
 
 import os
 import yaml
+import subprocess
 
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, TimerAction
@@ -32,6 +33,10 @@ def generate_launch_description():
 
     base_dir = os.path.dirname(__file__)
 
+    # =========================
+    # WORLD + ROBOT
+    # =========================
+
     world_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(base_dir, "world.launch.py")
@@ -43,6 +48,25 @@ def generate_launch_description():
             os.path.join(base_dir, "robot.launch.py")
         )
     )
+
+    # =========================
+    # XACRO
+    # =========================
+
+    xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
+
+    robot_description_content = subprocess.check_output(
+        ["xacro", xacro_file],
+        stderr=subprocess.STDOUT
+    ).decode("utf-8")
+
+    robot_description = {
+        "robot_description": robot_description_content
+    }
+
+    # =========================
+    # SRDF + CONFIG
+    # =========================
 
     robot_description_semantic = {
         "robot_description_semantic": load_file(
@@ -87,11 +111,16 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
+    # =========================
+    # MOVE GROUP
+    # =========================
+
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             joint_limits,
@@ -102,11 +131,16 @@ def generate_launch_description():
         ],
     )
 
+    # =========================
+    # EXECUTION NODES
+    # =========================
+
     robmove_node = Node(
         package="ros2srrc_execution",
         executable="robmove",
         output="screen",
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},
@@ -119,6 +153,7 @@ def generate_launch_description():
         executable="robpose",
         output="screen",
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},
@@ -131,6 +166,7 @@ def generate_launch_description():
         executable="move",
         output="screen",
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},

@@ -56,7 +56,7 @@
   <xacro:property name="output_recipe_filename" value="$(arg output_recipe_filename)"/>
 
   <!-- Include XACRO-MACRO file of the UR5: -->
-  <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_macro.urdf.xacro"/>	
+  <xacro:include filename="/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_robots/ur5/urdf/ur5_macro.urdf.xacro"/>
   <xacro:ur5 
     bringup="${bringup}"
     robot_ip="${robot_ip}"
@@ -69,7 +69,7 @@
   />
 
   <!-- Include XACRO-MACRO file of the Robotiq 2f-85: -->
-  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
+  <xacro:include filename="/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_endeffectors/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
   <xacro:robotiq_2f85 
     bringup="${bringup}"
     parent_link="tool0"
@@ -83,10 +83,10 @@
         <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
 
         <!-- UR5 Controller -->
-        <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
+        <parameters>/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_robots/ur5/config/controller.yaml</parameters>
 
         <!-- End-Effector Controller (if needed) -->
-        <parameters>$(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml</parameters>
+        <parameters>/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_endeffectors/${EE_name}/config/controller.yaml</parameters>
 
       </plugin>
     </gazebo>

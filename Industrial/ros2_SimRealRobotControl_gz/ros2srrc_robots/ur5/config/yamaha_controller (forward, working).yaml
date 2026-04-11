@@ -1,0 +1,18 @@
+controller_manager:
+  ros__parameters:
+
+    update_rate: 250 #Hz
+
+    yamaha_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+yamaha_position_controller:
+  ros__parameters:
+    
+    joints: 
+       - yamaha_joint
+    
+    interface_name: position
+
+       
+
