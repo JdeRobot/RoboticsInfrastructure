@@ -53,7 +53,10 @@ def generate_launch_description():
     )
 
     doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc)
+    xacro.process_doc(doc, mappings={
+        "EE": "true",
+        "EE_name": "robotiq_2f85"
+    })
 
     robot_description = {
         "robot_description": doc.toxml()
