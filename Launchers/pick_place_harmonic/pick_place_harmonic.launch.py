@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Pick Place Harmonic - FIXED (with correct XACRO → URDF)
+Pick Place Harmonic - CLASSIC MODE (NO MoveIt)
 """
 
 import os
@@ -50,7 +50,7 @@ def generate_launch_description():
     )
 
     # =========================
-    # XACRO
+    # XACRO → URDF
     # =========================
 
     xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
@@ -65,7 +65,7 @@ def generate_launch_description():
     }
 
     # =========================
-    # SRDF + CONFIG
+    # CONFIG (necesario para execution)
     # =========================
 
     robot_description_semantic = {
@@ -82,57 +82,8 @@ def generate_launch_description():
         )
     }
 
-    joint_limits = {
-        "robot_description_planning": load_yaml(
-            "ros2srrc_robots",
-            "ur5/config/joint_limits.yaml"
-        )
-    }
-
-    moveit_controllers = {
-        "moveit_simple_controller_manager": load_yaml(
-            "ros2srrc_robots",
-            "ur5/config/controller_moveit2.yaml"
-        ),
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-    }
-
-    trajectory_execution = {
-        "moveit_manage_controllers": True,
-        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
-        "trajectory_execution.allowed_goal_duration_margin": 0.5,
-        "trajectory_execution.allowed_start_tolerance": 0.01,
-    }
-
-    planning_scene_monitor_parameters = {
-        "publish_planning_scene": True,
-        "publish_geometry_updates": True,
-        "publish_state_updates": True,
-        "publish_transforms_updates": True,
-    }
-
     # =========================
-    # MOVE GROUP
-    # =========================
-
-    move_group_node = Node(
-        package="moveit_ros_move_group",
-        executable="move_group",
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            kinematics_yaml,
-            joint_limits,
-            moveit_controllers,
-            trajectory_execution,
-            planning_scene_monitor_parameters,
-            {"use_sim_time": True},
-        ],
-    )
-
-    # =========================
-    # EXECUTION NODES
+    # EXECUTION NODES (CLAVE)
     # =========================
 
     robmove_node = Node(
@@ -176,17 +127,17 @@ def generate_launch_description():
         ],
     )
 
+    # =========================
+    # LAUNCH
+    # =========================
+
     return LaunchDescription([
         world_launch,
         robot_launch,
 
+        # Espera corta para que Gazebo arranque
         TimerAction(
-            period=3.0,
-            actions=[move_group_node]
-        ),
-
-        TimerAction(
-            period=10.0,
+            period=2.0,
             actions=[robmove_node, robpose_node, move_node]
         )
     ])
