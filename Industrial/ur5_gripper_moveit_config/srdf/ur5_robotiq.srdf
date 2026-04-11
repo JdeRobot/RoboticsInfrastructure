@@ -55,6 +55,8 @@
   <passive_joint name="robotiq_85_right_inner_knuckle_joint" />
   <passive_joint name="robotiq_85_left_finger_tip_joint" />
   <passive_joint name="robotiq_85_right_finger_tip_joint" />
+  <passive_joint name="robotiq_85_left_finger_joint" />
+  <passive_joint name="robotiq_85_right_finger_joint" />
   
   <!--DISABLE COLLISIONS-->
   <disable_collisions link1="base_link" link2="base_link_inertia" reason="Adjacent"/>
