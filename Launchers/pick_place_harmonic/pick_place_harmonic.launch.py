@@ -5,7 +5,6 @@ Pick Place Harmonic - FULL (Classic-like MoveIt integration)
 """
 
 import os
-import xacro
 import yaml
 
 from launch import LaunchDescription
@@ -44,23 +43,6 @@ def generate_launch_description():
             os.path.join(base_dir, "robot.launch.py")
         )
     )
-
-
-    xacro_file = os.path.join(
-        get_package_share_directory("ros2srrc_ur5_gazebo"),
-        "urdf",
-        "ur5_robotiq_2f85.urdf.xacro"
-    )
-
-    doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc, mappings={
-        "EE": "true",
-        "EE_name": "robotiq_2f85"
-    })
-
-    robot_description = {
-        "robot_description": doc.toxml()
-    }
 
     robot_description_semantic = {
         "robot_description_semantic": load_file(
@@ -105,13 +87,11 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
-
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             joint_limits,
@@ -122,13 +102,11 @@ def generate_launch_description():
         ],
     )
 
-
     robmove_node = Node(
         package="ros2srrc_execution",
         executable="robmove",
         output="screen",
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},
@@ -141,7 +119,6 @@ def generate_launch_description():
         executable="robpose",
         output="screen",
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},
@@ -154,7 +131,6 @@ def generate_launch_description():
         executable="move",
         output="screen",
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             {"use_sim_time": True},
