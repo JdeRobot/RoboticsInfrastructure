@@ -70,9 +70,9 @@ void PreUpdate(
 
     if (parentPos && !parentPos->Data().empty())
     {
-      _ecm.SetComponentData(
+      _ecm.SetComponentData<components::JointPosition>(
         mimicJoint,
-        components::JointPosition({parentPos->Data()[0]})
+        {parentPos->Data()[0]}
       );
     }
   }
