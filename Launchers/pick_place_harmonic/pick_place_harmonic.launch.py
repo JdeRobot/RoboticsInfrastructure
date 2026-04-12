@@ -175,6 +175,8 @@ def generate_launch_description():
         robot_description_semantic,
         kinematics_yaml,
         {"use_sim_time": True},
+        {"ROB_PARAM": "ur5"},
+        {"EE_PARAM": "robotiq_2f85"},
     ]
 
     move_node = Node(
@@ -198,13 +200,18 @@ def generate_launch_description():
         parameters=common_params,
     )
 
+    delayed_spawn = TimerAction(
+        period=3.0,
+        actions=[spawn_robot],
+    )
+
 
     return LaunchDescription([
 
         gz,
         robot_state_publisher,
         clock_bridge,
-        spawn_robot,
+        delayed_spawn,
 
         # Controllers chain
         RegisterEventHandler(

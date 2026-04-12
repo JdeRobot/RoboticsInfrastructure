@@ -55,6 +55,9 @@
   <xacro:arg name="output_recipe_filename" default="none"/>
   <xacro:property name="output_recipe_filename" value="$(arg output_recipe_filename)"/>
 
+  <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:property name="simulation_controllers" value="$(arg simulation_controllers)"/>
+
   <!-- Include XACRO-MACRO file of the UR5: -->
   <xacro:include filename="/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_robots/ur5/urdf/ur5_macro.urdf.xacro"/>
   <xacro:ur5 
@@ -87,9 +90,7 @@
           </hardware>
         </ros2_control>
 
-        <parameters>/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_robots/ur5/config/controller.yaml</parameters>
-
-        <parameters>/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_endeffectors/${EE_name}/config/controller.yaml</parameters>
+        <parameters>${simulation_controllers}</parameters>
 
       </plugin>
 
