@@ -37,7 +37,7 @@ def generate_launch_description():
 
     gz = ExecuteProcess(
         cmd=["gz", "sim", "-r", "-v", "4", world_path],
-        output="screen"
+        output="both"
     )
 
     # =========================
@@ -89,16 +89,21 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="screen",
+        output="both",
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    static_tf = Node(
+    """static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
+        arguments=[
+            "0", "0", "0.9", "0", "0", "0", "world", "base_link",
+            "--ros-args", "--log-level", "debug",
+        ],
+        output="both",
         parameters=[{"use_sim_time": True}],
-    )
+    )"""
 
     # =========================
     # SPAWN ROBOT (HARMONIC)
@@ -108,13 +113,14 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-topic", "robot_description",
+            "-param", "robot_description",
             "-name", "ur5",
             "-x", "0.0",
             "-y", "0.0",
             "-z", "0.9",
         ],
-        output="screen",
+        parameters=[robot_description],
+        output="both",
     )
 
     # =========================
@@ -153,15 +159,32 @@ def generate_launch_description():
     # =========================
     # MOVE GROUP (IGUAL QUE CLASSIC)
     # =========================
+    
+
+    moveit_controllers = {
+        "moveit_simple_controller_manager": load_yaml(
+            "ur5_gripper_moveit_config",
+            "config/moveit_controllers.yaml"
+        )
+    }
+
+    print("===== DEBUG MOVEIT =====")
+    print(robot_description.keys())
+    print(robot_description_semantic.keys())
+    print(moveit_controllers)
+    print("========================")
 
     move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        output="screen",
+        output="both",
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=[
             robot_description,
             robot_description_semantic,
             kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
         ],
     )
@@ -183,21 +206,24 @@ def generate_launch_description():
     move_node = Node(
         package="ros2srrc_execution",
         executable="move",
-        output="screen",
+        output="both",
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=common_params,
     )
 
     robmove_node = Node(
         package="ros2srrc_execution",
         executable="robmove",
-        output="screen",
+        output="both",
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=common_params,
     )
 
     robpose_node = Node(
         package="ros2srrc_execution",
         executable="robpose",
-        output="screen",
+        output="both",
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=common_params,
     )
 
@@ -209,7 +235,7 @@ def generate_launch_description():
 
         gz,
         robot_state_publisher,
-        static_tf,
+        # static_tf,
         clock_bridge,
 
         spawn_robot,
@@ -217,31 +243,34 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn_robot,
-                on_exit=[joint_state_broadcaster],
+                on_exit=[
+                    TimerAction(
+                        period=3.0,
+                        actions=[joint_state_broadcaster],
+                    )
+                ],
             )
         ),
 
         RegisterEventHandler(
             OnProcessExit(
                 target_action=joint_state_broadcaster,
-                on_exit=[joint_trajectory_controller],
+                on_exit=[
+                    TimerAction(
+                        period=2.0,
+                        actions=[joint_trajectory_controller],
+                    )
+                ],
             )
         ),
 
         RegisterEventHandler(
             OnProcessExit(
                 target_action=joint_trajectory_controller,
-                on_exit=[gripper_controller],
-            )
-        ),
-
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=spawn_robot,
                 on_exit=[
                     TimerAction(
                         period=2.0,
-                        actions=[move_group],
+                        actions=[gripper_controller],
                     )
                 ],
             )
@@ -252,7 +281,19 @@ def generate_launch_description():
                 target_action=spawn_robot,
                 on_exit=[
                     TimerAction(
-                        period=4.0,
+                        period=5.0,
+                        actions=[move_group],
+                    )
+                ],
+            )
+        ),
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=move_group,
+                on_exit=[
+                    TimerAction(
+                        period=5.0,
                         actions=[move_node, robmove_node, robpose_node],
                     )
                 ],

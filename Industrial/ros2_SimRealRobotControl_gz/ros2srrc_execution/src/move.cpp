@@ -172,7 +172,7 @@ public:
 
         action_server_ = rclcpp_action::create_server<Move>(
             this,
-            "/Move",
+            "/move",
             std::bind(&ActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&ActionServer::handle_cancel, this, std::placeholders::_1),
             std::bind(&ActionServer::handle_accepted, this, std::placeholders::_1));
@@ -430,73 +430,107 @@ private:
 
 int main(int argc, char ** argv)
 {
-    // Initialise MAIN NODE:
+    // ================= INIT =================
     rclcpp::init(argc, argv);
     auto const logger = rclcpp::get_logger("MOVE_INTERFACE");
 
-    // Obtain ROBOT + END-EFFECTOR + ENVIRONMENT parameters:
+    // ================= PARAMETERS =================
     auto node_PARAM_ROB = std::make_shared<ros2_RobotParam>();
     rclcpp::spin_some(node_PARAM_ROB);
+
     auto node_PARAM_EE = std::make_shared<ros2_EEParam>();
     rclcpp::spin_some(node_PARAM_EE);
 
-    // DEFINE -> RobotSPECS + eeSPECS variables:
-    // Robot SPECIFICATIONS:
+    // ================= LOAD SPECS =================
     if (param_ROB != "none"){
-        std::string pkgPATH_R = ament_index_cpp::get_package_share_directory("ros2srrc_robots");
-        std::string PATH_R = pkgPATH_R + "/" + param_ROB + "/config/joint_specifications.yaml";
+        std::string pkgPATH_R =
+            ament_index_cpp::get_package_share_directory("ros2srrc_robots");
+        std::string PATH_R =
+            pkgPATH_R + "/" + param_ROB + "/config/joint_specifications.yaml";
+
         YAML::Node SPECIFICATIONS_R = YAML::LoadFile(PATH_R);
-        robotSPECS.robot_max = SPECIFICATIONS_R["Limits"]["Max"].as<std::vector<double>>();
-        robotSPECS.robot_min = SPECIFICATIONS_R["Limits"]["Min"].as<std::vector<double>>();
-    };
-    // End-Effector SPECIFICATIONS:
+
+        robotSPECS.robot_max =
+            SPECIFICATIONS_R["Limits"]["Max"].as<std::vector<double>>();
+        robotSPECS.robot_min =
+            SPECIFICATIONS_R["Limits"]["Min"].as<std::vector<double>>();
+    }
+
     if (param_EE != "none"){
-        std::string pkgPATH = ament_index_cpp::get_package_share_directory("ros2srrc_endeffectors");
-        std::string PATH = pkgPATH + "/" + param_EE + "/config/joint_specifications.yaml";
+        std::string pkgPATH =
+            ament_index_cpp::get_package_share_directory("ros2srrc_endeffectors");
+        std::string PATH =
+            pkgPATH + "/" + param_EE + "/config/joint_specifications.yaml";
+
         YAML::Node SPECIFICATIONS = YAML::LoadFile(PATH);
+
         eeSPECS.ee_max = SPECIFICATIONS["Limits"]["Max"].as<double>();
         eeSPECS.ee_min = SPECIFICATIONS["Limits"]["Min"].as<double>();
-        eeSPECS.ee_vector =  SPECIFICATIONS["JointsVector"].as<std::vector<double>>();
-    };
+        eeSPECS.ee_vector =
+            SPECIFICATIONS["JointsVector"].as<std::vector<double>>();
+    }
 
-    // Launch and spin (EXECUTOR) MoveIt!2 Interface node:
-    auto name = "ros2srrc_move";
-    auto const node2 = std::make_shared<rclcpp::Node>(name, rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
-    rclcpp::executors::SingleThreadedExecutor executor; 
+    // ================= ACTION SERVER (CLAVE) =================
+    auto action_server = std::make_shared<ActionServer>();
+
+    auto node2 = std::make_shared<rclcpp::Node>(
+        "moveit_client_node",
+        rclcpp::NodeOptions()
+            .automatically_declare_parameters_from_overrides(true)
+    );
+    
+    rclcpp::executors::SingleThreadedExecutor executor;
     executor.add_node(node2);
     std::thread([&executor]() { executor.spin(); }).detach();
 
-    // CREATE -> MoveGroupInterface(s):
+    // Esperar a que MoveIt publique parámetros
+    rclcpp::sleep_for(std::chrono::seconds(2));
+
+
+    // ================= MOVEIT =================
     using moveit::planning_interface::MoveGroupInterface;
-    // 1. ROBOT:
+
+    // ROBOT
     if (param_ROB != "none"){
-        auto name = param_ROB + "_arm";
-        
-        move_group_interface_ROB = MoveGroupInterface(node2, name);
+        std::string group_name = "manipulator";
+
+        move_group_interface_ROB = MoveGroupInterface(node2, group_name);
         move_group_interface_ROB.setPlanningPipelineId("move_group");
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
-        joint_model_group_ROB = move_group_interface_ROB.getCurrentState()->getJointModelGroup(name);
-        RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB.c_str());
+        joint_model_group_ROB =
+            move_group_interface_ROB.getCurrentState()
+                ->getJointModelGroup(group_name);
+
+        RCLCPP_INFO(logger,
+            "MoveGroupInterface created for ROBOT group: %s",
+            group_name.c_str());
     }
-    // 2. END-EFFECTOR:
+
+    // END EFFECTOR
     if (param_EE != "none"){
         move_group_interface_EE = MoveGroupInterface(node2, param_EE);
         move_group_interface_EE.setPlanningPipelineId("move_group");
+
         move_group_interface_EE.setMaxVelocityScalingFactor(1.0);
         move_group_interface_EE.setMaxAccelerationScalingFactor(1.0);
-        joint_model_group_EE = move_group_interface_EE.getCurrentState()->getJointModelGroup(param_EE);
-        RCLCPP_INFO(logger, "MoveGroupInterface object created for END-EFFECTOR: %s", param_EE.c_str());
+
+        joint_model_group_EE =
+            move_group_interface_EE.getCurrentState()
+                ->getJointModelGroup(param_EE);
+
+        RCLCPP_INFO(logger,
+            "MoveGroupInterface created for EE: %s",
+            param_EE.c_str());
     }
 
-    // CREATE -> PlanningSceneInterface:
+    // ================= PLANNING SCENE =================
     using moveit::planning_interface::PlanningSceneInterface;
     auto planning_scene_interface = PlanningSceneInterface();
 
-    // Declare and spin ACTION SERVER:
-    auto action_server = std::make_shared<ActionServer>();
+    // ================= SPIN =================
     rclcpp::spin(action_server);
 
     rclcpp::shutdown();
