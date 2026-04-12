@@ -88,6 +88,15 @@
       </plugin>
     </gazebo>
 
+    <gazebo>
+      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+
+        <parent_joint>robotiq_85_left_knuckle_joint</parent_joint>
+        <mimic_joint>robotiq_85_right_knuckle_joint</mimic_joint>
+
+      </plugin>
+    </gazebo>
+
   </xacro:unless>
 
   <!-- World: LINK -->
