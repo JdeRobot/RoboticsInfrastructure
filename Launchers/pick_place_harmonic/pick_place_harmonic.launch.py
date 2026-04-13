@@ -133,19 +133,36 @@ def generate_launch_description():
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster"],
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller"],
+        arguments=[
+            "joint_trajectory_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     gripper_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["gripper_controller"],
+        arguments=[
+            "gripper_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
+    delayed_joint_state_broadcaster = TimerAction(
+        period=8.0,
+        actions=[joint_state_broadcaster],
     )
 
     # =========================
@@ -201,7 +218,7 @@ def generate_launch_description():
     )
 
     delayed_spawn = TimerAction(
-        period=3.0,
+        period=5.0,
         actions=[spawn_robot],
     )
 
@@ -212,14 +229,9 @@ def generate_launch_description():
         robot_state_publisher,
         clock_bridge,
         delayed_spawn,
+        delayed_joint_state_broadcaster,
 
-        # Controllers chain
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=spawn_robot,
-                on_exit=[joint_state_broadcaster],
-            )
-        ),
+        
 
         RegisterEventHandler(
             OnProcessExit(
