@@ -112,7 +112,7 @@ class MoveCLIENT(Node):
     def __init__(self):
 
         super().__init__('ros2srrc_Move_Client')
-        self._action_client = ActionClient(self, Move, 'Move')
+        self._action_client = ActionClient(self, Move, 'move_action')
 
         print("[CLIENT - robot.py]: Initialising ROS2 /Move Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available...")
