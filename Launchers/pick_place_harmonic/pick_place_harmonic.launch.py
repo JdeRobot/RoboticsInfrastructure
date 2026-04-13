@@ -1,3 +1,4 @@
+Este es el launcher que estoy usando:
 #!/usr/bin/env python3
 
 import os
@@ -36,7 +37,7 @@ def generate_launch_description():
     )
 
     gz = ExecuteProcess(
-        cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],  # 👈 FIX GUI
+        cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],
         output="both"
     )
 
@@ -75,8 +76,8 @@ def generate_launch_description():
 
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ur5_gripper_moveit_config",
-            "srdf/ur5_robotiq.srdf"
+            "ros2srrc_ur5_moveit2",
+            "config/ur5robotiq_2f85.srdf"
         )
     }
 
@@ -197,6 +198,7 @@ def generate_launch_description():
     ]
 
     move_node = Node(
+        name="move",
         package="ros2srrc_execution",
         executable="move",
         output="screen",
@@ -206,7 +208,7 @@ def generate_launch_description():
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
-            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},  # 👈 ESTE ES EL FIX
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
             {"EE_PARAM": "robotiq_2f85"},
@@ -214,17 +216,39 @@ def generate_launch_description():
     )
 
     robmove_node = Node(
+        name="robmove",
         package="ros2srrc_execution",
         executable="robmove",
         output="both",
-        parameters=common_params,
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+            {"ENV_PARAM": "gazebo"},
+        ],
     )
 
     robpose_node = Node(
+        name="robpose",
         package="ros2srrc_execution",
         executable="robpose",
         output="both",
-        parameters=common_params,
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+            {"ENV_PARAM": "gazebo"},
+        ],
     )
 
     delayed_spawn = TimerAction(

@@ -1,538 +1,304 @@
-/*
-# ===================================== COPYRIGHT ===================================== #
-#                                                                                       #
-#  IFRA (Intelligent Flexible Robotics and Assembly) Group, CRANFIELD UNIVERSITY        #
-#  Created on behalf of the IFRA Group at Cranfield University, United Kingdom          #
-#  E-mail: IFRA@cranfield.ac.uk                                                         #
-#                                                                                       #
-#  Licensed under the Apache-2.0 License.                                               #
-#  You may not use this file except in compliance with the License.                     #
-#  You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0  #
-#                                                                                       #
-#  Unless required by applicable law or agreed to in writing, software distributed      #
-#  under the License is distributed on an "as-is" basis, without warranties or          #
-#  conditions of any kind, either express or implied. See the License for the specific  #
-#  language governing permissions and limitations under the License.                    #
-#                                                                                       #
-#  IFRA Group - Cranfield University                                                    #
-#  AUTHORS: Mikel Bueno Viso - Mikel.Bueno-Viso@cranfield.ac.uk                         #
-#           Dr. Seemal Asif  - s.asif@cranfield.ac.uk                                   #
-#           Prof. Phil Webb  - p.f.webb@cranfield.ac.uk                                 #
-#                                                                                       #
-#  Date: April, 2023.                                                                   #
-#                                                                                       #
-# ===================================== COPYRIGHT ===================================== #
+#!/usr/bin/env python3
 
-# ======= CITE OUR WORK ======= #
-# You can cite our work with the following statement:
-# IFRA-Cranfield (2023) ROS 2 Sim-to-Real Robot Control. URL: https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl.
-*/
+import os
+import xacro
+import yaml
 
-// Include standard libraries:
-#include <string>
-#include <vector>
-
-// Include -> YAML file parser:
-#include <iostream>
-#include <fstream>
-#include <yaml-cpp/yaml.h>
-#include <ament_index_cpp/get_package_share_directory.hpp>
-
-// INCLUDE -> FUNCTIONS:
-#include "ros2srrc_execution/movej.h"
-#include "ros2srrc_execution/movel.h"
-#include "ros2srrc_execution/mover.h"
-#include "ros2srrc_execution/moverot.h"
-#include "ros2srrc_execution/moverp.h"
-#include "ros2srrc_execution/moveg.h"
-
-// Include RCLCPP and RCLCPP_ACTION:
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
-
-// Include MoveIt!2:
-#include <moveit/move_group_interface/move_group_interface_improved.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
-
-// Include the move ROS2 ACTION:
-#include "ros2srrc_data/action/move.hpp"
-
-// Include the ROS2 MSG messages:
-#include "ros2srrc_data/msg/joint.hpp"
-#include "ros2srrc_data/msg/joints.hpp"
-#include "ros2srrc_data/msg/xyz.hpp"
-#include "ros2srrc_data/msg/xyzypr.hpp"
-#include "ros2srrc_data/msg/ypr.hpp"
-#include "ros2srrc_data/msg/specs.hpp"
-
-// Declaration of GLOBAL VARIABLES --> ROBOT / END-EFFECTOR / ENVIRONMENT PARAMETERS:
-std::string param_ROB = "none";
-std::string param_EE = "none";
-std::string param_ENV = "none";
-
-// Declaration of GLOBAL VARIABLES --> MoveIt!2 Interface:
-moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
-moveit::planning_interface::MoveGroupInterface move_group_interface_EE;
-
-// Declaration of GLOBAL VARIABLES --> JointModelGroup:
-const moveit::core::JointModelGroup* joint_model_group_ROB;
-const moveit::core::JointModelGroup* joint_model_group_EE;
-
-// Declaration of GLOBAL VARIABLE --> RES:
-std::string RES = "none";
-
-// Declaration of GLOBAL VARIABLES --> robotSPECS and eeSPECS:
-ros2srrc_data::msg::Specs robotSPECS;
-ros2srrc_data::msg::Specs eeSPECS;
-
-// ======================================================================================================================== //
-// ==================== PARAM: ROBOT + END-EFFECTOR ==================== //
-
-class ros2_RobotParam : public rclcpp::Node
-{
-public:
-    ros2_RobotParam() : Node("ros2_RobotParam") 
-    {
-        this->declare_parameter("ROB_PARAM", "none");
-        param_ROB = this->get_parameter("ROB_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
-    }
-private:
-};
-
-class ros2_EEParam : public rclcpp::Node
-{
-public:
-    ros2_EEParam() : Node("ros2_EEParam") 
-    {
-        this->declare_parameter("EE_PARAM", "none");
-        param_EE = this->get_parameter("EE_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "EE_PARAM received -> %s", param_EE.c_str());
-    }
-private:
-};
+from launch import LaunchDescription
+from launch.actions import ExecuteProcess, RegisterEventHandler, TimerAction
+from launch.event_handlers import OnProcessExit
+from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
 
 
-// ======================================================================================================================== //
-// ==================== FUNCTIONS ==================== //
+def load_file(package_name, file_path):
+    pkg_path = get_package_share_directory(package_name)
+    with open(os.path.join(pkg_path, file_path), 'r') as f:
+        return f.read()
 
-// ===== PLAN ===== //
-// ROBOT:
-moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
-    
-    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
-    // Execute the plan
-    if (success)
-    {
-        RES = "PLANNING: OK";
-        return(my_plan);
-    }
-    else
-    {
-        RES = "PLANNING: ERROR";
-        return(my_plan);
+def load_yaml(package_name, file_path):
+    pkg_path = get_package_share_directory(package_name)
+    with open(os.path.join(pkg_path, file_path), 'r') as f:
+        return yaml.safe_load(f)
+
+
+def generate_launch_description():
+
+    # =========================
+    # WORLD
+    # =========================
+
+    world_path = os.path.join(
+        get_package_share_directory("robotiq_description"),
+        "world",
+        "warehouse_arm_harmonic.world"
+    )
+
+    gz = ExecuteProcess(
+        cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],  # 👈 FIX GUI
+        output="both"
+    )
+
+    # =========================
+    # ROBOT DESCRIPTION
+    # =========================
+
+    xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
+
+    pkg_share_dir = get_package_share_directory("ur5_gripper_description")
+    controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
+
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "ur_type": "ur5",
+            "name": "ur",
+            "prefix": "",
+            "use_fake_hardware": "false",
+            "sim_gazebo": "false",
+            "sim_gz": "true",
+            "simulation_controllers": controllers_file,
+
+            "EE": "true",
+            "EE_name": "robotiq_2f85",
+        },
+    ).toxml()
+
+    print("ROBOT DESCRIPTION LENGTH:", len(robot_description_content))
+
+    robot_description = {"robot_description": robot_description_content}
+
+    # =========================
+    # MOVEIT CONFIG
+    # =========================
+
+    robot_description_semantic = {
+        "robot_description_semantic": load_file(
+            "ros2srrc_ur5_moveit2",
+            "config/ur5robotiq_2f85.srdf"
+        )
     }
 
-};
-// END-EFFECTOR:
-moveit::planning_interface::MoveGroupInterface::Plan plan_EE() {
-    
-    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_EE.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
-    // Execute the plan
-    if (success)
-    {
-        RES = "PLANNING: OK";
-        return(my_plan);
-    }
-    else
-    {
-        RES = "PLANNING: ERROR (EE)";
-        return(my_plan);
-    }
-    
-};
-
-
-// ======================================================================================================================== //
-// ==================== ACTION SERVER CLASS ==================== //
-
-class ActionServer : public rclcpp::Node
-{
-public:
-    using Move = ros2srrc_data::action::Move;
-    using GoalHandle = rclcpp_action::ServerGoalHandle<Move>;
-
-    explicit ActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
-    : Node("MOVE_INTERFACE", options)
-    {
-
-        action_server_ = rclcpp_action::create_server<Move>(
-            this,
-            "/move",
-            std::bind(&ActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
-            std::bind(&ActionServer::handle_cancel, this, std::placeholders::_1),
-            std::bind(&ActionServer::handle_accepted, this, std::placeholders::_1));
-
+    kinematics_yaml = {
+        "robot_description_kinematics": load_yaml(
+            "ur5_gripper_moveit_config",
+            "config/kinematics.yaml"
+        )
     }
 
-private:
-    rclcpp_action::Server<Move>::SharedPtr action_server_;
-    
-    // ACCEPT GOAL and NOTIFY which ACTION is going to be exectuted:
-    rclcpp_action::GoalResponse handle_goal(
-        const rclcpp_action::GoalUUID & uuid,
-        std::shared_ptr<const Move::Goal> goal)
-    {
-        // 1. Obtain ACTION type + speed:
-        std::string action;
-        action = goal->action;
-        double speed = goal->speed;
-
-        // 2. Assign VARIABLE TYPE accordingly, and notify:
-        if (action == "MoveJ"){
-            auto MoveJGoal = goal->movej;
-            RCLCPP_INFO(this->get_logger(), "Received a GOAL REQUEST: MoveJ Action -> (%.2f,%.2f,%.2f,%.2f,%.2f,%.2f)",MoveJGoal.joint1,MoveJGoal.joint2,MoveJGoal.joint3,MoveJGoal.joint4,MoveJGoal.joint5,MoveJGoal.joint6);
-        }
-        // *** REST OF THE ACTIONS HERE *** //
-
-        return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE; 
+    moveit_controllers = {
+        "moveit_simple_controller_manager": load_yaml(
+            "ur5_gripper_moveit_config",
+            "config/moveit_controllers.yaml"
+        )
     }
 
-    // No idea about what this function does:
-    void handle_accepted(const std::shared_ptr<GoalHandle> goal_handle)
-    {
-        // This needs to return quickly to avoid blocking the executor, so spin up a new thread:
-        std::thread(
-            [this, goal_handle]() {
-                execute(goal_handle);
-            }).detach();
-        
-    }
+    # =========================
+    # CORE NODES
+    # =========================
 
-    // Function that cancels the goal request:
-    rclcpp_action::CancelResponse handle_cancel(
-        const std::shared_ptr<GoalHandle> goal_handle)
-    {
-        RCLCPP_INFO(this->get_logger(), "Received a cancel request.");
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description, {"use_sim_time": True}],
+    )
 
-        // We call the -> void moveit::planning_interface::MoveGroupInterface::stop(void) method,
-        // which stops any trajectory execution, if one is active.
-        if (param_ROB != "none"){
-            move_group_interface_ROB.stop();
-        }
-        if (param_EE != "none" && param_ENV != "bringup"){
-            move_group_interface_EE.stop();
-        }
+    spawn_robot = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=[
+            "-param", "robot_description",
+            "-name", "ur5",
+            "-x", "0.0",
+            "-y", "0.0",
+            "-z", "0.9",
+        ],
+        parameters=[robot_description],
+        output="both",
+    )
 
-        (void)goal_handle;
-        return rclcpp_action::CancelResponse::ACCEPT;
-    }
+    clock_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+        parameters=[{"use_sim_time": True}],
+    )
 
-    // MAIN LOOP OF THE ACTION SERVER -> EXECUTION:
-    void execute(const std::shared_ptr<GoalHandle> goal_handle)
-    {
+    # =========================
+    # CONTROLLERS
+    # =========================
 
-        // Obtain ACTION type:
-        const auto goal = goal_handle->get_goal();
-        std::string action = goal->action;
+    joint_state_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
 
-        // DECLARE RESULT:
-        auto result = std::make_shared<Move::Result>();
+    joint_trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "joint_trajectory_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
 
-        // ===== ACTION EXECUTION ===== //
-        moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
-        
-        if (action == "MoveJ" && param_ROB != "none"){
-            
-            // 1. Define JP VECTOR:
-            std::vector<double> JP;
-            moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
-            current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
-            
-            // 2. CALL MoveJAction for CALCULATIONS:
-            MoveJSTRUCT MoveJRES = MoveJAction(goal->movej, JP, robotSPECS);
-            JP = MoveJRES.JP;
-            move_group_interface_ROB.setJointValueTarget(JP);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+    gripper_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "gripper_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
 
-            // 4. PLAN:
-            if (MoveJRES.RES == "LIMITS: OK"){
-                MyPlan = plan_ROB();
-            } else {
-                RES = MoveJRES.RES;
-            }
+    delayed_joint_state_broadcaster = TimerAction(
+        period=8.0,
+        actions=[joint_state_broadcaster],
+    )
 
-        } else if (action == "MoveL" && param_ROB != "none"){
-            
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
-            
-            // 2. CALL MoveLAction for CALCULATIONS:
-            auto TARGET_POSE = MoveLAction(goal->movel, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("LIN");
+    # =========================
+    # MOVEIT
+    # =========================
 
-            // 4. PLAN:
-            MyPlan = plan_ROB();
+    move_group = Node(
+        package="moveit_ros_move_group",
+        executable="move_group",
+        output="both",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {"use_sim_time": True},
+        ],
+    )
 
-        } else if (action == "MoveR" && param_ROB != "none"){
+    # =========================
+    # EXECUTION NODES
+    # =========================
 
-            // 1. Define JP VECTOR:
-            std::vector<double> JP;
-            moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
-            current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
-            
-            // 2. CALL MoveRAction for CALCULATIONS:
-            MoveRSTRUCT MoveRRES = MoveRAction(goal->mover, JP, robotSPECS);
-            JP = MoveRRES.JP;
-            move_group_interface_ROB.setJointValueTarget(JP);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+    common_params = [
+        robot_description,
+        robot_description_semantic,
+        kinematics_yaml,
+        {"use_sim_time": True},
+        {"ROB_PARAM": "ur5"},
+        {"EE_PARAM": "robotiq_2f85"},
+    ]
 
-            // 4. PLAN:
-            if (MoveRRES.RES == "LIMITS: OK"){
-                MyPlan = plan_ROB();
-            } else {
-                RES = MoveRRES.RES;
-            }
+    move_node = Node(
+        name="move",
+        package="ros2srrc_execution",
+        executable="move",
+        output="screen",
+        arguments=['--ros-args', '--log-level', 'debug'],
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},  # 👈 ESTE ES EL FIX
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+        ],
+    )
 
-        } else if (action == "MoveROT" && param_ROB != "none"){
-            
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
-            
-            // 2. CALL MoveROTAction for CALCULATIONS:
-            auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+    robmove_node = Node(
+        name="robmove",
+        package="ros2srrc_execution",
+        executable="robmove",
+        output="both",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+            {"ENV_PARAM": "gazebo"},
+        ],
+    )
 
-            // 4. PLAN:
-            MyPlan = plan_ROB();
-        
-        } else if (action == "MoveRP" && param_ROB != "none"){
-            
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
-            
-            // 2. CALL MoveRPAction for CALCULATIONS:
-            auto TARGET_POSE = MoveRPAction(goal->moverp, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+    robpose_node = Node(
+        name="robpose",
+        package="ros2srrc_execution",
+        executable="robpose",
+        output="both",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+            {"ENV_PARAM": "gazebo"},
+        ],
+    )
 
-            // 4. PLAN:
-            MyPlan = plan_ROB();
-        
-        } else if (action == "MoveG" && param_EE != "none"){
-            
-            // 1. Define JP VECTOR:
-            std::vector<double> JP;
-            moveit::core::RobotStatePtr current_state = move_group_interface_EE.getCurrentState(10);
-            current_state->copyJointGroupPositions(joint_model_group_EE, JP);
+    delayed_spawn = TimerAction(
+        period=5.0,
+        actions=[spawn_robot],
+    )
 
-            // 2. CALL MoveGAction for CALCULATIONS:
-            MoveGSTRUCT MoveGRES = MoveGAction(goal->moveg, JP, eeSPECS);
-            JP = MoveGRES.JP;
-            move_group_interface_EE.setJointValueTarget(JP);
-            
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_EE.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_EE.setPlannerId("PTP");
+    delayed_execution_nodes = TimerAction(
+        period=10.0,
+        actions=[
+            ExecuteProcess(cmd=["echo", ">>> LAUNCH: intentando lanzar move_node"]),
+            move_node,
+            robmove_node,
+            robpose_node
+        ],
+    )
 
-            // 4. PLAN:
-            if (MoveGRES.RES == "LIMITS: OK"){
-                MyPlan = plan_EE();
-            } else {
-                RES = MoveGRES.RES;
-            }
-        
-        }
+    print(">>> LAUNCH: move_node configurado")
 
-        // EXECUTE:
-        if (RES == "PLANNING: OK"){
+    return LaunchDescription([
 
-            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        gz,
+        robot_state_publisher,
+        clock_bridge,
+        delayed_spawn,
+        delayed_joint_state_broadcaster,
+        delayed_execution_nodes,
 
-            if (goal_handle->is_canceling()) {
-                RCLCPP_INFO(this->get_logger(), "Goal canceled.");
-                result->result = action + ":CANCELED";
-                goal_handle->canceled(result);
-                return;
-            } 
-            
-            if (ExecSUCCESS){
-                RCLCPP_INFO(this->get_logger(), "%s - %s: Movement executed!", param_ROB.c_str(), action.c_str());
-                result->result = action + ":SUCCESS";
-                goal_handle->succeed(result);
-            } else {
-                RCLCPP_INFO(this->get_logger(), "%s - %s: Movement execution failed!", param_ROB.c_str(), action.c_str());
-                result->result = action + ":FAILED. Reason -> Execution error.";
-                goal_handle->succeed(result);
-            }
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_state_broadcaster,
+                on_exit=[joint_trajectory_controller],
+            )
+        ),
 
-        } else if (RES == "PLANNING: OK (EE)"){
-            move_group_interface_EE.execute(MyPlan);
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_trajectory_controller,
+                on_exit=[gripper_controller],
+            )
+        ),
 
-            if (goal_handle->is_canceling()) {
-                RCLCPP_INFO(this->get_logger(), "Goal canceled.");
-                result->result = action + ":CANCELED";
-                goal_handle->canceled(result);
-                return;
-            } else {
-                RCLCPP_INFO(this->get_logger(), "%s - %s: Movement executed!", param_EE.c_str(), action.c_str());
-                result->result = action + ":SUCCESS";
-                goal_handle->succeed(result);
-            }
-            
-        } else if (RES == "PLANNING: ERROR"){
-            RCLCPP_INFO(this->get_logger(), "%s - %s: Planning failed!", param_ROB.c_str(), action.c_str());
-            result->result = action + ":FAILED. Reason -> Planning failed.";
-            goal_handle->succeed(result);
-        } else if (RES == "PLANNING: ERROR (EE)"){
-            RCLCPP_INFO(this->get_logger(), "%s - %s: Planning failed!", param_EE.c_str(), action.c_str());
-            result->result = action + ":FAILED. Reason -> Planning failed.";
-            goal_handle->succeed(result);
-
-        } else {
-
-            RCLCPP_INFO(this->get_logger(), "ERROR: %s", RES.c_str());
-            result->result = action + ":FAILED. Reason -> " + RES;
-            goal_handle->succeed(result);
-
-        };
-
-        // RE-INITIALISE RES variable:
-        RES = "none";
-
-    }
-
-};
-
-
-// ==================== MAIN ==================== //
-
-int main(int argc, char ** argv)
-{
-    // ================= INIT =================
-    rclcpp::init(argc, argv);
-    auto const logger = rclcpp::get_logger("MOVE_INTERFACE");
-
-    // ================= PARAMETERS =================
-    auto node_PARAM_ROB = std::make_shared<ros2_RobotParam>();
-    rclcpp::spin_some(node_PARAM_ROB);
-
-    auto node_PARAM_EE = std::make_shared<ros2_EEParam>();
-    rclcpp::spin_some(node_PARAM_EE);
-
-    // ================= LOAD SPECS =================
-    if (param_ROB != "none"){
-        std::string pkgPATH_R =
-            ament_index_cpp::get_package_share_directory("ros2srrc_robots");
-        std::string PATH_R =
-            pkgPATH_R + "/" + param_ROB + "/config/joint_specifications.yaml";
-
-        YAML::Node SPECIFICATIONS_R = YAML::LoadFile(PATH_R);
-
-        robotSPECS.robot_max =
-            SPECIFICATIONS_R["Limits"]["Max"].as<std::vector<double>>();
-        robotSPECS.robot_min =
-            SPECIFICATIONS_R["Limits"]["Min"].as<std::vector<double>>();
-    }
-
-    if (param_EE != "none"){
-        std::string pkgPATH =
-            ament_index_cpp::get_package_share_directory("ros2srrc_endeffectors");
-        std::string PATH =
-            pkgPATH + "/" + param_EE + "/config/joint_specifications.yaml";
-
-        YAML::Node SPECIFICATIONS = YAML::LoadFile(PATH);
-
-        eeSPECS.ee_max = SPECIFICATIONS["Limits"]["Max"].as<double>();
-        eeSPECS.ee_min = SPECIFICATIONS["Limits"]["Min"].as<double>();
-        eeSPECS.ee_vector =
-            SPECIFICATIONS["JointsVector"].as<std::vector<double>>();
-    }
-
-    // ================= ACTION SERVER (CLAVE) =================
-    auto action_server = std::make_shared<ActionServer>();
-
-    auto node2 = std::make_shared<rclcpp::Node>(
-        "moveit_client_node",
-        rclcpp::NodeOptions()
-            .automatically_declare_parameters_from_overrides(true)
-    );
-    
-    rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(node2);
-    std::thread([&executor]() { executor.spin(); }).detach();
-
-    // Esperar a que MoveIt publique parámetros
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-
-    // ================= MOVEIT =================
-    using moveit::planning_interface::MoveGroupInterface;
-
-    // ROBOT
-    if (param_ROB != "none"){
-        std::string group_name = "ur5_arm";
-
-        move_group_interface_ROB = MoveGroupInterface(node2, group_name);
-        move_group_interface_ROB.setPlanningPipelineId("move_group");
-
-        move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
-        move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
-
-        joint_model_group_ROB =
-            move_group_interface_ROB.getCurrentState()
-                ->getJointModelGroup(group_name);
-
-        RCLCPP_INFO(logger,
-            "MoveGroupInterface created for ROBOT group: %s",
-            group_name.c_str());
-    }
-
-    // END EFFECTOR
-    if (param_EE != "none"){
-        move_group_interface_EE = MoveGroupInterface(node2, param_EE);
-        move_group_interface_EE.setPlanningPipelineId("move_group");
-
-        move_group_interface_EE.setMaxVelocityScalingFactor(1.0);
-        move_group_interface_EE.setMaxAccelerationScalingFactor(1.0);
-
-        joint_model_group_EE =
-            move_group_interface_EE.getCurrentState()
-                ->getJointModelGroup(param_EE);
-
-        RCLCPP_INFO(logger,
-            "MoveGroupInterface created for EE: %s",
-            param_EE.c_str());
-    }
-
-    // ================= PLANNING SCENE =================
-    using moveit::planning_interface::PlanningSceneInterface;
-    auto planning_scene_interface = PlanningSceneInterface();
-
-    // ================= SPIN =================
-    rclcpp::spin(action_server);
-
-    rclcpp::shutdown();
-    return 0;
-}
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=gripper_controller,
+                on_exit=[
+                    TimerAction(
+                        period=2.0,
+                        actions=[move_group],
+                    )
+                ],
+            )
+        ),
+    ])
