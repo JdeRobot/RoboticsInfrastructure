@@ -62,7 +62,8 @@ class RobMoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
-        self._action_client.wait_for_server()
+        while not self._action_client.wait_for_server(timeout_sec=1.0):
+            rclpy.spin_once(self)
         print("[CLIENT - robot.py]: /Robmove ACTION SERVER detected, ready!")
         print("")
 
@@ -115,7 +116,8 @@ class MoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /Move Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available...")
-        self._action_client.wait_for_server()
+        while not self._action_client.wait_for_server(timeout_sec=1.0):
+            rclpy.spin_once(self)
         print("[CLIENT - robot.py]: /Move ACTION SERVER detected, ready!")
         print("")
 
