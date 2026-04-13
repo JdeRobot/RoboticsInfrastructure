@@ -170,7 +170,7 @@ def generate_launch_description():
     # MOVEIT
     # =========================
 
-    move_group = Node(
+    """move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="both",
@@ -182,7 +182,7 @@ def generate_launch_description():
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
         ],
-    )
+    )"""
 
     # =========================
     # EXECUTION NODES
@@ -291,7 +291,7 @@ def generate_launch_description():
             )
         ),
 
-        RegisterEventHandler(
+        """RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
                 on_exit=[
@@ -301,5 +301,5 @@ def generate_launch_description():
                     )
                 ],
             )
-        ),
+        ),"""
     ])
