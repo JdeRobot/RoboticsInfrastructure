@@ -94,10 +94,10 @@
 
       </plugin>
 
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <!--<plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint::MimicJoint">
         <parent_joint>robotiq_85_left_knuckle_joint</parent_joint>
         <mimic_joint>robotiq_85_right_knuckle_joint</mimic_joint>
-      </plugin>
+      </plugin>-->
     </gazebo>
 
   </xacro:unless>
