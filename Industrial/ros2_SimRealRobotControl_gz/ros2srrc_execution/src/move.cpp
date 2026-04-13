@@ -492,7 +492,7 @@ int main(int argc, char ** argv)
 
     // ROBOT
     if (param_ROB != "none"){
-        std::string group_name = "manipulator";
+        std::string group_name = "ur5_arm";
 
         move_group_interface_ROB = MoveGroupInterface(node2, group_name);
         move_group_interface_ROB.setPlanningPipelineId("move_group");

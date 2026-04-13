@@ -199,8 +199,18 @@ def generate_launch_description():
     move_node = Node(
         package="ros2srrc_execution",
         executable="move",
-        output="both",
-        parameters=common_params,
+        output="screen",
+        arguments=['--ros-args', '--log-level', 'debug'],
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},  # 👈 ESTE ES EL FIX
+            {"use_sim_time": True},
+            {"ROB_PARAM": "ur5"},
+            {"EE_PARAM": "robotiq_2f85"},
+        ],
     )
 
     robmove_node = Node(
@@ -222,6 +232,17 @@ def generate_launch_description():
         actions=[spawn_robot],
     )
 
+    delayed_execution_nodes = TimerAction(
+        period=10.0,
+        actions=[
+            ExecuteProcess(cmd=["echo", ">>> LAUNCH: intentando lanzar move_node"]),
+            move_node,
+            robmove_node,
+            robpose_node
+        ],
+    )
+
+    print(">>> LAUNCH: move_node configurado")
 
     return LaunchDescription([
 
@@ -230,8 +251,7 @@ def generate_launch_description():
         clock_bridge,
         delayed_spawn,
         delayed_joint_state_broadcaster,
-
-        
+        delayed_execution_nodes,
 
         RegisterEventHandler(
             OnProcessExit(
@@ -247,7 +267,6 @@ def generate_launch_description():
             )
         ),
 
-        # MoveIt after controllers
         RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
@@ -255,19 +274,6 @@ def generate_launch_description():
                     TimerAction(
                         period=2.0,
                         actions=[move_group],
-                    )
-                ],
-            )
-        ),
-
-        # Action servers AFTER MoveIt
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=gripper_controller,
-                on_exit=[
-                    TimerAction(
-                        period=4.0,
-                        actions=[move_node, robmove_node, robpose_node],
                     )
                 ],
             )
