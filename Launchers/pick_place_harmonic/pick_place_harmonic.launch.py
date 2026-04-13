@@ -81,10 +81,12 @@ def generate_launch_description():
         )
     }
 
-    kinematics_yaml = load_yaml(
+    raw_kinematics = load_yaml(
         "ur5_gripper_moveit_config",
         "config/kinematics.yaml"
     )
+
+    kinematics_yaml = raw_kinematics["/**"]["ros__parameters"]
 
     moveit_controllers = {
         "moveit_simple_controller_manager": load_yaml(
