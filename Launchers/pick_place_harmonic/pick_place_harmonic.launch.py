@@ -9,6 +9,7 @@ from launch.actions import ExecuteProcess, RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import SetEnvironmentVariable
 
 
 def load_file(package_name, file_path):
@@ -33,6 +34,33 @@ def generate_launch_description():
         get_package_share_directory("robotiq_description"),
         "world",
         "warehouse_arm_harmonic.world"
+    )
+
+    # =========================
+    # GAZEBO ENV PATHS (CLAVE)
+    # =========================
+
+    gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
+    gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
+
+    gz_plugin_path = (
+        gz_link_attacher_path + ":" +
+        gz_ros2_control_path + ":" +
+        "/opt/ros/humble/lib"
+    )
+
+    print("DEBUG GZ_SIM_SYSTEM_PLUGIN_PATH =", gz_plugin_path)
+
+    set_gz_plugin_path = SetEnvironmentVariable(
+        name="GZ_SIM_SYSTEM_PLUGIN_PATH",
+        value=gz_plugin_path
+    )
+
+    existing_ld = os.environ.get("LD_LIBRARY_PATH", "")
+
+    set_ld_library_path = SetEnvironmentVariable(
+        name="LD_LIBRARY_PATH",
+        value=gz_plugin_path + ":/usr/lib/x86_64-linux-gnu:" + existing_ld
     )
 
     gz = ExecuteProcess(
@@ -103,17 +131,28 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
+        output="both",
+        parameters=[{"use_sim_time": True}],
+    )
+
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-param", "robot_description",
+            "-topic", "robot_description",
             "-name", "ur5",
+            "-allow_renaming", "true",
             "-x", "0.0",
             "-y", "0.0",
             "-z", "0.9",
+            "-R", "0.0",
+            "-P", "0.0",
+            "-Y", "0.0",
         ],
-        parameters=[robot_description],
         output="both",
     )
 
@@ -267,9 +306,11 @@ def generate_launch_description():
     print(">>> LAUNCH: move_node configurado")
 
     return LaunchDescription([
-
+        set_gz_plugin_path,
+        set_ld_library_path,
         gz,
         robot_state_publisher,
+        static_tf,
         clock_bridge,
         delayed_spawn,
         #delayed_joint_state_broadcaster,
