@@ -375,9 +375,9 @@ def generate_launch_description():
         set_gz_plugin_path,
         set_ld_library_path,
         gz,
+        clock_bridge,
         robot_state_publisher,
         static_tf,
-        clock_bridge,
 
         # Spawn robot
         TimerAction(period=5.0, actions=[spawn_robot]),
