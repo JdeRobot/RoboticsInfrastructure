@@ -58,7 +58,7 @@ class RobMoveCLIENT(Node):
     def __init__(self):
 
         super().__init__('ros2srrc_RobMove_Client')
-        self._action_client = ActionClient(self, Robmove, 'Robmove')
+        self._action_client = ActionClient(self, Robmove, '/Robmove')
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
@@ -112,13 +112,13 @@ class MoveCLIENT(Node):
     def __init__(self):
 
         super().__init__('ros2srrc_Move_Client')
-        self._action_client = ActionClient(self, Move, 'move')
+        self._action_client = ActionClient(self, Move, '/move_action')
 
-        print("[CLIENT - robot.py]: Initialising ROS2 /move Action Client!")
-        print("[CLIENT - robot.py]: Waiting for /move ROS2 ActionServer to be available...")
+        print("[CLIENT - robot.py]: Initialising ROS2 /move_action Action Client!")
+        print("[CLIENT - robot.py]: Waiting for /move_action ROS2 ActionServer to be available...")
         while not self._action_client.wait_for_server(timeout_sec=1.0):
             rclpy.spin_once(self)
-        print("[CLIENT - robot.py]: /move ACTION SERVER detected, ready!")
+        print("[CLIENT - robot.py]: /move_action ACTION SERVER detected, ready!")
         print("")
 
     def send_goal(self, ACTION):
