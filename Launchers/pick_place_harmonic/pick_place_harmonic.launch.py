@@ -239,12 +239,11 @@ def generate_launch_description():
         {"EE_PARAM": "robotiq_2f85"},
     ]
 
-    move_node = Node(
-        name="move",
+    move_action_server = Node(
+        name="move_action_server",
         package="ros2srrc_execution",
         executable="move",
         output="screen",
-        arguments=['--ros-args', '--log-level', 'info'],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -384,25 +383,15 @@ def generate_launch_description():
         robot_state_publisher,
         static_tf,
 
-        # Spawn robot
         TimerAction(period=5.0, actions=[spawn_robot]),
 
-        # Controllers
         TimerAction(period=8.0, actions=[joint_state_broadcaster]),
         TimerAction(period=10.0, actions=[joint_trajectory_controller]),
         TimerAction(period=12.0, actions=[gripper_controller]),
 
-        # MoveIt
         TimerAction(period=18.0, actions=[move_group]),
 
-        # Execution nodes
-        TimerAction(
-            period=22.0,
-            actions=[
-                ExecuteProcess(cmd=["echo", ">>> launching execution nodes"]),
-                move_node,
-                robmove_node,
-                robpose_node
-            ],
-        ),
+        TimerAction(period=20.0, actions=[move_action_server]),
+
+        TimerAction(period=22.0, actions=[robmove_node, robpose_node]),
     ])
