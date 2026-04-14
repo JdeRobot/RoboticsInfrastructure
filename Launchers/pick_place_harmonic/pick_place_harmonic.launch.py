@@ -305,7 +305,7 @@ def generate_launch_description():
 
     print(">>> LAUNCH: move_node configurado")
 
-    return LaunchDescription([
+    """return LaunchDescription([
         SetParameter(name="use_sim_time", value=True),
         
         set_gz_plugin_path,
@@ -366,5 +366,38 @@ def generate_launch_description():
                     )
                 ],
             )
+        ),
+    ])"""
+
+    return LaunchDescription([
+        SetParameter(name="use_sim_time", value=True),
+
+        set_gz_plugin_path,
+        set_ld_library_path,
+        gz,
+        robot_state_publisher,
+        static_tf,
+        clock_bridge,
+
+        # Spawn robot
+        TimerAction(period=5.0, actions=[spawn_robot]),
+
+        # Controllers
+        TimerAction(period=8.0, actions=[joint_state_broadcaster]),
+        TimerAction(period=10.0, actions=[joint_trajectory_controller]),
+        TimerAction(period=12.0, actions=[gripper_controller]),
+
+        # MoveIt
+        TimerAction(period=18.0, actions=[move_group]),
+
+        # Execution nodes
+        TimerAction(
+            period=22.0,
+            actions=[
+                ExecuteProcess(cmd=["echo", ">>> launching execution nodes"]),
+                move_node,
+                robmove_node,
+                robpose_node
+            ],
         ),
     ])
