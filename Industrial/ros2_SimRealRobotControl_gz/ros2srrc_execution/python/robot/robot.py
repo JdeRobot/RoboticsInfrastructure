@@ -62,8 +62,15 @@ class RobMoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
-        while not self._action_client.wait_for_server(timeout_sec=1.0):
-            rclpy.spin_once(self)
+        for i in range(20):   # ~20 segundos
+            if self._action_client.wait_for_server(timeout_sec=1.0):
+                print("[OK] Robmove server detected!")
+                break
+            print(f"...retry {i+1}/20")
+
+        else:
+            print("[ERROR] Robmove server NOT available")
+            
         print("[CLIENT - robot.py]: /Robmove ACTION SERVER detected, ready!")
         print("")
 
