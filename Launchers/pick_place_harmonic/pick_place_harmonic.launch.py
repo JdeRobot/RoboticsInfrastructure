@@ -113,6 +113,11 @@ def generate_launch_description():
         "config/kinematics.yaml"
     )
 
+    kinematics_yaml = {
+        "robot_description_kinematics":
+            kinematics_yaml["/**"]["ros__parameters"]
+    }
+
     moveit_controllers = load_yaml(
         "ur5_gripper_moveit_config",
         "config/moveit_controllers.yaml"
