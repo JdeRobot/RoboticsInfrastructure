@@ -6,7 +6,7 @@ import yaml
 
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, RegisterEventHandler, TimerAction
-from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
@@ -80,19 +80,17 @@ def generate_launch_description():
         )
     }
 
-    raw_kinematics = load_yaml(
+    kinematics_yaml = load_yaml(
         "ur5_gripper_moveit_config",
         "config/kinematics.yaml"
     )
 
-    kinematics_yaml = raw_kinematics["/**"]["ros__parameters"]
+    moveit_controllers = load_yaml(
+        "ur5_gripper_moveit_config",
+        "config/moveit_controllers.yaml"
+    )
 
-    moveit_controllers = {
-        "moveit_simple_controller_manager": load_yaml(
-            "ur5_gripper_moveit_config",
-            "config/moveit_controllers.yaml"
-        )
-    }
+    moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
     # =========================
     # CORE NODES
@@ -160,16 +158,16 @@ def generate_launch_description():
         ],
     )
 
-    delayed_joint_state_broadcaster = TimerAction(
+    """delayed_joint_state_broadcaster = TimerAction(
         period=8.0,
         actions=[joint_state_broadcaster],
-    )
+    )"""
 
     # =========================
     # MOVEIT
     # =========================
 
-    """move_group = Node(
+    move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="both",
@@ -180,8 +178,9 @@ def generate_launch_description():
             moveit_controllers,
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
+            {"publish_robot_description_semantic": True},
         ],
-    )"""
+    )
 
     # =========================
     # EXECUTION NODES
@@ -255,7 +254,7 @@ def generate_launch_description():
         actions=[spawn_robot],
     )
 
-    delayed_execution_nodes = TimerAction(
+    """delayed_execution_nodes = TimerAction(
         period=10.0,
         actions=[
             ExecuteProcess(cmd=["echo", ">>> LAUNCH: intentando lanzar move_node"]),
@@ -263,7 +262,7 @@ def generate_launch_description():
             robmove_node,
             robpose_node
         ],
-    )
+    )"""
 
     print(">>> LAUNCH: move_node configurado")
 
@@ -273,8 +272,15 @@ def generate_launch_description():
         robot_state_publisher,
         clock_bridge,
         delayed_spawn,
-        delayed_joint_state_broadcaster,
-        delayed_execution_nodes,
+        #delayed_joint_state_broadcaster,
+        #delayed_execution_nodes,
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=spawn_robot,
+                on_exit=[joint_state_broadcaster],
+            )
+        ),
 
         RegisterEventHandler(
             OnProcessExit(
@@ -290,15 +296,32 @@ def generate_launch_description():
             )
         ),
 
-        """RegisterEventHandler(
+        RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
                 on_exit=[
                     TimerAction(
-                        period=2.0,
+                        period=5.0,
                         actions=[move_group],
                     )
                 ],
             )
-        ),"""
+        ),
+
+        RegisterEventHandler(
+            OnProcessStart(
+                target_action=move_group,
+                on_start=[
+                    TimerAction(
+                        period=5.0,
+                        actions=[
+                            ExecuteProcess(cmd=["echo", ">>> move_group listo, lanzando ejecución"]),
+                            move_node,
+                            robmove_node,
+                            robpose_node
+                        ],
+                    )
+                ],
+            )
+        ),
     ])
