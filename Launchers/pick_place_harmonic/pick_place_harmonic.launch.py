@@ -393,5 +393,14 @@ def generate_launch_description():
 
         TimerAction(period=20.0, actions=[move_action_server]),
 
-        TimerAction(period=22.0, actions=[robmove_node, robpose_node]),
+        RegisterEventHandler(
+            OnProcessStart(
+                target_action=move_group,
+                on_start=[
+                    ExecuteProcess(cmd=["echo", ">>> move_group ready → launching robmove"]),
+                    robmove_node,
+                    robpose_node
+                ],
+            )
+        ),
     ])
