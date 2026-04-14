@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 
     // MoveGroupInterface_ROB:
     using moveit::planning_interface::MoveGroupInterface;
-    auto ROBname = param_ROB + "_arm";
+    auto ROBname = "ur5_manipulator";
     move_group_interface_ROB = MoveGroupInterface(MoveIt2_NODE, ROBname);
 
     // SPIN PUBLISHER:
