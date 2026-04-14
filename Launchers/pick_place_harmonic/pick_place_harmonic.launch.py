@@ -1,4 +1,3 @@
-Este es el launcher que estoy usando:
 #!/usr/bin/env python3
 
 import os
