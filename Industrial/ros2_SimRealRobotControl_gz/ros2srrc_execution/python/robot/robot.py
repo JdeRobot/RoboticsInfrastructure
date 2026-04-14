@@ -62,15 +62,12 @@ class RobMoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
-        for i in range(20):   # ~20 segundos
-            if self._action_client.wait_for_server(timeout_sec=1.0):
-                print("[OK] Robmove server detected!")
-                break
-            print(f"...retry {i+1}/20")
 
-        else:
-            print("[ERROR] Robmove server NOT available")
-            
+        while not self._action_client.wait_for_server(timeout_sec=1.0):
+            print("...waiting for Robmove")
+            rclpy.spin_once(self)
+        print("[OK] Robmove server READY")
+
         print("[CLIENT - robot.py]: /Robmove ACTION SERVER detected, ready!")
         print("")
 
@@ -123,10 +120,12 @@ class MoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /move_action Action Client!")
         print("[CLIENT - robot.py]: Waiting for /move_action ROS2 ActionServer to be available...")
-        if not self._action_client.wait_for_server(timeout_sec=10.0):
-            print("[ERROR] move_action server not available!")
-        else:
-            print("[OK] move_action server detected!")
+
+        while not self._action_client.wait_for_server(timeout_sec=1.0):
+            print("...waiting for move_action")
+            rclpy.spin_once(self)
+
+        print("[OK] move_action server READY")
         print("[CLIENT - robot.py]: /move_action ACTION SERVER detected, ready!")
         print("")
 
@@ -178,8 +177,13 @@ class RBT():
     def __init__(self):
 
         # Initialise /Move and /RobMove Action Clients:
+        print("[RBT] Initializing Move client...")
         self.MoveClient = MoveCLIENT()
+
+        print("[RBT] Initializing RobMove client...")
         self.RobMoveClient = RobMoveCLIENT()
+
+        print("[RBT] ALL action servers READY")
 
         self.EXECUTING = ""
 

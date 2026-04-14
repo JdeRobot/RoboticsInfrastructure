@@ -253,6 +253,7 @@ def generate_launch_description():
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
             {"EE_PARAM": "robotiq_2f85"},
+            {"ENV_PARAM": "gazebo"}
         ],
     )
 
@@ -382,22 +383,49 @@ def generate_launch_description():
         clock_bridge,
         robot_state_publisher,
         static_tf,
-
         TimerAction(period=5.0, actions=[spawn_robot]),
 
-        TimerAction(period=8.0, actions=[joint_state_broadcaster]),
-        TimerAction(period=10.0, actions=[joint_trajectory_controller]),
-        TimerAction(period=12.0, actions=[gripper_controller]),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=spawn_robot,
+                on_exit=[joint_state_broadcaster],
+            )
+        ),
 
-        TimerAction(period=18.0, actions=[move_group]),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_state_broadcaster,
+                on_exit=[joint_trajectory_controller],
+            )
+        ),
 
-        TimerAction(period=20.0, actions=[move_action_server]),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_trajectory_controller,
+                on_exit=[gripper_controller],
+            )
+        ),
+
+        RegisterEventHandler(
+        OnProcessExit(
+            target_action=gripper_controller,
+            on_exit=[
+                TimerAction(
+                    period=2.0,
+                    actions=[move_group],
+                ),
+                TimerAction(
+                    period=2.0,
+                    actions=[move_action_server],
+                )
+            ],
+        )
+    ),
 
         RegisterEventHandler(
             OnProcessStart(
                 target_action=move_group,
                 on_start=[
-                    ExecuteProcess(cmd=["echo", ">>> move_group ready → launching robmove"]),
                     robmove_node,
                     robpose_node
                 ],
