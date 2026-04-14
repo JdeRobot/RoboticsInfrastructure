@@ -7,7 +7,7 @@ import yaml
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit, OnProcessStart
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 from ament_index_python.packages import get_package_share_directory
 from launch.actions import SetEnvironmentVariable
 
@@ -239,7 +239,7 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="move",
         output="screen",
-        arguments=['--ros-args', '--log-level', 'debug'],
+        arguments=['--ros-args', '--log-level', 'info'],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -306,6 +306,8 @@ def generate_launch_description():
     print(">>> LAUNCH: move_node configurado")
 
     return LaunchDescription([
+        SetParameter(name="use_sim_time", value=True),
+        
         set_gz_plugin_path,
         set_ld_library_path,
         gz,
@@ -342,7 +344,7 @@ def generate_launch_description():
                 target_action=gripper_controller,
                 on_exit=[
                     TimerAction(
-                        period=5.0,
+                        period=12.0,
                         actions=[move_group],
                     )
                 ],
@@ -354,7 +356,7 @@ def generate_launch_description():
                 target_action=move_group,
                 on_start=[
                     TimerAction(
-                        period=5.0,
+                        period=15.0,
                         actions=[
                             ExecuteProcess(cmd=["echo", ">>> move_group listo, lanzando ejecución"]),
                             move_node,
