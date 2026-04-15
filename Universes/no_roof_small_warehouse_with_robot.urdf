@@ -2,11 +2,11 @@
 <robot name="small_warehouse">
 
   <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
+    <color rgba="0.0 0.0 0.0 1.0"/>
   </material>
 
   <material name="dark">
-    <color rgba="0.3 0.3 0.3 1.0"/>
+    <color rgba="0.1 0.1 0.1 1.0"/>
   </material>
 
   <material name="light_black">
@@ -33,10 +33,6 @@
     <color rgba="0.8706 0.8118 0.7647 1.0"/>
   </material>
 
-  <material name="red">
-    <color rgba="0.8 0.0 0.0 1.0"/>
-  </material>
-
   <material name="white">
     <color rgba="1.0 1.0 1.0 1.0"/>
   </material>
@@ -53,7 +49,7 @@
     <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/bases/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -68,9 +64,7 @@
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1.3729096e+00"/>
-      <inertia ixx="8.7002718e-03" ixy="-4.7576583e-05" ixz="1.1160499e-04"
-               iyy="8.6195418e-03" iyz="-3.5422299e-06"
-               izz="1.4612727e-02" />
+      <inertia ixx="8.7002718e-03" ixy="-4.7576583e-05" ixz="1.1160499e-04" iyy="8.6195418e-03" iyz="-3.5422299e-06" izz="1.4612727e-02" />
     </inertial>
   </link>
 
@@ -85,7 +79,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/wheels/left_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/left_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -100,10 +94,8 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="2.8498940e-02" />
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-               iyy="1.1192413e-05" iyz="-1.4400107e-11"
-               izz="2.0712558e-05" />
-      </inertial>
+      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05" />
+    </inertial>
   </link>
 
   <joint name="wheel_right_joint" type="continuous">
@@ -117,7 +109,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/wheels/right_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/right_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -132,10 +124,8 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="2.8498940e-02" />
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-               iyy="1.1192413e-05" iyz="-1.4400107e-11"
-               izz="2.0712558e-05" />
-      </inertial>
+      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05" />
+    </inertial>
   </link>
 
 
@@ -157,9 +147,7 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="0.005" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -180,9 +168,7 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="0.005" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -204,7 +190,7 @@
     <visual>
       <origin xyz="0 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/sensors/lds.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/lds.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -219,9 +205,7 @@
     <inertial>
       <mass value="0.114" />
       <origin xyz="0 0 0" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -233,7 +217,7 @@
   </joint>
 
 
-<link name="link_platform_mid">
+  <link name="link_platform_mid">
     <origin xyz="0 0 0.0" rpy="0 0 0"/>
 
     <visual>
@@ -250,10 +234,7 @@
 
     <inertial>
       <mass value="1"/>
-      <inertia
-              ixx="1.0" ixy="0.0" ixz="0.0"
-              iyy="1.0" iyz="0.0"
-              izz="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
 
   </link>
@@ -263,37 +244,13 @@
     <origin xyz="0.0 0 0.20" rpy="0. 0. 0."/>
   </joint>
 
-
-  <link name="lift_link">
-    <origin xyz="0 0 0.0" rpy="0 0 0"/>
-
-    <visual>
-      <geometry>
-        <box size="0.40 0.40 0.01" />
-      </geometry>
-      <material name="red"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.40 0.40 0.01" />
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="1"/>
-      <inertia
-              ixx="1.0" ixy="0.0" ixz="0.0"
-              iyy="1.0" iyz="0.0"
-              izz="1.0"/>
-    </inertial>
-  </link>
-
-  <joint name="lift_joint" type="prismatic" >
-  <origin xyz="0 0 0.16" rpy="0. 0. 0."/>
+  <joint name="lift_joint" type="prismatic">
+    <origin xyz="0 0 0.16" rpy="0. 0. 0."/>
     <child link="lift_link" />
     <parent link="link_platform_mid" />
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <limit effort="10000.0" lower="-0.05" upper="0.24" velocity="0.5"/>
-<!--    <inertia ixx="0" ixy="0.0" ixz="1" iyy="0" iyz="0" izz="0"/>-->
+    <!--    <inertia ixx="0" ixy="0.0" ixz="1" iyy="0" iyz="0" izz="0"/>-->
   </joint>
 
 
@@ -301,7 +258,7 @@
 
   <link name="camera_link">
     <visual>
-     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
       <geometry>
         <box size="0.01 0.03 0.01" />
       </geometry>
@@ -314,12 +271,10 @@
     </collision>
 
     <!-- This inertial field needs doesn't contain reliable data!! -->
-<!--   <inertial>
+    <!--   <inertial>
       <mass value="0.564" />
       <origin xyz="0 0 0" />
-      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0"
-               iyy="0.000498940" iyz="0.0"
-               izz="0.003879257" />
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
     </inertial>-->
   </link>
 
@@ -362,7 +317,7 @@
 
   <link name="aws_robomaker_warehouse_ShelfF_01">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="-5.795143 -0.956635 0"/>
       <geometry>
         <mesh filename="package://package_delivery/models/aws_robomaker_warehouse_ShelfF_01/meshes/aws_robomaker_warehouse_ShelfF_01_visual.dae" scale="1 1 1"/>
       </geometry>
@@ -380,50 +335,50 @@
 
   <link name="pallet_0">
     <visual>
-      <origin xyz="3.728 0.57943 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728 0.57943 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
 
   <link name="pallet_1">
     <visual>
-      <origin xyz="3.728 -4.827049 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728 -4.827049 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
   <link name="pallet_2">
     <visual>
-      <origin xyz="3.728  -8.6651 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728  -8.6651 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
   <link name="pallet_3">
     <visual>
-      <origin xyz="3.728  -1.242668 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728  -1.242668 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
   <link name="pallet_4">
     <visual>
-      <origin xyz="3.728  -3.038551 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728  -3.038551 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
   <link name="pallet_5">
     <visual>
-      <origin xyz="3.728  -6.750542 0" rpy="0 0 1.588"/>
+      <origin xyz="3.728  -6.750542 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://laser_mapping/models/pallet/meshes/pallet.dae" scale="1 1 1"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/rack/meshes/rack.stl" scale="0.75 0.5 1"/>
       </geometry>
     </visual>
   </link>
