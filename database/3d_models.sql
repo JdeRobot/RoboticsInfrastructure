@@ -115,19 +115,18 @@ COPY public.world_viewer (id, name, folder_path) FROM stdin;
 11	Montreal	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line.urdf
 12	Small Warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/no_roof_small_warehouse_with_robot.urdf
 13	Nurburgring	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line.urdf
-14	Obstacle avoidance	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/obstacle_avoidance_h.urdf
-15	Pallet warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/pallet_warehouse_with_robot.urdf
-16	Rescue people	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/rescue_people.urdf
-17	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/restaurant.urdf
-18	Road junction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/road_junction.urdf
-19	Roomba house	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house.urdf
-20	Roomba house Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house_followingcam_visual_loc.urdf
-21	Simple circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
-22	Simple circuit Obst	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_obstacles.urdf
-23	Small laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/small_laser_mapping.urdf
-24	Spa	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/spa_circuit.urdf
-25	Taxi City large	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/taxi_navigation_city_large.urdf
-26	Warehouse Arm	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/warehouse_arm.urdf
+14	Pallet warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/pallet_warehouse_with_robot.urdf
+15	Rescue people	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/rescue_people.urdf
+16	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/restaurant.urdf
+17	Road junction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/road_junction.urdf
+18	Roomba house	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house.urdf
+19	Roomba house Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house_followingcam_visual_loc.urdf
+20	Simple circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
+21	Simple circuit Obst	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_obstacles.urdf
+22	Small laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/small_laser_mapping.urdf
+23	Spa	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/spa_circuit.urdf
+24	Taxi City large	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/taxi_navigation_city_large.urdf
+25	Warehouse Arm	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/warehouse_arm.urdf
 \.
 
 --
