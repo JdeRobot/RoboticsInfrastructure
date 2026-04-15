@@ -125,6 +125,29 @@ def generate_launch_description():
 
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
+    ompl_planning_yaml = load_yaml(
+        "ur5_gripper_moveit_config",
+        "config/ompl_planning.yaml"
+    )
+
+    ompl_planning_yaml = ompl_planning_yaml["/**"]["ros__parameters"]
+
+    planning_pipelines_config = {
+        "planning_pipelines": ["ompl"],
+        "default_planning_pipeline": "ompl",
+    }
+
+    trajectory_execution = {
+        "moveit_manage_controllers": True,
+    }
+
+    planning_scene_monitor_parameters = {
+        "publish_planning_scene": True,
+        "publish_geometry_updates": True,
+        "publish_state_updates": True,
+        "publish_transforms_updates": True,
+    }
+
     # =========================
     # CORE NODES
     # =========================
@@ -219,10 +242,12 @@ def generate_launch_description():
             robot_description,
             robot_description_semantic,
             kinematics_yaml,
+            ompl_planning_yaml,
+            planning_pipelines_config,
+            trajectory_execution,
+            planning_scene_monitor_parameters,
             moveit_controllers,
-            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
-            {"publish_robot_description_semantic": True},
         ],
     )
 

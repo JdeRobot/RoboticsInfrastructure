@@ -62,17 +62,11 @@ class RobMoveCLIENT(Node):
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
         print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
-        print("Waiting for /Robmove server...")
 
-        for i in range(20):   # ~20 segundos
-            if self._action_client.wait_for_server(timeout_sec=1.0):
-                print("[OK] Robmove server detected!")
-                break
-            print(f"...retry {i+1}/20")
+        self._action_client.wait_for_server()
 
-        else:
-            print("[ERROR] Robmove server NOT available")
         print("[CLIENT - robot.py]: /Robmove ACTION SERVER detected, ready!")
+        print("")
         print("")
 
     def send_goal(self, TYPE, SPEED, TARGET_POSE):
@@ -120,15 +114,14 @@ class MoveCLIENT(Node):
     def __init__(self):
 
         super().__init__('ros2srrc_Move_Client')
-        self._action_client = ActionClient(self, Move, '/move_action')
+        self._action_client = ActionClient(self, Move, '/Move')
 
-        print("[CLIENT - robot.py]: Initialising ROS2 /move_action Action Client!")
-        print("[CLIENT - robot.py]: Waiting for /move_action ROS2 ActionServer to be available...")
-        if not self._action_client.wait_for_server(timeout_sec=10.0):
-            print("[ERROR] move_action server not available!")
-        else:
-            print("[OK] move_action server detected!")
-        print("[CLIENT - robot.py]: /move_action ACTION SERVER detected, ready!")
+        print("[CLIENT - robot.py]: Initialising ROS2 /Move Action Client!")
+        print("[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available...")
+
+        self._action_client.wait_for_server()
+
+        print("[CLIENT - robot.py]: /Move ACTION SERVER detected, ready!")
         print("")
 
     def send_goal(self, ACTION):

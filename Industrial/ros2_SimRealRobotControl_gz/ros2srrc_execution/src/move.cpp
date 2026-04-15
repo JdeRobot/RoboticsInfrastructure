@@ -175,7 +175,7 @@ public:
 
         action_server_ = rclcpp_action::create_server<Move>(
             this,
-            "/move",
+            "/Move",
             std::bind(&ActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&ActionServer::handle_cancel, this, std::placeholders::_1),
             std::bind(&ActionServer::handle_accepted, this, std::placeholders::_1));
@@ -511,7 +511,7 @@ int main(int argc, char ** argv)
     if (param_ROB != "none"){
         std::string group_name = "ur5_manipulator";
 
-        move_group_interface_ROB = MoveGroupInterface(node2, param_EE);
+        move_group_interface_ROB = MoveGroupInterface(node2, group_name);
         move_group_interface_ROB.setPlanningPipelineId("move_group");
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);

@@ -172,7 +172,7 @@ private:
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+        move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
