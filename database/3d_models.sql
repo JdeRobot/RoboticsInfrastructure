@@ -113,12 +113,12 @@ COPY public.world_viewer (id, name, folder_path) FROM stdin;
 9	Marker Visual Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/marker_visual_loc.urdf
 10	Monaco	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/monaco_circuit.urdf
 11	Montmelo	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line.urdf
-12	Montmelo Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line_ackermann.urdf
+12	Montmelo Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line.urdf
 13	Montreal	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line.urdf
-14	Montreal Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line_ackermann.urdf
+14	Montreal Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line.urdf
 15	Small Warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/no_roof_small_warehouse_with_robot.urdf
 16	Nurburgring	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line.urdf
-17	Nurburgring Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line_ackermann.urdf
+17	Nurburgring Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line.urdf
 18	Pallet warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/pallet_warehouse_with_robot.urdf
 19	Rescue people	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/rescue_people.urdf
 20	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/restaurant.urdf
@@ -126,7 +126,7 @@ COPY public.world_viewer (id, name, folder_path) FROM stdin;
 22	Roomba house	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house.urdf
 23	Roomba house Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house_followingcam_visual_loc.urdf
 24	Simple circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
-25	Simple circuit Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_ackermann.urdf
+25	Simple circuit Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
 26	Simple circuit Obst	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_obstacles.urdf
 27	Small laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/small_laser_mapping.urdf
 28	Spa	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/spa_circuit.urdf
