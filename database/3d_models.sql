@@ -104,29 +104,34 @@ COPY public.robot_viewer (id, name, folder_path) FROM stdin;
 COPY public.world_viewer (id, name, folder_path) FROM stdin;
 1	Autopark Battery	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/autopark_battery.urdf
 2	Autopark Line	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/autopark_line.urdf
-3	Autopark Side	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/autopark_sideways.urdf
-4	Gas station Park	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/gas_station_parking.urdf
-5	Hospital FP	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/hospital_follow_person.urdf
-6	3D Reconstruction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/kobuki_3d_reconstruction.urdf
-7	Laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/laser_map.urdf
-8	Marker Visual Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/marker_visual_loc.urdf
-9	Monaco	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/monaco_circuit.urdf
-10	Montmelo	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line.urdf
-11	Montreal	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line.urdf
-12	Small Warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/no_roof_small_warehouse_with_robot.urdf
-13	Nurburgring	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line.urdf
-14	Pallet warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/pallet_warehouse_with_robot.urdf
-15	Rescue people	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/rescue_people.urdf
-16	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/restaurant.urdf
-17	Road junction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/road_junction.urdf
-18	Roomba house	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house.urdf
-19	Roomba house Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house_followingcam_visual_loc.urdf
-20	Simple circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
-21	Simple circuit Obst	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_obstacles.urdf
-22	Small laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/small_laser_mapping.urdf
-23	Spa	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/spa_circuit.urdf
-24	Taxi City large	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/taxi_navigation_city_large.urdf
-25	Warehouse Arm	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/warehouse_arm.urdf
+3	Autopark Line Lidar	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/autopark_line_lidar.urdf
+4	Autopark Side	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/autopark_sideways.urdf
+5	Gas station Park	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/gas_station_parking.urdf
+6	Hospital FP	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/hospital_follow_person.urdf
+7	3D Reconstruction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/kobuki_3d_reconstruction.urdf
+8	Laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/laser_map.urdf
+9	Marker Visual Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/marker_visual_loc.urdf
+10	Monaco	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/monaco_circuit.urdf
+11	Montmelo	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line.urdf
+12	Montmelo Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montmelo_line_ackermann.urdf
+13	Montreal	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line.urdf
+14	Montreal Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/montreal_line_ackermann.urdf
+15	Small Warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/no_roof_small_warehouse_with_robot.urdf
+16	Nurburgring	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line.urdf
+17	Nurburgring Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/nurburgring_line_ackermann.urdf
+18	Pallet warehouse Bot	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/pallet_warehouse_with_robot.urdf
+19	Rescue people	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/rescue_people.urdf
+20	Restaurant	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/restaurant.urdf
+21	Road junction	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/road_junction.urdf
+22	Roomba house	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house.urdf
+23	Roomba house Loc	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/roomba_1_house_followingcam_visual_loc.urdf
+24	Simple circuit	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit.urdf
+25	Simple circuit Ackermann	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_ackermann.urdf
+26	Simple circuit Obst	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/simple_circuit_obstacles.urdf
+27	Small laser Map	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/small_laser_mapping.urdf
+28	Spa	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/spa_circuit.urdf
+29	Taxi City large	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/taxi_navigation_city_large.urdf
+30	Warehouse Arm	../../../../static/ModelsViewer/RoboticsInfrastructure/Universes/warehouse_arm.urdf
 \.
 
 --
