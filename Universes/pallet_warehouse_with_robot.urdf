@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
-<robot name="pallet_warehouse_with_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="pallet_warehouse_with_robot"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
+    <color rgba="0.0 0.0 0.0 1.0"/>
   </material>
 
   <material name="dark">
@@ -57,7 +58,7 @@
     <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/bases/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -72,9 +73,7 @@
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1.3729096e+00"/>
-      <inertia ixx="8.7002718e-03" ixy="-4.7576583e-05" ixz="1.1160499e-04"
-               iyy="8.6195418e-03" iyz="-3.5422299e-06"
-               izz="1.4612727e-02" />
+      <inertia ixx="8.7002718e-03" ixy="-4.7576583e-05" ixz="1.1160499e-04" iyy="8.6195418e-03" iyz="-3.5422299e-06" izz="1.4612727e-02" />
     </inertial>
   </link>
 
@@ -89,7 +88,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/wheels/left_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/left_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -104,10 +103,8 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="2.8498940e-02" />
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-               iyy="1.1192413e-05" iyz="-1.4400107e-11"
-               izz="2.0712558e-05" />
-      </inertial>
+      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05" />
+    </inertial>
   </link>
 
   <joint name="wheel_right_joint" type="continuous">
@@ -121,7 +118,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/wheels/right_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/right_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -136,10 +133,8 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="2.8498940e-02" />
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-               iyy="1.1192413e-05" iyz="-1.4400107e-11"
-               izz="2.0712558e-05" />
-      </inertial>
+      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05" />
+    </inertial>
   </link>
 
 
@@ -161,9 +156,7 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="0.005" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -184,9 +177,7 @@
     <inertial>
       <origin xyz="0 0 0" />
       <mass value="0.005" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -208,7 +199,7 @@
     <visual>
       <origin xyz="0 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_robot/meshes/sensors/lds.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/lds.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -223,9 +214,7 @@
     <inertial>
       <mass value="0.114" />
       <origin xyz="0 0 0" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
     </inertial>
   </link>
 
@@ -237,7 +226,7 @@
   </joint>
 
 
-<link name="link_platform_mid">
+  <link name="link_platform_mid">
     <origin xyz="0 0 0.0" rpy="0 0 0"/>
 
     <visual>
@@ -254,10 +243,7 @@
 
     <inertial>
       <mass value="1"/>
-      <inertia
-              ixx="1.0" ixy="0.0" ixz="0.0"
-              iyy="1.0" iyz="0.0"
-              izz="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
 
   </link>
@@ -284,20 +270,17 @@
     </collision>
     <inertial>
       <mass value="1"/>
-      <inertia
-              ixx="1.0" ixy="0.0" ixz="0.0"
-              iyy="1.0" iyz="0.0"
-              izz="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
   </link>
 
-  <joint name="lift_joint" type="prismatic" >
-  <origin xyz="0 0 0.16" rpy="0. 0. 0."/>
+  <joint name="lift_joint" type="prismatic">
+    <origin xyz="0 0 0.16" rpy="0. 0. 0."/>
     <child link="lift_link" />
     <parent link="link_platform_mid" />
     <axis xyz="0 0 1" rpy="0 0 0"/>
     <limit effort="10000.0" lower="-0.05" upper="0.24" velocity="0.5"/>
-<!--    <inertia ixx="0" ixy="0.0" ixz="1" iyy="0" iyz="0" izz="0"/>-->
+    <!--    <inertia ixx="0" ixy="0.0" ixz="1" iyy="0" iyz="0" izz="0"/>-->
   </joint>
 
 
@@ -305,7 +288,7 @@
 
   <link name="camera_link">
     <visual>
-     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
       <geometry>
         <box size="0.01 0.03 0.01" />
       </geometry>
@@ -318,12 +301,10 @@
     </collision>
 
     <!-- This inertial field needs doesn't contain reliable data!! -->
-<!--   <inertial>
+    <!--   <inertial>
       <mass value="0.564" />
       <origin xyz="0 0 0" />
-      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0"
-               iyy="0.000498940" iyz="0.0"
-               izz="0.003879257" />
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
     </inertial>-->
   </link>
 
@@ -360,74 +341,368 @@
 
 
 
-<link name="warehouse_walls">
+  <link name="warehouse_walls">
 
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://amazon_robot/models/warehouse_walls/untitled.dae"/>
-    </geometry>
-  </visual>
-</link>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://amazon_warehouse_harmonic//models/warehouse_walls/untitled.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
-<!-- 43 pallets -->
+  <!-- 43 pallets -->
   <!-- ================= POPULATION 0  (-7, -5) ================= -->
-  <link name="pallet_0_0"><visual><origin xyz="-7 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_0_1"><visual><origin xyz="-5.5 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_0_2"><visual><origin xyz="-4 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_0_3"><visual><origin xyz="-7 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_0_4"><visual><origin xyz="-5.5 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_0_5"><visual><origin xyz="-4 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_0_0">
+    <visual>
+      <origin xyz="-7 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_0_1">
+    <visual>
+      <origin xyz="-5.5 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_0_2">
+    <visual>
+      <origin xyz="-4 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_0_3">
+    <visual>
+      <origin xyz="-7 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_0_4">
+    <visual>
+      <origin xyz="-5.5 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_0_5">
+    <visual>
+      <origin xyz="-4 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 1  (0, -5) ================= -->
-  <link name="pallet_1_0"><visual><origin xyz="0 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_1_1"><visual><origin xyz="1.5 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_1_2"><visual><origin xyz="3 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_1_3"><visual><origin xyz="0 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_1_4"><visual><origin xyz="1.5 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_1_5"><visual><origin xyz="3 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_1_0">
+    <visual>
+      <origin xyz="0 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_1_1">
+    <visual>
+      <origin xyz="1.5 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_1_2">
+    <visual>
+      <origin xyz="3 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_1_3">
+    <visual>
+      <origin xyz="0 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_1_4">
+    <visual>
+      <origin xyz="1.5 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_1_5">
+    <visual>
+      <origin xyz="3 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 2  (7, -5) ================= -->
-  <link name="pallet_2_0"><visual><origin xyz="7 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_2_1"><visual><origin xyz="8.5 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_2_2"><visual><origin xyz="10 -5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_2_3"><visual><origin xyz="7 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_2_4"><visual><origin xyz="8.5 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_2_5"><visual><origin xyz="10 -3 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_2_0">
+    <visual>
+      <origin xyz="7 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_2_1">
+    <visual>
+      <origin xyz="8.5 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_2_2">
+    <visual>
+      <origin xyz="10 -5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_2_3">
+    <visual>
+      <origin xyz="7 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_2_4">
+    <visual>
+      <origin xyz="8.5 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_2_5">
+    <visual>
+      <origin xyz="10 -3 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 3  (-7, 5) ================= -->
-  <link name="pallet_3_0"><visual><origin xyz="-7 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_3_1"><visual><origin xyz="-5.5 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_3_2"><visual><origin xyz="-4 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_3_3"><visual><origin xyz="-7 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_3_4"><visual><origin xyz="-5.5 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_3_5"><visual><origin xyz="-4 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_3_0">
+    <visual>
+      <origin xyz="-7 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_3_1">
+    <visual>
+      <origin xyz="-5.5 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_3_2">
+    <visual>
+      <origin xyz="-4 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_3_3">
+    <visual>
+      <origin xyz="-7 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_3_4">
+    <visual>
+      <origin xyz="-5.5 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_3_5">
+    <visual>
+      <origin xyz="-4 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 4  (0, 5) ================= -->
-  <link name="pallet_4_0"><visual><origin xyz="0 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_4_1"><visual><origin xyz="1.5 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_4_2"><visual><origin xyz="3 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_4_3"><visual><origin xyz="0 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_4_4"><visual><origin xyz="1.5 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_4_5"><visual><origin xyz="3 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_4_0">
+    <visual>
+      <origin xyz="0 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_4_1">
+    <visual>
+      <origin xyz="1.5 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_4_2">
+    <visual>
+      <origin xyz="3 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_4_3">
+    <visual>
+      <origin xyz="0 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_4_4">
+    <visual>
+      <origin xyz="1.5 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_4_5">
+    <visual>
+      <origin xyz="3 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 5  (7, 5) ================= -->
-  <link name="pallet_5_0"><visual><origin xyz="7 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_5_1"><visual><origin xyz="8.5 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_5_2"><visual><origin xyz="10 5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_5_3"><visual><origin xyz="7 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_5_4"><visual><origin xyz="8.5 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_5_5"><visual><origin xyz="10 7 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_5_0">
+    <visual>
+      <origin xyz="7 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_5_1">
+    <visual>
+      <origin xyz="8.5 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_5_2">
+    <visual>
+      <origin xyz="10 5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_5_3">
+    <visual>
+      <origin xyz="7 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_5_4">
+    <visual>
+      <origin xyz="8.5 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_5_5">
+    <visual>
+      <origin xyz="10 7 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 6  (-2, -13.5) ================= -->
-  <link name="pallet_6_0"><visual><origin xyz="-2 -13.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_6_1"><visual><origin xyz="-2 -11.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_6_2"><visual><origin xyz="-2 -9.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_6_0">
+    <visual>
+      <origin xyz="-2 -13.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_6_1">
+    <visual>
+      <origin xyz="-2 -11.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_6_2">
+    <visual>
+      <origin xyz="-2 -9.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
   <!-- ================= POPULATION 7  (-2, 13.5) ================= -->
-  <link name="pallet_7_0"><visual><origin xyz="-2 13.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_7_1"><visual><origin xyz="-2 15.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
-  <link name="pallet_7_2"><visual><origin xyz="-2 17.5 0.125"/><geometry><mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/></geometry></visual></link>
+  <link name="pallet_7_0">
+    <visual>
+      <origin xyz="-2 13.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_7_1">
+    <visual>
+      <origin xyz="-2 15.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="pallet_7_2">
+    <visual>
+      <origin xyz="-2 17.5 0.125"/>
+      <geometry>
+        <mesh filename="package://amazon_robot/models/warehouse_pallet/warehouse_pallet.dae"/>
+      </geometry>
+    </visual>
+  </link>
 
 
 
