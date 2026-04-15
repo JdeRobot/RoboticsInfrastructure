@@ -12,7 +12,7 @@
     </visual>
 
     <visual>
-      <origin rpy="1.57079632679 0 0" xyz="-53.46 11.50 1"/>
+      <origin rpy="0 0 0" xyz="-53.46 11.50 1"/>
       <geometry>
         <mesh filename="package://f1/models/simple_circuit/meshes/simple_line.dae"/>
       </geometry>
