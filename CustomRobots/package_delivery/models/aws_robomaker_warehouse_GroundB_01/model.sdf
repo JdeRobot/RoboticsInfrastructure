@@ -1,16 +1,16 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <model name="aws_robomaker_warehouse_GroundB_01">
-    <link name="link">
+    <link name="link_groundb">
       <inertial>
-        <mass>1000</mass>
+        <mass>1.0</mass>
         <inertia>
-          <ixx>1200083.33</ixx>
+          <ixx>1</ixx>
+          <iyy>1</iyy>
+          <izz>1</izz>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>8333416.66</iyy>
           <iyz>0</iyz>
-          <izz>2033333.33</izz>
         </inertia>
       </inertial>
       <collision name="collision">
@@ -23,8 +23,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>100</mu>
-              <mu2>50</mu2>
+              <mu>1e+13</mu>
+              <mu2>1e+13</mu2>
               <fdir1>0 0 0</fdir1>
               <slip1>0</slip1>
               <slip2>0</slip2>
