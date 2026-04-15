@@ -17,12 +17,5 @@
         <mesh filename="package://f1/models/nurburgring_line/meshes/Circuito_Nurburgrin.dae"/>
       </geometry>
     </visual>
-    
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 1"/>
-      <geometry>
-        <mesh filename="package://f1/models/nurburgring_line/meshes/Nurburgrin_Pared.dae"/>
-      </geometry>
-    </visual>
   </link>
 </robot>

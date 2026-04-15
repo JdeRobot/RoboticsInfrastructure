@@ -17,12 +17,5 @@
         <mesh filename="package://f1/models/montmelo_line/meshes/montmelo.dae"/>
       </geometry>
     </visual>
-    
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 1"/>
-      <geometry>
-        <mesh filename="package://f1/models/montmelo_line/meshes/montmelo_pared.dae"/>
-      </geometry>
-    </visual>
   </link>
 </robot>
