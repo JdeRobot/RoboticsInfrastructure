@@ -512,7 +512,7 @@ int main(int argc, char ** argv)
         std::string group_name = "ur5_manipulator";
 
         move_group_interface_ROB = MoveGroupInterface(node2, group_name);
-        move_group_interface_ROB.setPlanningPipelineId("move_group");
+        move_group_interface_ROB.setPlanningPipelineId("ompl");
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
@@ -533,7 +533,7 @@ int main(int argc, char ** argv)
     // END EFFECTOR
     if (param_EE != "none"){
         move_group_interface_EE = MoveGroupInterface(node2, param_EE);
-        move_group_interface_EE.setPlanningPipelineId("move_group");
+        move_group_interface_EE.setPlanningPipelineId("ompl");
 
         move_group_interface_EE.setMaxVelocityScalingFactor(1.0);
         move_group_interface_EE.setMaxAccelerationScalingFactor(1.0);
