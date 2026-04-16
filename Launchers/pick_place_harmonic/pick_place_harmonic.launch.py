@@ -11,8 +11,10 @@ from launch_ros.actions import Node, SetParameter
 from ament_index_python.packages import get_package_share_directory
 from launch.actions import SetEnvironmentVariable
 from launch.actions import LogInfo
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-debug_args = ["--ros-args", "--log-level", "debug"]
+debug_args = ["--ros-args", "--log-level", "info"]
 
 def debug_event(name, action):
     return RegisterEventHandler(
@@ -44,6 +46,16 @@ def load_yaml(package_name, file_path):
 
 
 def generate_launch_description():
+    ur5_pkg = get_package_share_directory("ur5_gripper_description")
+
+    spawn_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(ur5_pkg, "launch", "spawn_robot_warehouse.launch.py")
+        ),
+        launch_arguments={
+            "launch_rviz": "false",
+        }.items(),
+    )
 
     # =========================
     # WORLD
@@ -167,53 +179,11 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
-    # =========================
-    # CORE NODES
-    # =========================
-
-    robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        emulate_tty=True,
-        arguments=debug_args,
-        parameters=[robot_description, {"use_sim_time": True}],
-    )
-
-    static_tf = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        arguments=[
-            "0", "0", "0.9", "0", "0", "0", "world", "base_link"
-        ] + debug_args,
-        output="screen",
-        emulate_tty=True,
-        parameters=[{"use_sim_time": True}],
-    )
-
-    spawn_robot = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=[
-            "-topic", "robot_description",
-            "-name", "ur5",
-            "-allow_renaming", "true",
-            "-x", "0.0",
-            "-y", "0.0",
-            "-z", "0.9",
-            "-R", "0.0",
-            "-P", "0.0",
-            "-Y", "0.0",
-        ] + debug_args,
-        output="screen",
-        emulate_tty=True,
-    )
-
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"
         ] + debug_args,
         output="screen",
         emulate_tty=True,
@@ -377,33 +347,25 @@ def generate_launch_description():
 
         ExecuteProcess(cmd=["echo", "===== START CORE NODES ====="]),
         clock_bridge,
-        robot_state_publisher,
-        static_tf,
 
         ExecuteProcess(cmd=["echo", "===== SPAWN ROBOT ====="]),
-        spawn_robot,
+        spawn_launch,
 
         ExecuteProcess(cmd=["echo", "===== LOAD CONTROLLERS ====="]),
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=spawn_robot,
-                on_exit=[joint_state_broadcaster],
-            )
+        TimerAction(
+            period=5.0,
+            actions=[joint_state_broadcaster],
         ),
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=joint_state_broadcaster,
-                on_exit=[joint_trajectory_controller],
-            )
+        TimerAction(
+            period=7.0,
+            actions=[joint_trajectory_controller],
         ),
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=joint_trajectory_controller,
-                on_exit=[gripper_controller],
-            )
+        TimerAction(
+            period=9.0,
+            actions=[gripper_controller],
         ),
 
         ExecuteProcess(cmd=["echo", "===== START MOVE GROUP ====="]),
@@ -417,8 +379,6 @@ def generate_launch_description():
 
 
         debug_event("gz", gz),
-        debug_event("robot_state_publisher", robot_state_publisher),
-        debug_event("spawn_robot", spawn_robot),
         debug_event("joint_state_broadcaster", joint_state_broadcaster),
         debug_event("joint_trajectory_controller", joint_trajectory_controller),
         debug_event("gripper_controller", gripper_controller),

@@ -1,72 +1,35 @@
-#!/usr/bin/env python3
+"""
+Pick Place Harmonic - Robot Launcher
+Wraps spawn_robot_warehouse.launch.py
+"""
 
 import os
-import xacro
-
 from launch import LaunchDescription
-from launch.actions import TimerAction, RegisterEventHandler
-from launch.event_handlers import OnProcessExit
-from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
 
-    pkg_share_dir = get_package_share_directory("ros2srrc_ur5_gazebo")
+    try:
+        ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
+    except Exception as e:
+        print(f"ERROR: Cannot find ur5_gripper_description package: {e}")
+        print("Make sure packages are built in /home/ws")
+        raise
 
-    xacro_file = os.path.join(
-        pkg_share_dir,
-        "urdf",
-        "ur5_robotiq_2f85.urdf.xacro"
+    warehouse_launch_file = os.path.join(
+        ur5_gripper_pkg, "launch", "spawn_robot_warehouse.launch.py"
     )
 
-    robot_description_content = xacro.process_file(
-        xacro_file,
-        mappings={
-            "EE": "true",
-            "EE_name": "robotiq_2f85",
-            "hmi": "false",
-        },
-    ).toxml()
+    print(f"Including launch file: {warehouse_launch_file}")
 
-    robot_description = {"robot_description": robot_description_content}
-
-    robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[robot_description, {"use_sim_time": True}],
+    warehouse_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(warehouse_launch_file),
+        launch_arguments={
+            "launch_rviz": "false",
+        }.items(),
     )
 
-    spawn_entity = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=[
-            "-topic", "robot_description",
-            "-name", "ur5",
-            "-x", "0.0",
-            "-y", "0.0",
-            "-z", "0.9",
-        ],
-        output="screen",
-    )
-
-    static_tf = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
-        parameters=[{"use_sim_time": True}],
-    )
-
-    bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
-    )
-
-    return LaunchDescription([
-        robot_state_publisher,
-        static_tf,
-        bridge,
-        TimerAction(period=3.0, actions=[spawn_entity]),
-    ])
+    return LaunchDescription([warehouse_launch])
