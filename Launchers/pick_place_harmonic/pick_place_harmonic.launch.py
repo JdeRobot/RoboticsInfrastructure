@@ -269,6 +269,9 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="move",
         output="screen",
+        output="screen",
+        emulate_tty=True,
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -322,30 +325,20 @@ def generate_launch_description():
         actions=[spawn_robot],
     )
 
-    """delayed_execution_nodes = TimerAction(
-        period=10.0,
-        actions=[
-            ExecuteProcess(cmd=["echo", ">>> LAUNCH: intentando lanzar move_node"]),
-            move_node,
-            robmove_node,
-            robpose_node
-        ],
-    )"""
 
     print(">>> LAUNCH: move_node configurado")
 
-    """return LaunchDescription([
+
+    return LaunchDescription([
         SetParameter(name="use_sim_time", value=True),
-        
+
         set_gz_plugin_path,
         set_ld_library_path,
         gz,
+        clock_bridge,
         robot_state_publisher,
         static_tf,
-        clock_bridge,
-        delayed_spawn,
-        #delayed_joint_state_broadcaster,
-        #delayed_execution_nodes,
+        spawn_robot,
 
         RegisterEventHandler(
             OnProcessExit(
@@ -371,61 +364,35 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
-                on_exit=[
-                    TimerAction(
-                        period=12.0,
-                        actions=[move_group],
-                    )
-                ],
+                on_exit=[move_group],
             )
         ),
 
+        ExecuteProcess(
+            cmd=["echo", ">>> launching move_action_server"],
+        ),
+
         RegisterEventHandler(
-            OnProcessStart(
-                target_action=move_group,
-                on_start=[
+            OnProcessExit(
+                target_action=gripper_controller,
+                on_exit=[
+                    ExecuteProcess(cmd=["echo", ">>> controllers ready → launching full stack"]),
+                    
+                    move_group,
+
                     TimerAction(
-                        period=15.0,
+                        period=5.0,
                         actions=[
-                            ExecuteProcess(cmd=["echo", ">>> move_group listo, lanzando ejecución"]),
-                            move_node,
+                            move_action_server,
                             robmove_node,
                             robpose_node
-                        ],
+                        ]
                     )
                 ],
             )
         ),
-    ])"""
 
-    return LaunchDescription([
-        SetParameter(name="use_sim_time", value=True),
-
-        set_gz_plugin_path,
-        set_ld_library_path,
-        gz,
-        clock_bridge,
-        robot_state_publisher,
-        static_tf,
-
-        TimerAction(period=5.0, actions=[spawn_robot]),
-
-        TimerAction(period=8.0, actions=[joint_state_broadcaster]),
-        TimerAction(period=10.0, actions=[joint_trajectory_controller]),
-        TimerAction(period=12.0, actions=[gripper_controller]),
-
-        TimerAction(period=18.0, actions=[move_group]),
-
-        TimerAction(period=20.0, actions=[move_action_server]),
-
-        RegisterEventHandler(
-        OnProcessStart(
-            target_action=move_group,
-            on_start=[
-                ExecuteProcess(cmd=["echo", ">>> move_group ready → launching robmove"]),
-                robmove_node,
-                robpose_node
-            ],
-        )
-    ),
+        ExecuteProcess(
+            cmd=["ros2", "node", "list"],
+        ),
     ])
