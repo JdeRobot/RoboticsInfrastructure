@@ -43,6 +43,9 @@
 
 #include <moveit_msgs/action/move_group.hpp>
 
+#include <moveit/trajectory_processing/iterative_time_parameterization.h>
+#include <moveit/robot_trajectory/robot_trajectory.h>
+
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
@@ -174,12 +177,30 @@ private:
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        move_group_interface_ROB.setPlannerId(GOAL->type);
+        move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
+            robot_trajectory::RobotTrajectory rt(
+                move_group_interface_ROB.getRobotModel(),
+                "ur5_manipulator"
+            );
+
+            rt.setRobotTrajectoryMsg(
+                *MyPlan.start_state_,
+                MyPlan.trajectory_
+            );
+
+            trajectory_processing::IterativeParabolicTimeParameterization iptp;
+            bool success = iptp.computeTimeStamps(rt, 1.0);
+
+            if (!success) {
+                RCLCPP_ERROR(this->get_logger(), "Time parameterization failed!");
+            }
+
+            rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 

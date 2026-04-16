@@ -68,6 +68,9 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <moveit_msgs/action/move_group.hpp>
 
+#include <moveit/trajectory_processing/iterative_time_parameterization.h>
+#include <moveit/robot_trajectory/robot_trajectory.h>
+
 // Declaration of GLOBAL VARIABLES --> ROBOT / END-EFFECTOR / ENVIRONMENT PARAMETERS:
 std::string param_ROB = "none";
 std::string param_EE = "none";
@@ -370,6 +373,25 @@ private:
 
         // EXECUTE:
         if (RES == "PLANNING: OK"){
+
+            robot_trajectory::RobotTrajectory rt(
+                move_group_interface_ROB.getRobotModel(),
+                "ur5_manipulator"
+            );
+
+            rt.setRobotTrajectoryMsg(
+                *MyPlan.start_state_,
+                MyPlan.trajectory_
+            );
+
+            trajectory_processing::IterativeParabolicTimeParameterization iptp;
+            bool success = iptp.computeTimeStamps(rt, 1.0);
+
+            if (!success) {
+                RCLCPP_ERROR(this->get_logger(), "Time parameterization failed!");
+            }
+
+            rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
