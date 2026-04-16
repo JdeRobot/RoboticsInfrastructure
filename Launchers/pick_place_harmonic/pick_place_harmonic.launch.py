@@ -341,7 +341,7 @@ def generate_launch_description():
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
-            {"EE_PARAM": "robotiq_2f85"},
+            {"EE_PARAM": "gripper"},
         ],
     )
 
@@ -360,7 +360,7 @@ def generate_launch_description():
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
-            {"EE_PARAM": "robotiq_2f85"},
+            {"EE_PARAM": "gripper"},
             {"ENV_PARAM": "gazebo"},
         ],
     )
@@ -380,7 +380,7 @@ def generate_launch_description():
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
-            {"EE_PARAM": "robotiq_2f85"},
+            {"EE_PARAM": "gripper"},
             {"ENV_PARAM": "gazebo"},
         ],
     )
