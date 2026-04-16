@@ -415,17 +415,6 @@ def generate_launch_description():
             )
         ),
 
-        """RegisterEventHandler(
-            OnProcessStart(
-                target_action=move_group,
-                on_start=[
-                    LogInfo(msg=">>> EVENT TRIGGERED: move_group started"),
-                    ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
-                    move_action_server,
-                ],
-            )
-        ),"""
-
 
         debug_event("gz", gz),
         debug_event("robot_state_publisher", robot_state_publisher),
@@ -442,8 +431,6 @@ def generate_launch_description():
         debug_exit("move_group", move_group),
         debug_exit("move_action_server", move_action_server),
         debug_exit("robmove", robmove_node),
-        debug_exit("robpose", robpose_node),
-
         debug_exit("robpose", robpose_node),
 
         TimerAction(
