@@ -54,6 +54,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "launch_rviz": "false",
+            "use_sim_time": "true",
         }.items(),
     )
 
@@ -103,7 +104,7 @@ def generate_launch_description():
     # ROBOT DESCRIPTION
     # =========================
 
-    xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
+    """xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
 
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
@@ -126,7 +127,7 @@ def generate_launch_description():
 
     print("ROBOT DESCRIPTION LENGTH:", len(robot_description_content))
 
-    robot_description = {"robot_description": robot_description_content}
+    robot_description = {"robot_description": robot_description_content}"""
 
     # =========================
     # MOVEIT CONFIG
@@ -246,7 +247,6 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             ompl_planning_yaml,
@@ -277,9 +277,8 @@ def generate_launch_description():
         executable="move",
         output="screen",
         emulate_tty=True,
-        arguments=["--ros-args", "--log-level", "debug"],
+        arguments=["--ros-args", "--log-level", "warn"],
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -298,7 +297,6 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -318,7 +316,6 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
-            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -337,6 +334,10 @@ def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable(name="RCUTILS_LOGGING_BUFFERED_STREAM", value="1"),
         SetEnvironmentVariable(name="RCUTILS_COLORIZED_OUTPUT", value="1"),
+        SetEnvironmentVariable(
+            name="RCUTILS_LOGGING_SEVERITY_THRESHOLD",
+            value="WARN"
+        ),
         SetParameter(name="use_sim_time", value=True),
 
         set_gz_plugin_path,
