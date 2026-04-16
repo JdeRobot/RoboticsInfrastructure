@@ -415,16 +415,16 @@ def generate_launch_description():
             )
         ),
 
-        RegisterEventHandler(
-        OnProcessStart(
-            target_action=move_group,
-            on_start=[
-                LogInfo(msg=">>> EVENT TRIGGERED: move_group started"),
-                ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
-                move_action_server,
-            ],
-        )
-    ),
+        """RegisterEventHandler(
+            OnProcessStart(
+                target_action=move_group,
+                on_start=[
+                    LogInfo(msg=">>> EVENT TRIGGERED: move_group started"),
+                    ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
+                    move_action_server,
+                ],
+            )
+        ),"""
 
 
         debug_event("gz", gz),
@@ -443,4 +443,14 @@ def generate_launch_description():
         debug_exit("move_action_server", move_action_server),
         debug_exit("robmove", robmove_node),
         debug_exit("robpose", robpose_node),
+
+        debug_exit("robpose", robpose_node),
+
+        TimerAction(
+            period=5.0,
+            actions=[
+                LogInfo(msg=">>> FORCING move_action_server (Timer)"),
+                move_action_server,
+            ],
+        ),
     ])
