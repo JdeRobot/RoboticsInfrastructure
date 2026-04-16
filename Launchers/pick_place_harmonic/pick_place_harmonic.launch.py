@@ -306,10 +306,12 @@ def generate_launch_description():
         parameters=[
             robot_description,
             robot_description_semantic,
-            kinematics_yaml,
-            #ompl_planning_yaml,
+            kinematics_yaml,+
             planning_pipelines_config,
             {"planning_plugin": "ompl_interface/OMPLPlanner"},
+            {
+                "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization"
+            },
             trajectory_execution,
             planning_scene_monitor_parameters,
             moveit_controllers,
