@@ -414,19 +414,25 @@ def generate_launch_description():
                 on_exit=[
                     ExecuteProcess(cmd=["echo", ">>> controllers ready → launching move_group"]),
                     move_group,
-
+                ],
+            )
+        ),
+        
+        RegisterEventHandler(
+            OnProcessStart(
+                target_action=move_group,
+                on_start=[
                     TimerAction(
-                        period=5.0,
+                        period=3.0,
                         actions=[
-                            ExecuteProcess(cmd=["echo", "===== START EXECUTION ====="]),
+                            ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
                             move_action_server,
-                            robmove_node,
-                            robpose_node
                         ]
                     )
                 ],
             )
         ),
+
 
         debug_event("gz", gz),
         debug_event("robot_state_publisher", robot_state_publisher),
