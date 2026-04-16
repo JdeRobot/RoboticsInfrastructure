@@ -411,27 +411,20 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
-                on_exit=[
-                    ExecuteProcess(cmd=["echo", ">>> controllers ready → launching move_group"]),
-                    move_group,
-                ],
+                on_exit=[move_group],
             )
         ),
-        
+
         RegisterEventHandler(
-            OnProcessStart(
-                target_action=move_group,
-                on_start=[
-                    TimerAction(
-                        period=3.0,
-                        actions=[
-                            ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
-                            move_action_server,
-                        ]
-                    )
-                ],
-            )
-        ),
+        OnProcessStart(
+            target_action=move_group,
+            on_start=[
+                LogInfo(msg=">>> EVENT TRIGGERED: move_group started"),
+                ExecuteProcess(cmd=["echo", ">>> launching move_action_server"]),
+                move_action_server,
+            ],
+        )
+    ),
 
 
         debug_event("gz", gz),
