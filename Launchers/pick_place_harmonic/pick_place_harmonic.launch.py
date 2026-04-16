@@ -46,17 +46,6 @@ def load_yaml(package_name, file_path):
 
 
 def generate_launch_description():
-    ur5_pkg = get_package_share_directory("ur5_gripper_description")
-
-    spawn_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(ur5_pkg, "launch", "spawn_robot_warehouse.launch.py")
-        ),
-        launch_arguments={
-            "launch_rviz": "false",
-            "use_sim_time": "true",
-        }.items(),
-    )
 
     # =========================
     # WORLD
@@ -81,6 +70,21 @@ def generate_launch_description():
         "/opt/ros/humble/lib"
     )
 
+    resource_path = (
+        os.path.dirname(get_package_share_directory("ur5_gripper_description")) + ":" +
+        os.path.dirname(get_package_share_directory("robotiq_description")) + ":" +
+        os.path.join(
+            get_package_share_directory("robotiq_description"),
+            "world",
+            "models"
+        )
+    )
+
+    set_resource_path = SetEnvironmentVariable(
+        name="GZ_SIM_RESOURCE_PATH",
+        value=resource_path
+    )
+
     print("DEBUG GZ_SIM_SYSTEM_PLUGIN_PATH =", gz_plugin_path)
 
     set_gz_plugin_path = SetEnvironmentVariable(
@@ -97,14 +101,23 @@ def generate_launch_description():
 
     gz = ExecuteProcess(
         cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],
-        output="both"
+        output="both",
+        additional_env={
+            "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_plugin_path,
+            "LD_LIBRARY_PATH": gz_plugin_path + ":/usr/lib/x86_64-linux-gnu:" + existing_ld,
+            "GZ_SIM_RESOURCE_PATH": resource_path,
+        }
     )
 
     # =========================
     # ROBOT DESCRIPTION
     # =========================
 
-    """xacro_file = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/ros2srrc_ur5_gazebo/urdf/ur5_robotiq_2f85.urdf.xacro"
+    xacro_file = os.path.join(
+        get_package_share_directory("ur5_gripper_description"),
+        "urdf",
+        "ur5_robotiq85_gripper.urdf.xacro"
+    )
 
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
@@ -127,7 +140,7 @@ def generate_launch_description():
 
     print("ROBOT DESCRIPTION LENGTH:", len(robot_description_content))
 
-    robot_description = {"robot_description": robot_description_content}"""
+    robot_description = {"robot_description": robot_description_content}
 
     # =========================
     # MOVEIT CONFIG
@@ -180,12 +193,53 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
+    # =========================
+    # CORE NODES
+    # =========================
+
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        emulate_tty=True,
+        parameters=[robot_description, {"use_sim_time": True}],
+    )
+
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        arguments=[
+            "0", "0", "0.9", "0", "0", "0", "world", "base_link"
+        ],
+        output="screen",
+        emulate_tty=True,
+        parameters=[{"use_sim_time": True}],
+    )
+
+    spawn_robot = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=[
+            "-topic", "robot_description",
+            "-name", "ur5_robotiq",
+            "-allow_renaming", "true",
+            "-x", "0.0",
+            "-y", "0.0",
+            "-z", "0.9",
+            "-R", "0.0",
+            "-P", "0.0",
+            "-Y", "0.0",
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
+    )
+
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"
-        ] + debug_args,
+        ]
         output="screen",
         emulate_tty=True,
         parameters=[{"use_sim_time": True}],
@@ -247,6 +301,7 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             ompl_planning_yaml,
@@ -279,6 +334,7 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=["--ros-args", "--log-level", "warn"],
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -297,6 +353,7 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -316,6 +373,7 @@ def generate_launch_description():
         emulate_tty=True,
         arguments=debug_args,
         parameters=[
+            robot_description,
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
@@ -334,39 +392,44 @@ def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable(name="RCUTILS_LOGGING_BUFFERED_STREAM", value="1"),
         SetEnvironmentVariable(name="RCUTILS_COLORIZED_OUTPUT", value="1"),
-        SetEnvironmentVariable(
-            name="RCUTILS_LOGGING_SEVERITY_THRESHOLD",
-            value="WARN"
-        ),
         SetParameter(name="use_sim_time", value=True),
 
         set_gz_plugin_path,
         set_ld_library_path,
+        set_resource_path, 
 
         ExecuteProcess(cmd=["echo", "===== START GAZEBO ====="]),
         gz,
 
         ExecuteProcess(cmd=["echo", "===== START CORE NODES ====="]),
         clock_bridge,
+        robot_state_publisher,
+        static_tf,
 
         ExecuteProcess(cmd=["echo", "===== SPAWN ROBOT ====="]),
-        spawn_launch,
+        spawn_robot,
 
         ExecuteProcess(cmd=["echo", "===== LOAD CONTROLLERS ====="]),
 
-        TimerAction(
-            period=5.0,
-            actions=[joint_state_broadcaster],
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=spawn_robot,
+                on_exit=[joint_state_broadcaster],
+            )
         ),
 
-        TimerAction(
-            period=7.0,
-            actions=[joint_trajectory_controller],
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_state_broadcaster,
+                on_exit=[joint_trajectory_controller],
+            )
         ),
 
-        TimerAction(
-            period=9.0,
-            actions=[gripper_controller],
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=joint_trajectory_controller,
+                on_exit=[gripper_controller],
+            )
         ),
 
         ExecuteProcess(cmd=["echo", "===== START MOVE GROUP ====="]),
@@ -380,6 +443,8 @@ def generate_launch_description():
 
 
         debug_event("gz", gz),
+        debug_event("robot_state_publisher", robot_state_publisher),
+        debug_event("spawn_robot", spawn_robot),
         debug_event("joint_state_broadcaster", joint_state_broadcaster),
         debug_event("joint_trajectory_controller", joint_trajectory_controller),
         debug_event("gripper_controller", gripper_controller),
