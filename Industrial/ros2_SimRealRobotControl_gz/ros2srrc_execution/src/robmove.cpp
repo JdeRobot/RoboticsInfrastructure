@@ -41,6 +41,8 @@
 #include <moveit/move_group_interface/move_group_interface_improved.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
+#include <moveit_msgs/action/move_group.hpp>
+
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
@@ -238,11 +240,28 @@ int main(int argc, char **argv)
     executor.add_node(MoveIt2_NODE);
     std::thread([&executor]() { executor.spin(); }).detach();
 
+    auto move_group_client =
+        rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
+            MoveIt2_NODE,
+            "move_action"
+        );
+
+    RCLCPP_INFO(logger, "Waiting for MoveGroup action server...");
+
+    if (!move_group_client->wait_for_action_server(std::chrono::seconds(10))) {
+        RCLCPP_ERROR(logger, "MoveGroup action server not available!");
+        rclcpp::shutdown();
+        return 1;
+    }
+
+    RCLCPP_INFO(logger, "MoveGroup action server ready!");
+
     // MoveGroupInterface_ROB:
     using moveit::planning_interface::MoveGroupInterface;
     auto ROBname = "ur5_manipulator";
     move_group_interface_ROB = MoveGroupInterface(MoveIt2_NODE, ROBname);
-    move_group_interface_ROB.setPlanningPipelineId("move_group");
+    move_group_interface_ROB.setPlanningPipelineId("ompl");
+    move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);

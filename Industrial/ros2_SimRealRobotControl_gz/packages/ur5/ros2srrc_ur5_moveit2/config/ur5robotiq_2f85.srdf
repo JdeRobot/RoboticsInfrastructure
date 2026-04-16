@@ -38,7 +38,7 @@
     <chain base_link="base_link" tip_link="tool0"/>
   </group>
 
-  <group name="robotiq_2f85">
+  <group name="gripper">
     <joint name="robotiq_85_left_knuckle_joint"/>
   </group>
 
@@ -60,15 +60,15 @@
     <joint name="wrist_3_joint" value="0" />
   </group_state>
 
-  <group_state name="GripperOpen" group="robotiq_2f85">
+  <group_state name="GripperOpen" group="gripper">
     <joint name="robotiq_85_left_knuckle_joint" value="0" />
   </group_state>
 
-  <group_state name="GripperCloseHALF" group="robotiq_2f85">
+  <group_state name="GripperCloseHALF" group="gripper">
     <joint name="robotiq_85_left_knuckle_joint" value="0.5" />
   </group_state>
 
-  <group_state name="GripperCloseFULL" group="robotiq_2f85">
+  <group_state name="GripperCloseFULL" group="gripper">
     <joint name="robotiq_85_left_knuckle_joint" value="0.8" />
   </group_state>
 

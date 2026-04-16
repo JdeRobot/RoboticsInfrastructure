@@ -437,7 +437,18 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
-                on_exit=[move_group],
+                on_exit=[
+                    move_group,
+
+                    TimerAction(
+                        period=3.0,
+                        actions=[
+                            move_action_server,
+                            robmove_node,
+                            robpose_node
+                        ],
+                    ),
+                ],
             )
         ),
 
@@ -459,11 +470,4 @@ def generate_launch_description():
         debug_exit("robmove", robmove_node),
         debug_exit("robpose", robpose_node),
 
-        TimerAction(
-            period=5.0,
-            actions=[
-                LogInfo(msg=">>> FORCING move_action_server (Timer)"),
-                move_action_server,
-            ],
-        ),
     ])
