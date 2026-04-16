@@ -39,7 +39,7 @@
   </group>
 
   <group name="robotiq_2f85">
-    <chain base_link="robotiq_85_base_link" tip_link="robotiq_85_left_finger_tip_link"/>
+    <joint name="robotiq_85_left_knuckle_joint"/>
   </group>
 
   <group_state group="ur5_manipulator" name="home">
