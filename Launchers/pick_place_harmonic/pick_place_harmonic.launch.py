@@ -10,6 +10,25 @@ from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch_ros.actions import Node, SetParameter
 from ament_index_python.packages import get_package_share_directory
 from launch.actions import SetEnvironmentVariable
+from launch.actions import LogInfo
+
+debug_args = ["--ros-args", "--log-level", "debug"]
+
+def debug_event(name, action):
+    return RegisterEventHandler(
+        OnProcessStart(
+            target_action=action,
+            on_start=[LogInfo(msg=f"STARTED: {name}")]
+        )
+    )
+
+def debug_exit(name, action):
+    return RegisterEventHandler(
+        OnProcessExit(
+            target_action=action,
+            on_exit=[LogInfo(msg=f"EXIT: {name}")]
+        )
+    )
 
 
 def load_file(package_name, file_path):
@@ -155,15 +174,20 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="both",
+        output="screen",
+        emulate_tty=True,
+        arguments=debug_args,
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
-        output="both",
+        arguments=[
+            "0", "0", "0.9", "0", "0", "0", "world", "base_link"
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
         parameters=[{"use_sim_time": True}],
     )
 
@@ -180,14 +204,19 @@ def generate_launch_description():
             "-R", "0.0",
             "-P", "0.0",
             "-Y", "0.0",
-        ],
-        output="both",
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
     )
 
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
         parameters=[{"use_sim_time": True}],
     )
 
@@ -202,7 +231,9 @@ def generate_launch_description():
             "joint_state_broadcaster",
             "--controller-manager",
             "/controller_manager",
-        ],
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
     )
 
     joint_trajectory_controller = Node(
@@ -212,7 +243,9 @@ def generate_launch_description():
             "joint_trajectory_controller",
             "--controller-manager",
             "/controller_manager",
-        ],
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
     )
 
     gripper_controller = Node(
@@ -222,7 +255,9 @@ def generate_launch_description():
             "gripper_controller",
             "--controller-manager",
             "/controller_manager",
-        ],
+        ] + debug_args,
+        output="screen",
+        emulate_tty=True,
     )
 
     """delayed_joint_state_broadcaster = TimerAction(
@@ -237,7 +272,9 @@ def generate_launch_description():
     move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        output="both",
+        output="screen",
+        emulate_tty=True,
+        arguments=debug_args,
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -269,7 +306,6 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="move",
         output="screen",
-        output="screen",
         emulate_tty=True,
         arguments=["--ros-args", "--log-level", "debug"],
         parameters=[
@@ -288,7 +324,9 @@ def generate_launch_description():
         name="robmove",
         package="ros2srrc_execution",
         executable="robmove",
-        output="both",
+        output="screen",
+        emulate_tty=True,
+        arguments=debug_args,
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -306,7 +344,9 @@ def generate_launch_description():
         name="robpose",
         package="ros2srrc_execution",
         executable="robpose",
-        output="both",
+        output="screen",
+        emulate_tty=True,
+        arguments=debug_args,
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -320,25 +360,30 @@ def generate_launch_description():
         ],
     )
 
-    delayed_spawn = TimerAction(
-        period=5.0,
-        actions=[spawn_robot],
-    )
-
 
     print(">>> LAUNCH: move_node configurado")
 
 
     return LaunchDescription([
+        SetEnvironmentVariable(name="RCUTILS_LOGGING_BUFFERED_STREAM", value="1"),
+        SetEnvironmentVariable(name="RCUTILS_COLORIZED_OUTPUT", value="1"),
         SetParameter(name="use_sim_time", value=True),
 
         set_gz_plugin_path,
         set_ld_library_path,
+
+        ExecuteProcess(cmd=["echo", "===== START GAZEBO ====="]),
         gz,
+
+        ExecuteProcess(cmd=["echo", "===== START CORE NODES ====="]),
         clock_bridge,
         robot_state_publisher,
         static_tf,
+
+        ExecuteProcess(cmd=["echo", "===== SPAWN ROBOT ====="]),
         spawn_robot,
+
+        ExecuteProcess(cmd=["echo", "===== LOAD CONTROLLERS ====="]),
 
         RegisterEventHandler(
             OnProcessExit(
@@ -361,28 +406,19 @@ def generate_launch_description():
             )
         ),
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=gripper_controller,
-                on_exit=[move_group],
-            )
-        ),
-
-        ExecuteProcess(
-            cmd=["echo", ">>> launching move_action_server"],
-        ),
+        ExecuteProcess(cmd=["echo", "===== START MOVE GROUP ====="]),
 
         RegisterEventHandler(
             OnProcessExit(
                 target_action=gripper_controller,
                 on_exit=[
-                    ExecuteProcess(cmd=["echo", ">>> controllers ready → launching full stack"]),
-                    
+                    ExecuteProcess(cmd=["echo", ">>> controllers ready → launching move_group"]),
                     move_group,
 
                     TimerAction(
                         period=5.0,
                         actions=[
+                            ExecuteProcess(cmd=["echo", "===== START EXECUTION ====="]),
                             move_action_server,
                             robmove_node,
                             robpose_node
@@ -392,7 +428,20 @@ def generate_launch_description():
             )
         ),
 
-        ExecuteProcess(
-            cmd=["ros2", "node", "list"],
-        ),
+        debug_event("gz", gz),
+        debug_event("robot_state_publisher", robot_state_publisher),
+        debug_event("spawn_robot", spawn_robot),
+        debug_event("joint_state_broadcaster", joint_state_broadcaster),
+        debug_event("joint_trajectory_controller", joint_trajectory_controller),
+        debug_event("gripper_controller", gripper_controller),
+        debug_event("move_group", move_group),
+        debug_event("move_action_server", move_action_server),
+        debug_event("robmove", robmove_node),
+        debug_event("robpose", robpose_node),
+
+        debug_exit("gz", gz),
+        debug_exit("move_group", move_group),
+        debug_exit("move_action_server", move_action_server),
+        debug_exit("robmove", robmove_node),
+        debug_exit("robpose", robpose_node),
     ])
