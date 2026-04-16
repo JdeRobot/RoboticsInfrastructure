@@ -380,7 +380,7 @@ private:
             );
 
             rt.setRobotTrajectoryMsg(
-                *MyPlan.start_state_,
+                MyPlan.start_state_,
                 MyPlan.trajectory_
             );
 

@@ -53,7 +53,7 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 std::string param_ROB = "none";
 
 // Declaration of GLOBAL VARIABLE --> RES:
-auto RES = "none";
+std::string RES = "none";
 
 // =============================================================================== //
 //  PARAM -> ROBOT:
@@ -189,7 +189,7 @@ private:
             );
 
             rt.setRobotTrajectoryMsg(
-                *MyPlan.start_state_,
+                MyPlan.start_state_,
                 MyPlan.trajectory_
             );
 
