@@ -10,7 +10,7 @@
     </inertial>
     <visual name="car">
       <geometry>
-        <mesh filename="package://f1/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
+        <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
       </geometry>
     </visual>
   </link>

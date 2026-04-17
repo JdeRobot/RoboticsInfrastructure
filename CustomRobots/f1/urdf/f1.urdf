@@ -12,7 +12,7 @@
     </inertial>
     <visual name="car">
       <geometry>
-        <mesh filename="package://f1/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
+        <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
       </geometry>
     </visual>
   </link>
@@ -24,7 +24,7 @@
       </sphere>
     </geometry>
   </visual>
-  <gazebo reference="camera_link">
+  <gz reference="camera_link">
     <sensor name="cam_f1_left" type="camera">
       <pose>0.45 0.04 0.1 0 0 0</pose>
       <always_on>true</always_on>
@@ -50,13 +50,13 @@
         </noise>
       </camera>
     </sensor>
-  </gazebo>
-  <gazebo>
+  </gz>
+  <gz>
     <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
       <topic>/F1ROS/cmd_vel</topic>
     </plugin>
-  </gazebo>
-  <gazebo>
+  </gz>
+  <gz>
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
       <robot_base_frame>xf1</robot_base_frame>
@@ -64,5 +64,5 @@
       <odom_topic>/F1ROS/odom</odom_topic>
       <dimensions>3</dimensions>
     </plugin>
-  </gazebo>
+  </gz>
 </robot>
