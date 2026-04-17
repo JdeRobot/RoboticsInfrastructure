@@ -396,84 +396,31 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        SetEnvironmentVariable(name="RCUTILS_LOGGING_BUFFERED_STREAM", value="1"),
-        SetEnvironmentVariable(name="RCUTILS_COLORIZED_OUTPUT", value="1"),
-        SetParameter(name="use_sim_time", value=True),
-
         set_gz_plugin_path,
         set_ld_library_path,
         set_resource_path, 
 
-        ExecuteProcess(cmd=["echo", "===== START GAZEBO ====="]),
         gz,
 
-        ExecuteProcess(cmd=["echo", "===== START CORE NODES ====="]),
         clock_bridge,
         robot_state_publisher,
         static_tf,
 
-        ExecuteProcess(cmd=["echo", "===== SPAWN ROBOT ====="]),
         spawn_robot,
 
-        ExecuteProcess(cmd=["echo", "===== LOAD CONTROLLERS ====="]),
+        TimerAction(
+            period=8.0,
+            actions=[
+                joint_state_broadcaster,
+                joint_trajectory_controller,
+                gripper_controller,
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=spawn_robot,
-                on_exit=[joint_state_broadcaster],
-            )
+                move_group,
+
+                move_action_server,
+                robmove_node,
+                robpose_node,
+            ],
         ),
-
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=joint_state_broadcaster,
-                on_exit=[joint_trajectory_controller],
-            )
-        ),
-
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=joint_trajectory_controller,
-                on_exit=[gripper_controller],
-            )
-        ),
-
-        ExecuteProcess(cmd=["echo", "===== START MOVE GROUP ====="]),
-
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=gripper_controller,
-                on_exit=[
-                    move_group,
-
-                    TimerAction(
-                        period=3.0,
-                        actions=[
-                            move_action_server,
-                            robmove_node,
-                            robpose_node
-                        ],
-                    ),
-                ],
-            )
-        ),
-
-
-        debug_event("gz", gz),
-        debug_event("robot_state_publisher", robot_state_publisher),
-        debug_event("spawn_robot", spawn_robot),
-        debug_event("joint_state_broadcaster", joint_state_broadcaster),
-        debug_event("joint_trajectory_controller", joint_trajectory_controller),
-        debug_event("gripper_controller", gripper_controller),
-        debug_event("move_group", move_group),
-        debug_event("move_action_server", move_action_server),
-        debug_event("robmove", robmove_node),
-        debug_event("robpose", robpose_node),
-
-        debug_exit("gz", gz),
-        debug_exit("move_group", move_group),
-        debug_exit("move_action_server", move_action_server),
-        debug_exit("robmove", robmove_node),
-        debug_exit("robpose", robpose_node),
 
     ])
