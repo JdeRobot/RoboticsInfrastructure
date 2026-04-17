@@ -17,7 +17,6 @@ set(ros2_dependencies
   ros_gz_interfaces
 )
 
-# Find ament_cmake (required for the build system itself)
 find_package(ament_cmake REQUIRED)
 
 # Loop through the list to find all specified ROS 2 packages automatically
@@ -28,8 +27,13 @@ endforeach()
 # Find OpenCV explicitly (Required by Camera and Classnet for cv::Mat and cv::dnn)
 find_package(OpenCV REQUIRED)
 
+# Find external C++ libraries for the WebGUI
+find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(nlohmann_json REQUIRED)
+
 # Create the shared library from the source files matching the new structure
 add_library(${PROJECT_NAME} SHARED
+  # HAL
   src/hal/bumper.cpp
   src/hal/camera.cpp
   src/hal/classnet.cpp
@@ -38,6 +42,8 @@ add_library(${PROJECT_NAME} SHARED
   src/hal/motors.cpp
   src/hal/odometry.cpp
   src/hal/sim_time.cpp
+  # WebGUI
+  src/webgui/MeasuringThreadingGUI.cpp
 )
 
 # Specify the include directories so the compiler finds the .hpp files
@@ -45,11 +51,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   ${OpenCV_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
 
 # Link all listed ROS 2 dependencies and OpenCV to the library
 ament_target_dependencies(${PROJECT_NAME} ${ros2_dependencies})
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} 
+  ${OpenCV_LIBRARIES}
+  Boost::system
+  Boost::thread
+  nlohmann_json::nlohmann_json
+)
 
 # Install the include directory so other packages can do #include
 install(DIRECTORY include/
