@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot name="f1_gz"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="f1_camera" params="xyzrpy name">
+
+    <visual name='${name}_pose'>
+      <pose>${xyzrpy}</pose>
+      <geometry>
+        <sphere>
+          <radius>.005</radius>
+        </sphere>
+      </geometry>
+    </visual>
+
+    <gazebo reference="camera_link">
+      <sensor name="${name}" type="camera">
+        <pose>${xyzrpy}</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>20.000000</update_rate>
+        <topic>/${name}/image_raw</topic>
+        <camera name="cleft">
+          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.100000</near>
+            <far>15.000000</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_odom" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>xf1</robot_base_frame>
+        <odom_publish_frequency>20.0</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

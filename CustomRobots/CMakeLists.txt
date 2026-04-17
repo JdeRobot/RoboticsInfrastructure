@@ -85,8 +85,11 @@ install(
     Turtlebot2/turtlebot2_simulated/turtlebot2/launch
     Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
     Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
+    
     f1/models
     f1/params
+    f1/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
