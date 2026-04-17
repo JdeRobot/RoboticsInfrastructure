@@ -1,5 +1,6 @@
 <?xml version="1.0" ?>
-<robot name="f1_renault">
+<robot name="f1"
+  xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
   <link name="f1">
     <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -14,7 +15,7 @@
     </visual>
   </link>
 
-  <xarcro:f1_camera xyzrpy="0.45 0.04 0.1 0 0 0" name="cam_f1_left"/>
-  <xarcro:f1_velocity topic="/F1ROS/cmd_vel"/>
-  <xarcro:f1_odom topic="/F1ROS/odom"/>
+  <xacro:f1_camera xyzrpy="0.45 0.04 0.1 0 0 0" name="cam_f1_left"/>
+  <xacro:f1_velocity topic="/F1ROS/cmd_vel"/>
+  <xacro:f1_odom topic="/F1ROS/odom"/>
 </robot>

@@ -69,41 +69,41 @@ def generate_launch_description():
     #     launch_arguments={"use_sim_time": use_sim_time}.items(),
     # )
 
-    spawn_robot_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(robot_launch_dir, "spawn_robot.launch.py")
-        ),
-        launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
-    )
+    # spawn_robot_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(robot_launch_dir, "spawn_robot.launch.py")
+    #     ),
+    #     launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
+    # )
 
     ### Testing
 
     urdf_file = os.path.join(package_dir, "models", "f1", "f1.urdf")
 
-    with open(urdf_file, "r") as info:
-        robot_desc = info.read()
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
-    robot_model = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        parameters=[{"robot_description": robot_desc, "use_sim_time": True}],
-        arguments=[urdf_file],
+    robot_description = ParameterValue(
+        Command(["xacro", " ", urdf_file]),
+        value_type=str,
     )
 
-    joint_state_publisher_node = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
-        parameters=[{"use_sim_time": True}],
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        output="screen",
+        parameters=[
+            {"use_sim_time": use_sim_time, "robot_description": robot_description}
+        ],
     )
 
     robot_entity = Node(
-        package=ros_gz_sim,
-        executable="spawn_entity.py",
+        package="ros_gz_sim",
+        executable="create",
         arguments=[
             "-topic",
-            "robot_description",
-            "-entity",
+            "/robot_description",
+            "-name",
             "f1",
             " ".join(["-x", str(53.462)]),
             " ".join(["-y", str(-10.734)]),
@@ -131,15 +131,14 @@ def generate_launch_description():
     ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
     # ld.add_action(gazebo_client)
-    ld.add_action(declare_x_cmd)
-    ld.add_action(declare_y_cmd)
-    ld.add_action(declare_z_cmd)
-    ld.add_action(declare_roll_cmd)
-    ld.add_action(declare_pitch_cmd)
-    ld.add_action(declare_yaw_cmd)
+    # ld.add_action(declare_x_cmd)
+    # ld.add_action(declare_y_cmd)
+    # ld.add_action(declare_z_cmd)
+    # ld.add_action(declare_roll_cmd)
+    # ld.add_action(declare_pitch_cmd)
+    # ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
 
-    ld.add_action(joint_state_publisher_node)
     ld.add_action(robot_model)
     ld.add_action(robot_entity)
 
