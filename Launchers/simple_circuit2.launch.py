@@ -18,25 +18,12 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-
-    x = LaunchConfiguration("x")
-    y = LaunchConfiguration("y")
-    z = LaunchConfiguration("z")
-    roll = LaunchConfiguration("R")
-    pitch = LaunchConfiguration("P")
-    yaw = LaunchConfiguration("Y")
-
     package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
+    urdf_file = os.path.join(package_dir, "urdf", "f1.urdf")
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    robot_launch_dir = "/opt/jderobot/Launchers/simple_circuit"
-
-    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    x_pose = LaunchConfiguration("x_pose", default="1.0")
-    y_pose = LaunchConfiguration("y_pose", default="-1.5")
-    z_pose = LaunchConfiguration("z_pose", default="7.1")
     world_file_name = "simple_circuit.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
@@ -50,10 +37,6 @@ def generate_launch_description():
             "on_exit_shutdown": "true",
         }.items(),
     )
-
-    ### Testing
-
-    urdf_file = os.path.join(package_dir, "urdf", "f1.urdf")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
@@ -80,12 +63,26 @@ def generate_launch_description():
             "/robot_description",
             "-name",
             "f1",
-            " ".join(["-x", str(53.462)]),
-            " ".join(["-y", str(-10.734)]),
-            " ".join(["-z", str(0.004)]),
-            " ".join(["-R", str(0)]),
-            " ".join(["-P", str(0)]),
-            " ".join(["-Y", str(-1.57)]),
+            "-allow_renaming",
+            "true",
+            "-x",
+            "53.462",
+            "-y",
+            "-10.743",
+            "-z",
+            "0.004",
+            "-R",
+            "0",
+            "-P",
+            "0",
+            "-Y",
+            "-1.57",
+            # " ".join(["-x", str(53.462)]),
+            # " ".join(["-y", str(-10.734)]),
+            # " ".join(["-z", str(0.004)]),
+            # " ".join(["-R", str(0)]),
+            # " ".join(["-P", str(0)]),
+            # " ".join(["-Y", str(-1.57)]),
         ],
         output="screen",
     )
