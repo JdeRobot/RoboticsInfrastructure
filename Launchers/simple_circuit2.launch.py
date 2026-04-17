@@ -14,6 +14,7 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
@@ -50,35 +51,9 @@ def generate_launch_description():
         }.items(),
     )
 
-    declare_x_cmd = DeclareLaunchArgument("x", default_value="1.0")
-
-    declare_y_cmd = DeclareLaunchArgument("y", default_value="-1.5")
-
-    declare_z_cmd = DeclareLaunchArgument("z", default_value="7.1")
-
-    declare_roll_cmd = DeclareLaunchArgument("R", default_value="0.0")
-
-    declare_pitch_cmd = DeclareLaunchArgument("P", default_value="0.0")
-
-    declare_yaw_cmd = DeclareLaunchArgument("Y", default_value="1.57079")
-
-    # robot_state_publisher_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(robot_launch_dir, "robot_state_publisher.launch.py")
-    #     ),
-    #     launch_arguments={"use_sim_time": use_sim_time}.items(),
-    # )
-
-    # spawn_robot_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(robot_launch_dir, "spawn_robot.launch.py")
-    #     ),
-    #     launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "z_pose": z_pose}.items(),
-    # )
-
     ### Testing
 
-    urdf_file = os.path.join(package_dir, "models", "f1", "f1.urdf")
+    urdf_file = os.path.join(package_dir, "urdf", "f1.urdf")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
@@ -130,16 +105,9 @@ def generate_launch_description():
     )
     ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
-    # ld.add_action(gazebo_client)
-    # ld.add_action(declare_x_cmd)
-    # ld.add_action(declare_y_cmd)
-    # ld.add_action(declare_z_cmd)
-    # ld.add_action(declare_roll_cmd)
-    # ld.add_action(declare_pitch_cmd)
-    # ld.add_action(declare_yaw_cmd)
     ld.add_action(world_entity_cmd)
 
-    ld.add_action(robot_model)
+    ld.add_action(robot_state_publisher_node)
     ld.add_action(robot_entity)
 
     return ld
