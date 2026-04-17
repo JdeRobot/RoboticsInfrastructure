@@ -177,7 +177,7 @@ private:
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+        move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
@@ -188,8 +188,10 @@ private:
                 "ur5_manipulator"
             );
 
+            moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
+
             rt.setRobotTrajectoryMsg(
-                MyPlan.start_state_,
+                *current_state,
                 MyPlan.trajectory_
             );
 
