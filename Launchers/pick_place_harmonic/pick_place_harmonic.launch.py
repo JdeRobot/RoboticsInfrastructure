@@ -18,7 +18,12 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(base_dir, "robot.launch.py"))
     )
 
+    execution_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(base_dir, "execution.launch.py"))
+    )
+
     return LaunchDescription([
         world_launch,
-        robot_launch
+        robot_launch,
+        execution_launch
     ])
