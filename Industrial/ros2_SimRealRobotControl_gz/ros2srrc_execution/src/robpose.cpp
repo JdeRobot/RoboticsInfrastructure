@@ -74,7 +74,7 @@ private:
   void timer_callback()
   {
     if (!move_group_interface_ROB.getRobotModel()) {
-        return
+        return;
     }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
