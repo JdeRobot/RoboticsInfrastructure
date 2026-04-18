@@ -74,7 +74,7 @@ private:
   void timer_callback()
   {
     if (!move_group_interface_ROB.getRobotModel()) {
-        return;
+        return
     }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
@@ -106,17 +106,6 @@ int main(int argc, char **argv)
     rclcpp::init(argc, argv);
 
     auto node = std::make_shared<RobPose_PUB>();
-
-    // ===== MOVEIT HELPER NODE =====
-    auto moveit_node = std::make_shared<rclcpp::Node>(
-        "moveit_helper_node_robpose",
-        rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
-    );
-
-    // Executor para MoveIt
-    rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(moveit_node);
-    std::thread([&executor]() { executor.spin(); }).detach();
 
     // === PARAM ===
     node->declare_parameter("ROB_PARAM", "none");
