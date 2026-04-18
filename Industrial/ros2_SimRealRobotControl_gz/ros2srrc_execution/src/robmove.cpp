@@ -242,6 +242,17 @@ int main(int argc, char **argv)
 
     auto node = std::make_shared<ActionServer>();
 
+    // ===== MOVEIT HELPER NODE =====
+    auto moveit_node = std::make_shared<rclcpp::Node>(
+        "moveit_helper_node_robmove",
+        rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
+    );
+
+    // Executor para que MoveIt funcione
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(moveit_node);
+    std::thread([&executor]() { executor.spin(); }).detach();
+
     auto move_group_client =
         rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
             node,
@@ -262,7 +273,7 @@ int main(int argc, char **argv)
 
     std::string ROBname = "ur5_manipulator";
 
-    move_group_interface_ROB = MoveGroupInterface(node, ROBname);
+    move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 
     move_group_interface_ROB.setPlanningPipelineId("ompl");
     move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
