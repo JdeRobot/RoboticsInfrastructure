@@ -92,34 +92,6 @@ ros2srrc_data::msg::Specs robotSPECS;
 ros2srrc_data::msg::Specs eeSPECS;
 
 // ======================================================================================================================== //
-// ==================== PARAM: ROBOT + END-EFFECTOR ==================== //
-
-class ros2_RobotParam : public rclcpp::Node
-{
-public:
-    ros2_RobotParam() : Node("ros2_RobotParam") 
-    {
-        this->declare_parameter("ROB_PARAM", "none");
-        param_ROB = this->get_parameter("ROB_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
-    }
-private:
-};
-
-class ros2_EEParam : public rclcpp::Node
-{
-public:
-    ros2_EEParam() : Node("ros2_EEParam") 
-    {
-        this->declare_parameter("EE_PARAM", "none");
-        param_EE = this->get_parameter("EE_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "EE_PARAM received -> %s", param_EE.c_str());
-    }
-private:
-};
-
-
-// ======================================================================================================================== //
 // ==================== FUNCTIONS ==================== //
 
 // ===== PLAN ===== //
@@ -175,6 +147,14 @@ public:
     explicit ActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
     : Node("MOVE_INTERFACE", options)
     {
+        // ===== PARAMETERS =====
+        this->declare_parameter("ROB_PARAM", "none");
+        param_ROB = this->get_parameter("ROB_PARAM").as_string();
+        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
+
+        this->declare_parameter("EE_PARAM", "none");
+        param_EE = this->get_parameter("EE_PARAM").as_string();
+        RCLCPP_INFO(this->get_logger(), "EE_PARAM received -> %s", param_EE.c_str());
 
         action_server_ = rclcpp_action::create_server<Move>(
             this,
@@ -244,6 +224,11 @@ private:
 
         // Obtain ACTION type:
         const auto goal = goal_handle->get_goal();
+        
+        if (!move_group_interface_ROB.getRobotModel()) {
+            RCLCPP_WARN(this->get_logger(), "MoveIt not ready yet");
+            return;
+        }
         std::string action = goal->action;
 
         // DECLARE RESULT:
@@ -461,19 +446,17 @@ int main(int argc, char ** argv)
     rclcpp::init(argc, argv);
     auto const logger = rclcpp::get_logger("MOVE_INTERFACE");
 
-    // ================= PARAMETERS =================
-    auto node_PARAM_ROB = std::make_shared<ros2_RobotParam>();
-    rclcpp::spin_some(node_PARAM_ROB);
-
-    auto node_PARAM_EE = std::make_shared<ros2_EEParam>();
-    rclcpp::spin_some(node_PARAM_EE);
+    // ================= ACTION SERVER (CLAVE) =================
+    auto node = std::make_shared<ActionServer>();
+    
 
     // ================= LOAD SPECS =================
-    if (param_ROB != "none"){
+    std::string rob_param = node->get_parameter("ROB_PARAM").as_string();
+    if (rob_param != "none"){
         std::string pkgPATH_R =
             ament_index_cpp::get_package_share_directory("ros2srrc_robots");
         std::string PATH_R =
-            pkgPATH_R + "/" + param_ROB + "/config/joint_specifications.yaml";
+            pkgPATH_R + "/" + rob_param + "/config/joint_specifications.yaml";
 
         YAML::Node SPECIFICATIONS_R = YAML::LoadFile(PATH_R);
 
@@ -483,11 +466,12 @@ int main(int argc, char ** argv)
             SPECIFICATIONS_R["Limits"]["Min"].as<std::vector<double>>();
     }
 
-    if (param_EE != "none"){
+    std::string ee_param = node->get_parameter("EE_PARAM").as_string();
+    if (ee_param != "none"){
         std::string pkgPATH =
             ament_index_cpp::get_package_share_directory("ros2srrc_endeffectors");
         std::string PATH =
-            pkgPATH + "/" + param_EE + "/config/joint_specifications.yaml";
+            pkgPATH + "/" + ee_param + "/config/joint_specifications.yaml";
 
         YAML::Node SPECIFICATIONS = YAML::LoadFile(PATH);
 
@@ -497,23 +481,10 @@ int main(int argc, char ** argv)
             SPECIFICATIONS["JointsVector"].as<std::vector<double>>();
     }
 
-    // ================= ACTION SERVER (CLAVE) =================
-    auto action_server = std::make_shared<ActionServer>();
-
-    auto node2 = std::make_shared<rclcpp::Node>(
-        "moveit_client_node",
-        rclcpp::NodeOptions()
-            .automatically_declare_parameters_from_overrides(true)
-    );
-    
-    rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(node2);
-    std::thread([&executor]() { executor.spin(); }).detach();
-
     // ================= ESPERAR A MOVEIT =================
     auto move_group_client =
         rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
-            node2,
+            node,
             "move_action"
         );
 
@@ -532,10 +503,10 @@ int main(int argc, char ** argv)
     using moveit::planning_interface::MoveGroupInterface;
 
     // ROBOT
-    if (param_ROB != "none"){
+    if (rob_param != "none"){
         std::string group_name = "ur5_manipulator";
 
-        move_group_interface_ROB = MoveGroupInterface(node2, group_name);
+        move_group_interface_ROB = MoveGroupInterface(node, group_name);
         move_group_interface_ROB.setPlanningPipelineId("ompl");
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
@@ -555,8 +526,8 @@ int main(int argc, char ** argv)
     }
 
     // END EFFECTOR
-    if (param_EE != "none"){
-        move_group_interface_EE = MoveGroupInterface(node2, param_EE);
+    if (ee_param != "none"){
+        move_group_interface_EE = MoveGroupInterface(node, ee_param);
         move_group_interface_EE.setPlanningPipelineId("ompl");
 
         move_group_interface_EE.setMaxVelocityScalingFactor(1.0);
@@ -564,11 +535,11 @@ int main(int argc, char ** argv)
 
         joint_model_group_EE =
             move_group_interface_EE.getCurrentState()
-                ->getJointModelGroup(param_EE);
+                ->getJointModelGroup(ee_param);
 
         RCLCPP_INFO(logger,
             "MoveGroupInterface created for EE: %s",
-            param_EE.c_str());
+            ee_param.c_str());
     }
 
     // ================= PLANNING SCENE =================
@@ -576,7 +547,7 @@ int main(int argc, char ** argv)
     auto planning_scene_interface = PlanningSceneInterface();
 
     // ================= SPIN =================
-    rclcpp::spin(action_server);
+    rclcpp::spin(node);
 
     rclcpp::shutdown();
     return 0;

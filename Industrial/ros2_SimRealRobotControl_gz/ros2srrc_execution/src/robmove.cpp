@@ -45,6 +45,7 @@
 
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
+#include <geometry_msgs/msg/pose.hpp>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -54,21 +55,6 @@ std::string param_ROB = "none";
 
 // Declaration of GLOBAL VARIABLE --> RES:
 std::string RES = "none";
-
-// =============================================================================== //
-//  PARAM -> ROBOT:
-
-class ros2_RobotParam : public rclcpp::Node
-{
-public:
-    ros2_RobotParam() : Node("ros2_RobotParam") 
-    {
-        this->declare_parameter("ROB_PARAM", "none");
-        param_ROB = this->get_parameter("ROB_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
-    }
-private:
-};
 
 // =============================================================================== //
 // MoveIt!2 -> MoveGroupInterface/Plan function:
@@ -103,6 +89,10 @@ public:
     using GoalHandle = rclcpp_action::ServerGoalHandle<Robmove>;
 
     explicit ActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions()) : Node("ros2srrc_RobMove", options){
+
+        this->declare_parameter("ROB_PARAM", "none");
+        param_ROB = this->get_parameter("ROB_PARAM").as_string();
+        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
@@ -247,25 +237,14 @@ private:
 
 int main(int argc, char **argv)
 {
-
-    // Initialise MAIN NODE:
     rclcpp::init(argc, argv);
     auto const logger = rclcpp::get_logger("RobMove_INTERFACE");
 
-    // Obtain ROBOT parameter:
-    auto node_PARAM_ROB = std::make_shared<ros2_RobotParam>();
-    rclcpp::spin_some(node_PARAM_ROB);
-
-    // Launch and spin (EXECUTOR) MoveIt!2 Interface node:
-    auto name = "ros2srrc_RobMove";
-    auto const MoveIt2_NODE = std::make_shared<rclcpp::Node>(name, rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
-    rclcpp::executors::SingleThreadedExecutor executor; 
-    executor.add_node(MoveIt2_NODE);
-    std::thread([&executor]() { executor.spin(); }).detach();
+    auto node = std::make_shared<ActionServer>();
 
     auto move_group_client =
         rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
-            MoveIt2_NODE,
+            node,
             "move_action"
         );
 
@@ -279,27 +258,22 @@ int main(int argc, char **argv)
 
     RCLCPP_INFO(logger, "MoveGroup action server ready!");
 
-    // MoveGroupInterface_ROB:
     using moveit::planning_interface::MoveGroupInterface;
-    auto ROBname = "ur5_manipulator";
-    move_group_interface_ROB = MoveGroupInterface(MoveIt2_NODE, ROBname);
+
+    std::string ROBname = "ur5_manipulator";
+
+    move_group_interface_ROB = MoveGroupInterface(node, ROBname);
+
     move_group_interface_ROB.setPlanningPipelineId("ompl");
     move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
-    
-    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname);
 
-    // CREATE -> PlanningSceneInterface:
-    using moveit::planning_interface::PlanningSceneInterface;
-    auto planning_scene_interface = PlanningSceneInterface();
+    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
 
-    // Declare and spin ACTION SERVER:
-    auto action_server = std::make_shared<ActionServer>();
-    rclcpp::spin(action_server);
+    rclcpp::spin(node);
 
     rclcpp::shutdown();
     return 0;
-
 }

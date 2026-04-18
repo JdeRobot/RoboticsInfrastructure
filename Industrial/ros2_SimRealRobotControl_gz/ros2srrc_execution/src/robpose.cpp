@@ -59,21 +59,6 @@ ros2srrc_data::msg::Robpose POSE;
 // =============================================================================== //
 //  PARAM -> ROBOT:
 
-class ros2_RobotParam : public rclcpp::Node
-{
-public:
-    ros2_RobotParam() : Node("ros2_RobotParam") 
-    {
-        this->declare_parameter("ROB_PARAM", "none");
-        param_ROB = this->get_parameter("ROB_PARAM").get_parameter_value().get<std::string>();
-        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
-    }
-private:
-};
-
-// =============================================================================== //
-//  PARAM -> ROBOT:
-
 class RobPose_PUB : public rclcpp::Node
 {
 public:
@@ -88,6 +73,9 @@ private:
 
   void timer_callback()
   {
+    if (!move_group_interface_ROB.getRobotModel()) {
+        return;
+    }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
 
@@ -115,30 +103,26 @@ private:
 
 int main(int argc, char **argv)
 {
-
-    // Initialise MAIN NODE:
     rclcpp::init(argc, argv);
-    
-    // Obtain ROBOT parameter:
-    auto node_PARAM_ROB = std::make_shared<ros2_RobotParam>();
-    rclcpp::spin_some(node_PARAM_ROB);
 
-    // Launch and spin (EXECUTOR) MoveIt!2 Interface node:
-    auto name = "ros2srrc_RobPose";
-    auto const MoveIt2_NODE = std::make_shared<rclcpp::Node>(name, rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
-    rclcpp::executors::SingleThreadedExecutor executor; 
-    executor.add_node(MoveIt2_NODE);
-    std::thread([&executor]() { executor.spin(); }).detach();
+    auto node = std::make_shared<RobPose_PUB>();
 
-    // MoveGroupInterface_ROB:
+    // === PARAM ===
+    node->declare_parameter("ROB_PARAM", "none");
+    param_ROB = node->get_parameter("ROB_PARAM").as_string();
+
+    RCLCPP_INFO(node->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
+
+    // === MOVEIT ===
     using moveit::planning_interface::MoveGroupInterface;
-    auto ROBname = "ur5_manipulator";
-    move_group_interface_ROB = MoveGroupInterface(MoveIt2_NODE, ROBname);
+    std::string ROBname = "ur5_manipulator";
 
-    // SPIN PUBLISHER:
-    rclcpp::spin(std::make_shared<RobPose_PUB>());
+    move_group_interface_ROB = MoveGroupInterface(node, ROBname);
+
+    RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
+
+    rclcpp::spin(node);
 
     rclcpp::shutdown();
     return 0;
-
 }
