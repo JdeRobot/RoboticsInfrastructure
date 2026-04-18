@@ -8,6 +8,7 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="move",
         name="move_action_server",
+        namespace="exec"
         output="screen"
     )
 
@@ -15,6 +16,7 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="robmove",
         name="Robmove",
+        namespace="exec"
         output="screen"
     )
 
@@ -22,6 +24,7 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="robpose",
         name="robpose",
+        namespace="exec"
         output="screen"
     )
 
