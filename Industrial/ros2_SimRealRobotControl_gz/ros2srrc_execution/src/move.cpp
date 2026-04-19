@@ -419,9 +419,9 @@ private:
             if (!move_group_interface_ROB.getPoseTargets().empty()) {
                 auto target = move_group_interface_ROB.getPoseTargets()[0];
 
-                double dx = final_pose.pose.position.x - target.position.x;
-                double dy = final_pose.pose.position.y - target.position.y;
-                double dz = final_pose.pose.position.z - target.position.z;
+                double dx = final_pose.pose.position.x - target.pose.position.x;
+                double dy = final_pose.pose.position.y - target.pose.position.y;
+                double dz = final_pose.pose.position.z - target.pose.position.z;
 
                 error = sqrt(dx*dx + dy*dy + dz*dz);
             }
