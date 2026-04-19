@@ -160,6 +160,8 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
+        move_group_interface_ROB.setStartStateToCurrentState();
+        rclcpp::sleep_for(std::chrono::milliseconds(50));
         moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
         move_group_interface_ROB.setStartState(*current_state);
         move_group_interface_ROB.clearPoseTargets();
@@ -168,6 +170,8 @@ private:
         move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
+        move_group_interface_ROB.setPlanningTime(2.0);
+
         MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
@@ -175,8 +179,6 @@ private:
                 move_group_interface_ROB.getRobotModel(),
                 "ur5_manipulator"
             );
-
-            moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
 
             rt.setRobotTrajectoryMsg(
                 *current_state,
@@ -223,7 +225,8 @@ private:
 
         RES = "none";
 
-        move_group_interface_ROB.setStartStateToCurrentState(); 
+        move_group_interface_ROB.setStartStateToCurrentState();
+        rclcpp::sleep_for(std::chrono::milliseconds(50));
 
     }
 
