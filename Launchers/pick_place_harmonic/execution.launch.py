@@ -81,6 +81,13 @@ def generate_launch_description():
         "config/moveit_controllers.yaml"
     )
 
+    ompl_planning = load_yaml(
+        "ur5_gripper_moveit_config",
+        "config/ompl_planning.yaml"
+    )
+
+    ompl_planning = ompl_planning["/**"]["ros__parameters"]
+
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
     # =========================
@@ -97,6 +104,7 @@ def generate_launch_description():
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
+            ompl_planning,
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
@@ -114,6 +122,7 @@ def generate_launch_description():
             robot_description_semantic,
             kinematics_yaml,
             moveit_controllers,
+            ompl_planning,
             {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
@@ -129,6 +138,7 @@ def generate_launch_description():
             robot_description,
             robot_description_semantic,
             kinematics_yaml,
+            ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
         ],
