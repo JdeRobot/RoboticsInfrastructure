@@ -254,7 +254,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_ROB.setPlannerId("RRTstar");
 
             // 4. PLAN:
             if (MoveJRES.RES == "LIMITS: OK"){
@@ -311,7 +311,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_ROB.setPlannerId("RRTstar");
 
             // 4. PLAN:
             if (MoveRRES.RES == "LIMITS: OK"){
@@ -335,7 +335,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_ROB.setPlannerId("RRTstar");
 
             // 4. PLAN:
             MyPlan = plan_ROB();
@@ -355,7 +355,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_ROB.setPlannerId("RRTstar");
 
             // 4. PLAN:
             MyPlan = plan_ROB();
@@ -375,7 +375,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_EE.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_EE.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_EE.setPlannerId("RRTstar");
 
             // 4. PLAN:
             if (MoveGRES.RES == "LIMITS: OK"){
@@ -411,6 +411,23 @@ private:
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+
+            auto final_pose = move_group_interface_ROB.getCurrentPose();
+
+            double error = 0.0;
+
+            if (!move_group_interface_ROB.getPoseTargets().empty()) {
+                auto target = move_group_interface_ROB.getPoseTargets()[0];
+
+                double dx = final_pose.pose.position.x - target.position.x;
+                double dy = final_pose.pose.position.y - target.position.y;
+                double dz = final_pose.pose.position.z - target.position.z;
+
+                error = sqrt(dx*dx + dy*dy + dz*dz);
+            }
+
+            RCLCPP_INFO(this->get_logger(), "Final position error: %.5f", error);
+
             move_group_interface_ROB.setStartStateToCurrentState();
             
             if (goal_handle->is_canceling()) {
@@ -542,6 +559,13 @@ int main(int argc, char ** argv)
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
+
+        move_group_interface_ROB.setPlanningTime(5.0);
+        move_group_interface_ROB.setNumPlanningAttempts(5);
+        move_group_interface_ROB.allowReplanning(true);
+        move_group_interface_ROB.setGoalPositionTolerance(0.001);
+        move_group_interface_ROB.setGoalOrientationTolerance(0.001);
+        move_group_interface_ROB.setPlannerId("RRTstar");
 
         if (!move_group_interface_ROB.getCurrentState()) {
             RCLCPP_ERROR(logger, "Failed to get current state!");

@@ -164,9 +164,9 @@ private:
         move_group_interface_ROB.clearPoseTargets();
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-        move_group_interface_ROB.setGoalTolerance(0.001);
+        move_group_interface_ROB.setGoalPositionTolerance(0.001);
+        move_group_interface_ROB.setGoalOrientationTolerance(0.001);
 
-        move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
@@ -262,8 +262,16 @@ int main(int argc, char **argv)
 
     move_group_interface_ROB = MoveGroupInterface(node, ROBname);
 
+    move_group_interface_ROB.setPlanningTime(5.0);
+    move_group_interface_ROB.setNumPlanningAttempts(5);
+    move_group_interface_ROB.allowReplanning(true);
+
+    move_group_interface_ROB.setGoalPositionTolerance(0.001);
+    move_group_interface_ROB.setGoalOrientationTolerance(0.001);
+
+    move_group_interface_ROB.setPlannerId("RRTstar");
+
     move_group_interface_ROB.setPlanningPipelineId("ompl");
-    move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
