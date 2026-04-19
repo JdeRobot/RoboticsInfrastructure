@@ -45,6 +45,7 @@
 
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
+#include <geometry_msgs/msg/pose.hpp>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -59,7 +60,7 @@ std::string RES = "none";
 // MoveIt!2 -> MoveGroupInterface/Plan function:
 
 moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
-    
+
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
     bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
@@ -140,7 +141,7 @@ private:
         RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
-        
+
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
 
@@ -151,6 +152,8 @@ private:
 
         moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
 
+        auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
+
         geometry_msgs::msg::Pose TARGET_POSE;
         TARGET_POSE.position.x = GOAL->x;
         TARGET_POSE.position.y = GOAL->y;
@@ -160,13 +163,11 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        move_group_interface_ROB.setStartStateToCurrentState();
-        move_group_interface_ROB.clearPoseTargets();
-
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-        move_group_interface_ROB.setGoalPositionTolerance(0.001);
-        move_group_interface_ROB.setGoalOrientationTolerance(0.001);
 
+        move_group_interface_ROB.setStartStateToCurrentState(); 
+
+        move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
@@ -202,7 +203,7 @@ private:
                 goal_handle->canceled(RESULT);
                 return;
             } 
-            
+
             if (ExecSUCCESS){
                 RCLCPP_INFO(this->get_logger(), "ROBOT MOVEMENT (%s) successfully executed.", GOAL->type.c_str());
                 RESULT->success = true;
@@ -238,7 +239,19 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
     auto const logger = rclcpp::get_logger("RobMove_INTERFACE");
+
     auto node = std::make_shared<ActionServer>();
+
+    // ===== MOVEIT HELPER NODE =====
+    auto moveit_node = std::make_shared<rclcpp::Node>(
+        "moveit_helper_node_robmove",
+        rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
+    );
+
+    // Executor para que MoveIt funcione
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(moveit_node);
+    std::thread([&executor]() { executor.spin(); }).detach();
 
     auto move_group_client =
         rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
@@ -260,18 +273,11 @@ int main(int argc, char **argv)
 
     std::string ROBname = "ur5_manipulator";
 
+    move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
     move_group_interface_ROB = MoveGroupInterface(node, ROBname);
 
-    move_group_interface_ROB.setPlanningTime(5.0);
-    move_group_interface_ROB.setNumPlanningAttempts(5);
-    move_group_interface_ROB.allowReplanning(true);
-
-    move_group_interface_ROB.setGoalPositionTolerance(0.001);
-    move_group_interface_ROB.setGoalOrientationTolerance(0.001);
-
-    move_group_interface_ROB.setPlannerId("RRTstar");
-
     move_group_interface_ROB.setPlanningPipelineId("ompl");
+    move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
@@ -282,4 +288,3 @@ int main(int argc, char **argv)
 
     rclcpp::shutdown();
     return 0;
-}

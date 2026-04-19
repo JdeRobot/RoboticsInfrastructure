@@ -74,6 +74,7 @@ private:
   void timer_callback()
   {
     if (!move_group_interface_ROB.getRobotModel()) {
+        return
         return;
     }
 
@@ -125,4 +126,3 @@ int main(int argc, char **argv)
 
     rclcpp::shutdown();
     return 0;
-}
