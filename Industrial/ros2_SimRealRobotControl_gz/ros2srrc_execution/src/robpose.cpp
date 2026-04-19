@@ -74,7 +74,6 @@ private:
   void timer_callback()
   {
     if (!move_group_interface_ROB.getRobotModel()) {
-        return
         return;
     }
 

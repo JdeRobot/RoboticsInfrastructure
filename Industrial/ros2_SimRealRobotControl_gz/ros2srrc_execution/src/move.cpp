@@ -382,7 +382,6 @@ private:
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
 
             rt.setRobotTrajectoryMsg(
-                MyPlan.start_state_,
                 *current_state,
                 MyPlan.trajectory_
             );
