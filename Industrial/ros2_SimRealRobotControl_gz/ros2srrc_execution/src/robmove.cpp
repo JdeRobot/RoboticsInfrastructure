@@ -45,7 +45,6 @@
 
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
-#include <geometry_msgs/msg/pose.hpp>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -151,8 +150,6 @@ private:
         // 3. Robot Movement -> EXECUTION:
 
         moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
-        
-        auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose().pose;
 
         geometry_msgs::msg::Pose TARGET_POSE;
         TARGET_POSE.position.x = GOAL->x;
@@ -164,45 +161,12 @@ private:
         TARGET_POSE.orientation.w = GOAL->qw;
 
         move_group_interface_ROB.setStartStateToCurrentState();
+        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+
+        move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
-        move_group_interface_ROB.setGoalPositionTolerance(0.001);
-        move_group_interface_ROB.setGoalOrientationTolerance(0.001);
-
-        if (GOAL->type == "LIN")
-        {
-            std::vector<geometry_msgs::msg::Pose> waypoints;
-
-            waypoints.push_back(CURRENT_POSE);
-            waypoints.push_back(TARGET_POSE);
-
-            moveit_msgs::msg::RobotTrajectory trajectory;
-
-            double fraction = move_group_interface_ROB.computeCartesianPath(
-                waypoints,
-                0.005,
-                0.0,
-                trajectory
-            );
-
-            if (fraction > 0.95)
-            {
-                MyPlan.trajectory_ = trajectory;
-                RES = "PLANNING: OK";
-            }
-            else
-            {
-                RCLCPP_WARN(this->get_logger(), "Cartesian path incomplete: %.2f%%", fraction * 100.0);
-                RES = "PLANNING: ERROR";
-            }
-        }
-        else
-        {
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
-
-            MyPlan = plan_ROB();
-        }
+        MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
             robot_trajectory::RobotTrajectory rt(
@@ -271,7 +235,6 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
     auto const logger = rclcpp::get_logger("RobMove_INTERFACE");
-
     auto node = std::make_shared<ActionServer>();
 
     auto move_group_client =
