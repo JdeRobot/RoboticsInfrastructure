@@ -276,23 +276,23 @@ private:
             }
 
         } else if (action == "MoveL" && param_ROB != "none"){
-            RCLCPP_INFO(logger, "Planner: %s",
-                move_group_interface_ROB.getPlannerId().c_str());
 
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
+            auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
-            // 2. CALL MoveLAction for CALCULATIONS:
-            auto TARGET_POSE = MoveLAction(goal->movel, POSE);
+            geometry_msgs::msg::Pose TARGET_POSE = CURRENT_POSE.pose;
+
+            TARGET_POSE.position.x += goal->movel.x;
+            TARGET_POSE.position.y += goal->movel.y;
+            TARGET_POSE.position.z += goal->movel.z;
+
+            TARGET_POSE.orientation = CURRENT_POSE.pose.orientation;
+
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
             move_group_interface_ROB.setPlannerId("LIN");
 
-            // 4. PLAN:
             MyPlan = plan_ROB();
-
         } else if (action == "MoveR" && param_ROB != "none"){
 
             // 1. Define JP VECTOR:
@@ -580,4 +580,4 @@ int main(int argc, char ** argv)
 
     rclcpp::shutdown();
     return 0;
-    
+}

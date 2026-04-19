@@ -275,8 +275,6 @@ int main(int argc, char **argv)
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 
-    //move_group_interface_ROB.setPlanningPipelineId("move_group");//
-
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
