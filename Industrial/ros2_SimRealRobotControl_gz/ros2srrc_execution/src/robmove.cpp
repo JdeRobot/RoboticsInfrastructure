@@ -152,7 +152,7 @@ private:
 
         moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
         
-        auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
+        auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose().pose;
 
         geometry_msgs::msg::Pose TARGET_POSE;
         TARGET_POSE.position.x = GOAL->x;
@@ -163,14 +163,46 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-
-        move_group_interface_ROB.setStartStateToCurrentState(); 
-
-        move_group_interface_ROB.setPlannerId(GOAL->type);
+        move_group_interface_ROB.setStartStateToCurrentState();
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
-        MyPlan = plan_ROB();
+        move_group_interface_ROB.setGoalPositionTolerance(0.001);
+        move_group_interface_ROB.setGoalOrientationTolerance(0.001);
+
+        if (GOAL->type == "LIN")
+        {
+            std::vector<geometry_msgs::msg::Pose> waypoints;
+
+            waypoints.push_back(CURRENT_POSE);
+            waypoints.push_back(TARGET_POSE);
+
+            moveit_msgs::msg::RobotTrajectory trajectory;
+
+            double fraction = move_group_interface_ROB.computeCartesianPath(
+                waypoints,
+                0.005,
+                0.0,
+                trajectory
+            );
+
+            if (fraction > 0.95)
+            {
+                MyPlan.trajectory_ = trajectory;
+                RES = "PLANNING: OK";
+            }
+            else
+            {
+                RCLCPP_WARN(this->get_logger(), "Cartesian path incomplete: %.2f%%", fraction * 100.0);
+                RES = "PLANNING: ERROR";
+            }
+        }
+        else
+        {
+            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+
+            MyPlan = plan_ROB();
+        }
 
         if (RES == "PLANNING: OK"){
             robot_trajectory::RobotTrajectory rt(
