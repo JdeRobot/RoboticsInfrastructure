@@ -266,7 +266,7 @@ private:
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
+            move_group_interface_ROB.setPlannerId("PTP");
 
             // 4. PLAN:
             if (MoveJRES.RES == "LIMITS: OK"){
@@ -276,6 +276,8 @@ private:
             }
 
         } else if (action == "MoveL" && param_ROB != "none"){
+            RCLCPP_INFO(logger, "Planner: %s",
+                move_group_interface_ROB.getPlannerId().c_str());
 
             // 1. Define POSE VECTOR:
             auto POSE = move_group_interface_ROB.getCurrentPose();
@@ -536,7 +538,6 @@ int main(int argc, char ** argv)
         std::string group_name = "ur5_manipulator";
 
         move_group_interface_ROB = MoveGroupInterface(node2, group_name);
-        move_group_interface_ROB.setPlanningPipelineId("ompl");
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
@@ -557,7 +558,6 @@ int main(int argc, char ** argv)
     // END EFFECTOR
     if (param_EE != "none"){
         move_group_interface_EE = MoveGroupInterface(node2, param_EE);
-        move_group_interface_EE.setPlanningPipelineId("ompl");
 
         move_group_interface_EE.setMaxVelocityScalingFactor(1.0);
         move_group_interface_EE.setMaxAccelerationScalingFactor(1.0);
@@ -580,4 +580,4 @@ int main(int argc, char ** argv)
 
     rclcpp::shutdown();
     return 0;
-}
+    
