@@ -160,7 +160,9 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        move_group_interface_ROB.setStartStateToCurrentState();
+        moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
+        move_group_interface_ROB.setStartState(*current_state);
+        move_group_interface_ROB.clearPoseTargets();
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
