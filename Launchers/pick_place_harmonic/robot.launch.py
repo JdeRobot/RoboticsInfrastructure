@@ -82,11 +82,41 @@ def generate_launch_description():
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
     planning_pipelines_config = {
-        "planning_pipelines": ["ompl"],
-        "default_planning_pipeline": "ompl",
+        "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
+        "default_planning_pipeline": "pilz_industrial_motion_planner",
+
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
         },
+
+        "pilz_industrial_motion_planner": {
+            "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
+            "request_adapters": "",
+            "start_state_max_bounds_error": 0.1,
+            "default_planner_config": "PTP",
+        },
+    }
+
+    move_group_capabilities = {
+        "capabilities": "pilz_industrial_motion_planner/MoveGroupSequenceAction "
+                        "pilz_industrial_motion_planner/MoveGroupSequenceService"
+    }
+
+    pilz_cartesian_limits = load_yaml(
+        "ros2srrc_robots",
+        "ur5/config/pilz_cartesian_limits.yaml"
+    )
+
+    joint_limits_yaml = load_yaml(
+        "ros2srrc_robots",
+        "ur5/config/joint_limits.yaml"
+    )
+
+    combined_planning = {
+        "robot_description_planning": {
+            **joint_limits_yaml,
+            **pilz_cartesian_limits
+        }
     }
 
     # =========================
@@ -161,7 +191,9 @@ def generate_launch_description():
             robot_description_semantic,
             kinematics_yaml,
             planning_pipelines_config,
+            move_group_capabilities,
             moveit_controllers,
+            combined_planning,
             {"use_sim_time": True},
         ]
     )

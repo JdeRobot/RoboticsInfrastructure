@@ -74,7 +74,7 @@ private:
   void timer_callback()
   {
     if (!move_group_interface_ROB.getRobotModel()) {
-        return;
+      return;
     }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
@@ -103,25 +103,26 @@ private:
 
 int main(int argc, char **argv)
 {
-    rclcpp::init(argc, argv);
+  rclcpp::init(argc, argv);
 
-    auto node = std::make_shared<RobPose_PUB>();
+  auto node = std::make_shared<RobPose_PUB>();
 
-    // === PARAM ===
-    node->declare_parameter("ROB_PARAM", "none");
-    param_ROB = node->get_parameter("ROB_PARAM").as_string();
+  // === PARAM ===
+  node->declare_parameter("ROB_PARAM", "none");
+  param_ROB = node->get_parameter("ROB_PARAM").as_string();
 
-    RCLCPP_INFO(node->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
+  RCLCPP_INFO(node->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
-    // === MOVEIT ===
-    using moveit::planning_interface::MoveGroupInterface;
-    std::string ROBname = "ur5_manipulator";
+  // === MOVEIT ===
+  using moveit::planning_interface::MoveGroupInterface;
+  std::string ROBname = "ur5_manipulator";
 
-    move_group_interface_ROB = MoveGroupInterface(node, ROBname);
+  move_group_interface_ROB = MoveGroupInterface(node, ROBname);
 
-    RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
+  RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
 
-    rclcpp::spin(node);
+  rclcpp::spin(node);
 
-    rclcpp::shutdown();
-    return 0;
+  rclcpp::shutdown();
+  return 0;
+}
