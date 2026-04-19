@@ -243,7 +243,10 @@ private:
             std::vector<double> JP;
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
             current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
-            
+
+            move_group_interface_ROB.setStartStateToCurrentState();
+            move_group_interface_ROB.clearPoseTargets();
+
             // 2. CALL MoveJAction for CALCULATIONS:
             MoveJSTRUCT MoveJRES = MoveJAction(goal->movej, JP, robotSPECS);
             JP = MoveJRES.JP;
@@ -267,14 +270,29 @@ private:
             
             // 2. CALL MoveLAction for CALCULATIONS:
             auto TARGET_POSE = MoveLAction(goal->movel, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("LIN");
+            move_group_interface_ROB.setStartStateToCurrentState();
+            move_group_interface_ROB.clearPoseTargets();
 
-            // 4. PLAN:
-            MyPlan = plan_ROB();
+            std::vector<geometry_msgs::msg::Pose> waypoints;
+            waypoints.push_back(TARGET_POSE);
+
+            moveit_msgs::msg::RobotTrajectory trajectory;
+
+            double fraction = move_group_interface_ROB.computeCartesianPath(
+                waypoints,
+                0.01,
+                0.0,
+                trajectory
+            );
+
+            if (fraction > 0.9) {
+                MyPlan.trajectory_ = trajectory;
+                RES = "PLANNING: OK";
+            } else {
+                RES = "PLANNING: ERROR";
+            }
 
         } else if (action == "MoveR" && param_ROB != "none"){
 
@@ -282,6 +300,9 @@ private:
             std::vector<double> JP;
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
             current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
+
+            move_group_interface_ROB.setStartStateToCurrentState();
+            move_group_interface_ROB.clearPoseTargets();
             
             // 2. CALL MoveRAction for CALCULATIONS:
             MoveRSTRUCT MoveRRES = MoveRAction(goal->mover, JP, robotSPECS);
@@ -290,7 +311,7 @@ private:
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
             // 4. PLAN:
             if (MoveRRES.RES == "LIMITS: OK"){
@@ -306,11 +327,15 @@ private:
             
             // 2. CALL MoveROTAction for CALCULATIONS:
             auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
+
+            move_group_interface_ROB.setStartStateToCurrentState();
+            move_group_interface_ROB.clearPoseTargets();
+
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
             // 4. PLAN:
             MyPlan = plan_ROB();
@@ -322,11 +347,15 @@ private:
             
             // 2. CALL MoveRPAction for CALCULATIONS:
             auto TARGET_POSE = MoveRPAction(goal->moverp, POSE);
+
+            move_group_interface_ROB.setStartStateToCurrentState();
+            move_group_interface_ROB.clearPoseTargets();
+
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_ROB.setPlannerId("PTP");
+            move_group_interface_ROB.setPlannerId("RRTConnectkConfigDefault");
 
             // 4. PLAN:
             MyPlan = plan_ROB();
@@ -341,11 +370,12 @@ private:
             // 2. CALL MoveGAction for CALCULATIONS:
             MoveGSTRUCT MoveGRES = MoveGAction(goal->moveg, JP, eeSPECS);
             JP = MoveGRES.JP;
+            move_group_interface_EE.setStartStateToCurrentState();
             move_group_interface_EE.setJointValueTarget(JP);
             
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_EE.setMaxVelocityScalingFactor(goal->speed);
-            move_group_interface_EE.setPlannerId("PTP");
+            move_group_interface_EE.setPlannerId("RRTConnectkConfigDefault");
 
             // 4. PLAN:
             if (MoveGRES.RES == "LIMITS: OK"){
@@ -381,7 +411,8 @@ private:
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
+            move_group_interface_ROB.setStartStateToCurrentState();
+            
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");
                 result->result = action + ":CANCELED";
