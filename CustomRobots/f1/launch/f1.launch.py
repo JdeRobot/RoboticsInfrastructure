@@ -63,11 +63,19 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_image_bridge = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/cam_f1_left/image_raw"],
+        output="screen",
+    )
+
     ld = LaunchDescription()
 
     # Add any actions
     ld.add_action(robot_state_publisher_node)
     ld.add_action(gz_spawn_entity)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(gz_ros2_image_bridge)
 
     return ld
