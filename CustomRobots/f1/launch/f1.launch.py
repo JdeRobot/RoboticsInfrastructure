@@ -1,55 +1,66 @@
-# Copyright 2022 Intelligent Robotics Lab
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
-from launch.actions import SetEnvironmentVariable
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
 
     robots_pkg = get_package_share_directory("custom_robots")
+    urdf_file = os.path.join(package_dir, "urdf", "f1.urdf")
+    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
-    urdf_file = os.path.join(robots_pkg, "models", "f1.urdf")
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
-    with open(urdf_file, "r") as info:
-        robot_desc = info.read()
-
-    # Robot description
-    robot_model = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        parameters=[{"robot_description": robot_desc}],
-        arguments=[urdf_file],
+    robot_description = ParameterValue(
+        Command(["xacro", " ", urdf_file]),
+        value_type=str,
     )
 
-    # TF Tree
-    joint_state_publisher_node = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        output="screen",
+        parameters=[
+            {"use_sim_time": use_sim_time, "robot_description": robot_description}
+        ],
+    )
+
+    gz_spawn_entity = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=[
+            "-topic",
+            "/robot_description",
+            "-name",
+            "f1",
+            " ".join(["-x", str(53.462)]),
+            " ".join(["-y", str(-10.734)]),
+            " ".join(["-z", str(0.004)]),
+            " ".join(["-R", str(0)]),
+            " ".join(["-P", str(0)]),
+            " ".join(["-Y", str(-1.57)]),
+        ],
+        output="screen",
+    )
+
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        output="screen",
     )
 
     ld = LaunchDescription()
 
     # Add any actions
-    ld.add_action(robot_model)
+    ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_publisher_node)
+    ld.add_action(gz_spawn_entity)
+    ld.add_action(gz_ros2_bridge)
 
     return ld
