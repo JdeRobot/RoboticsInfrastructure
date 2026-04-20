@@ -81,13 +81,20 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
     : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq)
 {
     ws_session_ = std::make_shared<WebSocketSession>(ioc_);
-    ws_session_->set_message_callback(std::bind(&BaseWebGUI::process_message, this, std::placeholders::_1));
+    
+    ws_session_->set_message_callback([this](const std::string& msg) {
+        this->process_message(msg);
+    });
+    
     ws_session_->run(host, port);
 
     ioc_thread_ = std::thread([this]() { ioc_.run(); });
 
     perf_sub_ = this->create_subscription<gazebo_msgs::msg::PerformanceMetrics>(
-        "/performance_metrics", 10, std::bind(&BaseWebGUI::performance_callback, this, std::placeholders::_1));
+        "/performance_metrics", 
+        rclcpp::SensorDataQoS(), 
+        std::bind(&BaseWebGUI::performance_callback, this, std::placeholders::_1)
+    );
 
     auto period = std::chrono::duration<double>(1.0 / freq);
     gui_timer_ = this->create_wall_timer(
