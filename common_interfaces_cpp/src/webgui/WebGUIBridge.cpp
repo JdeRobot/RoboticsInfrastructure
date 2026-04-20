@@ -114,6 +114,11 @@ void BaseWebGUI::process_message(const std::string& msg)
     }
 }
 
+std::vector<rclcpp::Node::SharedPtr> BaseWebGUI::get_nodes()
+{
+    return {shared_from_this()};
+}
+
 void BaseWebGUI::send_to_client(const std::string& msg)
 {
     if (ws_session_) {

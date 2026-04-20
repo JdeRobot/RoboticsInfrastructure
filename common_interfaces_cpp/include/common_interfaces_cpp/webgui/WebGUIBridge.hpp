@@ -55,6 +55,7 @@ public:
 
     virtual void process_message(const std::string& msg);
     virtual json update_gui() = 0;
+    virtual std::vector<rclcpp::Node::SharedPtr> get_nodes();
 
     void send_to_client(const std::string& msg);
 
