@@ -90,16 +90,19 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
 
     ioc_thread_ = std::thread([this]() { ioc_.run(); });
 
-    perf_sub_ = this->create_subscription<gazebo_msgs::msg::PerformanceMetrics>(
-        "/performance_metrics", 
-        rclcpp::SensorDataQoS(), 
-        std::bind(&BaseWebGUI::performance_callback, this, std::placeholders::_1)
-    );
+    gz_node_.subscribe("/world/default/stats", &BaseWebGUI::gz_stats_callback, this);
 
     auto period = std::chrono::duration<double>(1.0 / freq);
     gui_timer_ = this->create_wall_timer(
         std::chrono::duration_cast<std::chrono::nanoseconds>(period),
         std::bind(&BaseWebGUI::gui_timer_callback, this));
+}
+
+void BaseWebGUI::gz_stats_callback(const gz::msgs::WorldStatistics &msg)
+{
+    if (msg.has_real_time_factor()) {
+        real_time_factor_ = msg.real_time_factor();
+    }
 }
 
 BaseWebGUI::~BaseWebGUI()
@@ -131,11 +134,6 @@ void BaseWebGUI::send_to_client(const std::string& msg)
     if (ws_session_) {
         ws_session_->send(msg);
     }
-}
-
-void BaseWebGUI::performance_callback(const gazebo_msgs::msg::PerformanceMetrics::SharedPtr msg)
-{
-    real_time_factor_ = msg->real_time_factor;
 }
 
 void BaseWebGUI::gui_timer_callback()

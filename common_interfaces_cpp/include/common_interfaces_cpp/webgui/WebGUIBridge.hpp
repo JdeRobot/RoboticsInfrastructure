@@ -8,7 +8,8 @@
 #include <boost/asio/strand.hpp>
 #include <nlohmann/json.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <gazebo_msgs/msg/performance_metrics.hpp>
+#include <gz/transport.hh>
+#include <gz/msgs/world_statistics.pb.h>
 #include <string>
 #include <thread>
 #include <mutex>
@@ -68,15 +69,15 @@ protected:
     double gui_freq_;
 
 private:
-    void performance_callback(const gazebo_msgs::msg::PerformanceMetrics::SharedPtr msg);
     void gui_timer_callback();
+    void gz_stats_callback(const gz::msgs::WorldStatistics &msg);
 
     net::io_context ioc_;
     std::shared_ptr<WebSocketSession> ws_session_;
     std::thread ioc_thread_;
 
-    rclcpp::Subscription<gazebo_msgs::msg::PerformanceMetrics>::SharedPtr perf_sub_;
+    gz::transport::Node gz_node_;
     rclcpp::TimerBase::SharedPtr gui_timer_;
 };
 
-#endif // WEBUI_BRIDGE_HPP_
+#endif
