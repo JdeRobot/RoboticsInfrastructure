@@ -10,6 +10,11 @@
       <mass value="10"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1.0"/>
     </inertial>
+    <collision>
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
+      </geometry>
+    </collision>
     <visual name="car">
       <geometry>
         <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
