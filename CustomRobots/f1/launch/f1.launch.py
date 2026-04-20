@@ -59,7 +59,6 @@ def generate_launch_description():
 
     # Add any actions
     ld.add_action(robot_state_publisher_node)
-    ld.add_action(joint_state_publisher_node)
     ld.add_action(gz_spawn_entity)
     ld.add_action(gz_ros2_bridge)
 
