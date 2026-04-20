@@ -22,6 +22,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     urdf_file = os.path.join(package_dir, "urdf", "f1.urdf")
+    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
     gazebo_models_path = os.path.join(package_dir, "models")
 
     world_file_name = "simple_circuit.world"
@@ -55,7 +56,7 @@ def generate_launch_description():
         ],
     )
 
-    robot_entity = Node(
+    gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         arguments=[
@@ -94,6 +95,13 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        output="screen",
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
@@ -101,10 +109,11 @@ def generate_launch_description():
         "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
     )
     ld.add_action(set_env_vars_resources)
+
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
-
     ld.add_action(robot_state_publisher_node)
-    ld.add_action(robot_entity)
+    ld.add_action(gz_spawn_entity)
+    ld.add_action(gz_ros2_bridge)
 
     return ld
