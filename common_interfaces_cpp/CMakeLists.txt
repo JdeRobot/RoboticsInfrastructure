@@ -25,6 +25,7 @@ endforeach()
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(nlohmann_json REQUIRED)
+
 find_package(gz-transport13 REQUIRED)
 find_package(gz-msgs10 REQUIRED)
 
@@ -45,8 +46,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<INSTALL_INTERFACE:include>
   ${OpenCV_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-  ${GZ-TRANSPORT_INCLUDE_DIRS}
-  ${GZ-MSGS_INCLUDE_DIRS}
 )
 
 ament_target_dependencies(${PROJECT_NAME} ${ros2_dependencies})
@@ -60,9 +59,7 @@ target_link_libraries(${PROJECT_NAME}
   gz-msgs10::gz-msgs10
 )
 
-install(DIRECTORY include/
-  DESTINATION include
-)
+install(DIRECTORY include/ DESTINATION include)
 
 install(TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}
