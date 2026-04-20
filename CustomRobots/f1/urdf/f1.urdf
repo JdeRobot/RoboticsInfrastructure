@@ -4,7 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="f1">
-  <link name="f1">
+  <link name="base">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <inertial>
       <mass value="10"/>
@@ -22,17 +22,23 @@
     </visual>
   </link>
 
-  <visual name="cam_f1_left_pose">
-    <pose>0.45 0.04 0.1 0 0 0</pose>
-    <geometry>
-      <sphere>
-        <radius>.005</radius>
-      </sphere>
-    </geometry>
-  </visual>
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="lidar_to_base" type="fixed">
+    <parent link="base"/>
+    <child link="camera_link"/>
+    <origin xyz="0.45 0.04 0.1" rpy="0 0 0"/>
+  </joint>
+
   <gazebo reference="camera_link">
     <sensor name="cam_f1_left" type="camera">
-      <origin rpy="0 0 0" xyz="0.45 0.04 0.1"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>20.000000</update_rate>

@@ -2,7 +2,7 @@
 <robot name="f1"
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
-  <link name="f1">
+  <link name="base">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <inertial>
       <mass value="10"/>
@@ -21,7 +21,7 @@
     </visual>
   </link>
 
-  <xacro:f1_camera xyzrpy="0.45 0.04 0.1 0 0 0" name="cam_f1_left"/>
+  <xacro:f1_camera xyz="0.45 0.04 0.1" rpy="0 0 0" name="cam_f1_left" parent="base"/>
   <xacro:f1_velocity topic="/F1ROS/cmd_vel"/>
   <xacro:f1_odom topic="/F1ROS/odom"/>
 </robot>
