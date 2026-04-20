@@ -61,6 +61,6 @@ def generate_launch_description():
 
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
-    ld.add_action(spawn_robot_cmd)
+    # ld.add_action(spawn_robot_cmd)
 
     return ld
