@@ -22,12 +22,6 @@
     </visual>
   </link>
 
-  <joint name="cam_f1_joint" type="fixed">
-    <parent link="f1"/>
-    <child link="camera_link"/>
-    <origin xyz="0.45 0.04 0.1" rpy="0 0 0"/>
-  </joint>
-
   <visual name="cam_f1_left_pose">
     <pose>0.45 0.04 0.1 0 0 0</pose>
     <geometry>
@@ -38,6 +32,7 @@
   </visual>
   <gazebo reference="camera_link">
     <sensor name="cam_f1_left" type="camera">
+      <origin rpy="0 0 0" xyz="0.45 0.04 0.1"/>
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>20.000000</update_rate>
