@@ -43,7 +43,7 @@ add_library(${PROJECT_NAME} SHARED
   src/hal/odometry.cpp
   src/hal/sim_time.cpp
   # WebGUI
-  src/webgui/MeasuringThreadingGUI.cpp
+  src/webgui/WebGUIBridge.cpp
 )
 
 # Specify the include directories so the compiler finds the .hpp files
@@ -79,6 +79,6 @@ install(TARGETS ${PROJECT_NAME}
 # Export include directories, targets, and dependencies
 ament_export_include_directories(include)
 ament_export_targets(${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_dependencies(${ros2_dependencies})
+ament_export_dependencies(${ros2_dependencies} OpenCV nlohmann_json Boost)
 
 ament_package()
