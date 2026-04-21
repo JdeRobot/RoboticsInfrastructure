@@ -335,11 +335,11 @@ private:
 
         } else if (action == "MoveROT" && param_ROB != "none"){
 
-            auto current_pose_stamped = move_group_interface_ROB.getCurrentPose();
+            auto current_pose = move_group_interface_ROB.getCurrentPose();
 
-            geometry_msgs::msg::Pose current_pose = current_pose_stamped.pose;
+            auto target_pose_stamped = MoveROTAction(goal->moverot, current_pose);
 
-            geometry_msgs::msg::Pose target_pose = MoveROTAction(goal->moverot, current_pose);
+            geometry_msgs::msg::Pose target_pose = target_pose_stamped.pose;
 
             move_group_interface_ROB.setPoseTarget(target_pose);
 
