@@ -148,8 +148,8 @@
 
       <sensor name="prius_autoparking" type="camera">
         <pose relative_to="base_link">0 0.2 1.45 0 0 1.57</pose>
-        <always_on>false</always_on>
-        <visualize>true</visualize>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
         <update_rate>20</update_rate>
         <topic>/prius_autoparking/image_raw</topic>
         <camera name="camera">
@@ -177,9 +177,6 @@
             <near>0.01</near>
             <far>200</far>
           </clip>
-          <render>
-            <clear_every_frame>true</clear_every_frame>
-          </render>
           <noise>
             <type>gaussian</type>
             <mean>0</mean>
