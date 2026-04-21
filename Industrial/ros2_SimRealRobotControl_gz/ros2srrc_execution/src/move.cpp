@@ -335,21 +335,38 @@ private:
 
         } else if (action == "MoveROT" && param_ROB != "none"){
 
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
+            auto current_pose = move_group_interface_ROB.getCurrentPose().pose;
 
-            // 2. CALL MoveROTAction for CALCULATIONS:
-            auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
-            move_group_interface_ROB.setApproximateJointValueTarget(TARGET_POSE);
+            double roll  = goal->moverot.roll  * M_PI / 180.0;
+            double pitch = goal->moverot.pitch * M_PI / 180.0;
+            double yaw   = goal->moverot.yaw   * M_PI / 180.0;
 
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setPlannerId("PTP");
+            tf2::Quaternion q_current, q_rot, q_result;
 
-            // 4. PLAN:
+            tf2::fromMsg(current_pose.orientation, q_current);
+
+            q_rot.setRPY(roll, pitch, yaw);
+
+            q_result = q_current * q_rot;
+            q_result.normalize();
+
+            geometry_msgs::msg::Pose target_pose = current_pose;
+            target_pose.orientation = tf2::toMsg(q_result);
+
+            RCLCPP_INFO(this->get_logger(),
+                "TARGET ORIENTATION → qx: %.3f qy: %.3f qz: %.3f qw: %.3f",
+                target_pose.orientation.x,
+                target_pose.orientation.y,
+                target_pose.orientation.z,
+                target_pose.orientation.w
+            );
+
+            move_group_interface_ROB.setApproximateJointValueTarget(target_pose);
+
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed);
+
             MyPlan = plan_ROB();
-
         } else if (action == "MoveRP" && param_ROB != "none"){
 
             // 1. Define POSE VECTOR:
