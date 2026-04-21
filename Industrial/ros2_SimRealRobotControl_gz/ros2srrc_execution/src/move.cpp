@@ -278,23 +278,37 @@ private:
 
         } else if (action == "MoveL" && param_ROB != "none"){
 
-            auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
+            std::vector<geometry_msgs::msg::Pose> waypoints;
 
-            geometry_msgs::msg::Pose TARGET_POSE = CURRENT_POSE.pose;
+            auto start_pose = move_group_interface_ROB.getCurrentPose().pose;
 
-            TARGET_POSE.position.x += goal->movel.x;
-            TARGET_POSE.position.y += goal->movel.y;
-            TARGET_POSE.position.z += goal->movel.z;
+            geometry_msgs::msg::Pose target_pose = start_pose;
+            target_pose.position.x += goal->movel.x;
+            target_pose.position.y += goal->movel.y;
+            target_pose.position.z += goal->movel.z;
 
-            TARGET_POSE.orientation = CURRENT_POSE.pose.orientation;
+            waypoints.push_back(target_pose);
 
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+            moveit_msgs::msg::RobotTrajectory trajectory;
 
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setPlannerId("LIN");
+            const double eef_step = 0.005;
+            const double jump_threshold = 0.0;
 
-            MyPlan = plan_ROB();
+            double fraction = move_group_interface_ROB.computeCartesianPath(
+                waypoints,
+                eef_step,
+                jump_threshold,
+                trajectory
+            );
+
+            if (fraction < 0.9) {
+                RCLCPP_ERROR(this->get_logger(), "Cartesian path failed! Fraction: %f", fraction);
+                RES = "PLANNING: ERROR";
+                return;
+            }
+
+            MyPlan.trajectory_ = trajectory;
+            RES = "PLANNING: OK";
         } else if (action == "MoveR" && param_ROB != "none"){
 
             // 1. Define JP VECTOR:
