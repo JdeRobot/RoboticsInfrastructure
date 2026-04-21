@@ -97,7 +97,7 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
         std::bind(&BaseWebGUI::gui_timer_callback, this));
 
     stats_timer_ = this->create_wall_timer(
-        std::chrono::seconds(2),
+        std::chrono::milliseconds(250),
         std::bind(&BaseWebGUI::stats_timer_callback, this));
 }
 
@@ -133,10 +133,10 @@ void BaseWebGUI::send_to_client(const std::string& msg)
 void BaseWebGUI::stats_timer_callback()
 {
     auto now = std::chrono::steady_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - last_freq_update_).count();
+    std::chrono::duration<double> elapsed = now - last_freq_update_;
     
-    if (elapsed > 0) {
-        brain_freq_ = static_cast<double>(iteration_counter_) / elapsed;
+    if (elapsed.count() > 0.0) {
+        brain_freq_ = static_cast<double>(iteration_counter_) / elapsed.count();
     }
     iteration_counter_ = 0;
     last_freq_update_ = now;
@@ -153,7 +153,9 @@ void BaseWebGUI::stats_timer_callback()
                     std::string val = line.substr(start);
                     val.erase(std::remove(val.begin(), val.end(), ' '), val.end());
                     val.erase(std::remove(val.begin(), val.end(), '\n'), val.end());
-                    real_time_factor_ = std::stod(val);
+                    
+                    double raw_val = std::stod(val);
+                    real_time_factor_ = std::round(raw_val * 100.0) / 100.0;
                 } catch (...) {}
                 break;
             }
