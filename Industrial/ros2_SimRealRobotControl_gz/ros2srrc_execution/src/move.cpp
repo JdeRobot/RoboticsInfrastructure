@@ -70,6 +70,7 @@
 
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 // Declaration of GLOBAL VARIABLES --> ROBOT / END-EFFECTOR / ENVIRONMENT PARAMETERS:
 std::string param_ROB = "none";
