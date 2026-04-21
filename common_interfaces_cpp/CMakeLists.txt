@@ -26,9 +26,6 @@ find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(nlohmann_json REQUIRED)
 
-find_package(gz-transport13 REQUIRED)
-find_package(gz-msgs10 REQUIRED)
-
 add_library(${PROJECT_NAME} SHARED
   src/hal/bumper.cpp
   src/hal/camera.cpp
@@ -55,8 +52,6 @@ target_link_libraries(${PROJECT_NAME}
   Boost::system
   Boost::thread
   nlohmann_json::nlohmann_json
-  gz-transport13::core
-  gz-msgs10::gz-msgs10
 )
 
 install(DIRECTORY include/ DESTINATION include)
@@ -74,9 +69,7 @@ ament_export_dependencies(
   ${ros2_dependencies} 
   OpenCV 
   nlohmann_json 
-  Boost 
-  gz-transport13 
-  gz-msgs10
+  Boost
 )
 
 ament_package()

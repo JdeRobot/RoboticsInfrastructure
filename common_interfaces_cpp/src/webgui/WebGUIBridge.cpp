@@ -78,7 +78,7 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t)
 }
 
 BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq)
-    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq)
+    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), running_(true)
 {
     ws_session_ = std::make_shared<WebSocketSession>(ioc_);
     
@@ -89,8 +89,7 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
     ws_session_->run(host, port);
 
     ioc_thread_ = std::thread([this]() { ioc_.run(); });
-
-    gz_node_.subscribe("/world/default/stats", &BaseWebGUI::gz_stats_callback, this);
+    rtf_thread_ = std::thread(&BaseWebGUI::rtf_worker, this);
 
     auto period = std::chrono::duration<double>(1.0 / freq);
     gui_timer_ = this->create_wall_timer(
@@ -98,19 +97,31 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
         std::bind(&BaseWebGUI::gui_timer_callback, this));
 }
 
-void BaseWebGUI::gz_stats_callback(const gz::msgs::WorldStatistics &msg)
+void BaseWebGUI::rtf_worker()
 {
-    if (msg.has_real_time_factor()) {
-        real_time_factor_ = msg.real_time_factor();
+    FILE* pipe = popen("gz topic -e -t /world/default/stats", "r");
+    if (!pipe) return;
+
+    char buffer[512];
+    while (running_ && fgets(buffer, sizeof(buffer), pipe)) {
+        std::string line(buffer);
+        size_t pos = line.find("real_time_factor:");
+        if (pos != std::string::npos) {
+            try {
+                std::string val_str = line.substr(pos + 17);
+                real_time_factor_ = std::stod(val_str);
+            } catch (...) {}
+        }
     }
+    pclose(pipe);
 }
 
 BaseWebGUI::~BaseWebGUI()
 {
+    running_ = false;
     ioc_.stop();
-    if (ioc_thread_.joinable()) {
-        ioc_thread_.join();
-    }
+    if (ioc_thread_.joinable()) ioc_thread_.join();
+    if (rtf_thread_.joinable()) rtf_thread_.join();
 }
 
 void BaseWebGUI::process_message(const std::string& msg)

@@ -22,9 +22,6 @@
   <depend>rosgraph_msgs</depend>
   <depend>ros_gz_interfaces</depend>
 
-  <depend>gz-transport13</depend>
-  <depend>gz-msgs10</depend>
-
   <export>
     <build_type>ament_cmake</build_type>
   </export>

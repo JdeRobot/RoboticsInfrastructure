@@ -8,14 +8,14 @@
 #include <boost/asio/strand.hpp>
 #include <nlohmann/json.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <gz/transport.hh>
-#include <gz/msgs/world_statistics.pb.h>
 #include <string>
 #include <thread>
 #include <mutex>
 #include <memory>
 #include <functional>
 #include <vector>
+#include <cstdio>
+#include <iostream>
 
 namespace beast = boost::beast;
 namespace websocket = beast::websocket;
@@ -70,13 +70,14 @@ protected:
 
 private:
     void gui_timer_callback();
-    void gz_stats_callback(const gz::msgs::WorldStatistics &msg);
+    void rtf_worker();
 
     net::io_context ioc_;
     std::shared_ptr<WebSocketSession> ws_session_;
     std::thread ioc_thread_;
+    std::thread rtf_thread_;
+    bool running_;
 
-    gz::transport::Node gz_node_;
     rclcpp::TimerBase::SharedPtr gui_timer_;
 };
 
