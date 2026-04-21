@@ -333,7 +333,7 @@ private:
                 RES = MoveRRES.RES;
             }
 
-        } } else if (action == "MoveROT" && param_ROB != "none"){
+        } else if (action == "MoveROT" && param_ROB != "none"){
 
             auto current_pose_stamped = move_group_interface_ROB.getCurrentPose();
 
