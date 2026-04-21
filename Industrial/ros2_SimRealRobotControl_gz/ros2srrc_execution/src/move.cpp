@@ -333,14 +333,15 @@ private:
                 RES = MoveRRES.RES;
             }
 
-        } else if (action == "MoveROT" && param_ROB != "none"){
+        } } else if (action == "MoveROT" && param_ROB != "none"){
 
             std::vector<geometry_msgs::msg::Pose> waypoints;
 
-            auto start_pose = move_group_interface_ROB.getCurrentPose().pose;
-            geometry_msgs::msg::Pose target_pose = start_pose;
+            auto start_pose = move_group_interface_ROB.getCurrentPose();
 
-            target_pose = MoveROTAction(goal->moverot, start_pose);
+            auto target_pose_stamped = MoveROTAction(goal->moverot, start_pose);
+
+            geometry_msgs::msg::Pose target_pose = target_pose_stamped.pose;
 
             waypoints.push_back(target_pose);
 
