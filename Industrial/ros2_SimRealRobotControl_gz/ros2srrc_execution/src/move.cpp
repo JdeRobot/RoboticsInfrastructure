@@ -208,6 +208,7 @@ private:
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE; 
     }
 
+    // No idea about what this function does:
     void handle_accepted(const std::shared_ptr<GoalHandle> goal_handle)
     {
         // This needs to return quickly to avoid blocking the executor, so spin up a new thread:
@@ -253,18 +254,22 @@ private:
 
         if (action == "MoveJ" && param_ROB != "none"){
 
+            // 1. Define JP VECTOR:
             std::vector<double> JP;
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
             current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
 
+            // 2. CALL MoveJAction for CALCULATIONS:
             MoveJSTRUCT MoveJRES = MoveJAction(goal->movej, JP, robotSPECS);
             JP = MoveJRES.JP;
             move_group_interface_ROB.setJointValueTarget(JP);
 
+            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
+            // 4. PLAN:
             if (MoveJRES.RES == "LIMITS: OK"){
                 MyPlan = plan_ROB();
             } else {
@@ -306,18 +311,22 @@ private:
             RES = "PLANNING: OK";
         } else if (action == "MoveR" && param_ROB != "none"){
 
+            // 1. Define JP VECTOR:
             std::vector<double> JP;
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState(10);
             current_state->copyJointGroupPositions(joint_model_group_ROB, JP);
 
+            // 2. CALL MoveRAction for CALCULATIONS:
             MoveRSTRUCT MoveRRES = MoveRAction(goal->mover, JP, robotSPECS);
             JP = MoveRRES.JP;
             move_group_interface_ROB.setJointValueTarget(JP);
 
+            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
+            // 4. PLAN:
             if (MoveRRES.RES == "LIMITS: OK"){
                 MyPlan = plan_ROB();
             } else {
@@ -326,18 +335,21 @@ private:
 
         } else if (action == "MoveROT" && param_ROB != "none"){
 
-            auto current_pose = move_group_interface_ROB.getCurrentPose();
+            // 1. Define POSE VECTOR:
+            auto POSE = move_group_interface_ROB.getCurrentPose();
 
-            auto target_pose = MoveROTAction(goal->moverot, current_pose);
+            // 2. CALL MoveROTAction for CALCULATIONS:
+            auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
+            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-            move_group_interface_ROB.setPoseTarget(target_pose);
-            move_group_interface_ROB.setGoalOrientationTolerance(0.001);
-
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed * 0.5);
-            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed * 0.5);
+            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
+            // 4. PLAN:
             MyPlan = plan_ROB();
+
         } else if (action == "MoveRP" && param_ROB != "none"){
 
             // 1. Define POSE VECTOR:

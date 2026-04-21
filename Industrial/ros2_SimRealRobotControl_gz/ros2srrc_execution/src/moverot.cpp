@@ -47,7 +47,6 @@
 
 // Include the ROS2 MSG messages:
 #include "ros2srrc_data/msg/ypr.hpp"
-#include <cmath>
 
 // Declaration of GLOBAL VARIABLES --> CONSTANT VALUES for angle transformation (DEG->RAD):
 const double pi = 3.14159265358979;
@@ -77,16 +76,10 @@ geometry_msgs::msg::Pose MoveROTAction(ros2srrc_data::msg::Ypr GOAL, geometry_ms
     double Bw = cr * cp * cy + sr * sp * sy;
 
     // QUATERNION MULTIPLICATION:
-    double w = Bw*Aw - Bx*Ax - By*Ay - Bz*Az;
-    double x = Bw*Ax + Bx*Aw + By*Az - Bz*Ay;
-    double y = Bw*Ay - Bx*Az + By*Aw + Bz*Ax;
-    double z = Bw*Az + Bx*Ay - By*Ax + Bz*Aw;
-
-    double norm = sqrt(x*x + y*y + z*z + w*w);
-    x /= norm;
-    y /= norm;
-    z /= norm;
-    w /= norm;
+    double w = Aw*Bw - Ax*Bx - Ay*By - Az*Bz;
+    double x = Aw*Bx + Ax*Bw + Ay*Bz - Az*By;
+    double y = Aw*By - Ax*Bz + Ay*Bw + Az*Bx;
+    double z = Aw*Bz + Ax*By - Ay*Bx + Az*Bw; 
 
     // TARGET POSE:
     TARGET_POSE.position.x = POSE.pose.position.x;
