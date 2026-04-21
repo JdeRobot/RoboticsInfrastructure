@@ -335,21 +335,32 @@ private:
 
         } else if (action == "MoveROT" && param_ROB != "none"){
 
-            // 1. Define POSE VECTOR:
-            auto POSE = move_group_interface_ROB.getCurrentPose();
+            std::vector<geometry_msgs::msg::Pose> waypoints;
 
-            // 2. CALL MoveROTAction for CALCULATIONS:
-            auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+            auto start_pose = move_group_interface_ROB.getCurrentPose().pose;
+            geometry_msgs::msg::Pose target_pose = start_pose;
 
-            // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
-            move_group_interface_ROB.setPlannerId("PTP");
+            target_pose = MoveROTAction(goal->moverot, start_pose);
 
-            // 4. PLAN:
-            MyPlan = plan_ROB();
+            waypoints.push_back(target_pose);
 
+            moveit_msgs::msg::RobotTrajectory trajectory;
+
+            double fraction = move_group_interface_ROB.computeCartesianPath(
+                waypoints,
+                0.005,
+                0.0,
+                trajectory
+            );
+
+            if (fraction < 0.9) {
+                RCLCPP_ERROR(this->get_logger(), "Cartesian ROT failed: %f", fraction);
+                RES = "PLANNING: ERROR";
+                return;
+            }
+
+            MyPlan.trajectory_ = trajectory;
+            RES = "PLANNING: OK";
         } else if (action == "MoveRP" && param_ROB != "none"){
 
             // 1. Define POSE VECTOR:
