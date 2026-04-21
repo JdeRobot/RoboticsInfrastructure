@@ -1,15 +1,16 @@
 #include "common_interfaces_cpp/hal/camera.hpp"
 #include <sstream>
 #include <cmath>
+#include <cv_bridge/cv_bridge.h>
 
 const double PI = M_PI;
 
 Image::Image() {
-    height = 480;  // Image height [pixels]
-    width = 640;   // Image width [pixels]
-    timeStamp = 0; // Time stamp [s] */
-    format = "";   // Image format string (RGB8, BGR,...)
-    data = cv::Mat::zeros(height, width, CV_8UC3); // The image data itself
+    height = 480;
+    width = 640;
+    timeStamp = 0;
+    format = "";
+    data = cv::Mat::zeros(height, width, CV_8UC3);
 }
 
 std::string Image::to_string() const {
@@ -62,9 +63,15 @@ CameraNode::CameraNode(const std::string& topic)
 }
 
 void CameraNode::listener_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
+    std::lock_guard<std::mutex> lock(img_mutex_);
     last_img_ = *msg;
 }
 
 std::shared_ptr<Image> CameraNode::getImage() const {
-    return imageMsg2Image(last_img_);
+    sensor_msgs::msg::Image img_copy;
+    {
+        std::lock_guard<std::mutex> lock(img_mutex_);
+        img_copy = last_img_;
+    }
+    return imageMsg2Image(img_copy);
 }
