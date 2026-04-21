@@ -340,7 +340,7 @@ private:
 
             // 2. CALL MoveROTAction for CALCULATIONS:
             auto TARGET_POSE = MoveROTAction(goal->moverot, POSE);
-            move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+            move_group_interface_ROB.setApproximateJointValueTarget(TARGET_POSE);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
