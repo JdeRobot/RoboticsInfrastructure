@@ -77,8 +77,8 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t)
     ws_.async_read(buffer_, beast::bind_front_handler(&WebSocketSession::on_read, shared_from_this()));
 }
 
-BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq)
-    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), running_(true)
+BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic)
+    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), stats_topic_(stats_topic), running_(true)
 {
     ws_session_ = std::make_shared<WebSocketSession>(ioc_);
     
@@ -99,7 +99,8 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
 
 void BaseWebGUI::rtf_worker()
 {
-    FILE* pipe = popen("gz topic -e -t /world/default/stats", "r");
+    std::string command = "gz topic -e -t " + stats_topic_;
+    FILE* pipe = popen(command.c_str(), "r");
     if (!pipe) return;
 
     char buffer[512];

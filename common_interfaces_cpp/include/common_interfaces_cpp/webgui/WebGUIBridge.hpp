@@ -15,7 +15,6 @@
 #include <functional>
 #include <vector>
 #include <cstdio>
-#include <iostream>
 
 namespace beast = boost::beast;
 namespace websocket = beast::websocket;
@@ -51,7 +50,7 @@ private:
 class BaseWebGUI : public rclcpp::Node
 {
 public:
-    BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq);
+    BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic = "/world/default/stats");
     virtual ~BaseWebGUI();
 
     virtual void process_message(const std::string& msg);
@@ -67,6 +66,7 @@ protected:
     std::mutex ack_lock_;
     double brain_freq_;
     double gui_freq_;
+    std::string stats_topic_;
 
 private:
     void gui_timer_callback();
