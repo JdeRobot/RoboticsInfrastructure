@@ -52,7 +52,7 @@
     name="ur"
     prefix=""
     sim_gz="true"
-    use_fake_hardware="true"
+    use_fake_hardware="false"
 
     script_filename=""
     output_recipe_filename=""

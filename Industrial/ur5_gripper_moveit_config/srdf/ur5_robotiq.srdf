@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="ur5">
   <!--GROUPS-->
-  <group name="ur5_arm">
+  <group name="ur5_manipulator">
     <chain base_link="base_link" tip_link="tool0"/>
   </group>
   
@@ -10,7 +10,7 @@
   </group>
   
   <!--GROUP STATES-->
-  <group_state group="ur5_arm" name="home">
+  <group_state group="ur5_manipulator" name="home">
     <joint name="elbow_joint" value="0"/>
     <joint name="shoulder_lift_joint" value="-1.5707"/>
     <joint name="shoulder_pan_joint" value="0"/>
@@ -19,7 +19,7 @@
     <joint name="wrist_3_joint" value="0"/>
   </group_state>
   
-  <group_state group="ur5_arm" name="up">
+  <group_state group="ur5_manipulator" name="up">
     <joint name="elbow_joint" value="0"/>
     <joint name="shoulder_lift_joint" value="-1.5707"/>
     <joint name="shoulder_pan_joint" value="0"/>
@@ -28,7 +28,7 @@
     <joint name="wrist_3_joint" value="0"/>
   </group_state>
   
-  <group_state group="ur5_arm" name="test_configuration">
+  <group_state group="ur5_manipulator" name="test_configuration">
     <joint name="elbow_joint" value="1.4"/>
     <joint name="shoulder_lift_joint" value="-1.62"/>
     <joint name="shoulder_pan_joint" value="1.54"/>
@@ -46,7 +46,7 @@
   </group_state>
   
   <!--END EFFECTOR-->
-  <end_effector group="gripper" name="gripper" parent_group="ur5_arm" parent_link="tool0"/>
+  <end_effector group="gripper" name="gripper" parent_group="ur5_manipulator" parent_link="tool0"/>
   
   <!--PASSIVE JOINTS-->
   <!-- Declare mimic joints as passive so MoveIt doesn't try to control them directly -->
@@ -55,8 +55,6 @@
   <passive_joint name="robotiq_85_right_inner_knuckle_joint" />
   <passive_joint name="robotiq_85_left_finger_tip_joint" />
   <passive_joint name="robotiq_85_right_finger_tip_joint" />
-  <passive_joint name="robotiq_85_left_finger_joint" />
-  <passive_joint name="robotiq_85_right_finger_joint" />
   
   <!--DISABLE COLLISIONS-->
   <disable_collisions link1="base_link" link2="base_link_inertia" reason="Adjacent"/>

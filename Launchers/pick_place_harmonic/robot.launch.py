@@ -59,8 +59,8 @@ def generate_launch_description():
 
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_ur5_moveit2",
-            "config/ur5robotiq_2f85.srdf"
+            "ur5_gripper_moveit_config",
+            "srdf/ur5_robotiq   .srdf"
         )
     }
 
