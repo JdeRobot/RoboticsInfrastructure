@@ -15,6 +15,8 @@
 #include <functional>
 #include <vector>
 #include <cstdio>
+#include <chrono>
+#include <atomic>
 
 namespace beast = boost::beast;
 namespace websocket = beast::websocket;
@@ -50,7 +52,7 @@ private:
 class BaseWebGUI : public rclcpp::Node
 {
 public:
-    BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic = "/world/default/stats");
+    BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic = "/stats");
     virtual ~BaseWebGUI();
 
     virtual void process_message(const std::string& msg);
@@ -70,15 +72,17 @@ protected:
 
 private:
     void gui_timer_callback();
-    void rtf_worker();
+    void stats_timer_callback();
 
     net::io_context ioc_;
     std::shared_ptr<WebSocketSession> ws_session_;
     std::thread ioc_thread_;
-    std::thread rtf_thread_;
-    bool running_;
 
     rclcpp::TimerBase::SharedPtr gui_timer_;
+    rclcpp::TimerBase::SharedPtr stats_timer_;
+
+    std::atomic<int> iteration_counter_;
+    std::chrono::time_point<std::chrono::steady_clock> last_freq_update_;
 };
 
 #endif

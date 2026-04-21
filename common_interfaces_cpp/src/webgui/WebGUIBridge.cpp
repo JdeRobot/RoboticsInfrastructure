@@ -1,4 +1,5 @@
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
+#include <algorithm>
 
 WebSocketSession::WebSocketSession(net::io_context& ioc)
     : resolver_(net::make_strand(ioc)), ws_(net::make_strand(ioc)), is_writing_(false) {}
@@ -78,51 +79,32 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t)
 }
 
 BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic)
-    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), stats_topic_(stats_topic), running_(true)
+    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), stats_topic_(stats_topic), iteration_counter_(0)
 {
     ws_session_ = std::make_shared<WebSocketSession>(ioc_);
-    
     ws_session_->set_message_callback([this](const std::string& msg) {
         this->process_message(msg);
     });
-    
     ws_session_->run(host, port);
 
     ioc_thread_ = std::thread([this]() { ioc_.run(); });
-    rtf_thread_ = std::thread(&BaseWebGUI::rtf_worker, this);
+    
+    last_freq_update_ = std::chrono::steady_clock::now();
 
     auto period = std::chrono::duration<double>(1.0 / freq);
     gui_timer_ = this->create_wall_timer(
         std::chrono::duration_cast<std::chrono::nanoseconds>(period),
         std::bind(&BaseWebGUI::gui_timer_callback, this));
-}
 
-void BaseWebGUI::rtf_worker()
-{
-    std::string command = "gz topic -e -t " + stats_topic_;
-    FILE* pipe = popen(command.c_str(), "r");
-    if (!pipe) return;
-
-    char buffer[512];
-    while (running_ && fgets(buffer, sizeof(buffer), pipe)) {
-        std::string line(buffer);
-        size_t pos = line.find("real_time_factor:");
-        if (pos != std::string::npos) {
-            try {
-                std::string val_str = line.substr(pos + 17);
-                real_time_factor_ = std::stod(val_str);
-            } catch (...) {}
-        }
-    }
-    pclose(pipe);
+    stats_timer_ = this->create_wall_timer(
+        std::chrono::seconds(2),
+        std::bind(&BaseWebGUI::stats_timer_callback, this));
 }
 
 BaseWebGUI::~BaseWebGUI()
 {
-    running_ = false;
     ioc_.stop();
     if (ioc_thread_.joinable()) ioc_thread_.join();
-    if (rtf_thread_.joinable()) rtf_thread_.join();
 }
 
 void BaseWebGUI::process_message(const std::string& msg)
@@ -148,18 +130,53 @@ void BaseWebGUI::send_to_client(const std::string& msg)
     }
 }
 
+void BaseWebGUI::stats_timer_callback()
+{
+    auto now = std::chrono::steady_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - last_freq_update_).count();
+    
+    if (elapsed > 0) {
+        brain_freq_ = static_cast<double>(iteration_counter_) / elapsed;
+    }
+    iteration_counter_ = 0;
+    last_freq_update_ = now;
+
+    std::string cmd = "gz topic -e -t " + stats_topic_ + " -n 1";
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (pipe) {
+        char buffer[1024];
+        while (fgets(buffer, sizeof(buffer), pipe)) {
+            std::string line(buffer);
+            if (line.find("real_time_factor:") != std::string::npos) {
+                try {
+                    size_t start = line.find(":") + 1;
+                    std::string val = line.substr(start);
+                    val.erase(std::remove(val.begin(), val.end(), ' '), val.end());
+                    val.erase(std::remove(val.begin(), val.end(), '\n'), val.end());
+                    real_time_factor_ = std::stod(val);
+                } catch (...) {}
+                break;
+            }
+        }
+        pclose(pipe);
+    }
+
+    json payload;
+    payload["brain"] = std::round(brain_freq_ * 10.0) / 10.0;
+    payload["gui"] = gui_freq_;
+    payload["rtf"] = real_time_factor_;
+    payload["fps"] = -1.0;
+    payload["lat"] = -1.0;
+
+    send_to_client(payload.dump());
+}
+
 void BaseWebGUI::gui_timer_callback()
 {
+    iteration_counter_++;
     std::lock_guard<std::mutex> lock(ack_lock_);
     if (ack_frontend_ && ack_) {
         json payload = update_gui();
-        
-        payload["rtf"] = real_time_factor_;
-        payload["brain"] = brain_freq_;
-        payload["gui"] = gui_freq_;
-        payload["fps"] = -1.0;
-        payload["lat"] = -1.0;
-
         send_to_client(payload.dump());
         ack_ = false;
     }
