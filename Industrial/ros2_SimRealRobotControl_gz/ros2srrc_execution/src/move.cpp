@@ -265,7 +265,8 @@ private:
             move_group_interface_ROB.setJointValueTarget(JP);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
             // 4. PLAN:
@@ -289,7 +290,8 @@ private:
 
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("LIN");
 
             MyPlan = plan_ROB();
@@ -306,7 +308,8 @@ private:
             move_group_interface_ROB.setJointValueTarget(JP);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
             // 4. PLAN:
@@ -326,7 +329,8 @@ private:
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
             // 4. PLAN:
@@ -342,7 +346,8 @@ private:
             move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_ROB.setPlannerId("PTP");
 
             // 4. PLAN:
@@ -361,7 +366,8 @@ private:
             move_group_interface_EE.setJointValueTarget(JP);
 
             // 3. Assign SPEED and PLANNING METHOD (PTP, LIN, CIRC):
-            move_group_interface_EE.setMaxVelocityScalingFactor(goal->speed);
+            move_group_interface_EE.setMaxVelocityScalingFactor(goal->speed* 0.5);
+            move_group_interface_EE.setMaxAccelerationScalingFactor(goal->speed* 0.5);
             move_group_interface_EE.setPlannerId("PTP");
 
             // 4. PLAN:
@@ -539,8 +545,8 @@ int main(int argc, char ** argv)
 
         move_group_interface_ROB = MoveGroupInterface(node2, group_name);
 
-        move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
-        move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
+        move_group_interface_ROB.setMaxVelocityScalingFactor(0.5);
+        move_group_interface_ROB.setMaxAccelerationScalingFactor(0.5);
 
         if (!move_group_interface_ROB.getCurrentState()) {
             RCLCPP_ERROR(logger, "Failed to get current state!");
