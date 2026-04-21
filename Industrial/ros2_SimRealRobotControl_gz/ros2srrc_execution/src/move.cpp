@@ -333,7 +333,7 @@ private:
                 RES = MoveRRES.RES;
             }
 
-        } } else if (action == "MoveROT" && param_ROB != "none"){
+        } else if (action == "MoveROT" && param_ROB != "none"){
 
             std::vector<geometry_msgs::msg::Pose> waypoints;
 
