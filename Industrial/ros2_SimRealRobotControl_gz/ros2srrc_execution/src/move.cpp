@@ -335,6 +335,7 @@ private:
             }
 
         } else if (action == "MoveROT" && param_ROB != "none"){
+
             auto current_pose = move_group_interface_ROB.getCurrentPose().pose;
 
             auto TARGET_POSE = MoveROTAction(goal->moverot, move_group_interface_ROB.getCurrentPose());
@@ -344,6 +345,9 @@ private:
             target_pose.position = current_pose.position;
 
             move_group_interface_ROB.setPoseTarget(target_pose);
+
+            move_group_interface_ROB.setGoalOrientationTolerance(0.001);
+            move_group_interface_ROB.setGoalPositionTolerance(0.001);
 
             move_group_interface_ROB.setMaxVelocityScalingFactor(goal->speed);
             move_group_interface_ROB.setMaxAccelerationScalingFactor(goal->speed);
