@@ -28,7 +28,6 @@ public:
 
 cv::Mat depthToRGB8(const cv::Mat& gray_img_buff, const std::string& encoding);
 
-
 /*
  * Convert a ROS Image message to a JdeRobot Image object.
  *
@@ -38,7 +37,7 @@ cv::Mat depthToRGB8(const cv::Mat& gray_img_buff, const std::string& encoding);
  * Returns:
  * Image object with BGR data, or None if the message is empty.
  */
-std::shared_ptr<Image> imageMsg2Image(const sensor_msgs::msg::Image& img);
+std::shared_ptr<Image> imageMsg2Image(const sensor_msgs::msg::Image::ConstSharedPtr& img);
 
 /* ### HAL INTERFACE ### */
 
@@ -57,10 +56,10 @@ public:
 
 private:
     /* Store the latest image message received from the topic. */
-    void listener_callback(const sensor_msgs::msg::Image::SharedPtr msg);
+    void listener_callback(const sensor_msgs::msg::Image::ConstSharedPtr msg);
     
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_;
-    sensor_msgs::msg::Image last_img_;
+    std::shared_ptr<Image> last_image_obj_;
     mutable std::mutex img_mutex_;
 };
 
