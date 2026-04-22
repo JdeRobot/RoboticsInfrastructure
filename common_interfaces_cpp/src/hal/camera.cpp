@@ -5,7 +5,6 @@
 
 const double PI = M_PI;
 
-/* Represents a camera image with metadata and pixel data. */
 Image::Image() {
     height = 480;
     width = 640;
@@ -24,15 +23,6 @@ std::string Image::to_string() const {
     return oss.str();
 }
 
-/*
- * Convert a ROS Image message to a JdeRobot Image object.
- *
- * Args:
- * img: ROS sensor_msgs/Image message.
- *
- * Returns:
- * Image object with BGR data, or None if the message is empty.
- */
 std::shared_ptr<Image> imageMsg2Image(const sensor_msgs::msg::Image& img) {
     if (img.data.empty()) {
         return nullptr;
@@ -64,9 +54,7 @@ cv::Mat depthToRGB8(const cv::Mat& gray_img_buff, const std::string& encoding) {
     }
     return color_img;
 }
-/* ### HAL INTERFACE ### */
 
-/* ROS2 node that subscribes to a camera topic and stores the latest image. */
 CameraNode::CameraNode(const std::string& topic) 
     : Node("camera_node") {
     sub_ = this->create_subscription<sensor_msgs::msg::Image>(
@@ -79,14 +67,7 @@ void CameraNode::listener_callback(const sensor_msgs::msg::Image::SharedPtr msg)
     last_img_ = *msg;
 }
 
-/*
-* Return the latest camera image.
-*
-* Returns:
-* Image object with BGR data, or None if no image has been received.
-*/
 std::shared_ptr<Image> CameraNode::getImage() const {
-    /* Store the latest image message received from the topic. */
     sensor_msgs::msg::Image img_copy;
     {
         std::lock_guard<std::mutex> lock(img_mutex_);
