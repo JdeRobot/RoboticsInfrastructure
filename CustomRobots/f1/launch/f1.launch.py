@@ -2,7 +2,8 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
@@ -14,7 +15,12 @@ def generate_launch_description():
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    pose = LaunchConfiguration("pose")
+    x = LaunchConfiguration("x", default="0")
+    y = LaunchConfiguration("y", default="0")
+    z = LaunchConfiguration("z", default="0")
+    R = LaunchConfiguration("R", default="0")
+    P = LaunchConfiguration("P", default="0")
+    Y = LaunchConfiguration("Y", default="0")
 
     robot_description = ParameterValue(
         Command(["xacro", " ", urdf_file]),
@@ -31,9 +37,6 @@ def generate_launch_description():
         ],
     )
 
-    x, y, z, R, P, Y = pose.split(" ")
-    print(x, y, z, R, P, Y)
-
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
@@ -45,17 +48,17 @@ def generate_launch_description():
             "-allow_renaming",
             "true",
             "-x",
-            str(53.462),
+            x,
             "-y",
-            str(-10.734),
+            y,
             "-z",
-            str(0.004),
+            z,
             "-R",
-            str(0),
+            R,
             "-P",
-            str(0),
+            P,
             "-Y",
-            str(-1.57),
+            Y,
         ],
         output="screen",
     )
@@ -77,7 +80,12 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Add any entry parameter
-    ld.add_action(DeclareLaunchArgument("pose", default_value="0 0 0 0 0 0"))
+    ld.add_action(DeclareLaunchArgument("x", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("y", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("z", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("R", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("P", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("Y", default_value="0"))
 
     # Add any actions
     ld.add_action(robot_state_publisher_node)
