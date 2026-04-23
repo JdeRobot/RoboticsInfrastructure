@@ -14,6 +14,7 @@ def generate_launch_description():
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    pose = LaunchConfiguration("pose")
 
     robot_description = ParameterValue(
         Command(["xacro", " ", urdf_file]),
@@ -29,6 +30,9 @@ def generate_launch_description():
             {"use_sim_time": use_sim_time, "robot_description": robot_description}
         ],
     )
+
+    x, y, z, R, P, Y = pose.split(" ")
+    print(x, y, z, R, P, Y)
 
     gz_spawn_entity = Node(
         package="ros_gz_sim",
@@ -71,6 +75,9 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+
+    # Add any entry parameter
+    ld.add_action(DeclareLaunchArgument("pose", default_value="0 0 0 0 0 0"))
 
     # Add any actions
     ld.add_action(robot_state_publisher_node)
