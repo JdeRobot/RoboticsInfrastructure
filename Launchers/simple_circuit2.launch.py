@@ -37,13 +37,6 @@ def generate_launch_description():
         }.items(),
     )
 
-    ## Spawn robot
-    spawn_robot_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(package_dir, "launch", "f1.launch.py")
-        ),
-    )
-
     world_entity_cmd = Node(
         package="ros_gz_sim",
         executable="create",
@@ -61,6 +54,5 @@ def generate_launch_description():
 
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
-    # ld.add_action(spawn_robot_cmd)
 
     return ld
