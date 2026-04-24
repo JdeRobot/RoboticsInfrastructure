@@ -21,6 +21,8 @@ def launch_setup(context):
 
     package_dir = get_package_share_directory("custom_robots")
 
+    print(sensor.perform(context))
+
     nodes_to_start = []
 
     f1_sensor = "cam"
