@@ -81,6 +81,8 @@ private:
 
     rclcpp::TimerBase::SharedPtr gui_timer_;
     rclcpp::TimerBase::SharedPtr stats_timer_;
+    rclcpp::CallbackGroup::SharedPtr gui_cb_group_;
+    rclcpp::CallbackGroup::SharedPtr stats_cb_group_;
 
     std::atomic<int> iteration_counter_;
     std::chrono::time_point<std::chrono::steady_clock> last_freq_update_;

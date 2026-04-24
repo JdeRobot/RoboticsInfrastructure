@@ -91,14 +91,19 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
     
     last_freq_update_ = std::chrono::steady_clock::now();
 
+    gui_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+    stats_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+
     auto period = std::chrono::duration<double>(1.0 / freq);
     gui_timer_ = this->create_wall_timer(
         std::chrono::duration_cast<std::chrono::nanoseconds>(period),
-        std::bind(&BaseWebGUI::gui_timer_callback, this));
+        std::bind(&BaseWebGUI::gui_timer_callback, this),
+        gui_cb_group_);
 
     stats_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(500),
-        std::bind(&BaseWebGUI::stats_timer_callback, this));
+        std::bind(&BaseWebGUI::stats_timer_callback, this),
+        stats_cb_group_);
 }
 
 BaseWebGUI::~BaseWebGUI()
