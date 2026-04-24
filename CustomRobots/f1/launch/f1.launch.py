@@ -16,7 +16,7 @@ def launch_setup(context):
     R = LaunchConfiguration("R", default="0")
     P = LaunchConfiguration("P", default="0")
     Y = LaunchConfiguration("Y", default="0")
-    sensor = LaunchConfiguration("sensor", default="cam")
+    sensor = LaunchConfiguration("sensor", default="camera")
     mode = LaunchConfiguration("mode", default="holo")
 
     package_dir = get_package_share_directory("custom_robots")
