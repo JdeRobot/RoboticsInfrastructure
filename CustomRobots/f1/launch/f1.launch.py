@@ -9,15 +9,15 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def launch_setup(context):
-    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
-    x = LaunchConfiguration("x", default="0")
-    y = LaunchConfiguration("y", default="0")
-    z = LaunchConfiguration("z", default="0")
-    R = LaunchConfiguration("R", default="0")
-    P = LaunchConfiguration("P", default="0")
-    Y = LaunchConfiguration("Y", default="0")
-    sensor = LaunchConfiguration("sensor", default="camera")
-    mode = LaunchConfiguration("mode", default="holo")
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    x = LaunchConfiguration("x")
+    y = LaunchConfiguration("y")
+    z = LaunchConfiguration("z")
+    R = LaunchConfiguration("R")
+    P = LaunchConfiguration("P")
+    Y = LaunchConfiguration("Y")
+    sensor = LaunchConfiguration("sensor")
+    mode = LaunchConfiguration("mode")
 
     package_dir = get_package_share_directory("custom_robots")
 
