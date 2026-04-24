@@ -225,4 +225,4 @@ void BaseWebGUI::gui_timer_callback()
         json payload = update_gui();
         send_to_client(payload.dump());
     }
-}w
+}
