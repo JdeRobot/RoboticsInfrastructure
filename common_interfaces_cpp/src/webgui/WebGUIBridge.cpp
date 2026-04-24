@@ -97,7 +97,7 @@ BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, co
         std::bind(&BaseWebGUI::gui_timer_callback, this));
 
     stats_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(250),
+        std::chrono::milliseconds(500),
         std::bind(&BaseWebGUI::stats_timer_callback, this));
 }
 
@@ -105,6 +105,35 @@ BaseWebGUI::~BaseWebGUI()
 {
     ioc_.stop();
     if (ioc_thread_.joinable()) ioc_thread_.join();
+}
+
+std::string BaseWebGUI::base64_encode(const unsigned char* data, size_t len) {
+    static const char lookup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string out;
+    out.reserve((len + 2) / 3 * 4);
+    int i = 0, j = 0;
+    unsigned char a3[3], a4[4];
+    while (len--) {
+        a3[i++] = *(data++);
+        if (i == 3) {
+            a4[0] = (a3[0] & 0xfc) >> 2;
+            a4[1] = ((a3[0] & 0x03) << 4) + ((a3[1] & 0xf0) >> 4);
+            a4[2] = ((a3[1] & 0x0f) << 2) + ((a3[2] & 0xc0) >> 6);
+            a4[3] = a3[2] & 0x3f;
+            for (i = 0; i < 4; i++) out += lookup[a4[i]];
+            i = 0;
+        }
+    }
+    if (i) {
+        for (j = i; j < 3; j++) a3[j] = '\0';
+        a4[0] = (a3[0] & 0xfc) >> 2;
+        a4[1] = ((a3[0] & 0x03) << 4) + ((a3[1] & 0xf0) >> 4);
+        a4[2] = ((a3[1] & 0x0f) << 2) + ((a3[2] & 0xc0) >> 6);
+        a4[3] = a3[2] & 0x3f;
+        for (j = 0; j < i + 1; j++) out += lookup[a4[j]];
+        while (i++ < 3) out += '=';
+    }
+    return out;
 }
 
 void BaseWebGUI::process_message(const std::string& msg)

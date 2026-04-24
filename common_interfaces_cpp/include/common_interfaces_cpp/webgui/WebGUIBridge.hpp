@@ -60,6 +60,7 @@ public:
     virtual std::vector<rclcpp::Node::SharedPtr> get_nodes();
 
     void send_to_client(const std::string& msg);
+    static std::string base64_encode(const unsigned char* data, size_t len);
 
 protected:
     double real_time_factor_;
