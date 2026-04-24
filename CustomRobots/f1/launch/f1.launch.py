@@ -9,6 +9,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def launch_setup(context):
+    use_sim_time = LaunchConfiguration("use_sim_time")
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
@@ -105,6 +106,9 @@ def generate_launch_description():
     declared_arguments = []
 
     # Add any entry parameter
+    declared_arguments.append(
+        DeclareLaunchArgument("use_sim_time", default_value="true")
+    )
     declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
