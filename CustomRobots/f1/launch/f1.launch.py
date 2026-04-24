@@ -26,6 +26,8 @@ def launch_setup(context):
     f1_sensor = "cam"
     f1_model = "holo"
 
+    print(sensor.perform(context))
+
     if sensor.perform(context) == "laser":
         f1_sensor = "laser"
 
