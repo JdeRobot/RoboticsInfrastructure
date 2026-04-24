@@ -6,85 +6,105 @@
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/strand.hpp>
+#include <boost/asio/executor_work_guard.hpp>
 #include <nlohmann/json.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <opencv2/opencv.hpp>
 #include <string>
 #include <thread>
 #include <mutex>
 #include <memory>
 #include <functional>
 #include <vector>
-#include <cstdio>
 #include <chrono>
 #include <atomic>
+#include <optional>
 
-namespace beast = boost::beast;
+namespace beast     = boost::beast;
 namespace websocket = beast::websocket;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
-using json = nlohmann::json;
+namespace net       = boost::asio;
+using tcp           = net::ip::tcp;
+using json          = nlohmann::json;
+
+// WebSocketSession
+// Manages a single async WebSocket client connection.
+// Thread-safe send queue: call send() from any thread.
 
 class WebSocketSession : public std::enable_shared_from_this<WebSocketSession>
 {
 public:
     explicit WebSocketSession(net::io_context& ioc);
+
     void run(const std::string& host, const std::string& port);
     void send(const std::string& msg);
-    void set_message_callback(std::function<void(const std::string&)> cb);
+    void set_on_message(std::function<void(const std::string&)> cb);
 
 private:
-    void on_resolve(beast::error_code ec, tcp::resolver::results_type results);
-    void on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type ep);
+    void on_resolve  (beast::error_code ec, tcp::resolver::results_type results);
+    void on_connect  (beast::error_code ec, tcp::resolver::results_type::endpoint_type ep);
     void on_handshake(beast::error_code ec);
-    void on_write(beast::error_code ec, std::size_t bytes_transferred);
-    void on_read(beast::error_code ec, std::size_t bytes_transferred);
+    void on_read     (beast::error_code ec, std::size_t);
+    void on_write    (beast::error_code ec, std::size_t);
+    void do_write    ();
 
-    tcp::resolver resolver_;
-    websocket::stream<beast::tcp_stream> ws_;
-    beast::flat_buffer buffer_;
-    std::string host_;
-    std::vector<std::string> write_queue_;
-    std::mutex queue_mutex_;
-    bool is_writing_;
-    std::function<void(const std::string&)> message_callback_;
+    tcp::resolver                           resolver_;
+    websocket::stream<beast::tcp_stream>    ws_;
+    beast::flat_buffer                      buffer_;
+    std::string                             host_;
+    std::vector<std::string>                send_queue_;
+    std::mutex                              queue_mtx_;
+    bool                                    writing_{ false };
+    std::function<void(const std::string&)> on_message_;
 };
 
+// ---------------------------------------------------------------------------
+// BaseWebGUI
+//
+// Derive from this class to implement an exercise GUI.
+// Override:
+//   json update_gui()               — called at gui_freq Hz, return JSON to send
+//   void on_frontend_message(msg)   — called when the frontend sends something
+//
+// Call send_to_frontend(json) from anywhere to push an unsolicited message.
+// ---------------------------------------------------------------------------
 class BaseWebGUI : public rclcpp::Node
 {
 public:
-    BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic = "/stats");
+    // node_name : ROS node name
+    // host/port : WebSocket server address (the frontend's WS server)
+    // gui_freq  : Hz at which update_gui() is called
+    BaseWebGUI(const std::string& node_name,
+               const std::string& host,
+               const std::string& port,
+               double             gui_freq);
+
     virtual ~BaseWebGUI();
 
-    virtual void process_message(const std::string& msg);
+    // --- Override these ---
     virtual json update_gui() = 0;
-    virtual std::vector<rclcpp::Node::SharedPtr> get_nodes();
+    virtual void on_frontend_message(const std::string& msg) {}
 
-    void send_to_client(const std::string& msg);
+    // Send an arbitrary JSON payload to the frontend immediately
+    void send_to_frontend(const json& payload);
+
+    // Base64 utility (available to subclasses)
     static std::string base64_encode(const unsigned char* data, size_t len);
 
 protected:
-    double real_time_factor_;
-    bool ack_;
-    std::mutex ack_lock_;
-    double brain_freq_;
     double gui_freq_;
-    std::string stats_topic_;
 
 private:
-    void gui_timer_callback();
-    void stats_timer_callback();
+    void on_ws_message(const std::string& msg);
+    void gui_timer_cb();
 
-    net::io_context ioc_;
-    std::shared_ptr<WebSocketSession> ws_session_;
-    std::thread ioc_thread_;
+    // WebSocket (runs on its own io_context thread)
+    net::io_context                                                    ioc_;
+    std::optional<net::executor_work_guard<net::io_context::executor_type>> work_guard_;
+    std::shared_ptr<WebSocketSession>                                  ws_session_;
+    std::thread                                                        ioc_thread_;
 
+    // ROS timer
     rclcpp::TimerBase::SharedPtr gui_timer_;
-    rclcpp::TimerBase::SharedPtr stats_timer_;
-    rclcpp::CallbackGroup::SharedPtr gui_cb_group_;
-    rclcpp::CallbackGroup::SharedPtr stats_cb_group_;
-
-    std::atomic<int> iteration_counter_;
-    std::chrono::time_point<std::chrono::steady_clock> last_freq_update_;
 };
 
-#endif
+#endif // WEBUI_BRIDGE_HPP_
