@@ -90,11 +90,6 @@ def launch_setup(context):
     # Sensor deppending on sensor arguments
     if f1_sensor == "cam":
         gz_ros2_image_bridge = Node(
-            condition=IfCondition(
-                AndSubstitution(
-                    launch_dashboard_client, NotSubstitution(use_mock_hardware)
-                )
-            ),
             package="ros_gz_image",
             executable="image_bridge",
             arguments=["/cam_f1_left/image_raw"],
@@ -107,16 +102,17 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = []
-    ld = LaunchDescription([OpaqueFunction(function=launch_setup)])
 
     # Add any entry parameter
-    ld.add_action(DeclareLaunchArgument("x", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("y", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("z", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("R", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("P", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("Y", default_value="0"))
-    ld.add_action(DeclareLaunchArgument("sensor", default_value="camera"))
-    ld.add_action(DeclareLaunchArgument("mode", default_value="holo"))
+    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
+    declared_arguments.append(DeclareLaunchArgument("mode", default_value="holo"))
 
-    return ld
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )
