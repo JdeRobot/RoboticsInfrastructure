@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 
 # ===================================== COPYRIGHT ===================================== #
@@ -36,25 +35,31 @@
 # Required to include ROS2 and its components:
 import rclpy
 from rclpy.node import Node
+
 # Import ROS2 Services:
 from abb_robot_msgs.srv import SetIOSignal
 
 # =============================================================================== #
 # ABB Robot I/O - ROS2 Service Client:
 
+
 class ZimmerGRIPPER(Node):
 
     def __init__(self):
 
-        super().__init__('ZimmerGripper_client')
+        super().__init__("ZimmerGripper_client")
 
-        print("[CLIENT - zimmer_abb.py]: Initialising ABB-RWS I/O ROS 2 Service Client.")
+        print(
+            "[CLIENT - zimmer_abb.py]: Initialising ABB-RWS I/O ROS 2 Service Client."
+        )
 
-        self.cli = self.create_client(SetIOSignal, '/rws_client/set_io_signal')
+        self.cli = self.create_client(SetIOSignal, "/rws_client/set_io_signal")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            print('[CLIENT - zimmer_abb.py]: Waiting for ABB-RWS I/O Service Server to be available...')
+            print(
+                "[CLIENT - zimmer_abb.py]: Waiting for ABB-RWS I/O Service Server to be available..."
+            )
 
-        print('[CLIENT - zimmer_abb.py]: ABB-RWS I/O Service Server detected, ready!')
+        print("[CLIENT - zimmer_abb.py]: ABB-RWS I/O Service Server detected, ready!")
         print("")
 
         self.req = SetIOSignal.Request()
@@ -64,7 +69,12 @@ class ZimmerGRIPPER(Node):
         self.req.value = value
         self.future = self.cli.call_async(self.req)
         rclpy.spin_until_future_complete(self, self.future)
-        print('[CLIENT - zimmer_abb.py]: ROS 2 Service successfully executed. Signal -> ' + signal + ", Value -> " + value)
+        print(
+            "[CLIENT - zimmer_abb.py]: ROS 2 Service successfully executed. Signal -> "
+            + signal
+            + ", Value -> "
+            + value
+        )
         print("")
 
     def OPEN(self):
@@ -73,14 +83,16 @@ class ZimmerGRIPPER(Node):
         RES["Success"] = False
         RES["Message"] = ""
 
-        print('[CLIENT - zimmer_abb.py]: Sending request -> OPEN GRIPPER.')
+        print("[CLIENT - zimmer_abb.py]: Sending request -> OPEN GRIPPER.")
         signal = "gripper"
         value = "1"
-        self.send_request(signal,value)
+        self.send_request(signal, value)
 
-        RES["Message"] = "Gripper (0-OPEN) signal successfully sent to ABB Robot Controller."
-        RES["Success"]= True
-        return(RES)
+        RES["Message"] = (
+            "Gripper (0-OPEN) signal successfully sent to ABB Robot Controller."
+        )
+        RES["Success"] = True
+        return RES
 
     def CLOSE(self):
 
@@ -88,11 +100,13 @@ class ZimmerGRIPPER(Node):
         RES["Success"] = False
         RES["Message"] = ""
 
-        print('[CLIENT - zimmer_abb.py]: Sending request -> CLOSE GRIPPER.')
+        print("[CLIENT - zimmer_abb.py]: Sending request -> CLOSE GRIPPER.")
         signal = "gripper"
         value = "0"
-        self.send_request(signal,value)
+        self.send_request(signal, value)
 
-        RES["Message"] = "Gripper (1-CLOSE) signal successfully sent to ABB Robot Controller."
-        RES["Success"]= True
-        return(RES)
+        RES["Message"] = (
+            "Gripper (1-CLOSE) signal successfully sent to ABB Robot Controller."
+        )
+        RES["Success"] = True
+        return RES

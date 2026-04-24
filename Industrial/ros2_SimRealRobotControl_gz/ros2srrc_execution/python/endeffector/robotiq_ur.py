@@ -35,24 +35,30 @@
 # Required to include ROS2 and its components:
 import rclpy
 from rclpy.node import Node
+
 # Import ROS2 Services:
 from ros2_robotiqgripper.srv import RobotiqGripper
 
 # =============================================================================== #
 # Robotiq Gripper - ROS2 Service Client:
 
+
 class ServiceClient(Node):
 
     def __init__(self):
 
-        super().__init__('RobotiqGripper_client')
+        super().__init__("RobotiqGripper_client")
 
         print("[CLIENT - robotiq_ur.py]: Initialising Robotiq-UR ROS 2 Service Client!")
-        self.cli = self.create_client(RobotiqGripper, '/Robotiq_Gripper')
+        self.cli = self.create_client(RobotiqGripper, "/Robotiq_Gripper")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            print('[CLIENT - robotiq_ur.py]: Waiting for RobotiqGripper Service Server to be available...')
+            print(
+                "[CLIENT - robotiq_ur.py]: Waiting for RobotiqGripper Service Server to be available..."
+            )
 
-        print('[CLIENT - robotiq_ur.py]: RobotiqGripper Service Server detected, ready!')
+        print(
+            "[CLIENT - robotiq_ur.py]: RobotiqGripper Service Server detected, ready!"
+        )
         print("")
 
         self.req = RobotiqGripper.Request()
@@ -69,17 +75,19 @@ class ServiceClient(Node):
         action = "CLOSE"
         self.send_request(action)
 
+
 # =============================================================================== #
 # Robotiq Gripper CLASS:
 
-class RobotiqGRIPPER():
+
+class RobotiqGRIPPER:
 
     def __init__(self):
         self.CLIENT = ServiceClient()
 
     def OPEN(self):
 
-        print('[CLIENT - robotiq_ur.py]: Sending request -> OPEN GRIPPER.')
+        print("[CLIENT - robotiq_ur.py]: Sending request -> OPEN GRIPPER.")
 
         # Initialise RESULT:
         RES = {}
@@ -94,14 +102,17 @@ class RobotiqGRIPPER():
             rclpy.spin_once(self.CLIENT)
 
             if self.CLIENT.future.done():
-                
+
                 try:
                     OpenRES = self.CLIENT.future.result()
 
                 except Exception as exc:
-                    print("[CLIENT - robotiq_ur.py]: /Robotiq_Gripper Service call failed -> " + str(exc))
+                    print(
+                        "[CLIENT - robotiq_ur.py]: /Robotiq_Gripper Service call failed -> "
+                        + str(exc)
+                    )
                     print("")
-                    return(RES)
+                    return RES
 
                 else:
                     RES["Success"] = OpenRES.success
@@ -109,15 +120,18 @@ class RobotiqGRIPPER():
                     RES["Average"] = OpenRES.average
                     RES["Message"] = OpenRES.message
 
-                    print('[CLIENT - robotiq_ur.py]: OPEN GRIPPER execution finished, result -> ' + RES["Message"])
+                    print(
+                        "[CLIENT - robotiq_ur.py]: OPEN GRIPPER execution finished, result -> "
+                        + RES["Message"]
+                    )
                     print("")
 
-                    return(RES)
+                    return RES
 
     def CLOSE(self):
 
-        print('[CLIENT - robotiq_ur.py]: Sending request -> CLOSE GRIPPER.')
-        
+        print("[CLIENT - robotiq_ur.py]: Sending request -> CLOSE GRIPPER.")
+
         # Initialise RESULT:
         RES = {}
         RES["Success"] = False
@@ -131,13 +145,16 @@ class RobotiqGRIPPER():
             rclpy.spin_once(self.CLIENT)
 
             if self.CLIENT.future.done():
-                
+
                 try:
                     CloseRES = self.CLIENT.future.result()
 
                 except Exception as exc:
-                    print("[CLIENT - robotiq_ur.py]: /Robotiq_Gripper Service call failed -> " + str(exc))
-                    return(RES)
+                    print(
+                        "[CLIENT - robotiq_ur.py]: /Robotiq_Gripper Service call failed -> "
+                        + str(exc)
+                    )
+                    return RES
 
                 else:
                     RES["Success"] = CloseRES.success
@@ -145,7 +162,10 @@ class RobotiqGRIPPER():
                     RES["Average"] = CloseRES.average
                     RES["Message"] = CloseRES.message
 
-                    print('[CLIENT - robotiq_ur.py]: CLOSE GRIPPER execution finished, result -> ' + RES["Message"])
+                    print(
+                        "[CLIENT - robotiq_ur.py]: CLOSE GRIPPER execution finished, result -> "
+                        + RES["Message"]
+                    )
                     print("")
 
-                    return(RES)
+                    return RES
