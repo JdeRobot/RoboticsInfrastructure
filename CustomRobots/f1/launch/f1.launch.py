@@ -28,16 +28,12 @@ def launch_setup(context):
 
     if sensor.perform(context) == "laser":
         f1_sensor = "laser"
-        print(
-            "LLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRR"
-        )
 
     if mode.perform(context) == "ackermann":
         f1_model = "ackermann"
 
     urdf_file = os.path.join(package_dir, "urdf", f"f1_{f1_model}_{f1_sensor}.urdf")
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
-    print(urdf_file)
 
     robot_description = ParameterValue(
         Command(["xacro", " ", urdf_file]),
@@ -111,18 +107,17 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = []
-    ld = LaunchDescription()
+    ld = LaunchDescription([OpaqueFunction(function=launch_setup)])
 
     # Add any entry parameter
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("mode", default_value="holo"))
+    ld.add_action(start_gazebo_ros_bridge_cmd)
+    ld.add_action(DeclareLaunchArgument("x", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("y", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("z", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("R", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("P", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("Y", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("sensor", default_value="camera"))
+    ld.add_action(DeclareLaunchArgument("mode", default_value="holo"))
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return ld
