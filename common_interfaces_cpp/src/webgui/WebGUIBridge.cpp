@@ -79,7 +79,7 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t)
 }
 
 BaseWebGUI::BaseWebGUI(const std::string& node_name, const std::string& host, const std::string& port, double freq, const std::string& stats_topic)
-    : Node(node_name), real_time_factor_(0.0), ack_frontend_(false), ack_(true), brain_freq_(0.0), gui_freq_(freq), stats_topic_(stats_topic), iteration_counter_(0)
+    : Node(node_name), real_time_factor_(0.0), ack_(true), brain_freq_(0.0), gui_freq_(freq), stats_topic_(stats_topic), iteration_counter_(0)
 {
     ws_session_ = std::make_shared<WebSocketSession>(ioc_);
     ws_session_->set_message_callback([this](const std::string& msg) {
@@ -146,9 +146,6 @@ void BaseWebGUI::process_message(const std::string& msg)
     if (msg.find("ack") != std::string::npos) {
         std::lock_guard<std::mutex> lock(ack_lock_);
         ack_ = true;
-    } else if (msg.find("start") != std::string::npos) {
-        std::lock_guard<std::mutex> lock(ack_lock_);
-        ack_frontend_ = true;
     }
 }
 
@@ -220,7 +217,7 @@ void BaseWebGUI::gui_timer_callback()
 
     {
         std::lock_guard<std::mutex> lock(ack_lock_);
-        if (ack_frontend_ && ack_) {
+        if (ack_) {
             should_send = true;
             ack_ = false;
         }

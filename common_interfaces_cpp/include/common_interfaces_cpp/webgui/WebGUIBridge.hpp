@@ -64,7 +64,6 @@ public:
 
 protected:
     double real_time_factor_;
-    bool ack_frontend_;
     bool ack_;
     std::mutex ack_lock_;
     double brain_freq_;
