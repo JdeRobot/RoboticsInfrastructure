@@ -9,7 +9,6 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def launch_setup(context):
-    use_sim_time = LaunchConfiguration("use_sim_time")
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
