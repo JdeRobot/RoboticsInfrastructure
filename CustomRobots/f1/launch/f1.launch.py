@@ -2,18 +2,13 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    package_dir = get_package_share_directory("custom_robots")
-
-    urdf_file = os.path.join(package_dir, "urdf", "f1_holo_cam.urdf")
-    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
-
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     x = LaunchConfiguration("x", default="0")
     y = LaunchConfiguration("y", default="0")
@@ -21,6 +16,22 @@ def generate_launch_description():
     R = LaunchConfiguration("R", default="0")
     P = LaunchConfiguration("P", default="0")
     Y = LaunchConfiguration("Y", default="0")
+    sensor = LaunchConfiguration("sensor", default="cam")
+    mode = LaunchConfiguration("mode", default="holo")
+
+    package_dir = get_package_share_directory("custom_robots")
+
+    f1_sensor = "cam"
+    f1_model = "holo"
+
+    if sensor == "laser":
+        f1_sensor = "laser"
+
+    if mode == "ackermann":
+        f1_model = "ackermann"
+
+    urdf_file = os.path.join(package_dir, "urdf", f"f1_{f1_model}_{f1_sensor}.urdf")
+    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
     robot_description = ParameterValue(
         Command(["xacro", " ", urdf_file]),
@@ -70,13 +81,6 @@ def generate_launch_description():
         output="screen",
     )
 
-    gz_ros2_image_bridge = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/cam_f1_left/image_raw"],
-        output="screen",
-    )
-
     ld = LaunchDescription()
 
     # Add any entry parameter
@@ -86,11 +90,21 @@ def generate_launch_description():
     ld.add_action(DeclareLaunchArgument("R", default_value="0"))
     ld.add_action(DeclareLaunchArgument("P", default_value="0"))
     ld.add_action(DeclareLaunchArgument("Y", default_value="0"))
+    ld.add_action(DeclareLaunchArgument("sensor", default_value="camera"))
 
     # Add any actions
     ld.add_action(robot_state_publisher_node)
     ld.add_action(gz_spawn_entity)
     ld.add_action(gz_ros2_bridge)
-    ld.add_action(gz_ros2_image_bridge)
+
+    # Sensor deppending on sensor arguments
+    if f1_sensor == "cam":
+        gz_ros2_image_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            arguments=["/cam_f1_left/image_raw"],
+            output="screen",
+        )
+        ld.add_action(gz_ros2_image_bridge)
 
     return ld
