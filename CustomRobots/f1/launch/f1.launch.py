@@ -110,7 +110,6 @@ def generate_launch_description():
     ld = LaunchDescription([OpaqueFunction(function=launch_setup)])
 
     # Add any entry parameter
-    ld.add_action(start_gazebo_ros_bridge_cmd)
     ld.add_action(DeclareLaunchArgument("x", default_value="0"))
     ld.add_action(DeclareLaunchArgument("y", default_value="0"))
     ld.add_action(DeclareLaunchArgument("z", default_value="0"))
