@@ -26,6 +26,9 @@ def generate_launch_description():
 
     if sensor == "laser":
         f1_sensor = "laser"
+        print(
+            "LLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRR"
+        )
 
     if mode == "ackermann":
         f1_model = "ackermann"
