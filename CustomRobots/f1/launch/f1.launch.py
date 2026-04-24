@@ -23,6 +23,7 @@ def generate_launch_description():
 
     f1_sensor = "cam"
     f1_model = "holo"
+    print(sensor)
 
     if sensor == "laser":
         f1_sensor = "laser"
