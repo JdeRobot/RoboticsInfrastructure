@@ -21,8 +21,6 @@ def launch_setup(context):
 
     package_dir = get_package_share_directory("custom_robots")
 
-    print(sensor.perform(context))
-
     nodes_to_start = []
 
     f1_sensor = "cam"
@@ -39,6 +37,7 @@ def launch_setup(context):
 
     urdf_file = os.path.join(package_dir, "urdf", f"f1_{f1_model}_{f1_sensor}.urdf")
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
+    print(urdf_file)
 
     robot_description = ParameterValue(
         Command(["xacro", " ", urdf_file]),
