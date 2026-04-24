@@ -36,6 +36,7 @@ add_library(${PROJECT_NAME} SHARED
   src/hal/odometry.cpp
   src/hal/sim_time.cpp
   src/webgui/WebGUIBridge.cpp
+  src/webgui/RTFMonitor.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
