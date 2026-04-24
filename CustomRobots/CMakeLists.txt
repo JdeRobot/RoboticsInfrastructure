@@ -99,6 +99,7 @@ install(
     amazon_robot_classic/meshes
     amazon_warehouse_harmonic/models
     amazon_warehouse_harmonic/params
+    package_delivery/models
     # AMAZON HOSPITAL
     amazon_hospital/models
     amazon_hospital/hospital_world/launch

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <asset>
     <contributor>
       <author>Blender User</author>
@@ -16,7 +17,7 @@
         <technique sid="common">
           <lambert>
             <emission>
-              <color sid="emission">0 0 0 1</color>
+              <color sid="emission">0.01648708 0.05820287 0.162636 1</color>
             </emission>
             <diffuse>
               <color sid="diffuse">0.01648708 0.05820287 0.162636 1</color>
@@ -36,7 +37,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.03057528 0.08001038 0.02631276 1</color>
+              <color sid="diffuse">0.12057528 0.32001038 0.10431276 1</color>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>

@@ -16,7 +16,7 @@
     <child link="prius_autoparking" />
     <origin rpy="0 0 1.54" xyz="-7 2.5 0"/>
   </joint>
-  
+
   <link name="prius_autoparking">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
