@@ -9,13 +9,13 @@ from ament_index_python.packages import get_package_share_directory
 
 def load_file(package_name, file_path):
     pkg_path = get_package_share_directory(package_name)
-    with open(os.path.join(pkg_path, file_path), 'r') as f:
+    with open(os.path.join(pkg_path, file_path), "r") as f:
         return f.read()
 
 
 def load_yaml(package_name, file_path):
     pkg_path = get_package_share_directory(package_name)
-    with open(os.path.join(pkg_path, file_path), 'r') as f:
+    with open(os.path.join(pkg_path, file_path), "r") as f:
         return yaml.safe_load(f)
 
 
@@ -27,7 +27,7 @@ def generate_launch_description():
     xacro_file = os.path.join(
         get_package_share_directory("ur5_gripper_description"),
         "urdf",
-        "ur5_robotiq85_gripper.urdf.xacro"
+        "ur5_robotiq85_gripper.urdf.xacro",
     )
 
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
@@ -55,36 +55,27 @@ def generate_launch_description():
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_ur5_moveit2",
-            "config/ur5robotiq_2f85.srdf"
+            "ros2srrc_ur5_moveit2", "config/ur5robotiq_2f85.srdf"
         )
     }
 
     # =========================
     # KINEMATICS
     # =========================
-    kinematics_yaml = load_yaml(
-        "ur5_gripper_moveit_config",
-        "config/kinematics.yaml"
-    )
+    kinematics_yaml = load_yaml("ur5_gripper_moveit_config", "config/kinematics.yaml")
 
     kinematics_yaml = {
-        "robot_description_kinematics":
-            kinematics_yaml["/**"]["ros__parameters"]
+        "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
 
     # =========================
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "ur5_gripper_moveit_config",
-        "config/moveit_controllers.yaml"
+        "ur5_gripper_moveit_config", "config/moveit_controllers.yaml"
     )
 
-    ompl_planning = load_yaml(
-        "ur5_gripper_moveit_config",
-        "config/ompl_planning.yaml"
-    )
+    ompl_planning = load_yaml("ur5_gripper_moveit_config", "config/ompl_planning.yaml")
 
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
@@ -105,7 +96,9 @@ def generate_launch_description():
             kinematics_yaml,
             moveit_controllers,
             ompl_planning,
-            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {
+                "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+            },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
             {"EE_PARAM": "robotiq_2f85"},
@@ -123,7 +116,9 @@ def generate_launch_description():
             kinematics_yaml,
             moveit_controllers,
             ompl_planning,
-            {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+            {
+                "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+            },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
         ],
@@ -148,8 +143,4 @@ def generate_launch_description():
     # LAUNCH
     # =========================
 
-    return LaunchDescription([
-        move,
-        robmove,
-        robpose
-    ])
+    return LaunchDescription([move, robmove, robpose])

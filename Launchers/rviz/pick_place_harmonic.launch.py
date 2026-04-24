@@ -97,7 +97,6 @@ def generate_launch_description():
         ],
     )
 
-
     # Delay RViz after MoveIt
     delay_rviz = TimerAction(
         period=3.0,

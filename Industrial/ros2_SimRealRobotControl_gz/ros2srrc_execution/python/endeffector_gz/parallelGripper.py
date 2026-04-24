@@ -35,13 +35,16 @@
 # ===== IMPORT REQUIRED COMPONENTS ===== #
 # System functions and classes:
 import sys, os, time
+
 # Required to include ROS2 and its components:
 import rclpy
 from rclpy.node import Node
 from ament_index_python.packages import get_package_share_directory
+
 # Import LinkAttacher (ROS2 SRV):
 from linkattacher_msgs.srv import AttachLink
 from linkattacher_msgs.srv import DetachLink
+
 # Import ROS2 messages:
 from std_msgs.msg import String
 from ros2srrc_data.msg import Action
@@ -49,7 +52,9 @@ from ros2srrc_data.msg import Robpose
 from objectpose_msgs.msg import ObjectPose
 
 # Import -> RobotClient for MoveG action execution:
-PATH = os.path.join(get_package_share_directory("ros2srrc_execution"), 'python', 'robot')
+PATH = os.path.join(
+    get_package_share_directory("ros2srrc_execution"), "python", "robot"
+)
 sys.path.append(PATH)
 from robot import RBT
 
@@ -61,14 +66,19 @@ EEPose = Robpose()
 
 # GLOBAL VARIABLE -> AttachCheck:
 from dataclasses import dataclass
+
+
 @dataclass
-class AttDetCHECK:                     # Define -> Data class.
+class AttDetCHECK:  # Define -> Data class.
     ATTACHED: bool
     NAME: String
-AttachCheck = AttDetCHECK(False,"")    # Initialise variable.
+
+
+AttachCheck = AttDetCHECK(False, "")  # Initialise variable.
 
 # =============================================================================== #
 # ObjectPose SUBSCRIBER:
+
 
 class ObjPOSE(Node):
 
@@ -81,7 +91,9 @@ class ObjPOSE(Node):
         for x in ObjectLIST:
 
             TopicName = "/" + x + "/ObjectPose"
-            self.subLIST.append(self.create_subscription(ObjectPose, TopicName, self.CALLBACK_FN, 10))
+            self.subLIST.append(
+                self.create_subscription(ObjectPose, TopicName, self.CALLBACK_FN, 10)
+            )
 
     def CALLBACK_FN(self, OBJ):
 
@@ -104,11 +116,13 @@ class ObjPOSE(Node):
         T = time.time() + 0.50
         while time.time() < T:
             rclpy.spin_once(self)
-        
-        return(OBJECTS)
-    
+
+        return OBJECTS
+
+
 # =============================================================================== #
 # Robot(EE) Pose SUBSCRIBER:
+
 
 class eePOSE(Node):
 
@@ -136,11 +150,13 @@ class eePOSE(Node):
         T = time.time() + 0.50
         while time.time() < T:
             rclpy.spin_once(self)
-        
-        return(EEPose)
-    
+
+        return EEPose
+
+
 # =============================================================================== #
 # LinkAttacher SERVICE CLIENT:
+
 
 class LinkAttacher_Client(Node):
 
@@ -151,13 +167,19 @@ class LinkAttacher_Client(Node):
         self.AttachClient = self.create_client(AttachLink, "/ATTACHLINK")
         self.DetachClient = self.create_client(DetachLink, "/DETACHLINK")
 
-        print("[CLIENT - parallelGripper.py]: Initialising /ATTACHLINK and /DETACHLINK ROS 2 Service Clients.")
+        print(
+            "[CLIENT - parallelGripper.py]: Initialising /ATTACHLINK and /DETACHLINK ROS 2 Service Clients."
+        )
 
-        while not self.AttachClient.wait_for_service(timeout_sec=1.0): 
-            print("[CLIENT - parallelGripper.py]: /ATTACHLINK ROS2 Service not still available, waiting...")
+        while not self.AttachClient.wait_for_service(timeout_sec=1.0):
+            print(
+                "[CLIENT - parallelGripper.py]: /ATTACHLINK ROS2 Service not still available, waiting..."
+            )
         print("[CLIENT - parallelGripper.py]: /ATTACHLINK ROS2 Service ready.")
-        while not self.DetachClient.wait_for_service(timeout_sec=1.0): 
-            print("[CLIENT - parallelGripper.py]: /DETACHLINK ROS2 Service not still available, waiting...")
+        while not self.DetachClient.wait_for_service(timeout_sec=1.0):
+            print(
+                "[CLIENT - parallelGripper.py]: /DETACHLINK ROS2 Service not still available, waiting..."
+            )
         print("[CLIENT - parallelGripper.py]: /DETACHLINK ROS2 Service ready.")
 
         print("")
@@ -186,7 +208,8 @@ class LinkAttacher_Client(Node):
 
         self.DetachFuture = self.DetachClient.call_async(self.DetachRequest)
 
-class LinkAttacher():
+
+class LinkAttacher:
 
     def __init__(self, ROBOT, EE):
         self.CLIENT = LinkAttacher_Client(ROBOT, EE)
@@ -203,21 +226,30 @@ class LinkAttacher():
                 try:
                     AttachRES = self.CLIENT.AttachFuture.result()
                 except Exception as exc:
-                    print("[CLIENT - parallelGripper.py]: /ATTACHLINK Service call failed -> " + str(exc))
+                    print(
+                        "[CLIENT - parallelGripper.py]: /ATTACHLINK Service call failed -> "
+                        + str(exc)
+                    )
                     print("")
-                    return(False)
+                    return False
                 else:
-                    if (AttachRES.success):
-                        print("[CLIENT - parallelGripper.py]: /ATTACHLINK successful -> " + str(AttachRES.message))
+                    if AttachRES.success:
+                        print(
+                            "[CLIENT - parallelGripper.py]: /ATTACHLINK successful -> "
+                            + str(AttachRES.message)
+                        )
                         print("")
                         AttachCheck.ATTACHED = True
                         AttachCheck.NAME = NAME
-                        return(True)
+                        return True
                     else:
-                        print("[CLIENT - parallelGripper.py]: /ATTACHLINK unuccessful -> " + str(AttachRES.message))
+                        print(
+                            "[CLIENT - parallelGripper.py]: /ATTACHLINK unuccessful -> "
+                            + str(AttachRES.message)
+                        )
                         print("")
-                        return(False)
-                    
+                        return False
+
     def DETACH(self, NAME):
 
         global AttachCheck
@@ -230,45 +262,56 @@ class LinkAttacher():
                 try:
                     DetachRES = self.CLIENT.DetachFuture.result()
                 except Exception as exc:
-                    print("[CLIENT - parallelGripper.py]: /DETACHLINK Service call failed -> " + str(exc))
+                    print(
+                        "[CLIENT - parallelGripper.py]: /DETACHLINK Service call failed -> "
+                        + str(exc)
+                    )
                     print("")
-                    return(False)
+                    return False
                 else:
-                    if (DetachRES.success):
-                        print("[CLIENT - parallelGripper.py]: /DETACHLINK successful -> " + str(DetachRES.message))
+                    if DetachRES.success:
+                        print(
+                            "[CLIENT - parallelGripper.py]: /DETACHLINK successful -> "
+                            + str(DetachRES.message)
+                        )
                         print("")
                         AttachCheck.ATTACHED = False
                         AttachCheck.NAME = ""
-                        return(True)
+                        return True
                     else:
-                        print("[CLIENT - parallelGripper.py]: /DETACHLINK unuccessful -> " + str(DetachRES.message))
+                        print(
+                            "[CLIENT - parallelGripper.py]: /DETACHLINK unuccessful -> "
+                            + str(DetachRES.message)
+                        )
                         print("")
-                        return(False)
-                    
+                        return False
+
+
 # =============================================================================== #
 # parallelGR class, to OPEN/CLOSE the Parallel Gripper in Gazebo:
 
-class parallelGR():
+
+class parallelGR:
 
     def __init__(self, ObjectList, ROBOT, EE):
-        
+
         self.OLCheck = False
         if ObjectList != None:
             self.OLCheck = True
-        
+
         # Initialise RBT client -> For MoveG execution:
         self.RBTClient = RBT()
 
         # Initialise OBJECTS variable:
         if self.OLCheck:
-            
+
             for x in ObjectList:
                 OBJ = ObjectPose()
                 OBJ.objectname = x
                 OBJECTS.append(OBJ)
-                
+
             # Initialise ObjPose class:
-            self.objPoseClient = ObjPOSE(ObjectList)  
+            self.objPoseClient = ObjPOSE(ObjectList)
             # Initialise eePose class:
             self.eePoseClient = eePOSE()
 
@@ -276,21 +319,17 @@ class parallelGR():
             self.LinkAttacher = LinkAttacher(ROBOT, EE)
 
     def CLOSE(self, VAL):
-        
+
         T_start = time.time()
-        
+
         # Initialise -> RES:
-        RES = {
-            "Message": "",
-            "Success": False,
-            "ExecTime": -1.0
-        }
+        RES = {"Message": "", "Success": False, "ExecTime": -1.0}
 
         print("[CLIENT - parallelGripper.py]: EXECUTION REQUEST -> CLOSE GRIPPER.")
         print("")
 
         # Close GRIPPER -> /Move:
-        
+
         G = Action()
         G.action = "MoveG"
         G.speed = 1.0
@@ -298,18 +337,21 @@ class parallelGR():
 
         gRES = self.RBTClient.Move_EXECUTE(G)
 
-        if (gRES["Success"] == True):
-            print("[CLIENT - parallelGripper.py]: MoveG-CLOSE, Result -> " + gRES["Message"])
+        if gRES["Success"] == True:
+            print(
+                "[CLIENT - parallelGripper.py]: MoveG-CLOSE, Result -> "
+                + gRES["Message"]
+            )
             print("")
-            
+
         else:
             RES["Message"] = "MoveG-CLOSE, Result -> " + gRES["Message"]
             print("[CLIENT - parallelGripper.py]: " + RES["Message"])
             print("")
-            return(RES)
+            return RES
 
         if self.OLCheck:
-            
+
             # ===== CHECK GRASPING ===== #
             Objects = self.objPoseClient.getOBJECTS()
             EEPose = self.eePoseClient.getEEPose()
@@ -318,17 +360,35 @@ class parallelGR():
             for x in Objects:
 
                 Check = True
-                print("[CLIENT - parallelGripper.py]: Checking if object is attached to ParallelGripper: " + x.objectname)
-                print("[CLIENT - parallelGripper.py]: EEPose.x -> " + str(EEPose.x) + " / ObjectPose.x -> " + str(x.x))
-                print("[CLIENT - parallelGripper.py]: EEPose.y -> " + str(EEPose.y) + " / ObjectPose.y -> " + str(x.y))
-                print("[CLIENT - parallelGripper.py]: EEPose.z -> " + str(EEPose.z) + " / ObjectPose.z -> " + str(x.z))
+                print(
+                    "[CLIENT - parallelGripper.py]: Checking if object is attached to ParallelGripper: "
+                    + x.objectname
+                )
+                print(
+                    "[CLIENT - parallelGripper.py]: EEPose.x -> "
+                    + str(EEPose.x)
+                    + " / ObjectPose.x -> "
+                    + str(x.x)
+                )
+                print(
+                    "[CLIENT - parallelGripper.py]: EEPose.y -> "
+                    + str(EEPose.y)
+                    + " / ObjectPose.y -> "
+                    + str(x.y)
+                )
+                print(
+                    "[CLIENT - parallelGripper.py]: EEPose.z -> "
+                    + str(EEPose.z)
+                    + " / ObjectPose.z -> "
+                    + str(x.z)
+                )
                 print("")
 
-                if (EEPose.x - 0.01 > x.x) or (EEPose.x + 0.01 < x.x): 
+                if (EEPose.x - 0.01 > x.x) or (EEPose.x + 0.01 < x.x):
                     Check = False
-                if (EEPose.y - 0.01 > x.y) or (EEPose.y + 0.01 < x.y): 
+                if (EEPose.y - 0.01 > x.y) or (EEPose.y + 0.01 < x.y):
                     Check = False
-                if (EEPose.z - 0.01 > x.z) or (EEPose.z + 0.01 < x.z): 
+                if (EEPose.z - 0.01 > x.z) or (EEPose.z + 0.01 < x.z):
                     Check = False
 
                 if Check == True:
@@ -337,7 +397,7 @@ class parallelGR():
 
             # LinkAttacher:
             if Check:
-                
+
                 AttRES = self.LinkAttacher.ATTACH(objNAME)
                 if AttRES:
                     RES["Message"] = "Gripper closed, object->" + objNAME + " attached."
@@ -345,7 +405,11 @@ class parallelGR():
                     print("[CLIENT - parallelGripper.py]: " + RES["Message"])
                     print("")
                 else:
-                    RES["Message"] = "Gripper closed, object->" + objNAME + " not attached, LinkAttacher plugin failed."
+                    RES["Message"] = (
+                        "Gripper closed, object->"
+                        + objNAME
+                        + " not attached, LinkAttacher plugin failed."
+                    )
                     print("[CLIENT - parallelGripper.py]: " + RES["Message"])
                     print("")
 
@@ -354,35 +418,31 @@ class parallelGR():
                 RES["Success"] = True
                 print("[CLIENT - parallelGripper.py]: " + RES["Message"])
                 print("")
-                
+
         else:
             RES["Message"] = "Gripper closed, no objects."
             RES["Success"] = True
             print("[CLIENT - parallelGripper.py]: " + RES["Message"])
             print("")
-            
+
         T_end = time.time()
         T = round((T_end - T_start), 4)
         RES["ExecTime"] = T
 
-        return(RES)
+        return RES
 
     def OPEN(self):
-        
+
         T_start = time.time()
 
         # Initialise -> RES:
-        RES = {
-            "Message": "",
-            "Success": False,
-            "ExecTime": -1.0
-        }
-         
+        RES = {"Message": "", "Success": False, "ExecTime": -1.0}
+
         print("[CLIENT - parallelGripper.py]: EXECUTION REQUEST -> OPEN GRIPPER.")
         print("")
 
         # Open GRIPPER -> /Move:
-        
+
         G = Action()
         G.action = "MoveG"
         G.speed = 1.0
@@ -390,18 +450,21 @@ class parallelGR():
 
         gRES = self.RBTClient.Move_EXECUTE(G)
 
-        if (gRES["Success"] == True):
-            print("[CLIENT - parallelGripper.py]: MoveG-OPEN, Result -> " + gRES["Message"])
-            
+        if gRES["Success"] == True:
+            print(
+                "[CLIENT - parallelGripper.py]: MoveG-OPEN, Result -> "
+                + gRES["Message"]
+            )
+
         else:
             RES["Message"] = "MoveG-OPEN, Result -> " + gRES["Message"]
             print("[CLIENT - parallelGripper.py]: " + RES["Message"])
-            return(RES)
-        
+            return RES
+
         if self.OLCheck:
 
             # CHECK if --> There is any object currently grasped:
-            global AttachCheck 
+            global AttachCheck
             objNAME = AttachCheck.NAME
 
             if AttachCheck.ATTACHED:
@@ -413,25 +476,31 @@ class parallelGR():
                     RES["Success"] = True
                     print("[CLIENT - parallelGripper.py]: " + RES["Message"])
                     print("")
-                else: 
-                    RES["Message"] = "Gripper opened, object->" + objNAME + " not detached, LinkAttacher plugin failed."
+                else:
+                    RES["Message"] = (
+                        "Gripper opened, object->"
+                        + objNAME
+                        + " not detached, LinkAttacher plugin failed."
+                    )
                     print("[CLIENT - parallelGripper.py]: " + RES["Message"])
                     print("")
 
             else:
                 RES["Message"] = "Gripper opened without dropping any object."
                 RES["Success"] = True
-                print("[CLIENT - parallelGripper.py]: Gripper opened without dropping any object.")
+                print(
+                    "[CLIENT - parallelGripper.py]: Gripper opened without dropping any object."
+                )
                 print("")
-                
+
         else:
             RES["Message"] = "Gripper opened, no objects."
             RES["Success"] = True
             print("[CLIENT - parallelGripper.py]: " + RES["Message"])
             print("")
-            
+
         T_end = time.time()
         T = round((T_end - T_start), 4)
         RES["ExecTime"] = T
 
-        return(RES)
+        return RES

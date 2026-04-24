@@ -30,20 +30,22 @@
 
 # robot.py
 # This CLIENT executes Robot Movements, by calling the following ROS2 Actions:
-#   - /Robmove allows the user to move the robot to a specific End-Effector pose. 
-#   - /Move allows the user to execute a specific robot movement: Cartesian-Space, Joint-Space, Single Joint, Rotation... 
+#   - /Robmove allows the user to move the robot to a specific End-Effector pose.
+#   - /Move allows the user to execute a specific robot movement: Cartesian-Space, Joint-Space, Single Joint, Rotation...
 
 # ===== IMPORT REQUIRED COMPONENTS ===== #
 # System:
 import time
+
 # Required to include ROS2 and its components:
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
+
 # Import /Move and /RobMove ROS2 Actions:
 from ros2srrc_data.action import Move
 from ros2srrc_data.action import Robmove
-  
+
 # Global Variable -> RES:
 RES = {}
 RES["Success"] = False
@@ -53,15 +55,18 @@ RES["ExecTime"] = -1.0
 # =============================================================================== #
 # /RobMove ACTION CLIENT:
 
+
 class RobMoveCLIENT(Node):
 
     def __init__(self):
 
-        super().__init__('ros2srrc_RobMove_Client')
-        self._action_client = ActionClient(self, Robmove, '/Robmove')
+        super().__init__("ros2srrc_RobMove_Client")
+        self._action_client = ActionClient(self, Robmove, "/Robmove")
 
         print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
-        print("[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available...")
+        print(
+            "[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available..."
+        )
 
         self._action_client.wait_for_server()
 
@@ -70,7 +75,7 @@ class RobMoveCLIENT(Node):
         print("")
 
     def send_goal(self, TYPE, SPEED, TARGET_POSE):
-        
+
         goal_msg = Robmove.Goal()
         goal_msg.type = TYPE
         goal_msg.speed = SPEED
@@ -81,43 +86,47 @@ class RobMoveCLIENT(Node):
         goal_msg.qy = TARGET_POSE.qy
         goal_msg.qz = TARGET_POSE.qz
         goal_msg.qw = TARGET_POSE.qw
-        
+
         self._send_goal_future = self._action_client.send_goal_async(goal_msg)
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
     def goal_response_callback(self, future):
-        
+
         self.goal_handle = future.result()
 
         if not self.goal_handle.accepted:
-            print('[CLIENT - robot.py]: RobMove ACTION CALL -> GOAL has been REJECTED.')
+            print("[CLIENT - robot.py]: RobMove ACTION CALL -> GOAL has been REJECTED.")
             return
-        
-        print('[CLIENT - robot.py]: RobMove ACTION CALL -> GOAL has been ACCEPTED.')
+
+        print("[CLIENT - robot.py]: RobMove ACTION CALL -> GOAL has been ACCEPTED.")
 
         self._get_result_future = self.goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
-        
+
         global RES
-        
+
         RESULT = future.result().result
-        RES["Success"] = RESULT.success  
-        RES["Message"] = RESULT.message 
-        
+        RES["Success"] = RESULT.success
+        RES["Message"] = RESULT.message
+
+
 # =============================================================================== #
 # /Move ACTION CLIENT:
+
 
 class MoveCLIENT(Node):
 
     def __init__(self):
 
-        super().__init__('ros2srrc_Move_Client')
-        self._action_client = ActionClient(self, Move, '/Move')
+        super().__init__("ros2srrc_Move_Client")
+        self._action_client = ActionClient(self, Move, "/Move")
 
         print("[CLIENT - robot.py]: Initialising ROS2 /Move Action Client!")
-        print("[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available...")
+        print(
+            "[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available..."
+        )
 
         self._action_client.wait_for_server()
 
@@ -135,39 +144,41 @@ class MoveCLIENT(Node):
         goal_msg.moverot = ACTION.moverot
         goal_msg.moverp = ACTION.moverp
         goal_msg.moveg = ACTION.moveg
-        
+
         self._send_goal_future = self._action_client.send_goal_async(goal_msg)
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
     def goal_response_callback(self, future):
-        
+
         self.goal_handle = future.result()
 
         if not self.goal_handle.accepted:
-            print('[CLIENT - robot.py]: Move ACTION CALL -> GOAL has been REJECTED.')
+            print("[CLIENT - robot.py]: Move ACTION CALL -> GOAL has been REJECTED.")
             return
-        
-        print('[CLIENT - robot.py]: Move ACTION CALL -> GOAL has been ACCEPTED.')
+
+        print("[CLIENT - robot.py]: Move ACTION CALL -> GOAL has been ACCEPTED.")
 
         self._get_result_future = self.goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
-        
+
         global RES
-        
-        RESULT = future.result().result  
-        RES["Message"] = RESULT.result 
+
+        RESULT = future.result().result
+        RES["Message"] = RESULT.result
 
         if "FAILED" in RES["Message"]:
             RES["Success"] = False
         else:
             RES["Success"] = True
-            
+
+
 # =============================================================================== #
 # ROBOT class, to execute any robot movement:
 
-class RBT():
+
+class RBT:
 
     def __init__(self):
 
@@ -181,36 +192,36 @@ class RBT():
 
         global RES
         self.EXECUTING = "Move"
-        
+
         T_start = time.time()
 
         # Initialise RES:
         RES["Success"] = False
         RES["Message"] = "null"
         RES["ExecTime"] = -1.0
-        
+
         self.MoveClient.send_goal(ACTION)
         while rclpy.ok():
             rclpy.spin_once(self.MoveClient)
 
-            if (RES["Message"] != "null"):
+            if RES["Message"] != "null":
                 break
 
-        print('[CLIENT - robot.py]: Move ACTION EXECUTED -> Result: ' + RES["Message"])
+        print("[CLIENT - robot.py]: Move ACTION EXECUTED -> Result: " + RES["Message"])
         print("")
-        
+
         T_end = time.time()
         T = round((T_end - T_start), 4)
         RES["ExecTime"] = T
 
         self.EXECUTING = ""
-        return(RES)
+        return RES
 
     def RobMove_EXECUTE(self, TYPE, SPEED, POSE):
 
         global RES
         self.EXECUTING = "RobMove"
-        
+
         T_start = time.time()
 
         # Initialise RES:
@@ -222,32 +233,34 @@ class RBT():
         while rclpy.ok():
             rclpy.spin_once(self.RobMoveClient)
 
-            if (RES["Message"] != "null"):
+            if RES["Message"] != "null":
                 break
 
-        print('[CLIENT - robot.py]: RobMove ACTION EXECUTED -> Result: ' + RES["Message"])
+        print(
+            "[CLIENT - robot.py]: RobMove ACTION EXECUTED -> Result: " + RES["Message"]
+        )
         print("")
-        
+
         T_end = time.time()
         T = round((T_end - T_start), 4)
         RES["ExecTime"] = T
 
         self.EXECUTING = ""
-        return(RES)
-    
+        return RES
+
     def CANCEL(self):
-        
-        print('[CLIENT - robot.py]: MOVEMENT CANCEL REQUEST. Stopping robot...')
-        
+
+        print("[CLIENT - robot.py]: MOVEMENT CANCEL REQUEST. Stopping robot...")
+
         try:
             if self.EXECUTING == "Move":
                 self.MoveClient.goal_handle.cancel_goal_async()
-            elif self.EXECUTING =="RobMove":
+            elif self.EXECUTING == "RobMove":
                 self.RobMoveClient.goal_handle.cancel_goal_async()
             else:
                 None
         except AttributeError:
             pass
-        
-        print('[CLIENT - robot.py]: MOVEMENT CANCEL REQUEST. Robot stopped.')
+
+        print("[CLIENT - robot.py]: MOVEMENT CANCEL REQUEST. Robot stopped.")
         print("")

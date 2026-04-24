@@ -152,7 +152,7 @@ def generate_launch_description():
             "--param-file",
             controllers_file,
             "-c",
-            "/controller_manager"
+            "/controller_manager",
         ],
         output="screen",
     )
@@ -165,7 +165,7 @@ def generate_launch_description():
             "--param-file",
             controllers_file,
             "-c",
-            "/controller_manager"
+            "/controller_manager",
         ],
         output="screen",
     )
