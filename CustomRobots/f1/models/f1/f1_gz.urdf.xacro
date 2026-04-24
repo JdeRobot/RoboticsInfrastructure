@@ -84,26 +84,25 @@
         </lidar>
       </sensor>
     </gazebo>
-  </link>
-</xacro:macro>
+  </xacro:macro>
 
-<xacro:macro name="f1_velocity" params="topic">
-  <gazebo>
-    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-      <topic>${topic}</topic>
-    </plugin>
-  </gazebo>
-</xacro:macro>
+  <xacro:macro name="f1_velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
 
-<xacro:macro name="f1_odom" params="topic">
-  <gazebo>
-    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-      <odom_frame>odom</odom_frame>
-      <robot_base_frame>xf1</robot_base_frame>
-      <odom_publish_frequency>20.0</odom_publish_frequency>
-      <odom_topic>${topic}</odom_topic>
-      <dimensions>3</dimensions>
-    </plugin>
-  </gazebo>
-</xacro:macro>
+  <xacro:macro name="f1_odom" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>xf1</robot_base_frame>
+        <odom_publish_frequency>20.0</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
 </robot>
