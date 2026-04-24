@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<robot name="f1"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
+
+  <xacro:macro name="holonomic">
+
+    <link name="base">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertial>
+        <mass value="10"/>
+        <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1.0"/>
+      </inertial>
+
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
+        </geometry>
+      </collision>
+      <visual name="car">
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:f1_velocity topic="/F1ROS/cmd_vel"/>
+    <xacro:f1_odom topic="/F1ROS/odom"/>
+  </xacro:macro>
+</robot>

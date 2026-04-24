@@ -45,23 +45,65 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="f1_velocity" params="topic">
-    <gazebo>
-      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-        <topic>${topic}</topic>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
+  <xacro:macro name="f1_laser" params="xyz rpy name parent">
+    <link name='"${name}_link"'>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"/>
+        </geometry>
+      </visual>
+    </link>
 
-  <xacro:macro name="f1_odom" params="topic">
-    <gazebo>
-      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-        <odom_frame>odom</odom_frame>
-        <robot_base_frame>xf1</robot_base_frame>
-        <odom_publish_frequency>20.0</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
-        <dimensions>3</dimensions>
-      </plugin>
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>20</update_rate>
+        <topic>f1/laser/scan</topic>
+        <gz_frame_id>base_scan</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+        </lidar>
+      </sensor>
     </gazebo>
-  </xacro:macro>
+  </link>
+</xacro:macro>
+
+<xacro:macro name="f1_velocity" params="topic">
+  <gazebo>
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>${topic}</topic>
+    </plugin>
+  </gazebo>
+</xacro:macro>
+
+<xacro:macro name="f1_odom" params="topic">
+  <gazebo>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>xf1</robot_base_frame>
+      <odom_publish_frequency>20.0</odom_publish_frequency>
+      <odom_topic>${topic}</odom_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+  </gazebo>
+</xacro:macro>
 </robot>
