@@ -35,7 +35,7 @@
       <dimensions>3</dimensions>
     </plugin>
   </gazebo>
-  <link name="&quot;laser_link&quot;">
+  <link name="laser_link">
     <visual>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/hokuyo.dae"/>

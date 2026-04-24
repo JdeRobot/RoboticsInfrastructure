@@ -46,7 +46,7 @@
   </xacro:macro>
 
   <xacro:macro name="f1_laser" params="xyz rpy name parent">
-    <link name='"${name}_link"'>
+    <link name="${name}_link">
       <visual>
         <geometry>
           <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"/>
