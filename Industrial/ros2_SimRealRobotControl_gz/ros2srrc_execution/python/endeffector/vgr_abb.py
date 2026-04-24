@@ -35,25 +35,29 @@
 # Required to include ROS2 and its components:
 import rclpy
 from rclpy.node import Node
+
 # Import ROS2 Services:
 from abb_robot_msgs.srv import SetIOSignal
 
 # =============================================================================== #
 # ABB Robot I/O - ROS2 Service Client:
 
+
 class vgrABB(Node):
 
     def __init__(self):
 
-        super().__init__('VacuumGripper_client')
+        super().__init__("VacuumGripper_client")
 
         print("[CLIENT - vgr_abb.py]: Initialising ABB-RWS I/O ROS 2 Service Client.")
 
-        self.cli = self.create_client(SetIOSignal, '/rws_client/set_io_signal')
+        self.cli = self.create_client(SetIOSignal, "/rws_client/set_io_signal")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            print('[CLIENT - vgr_abb.py]: Waiting for ABB-RWS I/O Service Server to be available...')
+            print(
+                "[CLIENT - vgr_abb.py]: Waiting for ABB-RWS I/O Service Server to be available..."
+            )
 
-        print('[CLIENT - vgr_abb.py]: ABB-RWS I/O Service Server detected, ready!')
+        print("[CLIENT - vgr_abb.py]: ABB-RWS I/O Service Server detected, ready!")
         print("")
 
         self.req = SetIOSignal.Request()
@@ -63,7 +67,12 @@ class vgrABB(Node):
         self.req.value = value
         self.future = self.cli.call_async(self.req)
         rclpy.spin_until_future_complete(self, self.future)
-        print('[CLIENT - vgr_abb.py]: ROS 2 Service successfully executed. Signal -> ' + signal + ", Value -> " + value)
+        print(
+            "[CLIENT - vgr_abb.py]: ROS 2 Service successfully executed. Signal -> "
+            + signal
+            + ", Value -> "
+            + value
+        )
         print("")
 
     def DEACTIVATE(self):
@@ -72,14 +81,16 @@ class vgrABB(Node):
         RES["Success"] = False
         RES["Message"] = ""
 
-        print('[CLIENT - vgr_abb.py]: Sending request -> DEACTIVATE VACUUM.')
+        print("[CLIENT - vgr_abb.py]: Sending request -> DEACTIVATE VACUUM.")
         signal = "gripper"
         value = "0"
-        self.send_request(signal,value)
+        self.send_request(signal, value)
 
-        RES["Message"] = "Vacuum Gripper (0-DEACTIVATE) signal successfully sent to ABB Robot Controller."
-        RES["Success"]= True
-        return(RES)
+        RES["Message"] = (
+            "Vacuum Gripper (0-DEACTIVATE) signal successfully sent to ABB Robot Controller."
+        )
+        RES["Success"] = True
+        return RES
 
     def ACTIVATE(self):
 
@@ -87,11 +98,13 @@ class vgrABB(Node):
         RES["Success"] = False
         RES["Message"] = ""
 
-        print('[CLIENT - vgr_abb.py]: Sending request -> ACTIVATE VACUUM.')
+        print("[CLIENT - vgr_abb.py]: Sending request -> ACTIVATE VACUUM.")
         signal = "gripper"
         value = "1"
-        self.send_request(signal,value)
+        self.send_request(signal, value)
 
-        RES["Message"] = "Vacuum Gripper (1-ACTIVATE) signal successfully sent to ABB Robot Controller."
-        RES["Success"]= True
-        return(RES)
+        RES["Message"] = (
+            "Vacuum Gripper (1-ACTIVATE) signal successfully sent to ABB Robot Controller."
+        )
+        RES["Success"] = True
+        return RES
