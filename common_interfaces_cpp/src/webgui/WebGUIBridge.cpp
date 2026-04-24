@@ -170,45 +170,59 @@ void BaseWebGUI::stats_timer_callback()
     iteration_counter_ = 0;
     last_freq_update_ = now;
 
-    std::string cmd = "gz topic -e -t " + stats_topic_ + " -n 1";
-    FILE* pipe = popen(cmd.c_str(), "r");
-    if (pipe) {
-        char buffer[1024];
-        while (fgets(buffer, sizeof(buffer), pipe)) {
-            std::string line(buffer);
-            if (line.find("real_time_factor:") != std::string::npos) {
-                try {
-                    size_t start = line.find(":") + 1;
-                    std::string val = line.substr(start);
-                    val.erase(std::remove(val.begin(), val.end(), ' '), val.end());
-                    val.erase(std::remove(val.begin(), val.end(), '\n'), val.end());
-                    
-                    double raw_val = std::stod(val);
-                    real_time_factor_ = std::round(raw_val * 100.0) / 100.0;
-                } catch (...) {}
-                break;
+    std::thread([this]() {
+        std::string cmd = "gz topic -e -t " + stats_topic_ + " -n 1";
+        FILE* pipe = popen(cmd.c_str(), "r");
+        double current_rtf = real_time_factor_;
+        
+        if (pipe) {
+            char buffer[1024];
+            while (fgets(buffer, sizeof(buffer), pipe)) {
+                std::string line(buffer);
+                if (line.find("real_time_factor:") != std::string::npos) {
+                    try {
+                        size_t start = line.find(":") + 1;
+                        std::string val = line.substr(start);
+                        val.erase(std::remove(val.begin(), val.end(), ' '), val.end());
+                        val.erase(std::remove(val.begin(), val.end(), '\n'), val.end());
+                        
+                        double raw_val = std::stod(val);
+                        current_rtf = std::round(raw_val * 100.0) / 100.0;
+                    } catch (...) {}
+                    break;
+                }
             }
+            pclose(pipe);
         }
-        pclose(pipe);
-    }
+        
+        real_time_factor_ = current_rtf;
 
-    json payload;
-    payload["brain"] = std::round(brain_freq_ * 10.0) / 10.0;
-    payload["gui"] = gui_freq_;
-    payload["rtf"] = real_time_factor_;
-    payload["fps"] = -1.0;
-    payload["lat"] = -1.0;
+        json payload;
+        payload["brain"] = std::round(brain_freq_ * 10.0) / 10.0;
+        payload["gui"] = gui_freq_;
+        payload["rtf"] = real_time_factor_;
+        payload["fps"] = -1.0;
+        payload["lat"] = -1.0;
 
-    send_to_client(payload.dump());
+        send_to_client(payload.dump());
+    }).detach();
 }
 
 void BaseWebGUI::gui_timer_callback()
 {
     iteration_counter_++;
-    std::lock_guard<std::mutex> lock(ack_lock_);
-    if (ack_frontend_ && ack_) {
+    bool should_send = false;
+
+    {
+        std::lock_guard<std::mutex> lock(ack_lock_);
+        if (ack_frontend_ && ack_) {
+            should_send = true;
+            ack_ = false;
+        }
+    }
+
+    if (should_send) {
         json payload = update_gui();
         send_to_client(payload.dump());
-        ack_ = false;
     }
-}
+}w
