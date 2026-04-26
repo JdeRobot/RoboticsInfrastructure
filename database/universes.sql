@@ -191,16 +191,10 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 63	Laser Mapping Warehouse High Noise	63	0
 64	Small Laser Mapping Warehouse Medium Noise	64	0
 65	Small Laser Mapping Warehouse High Noise	65	0
-<<<<<<< HEAD
-<<<<<<< HEAD
 66	Follow Person Harmonic	66	0
 67	Follow Person Teleop Harmonic	67	0
-=======
 68	Machine vision Harmonic world	66	1
->>>>>>> ae7053c4a (Add universe machine vision in gazebo harmonic)
-=======
 66	Machine vision Harmonic world	66	0
->>>>>>> 3c1cafa1c (Fix database)
 \.
 
 --
