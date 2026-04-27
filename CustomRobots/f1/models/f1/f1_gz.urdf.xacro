@@ -94,14 +94,75 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="f1_odom" params="topic">
+  <xacro:macro name="f1_ackermann_steering" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+        <left_joint>fl_axle</left_joint>
+        <left_joint>bl_axle</left_joint>
+        <right_joint>fr_axle</right_joint>
+        <right_joint>br_axle</right_joint>
+        <left_steering_joint>front_steering</left_steering_joint>
+        <right_steering_joint>front_steering</right_steering_joint>
+        <kingpin_width>1.65</kingpin_width>
+        <steering_limit>0.3</steering_limit>
+        <wheel_base>3.351</wheel_base>
+        <wheel_separation>1.65</wheel_separation>
+        <wheel_radius>0.3425</wheel_radius>
+        <sub_topic>${topic}/steer_angle</sub_topic>
+        <min_velocity>-50</min_velocity>
+        <max_velocity>50</max_velocity>
+        <min_acceleration>-50</min_acceleration>
+        <max_acceleration>50</max_acceleration>
+        <topic>${topic}/cmd_vel</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_odom" params="topic freq">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
-        <robot_base_frame>xf1</robot_base_frame>
-        <odom_publish_frequency>20.0</odom_publish_frequency>
+        <robot_base_frame>chassis_link</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
         <odom_topic>${topic}</odom_topic>
         <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_pose" params="freq">
+    <gazebo>
+      <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <publish_collision_pose>false</publish_collision_pose>
+        <publish_visual_pose>false</publish_visual_pose>
+        <publish_nested_model_pose>true</publish_nested_model_pose>
+        <update_frequency>${freq}</update_frequency>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_joints">
+    <gazebo>
+      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+        <joint_name>fl_axle</joint_name>
+        <joint_name>fr_axle</joint_name>
+        <joint_name>bl_axle</joint_name>
+        <joint_name>br_axle</joint_name>
+        <joint_name>front_steering</joint_name>
+        <joint_name>steering_joint</joint_name>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="f1_steer_controller" params="topic joint">
+    <gazebo>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>${joint}</joint_name>
+        <sub_topic>${topic}</sub_topic>
+        <p_gain>10</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>1</d_gain>
       </plugin>
     </gazebo>
   </xacro:macro>
