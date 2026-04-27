@@ -78,22 +78,6 @@ def generate_launch_description():
     }
 
     # MoveIt move_group node
-    move_group_node = Node(
-        package="moveit_ros_move_group",
-        executable="move_group",
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            kinematics_yaml,
-            ompl_planning_yaml,
-            planning_pipelines_config,
-            trajectory_execution,
-            moveit_controllers,
-            planning_scene_monitor_parameters,
-            {"use_sim_time": True},
-        ],
-    )
 
     # RViz with MoveIt configuration
     rviz_config_file = os.path.join(moveit_pkg_share, "rviz", "moveit.rviz")
@@ -113,12 +97,6 @@ def generate_launch_description():
         ],
     )
 
-    # Delay MoveIt slightly to let controllers stabilize
-    delay_move_group = TimerAction(
-        period=2.0,
-        actions=[move_group_node],
-    )
-
     # Delay RViz after MoveIt
     delay_rviz = TimerAction(
         period=3.0,
@@ -127,7 +105,6 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            delay_move_group,
             delay_rviz,
         ]
     )
