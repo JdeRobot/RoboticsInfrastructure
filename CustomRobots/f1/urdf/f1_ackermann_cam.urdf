@@ -34,7 +34,7 @@
     <parent link="chassis_link"/>
     <child link="bl_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="bl_1">
@@ -62,7 +62,7 @@
     <parent link="chassis_link"/>
     <child link="br_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="br_1">
@@ -90,7 +90,7 @@
     <parent link="chassis_link"/>
     <child link="front_steering_link"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="0.5"/>
   </joint>
   <link name="front_steering_link">
@@ -106,7 +106,7 @@
     <parent link="front_steering_link"/>
     <child link="fl_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="fl_1">
@@ -134,7 +134,7 @@
     <parent link="front_steering_link"/>
     <child link="fr_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="fr_1">
@@ -162,7 +162,7 @@
     <parent link="chassis_link"/>
     <child link="steering_wheel"/>
     <axis xyz="0.0 -1.0 0.0"/>
-    <limit lower="-5" upper="5"/>
+    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics damping="10.0"/>
   </joint>
   <link name="steering_wheel">
