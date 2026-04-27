@@ -54,8 +54,8 @@ LaserData laserScan2LaserData(const sensor_msgs::msg::LaserScan& scan) {
     return laser;
 }
 
-LaserNode::LaserNode(const std::string& topic) 
-    : Node("laser_node") {
+LaserNode::LaserNode(const std::string& topic, const std::string& node_name) 
+    : Node(node_name) {
     sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         topic, 10, std::bind(&LaserNode::listener_callback, this, std::placeholders::_1)
     );

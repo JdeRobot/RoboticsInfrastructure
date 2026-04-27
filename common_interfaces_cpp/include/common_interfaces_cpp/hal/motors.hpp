@@ -10,7 +10,7 @@
 /* ROS2 node that publishes linear and angular velocity commands to a robot. */
 class MotorsNode : public rclcpp::Node {
 public:
-    MotorsNode(const std::string& topic, double maxV, double maxW);
+    MotorsNode(const std::string& topic, double maxV, double maxW, const std::string& node_name = "motors_node");
 
     /* Publish a linear velocity command.
      *

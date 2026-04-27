@@ -72,8 +72,8 @@ LidarData pointCloud2LidarData(const sensor_msgs::msg::PointCloud2::SharedPtr cl
     return lidar;
 }
 
-LidarNode::LidarNode(const std::string& topic) 
-    : Node("lidar_node"), last_cloud_(nullptr) {
+LidarNode::LidarNode(const std::string& topic, const std::string& node_name) 
+    : Node(node_name), last_cloud_(nullptr) {
     sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
         topic, 10, std::bind(&LidarNode::pointcloud_callback, this, std::placeholders::_1)
     );

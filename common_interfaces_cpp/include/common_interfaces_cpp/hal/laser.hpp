@@ -33,7 +33,7 @@ LaserData laserScan2LaserData(const sensor_msgs::msg::LaserScan& scan);
 /* ### HAL INTERFACE ### */
 class LaserNode : public rclcpp::Node {
 public:
-    LaserNode(const std::string& topic);
+    LaserNode(const std::string& topic, const std::string& node_name = "laser_node");
     LaserData getLaserData() const;
 
 private:

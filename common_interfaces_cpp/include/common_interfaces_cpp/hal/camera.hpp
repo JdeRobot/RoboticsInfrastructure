@@ -45,7 +45,7 @@ std::shared_ptr<Image> imageMsg2Image(const sensor_msgs::msg::Image::ConstShared
 
 class CameraNode : public rclcpp::Node {
 public:
-    CameraNode(const std::string& topic);
+    CameraNode(const std::string& topic,const std::string& node_name = "camera_node");
     /*
      * Return the latest camera image.
      *
