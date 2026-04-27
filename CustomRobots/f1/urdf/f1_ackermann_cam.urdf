@@ -34,6 +34,7 @@
     <parent link="chassis_link"/>
     <child link="bl_1"/>
     <axis xyz="-1 0 0"/>
+    <limit lower="-5" upper="5"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="bl_1">
