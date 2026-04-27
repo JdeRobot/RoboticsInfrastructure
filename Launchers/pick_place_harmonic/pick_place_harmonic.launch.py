@@ -1,6 +1,4 @@
-"""
-Pick Place Harmonic - Main Launcher
-"""
+#!/usr/bin/env python3
 
 import os
 from launch import LaunchDescription
@@ -20,4 +18,8 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(base_dir, "robot.launch.py"))
     )
 
-    return LaunchDescription([world_launch, robot_launch])
+    execution_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(base_dir, "execution.launch.py"))
+    )
+
+    return LaunchDescription([world_launch, robot_launch, execution_launch])

@@ -1,0 +1,13 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 250  # Hz
+
+    yamaha_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+yamaha_position_controller:
+  ros__parameters:
+    joints:
+      - yamaha_joint
+       
+

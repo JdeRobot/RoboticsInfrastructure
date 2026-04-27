@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # Se calcula una configuración de robot por cada "eef_step" en metros
     # El "jump_threshold" especifica la distancia maxima entre puntos consecutivos del espacio de configuracion del robot (dejar a 0)
     # El metodo devuelve la fraccion de la trayectoria que se ha podido seguir
-    (plan, fraction) = arm_group.compute_cartesian_path(
+    plan, fraction = arm_group.compute_cartesian_path(
         waypoints, 0.01, 0.0  # waypoints a seguir  # eef_step
     )  # jump_threshold
     rospy.loginfo("Cartesian path planned")

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="hand_camera_link">
+        <inertial>
+            <origin xyz="-0.00936000000 -0.00003000000 -0.00273000000" rpy="0 0 0"/>
+            <mass value="0.21970000000"/>
+            <inertia ixx="0.00000429247" ixy="0.00000000000" ixz="0.00000002565"
+                    iyy="0.00000008027" iyz="0.00000000000"
+                    izz="0.00000427339"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <!-- <box size="0.01 0.03 0.03" /> -->
+                <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+            </geometry>
+            <material name="dark_grey"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.dae"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <!-- frames in the center of the camera -->
+    <joint name="hand_camera_joint" type="fixed">
+        <parent link="${parent_hand}"/>
+        <child link="hand_camera_link"/>
+        <origin xyz="${cam_hand_px} ${cam_hand_py} ${cam_hand_pz}" 
+            rpy="${cam_hand_or} ${cam_hand_op} ${cam_hand_oy}"/>
+    </joint>
+    
+    <link name="hand_camera_optical_link"></link>
+    
+    <joint name="hand_camera_optical_joint" type="fixed">
+        <parent link="hand_camera_link"/>
+        <child link="hand_camera_optical_link"/>
+        <origin xyz="0 0 0" rpy="-1.57 0 -1.57" />
+    </joint>
+    
+    <gazebo reference="hand_camera_link">
+        <visual>
+            <geometry>
+                <mesh>
+                    <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+                </mesh>
+            </geometry>
+            <material>Gazebo/Red</material>
+        </visual>
+        
+        <sensor name="hand_camera" type="depth">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            
+            <camera>
+                <horizontal_fov>1.047</horizontal_fov>
+                <image>
+                    <format>B8G8R8</format>
+                    <width>640</width>
+                    <height>480</height>
+                </image>
+                <clip>
+                    <near>0.05</near>
+                    <far>8</far>
+                </clip>
+            </camera>
+            
+            <plugin name="hand_camera_controller" filename="libgazebo_ros_camera.so" >
+                <frame_name>hand_camera_optical_link</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+    
+    <gazebo reference="hand_camera_link">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+            </geometry>
+            <material>Gazebo/Red</material>
+        </visual>
+    </gazebo>
+</robot>

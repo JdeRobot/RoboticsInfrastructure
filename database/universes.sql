@@ -257,7 +257,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 53	Nurburgring Circuit Classic	/opt/jderobot/Launchers/nurburgring_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 54	Vacuums House Roof Classic	/opt/jderobot/Launchers/montecarlo_visual_loc_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic/pick_place_harmonic.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 58	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 59	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}

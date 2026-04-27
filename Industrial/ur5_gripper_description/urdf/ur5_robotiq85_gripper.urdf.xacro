@@ -1,38 +1,32 @@
 <?xml version="1.0"?>
 <robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- Pass through arguments to included files -->
   <xacro:arg name="name" default="ur"/>
   <xacro:arg name="ur_type" default="ur5"/>
   <xacro:arg name="prefix" default=""/>
   <xacro:arg name="use_fake_hardware" default="false"/>
   <xacro:arg name="fake_sensor_commands" default="false"/>
   <xacro:arg name="sim_gazebo" default="false"/>
-  <xacro:arg name="sim_gz" default="false"/>
+  <xacro:arg name="sim_gz" default="true"/>
   <xacro:arg name="simulation_controllers" default=""/>
 
   <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro" />
-  
+  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.ros2_control.xacro" />
+
+  <!-- Coupler -->
   <link name="robotiq_coupler">
     <visual>
       <geometry>
         <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
       </geometry>
-      <material name="flat_black"/>
     </visual>
     <collision>
       <geometry>
         <cylinder radius="0.04" length="0.015"/>
       </geometry>
     </collision>
-    <inertial>
-      <origin xyz="2.073e-05   1.45286e-03  -1.1049e-03" rpy="0 0 0" />
-      <mass value="0.168" />
-      <inertia ixx="6.69695624e-05" ixy="5.21511788e-09" ixz="-2.74383009e-08" 
-               iyy="7.85088161e-05" iyz="5.41105193e-07" izz="1.41819717e-04"/>
-    </inertial>
   </link>
 
   <joint name="robotiq_coupler_joint" type="fixed">
@@ -40,62 +34,32 @@
     <parent link="tool0"/>
     <child link="robotiq_coupler"/>
   </joint>
-  <gazebo reference="robotiq_coupler">
-    <mu1>0.9</mu1>
-    <mu2>0.9</mu2>
-    <material>Gazebo/FlatBlack</material>
-  </gazebo>
-  
-  <!-- Equivalent to the OpenRAVE manipulator denso_robotiq_85_gripper -->
-  <!-- <link name="ee_link" />
-  <joint name="manipulator_dummy_joint" type="fixed">
-    <origin xyz="0 0 0.17" rpy="0 0 0" />
-    <parent link="tool0"/>
-    <child link="ee_link"/>
-  </joint> -->
-  
-  <!-- Attach the robotiq 85 gripper -->
-  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler" >
+
+  <!-- Gripper -->
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
     <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
-  </xacro:robotiq_85_gripper> 
-  
-  <!-- Gazebo FT sensor plugin - Gazebo Sim (Harmonic) compatible -->
-  <!-- Note: FT sensor requires gazebo_ros2_control_demos or custom implementation -->
-  <!--
-  <gazebo reference="wrist_3_joint">
-    <sensor name="force_torque_sensor" type="force_torque">
-      <always_on>true</always_on>
-      <update_rate>250</update_rate>
-      <force_torque>
-        <frame>child</frame>
-        <measure_direction>child_to_parent</measure_direction>
-      </force_torque>
-    </sensor>
-  </gazebo>
-  -->
-  
-  <!-- Gazebo grasping plugin - Note: Grasping plugin may need custom implementation for Gazebo Sim -->
-  <!-- Commenting out for now as this plugin is not directly available in Gazebo Sim -->
-  <!--
-  <gazebo>
-    <gripper name="gazebo_gripper">
-      <grasp_check>
-        <attach_steps>2</attach_steps>    
-        <detach_steps>2</detach_steps>    
-        <min_contact_count>3</min_contact_count>
-      </grasp_check>
-      <gripper_link>robotiq_85_left_finger_tip_link</gripper_link>
-      <gripper_link>robotiq_85_right_finger_tip_link</gripper_link>
-      <palm_link>robotiq_85_base_link</palm_link>
-    </gripper>
-  </gazebo>
-  -->
-  
-  <!-- ros2_control for gripper -->
+  </xacro:robotiq_85_gripper>
+
+  <!-- ros2_control GRIPPER -->
   <xacro:robotiq_85_ros2_control 
     name="robotiq" 
     prefix="" 
     sim_gz="true"
     use_fake_hardware="false"/>
-  
+
+  <!-- ros2_control UR5 -->
+  <xacro:ur_ros2_control
+    name="ur"
+    prefix=""
+    sim_gz="true"
+    use_fake_hardware="false"
+
+    script_filename=""
+    output_recipe_filename=""
+    input_recipe_filename=""
+    tf_prefix=""
+    hash_kinematics=""
+    robot_ip="0.0.0.0"
+  />
+
 </robot>
