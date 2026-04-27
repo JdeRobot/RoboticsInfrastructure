@@ -1,7 +1,7 @@
 # File produced by Open Asset Import Library (http://www.assimp.sf.net)
 # (assimp v5.2.0)
 
-newmtl body
+newmtl generic.003
 Kd 1 1 1
 Ka 0.100000001 0.100000001 0.100000001
 Ks 0.400000006 0.400000006 0.400000006
@@ -9,9 +9,9 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd re0_main.png
+map_Kd materials/textures/generic_main.png.002.png
 
-newmtl generic
+newmtl tread.005
 Kd 1 1 1
 Ka 0.100000001 0.100000001 0.100000001
 Ks 0.400000006 0.400000006 0.400000006
@@ -19,9 +19,9 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd generic_main.png
+map_Kd materials/textures/tread_slick.png.002.png
 
-newmtl generic.001
+newmtl tyre.005
 Kd 1 1 1
 Ka 0.100000001 0.100000001 0.100000001
 Ks 0.400000006 0.400000006 0.400000006
@@ -29,9 +29,9 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd generic_main.png.001.png
+map_Kd materials/textures/tyre.png.002.png
 
-newmtl glass
+newmtl wheel.005
 Kd 1 1 1
 Ka 0.100000001 0.100000001 0.100000001
 Ks 0.400000006 0.400000006 0.400000006
@@ -39,24 +39,5 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd glass.png
-
-newmtl glow
-Kd 1 1 1
-Ka 0.100000001 0.100000001 0.100000001
-Ks 0.400000006 0.400000006 0.400000006
-Ke 0 0 0
-Ni 1
-Ns 10
-illum 2
-map_Kd light_glow.png
-
-newmtl material_003
-Kd 1 1 1
-Ka 0.100000001 0.100000001 0.100000001
-Ks 0.400000006 0.400000006 0.400000006
-Ke 0 0 0
-Ni 1
-Ns 10
-illum 2
+map_Kd materials/textures/re0_wheel.png.002.png
 

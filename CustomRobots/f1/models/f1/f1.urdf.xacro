@@ -30,25 +30,36 @@
 
   <xacro:macro name="ackermann">
 
-    <link name="base_link"/>
+    <link name="base"/>
+
     <joint name="chassis_link_joint" type="fixed">
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <parent link="base_link"/>
+      <parent link="base"/>
       <child link="chassis_link"/>
     </joint>
+
     <link name="chassis_link">
       <inertial>
-        <origin rpy="0 -0 0" xyz="1e-06 0.07307 0.65096"/>
+        <origin rpy="0 0 0" xyz="0 0.07307 0.65096"/>
         <mass value="1580"/>
         <inertia ixx="1997.86" ixy="-3e-05" ixz="-1e-06" iyy="442.769" iyz="62.5206" izz="2238.05"/>
       </inertial>
-      <visual>
-        <origin rpy="0 -0 1.5708" xyz="0 1.51 0"/>
+
+      <collision>
+        <origin rpy="0 1.51 0" xyz="1.5708 0 1.5708"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/chasis.dae" scale="5 5 5"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/chasis.obj" scale="5 5 5"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 1.51 0" xyz="1.5708 0 1.5708"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/chasis.obj" scale="5 5 5"/>
         </geometry>
       </visual>
+
     </link>
+
     <joint name="bl_axle" type="revolute">
       <origin rpy="0 -0 0" xyz="-0.775 -1.83364 0.324997"/>
       <parent link="chassis_link"/>
@@ -56,6 +67,7 @@
       <axis xyz="-1 0 0"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
+
     <link name="bl_1">
       <origin rpy="0 -0 0" xyz="0 0 0"/>
       <inertial>
@@ -63,13 +75,21 @@
         <mass value="24.5"/>
         <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
       </inertial>
-      <visual>
-        <origin rpy="0 -0 0" xyz="0.875 1.0136 0.1444"/>
+
+      <collision>
+        <origin rpy="0 1.5708 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/back_left.dae" scale="0.1 0.1 0.1"/>
+          <cylinder radius="0.3425" length="0.22"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0.875  0.14 -1.0126"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/back_left.obj" scale="0.1 0.1 0.1"/>
         </geometry>
       </visual>
     </link>
+
     <joint name="br_axle" type="revolute">
       <origin rpy="0 -0 0" xyz="0.775 -1.83364 0.324997"/>
       <parent link="chassis_link"/>
@@ -77,6 +97,7 @@
       <axis xyz="-1 0 0"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
+
     <link name="br_1">
       <origin rpy="0 -0 0" xyz="0 0 0"/>
       <inertial>
@@ -84,36 +105,46 @@
         <mass value="24.5"/>
         <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
       </inertial>
-      <visual>
-        <origin rpy="0 -0 0" xyz="-0.875 1.0136 0.1444"/>
+
+      <collision>
+        <origin rpy="0 1.5708 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/back_right.dae" scale="0.1 0.1 0.1"/>
+          <cylinder radius="0.3425" length="0.22"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="-0.875  0.14 -1.0126"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/back_right.obj" scale="0.1 0.1 0.1"/>
         </geometry>
       </visual>
     </link>
-    <joint name="l_steer" type="revolute">
-      <origin rpy="0 -0 0" xyz="-0.825 1.51736 0.324997"/>
+
+    <joint name="front_steering" type="revolute">
+      <origin rpy="0 -0 0" xyz="0 1.51736 0.324997"/>
       <parent link="chassis_link"/>
-      <child link="l_steer_1"/>
+      <child link="front_steering_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="-0.95" upper="0.95"/>
-      <dynamics friction="18.0474092253"/>
+      <dynamics friction="0.5"/>
     </joint>
-    <link name="l_steer_1">
+
+    <link name="front_steering_link">
       <origin rpy="0 -0 0" xyz="0 0 0"/>
       <inertial>
-        <origin rpy="0 -0 0" xyz="0.003381 0 0.02162"/>
-        <mass value="1"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="2"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
       </inertial>
     </link>
+
     <joint name="fl_axle" type="revolute">
       <origin rpy="0 -0 0" xyz="-0.05 0 0"/>
-      <parent link="l_steer_1"/>
+      <parent link="front_steering_link"/>
       <child link="fl_1"/>
       <axis xyz="-1 0 0"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
+
     <link name="fl_1">
       <origin rpy="0 -0 0" xyz="0 0 0"/>
       <inertial>
@@ -121,47 +152,47 @@
         <mass value="24.5"/>
         <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
       </inertial>
-      <visual>
-        <origin rpy="0 -0 0" xyz="0.875 -1.5174 0.1444"/>
+
+      <collision>
+        <origin rpy="0 0 0" xyz="0.875 -1.5174 0.1444"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/front_left.dae" scale="0.1 0.1 0.1"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/fl_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0.875  0.1444 -1.5174"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/front_left.obj" scale="0.1 0.1 0.1"/>
         </geometry>
       </visual>
     </link>
-    <joint name="r_steer" type="revolute">
-      <origin rpy="0 -0 0" xyz="0.825 1.51736 0.324997"/>
-      <parent link="chassis_link"/>
-      <child link="r_steer_1"/>
-      <axis xyz="0 0 1"/>
-      <limit lower="-0.95" upper="0.95"/>
-      <dynamics damping="0.01" friction="18.0474092253"/>
-    </joint>
-    <link name="r_steer_1">
-      <origin rpy="0 -0 0" xyz="0 0 0"/>
-      <inertial>
-        <origin rpy="0 -0 0" xyz="0.003381 0 0.02162"/>
-        <mass value="1"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
-    </link>
+
+
     <joint name="fr_axle" type="revolute">
-      <origin rpy="0 -0 0" xyz="0.05 0 0"/>
-      <parent link="r_steer_1"/>
+      <origin rpy="0 -0 0" xyz="0.825 0 0"/>
+      <parent link="front_steering_link"/>
       <child link="fr_1"/>
       <axis xyz="-1 0 0"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
+
     <link name="fr_1">
-      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <inertial>
-        <origin rpy="0 -0 0" xyz="-0.0377 0 -0"/>
+        <origin rpy="0 0 0" xyz="-0.0377 0 0"/>
         <mass value="24.5"/>
         <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
       </inertial>
-      <visual>
-        <origin rpy="0 -0 0" xyz="-0.875 -1.5174 0.1444"/>
+      <collision>
+        <origin rpy="0 0 0" xyz="-0.875 -1.5174 0.1444"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/front_right.dae" scale="0.1 0.1 0.1"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/fr_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="-0.875  0.1444 -1.5174"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/front_right.obj" scale="0.1 0.1 0.1"/>
         </geometry>
       </visual>
     </link>
@@ -171,15 +202,16 @@
       <parent link="chassis_link"/>
       <child link="steering_wheel"/>
       <axis xyz="0.0 -1.0 0.0"/>
-      <limit lower="-100" upper="100"/>
+      <limit lower="-5" upper="5"/>
       <dynamics damping="10.0"/>
     </joint>
+
     <link name="steering_wheel">
       <origin rpy="0 0 1.5708" xyz="0 0.87 -0.54"/>
       <visual>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://ackermann_cars/models/f1_renault_ackermann/Renault/steering_wheel.dae" scale="4.7 4.7 4.7"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/steering_wheel.dae" scale="4.7 4.7 4.7"/>
         </geometry>
       </visual>
     </link>
