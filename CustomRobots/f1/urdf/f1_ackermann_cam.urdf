@@ -6,7 +6,7 @@
 <robot name="f1">
   <link name="base"/>
   <joint name="chassis_link_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <origin rpy="1.5708 0 0" xyz="0.0 0.0 0.0"/>
     <parent link="base"/>
     <child link="chassis_link"/>
   </joint>
@@ -17,13 +17,13 @@
       <inertia ixx="1997.86" ixy="-3e-05" ixz="-1e-06" iyy="442.769" iyz="62.5206" izz="2238.05"/>
     </inertial>
     <collision>
-      <origin rpy="1.5708 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/chasis.obj" scale="5 5 5"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="1.5708 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/chasis.obj" scale="1 1 1"/>
       </geometry>
@@ -31,10 +31,10 @@
   </link>
 
   <joint name="bl_axle" type="revolute">
-    <origin rpy="0 0 -1.5708" xyz="-0.155 -0.366728 0.0649994"/>
+    <origin rpy="0 -1.5708 0" xyz="-0.465 0.095 0"/>
     <parent link="chassis_link"/>
     <child link="bl_1"/>
-    <axis xyz="-1 0 0"/>
+    <axis xyz="1 0 0"/>
     <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
@@ -47,13 +47,13 @@
       <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
     </inertial>
     <collision>
-      <origin rpy="0 1.5708 0" xyz="0 0 0"/>
+      <origin rpy="0 1.5708 0" xyz="-0.16 -0.028 0.206"/>
       <geometry>
-        <cylinder length="0.22" radius="0.3425"/>
+        <cylinder length="0.05" radius="0.066"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="0.875  0.14 -1.0126"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/back_left.obj" scale="0.02 0.02 0.02"/>
       </geometry>
@@ -61,7 +61,7 @@
   </link>
 
   <joint name="br_axle" type="revolute">
-    <origin rpy="0 0 -1.5708" xyz="-0.155 -0.366728 0.0649994"/>
+    <origin rpy="0 -1.5708 0" xyz="-0.465 0.095 0"/>
     <parent link="chassis_link"/>
     <child link="br_1"/>
     <axis xyz="-1 0 0"/>
@@ -76,26 +76,30 @@
       <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
     </inertial>
     <collision>
-      <origin rpy="0 1.5708 0" xyz="0 0 0"/>
+      <origin rpy="0 1.5708 0" xyz="0.16 -0.028 0.206"/>
       <geometry>
-        <cylinder length="0.22" radius="0.3425"/>
+        <cylinder length="0.05" radius="0.066"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="-0.875  0.14 -1.0126"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/back_right.obj" scale="0.02 0.02 0.02"/>
       </geometry>
     </visual>
   </link>
+
+
   <joint name="front_steering" type="revolute">
-    <origin rpy="0 -0 0" xyz="0 1.51736 0.324997"/>
+    <!-- <origin rpy="0 -1.5708 0" xyz="0 0.303472 0.0649994"/> -->
+    <origin rpy="0 -1.5708 0" xyz="0.0015 0.065 0"/>
     <parent link="chassis_link"/>
     <child link="front_steering_link"/>
     <axis xyz="0 0 1"/>
     <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="0.5"/>
   </joint>
+
   <link name="front_steering_link">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -103,15 +107,23 @@
       <mass value="2"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
+    <visual>
+      <origin rpy="0 1.5708 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.3" radius="0.01"/>
+      </geometry>
+    </visual>
   </link>
+
   <joint name="fl_axle" type="revolute">
-    <origin rpy="0 -0 0" xyz="-0.05 0 0"/>
+    <origin rpy="0 -0 0" xyz="-0.165 0 0"/>
     <parent link="front_steering_link"/>
     <child link="fl_1"/>
     <axis xyz="-1 0 0"/>
     <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="fl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -120,20 +132,22 @@
       <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
     </inertial>
     <collision>
-      <origin rpy="0 0 0" xyz="0.875 -1.5174 0.1444"/>
+      <origin rpy="0 1.5708 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/fl_1.stl" scale="0.001 0.001 0.001"/>
+        <cylinder length="0.05" radius="0.066"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="0.875  0.1444 -1.5174"/>
+      <origin rpy="0 0 0" xyz="0.165 0.03 0.303"/>
       <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/front_left.obj" scale="0.1 0.1 0.1"/>
+        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/front_left.obj" scale="0.02 0.02 0.02"/>
       </geometry>
     </visual>
   </link>
+
+
   <joint name="fr_axle" type="revolute">
-    <origin rpy="0 -0 0" xyz="0.825 0 0"/>
+    <origin rpy="0 -0 0" xyz="0.165 0 0"/>
     <parent link="front_steering_link"/>
     <child link="fr_1"/>
     <axis xyz="-1 0 0"/>
@@ -148,19 +162,19 @@
       <inertia ixx="1.84514" ixy="0" ixz="0" iyy="1.04961" iyz="0" izz="1.04961"/>
     </inertial>
     <collision>
-      <origin rpy="0 0 0" xyz="-0.875 -1.5174 0.1444"/>
+      <origin rpy="0 1.5708 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/fr_1.stl" scale="0.001 0.001 0.001"/>
+        <cylinder length="0.05" radius="0.066"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="-0.875  0.1444 -1.5174"/>
+      <origin rpy="0 0 0" xyz="-0.165 0.03 0.303"/>
       <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/front_right.obj" scale="0.1 0.1 0.1"/>
+        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/front_right.obj" scale="0.02 0.02 0.02"/>
       </geometry>
     </visual>
   </link>
-  <joint name="steering_joint" type="revolute">
+  <!-- <joint name="steering_joint" type="revolute">
     <origin rpy="0 0 0" xyz="-0.01 0.6 0.6"/>
     <parent link="chassis_link"/>
     <child link="steering_wheel"/>
@@ -176,7 +190,7 @@
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/steering_wheel.dae" scale="4.7 4.7 4.7"/>
       </geometry>
     </visual>
-  </link>
+  </link> -->
   <gazebo>
     <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
       <left_joint>fl_axle</left_joint>
@@ -237,7 +251,7 @@
   <joint name="cam_f1_left_to_base" type="fixed">
     <parent link="base"/>
     <child link="cam_f1_left_link"/>
-    <origin rpy="0 0 0" xyz="0.45 0.04 0.1"/>
+    <origin rpy="0 0 0" xyz="0.09 0.04 0.1"/>
   </joint>
   <gazebo reference="cam_f1_left_link">
     <sensor name="cam_f1_left" type="camera">

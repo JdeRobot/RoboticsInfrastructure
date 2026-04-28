@@ -9,7 +9,7 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd materials/textures/generic_main.png.002.png
+map_Kd materials/textures/generic_main.png
 
 newmtl tread.005
 Kd 1 1 1
@@ -19,7 +19,7 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd materials/textures/tread_slick.png.002.png
+map_Kd materials/textures/tread_slick.png
 
 newmtl tyre.005
 Kd 1 1 1
@@ -29,7 +29,7 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd materials/textures/tyre.png.002.png
+map_Kd materials/textures/tyre.png
 
 newmtl wheel.005
 Kd 1 1 1
@@ -39,5 +39,5 @@ Ke 0 0 0
 Ni 1
 Ns 10
 illum 2
-map_Kd materials/textures/re0_wheel.png.002.png
+map_Kd materials/textures/re0_wheel.png
 
