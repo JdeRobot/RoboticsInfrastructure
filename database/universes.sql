@@ -281,7 +281,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
 0	None	None	None	None
 1	Ur5	/opt/jderobot/Launchers/pick_place_harmonic/robot.launch.py	ur5	None
-2	F1	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera
+2	F1	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera
 \.
 -- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 
