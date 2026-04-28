@@ -55,10 +55,11 @@
     <visual>
       <origin rpy="0 0 0" xyz="0.875  0.14 -1.0126"/>
       <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/back_left.obj" scale="0.1 0.1 0.1"/>
+        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/back_left.obj" scale="0.02 0.02 0.02"/>
       </geometry>
     </visual>
   </link>
+
   <joint name="br_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="0.775 -1.83364 0.324997"/>
     <parent link="chassis_link"/>
