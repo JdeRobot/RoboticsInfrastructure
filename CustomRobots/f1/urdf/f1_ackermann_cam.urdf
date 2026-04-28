@@ -244,7 +244,7 @@
   <joint name="cam_f1_left_to_base" type="fixed">
     <parent link="base"/>
     <child link="cam_f1_left_link"/>
-    <origin rpy="0 0 1.57" xyz="0 0.0276 0.04"/>
+    <origin rpy="0 0 0" xyz="0.45 0.04 0.1"/>
   </joint>
   <gazebo reference="cam_f1_left_link">
     <sensor name="cam_f1_left" type="camera">
