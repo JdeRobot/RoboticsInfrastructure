@@ -193,7 +193,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 65	Small Laser Mapping Warehouse High Noise	65	0
 66	Follow Person Harmonic	66	0
 67	Follow Person Teleop Harmonic	67	0
-68	Machine vision Harmonic world	66	1
+68	Machine vision Harmonic world	66	0
 \.
 
 --
