@@ -17,18 +17,19 @@
       <inertia ixx="1997.86" ixy="-3e-05" ixz="-1e-06" iyy="442.769" iyz="62.5206" izz="2238.05"/>
     </inertial>
     <collision>
-      <origin rpy="0 1.51 0" xyz="0 1.5708 1.5708"/>
+      <origin rpy="1.5708 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/chasis.obj" scale="5 5 5"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="1.5708 -0 0" xyz="0 0 0 "/>
+      <origin rpy="1.5708 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/chasis.obj" scale="1 1 1"/>
       </geometry>
     </visual>
   </link>
+
   <joint name="bl_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="-0.775 -1.83364 0.324997"/>
     <parent link="chassis_link"/>
@@ -37,6 +38,7 @@
     <limit lower="-5" upper="5" effort="1000" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
+
   <link name="bl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
