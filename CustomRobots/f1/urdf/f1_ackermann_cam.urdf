@@ -23,7 +23,7 @@
       </geometry>
     </collision>
     <visual>
-      <origin rpy="1.5708 -0 0" xyz="0 1.51 0 "/>
+      <origin rpy="1.5708 -0 0" xyz="0 0 0 "/>
       <geometry>
         <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/chasis.obj" scale="1 1 1"/>
       </geometry>
