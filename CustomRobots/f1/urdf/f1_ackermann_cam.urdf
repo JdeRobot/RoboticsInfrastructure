@@ -29,16 +29,14 @@
       </geometry>
     </visual>
   </link>
-
   <joint name="bl_axle" type="revolute">
     <origin rpy="0 0 0" xyz="-0.155 -0.366728 0.0649994"/>
     <parent link="chassis_link"/>
     <child link="bl_1"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+    <limit effort="1000" lower="-5" upper="5" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
-
   <link name="bl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -59,13 +57,12 @@
       </geometry>
     </visual>
   </link>
-
   <joint name="br_axle" type="revolute">
     <origin rpy="0 0 0" xyz="0.155 -0.366728 0.0649994"/>
     <parent link="chassis_link"/>
     <child link="br_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+    <limit effort="1000" lower="-5" upper="5" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="br_1">
@@ -88,17 +85,14 @@
       </geometry>
     </visual>
   </link>
-
-
   <joint name="front_steering" type="revolute">
     <origin rpy="0 0 0" xyz="0 0.303472 0.0649994"/>
     <parent link="chassis_link"/>
     <child link="front_steering_link"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+    <limit effort="1000" lower="-5" upper="5" velocity="100"/>
     <dynamics friction="0.5"/>
   </joint>
-
   <link name="front_steering_link">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -107,16 +101,14 @@
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
   </link>
-
   <joint name="fl_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="-0.165 0 0"/>
     <parent link="front_steering_link"/>
     <child link="fl_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+    <limit effort="1000" lower="-5" upper="5" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
-
   <link name="fl_1">
     <origin rpy="0 -0 0" xyz="0 0 0"/>
     <inertial>
@@ -137,14 +129,12 @@
       </geometry>
     </visual>
   </link>
-
-
   <joint name="fr_axle" type="revolute">
     <origin rpy="0 -0 0" xyz="0.165 0 0"/>
     <parent link="front_steering_link"/>
     <child link="fr_1"/>
     <axis xyz="-1 0 0"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+    <limit effort="1000" lower="-5" upper="5" velocity="100"/>
     <dynamics friction="12.031606150200002"/>
   </joint>
   <link name="fr_1">
@@ -168,22 +158,23 @@
     </visual>
   </link>
   <!-- <joint name="steering_joint" type="revolute">
-    <origin rpy="0 0 0" xyz="-0.01 0.6 0.6"/>
-    <parent link="chassis_link"/>
-    <child link="steering_wheel"/>
-    <axis xyz="0.0 -1.0 0.0"/>
-    <limit lower="-5" upper="5" effort="1000" velocity="100"/>
-    <dynamics damping="10.0"/>
-  </joint>
-  <link name="steering_wheel">
-    <origin rpy="0 0 1.5708" xyz="0 0.87 -0.54"/>
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <mesh filename="file:///home/ws/install/custom_robots/share/custom_robots/models/f1/meshes/steering_wheel.dae" scale="4.7 4.7 4.7"/>
-      </geometry>
-    </visual>
-  </link> -->
+      <origin rpy="0 0 0" xyz="-0.01 0.6 0.6"/>
+      <parent link="chassis_link"/>
+      <child link="steering_wheel"/>
+      <axis xyz="0.0 -1.0 0.0"/>
+      <limit lower="-5" upper="5"/>
+      <dynamics damping="10.0"/>
+    </joint>
+
+    <link name="steering_wheel">
+      <origin rpy="0 0 1.5708" xyz="0 0.87 -0.54"/>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/steering_wheel.dae" scale="4.7 4.7 4.7"/>
+        </geometry>
+      </visual>
+    </link> -->
   <gazebo>
     <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
       <left_joint>fl_axle</left_joint>
@@ -197,12 +188,12 @@
       <wheel_base>3.351</wheel_base>
       <wheel_separation>1.65</wheel_separation>
       <wheel_radius>0.3425</wheel_radius>
-      <sub_topic>/model/f1_renault_ackermann_harmonic/steer_angle</sub_topic>
+      <!-- <sub_topic>${topic}/steer_angle</sub_topic> -->
       <min_velocity>-50</min_velocity>
       <max_velocity>50</max_velocity>
       <min_acceleration>-50</min_acceleration>
       <max_acceleration>50</max_acceleration>
-      <topic>/model/f1_renault_ackermann_harmonic/cmd_vel</topic>
+      <topic>/F1ROS/cmd_vel</topic>
     </plugin>
   </gazebo>
   <gazebo>
@@ -212,7 +203,7 @@
       <joint_name>bl_axle</joint_name>
       <joint_name>br_axle</joint_name>
       <joint_name>front_steering</joint_name>
-      <joint_name>steering_joint</joint_name>
+      <!-- <joint_name>steering_joint</joint_name> -->
     </plugin>
   </gazebo>
   <gazebo>
@@ -220,20 +211,11 @@
       <odom_frame>odom</odom_frame>
       <robot_base_frame>chassis_link</robot_base_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
-      <odom_topic>/model/f1_renault_ackermann_harmonic/odom</odom_topic>
+      <odom_topic>/F1ROS/odom</odom_topic>
       <dimensions>3</dimensions>
     </plugin>
   </gazebo>
-  <gazebo>
-    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
-      <publish_link_pose>true</publish_link_pose>
-      <publish_collision_pose>false</publish_collision_pose>
-      <publish_visual_pose>false</publish_visual_pose>
-      <publish_nested_model_pose>true</publish_nested_model_pose>
-      <update_frequency>50</update_frequency>
-    </plugin>
-  </gazebo>
-
+  <!-- <xacro:f1_steer_controller topic="/model/f1_renault_ackermann_harmonic/steering_wheel_cmd" joint="steering_joint"/> -->
   <link name="cam_f1_left_link">
     <visual>
       <geometry>
