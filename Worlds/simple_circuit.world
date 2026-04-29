@@ -26,7 +26,7 @@
       <pose>0 0 0 0 0 0</pose>
     </include> -->
     <include>
-      <uri>file:///home/ws/install/custom_robots/share/custom_robots/models/simple_circuit/simple_circuit.urdf</uri>
+      <uri>model://simpleCircuit.urdf</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
     <!-- Luz -->
