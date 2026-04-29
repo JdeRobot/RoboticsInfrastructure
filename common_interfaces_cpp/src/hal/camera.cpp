@@ -64,8 +64,8 @@ cv::Mat depthToRGB8(const cv::Mat& gray_img_buff, const std::string& encoding) {
     return color_img;
 }
 
-CameraNode::CameraNode(const std::string& topic) 
-    : Node("camera_node") {
+CameraNode::CameraNode(const std::string& topic, const std::string& node_name) 
+    : Node(node_name) {
     sub_ = this->create_subscription<sensor_msgs::msg::Image>(
         topic, 10, std::bind(&CameraNode::listener_callback, this, std::placeholders::_1)
     );
