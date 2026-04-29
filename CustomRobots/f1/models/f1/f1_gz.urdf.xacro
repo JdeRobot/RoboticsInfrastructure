@@ -108,12 +108,12 @@
         <wheel_base>3.351</wheel_base>
         <wheel_separation>1.65</wheel_separation>
         <wheel_radius>0.3425</wheel_radius>
-        <sub_topic>${topic}/steer_angle</sub_topic>
+        <!-- <sub_topic>${topic}/steer_angle</sub_topic> -->
         <min_velocity>-50</min_velocity>
         <max_velocity>50</max_velocity>
         <min_acceleration>-50</min_acceleration>
         <max_acceleration>50</max_acceleration>
-        <topic>${topic}/cmd_vel</topic>
+        <topic>${topic}</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
@@ -130,18 +130,6 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="f1_pose" params="freq">
-    <gazebo>
-      <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <publish_collision_pose>false</publish_collision_pose>
-        <publish_visual_pose>false</publish_visual_pose>
-        <publish_nested_model_pose>true</publish_nested_model_pose>
-        <update_frequency>${freq}</update_frequency>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
-
   <xacro:macro name="f1_joints">
     <gazebo>
       <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
@@ -150,7 +138,7 @@
         <joint_name>bl_axle</joint_name>
         <joint_name>br_axle</joint_name>
         <joint_name>front_steering</joint_name>
-        <joint_name>steering_joint</joint_name>
+        <!-- <joint_name>steering_joint</joint_name> -->
       </plugin>
     </gazebo>
   </xacro:macro>
