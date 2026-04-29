@@ -274,7 +274,7 @@ def generate_launch_description():
             '-entity', CONFIGURATION["rob"],
             '-x', '0.0',
             '-y', '0.0',
-            '-z', '0.0'
+            '-z', '0.8'
         ],
         output='both'
     )
