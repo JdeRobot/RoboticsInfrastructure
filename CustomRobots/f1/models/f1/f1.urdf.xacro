@@ -58,12 +58,12 @@
       </visual>
     </link>
 
-    <joint name="bl_axle" type="revolute">
+    <joint name="bl_axle" type="continuous">
       <origin rpy="0 0 0" xyz="-0.155 -0.366728 0.0649994"/>
       <parent link="chassis_link"/>
       <child link="bl_1"/>
       <axis xyz="1 0 0"/>
-      <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+      <limit effort="1000" velocity="100"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
 
@@ -88,12 +88,12 @@
       </visual>
     </link>
 
-    <joint name="br_axle" type="revolute">
+    <joint name="br_axle" type="continuous">
       <origin rpy="0 0 0" xyz="0.155 -0.366728 0.0649994"/>
       <parent link="chassis_link"/>
       <child link="br_1"/>
       <axis xyz="-1 0 0"/>
-      <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+      <limit effort="1000" velocity="100"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
 
@@ -136,12 +136,12 @@
       </inertial>
     </link>
 
-    <joint name="fl_axle" type="revolute">
+    <joint name="fl_axle" type="continuous">
       <origin rpy="0 -0 0" xyz="-0.165 0 0"/>
       <parent link="front_steering_link"/>
       <child link="fl_1"/>
       <axis xyz="-1 0 0"/>
-      <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+      <limit effort="1000" velocity="100"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
 
@@ -167,12 +167,12 @@
     </link>
 
 
-    <joint name="fr_axle" type="revolute">
+    <joint name="fr_axle" type="continuous">
       <origin rpy="0 -0 0" xyz="0.165 0 0"/>
       <parent link="front_steering_link"/>
       <child link="fr_1"/>
       <axis xyz="-1 0 0"/>
-      <limit lower="-5" upper="5" effort="1000" velocity="100"/>
+      <limit effort="1000" velocity="100"/>
       <dynamics friction="12.031606150200002"/>
     </joint>
 
