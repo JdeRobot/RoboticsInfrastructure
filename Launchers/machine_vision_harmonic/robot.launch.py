@@ -15,7 +15,7 @@ def generate_launch_description():
     xacro_file = os.path.join(
         pkg_path,
         "urdf",
-        "ur5_robotiq_2f85_with_cams.urdf.xacro"
+        "ur5_robotiq_2f85_with_cams_harmonic.urdf.xacro"
     )
 
     controllers_file = os.path.join(
@@ -27,10 +27,16 @@ def generate_launch_description():
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
+            "ur_type": "ur5",
+            "name": "ur",
+            "prefix": "",
+            "use_fake_hardware": "false",
+            "sim_gazebo": "false",
+            "sim_gz": "true",
+            "simulation_controllers": controllers_file,
             "hmi": "false",
             "EE": "true",
             "EE_name": "robotiq_2f85",
-            "sim_gazebo_classic": "false"
         },
     ).toxml()
 

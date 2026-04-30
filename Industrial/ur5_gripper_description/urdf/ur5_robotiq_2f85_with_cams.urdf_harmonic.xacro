@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="sim_gazebo" default="false"/>
+  <xacro:arg name="sim_gz" default="true"/>
+  <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:arg name="EE" default="true"/>
+  <xacro:arg name="EE_name" default="robotiq_2f85"/>
+
+  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro"/>
+  <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.ros2_control.xacro"/>
+
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
+
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>	
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>	
+
+  <xacro:ur_robot
+    name="$(arg name)"
+    ur_type="$(arg ur_type)"
+    prefix="$(arg prefix)"
+  />
+
+
+  <link name="robotiq_coupler">
+    <visual>
+      <geometry>
+        <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="robotiq_coupler_joint" type="fixed">
+    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2}"/>
+    <parent link="tool0"/>
+    <child link="robotiq_coupler"/>
+  </joint>
+
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
+  </xacro:robotiq_85_gripper>
+
+
+  <link name="world"/>
+
+  <link name="robot_stand">
+    <visual>
+      <geometry>
+        <box size="0.2 0.2 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.2 0.2 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="robot_stand"/>
+    <origin xyz="0 0 0.5"/>
+  </joint>
+
+  <joint name="stand_joint" type="fixed">
+    <parent link="robot_stand"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.52"/>
+  </joint>
+
+
+  <xacro:ur_ros2_control
+    name="ur"
+    prefix=""
+    sim_gz="true"
+    use_fake_hardware="false"
+  />
+
+  <xacro:robotiq_85_ros2_control
+    name="robotiq"
+    prefix=""
+    sim_gz="true"
+    use_fake_hardware="false"
+  />
+
+</robot>
