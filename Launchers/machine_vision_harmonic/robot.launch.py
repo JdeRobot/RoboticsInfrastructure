@@ -28,7 +28,8 @@ def generate_launch_description():
     xacro.process_doc(doc, mappings={
         "hmi": "false",
         "EE": "true",
-        "EE_name": "robotiq_2f85"
+        "EE_name": "robotiq_2f85",
+        "sim_gazebo_classic": "false"
     })
 
     robot_description = {

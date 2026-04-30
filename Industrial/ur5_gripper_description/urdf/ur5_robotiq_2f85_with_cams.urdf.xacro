@@ -72,7 +72,7 @@
 
 
   <gazebo>
-    <plugin filename="gz_ros2_control-system" name="gz_ros2_control">
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <robot_sim_type>gz_ros2_control/GazeboSimSystem</robot_sim_type>
 
       <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
