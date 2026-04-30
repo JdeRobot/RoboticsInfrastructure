@@ -401,7 +401,15 @@ def generate_launch_description():
     moveit_config = moveit_config_builder.to_moveit_configs()
 
     # Load additional configurations that need merging for EE
-    kinematics_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/kinematics.yaml")
+    raw_kinematics = load_yaml(
+        "ros2srrc_robots",
+        CONFIGURATION["rob"] + "/config/kinematics.yaml"
+    )
+
+    kinematics_yaml = {
+        "robot_description_kinematics": raw_kinematics["/**"]["ros__parameters"]
+    }
+    
     pilz_cartesian_limits_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/pilz_cartesian_limits.yaml")
     
     # Add Pilz planner configuration
