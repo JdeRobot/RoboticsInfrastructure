@@ -275,7 +275,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 
 COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
 0	None	None	None	None
-1	Ur5	/home/ws/src/Industrial/ur5_gripper_description/launch/spawn_robot_warehouse.launch.py	ur5	launch_rviz:false
+1	Ur5	/home/ws/src/Industrial/ur5_gripper_description/launch/spawn_robot_warehouse.launch.py	ur5_robotiq	None
 2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera

@@ -30,25 +30,26 @@ def generate_launch_description():
         ur5_share_parent + ":" + robotiq_share_parent + ":" + warehouse_models_path
     )
 
-    gz_env = {
-        "GZ_SIM_RESOURCE_PATH": resource_path,
-        "GZ_SIM_SYSTEM_PLUGIN_PATH": (
+    set_env = [
+        SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", resource_path),
+        SetEnvironmentVariable(
+            "GZ_SIM_SYSTEM_PLUGIN_PATH",
             "/home/ws/install/gz_link_attacher/lib:"
             + gz_lib_path
-            + ":/opt/ros/humble/lib"
+            + ":/opt/ros/humble/lib",
         ),
-        "LD_LIBRARY_PATH": "/home/ws/install/gz_link_attacher/lib:"
-        + gz_lib_path
-        + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
-        + os.environ.get("LD_LIBRARY_PATH", ""),
-        "DISPLAY": ":2",
-    }
-
-    print("DEBUG: GZ_SIM_SYSTEM_PLUGIN_PATH = " + gz_env["GZ_SIM_SYSTEM_PLUGIN_PATH"])
+        SetEnvironmentVariable(
+            "LD_LIBRARY_PATH",
+            "/home/ws/install/gz_link_attacher/lib:"
+            + gz_lib_path
+            + ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu:"
+            + os.environ.get("LD_LIBRARY_PATH", ""),
+        ),
+        SetEnvironmentVariable("DISPLAY", ":2"),
+    ]
 
     declared_arguments = [
         DeclareLaunchArgument("ur_type", default_value="ur5"),
-        DeclareLaunchArgument("launch_rviz", default_value="true"),
     ]
 
     xacro_file = os.path.join(pkg_share_dir, "urdf", "ur5_robotiq85_gripper.urdf.xacro")
@@ -76,19 +77,8 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    world_file = os.path.join(
-        robotiq_pkg_share_dir, "world", "warehouse_arm_harmonic.world"
-    )
-
     # RAM launches its own GUI client (gz sim -g), so we must NOT launch GUI here
     # This fixes the first-load issue where two GUIs conflict
-
-    gazebo = ExecuteProcess(
-        cmd=["gz", "sim", "-s", "-r", "-v", "4", world_file],
-        output="screen",
-        additional_env=gz_env,
-        shell=False,
-    )
 
     spawn_entity = Node(
         package="ros_gz_sim",
@@ -213,23 +203,6 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("launch_rviz")),
     )
 
-    rviz_config_file = os.path.join(moveit_pkg, "rviz", "moveit.rviz")
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        arguments=["-d", rviz_config_file],
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            ompl_planning_yaml,
-            kinematics_yaml,
-            {"use_sim_time": True},
-        ],
-        condition=IfCondition(LaunchConfiguration("launch_rviz")),
-    )
-
     delay_spawn = TimerAction(period=5.0, actions=[spawn_entity])
 
     delay_jsb = RegisterEventHandler(
@@ -250,12 +223,10 @@ def generate_launch_description():
         )
     )
     delay_mg = TimerAction(period=10.0, actions=[move_group_node])
-    delay_rviz = TimerAction(period=12.0, actions=[rviz_node])
 
     return LaunchDescription(
         declared_arguments
         + [
-            gazebo,
             robot_state_publisher,
             static_tf,
             gz_ros2_bridge_clock,
