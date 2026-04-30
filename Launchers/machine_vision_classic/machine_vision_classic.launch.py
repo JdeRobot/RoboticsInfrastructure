@@ -244,6 +244,7 @@ def generate_launch_description():
         "EE": EE,
         "EE_name": CONFIGURATION["ee"],
         "hmi": HMI,
+        "sim_gazebo_classic": "true"
     })
     
     # EE -> Controller file needed?
