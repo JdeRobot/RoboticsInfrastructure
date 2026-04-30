@@ -280,6 +280,14 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera
 5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser
+6	TurtleBot 2	None	None
+7	TurtleBot 3	None	None
+8	Holonomic Logistic	None	None
+9	Ackermann Logistic	None	None
+10	Autonomous car	None	None
+11	Drone	None	None
+11	Vacuum cleaner	None	None
+11	Rover 4wd	None	None
 \.
 -- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 
