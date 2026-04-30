@@ -244,6 +244,7 @@ def generate_launch_description():
         "EE": EE,
         "EE_name": CONFIGURATION["ee"],
         "hmi": HMI,
+        "sim_gazebo_classic": "true",
     })
     
     # EE -> Controller file needed?
@@ -309,9 +310,9 @@ def generate_launch_description():
 
     # Determine SRDF file path
     if (EE == "false"):
-        srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
+        srdf_file_path = "config/" + CONFIGURATION["rob"] + "_classic.srdf"
     else:
-        srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + ".srdf"
+        srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + "_classic.srdf"
 
     # Build MoveIt configuration using MoveItConfigsBuilder
     moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2")
