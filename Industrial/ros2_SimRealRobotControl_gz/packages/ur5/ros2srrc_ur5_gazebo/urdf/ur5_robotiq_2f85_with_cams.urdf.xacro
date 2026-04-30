@@ -49,6 +49,10 @@
   <xacro:arg name="EE_name" default="none"/>
   <xacro:property name="EE_name" value="$(arg EE_name)"/>
 
+  <!-- Argument to choose between classic and harmonic -->
+  <xacro:arg name="sim" default="classic"/>
+  <xacro:property name="sim" value="$(arg sim)"/>
+
   <!-- UR5 Control ARGUMENTS -->
   <xacro:arg name="script_filename" default="none"/>
   <xacro:property name="script_filename" value="$(arg script_filename)"/>
@@ -74,6 +78,9 @@
     EE="${EE}"
     EE_name="${EE_name}"
 
+    sim_gazebo="${sim == 'classic'}"
+    sim_gz="${sim == 'gz'}"
+
     script_filename="${script_filename}"
     input_recipe_filename="${input_recipe_filename}"
     output_recipe_filename="${output_recipe_filename}"
@@ -86,21 +93,32 @@
     parent_link="tool0"
   />
 
-  <!-- Load ROS 2 Gazebo Plugin -->
+  <!-- Load ROS 2 Control Plugin (Classic vs GZ) -->
   <xacro:unless value="${bringup}">
-    
-    <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
 
-        <!-- UR5 Controller -->
-        <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
+    <!-- Gazebo Classic -->
+    <xacro:if value="${sim == 'gz'}">
+      <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+          
+          <robot_sim_type>gz_ros2_control/GazeboSimSystem</robot_sim_type>
 
-        <!-- End-Effector Controller (if needed) -->
-        <parameters>$(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml</parameters>
+          <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
+          <parameters>$(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml</parameters>
 
-      </plugin>
-    </gazebo>
+        </plugin>
+      </gazebo>
+    </xacro:if>
+
+    <!-- Gazebo Harmonic / GZ -->
+    <xacro:if value="${sim == 'gz'}">
+      <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+          <parameters>$(find ros2srrc_robots)/ur5/config/controller.yaml</parameters>
+          <parameters>$(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml</parameters>
+        </plugin>
+      </gazebo>
+    </xacro:if>
 
   </xacro:unless>
 

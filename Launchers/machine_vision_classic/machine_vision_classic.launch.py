@@ -244,6 +244,7 @@ def generate_launch_description():
         "EE": EE,
         "EE_name": CONFIGURATION["ee"],
         "hmi": HMI,
+        "sim": "classic",
     })
     
     # EE -> Controller file needed?
@@ -264,20 +265,18 @@ def generate_launch_description():
             {"use_sim_time": True}
         ]
     )
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+    )
 
     # SPAWN ROBOT TO GAZEBO:
-    spawn_entity = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        arguments=[
-            '-topic', 'robot_description',
-            '-entity', CONFIGURATION["rob"],
-            '-x', '0.0',
-            '-y', '0.0',
-            '-z', '0.8'
-        ],
-        output='both'
-    )
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+                        arguments=['-topic', 'robot_description', '-entity', CONFIGURATION["rob"]],
+                        output='both')
 
     # ***** CONTROLLERS ***** #
     # Joint STATE BROADCASTER:
@@ -310,10 +309,13 @@ def generate_launch_description():
     # *********************** MoveIt!2 *********************** #   
 
     # Determine SRDF file path
-    if (EE == "false"):
-        srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
+    if CONFIG == "ur5_7":
+        srdf_file_path = "config/ur5robotiq_2f85.srdf"
     else:
-        srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + ".srdf"
+        if (EE == "false"):
+            srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
+        else:
+            srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + ".srdf"
 
     # Build MoveIt configuration using MoveItConfigsBuilder
     moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2")
@@ -559,6 +561,7 @@ def generate_launch_description():
     # Add ROS 2 Nodes to LaunchDescription() element:
     LD.add_action(gazebo)
     LD.add_action(node_robot_state_publisher)
+    LD.add_action(static_tf)
     LD.add_action(spawn_entity)
 
     LD.add_action(RegisterEventHandler(
