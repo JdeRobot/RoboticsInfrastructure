@@ -244,7 +244,6 @@ def generate_launch_description():
         "EE": EE,
         "EE_name": CONFIGURATION["ee"],
         "hmi": HMI,
-        "sim": "classic",
     })
     
     # EE -> Controller file needed?
@@ -310,7 +309,7 @@ def generate_launch_description():
 
     # Determine SRDF file path
     if CONFIG == "ur5_7":
-        srdf_file_path = "config/ur5robotiq_2f85.srdf"
+        srdf_file_path = "config/ur5robotiq_2f85_with_cam.srdf"
     else:
         if (EE == "false"):
             srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"

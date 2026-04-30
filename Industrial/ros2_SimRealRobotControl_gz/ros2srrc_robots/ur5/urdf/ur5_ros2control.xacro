@@ -126,11 +126,7 @@
   <xacro:arg name="tf_prefix" default=""/>
   <xacro:property name="tf_prefix" value="$(arg tf_prefix)"/>
 
-  <xacro:macro name="ur5_ros2control" params="
-    bringup robot_ip EE EE_name
-    script_filename input_recipe_filename output_recipe_filename
-    sim_gazebo:=false sim_gz:=false
-  ">
+  <xacro:macro name="ur5_ros2control" params="bringup robot_ip EE EE_name script_filename input_recipe_filename output_recipe_filename" >
 
     <!-- ROS2_CONTROL tag name: -->
     <!-- A. GAZEBO SIMULATION: -->

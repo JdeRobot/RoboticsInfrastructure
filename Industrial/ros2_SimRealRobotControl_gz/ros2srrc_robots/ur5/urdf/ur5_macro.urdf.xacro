@@ -65,7 +65,7 @@
   <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_common.xacro"/>
 
   <!-- XACRO-MACRO of UR5: -->
-  <xacro:macro name="ur5" params="bringup robot_ip EE EE_name script_filename input_recipe_filename output_recipe_filename sim">
+  <xacro:macro name="ur5" params="bringup robot_ip EE EE_name script_filename input_recipe_filename output_recipe_filename">
 
     <!-- LOAD UR5-Common: -->
     <xacro:ur5_common/>
@@ -78,37 +78,16 @@
 
     <!-- UR5 GAZEBO - ROS2_CONTROL: -->
     <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_ros2control.xacro" />
-    <xacro:if value="${sim == 'classic'}">
-      <xacro:ur5_ros2control 
-        bringup="${bringup}"
-        robot_ip="${robot_ip}"
-        EE="${EE}"
-        EE_name="${EE_name}"
+    <xacro:ur5_ros2control 
+      bringup="${bringup}"
+      robot_ip="${robot_ip}"
+      EE="${EE}"
+      EE_name="${EE_name}"
 
-        script_filename="${script_filename}"
-        input_recipe_filename="${input_recipe_filename}"
-        output_recipe_filename="${output_recipe_filename}"
-
-        sim_gazebo="true"
-        sim_gz="false"
-      />
-    </xacro:if>
-
-    <xacro:if value="${sim == 'gz'}">
-      <xacro:ur5_ros2control 
-        bringup="${bringup}"
-        robot_ip="${robot_ip}"
-        EE="${EE}"
-        EE_name="${EE_name}"
-
-        script_filename="${script_filename}"
-        input_recipe_filename="${input_recipe_filename}"
-        output_recipe_filename="${output_recipe_filename}"
-
-        sim_gazebo="false"
-        sim_gz="true"
-      />
-    </xacro:if>
+      script_filename="${script_filename}"
+      input_recipe_filename="${input_recipe_filename}"
+      output_recipe_filename="${output_recipe_filename}"
+    />
 
     <!-- ***** UR5 ROBOT .urdf SERIAL CHAIN ***** -->
 
