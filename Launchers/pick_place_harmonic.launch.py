@@ -59,5 +59,5 @@ def generate_launch_description():
         gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
     )
     ld.add_action(set_env_vars_resources)
-    ld.add_action(warehouse_launch)
+    # ld.add_action(warehouse_launch)
     return ld
