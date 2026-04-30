@@ -24,22 +24,16 @@ def generate_launch_description():
         "ur5_controllers.yaml"
     )
 
-    robot_description_content = xacro.process_file(
-        xacro_file,
-        mappings={
-            "ur_type": "ur5",
-            "name": "ur",
-            "prefix": "",
-            "use_fake_hardware": "false",
-            "sim_gazebo": "false",
-            "sim_gz": "true",
-            "simulation_controllers": controllers_file,
-            "EE": "true",
-            "EE_name": "robotiq_2f85",
-        },
-    ).toxml()
+    doc = xacro.parse(open(xacro_file))
+    xacro.process_doc(doc, mappings={
+        "hmi": "false",
+        "EE": "true",
+        "EE_name": "robotiq_2f85"
+    })
 
-    robot_description = {"robot_description": robot_description_content}
+    robot_description = {
+        "robot_description": doc.toxml()
+    }
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
