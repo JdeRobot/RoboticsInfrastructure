@@ -6,7 +6,6 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
     
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
@@ -114,7 +113,7 @@
           <geometry>
             <mesh>
               <scale>0.45 0.35 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor.dae</uri>
+              <uri>file:///home/ws/install/ros2srrc_ur5_gazebo/share/ros2srrc_ur5_gazebo/models/conveyor/meshes/conveyor.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -186,7 +185,7 @@
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>model://ground_logo_big/meshes/ground_logo.dae</uri>
+              <uri>file:///home/ws/install/ros2srrc_ur5_gazebo/share/ros2srrc_ur5_gazebo/models/ground_logo_big/meshes/ground_logo_big.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -227,7 +226,7 @@
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>model://target_table/meshes/target_table.dae</uri>
+              <uri>file:///home/ws/install/ros2srrc_ur5_gazebo/share/ros2srrc_ur5_gazebo/models/target_table/meshes/target_table.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -316,7 +315,7 @@
           <geometry>
             <mesh>
               <scale>0.25 0.25 0.25</scale>
-              <uri>model://target_4x4/meshes/target_4x4.dae</uri>
+              <uri>file:///home/ws/install/ros2srrc_ur5_gazebo/share/ros2srrc_ur5_gazebo/models/target_4x4/meshes/target_4x4.dae</uri>
             </mesh>
           </geometry>
         </visual>
