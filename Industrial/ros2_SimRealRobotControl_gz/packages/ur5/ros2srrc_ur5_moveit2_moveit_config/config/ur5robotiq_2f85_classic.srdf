@@ -57,7 +57,7 @@
     
   </group>
 
-  <group_state group="ur5_arm" name="home">
+  <group_state group="ur5_manipulator" name="home">
     <joint name="elbow_joint" value="0" />
     <joint name="shoulder_lift_joint" value="-1.5707" />
     <joint name="shoulder_pan_joint" value="0" />
@@ -66,7 +66,7 @@
     <joint name="wrist_3_joint" value="0" />
   </group_state>
 
-  <group_state group="ur5_arm" name="up">
+  <group_state group="ur5_manipulator" name="up">
     <joint name="elbow_joint" value="0" />
     <joint name="shoulder_lift_joint" value="-1.5707" />
     <joint name="shoulder_pan_joint" value="0" />

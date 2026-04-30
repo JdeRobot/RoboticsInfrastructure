@@ -120,7 +120,7 @@ def GetEEctr(EEName):
 def EEctrlEXISTS(EEName):
     
     PATH = os.path.join(get_package_share_directory('ros2srrc_endeffectors'), EEName, 'config')
-    YAML_PATH = PATH + "/controller.yaml"
+    YAML_PATH = PATH + "/controller_classic.yaml"
     
     RES = os.path.exists(YAML_PATH)
     return(RES)
