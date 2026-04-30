@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="ur5"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Pass through arguments to included files -->
   <xacro:arg name="name" default="ur"/>
@@ -14,13 +15,13 @@
   <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro" />
-  
+
   <link name="robotiq_coupler">
     <visual>
       <geometry>
         <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
       </geometry>
-      <material name="flat_black"/>
+      <!-- <material name="flat_black"/> -->
     </visual>
     <collision>
       <geometry>
@@ -30,8 +31,7 @@
     <inertial>
       <origin xyz="2.073e-05   1.45286e-03  -1.1049e-03" rpy="0 0 0" />
       <mass value="0.168" />
-      <inertia ixx="6.69695624e-05" ixy="5.21511788e-09" ixz="-2.74383009e-08" 
-               iyy="7.85088161e-05" iyz="5.41105193e-07" izz="1.41819717e-04"/>
+      <inertia ixx="6.69695624e-05" ixy="5.21511788e-09" ixz="-2.74383009e-08" iyy="7.85088161e-05" iyz="5.41105193e-07" izz="1.41819717e-04"/>
     </inertial>
   </link>
 
@@ -45,7 +45,7 @@
     <mu2>0.9</mu2>
     <material>Gazebo/FlatBlack</material>
   </gazebo>
-  
+
   <!-- Equivalent to the OpenRAVE manipulator denso_robotiq_85_gripper -->
   <!-- <link name="ee_link" />
   <joint name="manipulator_dummy_joint" type="fixed">
@@ -53,12 +53,12 @@
     <parent link="tool0"/>
     <child link="ee_link"/>
   </joint> -->
-  
+
   <!-- Attach the robotiq 85 gripper -->
-  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler" >
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
     <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
-  </xacro:robotiq_85_gripper> 
-  
+  </xacro:robotiq_85_gripper>
+
   <!-- Gazebo FT sensor plugin - Gazebo Sim (Harmonic) compatible -->
   <!-- Note: FT sensor requires gazebo_ros2_control_demos or custom implementation -->
   <!--
@@ -73,7 +73,7 @@
     </sensor>
   </gazebo>
   -->
-  
+
   <!-- Gazebo grasping plugin - Note: Grasping plugin may need custom implementation for Gazebo Sim -->
   <!-- Commenting out for now as this plugin is not directly available in Gazebo Sim -->
   <!--
@@ -90,12 +90,8 @@
     </gripper>
   </gazebo>
   -->
-  
+
   <!-- ros2_control for gripper -->
-  <xacro:robotiq_85_ros2_control 
-    name="robotiq" 
-    prefix="" 
-    sim_gz="true"
-    use_fake_hardware="false"/>
-  
+  <xacro:robotiq_85_ros2_control name="robotiq" prefix="" sim_gz="true" use_fake_hardware="false"/>
+
 </robot>
