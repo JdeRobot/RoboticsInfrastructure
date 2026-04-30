@@ -308,13 +308,10 @@ def generate_launch_description():
     # *********************** MoveIt!2 *********************** #   
 
     # Determine SRDF file path
-    if CONFIG == "ur5_7":
-        srdf_file_path = "config/ur5robotiq_2f85_with_cam.srdf"
+    if (EE == "false"):
+        srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
     else:
-        if (EE == "false"):
-            srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
-        else:
-            srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + ".srdf"
+        srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + ".srdf"
 
     # Build MoveIt configuration using MoveItConfigsBuilder
     moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2")
