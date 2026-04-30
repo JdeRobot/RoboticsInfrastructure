@@ -203,8 +203,6 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("launch_rviz")),
     )
 
-    delay_spawn = TimerAction(period=5.0, actions=[spawn_entity])
-
     delay_jsb = RegisterEventHandler(
         OnProcessExit(
             target_action=spawn_entity, on_exit=[load_joint_state_broadcaster]
@@ -230,7 +228,7 @@ def generate_launch_description():
             robot_state_publisher,
             static_tf,
             gz_ros2_bridge_clock,
-            delay_spawn,
+            spawn_entity,
             delay_jsb,
             delay_jtc,
             delay_gc,
