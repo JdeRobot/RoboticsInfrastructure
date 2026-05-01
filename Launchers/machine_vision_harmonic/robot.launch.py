@@ -140,7 +140,7 @@ def generate_launch_description():
             "-topic", "robot_description",
             "-x", "0.0",
             "-y", "0.0",
-            "-z", "0.9",
+            "-z", "0.01",
         ],
         output="screen",
     )
@@ -152,7 +152,7 @@ def generate_launch_description():
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"],
+        arguments=["/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock"],
         parameters=[{"use_sim_time": True}],
         output="screen",
     )
