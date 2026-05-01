@@ -15,7 +15,7 @@ def generate_launch_description():
     xacro_file = os.path.join(
         pkg_path,
         "urdf",
-        "ur5_robotiq_2f85_with_cams_harmonic.urdf.xacro"
+        "ur5_robotiq85_gripper.urdf.xacro"
     )
 
     controllers_file = os.path.join(
@@ -91,9 +91,16 @@ def generate_launch_description():
         )
     )
 
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
+    )
+
     return LaunchDescription([
         robot_state_publisher,
         clock_bridge,
+        static_tf,
         spawn_entity,
         delay_controllers,
     ])
