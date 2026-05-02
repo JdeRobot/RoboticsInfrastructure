@@ -387,13 +387,12 @@ def generate_launch_description():
         moveit_config_builder = moveit_config_builder.sensors_3d(
             file_path=sensors_3d_file
         )
-
-    moveit_config_builder = moveit_config_builder.robot_description_kinematics(
-        file_path=None
-    )
     
     # Build the configuration
     moveit_config = moveit_config_builder.to_moveit_configs()
+
+    moveit_config_dict = moveit_config.to_dict()
+    moveit_config_dict.pop("robot_description_kinematics", None)
 
     # Load additional configurations that need merging for EE
     raw_kinematics = load_yaml(
@@ -468,7 +467,7 @@ def generate_launch_description():
         output="screen",
         parameters=[
             robot_description,  # Add the robot description from earlier
-            moveit_config.to_dict(),
+            moveit_config_dict,
             pilz_planning_pipeline_config,
             joint_limits,  # This is critical - contains merged joint limits with acceleration limits for gripper
             moveit_controllers,
@@ -507,7 +506,7 @@ def generate_launch_description():
         arguments=["-d", rviz_full_config],
         parameters=[
             robot_description,
-            moveit_config.to_dict(),
+            moveit_config_dict,
             joint_limits,  # Add merged joint limits here too
             kinematics_yaml,
             {"use_sim_time": True},
