@@ -321,14 +321,6 @@ def generate_launch_description():
         file_path=srdf_file_path
     )
     
-    # Configure kinematics
-    moveit_config_builder = moveit_config_builder.robot_description_kinematics(
-        file_path=os.path.join(
-            get_package_share_directory("ros2srrc_robots"),
-            CONFIGURATION["rob"], "config", "kinematics.yaml"
-        )
-    )
-    
     # Configure joint limits
     if (EE == "false") or (EE == "true-NOctr"):
         joint_limits_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/joint_limits.yaml")
@@ -400,7 +392,21 @@ def generate_launch_description():
     moveit_config = moveit_config_builder.to_moveit_configs()
 
     # Load additional configurations that need merging for EE
-    kinematics_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/kinematics.yaml")
+    raw_kinematics = load_yaml(
+        "ros2srrc_robots",
+        CONFIGURATION["rob"] + "/config/kinematics.yaml"
+    )
+
+    # Si el yaml viene limpio
+    if "ur5_manipulator" in raw_kinematics:
+        kinematics_yaml = {
+            "robot_description_kinematics": raw_kinematics
+        }
+    else:
+        # Si viene con /**/ros__parameters
+        kinematics_yaml = {
+            "robot_description_kinematics": raw_kinematics["/**"]["ros__parameters"]
+        }
     pilz_cartesian_limits_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/pilz_cartesian_limits.yaml")
     
     # Add Pilz planner configuration
@@ -462,6 +468,7 @@ def generate_launch_description():
             pilz_planning_pipeline_config,
             joint_limits,  # This is critical - contains merged joint limits with acceleration limits for gripper
             moveit_controllers,
+            kinematics_yaml,
             {
                 "use_sim_time": True,
                 "trajectory_execution.allowed_execution_duration_scaling": 1.2,
@@ -498,6 +505,7 @@ def generate_launch_description():
             robot_description,
             moveit_config.to_dict(),
             joint_limits,  # Add merged joint limits here too
+            kinematics_yaml,
             {"use_sim_time": True},
         ]
     )
@@ -513,7 +521,7 @@ def generate_launch_description():
             package="ros2srrc_execution",
             executable="move",
             output="screen",
-            parameters=[robot_description, moveit_config.robot_description_semantic, {"robot_description_kinematics": kinematics_yaml}, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}, {"EE_PARAM": CONFIGURATION["ee"]}, {"ENV_PARAM": "gazebo"}],
+            parameters=[robot_description, moveit_config.robot_description_semantic, kinematics_yaml, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}, {"EE_PARAM": CONFIGURATION["ee"]}, {"ENV_PARAM": "gazebo"}],
         )
 
     else:
@@ -523,7 +531,7 @@ def generate_launch_description():
             package="ros2srrc_execution",
             executable="move",
             output="screen",
-            parameters=[robot_description, moveit_config.robot_description_semantic, {"robot_description_kinematics": kinematics_yaml}, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}, {"EE_PARAM": "none"}, {"ENV_PARAM": "gazebo"}],
+            parameters=[robot_description, moveit_config.robot_description_semantic, kinematics_yaml, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}, {"EE_PARAM": "none"}, {"ENV_PARAM": "gazebo"}],
         )
 
     # RobMove and RobPose:
@@ -532,14 +540,14 @@ def generate_launch_description():
         package="ros2srrc_execution",
         executable="robmove",
         output="screen",
-        parameters=[robot_description, moveit_config.robot_description_semantic, {"robot_description_kinematics": kinematics_yaml}, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}],
+        parameters=[robot_description, moveit_config.robot_description_semantic, kinematics_yaml, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}],
     )
     RobPoseInterface = Node(
         name="robpose",
         package="ros2srrc_execution",
         executable="robpose",
         output="screen",
-        parameters=[robot_description, moveit_config.robot_description_semantic, {"robot_description_kinematics": kinematics_yaml}, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}],
+        parameters=[robot_description, moveit_config.robot_description_semantic, kinematics_yaml, {"use_sim_time": True}, {"ROB_PARAM": CONFIGURATION["rob"]}],
     )
     
 
@@ -601,7 +609,7 @@ def generate_launch_description():
                 
                 # MoveIt!2:
                 TimerAction(
-                    period=2.0,
+                    period=5.0,
                     actions=[
                         rviz_node_full,
                         run_move_group_node,
