@@ -387,14 +387,18 @@ def generate_launch_description():
         moveit_config_builder = moveit_config_builder.sensors_3d(
             file_path=sensors_3d_file
         )
+
+    moveit_config_builder = moveit_config_builder.robot_description_kinematics(
+        file_path=None
+    )
     
     # Build the configuration
     moveit_config = moveit_config_builder.to_moveit_configs()
 
     # Load additional configurations that need merging for EE
     raw_kinematics = load_yaml(
-        "ros2srrc_robots",
-        CONFIGURATION["rob"] + "/config/kinematics.yaml"
+        "ur5_gripper_moveit_config",
+        "config/kinematics.yaml"
     )
 
     # Si el yaml viene limpio
