@@ -314,9 +314,7 @@ def generate_launch_description():
         srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + "_classic.srdf"
 
     # Build MoveIt configuration using MoveItConfigsBuilder
-    moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2").robot_description(
-        robot_description
-    )
+    moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2")
     
     # Configure robot description semantic (SRDF)
     moveit_config_builder = moveit_config_builder.robot_description_semantic(
