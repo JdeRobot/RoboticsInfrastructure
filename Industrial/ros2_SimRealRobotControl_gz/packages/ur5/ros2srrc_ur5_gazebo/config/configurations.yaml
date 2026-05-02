@@ -39,7 +39,7 @@ Configurations:
    
   - ID: "ur5_7"
     Name: "UR5 + Robotiq HandE gripper on top of Robot Stand."
-    urdf: "ur5_robotiq_2f85_with_cams.urdf.xacro"
+    urdf: "ur5_robotiq_2f85_with_cams_classic.urdf.xacro"
     rob: "ur5"
     ee: "robotiq_2f85"
 
