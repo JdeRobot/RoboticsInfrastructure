@@ -545,34 +545,16 @@ def generate_launch_description():
     LD.add_action(static_tf)
     LD.add_action(spawn_entity)
 
-    LD.add_action(RegisterEventHandler(
-        OnProcessExit(
-            target_action = spawn_entity,
-            on_exit = [
+    LD.add_action(
+        TimerAction(
+            period=3.0,
+            actions=[
                 joint_state_broadcaster_spawner,
-                ]
-            )
-        )
-    )
-
-    LD.add_action(RegisterEventHandler(
-        OnProcessExit(
-            target_action = spawn_entity,
-            on_exit = [
                 joint_trajectory_controller_spawner,
-                ]
-            )
-        )
-    )
-
-    LD.add_action(RegisterEventHandler(
-        OnProcessExit(
-            target_action = joint_trajectory_controller_spawner,
-            on_exit = [
                 gripper_controller_spawner,
             ]
         )
-    ))
+    )
 
     LD.add_action(RegisterEventHandler(
         OnProcessExit(
