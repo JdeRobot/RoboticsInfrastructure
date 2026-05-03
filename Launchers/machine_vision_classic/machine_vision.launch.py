@@ -310,7 +310,7 @@ def generate_launch_description():
         )
 
     # Build MoveIt configuration using MoveItConfigsBuilder
-    moveit_config_builder = MoveItConfigsBuilder("ros2srrc_ur5_moveit2_moveit_config")
+    moveit_config_builder = MoveItConfigsBuilder("ros2srrc_ur5_moveit2")
     
     # Configure robot description semantic (SRDF)
     moveit_config_builder = moveit_config_builder.robot_description_semantic(
@@ -385,7 +385,7 @@ def generate_launch_description():
     # Load additional configurations that need merging for EE
     raw_kinematics = load_yaml(
         "ur5_gripper_moveit_config",
-        "config/kinematics.yaml"
+        "config/kinematics_classic.yaml"
     )
 
     # Si el yaml viene limpio
