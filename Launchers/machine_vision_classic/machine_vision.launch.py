@@ -389,7 +389,7 @@ def generate_launch_description():
     )
 
     # Si el yaml viene limpio
-    if "ur5_manipulator" in raw_kinematics:
+    if "ur5_arm" in raw_kinematics:
         kinematics_yaml = {
             "robot_description_kinematics": raw_kinematics
         }
