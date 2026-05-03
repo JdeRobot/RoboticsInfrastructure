@@ -303,10 +303,14 @@ def generate_launch_description():
     if (EE == "false"):
         srdf_file_path = "config/" + CONFIGURATION["rob"] + ".srdf"
     else:
-        srdf_file_path = "config/" + CONFIGURATION["rob"] + CONFIGURATION["ee"] + "_classic.srdf"
+        srdf_file_path = os.path.join(
+            get_package_share_directory("ros2srrc_ur5_moveit2_moveit_config"),
+            "config",
+            "ur5robotiq_2f85_classic.srdf"
+        )
 
     # Build MoveIt configuration using MoveItConfigsBuilder
-    moveit_config_builder = MoveItConfigsBuilder(PACKAGE_NAME + "_moveit2")
+    moveit_config_builder = MoveItConfigsBuilder("ros2srrc_ur5_moveit2_moveit_config")
     
     # Configure robot description semantic (SRDF)
     moveit_config_builder = moveit_config_builder.robot_description_semantic(
@@ -452,9 +456,8 @@ def generate_launch_description():
                 "trajectory_execution.allowed_goal_duration_margin": 0.5,
                 "trajectory_execution.allowed_start_tolerance": 0.01,
                 "moveit_manage_controllers": True,
-                "planning_pipelines": ["move_group"],
-                # "default_planning_pipeline": "move_group",
-                "default_planning_pipeline": "move_group",
+                "planning_pipelines": ["pilz_industrial_motion_planner"],
+                "default_planning_pipeline": "pilz_industrial_motion_planner",
 
                 "publish_geometry_updates": False,
                 "publish_planning_scene": False,
@@ -582,7 +585,7 @@ def generate_launch_description():
                 
                 # Interfaces:
                 TimerAction(
-                    period=5.0,
+                    period=8.0,
                     actions=[
                         MoveInterface,
                         RobMoveInterface,
