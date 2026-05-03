@@ -291,19 +291,11 @@ def generate_launch_description():
         arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
     )
 
-    # EE CONTROLLERS:
-    if EE == "true":
-        CONTROLLERS = GetEEctr(CONFIGURATION["ee"])
-        CONTROLLER_NODES = []
-
-        for x in CONTROLLERS:
-            CONTROLLER_NODES.append(
-                Node(
-                    package="controller_manager",
-                    executable="spawner",
-                    arguments=[x, "-c", "/controller_manager"],
-                )
-            )
+    gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gripper_controller", "-c", "/controller_manager"],
+    )
 
     # *********************** MoveIt!2 *********************** #   
 
@@ -355,15 +347,7 @@ def generate_launch_description():
         publish_state_updates=True,
         publish_transforms_updates=True
     )
-    
-    # Configure trajectory execution - using robot controller config file
-    controller_config_path = os.path.join(
-        get_package_share_directory("ros2srrc_robots"),
-        CONFIGURATION["rob"], "config", "controller_moveit2.yaml"
-    )
-    moveit_config_builder = moveit_config_builder.trajectory_execution(
-        file_path=controller_config_path
-    )
+
     
     # Configure planning pipelines
     moveit_config_builder = moveit_config_builder.planning_pipelines(
@@ -422,22 +406,12 @@ def generate_launch_description():
         }
     }
 
-    # Add controller configuration for MoveIt
-    if (EE == "false") or (EE == "true-NOctr"):
-        moveit_simple_controllers_yaml = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/controller_moveit2.yaml")
-    else:
-        # Properly merge robot and end-effector controller configs
-        YAML_ROB = load_yaml("ros2srrc_robots", CONFIGURATION["rob"] + "/config/controller_moveit2.yaml")
-        YAML_EE = load_yaml("ros2srrc_endeffectors", CONFIGURATION["ee"] + "/config/controller_moveit2.yaml")
-        for x in YAML_ROB["controller_names"]:
-            YAML_EE["controller_names"].append(x)
-        moveit_simple_controllers_yaml = YAML_ROB | YAML_EE
+    moveit_controllers = load_yaml(
+        "ur5_gripper_moveit_config",
+        "config/moveit_controllers.yaml"
+    )
 
-    # Use the same structure as the backup file
-    moveit_controllers = {
-        "moveit_simple_controller_manager": moveit_simple_controllers_yaml,
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-    }
+    moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
     # Add trajectory execution parameters from backup
     trajectory_execution = {
@@ -591,19 +565,14 @@ def generate_launch_description():
         )
     )
 
-    if EE == "true":
-
-        for x in CONTROLLER_NODES:
-
-            LD.add_action(RegisterEventHandler(
-                OnProcessExit(
-                    target_action = joint_trajectory_controller_spawner,
-                    on_exit = [
-                        x,
-                        ]
-                    )
-                )
-            )
+    LD.add_action(RegisterEventHandler(
+        OnProcessExit(
+            target_action = joint_trajectory_controller_spawner,
+            on_exit = [
+                gripper_controller_spawner,
+            ]
+        )
+    ))
 
     LD.add_action(RegisterEventHandler(
         OnProcessExit(
