@@ -202,7 +202,6 @@ def generate_launch_description():
             planning_scene_monitor_parameters,
             {"use_sim_time": True},
         ],
-        condition=IfCondition(LaunchConfiguration("launch_rviz")),
     )
 
     delay_jsb = RegisterEventHandler(
