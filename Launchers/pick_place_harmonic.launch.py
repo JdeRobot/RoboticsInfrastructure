@@ -29,10 +29,18 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     gazebo_models_path = os.path.join(package_dir, "models")
-    gazebo_models2_path = os.path.join(package_dir2, "models")
+    gazebo_models2_path = os.path.join(package_dir2, "world", "models")
 
     world_file_name = "warehouse_arm_harmonic.world"
     world_path = os.path.join(package_dir2, "world", world_file_name)
+
+    resource_path = (
+        gazebo_models_path
+        + ":"
+        + os.path.dirname(package_dir2)
+        + ":"
+        + gazebo_models2_path
+    )
 
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -54,16 +62,9 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(
-        SetEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH", gazebo_models_path + ":" + gazebo_models2_path
-        )
+        SetEnvironmentVariable(name="GZ_SIM_RESOURCE_PATH", value=resource_path)
     )
 
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH", gazebo_models_path + ":" + gazebo_models2_path
-    )
-
-    ld.add_action(set_env_vars_resources)
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
 
