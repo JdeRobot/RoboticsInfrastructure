@@ -89,7 +89,6 @@ install(
     f1/models
     f1/params
     f1/launch
-    f1/urdf
 
     roomba_robot/models
     roomba_robot/params

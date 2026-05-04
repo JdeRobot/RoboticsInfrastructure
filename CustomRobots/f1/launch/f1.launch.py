@@ -55,6 +55,8 @@ def launch_setup(context):
         },
     ).toxml()
 
+    print(robot_description_content)
+
     robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
