@@ -50,6 +50,12 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("ur_type", default_value="ur5"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
     ]
 
     xacro_file = os.path.join(pkg_share_dir, "urdf", "ur5_robotiq85_gripper.urdf.xacro")
@@ -80,6 +86,13 @@ def generate_launch_description():
     # RAM launches its own GUI client (gz sim -g), so we must NOT launch GUI here
     # This fixes the first-load issue where two GUIs conflict
 
+    x = LaunchConfiguration("x")
+    y = LaunchConfiguration("y")
+    z = LaunchConfiguration("z")
+    R = LaunchConfiguration("R")
+    P = LaunchConfiguration("P")
+    Y = LaunchConfiguration("Y")
+
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
@@ -91,17 +104,17 @@ def generate_launch_description():
             "-allow_renaming",
             "true",
             "-x",
-            "0.0",
+            x,
             "-y",
-            "0.0",
+            y,
             "-z",
-            "0.9",
+            z,
             "-R",
-            "0.0",
+            R,
             "-P",
-            "0.0",
+            P,
             "-Y",
-            "0.0",
+            Y,
         ],
         output="screen",
     )
@@ -109,7 +122,7 @@ def generate_launch_description():
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        arguments=["0", "0", "0.9", "0", "0", "0", "world", "base_link"],
+        arguments=[x, y, Z, R, P, Y, "world", "base_link"],
         output="screen",
         parameters=[{"use_sim_time": True}],
     )
