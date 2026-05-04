@@ -1,4 +1,5 @@
 import os
+import xacro
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -24,7 +25,7 @@ def launch_setup(context):
     nodes_to_start = []
 
     f1_sensor = "cam"
-    f1_model = "holo"
+    f1_model = "holonomic"
 
     if sensor.perform(context) == "laser":
         f1_sensor = "laser"
@@ -35,19 +36,34 @@ def launch_setup(context):
     urdf_file = os.path.join(package_dir, "urdf", f"f1_{f1_model}_{f1_sensor}.urdf")
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
-    robot_description = ParameterValue(
-        Command(["xacro", " ", urdf_file]),
-        value_type=str,
+    # =========================
+    # ROBOT DESCRIPTION (URDF)
+    # =========================
+    xacro_file = os.path.join(
+        package_dir,
+        "models",
+        "f1",
+        "f1.urdf.xacro",
     )
+
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "holonomic": "true" if f1_model == "holonomic" else "false",
+            "ackermann": "true" if f1_model == "ackermann" else "false",
+            "camera": "true" if f1_sensor == "camera" else "false",
+            "laser": "true" if f1_sensor == "laser" else "false",
+        },
+    ).toxml()
+
+    robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
         output="screen",
-        parameters=[
-            {"use_sim_time": use_sim_time, "robot_description": robot_description}
-        ],
+        parameters=[robot_description, {"use_sim_time": True}],
     )
 
     gz_spawn_entity = Node(

@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<robot name="f1"
-  xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/models/f1/f1.urdf.xacro"/>
-
-  <xacro:ackermann/>
-  <xacro:f1_camera xyz="0.45 0.04 0.1" rpy="0 0 0" name="cam_f1_left" parent="base"/>
-</robot>
