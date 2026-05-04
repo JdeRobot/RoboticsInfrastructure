@@ -324,9 +324,9 @@ def generate_launch_description():
     return LaunchDescription(
         declared_arguments
         + [
-            set_gz_plugin_path,
-            set_ld_library_path,
-            set_resource_path,
+            # set_gz_plugin_path,
+            # set_ld_library_path,
+            # set_resource_path,
             clock_bridge,
             robot_state_publisher,
             static_tf,
