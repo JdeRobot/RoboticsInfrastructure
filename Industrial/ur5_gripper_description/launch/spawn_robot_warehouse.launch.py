@@ -30,8 +30,6 @@ def generate_launch_description():
         ur5_share_parent + ":" + robotiq_share_parent + ":" + warehouse_models_path
     )
 
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-
     set_env = [
         SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", resource_path),
         SetEnvironmentVariable(
@@ -224,7 +222,8 @@ def generate_launch_description():
     delay_mg = TimerAction(period=10.0, actions=[move_group_node])
 
     return LaunchDescription(
-        declared_arguments
+        set_env
+        + declared_arguments
         + [
             robot_state_publisher,
             static_tf,
