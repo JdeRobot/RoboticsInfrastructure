@@ -33,7 +33,6 @@ def launch_setup(context):
     if mode.perform(context) == "ackermann":
         f1_model = "ackermann"
 
-    urdf_file = os.path.join(package_dir, "urdf", f"f1_{f1_model}_{f1_sensor}.urdf")
     bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
 
     # =========================
