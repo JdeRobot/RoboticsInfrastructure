@@ -30,6 +30,8 @@ def generate_launch_description():
         ur5_share_parent + ":" + robotiq_share_parent + ":" + warehouse_models_path
     )
 
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
     set_env = [
         SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", resource_path),
         SetEnvironmentVariable(
