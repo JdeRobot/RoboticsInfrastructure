@@ -241,7 +241,7 @@ def generate_launch_description():
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        arguments=[x, y, Z, R, P, Y, "world", "base_link"],
+        arguments=[x, y, z, R, P, Y, "world", "base_link"],
     )
 
     spawn_robot = Node(
