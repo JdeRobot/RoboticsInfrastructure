@@ -150,25 +150,35 @@ def generate_launch_description():
     load_joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=[
+            "joint_trajectory_controller",
+            "--param-file",
+            controllers_file,
+            "-c",
+            "/controller_manager",
+        ],
         output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
     load_gripper_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["gripper_controller", "-c", "/controller_manager"],
+        arguments=[
+            "gripper_controller",
+            "--param-file",
+            controllers_file,
+            "-c",
+            "/controller_manager",
+        ],
         output="screen",
-        parameters=[{"use_sim_time": True}],
     )
 
-    moveit_config_package = "ur5_gripper_moveit_config"
+    moveit_config_package = "ros2srrc_ur5_moveit2_moveit_config"
     moveit_pkg = get_package_share_directory(moveit_config_package)
 
     ompl_planning_yaml = os.path.join(moveit_pkg, "config", "ompl_planning.yaml")
     kinematics_yaml = os.path.join(moveit_pkg, "config", "kinematics.yaml")
-    srdf_file = os.path.join(moveit_pkg, "srdf", "ur5_robotiq.srdf")
+    srdf_file = os.path.join(moveit_pkg, "config", "ur5robotiq_2f85.srdf")
     moveit_controllers = os.path.join(moveit_pkg, "config", "controllers.yaml")
 
     with open(srdf_file, "r") as f:

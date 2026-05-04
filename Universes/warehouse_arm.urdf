@@ -1,18 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="warehouse_arm">
 
-  <link name="ground">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="100 100 0.1"/>
-      </geometry>
-      <material name="gray">
-        <color rgba="0.5 0.5 0.5 1"/>
-      </material>
-    </visual>
-  </link>
-
   <link name="conveyor_belt">
     <visual>
       <origin xyz="0.6 0 0.95" rpy="0 0 1.57"/>
@@ -26,11 +14,11 @@
     <visual>
       <origin xyz="-0.5 0 0.1" rpy="0 -0 1.57"/>
       <geometry>
-        <mesh filename="package://pick_place/models/ground_logo_big/meshes/ground_logo.dae" scale="1 1 1"/>
+        <box size="10 10 0.1"/>
       </geometry>
-      <geometry>
-        <mesh filename="package://pick_place/models/ground_logo_big/materials/textures/ground_logo.png" scale="1 1 1"/>
-      </geometry>
+      <material name="textured">
+        <texture filename="package://pick_place/models/ground_logo_big/materials/textures/RubberMat_logo.png"/>
+      </material>
     </visual>
   </link>
 

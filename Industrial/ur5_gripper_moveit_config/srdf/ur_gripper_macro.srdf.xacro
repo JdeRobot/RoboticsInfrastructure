@@ -60,6 +60,13 @@
     <!--END EFFECTOR - Purpose - Represent information about an end effector.-->
     <end_effector name="gripper" parent_link="${prefix}tool0" group="gripper" parent_group="${prefix}${name}_manipulator" />
 
+    <!-- PASSIVE JOINTS (FIX para mimic joints) -->
+    <passive_joint name="robotiq_85_right_knuckle_joint"/>
+    <passive_joint name="robotiq_85_left_inner_knuckle_joint"/>
+    <passive_joint name="robotiq_85_right_inner_knuckle_joint"/>
+    <passive_joint name="robotiq_85_left_finger_tip_joint"/>
+    <passive_joint name="robotiq_85_right_finger_tip_joint"/>
+
     <!--VIRTUAL JOINT - Purpose - this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <!--PASSIVE JOINTS - MoveIt automatically detects mimic joints from URDF, don't declare them here -->
     <!-- Mimic joints (robotiq_85_right_knuckle_joint, robotiq_85_left_inner_knuckle_joint, etc.) 

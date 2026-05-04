@@ -1,0 +1,49 @@
+# ROS 2 Sim-to-Real Robot Control: UR5 Robot.
+Configurations:
+
+  - ID: "ur5_1"
+    Name: "UR5 on top of Robot Stand."
+    urdf: "ur5.urdf.xacro"
+    rob: "ur5"
+    ee: "none"
+
+  - ID: "ur5_2"
+    Name: "UR5 + Robotiq 2f-85 gripper on top of Robot Stand."
+    urdf: "ur5_robotiq_2f85.urdf.xacro"
+    rob: "ur5"
+    ee: "robotiq_2f85"
+
+  - ID: "ur5_3"
+    Name: "UR5 + Robotiq HandE gripper on top of Robot Stand."
+    urdf: "ur5_robotiq_hande.urdf.xacro"
+    rob: "ur5"
+    ee: "robotiq_hande"
+    
+  - ID: "ur5_4"
+    Name: "UR5 + Robotiq 2f-85 gripper + INDEPENDENT Yamaha linear actuator"
+    urdf: "ur5_robotiq_2f85_yamaha.urdf.xacro"
+    rob: "ur5"
+    ee: "robotiq_2f85"
+    
+  - ID: "ur5_5"
+    Name: "UR5 + Robotiq 2f-85 gripper + MOVEIT2-controlled Yamaha linear actuator"
+    urdf: "ur5_robotiq_2f85_yamaha_moveit.urdf.xacro"
+    rob: "ur5"
+    ee: "robotiq_2f85"
+    
+  - ID: "ur5_6"
+    Name: "UR5 + Vacuum-Gripper on top of Yamaha linear actuator"
+    urdf: "ur5_ls_vgr_yamaha.urdf.xacro"
+    rob: "ur5"
+    ee: "ls_vgr"
+   
+  - ID: "ur5_7"
+    Name: "UR5 + Robotiq HandE gripper on top of Robot Stand."
+    urdf: "ur5_robotiq_2f85_with_cams.urdf.xacro"
+    rob: "ur5"
+    ee: "robotiq_2f85"
+
+
+    
+
+   

@@ -26,7 +26,7 @@ BumperData contactsToBumperData(const std::vector<ros_gz_interfaces::msg::Contac
 /* ### HAL INTERFACE ### */
 class BumperNode : public rclcpp::Node {
 public:
-    BumperNode(const std::vector<std::string>& topics);
+    BumperNode(const std::vector<std::string>& topics, const std::string& node_name = "bumper_node");
     BumperData getBumperData() const;
 
 private:
