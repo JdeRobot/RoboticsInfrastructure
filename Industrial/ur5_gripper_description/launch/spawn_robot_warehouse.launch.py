@@ -235,6 +235,5 @@ def generate_launch_description():
             delay_jtc,
             delay_gc,
             delay_mg,
-            delay_rviz,
         ]
     )
