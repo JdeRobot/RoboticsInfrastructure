@@ -24,7 +24,7 @@ def launch_setup(context):
 
     nodes_to_start = []
 
-    f1_sensor = "cam"
+    f1_sensor = "camera"
     f1_model = "holonomic"
 
     if sensor.perform(context) == "laser":
