@@ -23,7 +23,7 @@ def launch_setup(context):
 
     nodes_to_start = []
 
-    sensor = autonomous_car
+    sensor = gz_sensor.perform(context)
 
     bridge_yaml = os.path.join(package_dir, "params", f"autonomous_car_${sensor}.yaml")
 
