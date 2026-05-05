@@ -29,8 +29,8 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    gz_ros2_control_install = "/home/ws/install"
-    gz_lib_path = os.path.join(gz_ros2_control_install, "gz_ros2_control", "lib")
+    gz_ros2_control_lib = "/home/ws/install/gz_ros2_control/lib"
+    gz_link_attacher_lib = "/home/ws/install/gz_link_attacher/lib"
 
     custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
 
@@ -46,13 +46,15 @@ def generate_launch_description():
             "GZ_SIM_SYSTEM_PLUGIN_PATH": (
                 "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins:"
                 "/usr/lib/x86_64-linux-gnu/gz-sim-8/systems:"
-                + gz_lib_path +
-                ":/opt/ros/humble/lib"
+                + gz_ros2_control_lib + ":"
+                + gz_link_attacher_lib + ":"
+                "/opt/ros/humble/lib"
             ),
             "LD_LIBRARY_PATH": (
                 "/usr/lib/x86_64-linux-gnu:"
-                + gz_lib_path +
-                ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu"
+                + gz_ros2_control_lib + ":"
+                + gz_link_attacher_lib + ":"
+                "/opt/ros/humble/lib"
             ),
             "DISPLAY": os.environ.get("DISPLAY", ":0"),
         }
