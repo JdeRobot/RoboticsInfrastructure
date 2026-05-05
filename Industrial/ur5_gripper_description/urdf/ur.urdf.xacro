@@ -88,7 +88,7 @@
      <origin xyz="0 0 0" rpy="0 0 0" />         
    </xacro:ur_robot>
 
-   <xacro:if value="$(arg sim_gazebo)">
+   <xacro:if value="$(arg sim_gazebo) and not $(arg sim_gz)">
     <!-- Gazebo plugins -->
     <!-- update the plugin  -->
     <gazebo reference="world">

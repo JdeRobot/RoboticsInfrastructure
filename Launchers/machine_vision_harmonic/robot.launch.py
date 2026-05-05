@@ -35,7 +35,7 @@ def generate_launch_description():
     xacro_file = os.path.join(
         pkg_gazebo,
         "urdf",
-        "ur5_robotiq_2f85_with_cams_gz.urdf.xacro"
+        "ur5_robotiq_2f85_with_cams.urdf.xacro"
     )
 
     controllers_file = os.path.join(
