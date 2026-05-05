@@ -152,7 +152,7 @@ moveit::planning_interface::MoveGroupInterface::Plan plan_EE() {
     // Execute the plan
     if (success)
     {
-        RES = "PLANNING: OK";
+        RES = "PLANNING: OK (EE)";
         return(my_plan);
     }
     else
