@@ -83,11 +83,12 @@
   />
 
   <!-- Include XACRO-MACRO file of the Robotiq 2f-85: -->
-  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
-  <xacro:robotiq_2f85 
-    bringup="${bringup}"
-    parent_link="tool0"
-  />
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
+  <xacro:robotiq_85_gripper 
+    prefix="" 
+    parent="tool0">
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
+  </xacro:robotiq_85_gripper>
 
 
   <!-- World: LINK -->
