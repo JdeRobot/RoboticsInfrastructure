@@ -232,6 +232,13 @@ def generate_launch_description():
     robot_description_path = os.path.join(get_package_share_directory(PACKAGE_NAME + '_gazebo'))
     # ROBOT urdf file path:
     xacro_file = os.path.join(robot_description_path,'urdf',CONFIGURATION["urdf"])
+
+    controllers_file = os.path.join(
+        get_package_share_directory("ur5_gripper_description"),
+        "config",
+        "ur5_controllers.yaml"
+    )
+    
     # Generate ROBOT_DESCRIPTION variable:
     doc = xacro.parse(open(xacro_file))
     
@@ -244,6 +251,7 @@ def generate_launch_description():
         "EE": EE,
         "EE_name": CONFIGURATION["ee"],
         "hmi": HMI,
+        "simulation_controllers": controllers_file,
     })
     
     # EE -> Controller file needed?
