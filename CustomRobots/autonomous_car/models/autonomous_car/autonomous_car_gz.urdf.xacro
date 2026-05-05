@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="f1_gz"
+<robot name="autonomous_car_gz"
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="camera" params="xyz rpy name parent">
 
