@@ -154,7 +154,7 @@
       <visual>
         <origin rpy="0 0 0" xyz="0.13 0 0"/>
         <geometry>
-          <mesh filename="$(find custom_robots)/models/f1/meshes/front_left.obj" scale="0.02 0.02 0.02"/>
+          <mesh filename="$(find custom_robots)/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
         </geometry>
       </visual>
     </link>
@@ -184,7 +184,7 @@
       <visual>
         <origin rpy="0 0 0" xyz="-0.13 0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/f1/meshes/front_left.obj" scale="0.02 0.02 0.02"/>
+          <mesh filename="$(find custom_robots)/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
         </geometry>
       </visual>
     </link>
