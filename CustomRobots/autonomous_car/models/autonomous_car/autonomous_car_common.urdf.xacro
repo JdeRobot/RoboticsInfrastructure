@@ -34,7 +34,7 @@
     </link>
 
     <joint name="bl_axle" type="continuous">
-      <origin rpy="0 0 0" xyz="-0.775 -1.63364 0.324997"/>
+      <origin rpy="0 0 0" xyz="-0.775 -1.52 0.324997"/>
       <parent link="chassis_link"/>
       <child link="bl_1"/>
       <axis xyz="1 0 0"/>
@@ -64,7 +64,7 @@
     </link>
 
     <joint name="br_axle" type="continuous">
-      <origin rpy="0 0 0" xyz="0.775 -1.63364 0.324997"/>
+      <origin rpy="0 0 0" xyz="0.775 -1.52 0.324997"/>
       <parent link="chassis_link"/>
       <child link="br_1"/>
       <axis xyz="-1 0 0"/>
@@ -94,7 +94,7 @@
     </link>
 
     <joint name="l_steer" type="revolute">
-      <origin rpy="0 0 0" xyz="-0.825 1.51736 0.324997"/>
+      <origin rpy="0 0 0" xyz="-0.825 1.32 0.324997"/>
       <parent link="chassis_link"/>
       <child link="l_steer_1"/>
       <axis xyz="0 0 1"/>
@@ -112,7 +112,7 @@
     </link>
 
     <joint name="r_steer" type="revolute">
-      <origin rpy="0 0 0" xyz="0.825 1.51736 0.324997"/>
+      <origin rpy="0 0 0" xyz="0.825 1.32 0.324997"/>
       <parent link="chassis_link"/>
       <child link="r_steer_1"/>
       <axis xyz="0 0 1"/>

@@ -240,9 +240,9 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
-42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
-43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
 45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 47	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
