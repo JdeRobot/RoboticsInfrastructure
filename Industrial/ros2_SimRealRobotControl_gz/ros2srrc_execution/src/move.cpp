@@ -408,8 +408,6 @@ private:
             moveit::core::RobotStatePtr current_state =
                 (action == "MoveG" ? move_group_interface_EE.getCurrentState() : move_group_interface_ROB.getCurrentState());
 
-            moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
-
             rt.setRobotTrajectoryMsg(
                 *current_state,
                 MyPlan.trajectory_
@@ -440,7 +438,8 @@ private:
             } 
 
             if (ExecSUCCESS){
-                RCLCPP_INFO(this->get_logger(), "%s - %s: Movement executed!", param_ROB.c_str(), action.c_str());
+                std::string name = (action == "MoveG") ? param_EE : param_ROB;
+                RCLCPP_INFO(this->get_logger(), "%s - %s: Movement executed!", name.c_str(), action.c_str());
                 result->result = action + ":SUCCESS";
                 goal_handle->succeed(result);
             } else {
