@@ -412,7 +412,7 @@ def generate_launch_description():
 
     moveit_controllers = load_yaml(
         "ur5_gripper_moveit_config",
-        "config/moveit_controllers.yaml"
+        "config/moveit_controllers_classic.yaml"
     )
 
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]

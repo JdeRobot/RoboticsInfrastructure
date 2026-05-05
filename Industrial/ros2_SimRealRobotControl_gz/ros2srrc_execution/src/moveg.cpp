@@ -69,12 +69,22 @@ MoveGSTRUCT MoveGAction (double VAL, std::vector<double> JP, ros2srrc_data::msg:
     };
 
     // 2. CONVERT -> VAL to GripperPose value (GP):
-    double GP = (GPMax - GPMin) * (VAL/100.0);
+    double GP = GPMin + (GPMax - GPMin) * (VAL / 100.0);
 
     // 3. SET GRIPPER POSE vector:
-    for (int i=0; i<JP.size(); i++){
-        JP[i] = GP*JointsVector[i];
-    };
+    for (int i = 0; i < JP.size(); i++) {
+
+        double value = GP;
+
+        if (JointsVector[i] < 0) {
+            value = GPMax - (value - GPMin);
+        }
+
+        if (value > GPMax) value = GPMax;
+        if (value < GPMin) value = GPMin;
+
+        JP[i] = value;
+    }
 
     RESULT.RES = "LIMITS: OK";
     RESULT.JP = JP;
