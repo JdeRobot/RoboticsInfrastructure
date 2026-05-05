@@ -3,16 +3,12 @@
   <world name="default">
     <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
     <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-    
+
     <gravity>0 0 -9.8</gravity>
     <atmosphere type="adiabatic"/>
 
@@ -33,11 +29,6 @@
     <include>
       <uri>model://autopark_sideways</uri>
       <pose> 0 -3 0 0 0 3.14</pose>
-    </include>
-
-    <include>
-      <uri>model://prius_autoparking_3laser_harmonic</uri>
-      <pose>-7 2.5 1.0 0 0 -1.54</pose>
     </include>
 
     <include>
@@ -100,63 +91,63 @@
       <uri>model://lamp_post</uri>
       <name>farola_0</name>
       <pose>20 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_1</name>
       <pose>15 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_2</name>
       <pose>10 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_3</name>
       <pose>5 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_4</name>
       <pose>0 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_5</name>
       <pose>-5 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_6</name>
       <pose>-10 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_7</name>
       <pose>-15 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
 
     <include>
       <uri>model://lamp_post</uri>
       <name>farola_8</name>
       <pose>-20 -8 0 0 0 3.14</pose>
-      <static>false</static>
+      <static>true</static>
     </include>
   </world>
 </sdf>

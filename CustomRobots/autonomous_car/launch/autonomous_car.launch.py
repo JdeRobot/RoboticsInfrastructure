@@ -17,23 +17,15 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
-    sensor = LaunchConfiguration("sensor")
-    mode = LaunchConfiguration("mode")
+    gz_sensor = LaunchConfiguration("sensor")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
-    f1_sensor = "camera"
-    f1_model = "holonomic"
+    sensor = autonomous_car
 
-    if sensor.perform(context) == "laser":
-        f1_sensor = "laser"
-
-    if mode.perform(context) == "ackermann":
-        f1_model = "ackermann"
-
-    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
+    bridge_yaml = os.path.join(package_dir, "params", f"autonomous_car_${sensor}.yaml")
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -41,21 +33,18 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "f1",
-        "f1.urdf.xacro",
+        "autonomous_car",
+        "autonomous_car.urdf.xacro",
     )
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "holonomic": "true" if f1_model == "holonomic" else "false",
-            "ackermann": "true" if f1_model == "ackermann" else "false",
-            "camera": "true" if f1_sensor == "camera" else "false",
-            "laser": "true" if f1_sensor == "laser" else "false",
+            "camera": "true" if sensor == "camera" else "false",
+            "lidar": "true" if sensor == "lidar" else "false",
+            "laser": "true" if sensor == "laser" else "false",
         },
     ).toxml()
-
-    print(robot_description_content)
 
     robot_description = {"robot_description": robot_description_content}
 
@@ -74,7 +63,7 @@ def launch_setup(context):
             "-topic",
             "/robot_description",
             "-name",
-            "f1",
+            "autonomous_car",
             "-allow_renaming",
             "true",
             "-x",
@@ -105,11 +94,11 @@ def launch_setup(context):
     nodes_to_start.append(gz_ros2_bridge)
 
     # Sensor deppending on sensor arguments
-    if f1_sensor == "camera":
+    if sensor == "camera":
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/cam_f1_left/image_raw"],
+            arguments=["/prius_autoparking/image_raw"],
             output="screen",
         )
         nodes_to_start.append(gz_ros2_image_bridge)
@@ -131,7 +120,6 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("mode", default_value="holo"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

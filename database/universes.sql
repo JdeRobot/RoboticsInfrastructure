@@ -168,10 +168,10 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 38	Industrial Machine Vision World	38	0
 39	Labyrinth Escape World	39	0
 40	Obstacle Avoidance Harmonic	40	3
-41	Autopark_line	41	0
-42	Autopark_battery	42	0
-43	Autopark_sideways	43	0
-44	Autopark Lidar Line	44	0
+41	Autopark_line	41	8
+42	Autopark_battery	42	8
+43	Autopark_sideways	43	8
+44	Autopark Lidar Line	41	7
 45	Vacuums House Classic	45	0
 46 	3d Reconstruction Classic	1	0
 47	Spa Circuit	47	0
@@ -240,10 +240,9 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 38	Machine Vision Industrial	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-44	Autopark Lidar Line	/opt/jderobot/Launchers/autopark_line_lidar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autopark_line_lidar.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,1.0,0.0,0.0,-1.54}
 45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 47	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -280,14 +279,16 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera
 5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser
-6	TurtleBot 2	None	None	None
-7	TurtleBot 3	None	None	None
-8	Holonomic Logistic	None	None	None
-9	Ackermann Logistic	None	None	None
-10	Autonomous car	None	None	None
-11	Drone	None	None	None
-11	Vacuum cleaner	None	None	None
-11	Rover 4wd	None	None	None
+6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera
+7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar
+8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser
+9	TurtleBot 2	None	None	None
+10	TurtleBot 3	None	None	None
+11	Holonomic Logistic	None	None	None
+12	Ackermann Logistic	None	None	None
+13	Drone	None	None	None
+14	Vacuum cleaner	None	None	None
+15	Rover 4wd	None	None	None
 \.
 -- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 

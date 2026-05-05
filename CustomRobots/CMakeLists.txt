@@ -90,6 +90,10 @@ install(
     f1/params
     f1/launch
 
+    autonomous_car/models
+    autonomous_car/params
+    autonomous_car/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
@@ -111,7 +115,6 @@ install(
     ackermann_logistic_robot/models
     autoparking/models
     autopark_harmonic/models
-    autopark_harmonic/params
     drone_assets/models
     drone_assets/bridges
     taxi_navigator/models
