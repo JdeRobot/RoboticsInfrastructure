@@ -76,6 +76,19 @@
       <xacro:ur5_transmission />
     </xacro:unless>
 
+    <!-- UR5 GAZEBO - ROS2_CONTROL: -->
+    <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_ros2control_classic.xacro" />
+    <xacro:ur5_ros2control 
+      bringup="${bringup}"
+      robot_ip="${robot_ip}"
+      EE="${EE}"
+      EE_name="${EE_name}"
+
+      script_filename="${script_filename}"
+      input_recipe_filename="${input_recipe_filename}"
+      output_recipe_filename="${output_recipe_filename}"
+    />
+
     <!-- ***** UR5 ROBOT .urdf SERIAL CHAIN ***** -->
 
     <!-- Links: -->
