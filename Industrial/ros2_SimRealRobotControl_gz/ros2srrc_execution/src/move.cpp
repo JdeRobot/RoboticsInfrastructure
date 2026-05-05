@@ -401,9 +401,12 @@ private:
         if (RES == "PLANNING: OK"){
 
             robot_trajectory::RobotTrajectory rt(
-                move_group_interface_ROB.getRobotModel(),
-                "ur5_manipulator"
+                (action == "MoveG" ? move_group_interface_EE.getRobotModel() : move_group_interface_ROB.getRobotModel()),
+                (action == "MoveG" ? param_EE : "ur5_manipulator")
             );
+
+            moveit::core::RobotStatePtr current_state =
+                (action == "MoveG" ? move_group_interface_EE.getCurrentState() : move_group_interface_ROB.getCurrentState());
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
 
@@ -421,7 +424,13 @@ private:
 
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
-            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            bool ExecSUCCESS;
+
+            if (action == "MoveG"){
+                ExecSUCCESS = (move_group_interface_EE.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            } else {
+                ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            }
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");
