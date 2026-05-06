@@ -20,11 +20,6 @@
     </scene>
 
     <include>
-      <uri>model://roombaROS</uri>
-      <pose>-1 1.5 0 0 0 0</pose>
-    </include>
-
-    <include>
       <name>house</name>
       <uri>model://house_int2</uri>
       <pose>0 0 0 0 0 0</pose>
