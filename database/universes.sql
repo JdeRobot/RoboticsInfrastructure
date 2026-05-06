@@ -282,13 +282,14 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera
 7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar
 8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser
-9	TurtleBot 2	None	None	None
-10	TurtleBot 3	None	None	None
-11	Holonomic Logistic	None	None	None
-12	Ackermann Logistic	None	None	None
-13	Drone	None	None	None
-14	Vacuum cleaner	None	None	None
-15	Rover 4wd	None	None	None
+9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser
+10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
+11	TurtleBot 2	None	None	None
+12	TurtleBot 3	None	None	None
+13	Holonomic Logistic	None	None	None
+14	Ackermann Logistic	None	None	None
+15	Drone	None	None	None
+16	Rover 4wd	None	None	None
 \.
 -- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 

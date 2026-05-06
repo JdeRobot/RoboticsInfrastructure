@@ -1,0 +1,179 @@
+<?xml version="1.0" ?>
+<robot name="vacuum_cleaner"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/vacuum_cleaner/vacuum_cleaner.urdf.xacro"/>
+
+  <xacro:macro name="vacuum_cleaner">
+
+    <link name="base">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.047800 "/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/create_body.dae"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.047800 "/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/create_body.dae"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="right_bumper_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
+      <parent link="base"/>
+      <child link="right_bumper_link"/>
+    </joint>
+
+    <link name="right_bumper_link">
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/right_bumper.dae"/>
+        </geometry>
+      </collision>
+      <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper"/>
+    </link>
+
+    <joint name="center_bumper_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
+      <parent link="base"/>
+      <child link="center_bumper_link"/>
+    </joint>
+
+    <link name="center_bumper_link">
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
+        </geometry>
+      </collision>
+      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
+    </link>
+
+    <joint name="left_bumper_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
+      <parent link="base"/>
+      <child link="left_bumper_link"/>
+    </joint>
+
+    <link name="left_bumper_link">
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/left_bumper.dae"/>
+        </geometry>
+      </collision>
+      <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper"/>
+    </link>
+
+    <joint name="front_wheel_joint" type="fixed">
+      <origin rpy="0 1.570700 1.570700" xyz="0.13 0 0.017"/>
+      <parent link="base"/>
+      <child link="front_wheel_link"/>
+    </joint>
+
+    <link name="front_wheel_link">
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <sphere radius="0.018"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <sphere radius="0.009"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="rear_wheel_joint" type="fixed">
+      <origin rpy="0 1.570700 1.570700" xyz="-0.13 0 0.017"/>
+      <parent link="base"/>
+      <child link="rear_wheel_link"/>
+    </joint>
+
+    <link name="rear_wheel_link">
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <sphere radius="0.015"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <sphere radius="0.0075"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="left_wheel_joint" type="continuous">
+      <origin rpy="0 0 0" xyz="0 0.13 0.032"/>
+      <parent link="base"/>
+      <child link="left_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+    </joint>
+
+    <link name="left_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.023"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.023"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="right_wheel_joint" type="continuous">
+      <origin rpy="0 0 0" xyz="0 0.13 0.032"/>
+      <parent link="base"/>
+      <child link="right_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+    </joint>
+
+    <link name="right_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.023"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 1.570700 1.570700" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.023"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:ackermann_steering topic="/prius_autoparking/cmd_vel"/>
+    <xacro:joints/>
+    <xacro:odom topic="/prius_autoparking/odom" freq="50"/>
+    <!-- <xacro:f1_steer_controller topic="/model/prius_autoparking/steering_wheel_cmd" joint="steering_joint"/> -->
+  </xacro:macro>
+</robot>
