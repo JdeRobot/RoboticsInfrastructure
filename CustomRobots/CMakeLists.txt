@@ -94,6 +94,10 @@ install(
     autonomous_car/params
     autonomous_car/launch
 
+    vacuum_cleaner/models
+    vacuum_cleaner/params
+    vacuum_cleaner/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
