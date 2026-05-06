@@ -171,9 +171,8 @@
       </visual>
     </link>
 
-    <xacro:ackermann_steering topic="/prius_autoparking/cmd_vel"/>
-    <xacro:joints/>
-    <xacro:odom topic="/prius_autoparking/odom" freq="50"/>
-    <!-- <xacro:f1_steer_controller topic="/model/prius_autoparking/steering_wheel_cmd" joint="steering_joint"/> -->
+    <xacro:velocity topic="/roombaROS/cmd_vel"/>
+    <xacro:odom topic="/roombaROS/odom" freq="20"/>
+    <xacro:noise_odom topic="/odom_noisy" vel_topic="/roombaROS/cmd_vel"/>
   </xacro:macro>
 </robot>
