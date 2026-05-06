@@ -19,6 +19,12 @@ public:
     double to_double() const; 
 };
 
+/*
+ * Translates from ROS Clock to JderobotTypes SimTimeData.
+ * @param clock: ROS Clock to translate
+ * @type clock: Clock
+ * @return a SimTimeData translated from clock
+ */
 SimTimeData simTime2SimTimeData(const rosgraph_msgs::msg::Clock& clock);
 
 /* ### HAL INTERFACE ### */
