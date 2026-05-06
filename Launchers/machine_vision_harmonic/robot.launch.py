@@ -210,6 +210,7 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
+        arguments=["--ros-args", "--log-level", "warn"],
         parameters=[
             robot_description,
             robot_description_semantic,

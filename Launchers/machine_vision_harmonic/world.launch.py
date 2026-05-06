@@ -43,55 +43,50 @@ def generate_launch_description():
         custom_models_path
     )
 
-    gz_env = {
-            "GZ_SIM_RESOURCE_PATH": resource_path,
-            "GZ_SIM_SYSTEM_PLUGIN_PATH": (
-                "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins:"
-                "/usr/lib/x86_64-linux-gnu/gz-sim-8/systems:"
-                + gz_lib_path + ":"
-                + gz_link_attacher_lib + ":"
-                ":/opt/ros/humble/lib"
-            ),
-            "LD_LIBRARY_PATH": (
-                "/usr/lib/x86_64-linux-gnu:"
-                + gz_lib_path + ":"
-                + gz_link_attacher_lib + ":"
-                ":/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu"
-            ),
-            "DISPLAY": os.environ.get("DISPLAY", ":0"),
-        }
-    
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-s", "-r", "-v", "4", world_path],
         output="screen",
-        additional_env=gz_env,
         shell=False,
-    )
-
-    world_entity_cmd = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=["-name", "world", "-file", world_path],
-        output="screen",
     )
 
     ld = LaunchDescription()
 
+    existing_ld = os.environ.get("LD_LIBRARY_PATH", "")
+
     ld.add_action(
         SetEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+            name="LD_LIBRARY_PATH",
+            value=(
+                gz_lib_path + ":"
+                + gz_link_attacher_lib + ":"
+                + "/home/ws/install/lib:"
+                + "/home/ws/install/linkattacher_msgs/lib:"
+                + "/opt/ros/humble/lib:"
+                + existing_ld
+            ),
         )
     )
 
     ld.add_action(
-        AppendEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
+        SetEnvironmentVariable(
+            name="GZ_SIM_SYSTEM_PLUGIN_PATH",
+            value=(
+                "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins:"
+                "/usr/lib/x86_64-linux-gnu/gz-sim-8/systems:"
+                + gz_lib_path + ":"
+                + gz_link_attacher_lib + ":"
+                + "/opt/ros/humble/lib"
+            ),
+        )
+    )
+
+    ld.add_action(
+        SetEnvironmentVariable(
+            name="GZ_SIM_RESOURCE_PATH",
+            value=resource_path,
         )
     )
 
     ld.add_action(gazebo)
-    ld.add_action(world_entity_cmd)
 
     return ld
