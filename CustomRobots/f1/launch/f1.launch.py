@@ -5,7 +5,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch_ros.actions import Node, PushROSNamespace
+from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.parameter_descriptions import ParameterValue
 
 
@@ -22,7 +22,7 @@ def launch_setup(context):
 
     package_dir = get_package_share_directory("custom_robots")
 
-    nodes_to_start = [PushROSNamespace("turtlesim2")]
+    nodes_to_start = [PushRosNamespace("turtlesim2")]
 
     f1_sensor = "camera"
     f1_model = "holonomic"
