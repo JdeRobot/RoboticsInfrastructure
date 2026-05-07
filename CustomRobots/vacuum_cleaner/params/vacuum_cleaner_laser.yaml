@@ -18,18 +18,18 @@
 
 - ros_topic_name: "/roombaROS/events/center_bumper"
   gz_topic_name: "/roombaROS/events/center_bumper"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  ros_type_name: "gazebo_msgs/msg/ContactsState"
   gz_type_name: "gz.msgs.Contacts"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/roombaROS/events/right_bumper"
   gz_topic_name: "/roombaROS/events/right_bumper"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  ros_type_name: "gazebo_msgs/msg/ContactsState"
   gz_type_name: "gz.msgs.Contacts"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/roombaROS/events/left_bumper"
   gz_topic_name: "/roombaROS/events/left_bumper"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  ros_type_name: "gazebo_msgs/msg/ContactsState"
   gz_type_name: "gz.msgs.Contacts"
   direction: GZ_TO_ROS
