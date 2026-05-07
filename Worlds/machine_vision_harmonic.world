@@ -929,6 +929,7 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose>-0.5 0 0.76 0 0 0</pose>
     </model>
+
     <model name='unit_box'>
       <pose>-0.7 -0.435456 0.927284 0 0 0</pose>
       <link name='link'>
@@ -947,7 +948,7 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <size>0.4 0.04 0.5</size>
+              <size>0.4 0.05 0.04</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -967,14 +968,13 @@
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.4 0.04 0.5</size>
+              <size>0.4 0.05 0.4</size>
             </box>
           </geometry>
           <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
+            <ambient>0.7 0.7 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
         <self_collide>0</self_collide>
@@ -983,6 +983,7 @@
       </link>
       <static>1</static>
     </model>
+
     <model name='unit_cylinder'>
       <pose>-0.3 0.38 0.897305 0 0 0</pose>
       <link name='link'>
@@ -1002,7 +1003,7 @@
           <geometry>
             <cylinder>
               <radius>0.08</radius>
-              <length>0.4</length>
+              <length>0.28</length>
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -1023,7 +1024,7 @@
           <geometry>
             <cylinder>
               <radius>0.08</radius>
-              <length>0.04</length>
+              <length>0.28</length>
             </cylinder>
           </geometry>
           <material>
@@ -1442,6 +1443,35 @@
         <kinematic>0</kinematic>
       </link>
       <pose>0.65 0.09 1.01 0 -0 0</pose>
+    </model>
+
+    <model name="robotbase">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <pose>0 0 0.45 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.09</radius>
+              <length>0.9</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.09</radius>
+              <length>0.9</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
     </model>
 
 

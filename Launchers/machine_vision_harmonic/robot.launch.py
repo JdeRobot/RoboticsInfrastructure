@@ -88,6 +88,11 @@ def generate_launch_description():
     )
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
+    move_group_capabilities = {
+        "capabilities": "pilz_industrial_motion_planner/MoveGroupSequenceAction "
+        "pilz_industrial_motion_planner/MoveGroupSequenceService"
+    }
+
     planning_pipelines_config = {
         "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
         "default_planning_pipeline": "pilz_industrial_motion_planner",
@@ -136,11 +141,16 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-name", "ur5",
-            "-topic", "robot_description",
-            "-x", "0.0",
-            "-y", "0.0",
-            "-z", "0.01",
+            "-topic",
+            "robot_description",
+            "-name",
+            "ur5_robotiq",
+            "-x",
+            "0.0",
+            "-y",
+            "0.0",
+            "-z",
+            "0.9",
         ],
         output="screen",
     )
@@ -152,7 +162,7 @@ def generate_launch_description():
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock"],
+        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"],
         parameters=[{"use_sim_time": True}],
         output="screen",
     )
@@ -163,8 +173,11 @@ def generate_launch_description():
         arguments=[
             "/hand_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/hand_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+            "/hand_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+
             "/base_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/base_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+            "/base_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
         ],
         output="screen",
     )
@@ -191,17 +204,6 @@ def generate_launch_description():
         arguments=["gripper_controller"],
     )
 
-    delay_controllers = RegisterEventHandler(
-        OnProcessExit(
-            target_action=spawn_entity,
-            on_exit=[
-                joint_state_broadcaster,
-                joint_trajectory_controller,
-                gripper_controller,
-            ],
-        )
-    )
-
     # =========================
     # MOVEIT
     # =========================
@@ -210,12 +212,12 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        arguments=["--ros-args", "--log-level", "warn"],
         parameters=[
             robot_description,
             robot_description_semantic,
             kinematics_yaml,
             planning_pipelines_config,
+            move_group_capabilities,
             moveit_controllers,
             combined_planning,
             {"use_sim_time": True},
@@ -232,6 +234,8 @@ def generate_launch_description():
         robot_state_publisher,
         static_tf,
         spawn_entity,
-        delay_controllers,
+        joint_state_broadcaster,
+        joint_trajectory_controller,
+        gripper_controller,
         move_group,
     ])
