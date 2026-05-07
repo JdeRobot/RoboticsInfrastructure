@@ -32,7 +32,7 @@
     </joint>
 
     <link name="right_bumper_link">
-      <collision>
+      <collision name="right_bumper">
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/right_bumper.dae"/>
@@ -48,7 +48,7 @@
     </joint>
 
     <link name="center_bumper_link">
-      <collision>
+      <collision name="center_bumper">
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
@@ -64,7 +64,7 @@
     </joint>
 
     <link name="left_bumper_link">
-      <collision>
+      <collision name="left_bumper">
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/left_bumper.dae"/>
