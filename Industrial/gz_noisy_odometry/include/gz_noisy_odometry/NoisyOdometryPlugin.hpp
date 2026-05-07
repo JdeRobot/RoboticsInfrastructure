@@ -57,14 +57,11 @@ namespace custom_plugins
     // This is the state published as odom_noisy and it is allowed to drift.
     gz::math::Pose3d noisy_pose_internal_;
 
-    // True simulator pose used only to extract the real motion increment
-    // between consecutive simulation steps.
-    gz::math::Pose3d last_true_pose_;
-
     std::chrono::steady_clock::duration last_update_time_{0};
 
-    // Latest commanded velocities are still stored because they are useful
-    // as auxiliary information and to keep compatibility with the original plugin.
+    // Latest commanded velocities received from cmd_vel.
+    // These are integrated as the nominal motion, mirroring what wheel encoders
+    // would observe — including when the robot is physically blocked.
     double current_v_{0.0};
     double current_w_{0.0};
 
