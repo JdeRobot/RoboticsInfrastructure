@@ -97,7 +97,7 @@
         </contact>
       </sensor>
       <plugin filename="gz-sim-touchplugin-system" name="gz::sim::systems::TouchPlugin">
-        <target>house</target>
+        <target>house_int2_harmonic</target>
         <namespace>${topic}</namespace>
         <time>0.001</time>
         <enabled>true</enabled>

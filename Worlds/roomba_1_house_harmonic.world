@@ -20,7 +20,7 @@
     </scene>
 
     <include>
-      <name>house</name>
+      <name>house_int2_harmonic</name>
       <uri>model://house_int2</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
