@@ -57,11 +57,13 @@ namespace custom_plugins
     // This is the state published as odom_noisy and it is allowed to drift.
     gz::math::Pose3d noisy_pose_internal_;
 
+    // True simulator pose used only to extract the real motion increment
+    // between consecutive simulation steps.
+    gz::math::Pose3d last_true_pose_;
+
     std::chrono::steady_clock::duration last_update_time_{0};
 
     // Latest commanded velocities received from cmd_vel.
-    // These are integrated as the nominal motion, mirroring what wheel encoders
-    // would observe — including when the robot is physically blocked.
     double current_v_{0.0};
     double current_w_{0.0};
 
@@ -80,6 +82,11 @@ namespace custom_plugins
     double alpha2_{0.0};
     double alpha3_{0.0};
     double alpha4_{0.0};
+
+    // Fraction of cmd_vel that leaks into the odometry when the robot is
+    // physically blocked (wall contact). Models wheel slip against the obstacle.
+    // Typical range: 0.01 – 0.05.
+    double slip_factor_{0.02};
   };
 }
 
