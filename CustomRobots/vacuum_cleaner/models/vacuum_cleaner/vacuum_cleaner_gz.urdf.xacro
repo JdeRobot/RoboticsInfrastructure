@@ -94,10 +94,10 @@
 
       <sensor name='${name}_sensor' type='contact'>
         <contact>
-          <collision>${name}</collision>
+          <collision>${name}_collision</collision>
           <topic>${topic}</topic>
         </contact>
-        <always_on>1</always_on>
+        <always_on>true</always_on>
         <update_rate>20</update_rate>
       </sensor>
 

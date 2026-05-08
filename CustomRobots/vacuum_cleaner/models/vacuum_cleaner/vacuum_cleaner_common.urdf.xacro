@@ -32,13 +32,13 @@
     </joint>
 
     <link name="right_bumper_link">
-      <collision name="right_bumper">
+      <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/right_bumper.dae"/>
         </geometry>
       </collision>
-      <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper"/>
+      <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper_link"/>
     </link>
 
     <joint name="center_bumper_joint" type="fixed">
@@ -48,13 +48,13 @@
     </joint>
 
     <link name="center_bumper_link">
-      <collision name="center_bumper">
+      <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
         </geometry>
       </collision>
-      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
+      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper_link"/>
     </link>
 
     <joint name="left_bumper_joint" type="fixed">
@@ -64,13 +64,13 @@
     </joint>
 
     <link name="left_bumper_link">
-      <collision name="left_bumper">
+      <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/left_bumper.dae"/>
         </geometry>
       </collision>
-      <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper"/>
+      <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper_link"/>
     </link>
 
     <joint name="front_wheel_joint" type="fixed">
