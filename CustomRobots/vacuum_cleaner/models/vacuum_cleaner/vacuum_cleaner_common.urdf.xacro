@@ -3,6 +3,9 @@
   <xacro:include filename="$(find custom_robots)/models/vacuum_cleaner/vacuum_cleaner_gz.urdf.xacro"/>
 
   <xacro:macro name="vacuum_cleaner">
+    <gazebo>
+      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
+    </gazebo>
 
     <link name="base">
       <inertial>
@@ -31,13 +34,12 @@
     </joint>
 
     <link name="right_bumper_link">
-      <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+      <collision name="right_bumper_collision">
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/right_bumper.dae"/>
         </geometry>
       </collision>
-      <!-- <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper_link"/> -->
+      <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper"/>
     </link>
 
     <joint name="center_bumper_joint" type="fixed">
@@ -52,19 +54,8 @@
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
         </geometry>
       </collision>
-      <!-- <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/> -->
+      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
     </link>
-
-    <gazebo>
-      <sensor name="center_bumper" type="contact">
-        <always_on>true</always_on>
-        <update_rate>20.0</update_rate>
-        <contact>
-          <collision>center_bumper_collision</collision>
-          <topic>/roombaROS/events/center_bumper</topic>
-        </contact>
-      </sensor>
-    </gazebo>
 
     <joint name="left_bumper_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
@@ -73,13 +64,12 @@
     </joint>
 
     <link name="left_bumper_link">
-      <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+      <collision name="left_bumper_collision">
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/left_bumper.dae"/>
         </geometry>
       </collision>
-      <!-- <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper_link"/> -->
+      <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper"/>
     </link>
 
     <joint name="front_wheel_joint" type="fixed">

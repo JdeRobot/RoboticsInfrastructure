@@ -10,11 +10,6 @@
 
   <xacro:vacuum_cleaner/>
 
-  <gazebo>
-    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
-  </gazebo>
-
-
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" name="camera" parent="base"/>
   </xacro:if>
