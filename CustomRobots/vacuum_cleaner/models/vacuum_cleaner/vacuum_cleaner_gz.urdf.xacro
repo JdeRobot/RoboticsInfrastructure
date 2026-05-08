@@ -94,7 +94,7 @@
 
       <sensor name='${name}_sensor' type='contact'>
         <contact>
-          <collision>${name}_collision</collision>
+          <collision>${name}_link_collision</collision>
           <topic>${topic}</topic>
         </contact>
         <always_on>true</always_on>
