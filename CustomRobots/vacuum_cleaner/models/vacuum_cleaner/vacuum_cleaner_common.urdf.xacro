@@ -49,7 +49,6 @@
 
     <link name="center_bumper_link">
       <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
         </geometry>

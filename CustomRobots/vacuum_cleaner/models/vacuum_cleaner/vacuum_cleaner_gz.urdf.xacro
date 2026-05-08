@@ -89,29 +89,24 @@
   </xacro:macro>
 
   <xacro:macro name="bumper" params="topic name">
-    <gazebo>
+    <gazebo reference="${name}_link">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <maxVel>0.01</maxVel>
+      <minDepth>0.001</minDepth>
+      <maxContacts>10</maxContacts>
+      <material>Gazebo/DarkGrey</material>
+
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
 
       <sensor name='${name}_sensor' type='contact'>
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
         <contact>
           <collision>${name}_link_collision</collision>
           <topic>${topic}</topic>
         </contact>
-        <always_on>true</always_on>
-        <update_rate>20</update_rate>
       </sensor>
-
-      <!-- <sensor name='${name}' type='contact'>
-        <contact>
-          <collision>${name}</collision>
-        </contact>
-      </sensor>
-      <plugin filename="gz-sim-touchplugin-system" name="gz::sim::systems::TouchPlugin">
-        <target>house_int2_harmonic</target>
-        <namespace>${topic}</namespace>
-        <time>0.001</time>
-        <enabled>true</enabled>
-      </plugin> -->
     </gazebo>
   </xacro:macro>
 
