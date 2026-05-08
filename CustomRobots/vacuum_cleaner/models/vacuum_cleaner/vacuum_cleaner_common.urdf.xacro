@@ -54,8 +54,8 @@
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
         </geometry>
       </collision>
-      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
     </link>
+    <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
 
     <joint name="left_bumper_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
