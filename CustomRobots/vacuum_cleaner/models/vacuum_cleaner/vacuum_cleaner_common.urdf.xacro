@@ -52,8 +52,19 @@
           <mesh filename="$(find custom_robots)/models/vacuum_cleaner/meshes/center_bumper.dae"/>
         </geometry>
       </collision>
-      <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
+      <!-- <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/> -->
     </link>
+
+    <gazebo>
+      <sensor name="center_bumper" type="contact">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <contact>
+          <collision>center_bumper_collision</collision>
+          <topic>/roombaROS/events/center_bumper</topic>
+        </contact>
+      </sensor>
+    </gazebo>
 
     <joint name="left_bumper_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
