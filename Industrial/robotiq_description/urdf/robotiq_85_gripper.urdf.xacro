@@ -273,31 +273,31 @@
     </gazebo>
 
     <gazebo>
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <plugin filename="gz-sim-mimic-joint-system" name="gz::sim::systems::MimicJoint">
         <joint>${prefix}robotiq_85_right_knuckle_joint</joint>
         <mimic_joint>${prefix}robotiq_85_left_knuckle_joint</mimic_joint>
         <multiplier>1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <plugin filename="gz-sim-mimic-joint-system" name="gz::sim::systems::MimicJoint">
         <joint>${prefix}robotiq_85_left_inner_knuckle_joint</joint>
         <mimic_joint>${prefix}robotiq_85_left_knuckle_joint</mimic_joint>
         <multiplier>1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <plugin filename="gz-sim-mimic-joint-system" name="gz::sim::systems::MimicJoint">
         <joint>${prefix}robotiq_85_right_inner_knuckle_joint</joint>
         <mimic_joint>${prefix}robotiq_85_left_knuckle_joint</mimic_joint>
         <multiplier>1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <plugin filename="gz-sim-mimic-joint-system" name="gz::sim::systems::MimicJoint">
         <joint>${prefix}robotiq_85_left_finger_tip_joint</joint>
         <mimic_joint>${prefix}robotiq_85_left_knuckle_joint</mimic_joint>
         <multiplier>-1.0</multiplier>
         <offset>0.0</offset>
       </plugin>
-      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint">
+      <plugin filename="gz-sim-mimic-joint-system" name="gz::sim::systems::MimicJoint">
         <joint>${prefix}robotiq_85_right_finger_tip_joint</joint>
         <mimic_joint>${prefix}robotiq_85_left_knuckle_joint</mimic_joint>
         <multiplier>-1.0</multiplier>
