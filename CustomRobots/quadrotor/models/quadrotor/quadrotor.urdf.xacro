@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<robot name="quadrotor"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="camera" default="true"/>
+
+  <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_common.urdf.xacro"/>
+
+  <xacro:quadrotor/>
+
+  <xacro:if value="$(arg camera)">
+    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="drone0"/>
+    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="drone0"/>
+  </xacro:if>
+</robot>

@@ -98,6 +98,10 @@ install(
     vacuum_cleaner/params
     vacuum_cleaner/launch
 
+    quadrotor/models
+    quadrotor/params
+    quadrotor/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models

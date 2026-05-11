@@ -3,9 +3,9 @@
 <sdf version="1.8">
     <model name='quadrotor_dual_cam'>
         <!-- Platform base model-->
-        <!-- <include merge="true">
+        <include merge="true">
             <uri>model://quadrotor_base</uri>
-        </include> -->
+        </include>
 
         <!-- TFs -->
         <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
