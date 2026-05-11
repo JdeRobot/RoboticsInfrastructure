@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
 
-  <xacro:macro name="quadrotor">
+  <xacro:macro name="quadrotor" params="namespace">
     <gazebo>
       <include merge="true">
         <uri>model://quadrotor_base</uri>
@@ -10,9 +10,9 @@
     </gazebo>
 
     <xacro:imu/>
-    <xacro:velocity namespace="drone0"/>
+    <xacro:velocity namespace="${namespace}"/>
     <xacro:tf freq="100"/>
-    <xacro:odom topic="/drone0/odom" freq="100"/>
-    <xacro:motors namespace="drone0"/>
+    <xacro:odom topic="/${namespace}/odom" freq="100"/>
+    <xacro:motors namespace="${namespace}"/>
   </xacro:macro>
 </robot>

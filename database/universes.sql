@@ -158,7 +158,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 28	Restaurant	21	0
 29	Vacuums House Markers	25	0
 30	Small Laser Mapping Warehouse	33	0
-31	Rescue People Harmonic	31	0
+31	Rescue People Harmonic	31	11
 32	Follow Road Harmonic	32	0
 33	Laser Mapping Warehouse Low Noise	12	0
 34	Pick And Place World	34	0
@@ -284,11 +284,11 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser
 9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
-11	TurtleBot 2	None	None	None
+11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	quadrotor	sensor:=camera namespace:drone0
 12	TurtleBot 3	None	None	None
 13	Holonomic Logistic	None	None	None
 14	Ackermann Logistic	None	None	None
-15	Drone	None	None	None
+15	urtleBot 2	None	None	None
 16	Rover 4wd	None	None	None
 \.
 -- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py

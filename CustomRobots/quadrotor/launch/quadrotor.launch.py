@@ -4,10 +4,10 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, IncludeLaunchDescription
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
-
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def launch_setup(context):
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -18,6 +18,7 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
+    gz_namespace = LaunchConfiguration("namespace")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -25,7 +26,7 @@ def launch_setup(context):
 
     sensor = gz_sensor.perform(context)
 
-    bridge_yaml = os.path.join(package_dir, "params", f"vacuum_cleaner_{sensor}.yaml")
+    bridge_yaml = os.path.join(package_dir, "params", f"quadrotor_{sensor}.yaml")
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -33,15 +34,15 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "vacuum_cleaner",
-        "vacuum_cleaner.urdf.xacro",
+        "quadrotor",
+        "quadrotor.urdf.xacro",
     )
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
             "camera": "true" if sensor == "camera" else "false",
-            "laser": "true" if sensor == "laser" else "false",
+            "namespace": gz_namespace.perform(context),
         },
     ).toxml()
 
@@ -60,9 +61,9 @@ def launch_setup(context):
         executable="create",
         arguments=[
             "-topic",
-            "/robot_description",
+            gz_namespace + "/robot_description",
             "-name",
-            "vacuum_cleaner",
+            "quadrotor",
             "-allow_renaming",
             "true",
             "-x",
@@ -84,23 +85,61 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        namespace=gz_namespace,
+        parameters=[{"config_file": bridge_yaml}],
         output="screen",
+    )
+
+    as2_gt_bridge = Node(
+        package="as2_gazebo_assets",
+        executable="ground_truth_bridge",
+        namespace=gz_namespace,
+        output="screen",
+        parameters=[
+            {
+                "name_space": gz_namespace,
+                "pose_frame_id": "earth",
+                "twist_frame_id": [gz_namespace,"/base_link"],
+            },
+        ],
+    )
+
+    as2 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(get_package_share_directory("jderobot_drones"), "launch"),
+                "/as2_default_gazebo_sim.launch.py",
+            ]
+        ),
+        launch_arguments={
+            "namespace": gz_namespace,
+        }.items(),
     )
 
     nodes_to_start.append(robot_state_publisher_node)
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
+    nodes_to_start.append(as2_gt_bridge)
+    nodes_to_start.append(as2)
 
     # Sensor deppending on sensor arguments
     if sensor == "camera":
-        gz_ros2_image_bridge = Node(
+        gz_ros2_frontal_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/camera/image_raw"],
+            arguments=[f"/{gz_namespace}/frontal_cam/image_raw"],
             output="screen",
         )
-        nodes_to_start.append(gz_ros2_image_bridge)
+
+        gz_ros2_ventral_image_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            arguments=[f"/{gz_namespace}/ventral_cam/image_raw"],
+            output="screen",
+        )
+
+        nodes_to_start.append(gz_ros2_frontal_image_bridge)
+        nodes_to_start.append(gz_ros2_ventral_image_bridge)
 
     return nodes_to_start
 
@@ -118,7 +157,8 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="laser"))
+    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
+    declared_arguments.append(DeclareLaunchArgument("namespace", description="Namespace to use"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

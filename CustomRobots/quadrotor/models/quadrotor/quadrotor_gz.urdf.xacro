@@ -157,8 +157,8 @@
       </plugin>
     </gazebo>
 
-    <xacro:if value="${rotor}">
-      <xacro:motor rotor="${rotor-1}" />
+    <xacro:if value="${rotor - 1}">
+      <xacro:motor rotor="${rotor-1}" namespace="${namespace}"/>
     </xacro:if>
   </xacro:macro>
 
