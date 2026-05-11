@@ -9,8 +9,12 @@ SimTimeData::SimTimeData() {
 std::string SimTimeData::to_string() const {
     std::ostringstream oss;
     oss << "SimTimeData: {\n   sec: " << seconds
-        << "\n   nanosec: " << nanoseconds;
+        << "\n   nanosec: " << nanoseconds << "\n}";
     return oss.str();
+}
+
+double SimTimeData::to_double() const {
+    return static_cast<double>(seconds) + (static_cast<double>(nanoseconds) * 1e-9);
 }
 
 SimTimeData simTime2SimTimeData(const rosgraph_msgs::msg::Clock& clock) {
@@ -20,8 +24,8 @@ SimTimeData simTime2SimTimeData(const rosgraph_msgs::msg::Clock& clock) {
     return clockData;
 }
 
-SimTimeNode::SimTimeNode() 
-    : Node("simulation_time_node") {
+SimTimeNode::SimTimeNode(const std::string& node_name) 
+    : Node(node_name) {
     
     rclcpp::QoS qos_policy(rclcpp::KeepLast(1));
     qos_policy.best_effort();
@@ -34,9 +38,11 @@ SimTimeNode::SimTimeNode()
 }
 
 void SimTimeNode::listener_callback(const rosgraph_msgs::msg::Clock::SharedPtr msg) {
+    std::lock_guard<std::mutex> guard(lock_);
     last_sim_time_ = *msg;
 }
 
-SimTimeData SimTimeNode::getSimTime() const {
+SimTimeData SimTimeNode::getSimTime() {
+    std::lock_guard<std::mutex> guard(lock_);
     return simTime2SimTimeData(last_sim_time_);
 }
