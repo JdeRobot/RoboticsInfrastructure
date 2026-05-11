@@ -288,14 +288,14 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 12	TurtleBot 3	None	None	None
 13	Holonomic Logistic	None	None	None
 14	Ackermann Logistic	None	None	None
-15	urtleBot 2	None	None	None
+15	TurtleBot 2	None	None	None
 16	Rover 4wd	None	None	None
 \.
--- 1	Turtlebot 3	/opt/jderobot/Launchers/robots/turtlebot3/spawn_robot.launch.py
 
 --
 -- Data for Name: tools; Type: TABLE DATA; Schema: public; Owner: user-dev
 --
+
 
 COPY public.tools (name, base_config) FROM stdin;
 console	None

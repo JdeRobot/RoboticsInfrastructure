@@ -67,10 +67,10 @@
     </include>
 
     <!-- Ocean -->
-    <include>
+    <!-- <include>
       <uri>model://ocean</uri>
       <pose>0 0 -0.02 0 0 -1.57</pose>
-    </include>
+    </include> -->
 
   </world>
 </sdf>
