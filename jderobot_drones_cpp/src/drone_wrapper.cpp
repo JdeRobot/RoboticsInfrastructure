@@ -48,9 +48,20 @@ void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az) {
 
 void DroneWrapper::setCmdMix(float vx, float vy, float z, float az) {
   // Send speed command in a plane (X/Y) with fixed height (Z) and yaw angle.
-  // The API requires exactly 6 arguments: (xy_frame, vx, vy, z_frame, z, yaw_speed)
-  // Explicitly casting to std::string to avoid ambiguous overload errors.
-  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed(std::string("base_link"), vx, vy, std::string("earth"), z, az);
+  // To avoid ambiguous overload errors in the Aerostack2 C++ API, we use the 
+  // unambiguous signature that accepts PoseStamped and TwistStamped messages.
+  
+  geometry_msgs::msg::PoseStamped pose_msg;
+  pose_msg.header.frame_id = "earth";
+  pose_msg.pose.position.z = z;
+
+  geometry_msgs::msg::TwistStamped twist_msg;
+  twist_msg.header.frame_id = "base_link";
+  twist_msg.twist.linear.x = vx;
+  twist_msg.twist.linear.y = vy;
+  twist_msg.twist.angular.z = az;
+
+  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed(pose_msg, twist_msg);
 }
 
 void DroneWrapper::takeoff(float height) {
