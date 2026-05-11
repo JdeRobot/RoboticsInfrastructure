@@ -1,6 +1,6 @@
 #include "jderobot_drones_cpp/drone_wrapper.hpp"
 
-DroneWrapper::DroneWrapper(const std::string &drone_id) : as2::Node(drone_id) {
+DroneWrapper::DroneWrapper(const std::string &drone_id) : as2::Node(drone_id + "_wrapper", drone_id) {
   // QoS for sensors (best effort) and targets (transient local)
   auto qos_sensors = rclcpp::QoS(10).best_effort().durability_volatile();
   auto qos_targets = rclcpp::QoS(10).reliable().transient_local();
