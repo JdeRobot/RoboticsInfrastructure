@@ -47,7 +47,8 @@ void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az) {
 
 void DroneWrapper::setCmdMix(float vx, float vy, float z, float az) {
   // Send speed command in a plane (X/Y) with fixed height (Z) and yaw angle.
-  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed("earth", vx, vy, z, az, "base_link", 1.0f, 1.0f);
+  // The API requires exactly 6 arguments: (xy_frame, vx, vy, z_frame, z, yaw_speed)
+  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed("base_link", vx, vy, "earth", z, az);
 }
 
 void DroneWrapper::takeoff(float height) {
