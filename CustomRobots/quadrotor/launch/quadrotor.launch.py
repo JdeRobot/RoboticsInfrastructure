@@ -47,7 +47,7 @@ def launch_setup(context):
         },
     ).toxml()
 
-    robot_description = {"robot_description": robot_description_content}
+    robot_description = {f"{namespace}/robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -62,7 +62,7 @@ def launch_setup(context):
         executable="create",
         arguments=[
             "-topic",
-            "/robot_description",
+            namespace + "/robot_description",
             "-name",
             "quadrotor",
             "-allow_renaming",
