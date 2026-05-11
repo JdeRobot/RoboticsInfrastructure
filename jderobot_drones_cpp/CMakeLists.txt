@@ -19,15 +19,22 @@ find_package(std_srvs REQUIRED)
 
 include_directories(include)
 
-add_library(drone_lib src/drone_wrapper.cpp src/image_sub.cpp)
-ament_target_dependencies(drone_lib 
+add_library(drone_lib_cpp src/drone_wrapper.cpp src/image_sub.cpp)
+
+ament_target_dependencies(drone_lib_cpp 
     rclcpp as2_core as2_msgs as2_motion_reference_handlers 
     geometry_msgs sensor_msgs std_srvs cv_bridge image_transport OpenCV)
+
+install(TARGETS drone_lib_cpp
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 install(DIRECTORY include/ DESTINATION include)
 
 install(DIRECTORY launch sim_config DESTINATION share/${PROJECT_NAME})
 
 ament_export_include_directories(include)
-ament_export_libraries(drone_lib)
+ament_export_libraries(drone_lib_cpp)
 ament_package()
