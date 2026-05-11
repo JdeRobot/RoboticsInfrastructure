@@ -19,13 +19,13 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
     gz_namespace = LaunchConfiguration("namespace")
-    namespace = gz_namespace.perform(context)
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
     sensor = gz_sensor.perform(context)
+    namespace = gz_namespace.perform(context)
 
     bridge_yaml = os.path.join(package_dir, "params", f"quadrotor_{sensor}.yaml")
 
@@ -86,7 +86,7 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        namespace=namespace,
+        namespace=gz_namespace,
         parameters=[{"config_file": bridge_yaml}],
         output="screen",
     )
@@ -94,13 +94,13 @@ def launch_setup(context):
     as2_gt_bridge = Node(
         package="as2_gazebo_assets",
         executable="ground_truth_bridge",
-        namespace=namespace,
+        namespace=gz_namespace,
         output="screen",
         parameters=[
             {
-                "name_space": namespace,
+                "name_space": gz_namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": [namespace,"/base_link"],
+                "twist_frame_id": [gz_namespace,"/base_link"],
             },
         ],
     )
