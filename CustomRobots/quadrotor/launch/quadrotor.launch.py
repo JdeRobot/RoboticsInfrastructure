@@ -62,7 +62,7 @@ def launch_setup(context):
         executable="create",
         arguments=[
             "-topic",
-            namespace + "/robot_description",
+            "/robot_description",
             "-name",
             "quadrotor",
             "-allow_renaming",
