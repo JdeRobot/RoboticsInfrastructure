@@ -15,13 +15,14 @@ find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(std_srvs REQUIRED)
 
 include_directories(include)
 
 add_library(drone_lib src/drone_wrapper.cpp src/image_sub.cpp)
 ament_target_dependencies(drone_lib 
     rclcpp as2_core as2_msgs as2_motion_reference_handlers 
-    geometry_msgs sensor_msgs cv_bridge image_transport OpenCV)
+    geometry_msgs sensor_msgs std_srvs cv_bridge image_transport OpenCV)
 
 install(DIRECTORY include/ DESTINATION include)
 
