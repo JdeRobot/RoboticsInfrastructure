@@ -37,18 +37,20 @@ DroneWrapper::DroneWrapper(const std::string &drone_id) : as2::Node(drone_id) {
 
 void DroneWrapper::setCmdPos(float x, float y, float z, float az) {
   // Send position command with yaw angle. The API requires 9 arguments including max velocities (vx, vy, vz).
-  pos_handler_->sendPositionCommandWithYawAngle("earth", x, y, z, az, "base_link", 1.0f, 1.0f, 1.0f);
+  // Explicitly casting to std::string to avoid ambiguous overload errors.
+  pos_handler_->sendPositionCommandWithYawAngle(std::string("earth"), x, y, z, az, std::string("base_link"), 1.0f, 1.0f, 1.0f);
 }
 
 void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az) {
-  // Send speed command with yaw angle.
-  speed_handler_->sendSpeedCommandWithYawSpeed("base_link", vx, vy, vz, az);
+  // Send speed command with yaw angle. Explicit std::string conversion.
+  speed_handler_->sendSpeedCommandWithYawSpeed(std::string("base_link"), vx, vy, vz, az);
 }
 
 void DroneWrapper::setCmdMix(float vx, float vy, float z, float az) {
   // Send speed command in a plane (X/Y) with fixed height (Z) and yaw angle.
   // The API requires exactly 6 arguments: (xy_frame, vx, vy, z_frame, z, yaw_speed)
-  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed("base_link", vx, vy, "earth", z, az);
+  // Explicitly casting to std::string to avoid ambiguous overload errors.
+  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed(std::string("base_link"), vx, vy, std::string("earth"), z, az);
 }
 
 void DroneWrapper::takeoff(float height) {
