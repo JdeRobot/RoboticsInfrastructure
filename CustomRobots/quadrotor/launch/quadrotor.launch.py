@@ -47,12 +47,13 @@ def launch_setup(context):
         },
     ).toxml()
 
-    robot_description = {f"{namespace}/robot_description": robot_description_content}
+    robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
