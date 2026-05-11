@@ -1,7 +1,7 @@
 #include "jderobot_drones_cpp/image_sub.hpp"
 
 ImageSubscriberNode::ImageSubscriberNode() : rclcpp::Node("image_subscriber_node") {
-  auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort().volatile_durability();
+  auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort().durability_volatile();
 
   frontal_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
       "/drone0/sensor_measurements/frontal_camera/image_raw", qos_profile,
