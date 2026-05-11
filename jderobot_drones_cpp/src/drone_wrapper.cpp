@@ -8,6 +8,7 @@ DroneWrapper::DroneWrapper(const std::string &drone_id) : as2::Node(drone_id) {
   // Initialize reference handlers
   pos_handler_ = std::make_shared<as2::motionReferenceHandlers::PositionMotion>(this);
   speed_handler_ = std::make_shared<as2::motionReferenceHandlers::SpeedMotion>(this);
+  speed_in_plane_handler_ = std::make_shared<as2::motionReferenceHandlers::SpeedInAPlaneMotion>(this);
 
   // Subscriptions
   yaw_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
@@ -21,6 +22,10 @@ DroneWrapper::DroneWrapper(const std::string &drone_id) : as2::Node(drone_id) {
   target_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
       "target_management/pose", qos_targets,
       std::bind(&DroneWrapper::targetCb, this, std::placeholders::_1));
+
+  pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
+      "self_localization/pose", qos_sensors,
+      std::bind(&DroneWrapper::poseCb, this, std::placeholders::_1));
 
   // Service clients for state events, arming and offboard
   state_client_ = this->create_client<as2_msgs::srv::SetPlatformStateMachineEvent>(
@@ -38,6 +43,11 @@ void DroneWrapper::setCmdPos(float x, float y, float z, float az) {
 void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az) {
   // Send speed command with yaw angle.
   speed_handler_->sendSpeedCommandWithYawSpeed("base_link", vx, vy, vz, az);
+}
+
+void DroneWrapper::setCmdMix(float vx, float vy, float z, float az) {
+  // Send speed command in a plane (X/Y) with fixed height (Z) and yaw angle.
+  speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed("earth", vx, vy, z, az, "base_link", 1.0f, 1.0f);
 }
 
 void DroneWrapper::takeoff(float height) {
@@ -78,6 +88,11 @@ void DroneWrapper::callStateEvent(int8_t event) {
 void DroneWrapper::yawRateCb(const geometry_msgs::msg::TwistStamped::SharedPtr msg) {
   // Update current yaw rate from subscription
   yaw_rate_ = msg->twist.angular.z;
+  
+  // Save linear velocity as well
+  speed_.x = msg->twist.linear.x;
+  speed_.y = msg->twist.linear.y;
+  speed_.z = msg->twist.linear.z;
 }
 
 void DroneWrapper::infoCb(const as2_msgs::msg::PlatformInfo::SharedPtr msg) {
@@ -88,4 +103,26 @@ void DroneWrapper::infoCb(const as2_msgs::msg::PlatformInfo::SharedPtr msg) {
 void DroneWrapper::targetCb(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
   // Update target pose from target management
   target_pose_ = msg->pose;
+}
+
+void DroneWrapper::poseCb(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
+  // Update position
+  position_.x = msg->pose.position.x;
+  position_.y = msg->pose.position.y;
+  position_.z = msg->pose.position.z;
+
+  // Convert quaternion to Euler (Roll, Pitch, Yaw)
+  tf2::Quaternion q(
+      msg->pose.orientation.x,
+      msg->pose.orientation.y,
+      msg->pose.orientation.z,
+      msg->pose.orientation.w);
+  tf2::Matrix3x3 m(q);
+  
+  double roll, pitch, yaw;
+  m.getRPY(roll, pitch, yaw);
+
+  orientation_.x = roll;
+  orientation_.y = pitch;
+  orientation_.z = yaw;
 }
