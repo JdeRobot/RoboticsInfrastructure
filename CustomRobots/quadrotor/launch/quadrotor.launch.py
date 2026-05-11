@@ -19,6 +19,7 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
     gz_namespace = LaunchConfiguration("namespace")
+    namespace = gz_namespace.perform(context)
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -42,7 +43,7 @@ def launch_setup(context):
         xacro_file,
         mappings={
             "camera": "true" if sensor == "camera" else "false",
-            "namespace": gz_namespace.perform(context),
+            "namespace": namespace,
         },
     ).toxml()
 
@@ -61,7 +62,7 @@ def launch_setup(context):
         executable="create",
         arguments=[
             "-topic",
-            gz_namespace + "/robot_description",
+            namespace + "/robot_description",
             "-name",
             "quadrotor",
             "-allow_renaming",
@@ -85,7 +86,7 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        namespace=gz_namespace,
+        namespace=namespace,
         parameters=[{"config_file": bridge_yaml}],
         output="screen",
     )
@@ -93,13 +94,13 @@ def launch_setup(context):
     as2_gt_bridge = Node(
         package="as2_gazebo_assets",
         executable="ground_truth_bridge",
-        namespace=gz_namespace,
+        namespace=namespace,
         output="screen",
         parameters=[
             {
-                "name_space": gz_namespace,
+                "name_space": namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": [gz_namespace,"/base_link"],
+                "twist_frame_id": [namespace,"/base_link"],
             },
         ],
     )
@@ -112,7 +113,7 @@ def launch_setup(context):
             ]
         ),
         launch_arguments={
-            "namespace": gz_namespace,
+            "namespace": namespace,
         }.items(),
     )
 
@@ -127,14 +128,14 @@ def launch_setup(context):
         gz_ros2_frontal_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=[f"/{gz_namespace}/frontal_cam/image_raw"],
+            arguments=[f"/{namespace}/frontal_cam/image_raw"],
             output="screen",
         )
 
         gz_ros2_ventral_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=[f"/{gz_namespace}/ventral_cam/image_raw"],
+            arguments=[f"/{namespace}/ventral_cam/image_raw"],
             output="screen",
         )
 
@@ -158,7 +159,7 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("namespace", description="Namespace to use"))
+    declared_arguments.append(DeclareLaunchArgument("namespace", description="Namespace to use", default_value="drone0"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
