@@ -5,6 +5,8 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(as2_core REQUIRED)
@@ -19,7 +21,7 @@ find_package(std_srvs REQUIRED)
 
 include_directories(include)
 
-add_library(drone_lib_cpp src/drone_wrapper.cpp src/image_sub.cpp)
+add_library(drone_lib_cpp SHARED src/drone_wrapper.cpp src/image_sub.cpp)
 
 ament_target_dependencies(drone_lib_cpp 
     rclcpp as2_core as2_msgs as2_motion_reference_handlers 
@@ -32,7 +34,6 @@ install(TARGETS drone_lib_cpp
 )
 
 install(DIRECTORY include/ DESTINATION include)
-
 install(DIRECTORY launch sim_config DESTINATION share/${PROJECT_NAME})
 
 ament_export_include_directories(include)
