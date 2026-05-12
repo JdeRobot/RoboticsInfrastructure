@@ -2,17 +2,11 @@
 
 <sdf version="1.8">
   <world name="default">
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-scene-broadcaster-system"
-      name="gz::sim::systems::SceneBroadcaster">
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
@@ -41,35 +35,32 @@
     <include>
       <uri>model://ground_plane_sincolor</uri>
     </include>
-    
+
     <!-- Pioneer2dx model -->
-    <include>
-      <uri>model://turtlebotROS</uri>
-      <pose>0 0 0 0 0 0</pose>
-    </include>
+
 
     <!-- Duck -->
     <include>
       <uri>model://duck</uri>
-       <pose>4.7 3 0  1.57 0 1.57</pose>
+      <pose>4.7 3 0  1.57 0 1.57</pose>
     </include>
 
     <!-- Cereales -->
     <include>
       <uri>model://cereales</uri>
-       <pose>5.3 2.3 0 0 0 0</pose>
+      <pose>5.3 2.3 0 0 0 0</pose>
     </include>
 
     <!-- Blocks -->
     <include>
       <uri>model://blocks</uri>
-       <pose>4.66 -4 0 0 0 1.57</pose>
+      <pose>4.66 -4 0 0 0 1.57</pose>
     </include>
 
     <!-- charactersMario -->
     <include>
       <uri>model://charactersMario</uri>
-       <pose>4.1 0.5 0 0 0 -1.57</pose>
+      <pose>4.1 0.5 0 0 0 -1.57</pose>
     </include>
 
     <light type="directional" name="sun">
@@ -80,6 +71,6 @@
       <direction>-0.5 0.1 -0.9</direction>
       <visualize>false</visualize>
     </light>
-    
+
   </world>
 </sdf>

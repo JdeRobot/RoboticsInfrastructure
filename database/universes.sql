@@ -139,7 +139,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 9	Autoparking Simple: In line	7	0
 10	Obstacle Avoidance Classic	19	0
 11 	City Large Harmonic	9	0
-12 	3d Reconstruction	46	0
+12 	3d Reconstruction	46	15
 13 	Autoparking Simple: In battery	6	0
 14 	Autoparking Gas Station: In line	3	0
 15 	Autoparking Gas Station: In battery	2	0
