@@ -34,7 +34,6 @@ install(TARGETS drone_lib_cpp
 )
 
 install(DIRECTORY include/ DESTINATION include)
-install(DIRECTORY launch sim_config DESTINATION share/${PROJECT_NAME})
 
 ament_export_include_directories(include)
 ament_export_libraries(drone_lib_cpp)
