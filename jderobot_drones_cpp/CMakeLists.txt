@@ -21,7 +21,7 @@ find_package(std_srvs REQUIRED)
 
 include_directories(include)
 
-add_library(drone_lib_cpp SHARED src/drone_wrapper.cpp src/image_sub.cpp)
+add_library(drone_lib_cpp SHARED src/drone_wrapper.cpp)
 
 ament_target_dependencies(drone_lib_cpp 
     rclcpp as2_core as2_msgs as2_motion_reference_handlers 
