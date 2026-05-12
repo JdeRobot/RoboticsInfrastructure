@@ -8,8 +8,8 @@
  -->
 <robot name="kobuki"
   xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find custom_robots)/urdf/common_properties.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/urdf/kobuki_gazebo.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/Turtlebot2/model/turtlebot2/common_properties.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/Turtlebot2/model/turtlebot2/kobuki_gazebo.urdf.xacro"/>
 
   <!-- Kobuki -->
   <xacro:macro name="kobuki">
