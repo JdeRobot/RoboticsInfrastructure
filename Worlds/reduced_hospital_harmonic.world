@@ -748,8 +748,8 @@
         </include>
         <include>
             <name>person2follow</name>
-            <uri>model://PersonToFollow_harmonic</uri>
-            <pose>4 10 0 0 0 3.14</pose>
+            <uri>model://PersonToFollowAnimation_harmonic</uri>
+            <pose>4 9 0 0 0 1.57</pose>
         </include>
         <include>
             <name>robot_follow_person</name>
