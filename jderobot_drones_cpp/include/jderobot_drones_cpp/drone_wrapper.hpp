@@ -23,49 +23,55 @@ public:
   void setCmdPos(float x, float y, float z, float az);
   void setCmdVel(float vx, float vy, float vz, float az);
   void setCmdMix(float vx, float vy, float z, float az);
-  
-  // State machine commands
+
+  // High-level blocking commands (mirror Python takeoff/land behaviour)
   void takeoff(float height);
   void land();
 
   // Getters
-  std::vector<double> getPosition() { return {position_.x, position_.y, position_.z}; }
+  std::vector<double> getPosition()    { return {position_.x, position_.y, position_.z}; }
   std::vector<double> getOrientation() { return {orientation_.x, orientation_.y, orientation_.z}; }
-  std::vector<double> getVelocity() { return {speed_.x, speed_.y, speed_.z}; }
-  float getYawRate() const { return yaw_rate_; }
-  int getLandedState() const { return static_cast<int>(state_); }
+  std::vector<double> getVelocity()    { return {speed_.x, speed_.y, speed_.z}; }
+  float getYawRate()    const { return yaw_rate_; }
+  int   getLandedState() const { return static_cast<int>(state_); }
 
 private:
-  // Callbacks
+  // Topic callbacks
   void yawRateCb(const geometry_msgs::msg::TwistStamped::SharedPtr msg);
   void infoCb(const as2_msgs::msg::PlatformInfo::SharedPtr msg);
   void targetCb(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
   void poseCb(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
-  
-  // Service call for state machine
-  void callStateEvent(int8_t event);
 
-  // Attributes
+  // Blocking service helpers — wait until the service replies before returning
+  void callStateEventSync(int8_t event);
+  void callSetBoolSync(rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr client, bool value);
+
+  // Internal state
   float yaw_rate_ = 0.0f;
-  int8_t state_ = 0;
+  int8_t state_   = 0;
   geometry_msgs::msg::Vector3 position_;
   geometry_msgs::msg::Vector3 orientation_;
   geometry_msgs::msg::Vector3 speed_;
-  geometry_msgs::msg::Pose target_pose_;
+  geometry_msgs::msg::Pose    target_pose_;
 
-  // Handlers and Clients
-  std::shared_ptr<as2::motionReferenceHandlers::PositionMotion> pos_handler_;
-  std::shared_ptr<as2::motionReferenceHandlers::SpeedMotion> speed_handler_;
+  // Motion-reference handlers
+  std::shared_ptr<as2::motionReferenceHandlers::PositionMotion>      pos_handler_;
+  std::shared_ptr<as2::motionReferenceHandlers::SpeedMotion>         speed_handler_;
   std::shared_ptr<as2::motionReferenceHandlers::SpeedInAPlaneMotion> speed_in_plane_handler_;
-  
+
+  // Subscriptions
   rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr yaw_sub_;
-  rclcpp::Subscription<as2_msgs::msg::PlatformInfo>::SharedPtr info_sub_;
-  rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr target_sub_;
-  rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr pose_sub_;
-  
+  rclcpp::Subscription<as2_msgs::msg::PlatformInfo>::SharedPtr      info_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr  target_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr  pose_sub_;
+
+  // Service clients — kept in a dedicated MutuallyExclusive callback group so
+  // that spin_until_future_complete() can drain their futures even while the
+  // MultiThreadedExecutor in HAL is already spinning the node's other callbacks.
+  rclcpp::CallbackGroup::SharedPtr service_cb_group_;
   rclcpp::Client<as2_msgs::srv::SetPlatformStateMachineEvent>::SharedPtr state_client_;
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr arm_client_;
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr offboard_client_;
 };
 
-#endif
+#endif // DRONE_WRAPPER_HPP
