@@ -177,32 +177,17 @@ void DroneWrapper::takeoff(float height)
 
 void DroneWrapper::land()
 {
-  // Guard: skip if already on the ground
-  if (state_ == 1 /* LANDED */ || state_ == 4 /* LANDING */) {
-    RCLCPP_INFO(this->get_logger(), "Drone is already landed!");
-    return;
-  }
-
-  // 1. Request LAND state transition
-  callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LAND);
-
-  float start_height = position_.z;
-
-  // 2. Descend until vertical speed drops (drone has touched the ground).
-  // Same detection logic as Python: vz low AND meaningful height drop.
-  while (true) {
-    setCmdVel(0.0f, 0.0f, -0.5f, 0.0f);
-    std::this_thread::sleep_for(100ms);
-
-    if (std::abs(speed_.z) < 0.1f &&
-        std::abs(position_.z - start_height) > 0.1f) {
-      break;
+    if (state_ == 1 || state_ == 4) {
+        return;
     }
-  }
 
-  // 3. Confirm landing and disarm
-  callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LANDED);
-  callSetBoolSync(arm_client_, false);
+    callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LAND);
+
+    while (state_ != 1 && rclcpp::ok()) {
+        std::this_thread::sleep_for(100ms);
+    }
+
+    callSetBoolSync(arm_client_, false);
 }
 
 // ---------------------------
