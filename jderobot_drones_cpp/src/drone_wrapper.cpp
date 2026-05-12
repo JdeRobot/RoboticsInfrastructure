@@ -177,19 +177,41 @@ void DroneWrapper::takeoff(float height)
 
 void DroneWrapper::land()
 {
-    if (state_ == 1 || state_ == 4) {
-        return;
+  if (state_ == 1 || state_ == 4) {
+    RCLCPP_INFO(this->get_logger(), "Drone is already landed!");
+    return;
+  }
+
+  // 1. Request LAND state transition
+  callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LAND);
+
+  float start_height = position_.z;
+
+  // 2. Actively send descent commands — Aerostack2 does NOT descend on its own.
+  // Mirror the Python logic: keep sending velocity until the drone has dropped
+  // enough AND vertical speed is near zero (touched ground).
+  while (rclcpp::ok()) {
+    setCmdVel(0.0f, 0.0f, -0.5f, 0.0f);
+    std::this_thread::sleep_for(100ms);
+
+    float dropped = start_height - position_.z;   // positive when descending
+    bool has_dropped_enough = dropped > 0.3f;
+    bool vz_is_low = std::abs(speed_.z) < 0.15f;
+
+    if (has_dropped_enough && vz_is_low) {
+      break;
     }
 
-    callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LAND);
-
-    while (state_ != 1 && rclcpp::ok()) {
-        std::this_thread::sleep_for(100ms);
+    // Safety fallback: if state machine already reports LANDED, stop
+    if (state_ == 1) {
+      break;
     }
+  }
 
-    callSetBoolSync(arm_client_, false);
+  // 3. Confirm landing and disarm
+  callStateEventSync(as2_msgs::msg::PlatformStateMachineEvent::LANDED);
+  callSetBoolSync(arm_client_, false);
 }
-
 // ---------------------------
 // Subscription callbacks
 
