@@ -102,6 +102,10 @@ install(
     quadrotor/params
     quadrotor/launch
 
+    rover_4wd/model
+    rover_4wd/params
+    rover_4wd/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
@@ -137,9 +141,7 @@ install(
     restaurant/models
     pick_place/models
     pick_place/urdf
-    rover_4wd_description/meshes
-    rover_4wd_description/urdf
-    rover_4wd_description/config
+
   DESTINATION share/${PROJECT_NAME})
 
 # install(
