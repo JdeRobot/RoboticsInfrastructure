@@ -134,8 +134,8 @@ void DroneWrapper::callStateEventSync(int8_t event)
 
   auto result = future.get();
   RCLCPP_INFO(this->get_logger(), "State event sent — success: %s, current_state: %d",
-              result->success ? "true" : "false",
-              static_cast<int>(result->current_state));
+            result->success ? "true" : "false",
+            static_cast<int>(result->current_state.state));
 }
 
 // High-level takeoff / land
