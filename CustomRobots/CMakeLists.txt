@@ -106,6 +106,10 @@ install(
     rover_4wd/params
     rover_4wd/launch
 
+    Turtlebot2/model
+    Turtlebot2/params
+    Turtlebot2/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
