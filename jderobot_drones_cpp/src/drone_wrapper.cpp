@@ -6,6 +6,7 @@
 
 using namespace std::chrono_literals;
 
+// -----------------------------------
 // Constructor
 
 DroneWrapper::DroneWrapper(const std::string &drone_id)
@@ -16,15 +17,14 @@ DroneWrapper::DroneWrapper(const std::string &drone_id)
   auto qos_targets = rclcpp::QoS(10).reliable().transient_local();
 
   // Dedicated callback group for service clients.
-  // MutuallyExclusive means rclcpp::spin_until_future_complete() can process
-  // service responses without conflicting with the external executor that spins
-  // the subscription callbacks.
+  // Using MutuallyExclusive so the MultiThreadedExecutor in HAL can process
+  // service responses in its background thread without conflicts.
   service_cb_group_ = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive);
 
   // Motion-reference handlers
-  pos_handler_           = std::make_shared<as2::motionReferenceHandlers::PositionMotion>(this);
-  speed_handler_         = std::make_shared<as2::motionReferenceHandlers::SpeedMotion>(this);
+  pos_handler_            = std::make_shared<as2::motionReferenceHandlers::PositionMotion>(this);
+  speed_handler_          = std::make_shared<as2::motionReferenceHandlers::SpeedMotion>(this);
   speed_in_plane_handler_ = std::make_shared<as2::motionReferenceHandlers::SpeedInAPlaneMotion>(this);
 
   // Subscriptions
@@ -44,7 +44,8 @@ DroneWrapper::DroneWrapper(const std::string &drone_id)
       "self_localization/pose", qos_sensors,
       std::bind(&DroneWrapper::poseCb, this, std::placeholders::_1));
 
-  // Service clients — assigned to the dedicated callback group
+  // Service clients — assigned to the dedicated callback group so the HAL
+  // background executor can drain their responses independently
   state_client_ = this->create_client<as2_msgs::srv::SetPlatformStateMachineEvent>(
       "platform/state_machine_event",
       rmw_qos_profile_services_default,
@@ -80,24 +81,27 @@ void DroneWrapper::setCmdMix(float vx, float vy, float z, float az)
 {
   // Use message-based overload to avoid ambiguous template resolution
   geometry_msgs::msg::PoseStamped pose_msg;
-  pose_msg.header.frame_id = "earth";
-  pose_msg.pose.position.z = z;
+  pose_msg.header.frame_id    = "earth";
+  pose_msg.pose.position.z    = z;
 
   geometry_msgs::msg::TwistStamped twist_msg;
-  twist_msg.header.frame_id  = "base_link";
-  twist_msg.twist.linear.x   = vx;
-  twist_msg.twist.linear.y   = vy;
-  twist_msg.twist.angular.z  = az;
+  twist_msg.header.frame_id   = "base_link";
+  twist_msg.twist.linear.x    = vx;
+  twist_msg.twist.linear.y    = vy;
+  twist_msg.twist.angular.z   = az;
 
   speed_in_plane_handler_->sendSpeedInAPlaneCommandWithYawSpeed(pose_msg, twist_msg);
 }
 
-// Blocking service helpers
+// The MultiThreadedExecutor started by HAL::init() is already spinning in a
+// background thread and will process the service response for us.
+// We simply call async_send_request() and then spin-wait on the future with
+// wait_for(), which is safe to call from any thread.
 
 void DroneWrapper::callSetBoolSync(
     rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr client, bool value)
 {
-  // Wait until the service is available
+  // Block until the service is advertised
   while (!client->wait_for_service(1s)) {
     RCLCPP_INFO(this->get_logger(), "Waiting for service '%s'...",
                 client->get_service_name());
@@ -107,12 +111,15 @@ void DroneWrapper::callSetBoolSync(
   request->data = value;
   auto future   = client->async_send_request(request);
 
-  // Spin *only* the service callback group until the future is ready.
-  // This does not interfere with the MultiThreadedExecutor running elsewhere.
-  rclcpp::executors::SingleThreadedExecutor tmp_exec;
-  tmp_exec.add_node(this->get_node_base_interface());
+  // Spin-wait: the HAL background executor processes the response,
+  // this loop just blocks the calling thread until it arrives.
+  auto timeout = std::chrono::steady_clock::now() + 10s;
   while (future.wait_for(10ms) != std::future_status::ready) {
-    tmp_exec.spin_some();
+    if (std::chrono::steady_clock::now() > timeout) {
+      RCLCPP_ERROR(this->get_logger(), "Timeout waiting for service '%s'",
+                   client->get_service_name());
+      return;
+    }
   }
 }
 
@@ -126,20 +133,23 @@ void DroneWrapper::callStateEventSync(int8_t event)
   request->event.event = event;
   auto future          = state_client_->async_send_request(request);
 
-  rclcpp::executors::SingleThreadedExecutor tmp_exec;
-  tmp_exec.add_node(this->get_node_base_interface());
+  // Same pattern: HAL executor handles the response in the background
+  auto timeout = std::chrono::steady_clock::now() + 10s;
   while (future.wait_for(10ms) != std::future_status::ready) {
-    tmp_exec.spin_some();
+    if (std::chrono::steady_clock::now() > timeout) {
+      RCLCPP_ERROR(this->get_logger(), "Timeout waiting for state_machine_event");
+      return;
+    }
   }
 
   auto result = future.get();
   RCLCPP_INFO(this->get_logger(), "State event sent — success: %s, current_state: %d",
-            result->success ? "true" : "false",
-            static_cast<int>(result->current_state.state));
+              result->success ? "true" : "false",
+              static_cast<int>(result->current_state.state));  // .state avoids invalid cast
 }
 
+// ----------
 // High-level takeoff / land
-
 void DroneWrapper::takeoff(float height)
 {
   // Guard: skip if already airborne
@@ -178,12 +188,12 @@ void DroneWrapper::land()
 
   float start_height = position_.z;
 
-  // 2. Descend until vertical speed drops (drone touched ground)
+  // 2. Descend until vertical speed drops (drone has touched the ground).
+  // Same detection logic as Python: vz low AND meaningful height drop.
   while (true) {
     setCmdVel(0.0f, 0.0f, -0.5f, 0.0f);
     std::this_thread::sleep_for(100ms);
 
-    // Same detection logic as Python: vz low AND meaningful height drop
     if (std::abs(speed_.z) < 0.1f &&
         std::abs(position_.z - start_height) > 0.1f) {
       break;
@@ -195,13 +205,14 @@ void DroneWrapper::land()
   callSetBoolSync(arm_client_, false);
 }
 
+// ---------------------------
 // Subscription callbacks
 
 void DroneWrapper::yawRateCb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 {
   yaw_rate_ = msg->twist.angular.z;
 
-  // Also capture linear velocity from the same topic (same as Python wrapper)
+  // Capture linear velocity from the same topic (same as Python wrapper)
   speed_.x = msg->twist.linear.x;
   speed_.y = msg->twist.linear.y;
   speed_.z = msg->twist.linear.z;
