@@ -52,7 +52,8 @@ private:
   geometry_msgs::msg::Vector3 position_;
   geometry_msgs::msg::Vector3 orientation_;
   geometry_msgs::msg::Vector3 speed_;
-  geometry_msgs::msg::Pose    target_pose_;
+  geometry_msgs::msg::Pose target_pose_;
+  std::string base_link_frame_;
 
   // Motion-reference handlers
   std::shared_ptr<as2::motionReferenceHandlers::PositionMotion>      pos_handler_;

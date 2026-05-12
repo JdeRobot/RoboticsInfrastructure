@@ -23,9 +23,10 @@ DroneWrapper::DroneWrapper(const std::string &drone_id)
       rclcpp::CallbackGroupType::MutuallyExclusive);
 
   // Motion-reference handlers
-  pos_handler_            = std::make_shared<as2::motionReferenceHandlers::PositionMotion>(this);
-  speed_handler_          = std::make_shared<as2::motionReferenceHandlers::SpeedMotion>(this);
+  pos_handler_ = std::make_shared<as2::motionReferenceHandlers::PositionMotion>(this);
+  speed_handler_ = std::make_shared<as2::motionReferenceHandlers::SpeedMotion>(this);
   speed_in_plane_handler_ = std::make_shared<as2::motionReferenceHandlers::SpeedInAPlaneMotion>(this);
+  base_link_frame_ = drone_id + "/base_link";
 
   // Subscriptions
   yaw_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
@@ -68,13 +69,13 @@ void DroneWrapper::setCmdPos(float x, float y, float z, float az)
 {
   pos_handler_->sendPositionCommandWithYawAngle(
       std::string("earth"), x, y, z, az,
-      std::string("base_link"), 1.0f, 1.0f, 1.0f);
+      base_link_frame_, 1.0f, 1.0f, 1.0f);
 }
 
 void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az)
 {
   speed_handler_->sendSpeedCommandWithYawSpeed(
-      std::string("base_link"), vx, vy, vz, az);
+      base_link_frame_, vx, vy, vz, az);
 }
 
 void DroneWrapper::setCmdMix(float vx, float vy, float z, float az)
@@ -85,7 +86,7 @@ void DroneWrapper::setCmdMix(float vx, float vy, float z, float az)
   pose_msg.pose.position.z    = z;
 
   geometry_msgs::msg::TwistStamped twist_msg;
-  twist_msg.header.frame_id   = "base_link";
+  twist_msg.header.frame_id   = base_link_frame_;
   twist_msg.twist.linear.x    = vx;
   twist_msg.twist.linear.y    = vy;
   twist_msg.twist.angular.z   = az;
@@ -177,7 +178,8 @@ void DroneWrapper::takeoff(float height)
 
 void DroneWrapper::land()
 {
-  if (state_ == 1 || state_ == 4) {
+  // Guard: skip if already on the ground
+  if (state_ == 1 /* LANDED */ || state_ == 4 /* LANDING */) {
     RCLCPP_INFO(this->get_logger(), "Drone is already landed!");
     return;
   }
@@ -191,7 +193,10 @@ void DroneWrapper::land()
   // Mirror the Python logic: keep sending velocity until the drone has dropped
   // enough AND vertical speed is near zero (touched ground).
   while (rclcpp::ok()) {
-    setCmdVel(0.0f, 0.0f, -0.5f, 0.0f);
+    // Force descent in the absolute "earth" frame so the simulator does not ignore it
+    speed_handler_->sendSpeedCommandWithYawSpeed(
+        std::string("earth"), 0.0f, 0.0f, -0.5f, 0.0f);
+    
     std::this_thread::sleep_for(100ms);
 
     float dropped = start_height - position_.z;   // positive when descending
