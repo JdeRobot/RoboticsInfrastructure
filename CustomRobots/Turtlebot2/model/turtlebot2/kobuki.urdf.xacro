@@ -14,7 +14,7 @@
   <!-- Poles -->
   <xacro:macro name="pole" params="parent name xyz height type">
 
-    <link name="pole_${name}">
+    <link name="pole_${type}_${name}">
       <visual>
         <geometry>
           <mesh filename="$(find custom_robots)/model/turtlebot2/meshes/stacks/hexagons/pole_${type}.dae"/>
@@ -27,10 +27,10 @@
       </collision>
     </link>
 
-    <joint name="pole_${name}_to_${parent}" type="fixed">
+    <joint name="pole_${type}_${name}_to_${parent}" type="fixed">
       <origin xyz="${xyz}" rpy="0 0 0" />
       <parent link="${parent}"/>
-      <child link="pole_${name}" />
+      <child link="pole_${type}_${name}" />
     </joint>
 
   </xacro:macro>
