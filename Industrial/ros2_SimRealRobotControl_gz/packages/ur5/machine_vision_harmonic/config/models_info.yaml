@@ -78,4 +78,4 @@ targets:
   target16: {x: -0.32, y: 0.18, z: 0.25}
 
 robot:
-  pose: {x: 0, y: 0, z: 1.0, roll: 0, pitch: 0, yaw: 0}
+  pose: {x: 0, y: 0, z: 0.0, roll: 0, pitch: 0, yaw: 0}
