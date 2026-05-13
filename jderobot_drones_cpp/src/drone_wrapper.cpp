@@ -41,7 +41,7 @@ DroneWrapper::DroneWrapper(const std::string &drone_id)
       "target_management/pose", qos_targets,
       std::bind(&DroneWrapper::targetCb, this, std::placeholders::_1));
 
-  pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
+  pose_sub = this->create_subscription<geometry_msgs::msg::PoseStamped>(
       "self_localization/pose", qos_sensors,
       std::bind(&DroneWrapper::poseCb, this, std::placeholders::_1));
 
@@ -74,8 +74,15 @@ void DroneWrapper::setCmdPos(float x, float y, float z, float az)
 
 void DroneWrapper::setCmdVel(float vx, float vy, float vz, float az)
 {
-  speed_handler_->sendSpeedCommandWithYawSpeed(
-      base_link_frame_, vx, vy, vz, az);
+  // Use message-based overload to avoid ambiguous template resolution
+  geometry_msgs::msg::TwistStamped twist_msg;
+  twist_msg.header.frame_id = base_link_frame_;
+  twist_msg.twist.linear.x = vx;
+  twist_msg.twist.linear.y = vy;
+  twist_msg.twist.linear.z = vz;
+  twist_msg.twist.angular.z = az;
+
+  speed_handler_->sendSpeedCommandWithYawSpeed(twist_msg);
 }
 
 void DroneWrapper::setCmdMix(float vx, float vy, float z, float az)
