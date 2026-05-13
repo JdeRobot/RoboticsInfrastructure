@@ -41,7 +41,7 @@ DroneWrapper::DroneWrapper(const std::string &drone_id)
       "target_management/pose", qos_targets,
       std::bind(&DroneWrapper::targetCb, this, std::placeholders::_1));
 
-  pose_sub = this->create_subscription<geometry_msgs::msg::PoseStamped>(
+  pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
       "self_localization/pose", qos_sensors,
       std::bind(&DroneWrapper::poseCb, this, std::placeholders::_1));
 
