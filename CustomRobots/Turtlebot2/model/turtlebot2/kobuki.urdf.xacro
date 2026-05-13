@@ -12,7 +12,7 @@
   <xacro:include filename="$(find custom_robots)/model/turtlebot2/turtlebot2_gz.urdf.xacro"/>
 
   <!-- Poles -->
-  <xacro:macro name="pole" parameters="parent name xyz height type">
+  <xacro:macro name="pole" params="parent name xyz height type">
 
     <link name="pole_${name}">
       <visual>
@@ -36,7 +36,7 @@
   </xacro:macro>
 
   <!-- Plates -->
-  <xacro:macro name="plate" parameters="parent xyz type">
+  <xacro:macro name="plate" params="parent xyz type">
 
     <link name="plate_${type}">
       <visual>
