@@ -1,0 +1,81 @@
+objects:
+  blue_sphere:
+    shape: sphere
+    size: 0.03
+    pose: {x: 0.45, y: 0.25, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: blue
+
+  red_sphere:
+    shape: sphere
+    size: 0.03
+    pose: {x: 0.45, y: -0.25, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: red
+
+  green_sphere:
+    shape: sphere
+    size: 0.03
+    pose: {x: 0.45, y: 0.09, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: green
+
+  purple_sphere:
+    shape: sphere
+    size: 0.03
+    pose: {x: 0.45, y: -0.09, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: purple
+
+  green_cylinder:
+    shape: cylinder
+    size: {radius: 0.03, height: 0.05}
+    pose: {x: 0.65, y: -0.09, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: green
+
+  purple_cylinder:
+    shape: cylinder
+    size: {radius: 0.02, height: 0.06}
+    pose: {x: 0.65, y: 0.25, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: purple
+
+  red_cylinder:
+    shape: cylinder
+    size: {radius: 0.02, height: 0.06}
+    pose: {x: 0.65, y: 0.09, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: red
+
+  blue_cylinder:
+    shape: cylinder
+    size: {radius: 0.03, height: 0.07}
+    pose: {x: 0.65, y: -0.25, z: 0.28, roll: 0, pitch: 0, yaw: 0}
+    color: blue
+
+
+obstacles:
+  conveyor:
+    shape: box
+    size: {x: 0.8, y: 2.4, z: 0.1}
+    pose: {x: 0.6, y: 0, z: 0.95, roll: 0, pitch: 0, yaw: 0}
+
+  # target:
+  #   shape: box
+  #   size: {x: 0.5, y: 0.5, z: 0.35}
+  #   pose: {x: -0.5, y: 0.0, z: 0.76, roll: 0, pitch: 0, yaw: 0}
+
+targets:
+  target1: {x: -0.68, y: -0.18, z: 0.25}
+  target2: {x: -0.68, y: -0.06, z: 0.25}
+  target3: {x: -0.68, y: 0.06, z: 0.25}
+  target4: {x: -0.68, y: 0.18, z: 0.25}
+  target5: {x: -0.56, y: -0.18, z: 0.25}
+  target6: {x: -0.56, y: -0.06, z: 0.25}
+  target7: {x: -0.56, y: 0.06, z: 0.25}
+  target8: {x: -0.56, y: 0.18, z: 0.25}
+  target9: {x: -0.44, y: -0.18, z: 0.25}
+  target10: {x: -0.44, y: -0.06, z: 0.25}
+  target11: {x: -0.44, y: 0.06, z: 0.25}
+  target12: {x: -0.44, y: 0.18, z: 0.25}
+  target13: {x: -0.32, y: -0.18, z: 0.25}
+  target14: {x: -0.32, y: -0.06, z: 0.25}
+  target15: {x: -0.32, y: 0.06, z: 0.25}
+  target16: {x: -0.32, y: 0.18, z: 0.25}
+
+robot:
+  pose: {x: 0, y: 0, z: 1.0, roll: 0, pitch: 0, yaw: 0}
