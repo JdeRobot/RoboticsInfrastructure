@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="turtlebot2"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="camera" default="true"/>
+  <xacro:arg name="stereo" default="false"/>
+
+  <xacro:include filename="$(find custom_robots)/models/turtlebot2/turtlebot2_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/turtlebot2/turtlebot2_common.urdf.xacro"/>
+
+  <xacro:turtlebot2/>
+
+  <xacro:if value="$(arg camera)">
+    <xacro:camera xyz="-0.118 0 0.2812" rpy="0 0 0" name="depth_camera" parent="base_link"/>
+    <xacro:laser xyz="0 0 0.44" rpy="0 0 0" name="laser" parent="base_link" topic="scan"/>
+  </xacro:if>
+
+  <xacro:if value="$(arg stereo)">
+    <xacro:fake_camera xyz="-0.118 0 0.2812" rpy="0 0 0" name="depth_camera" parent="base_link"/>
+    <xacro:stereo_camera xyz="-0.05 0.076 0.2424" rpy="-1.57 0 3.14" name="cam_turtlebot_left" parent="base_link"/>
+    <xacro:stereo_camera xyz="-0.05 -0.076 0.2424" rpy="-1.57 0 3.14" name="cam_turtlebot_right" parent="base_link"/>
+  </xacro:if>
+
+</robot>

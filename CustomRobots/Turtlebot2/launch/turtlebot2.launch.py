@@ -34,11 +34,15 @@ def launch_setup(context):
         package_dir,
         "model",
         "turtlebot2",
-        "kobuki_standalone.urdf.xacro",
+        "turtlebot2.urdf.xacro",
     )
 
     robot_description_content = xacro.process_file(
         xacro_file,
+        mappings={
+            "camera": "true" if sensor == "camera" else "false",
+            "stereo": "true" if sensor == "stereo" else "false",
+        },
     ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
@@ -89,14 +93,32 @@ def launch_setup(context):
     nodes_to_start.append(gz_ros2_bridge)
 
     # Sensor deppending on sensor arguments
-    # if sensor == "camera":
-    #     gz_ros2_image_bridge = Node(
-    #         package="ros_gz_image",
-    #         executable="image_bridge",
-    #         arguments=["/camera/image_raw"],
-    #         output="screen",
-    #     )
-    #     nodes_to_start.append(gz_ros2_image_bridge)
+    if sensor == "stereo":
+        gz_ros2_image_left_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            arguments=["/cam_turtlebot_left/image_raw"],
+            output="screen",
+        )
+
+        gz_ros2_image_right_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            arguments=["/cam_turtlebot_right/image_raw"],
+            output="screen",
+        )
+
+        nodes_to_start.append(gz_ros2_image_left_bridge)
+        nodes_to_start.append(gz_ros2_image_right_bridge)
+    elif sensor== "":
+        gz_ros2_image_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            arguments=["/depth_camera/image_raw"],
+            output="screen",
+        )
+
+        nodes_to_start.append(gz_ros2_image_bridge)
 
     return nodes_to_start
 

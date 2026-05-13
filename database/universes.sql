@@ -139,7 +139,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 9	Autoparking Simple: In line	7	0
 10	Obstacle Avoidance Classic	19	0
 11 	City Large Harmonic	9	0
-12 	3d Reconstruction	46	15
+12 	3d Reconstruction	46	16
 13 	Autoparking Simple: In battery	6	0
 14 	Autoparking Gas Station: In line	3	0
 15 	Autoparking Gas Station: In battery	2	0
@@ -194,7 +194,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 64	Small Laser Mapping Warehouse Medium Noise	64	0
 65	Small Laser Mapping Warehouse High Noise	65	0
 66	Follow Person Harmonic	66	15
-67	Follow Person Teleop Harmonic	67	0
+67	Follow Person Teleop Harmonic	67	15
 \.
 
 --
@@ -288,8 +288,10 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 12	Rover 4wd	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=none
 13	Holonomic Logistic	None	None	None
 14	Ackermann Logistic	None	None	None
-15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	None
-16	Turtlebot 3	None	None	None
+15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
+16	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
+17	Turtlebot 3	None	None	None
+18	Otro taxi	None	None	None
 \.
 
 --

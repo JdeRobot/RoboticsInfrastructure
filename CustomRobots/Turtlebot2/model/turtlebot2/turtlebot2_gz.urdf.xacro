@@ -42,6 +42,66 @@
     </gazebo>
   </xacro:macro>
 
+  <xacro:macro name="fake_camera" params="xyz rpy name parent">
+
+    <link name="${name}_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/turtlebot2/meshes/sensors/kinect.dae"/>
+        </geometry>
+      </visual>
+    </link>
+
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="stereo_camera" params="xyz rpy name parent">
+
+    <link name="${name}_link">
+    </link>
+
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="camera">
+        <origin xyz="0 0 0" rpy="-1.57 0 3.14"/>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>5</update_rate>
+        <topic>/${name}/image_raw</topic>
+        <camera name="camera">
+          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.570000</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.3</near>
+            <far>15</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
   <xacro:macro name="laser" params="xyz rpy name parent topic">
     <link name="${name}_link">
       <visual>
