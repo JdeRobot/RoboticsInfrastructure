@@ -51,10 +51,10 @@
       </collision>
     </link>
 
-    <joint name="pole_${type}_to_${parent}" type="fixed">
+    <joint name="plate_${type}_to_${parent}" type="fixed">
       <origin xyz="${xyz}" rpy="0 0 0" />
       <parent link="${parent}"/>
-      <child link="pole_${type}" />
+      <child link="plate_${type}" />
     </joint>
 
   </xacro:macro>
