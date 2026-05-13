@@ -288,7 +288,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 12	Rover 4wd	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=none
 13	Holonomic Logistic	None	None	None
 14	Ackermann Logistic	None	None	None
-15	TurtleBot 2	/home/ws/src/CustomRobots/turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
+15	TurtleBot 2	custom_robot turtlebot2.launch.py	turtlebot2	None
 16	Turtlebot 3	None	None	None
 \.
 

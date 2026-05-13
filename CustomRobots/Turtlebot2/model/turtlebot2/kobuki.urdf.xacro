@@ -9,7 +9,55 @@
 <robot name="kobuki"
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/model/turtlebot2/common_properties.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/model/turtlebot2/kobuki_gazebo.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/model/turtlebot2/turtlebot2_gz.urdf.xacro"/>
+
+  <!-- Poles -->
+  <xacro:macro name="pole" parameters="parent name xyz height type">
+
+    <link name="pole_${name}">
+      <visual>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/turtlebot2/meshes/stacks/hexagons/pole_${type}.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.012 0.012 ${height}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="pole_${name}_to_${parent}" type="fixed">
+      <origin xyz="${xyz}" rpy="0 0 0" />
+      <parent link="${parent}"/>
+      <child link="pole_${name}" />
+    </joint>
+
+  </xacro:macro>
+
+  <!-- Plates -->
+  <xacro:macro name="plate" parameters="parent xyz type">
+
+    <link name="plate_${type}">
+      <visual>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/turtlebot2/meshes/stacks/hexagons/plate_${type}.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.34 0.34 0.006"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="pole_${type}_to_${parent}" type="fixed">
+      <origin xyz="${xyz}" rpy="0 0 0" />
+      <parent link="${parent}"/>
+      <child link="pole_${type}" />
+    </joint>
+
+  </xacro:macro>
 
   <!-- Kobuki -->
   <xacro:macro name="kobuki">
@@ -150,6 +198,28 @@
       </inertial>
     </link>
 
+    <!-- Platform -->
+    <xacro:pole parent="base_link" name="0" xyz="0.12 0.082 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="1" xyz="0.055 0.12 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="2" xyz="-0.055 0.12 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="3" xyz="0.12 -0.082 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="4" xyz="0.055 -0.12 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="5" xyz="-0.055 -0.12 0.113" height="0.0492" type="bottom"/>
+    <xacro:pole parent="base_link" name="0" xyz="-0.1024 0.098 0.2474" height="0.0936" type="sensor"/>
+    <xacro:pole parent="base_link" name="1" xyz="-0.1024 -0.098 0.2474" height="0.0936" type="sensor"/>
+    <xacro:pole parent="base_link" name="0" xyz="0.0381 0.1505 0.1742" height="0.0608" type="middle"/>
+    <xacro:pole parent="base_link" name="1" xyz="0.0381 -0.1505 0.1742" height="0.0608" type="middle"/>
+    <xacro:pole parent="base_link" name="2" xyz="-0.0381 0.1505 0.1742" height="0.0608" type="middle"/>
+    <xacro:pole parent="base_link" name="3" xyz="-0.0381 -0.1505 0.1742" height="0.0608" type="middle"/>
+    <xacro:pole parent="base_link" name="0" xyz="0.0381 0.1505 0.3022" height="0.2032" type="top"/>
+    <xacro:pole parent="base_link" name="1" xyz="0.0381 -0.1505 0.3022" height="0.2032" type="top"/>
+    <xacro:pole parent="base_link" name="2" xyz="-0.0381 0.1505 0.3022" height="0.2032" type="top"/>
+    <xacro:pole parent="base_link" name="3" xyz="-0.0381 -0.1505 0.3022" height="0.2032" type="top"/>
+
+    <xacro:plate parent="base_link" xyz="0.02364 0 0.1408" type="bottom"/>
+    <xacro:plate parent="base_link" xyz="-0.01364 0 0.1976" type="middle"/>
+    <xacro:plate parent="base_link" xyz="-0.01364 0 0.4068" type="top"/>
+
     <!-- Kobuki's sensors -->
     <joint name="gyro_joint" type="fixed">
       <axis xyz="0 1 0"/>
@@ -205,7 +275,13 @@
     </link>
 
     <!-- Kobuki Gazebo simulation details -->
-    <xacro:kobuki_sim/>
+    <!-- <xacro:kobuki_sim/> -->
+    <xacro:camera xyz="-0.118 0 0.2812" rpy="0 0 0" name="depth_camera" parent="base_link"/>
+    <xacro:laser xyz="0 0 0.44" rpy="0 0 0" name="laser" parent="base_link" topic="scan"/>
+    <xacro:odom topic="odom" freq="20"/>
+    <xacro:velocity topic="cmd_vel"/>
+    <xacro:imu topic="imu"/>
+    <xacro:extra/>
 
   </xacro:macro>
 </robot>
