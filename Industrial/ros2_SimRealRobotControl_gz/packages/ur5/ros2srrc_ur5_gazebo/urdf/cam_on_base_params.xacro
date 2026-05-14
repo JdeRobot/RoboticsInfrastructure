@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:property name="pi" value="3.14159265359"/>
-    
     <xacro:property name="cam_base_px" value="1.0" />
     <xacro:property name="cam_base_py" value="0.0" />
     <xacro:property name="cam_base_pz" value="1.4" />
