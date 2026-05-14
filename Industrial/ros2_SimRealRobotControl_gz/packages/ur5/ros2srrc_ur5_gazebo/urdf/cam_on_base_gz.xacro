@@ -13,8 +13,15 @@
 
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+        <box>
+          <size>0.05 0.05 0.05</size>
+        </box>
       </geometry>
+
+      <material>
+        <ambient>0.2 0.2 0.2 1</ambient>
+        <diffuse>0.2 0.2 0.2 1</diffuse>
+      </material>
     </visual>
 
     <collision>
