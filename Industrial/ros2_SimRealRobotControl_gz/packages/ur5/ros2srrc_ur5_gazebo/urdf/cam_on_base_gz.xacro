@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <link name="hand_camera_link">
+  <link name="base_camera_link">
+
     <inertial>
       <origin xyz="-0.00936 -0.00003 -0.00273" rpy="0 0 0"/>
       <mass value="0.2197"/>
@@ -24,34 +25,34 @@
 
   </link>
 
-  <gazebo reference="hand_camera_link">
+  <gazebo reference="base_camera_link">
     <material>Gazebo/Grey</material>
   </gazebo>
 
-  <joint name="hand_camera_joint" type="fixed">
-    <parent link="tool0"/>
-    <child link="hand_camera_link"/>
-    <origin xyz="${cam_hand_px} ${cam_hand_py} ${cam_hand_pz}"
-            rpy="${cam_hand_or} ${cam_hand_op} ${cam_hand_oy}"/>
+  <joint name="base_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_camera_link"/>
+    <origin xyz="${cam_base_px} ${cam_base_py} ${cam_base_pz}"
+            rpy="${cam_base_or} ${cam_base_op} ${cam_base_oy}"/>
   </joint>
 
-  <link name="hand_camera_optical_link"/>
+  <link name="base_camera_optical_link"/>
 
-  <joint name="hand_camera_optical_joint" type="fixed">
-    <parent link="hand_camera_link"/>
-    <child link="hand_camera_optical_link"/>
+  <joint name="base_camera_optical_joint" type="fixed">
+    <parent link="base_camera_link"/>
+    <child link="base_camera_optical_link"/>
     <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
   </joint>
 
-  <gazebo reference="hand_camera_link">
+  <gazebo reference="base_camera_link">
 
-    <sensor name="hand_camera" type="rgbd_camera">
+    <sensor name="base_camera" type="rgbd_camera">
 
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>30</update_rate>
 
-      <topic>/hand_camera</topic>
+      <topic>/base_camera</topic>
 
       <camera>
 
