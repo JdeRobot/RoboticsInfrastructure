@@ -5,8 +5,8 @@
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="stereo" default="false"/>
 
-  <xacro:include filename="$(find custom_robots)/models/turtlebot2/turtlebot2_gz.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/models/turtlebot2/turtlebot2_common.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/model/turtlebot2/turtlebot2_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/model/turtlebot2/turtlebot2_common.urdf.xacro"/>
 
   <xacro:turtlebot2/>
 
