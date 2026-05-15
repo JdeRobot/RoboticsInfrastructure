@@ -113,10 +113,12 @@ cv::Mat NeuralNetwork::detect(const cv::Mat& img)
         return cv::Mat();
     }
 
+    // cvOut dimension is typically [1, 1, N, 7]. Reshape to [N, 7] to mimic cvOut[0, 0, :, :]
     cv::Mat detections(cv_out.size[2], cv_out.size[3], CV_32F, cv_out.ptr<float>());
     return detections.clone();
 }
 
+// Get bounding boxes function
 std::vector<BoundingBox> NeuralNetwork::getBoundingBoxes(const cv::Mat& img)
 {
     std::vector<BoundingBox> bounding_boxes;

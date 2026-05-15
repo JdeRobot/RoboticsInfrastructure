@@ -42,6 +42,7 @@ public:
     NeuralNetwork();
 
     cv::Mat detect(const cv::Mat& img);
+    // Get bounding boxes function
     std::vector<BoundingBox> getBoundingBoxes(const cv::Mat& img);
 
 private:
