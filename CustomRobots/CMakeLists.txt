@@ -78,13 +78,6 @@ install(
   DIRECTORY
     follow_person_harmonic/models
     follow_person_harmonic/params
-    Turtlebot2/turtlebot2_simulated/kobuki_description/launch
-    Turtlebot2/turtlebot2_simulated/kobuki_description/meshes
-    Turtlebot2/turtlebot2_simulated/kobuki_description/rviz
-    Turtlebot2/turtlebot2_simulated/kobuki_description/urdf
-    Turtlebot2/turtlebot2_simulated/turtlebot2/launch
-    Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
-    Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
     
     f1/models
     f1/params
