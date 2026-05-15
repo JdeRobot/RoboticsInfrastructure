@@ -1,11 +1,13 @@
 #include "common_interfaces_cpp/hal/classnet.hpp"
+
 #include <sstream>
+#include <stdexcept>
 
 const std::string FROZEN_GRAPH = "/resources/models/ssd_inception_v2_coco.pb";
 const std::string PB_TXT = "/resources/models/ssd_inception_v2_coco.pbtxt";
 const int SIZE = 300;
 
-std::map<int, std::string> LABEL_MAP = {
+const std::map<int, std::string> LABEL_MAP = {
     {0, "unlabeled"}, {1, "person"}, {2, "bicycle"}, {3, "car"}, {4, "motorcycle"},
     {5, "airplane"}, {6, "bus"}, {7, "train"}, {8, "truck"}, {9, "boat"},
     {10, "traffic"}, {11, "fire"}, {12, "street"}, {13, "stop"}, {14, "parking"},
@@ -45,57 +47,106 @@ std::map<int, std::string> LABEL_MAP = {
     {180, "window"}, {181, "window"}, {182, "wood"}
 };
 
-BoundingBox::BoundingBox(int identifier, const std::string& class_id_str, float score, float xmin, float ymin, float xmax, float ymax)
-    : id(identifier), class_id(class_id_str), score(score), xmin(xmin), ymin(ymin), xmax(xmax), ymax(ymax) {}
+BoundingBox::BoundingBox(
+    int identifier,
+    const std::string& class_id_str,
+    float score,
+    float xmin,
+    float ymin,
+    float xmax,
+    float ymax
+)
+    : id(identifier),
+      class_id(class_id_str),
+      score(score),
+      xmin(xmin),
+      ymin(ymin),
+      xmax(xmax),
+      ymax(ymax)
+{
+}
 
-std::string BoundingBox::to_string() const {
+std::string BoundingBox::to_string() const
+{
     std::ostringstream oss;
-    oss << "[id:" << id << "\nclass:" << class_id << "\nscore:" << score
-        << "\nxmin:" << xmin << "\nymin:" << ymin << "\nxmax:" << xmax << "\nymax:" << ymax << "\n";
+    oss << "[id:" << id
+        << "\nclass:" << class_id
+        << "\nscore:" << score
+        << "\nxmin:" << xmin
+        << "\nymin:" << ymin
+        << "\nxmax:" << xmax
+        << "\nymax:" << ymax
+        << "\n]";
     return oss.str();
 }
 
-NeuralNetwork::NeuralNetwork() {
+NeuralNetwork::NeuralNetwork()
+{
     net = cv::dnn::readNetFromTensorflow(FROZEN_GRAPH, PB_TXT);
+
+    if (net.empty()) {
+        throw std::runtime_error("Failed to load neural network model");
+    }
 }
 
-cv::Mat NeuralNetwork::detect(const cv::Mat& img) {
-    int rows = img.rows;
-    int cols = img.cols;
-    
+cv::Mat NeuralNetwork::detect(const cv::Mat& img)
+{
+    if (img.empty()) {
+        return cv::Mat();
+    }
+
     cv::Mat blob = cv::dnn::blobFromImage(
         img,
         1.0 / 127.5,
         cv::Size(SIZE, SIZE),
         cv::Scalar(127.5, 127.5, 127.5),
-        true, // swapRB
-        false // crop
+        true,
+        false
     );
-    
+
+    std::lock_guard<std::mutex> lock(net_mutex_);
+
     net.setInput(blob);
-    cv::Mat cvOut = net.forward();
-    
+    cv::Mat cv_out = net.forward();
+
+    if (cv_out.empty() || cv_out.dims < 4) {
+        return cv::Mat();
+    }
+
     // cvOut dimension is typically [1, 1, N, 7]. Reshape to [N, 7] to mimic cvOut[0, 0, :, :]
-    cv::Mat detections(cvOut.size[2], cvOut.size[3], CV_32F, cvOut.ptr<float>());
-    return detections;
+    cv::Mat detections(cv_out.size[2], cv_out.size[3], CV_32F, cv_out.ptr<float>());
+    return detections.clone();
 }
 
 // Get bounding boxes function
-std::vector<BoundingBox> NeuralNetwork::getBoundingBoxes(const cv::Mat& img) {
-    int rows = img.rows;
-    int cols = img.cols;
-    cv::Mat detections = detect(img);
+std::vector<BoundingBox> NeuralNetwork::getBoundingBoxes(const cv::Mat& img)
+{
     std::vector<BoundingBox> bounding_boxes;
+
+    if (img.empty()) {
+        return bounding_boxes;
+    }
+
+    const int rows = img.rows;
+    const int cols = img.cols;
+
+    cv::Mat detections = detect(img);
+
+    if (detections.empty()) {
+        return bounding_boxes;
+    }
 
     for (int i = 0; i < detections.rows; ++i) {
         int identifier = static_cast<int>(detections.at<float>(i, 1));
         float score = detections.at<float>(i, 2);
+
         float xmin = detections.at<float>(i, 3) * cols;
         float ymin = detections.at<float>(i, 4) * rows;
         float xmax = detections.at<float>(i, 5) * cols;
         float ymax = detections.at<float>(i, 6) * rows;
 
-        std::string class_name = "";
+        std::string class_name;
+
         auto it = LABEL_MAP.find(identifier);
         if (it != LABEL_MAP.end()) {
             class_name = it->second;
@@ -110,6 +161,7 @@ std::vector<BoundingBox> NeuralNetwork::getBoundingBoxes(const cv::Mat& img) {
             xmax,
             ymax
         );
+
         bounding_boxes.push_back(bounding_box);
     }
 
