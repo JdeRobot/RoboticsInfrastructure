@@ -138,7 +138,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 8	Follow Person Teleop	11	0
 9	Autoparking Simple: In line	7	0
 10	Obstacle Avoidance Classic	19	0
-11 	City Large Harmonic	9	0
+11 	City Large Harmonic	9	18
 12 	3d Reconstruction	46	16
 13 	Autoparking Simple: In battery	6	0
 14 	Autoparking Gas Station: In line	3	0
@@ -291,7 +291,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
 16	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
 17	Turtlebot 3	None	None	None
-18	Otro taxi	None	None	None
+18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic
 \.
 
 --
