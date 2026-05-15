@@ -75,7 +75,6 @@
 
     <gazebo reference="${name}_link">
       <sensor name="${name}" type="camera">
-        <origin xyz="0 0 0" rpy="-1.57 0 3.14"/>
         <always_on>true</always_on>
         <visualize>false</visualize>
         <update_rate>5</update_rate>

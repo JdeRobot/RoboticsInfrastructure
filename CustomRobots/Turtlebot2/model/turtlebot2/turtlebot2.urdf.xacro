@@ -16,9 +16,9 @@
   </xacro:if>
 
   <xacro:if value="$(arg stereo)">
-    <xacro:fake_camera xyz="-0.118 0 0.2812" rpy="0 0 0" name="depth_camera" parent="base_link"/>
-    <xacro:stereo_camera xyz="-0.05 0.076 0.2424" rpy="-1.57 0 3.14" name="cam_turtlebot_left" parent="base_link"/>
-    <xacro:stereo_camera xyz="-0.05 -0.076 0.2424" rpy="-1.57 0 3.14" name="cam_turtlebot_right" parent="base_link"/>
+    <xacro:fake_camera xyz="-0.118 0 0.23" rpy="0 0 0" name="depth_camera" parent="base_link"/>
+    <xacro:stereo_camera xyz="-0.05 0.076 0.2424" rpy="0 0 0" name="cam_turtlebot_left" parent="base_link"/>
+    <xacro:stereo_camera xyz="-0.05 -0.076 0.2424" rpy="0 0 0" name="cam_turtlebot_right" parent="base_link"/>
   </xacro:if>
 
 </robot>
