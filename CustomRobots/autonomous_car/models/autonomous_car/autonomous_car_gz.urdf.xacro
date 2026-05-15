@@ -208,6 +208,14 @@
     </gazebo>
   </xacro:macro>
 
+  <xacro:macro name="velocity" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
   <xacro:macro name="joints">
     <gazebo>
       <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">

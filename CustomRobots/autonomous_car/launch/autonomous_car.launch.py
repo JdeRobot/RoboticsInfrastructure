@@ -18,14 +18,16 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
+    gz_mode = LaunchConfiguration("mode")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
     sensor = gz_sensor.perform(context)
+    mode = gz_mode.perform(context)
 
-    bridge_yaml = os.path.join(package_dir, "params", f"autonomous_car_{sensor}.yaml")
+    bridge_yaml = os.path.join(package_dir, "params", f"autonomous_car_{mode}_{sensor}.yaml")
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -43,6 +45,7 @@ def launch_setup(context):
             "camera": "true" if sensor == "camera" else "false",
             "lidar": "true" if sensor == "lidar" else "false",
             "laser": "true" if sensor == "laser" else "false",
+            "steering": mode,
         },
     ).toxml()
 
@@ -119,7 +122,8 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
+    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="none"))
+    declared_arguments.append(DeclareLaunchArgument("mode", default_value="ackermann"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

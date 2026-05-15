@@ -5,11 +5,12 @@
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="laser" default="false"/>
+  <xacro:arg name="steering" default="ackermann"/>
 
   <xacro:include filename="$(find custom_robots)/models/autonomous_car/autonomous_car_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/autonomous_car/autonomous_car_common.urdf.xacro"/>
 
-  <xacro:autonomous_car/>
+  <xacro:autonomous_car steering="$(arg ackermann)"/>
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0 0.2 1.45" rpy="0 0 1.5708" name="prius_autoparking" parent="base_link"/>
