@@ -13,7 +13,7 @@
 
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.gbl"/>
       </geometry>
     </visual>
 
