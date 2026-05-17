@@ -19,7 +19,7 @@
 
     <collision>
       <geometry>
-        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.gbl"/>
+        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.glb"/>
       </geometry>
     </collision>
 
