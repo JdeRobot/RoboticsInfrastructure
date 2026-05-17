@@ -4,7 +4,7 @@
     <xacro:property name="cam_base_py" value="0.0" />
     <xacro:property name="cam_base_pz" value="1.4" />
     <xacro:property name="cam_base_or" value="1.57" />
-    <xacro:property name="cam_base_op" value="0" />
+    <xacro:property name="cam_base_op" value="0.4" />
     <xacro:property name="cam_base_oy" value="3.14" />
     <xacro:property name="parent_base" value="world" />
 </robot>
