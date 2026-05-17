@@ -25,10 +25,6 @@
 
   </link>
 
-  <gazebo reference="hand_camera_link">
-    <material>Gazebo/Grey</material>
-  </gazebo>
-
   <joint name="hand_camera_joint" type="fixed">
     <parent link="tool0"/>
     <child link="hand_camera_link"/>

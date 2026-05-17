@@ -19,15 +19,12 @@
 
     <collision>
       <geometry>
-        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.dae"/>
+        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
       </geometry>
     </collision>
 
   </link>
 
-  <gazebo reference="base_camera_link">
-    <material>Gazebo/Grey</material>
-  </gazebo>
 
   <joint name="base_camera_joint" type="fixed">
     <parent link="base_link"/>
