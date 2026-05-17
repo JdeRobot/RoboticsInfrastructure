@@ -15,13 +15,13 @@
 
   <!-- HAND CAMERA -->
 
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params_gz.xacro"/>
   <xacro:property name="parent_hand" value="tool0"/>
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_gz.xacro"/>
 
   <!-- BASE CAMERA -->
 
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params_gz.xacro"/>
   <xacro:property name="parent_base" value="base_link"/>
   <xacro:property name="cam_base_pz" value="0.5"/>
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_gz.xacro"/>

@@ -4,7 +4,7 @@
     <xacro:property name="cam_hand_py" value="-0.067" />
     <xacro:property name="cam_hand_pz" value="0.03" />
     <xacro:property name="cam_hand_or" value="0" />
-    <xacro:property name="cam_hand_op" value="-1.57" />
-    <xacro:property name="cam_hand_oy" value="1.57" />
+    <xacro:property name="cam_hand_op" value="1.57" />
+    <xacro:property name="cam_hand_oy" value="0" />
     <xacro:property name="parent_hand" value="tool0" />
 </robot>
