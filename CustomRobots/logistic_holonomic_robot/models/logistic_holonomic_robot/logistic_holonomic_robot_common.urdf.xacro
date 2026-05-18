@@ -231,8 +231,8 @@
 
     <joint name="lift_joint" type="prismatic">
       <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
-      <parent link="platform_link"/>
-      <child link="platform_support_link"/>
+      <parent link="platform_support_link"/>
+      <child link="platform_link"/>
       <axis xyz="0 0 1"/>
       <limit effort="20" velocity="0.5" lower="0.01" upper="0.13"/>
       <dynamics damping="0.01" friction="0" spring_reference="0" spring_stiffness="0"/>
