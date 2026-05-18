@@ -255,8 +255,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.15,0.0,0.0,0.0}
 56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic/world.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
 57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-58	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-59	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+58	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.5,0.0,0.0,0.0}
+59	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.5,0.0,0.0,0.0}
 60	Warehouse 1 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse1_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 61	Warehouse 2 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse2_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 62	Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -286,7 +286,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
 11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	quadrotor	sensor:=camera namespace:=drone0
 12	Rover 4wd	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=none
-13	Holonomic Logistic	None	None	None
+13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	None
 14	Ackermann Logistic	None	None	None
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
 16	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo

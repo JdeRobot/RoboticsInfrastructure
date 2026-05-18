@@ -1,0 +1,301 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/logistic_holonomic_robot/logistic_holonomic_robot_gz.urdf.xacro"/>
+
+  <xacro:macro name="logistic_holonomic_robot">
+    <link name="base_footprint" />
+
+    <link name="base">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="1.5"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.045"/>
+        <geometry>
+          <box size="0.532 0.532 0.188"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 -0.048"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/waffle_pi_base.dae" scale="0.002 0.002 0.002"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="base_to_base_footprint" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.064 0 0.048"/>
+      <parent link="base_footprint"/>
+      <child link="base"/>
+    </joint>
+
+    <joint name="left_wheel_joint" type="continuous">
+      <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
+      <parent link="base"/>
+      <child link="left_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+    </joint>
+
+    <link name="left_wheel_link">
+      <inertial>
+        <origin rpy="-1.57 0 0<" xyz="0.0 0.288 0.046"/>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="-1.57 0 0<" xyz="0.0 0.288 0.046"/>
+        <geometry>
+          <cylinder radius="0.1" lenght="0.02"/>
+        </geometry>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>10.0</mu>
+              <mu2>10.0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <soft_cfm>0.001</soft_cfm>
+              <soft_erp>0.5</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 0.288 0.046"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/left_tire.dae" scale="0.003 0.003 0.003"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="right_wheel_joint" type="continuous">
+      <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
+      <parent link="base"/>
+      <child link="right_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+    </joint>
+
+    <link name="right_wheel_link">
+      <inertial>
+        <origin rpy="-1.57 0 0<" xyz="0.0 -0.288 0.046"/>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="-1.57 0 0<" xyz="0.0 -0.288 0.046"/>
+        <geometry>
+          <cylinder radius="0.1" lenght="0.02"/>
+        </geometry>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>10.0</mu>
+              <mu2>10.0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <soft_cfm>0.001</soft_cfm>
+              <soft_erp>0.5</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual>
+        <origin rpy="0 0 0" xyz="0.0 -0.288 0.046"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/right_tire.dae" scale="0.003 0.003 0.003"/>
+        </geometry>
+      </visual>
+    </link>
+
+
+    <joint name="back_right_caster_joint" type="ball">
+      <origin rpy="0 0 0" xyz="-0.29 -0.13 -0.0275"/>
+      <parent link="base"/>
+      <child link="back_right_caster_link"/>
+    </joint>
+
+    <link name="back_right_caster_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.8"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+      <collision>
+        <geometry>
+          <sphere radius="0.025"/>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual>
+        <geometry>
+          <sphere radius="0.025"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="back_left_caster_joint" type="ball">
+      <origin rpy="0 0 0" xyz="-0.29  0.13 -0.0275"/>
+      <parent link="base"/>
+      <child link="back_left_caster_link"/>
+    </joint>
+
+    <link name="back_left_caster_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.8"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+      <collision>
+        <geometry>
+          <sphere radius="0.025"/>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual>
+        <geometry>
+          <sphere radius="0.025"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="platform_support_link" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
+      <parent link="base"/>
+      <child link="platform_support_link"/>
+    </joint>
+
+    <link name="platform_support_joint">
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/fixed_support.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="lift_joint" type="prismatic">
+      <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
+      <parent link="platform_link"/>
+      <child link="platform_support_link"/>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0.01</lower>
+          <upper>0.13</upper>
+          <effort>20</effort>
+          <velocity>0.5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.0</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>0</use_parent_model_frame>
+      </axis>
+      <physics>
+        <provide_feedback>1</provide_feedback>
+        <ode>
+          <implicit_spring_damper>0</implicit_spring_damper>
+          <cfm_damping>0</cfm_damping>
+          <limit>
+            <cfm>0.0</cfm>
+            <erp>0.8</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+
+    <link name="platform_link">
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.045"/>
+        <geometry>
+          <box size="0.55 0.55 0.04"/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1000000</mu>
+              <mu2>100000</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+5</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/platform2.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:velocity topic="/cmd_vel"/>
+    <xacro:odom topic="/model/amazon_robot/odometry" freq="50"/>
+    <xacro:joints topic="/robot/joint_state" vel_topic="/platform/cmd_vel"/>
+  </xacro:macro>
+</robot>
