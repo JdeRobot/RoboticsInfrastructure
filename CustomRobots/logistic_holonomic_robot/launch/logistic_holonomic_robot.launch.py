@@ -35,7 +35,7 @@ def launch_setup(context):
     )
 
     robot_description_content = xacro.process_file(
-        xacro_file,
+        xacro_file
     ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
