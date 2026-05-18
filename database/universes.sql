@@ -185,8 +185,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 55 	Rover 4wd Warehouse	55	12
 56	Pick And Place Harmonic World	56	1
 57 	Package delivery	57	0
-58	Warehouse 1 Harmonic	58	0
-59	Warehouse 2 Harmonic	59	0
+58	Warehouse 1 Harmonic	58	13
+59	Warehouse 2 Harmonic	59	13
 60	Warehouse 1 Ackermann Harmonic	60	0
 61	Warehouse 2 Ackermann Harmonic	61	0
 62	Laser Mapping Warehouse Medium Noise	62	0
