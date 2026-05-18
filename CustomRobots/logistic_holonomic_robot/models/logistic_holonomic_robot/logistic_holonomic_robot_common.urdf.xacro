@@ -50,28 +50,29 @@
         <geometry>
           <cylinder radius="0.1" lenght="0.02"/>
         </geometry>
-
-        <surface>
-          <friction>
-            <ode>
-              <mu>10.0</mu>
-              <mu2>10.0</mu2>
-              <fdir1>0 0 0</fdir1>
-              <slip1>0.0</slip1>
-              <slip2>0.0</slip2>
-            </ode>
-          </friction>
-          <contact>
-            <ode>
-              <soft_cfm>0.001</soft_cfm>
-              <soft_erp>0.5</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
-            </ode>
-          </contact>
-        </surface>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>10.0</mu>
+                <mu2>10.0</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0.001</soft_cfm>
+                <soft_erp>0.5</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
       </collision>
       <visual>
         <origin rpy="0 0 0" xyz="0.0 0.288 0.046"/>
@@ -100,28 +101,30 @@
         <geometry>
           <cylinder radius="0.1" lenght="0.02"/>
         </geometry>
+        <gz>
 
-        <surface>
-          <friction>
-            <ode>
-              <mu>10.0</mu>
-              <mu2>10.0</mu2>
-              <fdir1>0 0 0</fdir1>
-              <slip1>0.0</slip1>
-              <slip2>0.0</slip2>
-            </ode>
-          </friction>
-          <contact>
-            <ode>
-              <soft_cfm>0.001</soft_cfm>
-              <soft_erp>0.5</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
-            </ode>
-          </contact>
-        </surface>
+          <surface>
+            <friction>
+              <ode>
+                <mu>10.0</mu>
+                <mu2>10.0</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0.001</soft_cfm>
+                <soft_erp>0.5</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
       </collision>
       <visual>
         <origin rpy="0 0 0" xyz="0.0 -0.288 0.046"/>
@@ -132,7 +135,7 @@
     </link>
 
 
-    <joint name="back_right_caster_joint" type="ball">
+    <joint name="back_right_caster_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.29 -0.13 -0.0275"/>
       <parent link="base"/>
       <child link="back_right_caster_link"/>
@@ -148,18 +151,20 @@
         <geometry>
           <sphere radius="0.025"/>
         </geometry>
-        <surface>
-          <contact>
-            <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
-            </ode>
-          </contact>
-        </surface>
+        <gz>
+          <surface>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
       </collision>
       <visual>
         <geometry>
@@ -168,7 +173,7 @@
       </visual>
     </link>
 
-    <joint name="back_left_caster_joint" type="ball">
+    <joint name="back_left_caster_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.29  0.13 -0.0275"/>
       <parent link="base"/>
       <child link="back_left_caster_link"/>
@@ -184,18 +189,20 @@
         <geometry>
           <sphere radius="0.025"/>
         </geometry>
-        <surface>
-          <contact>
-            <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
-            </ode>
-          </contact>
-        </surface>
+        <gz>
+          <surface>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
       </collision>
       <visual>
         <geometry>
@@ -265,27 +272,29 @@
         <geometry>
           <box size="0.55 0.55 0.04"/>
         </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>1000000</mu>
-              <mu2>100000</mu2>
-              <fdir1>0 0 0</fdir1>
-              <slip1>0.0</slip1>
-              <slip2>0.0</slip2>
-            </ode>
-          </friction>
-          <contact>
-            <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+5</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0.001</min_depth>
-            </ode>
-          </contact>
-        </surface>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1000000</mu>
+                <mu2>100000</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
       </collision>
       <visual>
         <geometry>
