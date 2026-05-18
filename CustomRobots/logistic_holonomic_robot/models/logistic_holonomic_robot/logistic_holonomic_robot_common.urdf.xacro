@@ -48,7 +48,7 @@
       <collision>
         <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
         <geometry>
-          <cylinder radius="0.1" lenght="0.02"/>
+          <cylinder radius="0.1" length="0.02"/>
         </geometry>
         <gz>
           <surface>
@@ -99,7 +99,7 @@
       <collision>
         <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
         <geometry>
-          <cylinder radius="0.1" lenght="0.02"/>
+          <cylinder radius="0.1" length="0.02"/>
         </geometry>
         <gz>
 
@@ -233,33 +233,23 @@
       <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
       <parent link="platform_link"/>
       <child link="platform_support_link"/>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0.01</lower>
-          <upper>0.13</upper>
-          <effort>20</effort>
-          <velocity>0.5</velocity>
-        </limit>
-        <dynamics>
-          <damping>1.0</damping>
-          <friction>0</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>0</use_parent_model_frame>
-      </axis>
-      <physics>
-        <provide_feedback>1</provide_feedback>
-        <ode>
-          <implicit_spring_damper>0</implicit_spring_damper>
-          <cfm_damping>0</cfm_damping>
-          <limit>
-            <cfm>0.0</cfm>
-            <erp>0.8</erp>
-          </limit>
-        </ode>
-      </physics>
+      <axis xyz="0 0 1"/>
+      <limit effort="20" velocity="0.5" lower="0.01" upper="0.13"/>
+      <dynamics damping="0.01" friction="0" spring_reference="0" spring_stiffness="0"/>
+      <gz>
+
+        <physics>
+          <provide_feedback>1</provide_feedback>
+          <ode>
+            <implicit_spring_damper>0</implicit_spring_damper>
+            <cfm_damping>0</cfm_damping>
+            <limit>
+              <cfm>0.0</cfm>
+              <erp>0.8</erp>
+            </limit>
+          </ode>
+        </physics>
+      </gz>
     </joint>
 
     <link name="platform_link">
