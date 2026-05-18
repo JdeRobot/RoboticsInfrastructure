@@ -46,7 +46,7 @@
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0<" xyz="0.0 0.288 0.046"/>
+        <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
         <geometry>
           <cylinder radius="0.1" lenght="0.02"/>
         </geometry>
@@ -91,12 +91,12 @@
 
     <link name="right_wheel_link">
       <inertial>
-        <origin rpy="-1.57 0 0<" xyz="0.0 -0.288 0.046"/>
+        <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
         <mass value="0.1"/>
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0<" xyz="0.0 -0.288 0.046"/>
+        <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
         <geometry>
           <cylinder radius="0.1" lenght="0.02"/>
         </geometry>
