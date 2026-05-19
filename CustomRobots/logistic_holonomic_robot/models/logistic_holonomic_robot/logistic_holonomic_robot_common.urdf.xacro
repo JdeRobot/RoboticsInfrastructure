@@ -7,18 +7,15 @@
 
     <link name="base">
       <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
         <mass value="1.5"/>
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
-        <origin rpy="0 0 0" xyz="0 0 0.045"/>
         <geometry>
           <box size="0.532 0.532 0.188"/>
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0 0 -0.048"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/waffle_pi_base.dae" scale="0.002 0.002 0.002"/>
         </geometry>
@@ -26,27 +23,25 @@
     </link>
 
     <joint name="base_to_base_footprint" type="fixed">
-      <origin rpy="0 0 0" xyz="-0.064 0 0.048"/>
+      <origin rpy="0 0 0" xyz="0 0 0.048"/>
       <parent link="base_footprint"/>
       <child link="base"/>
     </joint>
 
     <joint name="left_wheel_joint" type="continuous">
-      <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
+      <origin rpy="0 0 0" xyz="0.127 0.288 0.046"/>
       <parent link="base"/>
       <child link="left_wheel_link"/>
-      <axis xyz="0 1 0"/>
+      <axis xyz="0 0 1"/>
       <limit effort="1000" velocity="100"/>
     </joint>
 
     <link name="left_wheel_link">
       <inertial>
-        <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
         <mass value="0.1"/>
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.046"/>
         <geometry>
           <cylinder radius="0.1" length="0.02"/>
         </geometry>
@@ -75,7 +70,6 @@
         </gz>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.0 0.288 0.046"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/left_tire.dae" scale="0.003 0.003 0.003"/>
         </geometry>
@@ -83,21 +77,19 @@
     </link>
 
     <joint name="right_wheel_joint" type="continuous">
-      <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
+      <origin rpy="0 0 0" xyz="0.127 -0.288 0.046"/>
       <parent link="base"/>
       <child link="right_wheel_link"/>
-      <axis xyz="0 1 0"/>
+      <axis xyz="0 0 1"/>
       <limit effort="1000" velocity="100"/>
     </joint>
 
     <link name="right_wheel_link">
       <inertial>
-        <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
         <mass value="0.1"/>
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.046"/>
         <geometry>
           <cylinder radius="0.1" length="0.02"/>
         </geometry>
@@ -127,7 +119,6 @@
         </gz>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.0 -0.288 0.046"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/right_tire.dae" scale="0.003 0.003 0.003"/>
         </geometry>
@@ -136,14 +127,13 @@
 
 
     <joint name="back_right_caster_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="-0.29 -0.13 -0.0275"/>
+      <origin rpy="0 0 0" xyz="-0.23 -0.13 -0.0275"/>
       <parent link="base"/>
       <child link="back_right_caster_link"/>
     </joint>
 
     <link name="back_right_caster_link">
       <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
         <mass value="0.8"/>
         <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
       </inertial>
@@ -174,14 +164,13 @@
     </link>
 
     <joint name="back_left_caster_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="-0.29  0.13 -0.0275"/>
+      <origin rpy="0 0 0" xyz="-0.23  0.13 -0.0275"/>
       <parent link="base"/>
       <child link="back_left_caster_link"/>
     </joint>
 
     <link name="back_left_caster_link">
       <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
         <mass value="0.8"/>
         <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
       </inertial>
@@ -230,14 +219,13 @@
     </link>
 
     <joint name="lift_joint" type="prismatic">
-      <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
+      <origin rpy="0 0 0" xyz="0 0.0 0.09"/>
       <parent link="platform_support_link"/>
       <child link="platform_link"/>
       <axis xyz="0 0 1"/>
       <limit effort="20" velocity="0.5" lower="0.01" upper="0.13"/>
       <dynamics damping="0.01" friction="0" spring_reference="0" spring_stiffness="0"/>
       <gz>
-
         <physics>
           <provide_feedback>1</provide_feedback>
           <ode>
