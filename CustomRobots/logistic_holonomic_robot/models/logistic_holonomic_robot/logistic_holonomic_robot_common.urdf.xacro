@@ -11,6 +11,7 @@
         <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.07"/>
         <geometry>
           <box size="0.532 0.532 0.188"/>
         </geometry>
@@ -29,7 +30,7 @@
     </joint>
 
     <joint name="left_wheel_joint" type="continuous">
-      <origin rpy="0 0 0" xyz="0.127 0.288 0.046"/>
+      <origin rpy="-1.57 0 0" xyz="0.127 0.288 0.046"/>
       <parent link="base"/>
       <child link="left_wheel_link"/>
       <axis xyz="0 0 1"/>
@@ -70,6 +71,7 @@
         </gz>
       </collision>
       <visual>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/left_tire.dae" scale="0.003 0.003 0.003"/>
         </geometry>
@@ -77,7 +79,7 @@
     </link>
 
     <joint name="right_wheel_joint" type="continuous">
-      <origin rpy="0 0 0" xyz="0.127 -0.288 0.046"/>
+      <origin rpy="-1.57 0 0" xyz="0.127 -0.288 0.046"/>
       <parent link="base"/>
       <child link="right_wheel_link"/>
       <axis xyz="0 0 1"/>
@@ -94,7 +96,6 @@
           <cylinder radius="0.1" length="0.02"/>
         </geometry>
         <gz>
-
           <surface>
             <friction>
               <ode>
@@ -119,6 +120,7 @@
         </gz>
       </collision>
       <visual>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="$(find custom_robots)/models/logistic_holonomic_robot/meshes/right_tire.dae" scale="0.003 0.003 0.003"/>
         </geometry>
@@ -126,7 +128,7 @@
     </link>
 
 
-    <joint name="back_right_caster_joint" type="fixed">
+    <!-- <joint name="back_right_caster_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.23 -0.13 -0.0275"/>
       <parent link="base"/>
       <child link="back_right_caster_link"/>
@@ -198,7 +200,7 @@
           <sphere radius="0.025"/>
         </geometry>
       </visual>
-    </link>
+    </link> -->
 
     <joint name="platform_support_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.02 0.0 0.2"/>
