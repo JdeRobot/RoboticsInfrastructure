@@ -30,7 +30,7 @@
     </joint>
 
     <joint name="left_wheel_joint" type="continuous">
-      <origin rpy="-1.57 0 0" xyz="0.127 0.288 0.046"/>
+      <origin rpy="-1.57 0 0" xyz="0 0.288 0.046"/>
       <parent link="base"/>
       <child link="left_wheel_link"/>
       <axis xyz="0 0 1"/>
@@ -79,7 +79,7 @@
     </link>
 
     <joint name="right_wheel_joint" type="continuous">
-      <origin rpy="-1.57 0 0" xyz="0.127 -0.288 0.046"/>
+      <origin rpy="-1.57 0 0" xyz="0 -0.288 0.046"/>
       <parent link="base"/>
       <child link="right_wheel_link"/>
       <axis xyz="0 0 1"/>
