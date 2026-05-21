@@ -40,11 +40,11 @@
 
   <group name="robotiq_2f85">
     <joint name="robotiq_85_left_knuckle_joint"/>
-    <joint name="robotiq_85_right_knuckle_joint_mimic"/>
-    <joint name="robotiq_85_left_inner_knuckle_joint_mimic"/>
-    <joint name="robotiq_85_right_inner_knuckle_joint_mimic"/>
-    <joint name="robotiq_85_left_finger_tip_joint_mimic"/>
-    <joint name="robotiq_85_right_finger_tip_joint_mimic"/>
+    <joint name="robotiq_85_right_knuckle_joint"/>
+    <joint name="robotiq_85_left_inner_knuckle_joint"/>
+    <joint name="robotiq_85_right_inner_knuckle_joint"/>
+    <joint name="robotiq_85_left_finger_tip_joint"/>
+    <joint name="robotiq_85_right_finger_tip_joint"/>
   </group>
 
   <group_state group="ur5_manipulator" name="home">
