@@ -5,24 +5,16 @@
             <max_step_size>0.008</max_step_size>
             <real_time_factor>1.0</real_time_factor>
         </physics>
-        <plugin
-            filename="gz-sim-physics-system"
-            name="gz::sim::systems::Physics">
+        <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
         </plugin>
-        <plugin
-            filename="gz-sim-user-commands-system"
-            name="gz::sim::systems::UserCommands">
+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
         </plugin>
-        <plugin
-            filename="gz-sim-scene-broadcaster-system"
-            name="gz::sim::systems::SceneBroadcaster">
+        <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
         </plugin>
 
-        <plugin
-            filename="gz-sim-imu-system"
-            name="gz::sim::systems::Imu">
+        <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
         </plugin>
-        
+
         <scene>
             <grid>false</grid>
         </scene>
@@ -48,22 +40,22 @@
                 <collision name="collision">
                     <geometry>
                         <plane>
-                        <normal>0 0 1</normal>
+                            <normal>0 0 1</normal>
                         </plane>
                     </geometry>
                 </collision>
                 <visual name="visual">
-                <geometry>
-                    <plane>
-                    <normal>0 0 1</normal>
-                    <size>100 100</size>
-                    </plane>
-                </geometry>
-                <material>
-                    <ambient>0.8 0.8 0.8 1</ambient>
-                    <diffuse>0.8 0.8 0.8 1</diffuse>
-                    <specular>0.8 0.8 0.8 1</specular>
-                </material>
+                    <geometry>
+                        <plane>
+                            <normal>0 0 1</normal>
+                            <size>100 100</size>
+                        </plane>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.8 0.8 1</ambient>
+                        <diffuse>0.8 0.8 0.8 1</diffuse>
+                        <specular>0.8 0.8 0.8 1</specular>
+                    </material>
                 </visual>
             </link>
         </model>
@@ -125,16 +117,6 @@
             <name>racks_set7</name>
             <uri>model://rack_set3</uri>
             <pose>-2 -15.5 0 0 0 0</pose>
-        </include>
-
-                <!-- 
-        Robot model in the world definition so it is restored on full simulation reset.
-        Otherwise, it would be lost after reset.
-        -->
-        <include>
-            <name>amazon_robot</name>
-            <uri>model://ackermann_logistic_robot_harmonic</uri>
-            <pose>0 0 0.5 0 0 -1.5</pose>
         </include>
     </world>
 </sdf>
