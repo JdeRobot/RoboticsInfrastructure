@@ -187,8 +187,8 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 57 	Package delivery	57	0
 58	Warehouse 1 Harmonic	58	13
 59	Warehouse 2 Harmonic	59	13
-60	Warehouse 1 Ackermann Harmonic	60	0
-61	Warehouse 2 Ackermann Harmonic	61	0
+60	Warehouse 1 Ackermann Harmonic	60	14
+61	Warehouse 2 Ackermann Harmonic	61	14
 62	Laser Mapping Warehouse Medium Noise	62	0
 63	Laser Mapping Warehouse High Noise	63	0
 64	Small Laser Mapping Warehouse Medium Noise	64	0
@@ -257,8 +257,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 58	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
 59	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2_amazon_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
-60	Warehouse 1 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse1_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.5,0.0,0.0,0.0}
-61	Warehouse 2 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse2_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.5,0.0,0.0,0.0}
+60	Warehouse 1 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse1_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
+61	Warehouse 2 Ackermann Harmonic	/opt/jderobot/Launchers/warehouse2_ackermann_logistic_robot_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
 62	Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 63	Laser Mapping Warehouse High Noise	/opt/jderobot/Launchers/laser_mapping_noise_high.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 64	Small Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
