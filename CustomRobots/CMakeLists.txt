@@ -107,6 +107,10 @@ install(
     logistic_holonomic_robot/params
     logistic_holonomic_robot/launch
 
+    logistic_ackermann_robot/models
+    logistic_ackermann_robot/params
+    logistic_ackermann_robot/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
