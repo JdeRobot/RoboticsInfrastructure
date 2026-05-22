@@ -25,7 +25,7 @@ def generate_launch_description():
     # PATHS
     # =========================
 
-    world_path = "/opt/jderobot/Worlds/machine_vision_harmonic.world"   
+    world_path = "/opt/jderobot/Worlds/machine_vision_harmonic.world"
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
@@ -37,10 +37,13 @@ def generate_launch_description():
     custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
 
     resource_path = (
-        ur5_share_parent + ":" +
-        robotiq_share_parent + ":" +
-        warehouse_models_path + ":" +
-        custom_models_path
+        ur5_share_parent
+        + ":"
+        + robotiq_share_parent
+        + ":"
+        + warehouse_models_path
+        + ":"
+        + custom_models_path
     )
 
     gazebo = ExecuteProcess(
@@ -57,8 +60,10 @@ def generate_launch_description():
         SetEnvironmentVariable(
             name="LD_LIBRARY_PATH",
             value=(
-                gz_lib_path + ":"
-                + gz_link_attacher_lib + ":"
+                gz_lib_path
+                + ":"
+                + gz_link_attacher_lib
+                + ":"
                 + "/home/ws/install/lib:"
                 + "/home/ws/install/linkattacher_msgs/lib:"
                 + "/opt/ros/humble/lib:"
@@ -73,8 +78,10 @@ def generate_launch_description():
             value=(
                 "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins:"
                 "/usr/lib/x86_64-linux-gnu/gz-sim-8/systems:"
-                + gz_lib_path + ":"
-                + gz_link_attacher_lib + ":"
+                + gz_lib_path
+                + ":"
+                + gz_link_attacher_lib
+                + ":"
                 + "/opt/ros/humble/lib"
             ),
         )

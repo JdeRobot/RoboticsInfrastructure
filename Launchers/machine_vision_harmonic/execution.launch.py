@@ -27,7 +27,7 @@ def generate_launch_description():
     xacro_file = os.path.join(
         get_package_share_directory("ros2srrc_ur5_gazebo"),
         "urdf",
-        "ur5_robotiq_2f85_with_cams.urdf.xacro"
+        "ur5_robotiq_2f85_with_cams.urdf.xacro",
     )
 
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")

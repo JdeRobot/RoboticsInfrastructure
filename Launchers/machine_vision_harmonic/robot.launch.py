@@ -33,16 +33,10 @@ def generate_launch_description():
     pkg_gazebo = get_package_share_directory("ros2srrc_ur5_gazebo")
 
     xacro_file = os.path.join(
-        pkg_gazebo,
-        "urdf",
-        "ur5_robotiq_2f85_with_cams.urdf.xacro"
+        pkg_gazebo, "urdf", "ur5_robotiq_2f85_with_cams.urdf.xacro"
     )
 
-    controllers_file = os.path.join(
-        pkg_desc,
-        "config",
-        "ur5_controllers.yaml"
-    )
+    controllers_file = os.path.join(pkg_desc, "config", "ur5_controllers.yaml")
 
     # =========================
     # ROBOT DESCRIPTION
@@ -76,9 +70,7 @@ def generate_launch_description():
         )
     }
 
-    kinematics_yaml = load_yaml(
-        "ur5_gripper_moveit_config", "config/kinematics.yaml"
-    )
+    kinematics_yaml = load_yaml("ur5_gripper_moveit_config", "config/kinematics.yaml")
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
@@ -109,9 +101,7 @@ def generate_launch_description():
         "ros2srrc_robots", "ur5/config/pilz_cartesian_limits.yaml"
     )
 
-    joint_limits_yaml = load_yaml(
-        "ros2srrc_robots", "ur5/config/joint_limits.yaml"
-    )
+    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur5/config/joint_limits.yaml")
 
     combined_planning = {
         "robot_description_planning": {
@@ -174,7 +164,6 @@ def generate_launch_description():
             "/hand_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/hand_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/hand_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-
             "/base_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/base_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
             "/base_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
@@ -228,14 +217,16 @@ def generate_launch_description():
     # LAUNCH
     # =========================
 
-    return LaunchDescription([
-        clock_bridge,
-        camera_bridge,
-        robot_state_publisher,
-        static_tf,
-        spawn_entity,
-        joint_state_broadcaster,
-        joint_trajectory_controller,
-        gripper_controller,
-        move_group,
-    ])
+    return LaunchDescription(
+        [
+            clock_bridge,
+            camera_bridge,
+            robot_state_publisher,
+            static_tf,
+            spawn_entity,
+            joint_state_broadcaster,
+            joint_trajectory_controller,
+            gripper_controller,
+            move_group,
+        ]
+    )
