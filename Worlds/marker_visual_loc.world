@@ -193,12 +193,5 @@
       <uri>model://posAprilTags</uri>
     </include>
 
-    <!-- Robot -->
-    <include>
-      <pose>1 -1.5 0.6 0 0 0</pose>
-      <name>turtlebot3_waffle</name>
-      <uri>model://turtlebot3_noisy_low</uri>
-    </include>
-
   </world>
 </sdf>
