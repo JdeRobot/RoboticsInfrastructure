@@ -96,10 +96,6 @@ namespace custom_plugins
     // Models imperfect wheel-wall contact (small perpendicular micro-displacements).
     double lateral_slip_ratio_{0.2};
 
-    // Consecutive simulation ticks the robot must appear blocked before slip
-    // activates, and the counter resets immediately on resumed motion.
-    int blocked_hysteresis_ticks_{3};
-    int blocked_ticks_{0};
   };
 }
 
