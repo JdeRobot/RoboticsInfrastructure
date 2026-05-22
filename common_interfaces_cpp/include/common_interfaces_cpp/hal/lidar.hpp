@@ -27,7 +27,7 @@ LidarData pointCloud2LidarData(const sensor_msgs::msg::PointCloud2::SharedPtr cl
 
 class LidarNode : public rclcpp::Node {
 public:
-    LidarNode(const std::string& topic);
+    LidarNode(const std::string& topic, const std::string& node_name = "lidar_node");
     LidarData getLidarData();
     sensor_msgs::msg::PointCloud2::SharedPtr get_point_cloud();
 

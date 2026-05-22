@@ -28,8 +28,8 @@ BumperData contactsToBumperData(const std::vector<ros_gz_interfaces::msg::Contac
     return bumper_data;
 }
 
-BumperNode::BumperNode(const std::vector<std::string>& topics_list) 
-    : Node("bumper_node"), topics(topics_list), contact_states_(3) {
+BumperNode::BumperNode(const std::vector<std::string>& topics_list, const std::string& node_name) 
+    : Node(node_name), topics(topics_list), contact_states_(3) {
     
     std::vector<std::function<void(const ros_gz_interfaces::msg::Contacts::SharedPtr)>> callbacks_ = {
         std::bind(&BumperNode::right_callback, this, std::placeholders::_1),

@@ -12,6 +12,8 @@
   <depend>rclcpp</depend>
   <depend>cv_bridge</depend>
   <depend>opencv</depend>
+  <depend>boost</depend>
+  <depend>nlohmann-json-dev</depend>
 
   <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>

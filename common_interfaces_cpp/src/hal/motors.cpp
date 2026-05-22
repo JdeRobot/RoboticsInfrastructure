@@ -1,7 +1,7 @@
 #include "common_interfaces_cpp/hal/motors.hpp"
 
-MotorsNode::MotorsNode(const std::string& topic, double maxV, double maxW) 
-    : Node("motors_node") {
+MotorsNode::MotorsNode(const std::string& topic, double maxV, double maxW, const std::string& node_name) 
+    : Node(node_name) {
     
     // maxV and maxW are kept in the constructor signature to match the Python interface
     
