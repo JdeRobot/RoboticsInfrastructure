@@ -33,7 +33,7 @@ def launch_setup(context):
     # =========================
     xacro_file = os.path.join(
         package_dir,
-        "model",
+        "models",
         "turtlebot3",
         "turtlebot3.urdf.xacro",
     )
