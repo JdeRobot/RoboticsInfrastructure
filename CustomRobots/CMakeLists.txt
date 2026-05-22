@@ -103,7 +103,7 @@ install(
     Turtlebot2/params
     Turtlebot2/launch
 
-    turtlebot3/model
+    turtlebot3/models
     turtlebot3/params
     turtlebot3/launch
 
