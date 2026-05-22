@@ -45,7 +45,10 @@ namespace custom_plugins
     alpha3_ = _sdf->Get<double>("alpha3", gaussian_noise_coeff_).first;
     alpha4_ = _sdf->Get<double>("alpha4", gaussian_noise_coeff_).first;
 
-    slip_factor_ = _sdf->Get<double>("slip_factor", 0.02).first;
+    slip_factor_               = _sdf->Get<double>("slip_factor",               0.02).first;
+    block_ratio_threshold_     = _sdf->Get<double>("block_ratio_threshold",     0.15).first;
+    lateral_slip_ratio_        = _sdf->Get<double>("lateral_slip_ratio",        0.20).first;
+    blocked_hysteresis_ticks_  = _sdf->Get<int>   ("blocked_hysteresis_ticks", 3   ).first;
 
     gz_node_.Subscribe(gz_cmd_vel_topic_, &NoisyOdometryPlugin::OnCmdVel, this);
 
@@ -123,18 +126,34 @@ namespace custom_plugins
     // In that case a small fraction of the commanded motion leaks into the
     // odometry, simulating wheel slip against the obstacle — exactly what real
     // encoders would observe when the wheels spin without moving the chassis.
-    const double trans_cmd    = v_cmd * dt;
+    const double trans_cmd     = v_cmd * dt;
     const double delta_rot_cmd = w_cmd * dt;
 
-    const bool is_blocked =
-      (std::abs(trans_cmd) > 1e-4 || std::abs(delta_rot_cmd) > 1e-4) &&
-      (trans_true < 1e-4 && std::abs(delta_yaw_true) < 1e-4);
+    // Ratio-based detection: blocked when a commanded axis achieves less than
+    // block_ratio_threshold_ of the expected increment. More robust than a fixed
+    // absolute threshold, which can misfire on slow robots or tiny commands.
+    const bool is_commanded    = std::abs(trans_cmd) > 1e-4 || std::abs(delta_rot_cmd) > 1e-4;
+    const bool linear_stalled  = std::abs(trans_cmd)     > 1e-4 &&
+                                  trans_true              < block_ratio_threshold_ * std::abs(trans_cmd);
+    const bool angular_stalled = std::abs(delta_rot_cmd) > 1e-4 &&
+                                  std::abs(delta_yaw_true) < block_ratio_threshold_ * std::abs(delta_rot_cmd);
+    const bool blocked_raw     = is_commanded && (linear_stalled || angular_stalled);
+
+    // Hysteresis: require several consecutive blocked detections before
+    // activating slip, and reset immediately when motion resumes.
+    blocked_ticks_ = blocked_raw
+      ? std::min(blocked_ticks_ + 1, blocked_hysteresis_ticks_)
+      : 0;
+    const bool is_blocked = (blocked_ticks_ >= blocked_hysteresis_ticks_);
 
     const double trans    = is_blocked ? trans_cmd    * slip_factor_ : trans_true;
     const double delta_yaw = is_blocked ? delta_rot_cmd * slip_factor_ : delta_yaw_true;
 
+    // When blocked, delta_body is near-zero simulator noise so atan2 returns a
+    // random angle. Force rot1=0 so the slip integrates along the robot's
+    // current heading, which is the only physically meaningful direction.
     const double rot1 =
-      (trans > 1e-9) ? NormalizeAngle(std::atan2(delta_body.Y(), delta_body.X())) : 0.0;
+      (!is_blocked && trans > 1e-9) ? NormalizeAngle(std::atan2(delta_body.Y(), delta_body.X())) : 0.0;
     const double rot2 = NormalizeAngle(delta_yaw - rot1);
 
     // Odometry motion model:
@@ -168,6 +187,19 @@ namespace custom_plugins
     noisy_pose_internal_.Pos().Y(
       noisy_pose_internal_.Pos().Y() + trans_noisy * std::sin(heading_after_rot1));
     noisy_pose_internal_.Pos().Z(current_true_pose.Pos().Z());
+
+    // When blocked, wheels spinning against a wall generate small random
+    // perpendicular micro-displacements (lateral slip). The direction is
+    // always 90° to the heading, so it cannot reverse the longitudinal slip.
+    if (is_blocked && lateral_slip_ratio_ > 0.0)
+    {
+      const double lateral = gz::math::Rand::DblNormal(
+        0.0, std::abs(trans) * lateral_slip_ratio_);
+      noisy_pose_internal_.Pos().X(
+        noisy_pose_internal_.Pos().X() - lateral * std::sin(heading_after_rot1));
+      noisy_pose_internal_.Pos().Y(
+        noisy_pose_internal_.Pos().Y() + lateral * std::cos(heading_after_rot1));
+    }
 
     noisy_pose_internal_.Rot() = gz::math::Quaterniond(0.0, 0.0, new_noisy_yaw);
     noisy_pose_internal_.Rot().Normalize();
