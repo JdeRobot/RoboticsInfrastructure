@@ -45,14 +45,13 @@ def launch_setup(context):
                 "laser": "true" if sensor == "laser" else "false",
             },
         ).toxml()
-
-        robot_description = {"robot_description": robot_description_content}
-
     else:
         ## Temporary SDF load to fix bumpers
         sdf_file = os.path.join(package_dir, 'models', 'vacuum_cleaner', 'vacuum_cleaner.sdf')
         with open(sdf_file, 'r') as infp:
             robot_description_content = infp.read()
+
+    robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
