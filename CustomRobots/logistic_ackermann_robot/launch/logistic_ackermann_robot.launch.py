@@ -39,10 +39,14 @@ def launch_setup(context):
     # ).toxml()
 
     ## Temporary SDF load
-    sdf_file = os.path.join(package_dir, 'models', 'logistic_ackermann_robot', 'logistic_ackermann_robot.sdf')
-    with open(sdf_file, 'r') as infp:
+    sdf_file = os.path.join(
+        package_dir,
+        "models",
+        "logistic_ackermann_robot",
+        "logistic_ackermann_robot.sdf",
+    )
+    with open(sdf_file, "r") as infp:
         robot_description_content = infp.read()
-
 
     robot_description = {"robot_description": robot_description_content}
 

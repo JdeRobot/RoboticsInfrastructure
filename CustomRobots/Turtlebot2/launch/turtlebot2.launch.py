@@ -110,7 +110,7 @@ def launch_setup(context):
 
         nodes_to_start.append(gz_ros2_image_left_bridge)
         nodes_to_start.append(gz_ros2_image_right_bridge)
-    elif sensor== "":
+    elif sensor == "":
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",

@@ -27,7 +27,9 @@ def launch_setup(context):
     sensor = gz_sensor.perform(context)
     mode = gz_mode.perform(context)
 
-    bridge_yaml = os.path.join(package_dir, "params", f"autonomous_car_{mode}_{sensor}.yaml")
+    bridge_yaml = os.path.join(
+        package_dir, "params", f"autonomous_car_{mode}_{sensor}.yaml"
+    )
 
     # =========================
     # ROBOT DESCRIPTION (URDF)

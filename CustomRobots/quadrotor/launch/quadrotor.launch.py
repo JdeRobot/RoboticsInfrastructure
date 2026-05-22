@@ -4,10 +4,15 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import DeclareLaunchArgument, OpaqueFunction, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    OpaqueFunction,
+    IncludeLaunchDescription,
+)
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 
 def launch_setup(context):
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -101,7 +106,7 @@ def launch_setup(context):
             {
                 "name_space": gz_namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": [gz_namespace,"/base_link"],
+                "twist_frame_id": [gz_namespace, "/base_link"],
             },
         ],
     )
@@ -160,7 +165,11 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("namespace", description="Namespace to use", default_value="drone0"))
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "namespace", description="Namespace to use", default_value="drone0"
+        )
+    )
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
