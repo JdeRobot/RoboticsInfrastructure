@@ -30,22 +30,29 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    xacro_file = os.path.join(
-        package_dir,
-        "models",
-        "vacuum_cleaner",
-        "vacuum_cleaner.urdf.xacro",
-    )
+    if sensor == "camera":
+        xacro_file = os.path.join(
+            package_dir,
+            "models",
+            "vacuum_cleaner",
+            "vacuum_cleaner.urdf.xacro",
+        )
 
-    robot_description_content = xacro.process_file(
-        xacro_file,
-        mappings={
-            "camera": "true" if sensor == "camera" else "false",
-            "laser": "true" if sensor == "laser" else "false",
-        },
-    ).toxml()
+        robot_description_content = xacro.process_file(
+            xacro_file,
+            mappings={
+                "camera": "true" if sensor == "camera" else "false",
+                "laser": "true" if sensor == "laser" else "false",
+            },
+        ).toxml()
 
-    robot_description = {"robot_description": robot_description_content}
+        robot_description = {"robot_description": robot_description_content}
+
+    else:
+        ## Temporary SDF load to fix bumpers
+        sdf_file = os.path.join(package_dir, 'models', 'vacuum_cleaner', 'vacuum_cleaner.sdf')
+        with open(sdf_file, 'r') as infp:
+            robot_description_content = infp.read()
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
