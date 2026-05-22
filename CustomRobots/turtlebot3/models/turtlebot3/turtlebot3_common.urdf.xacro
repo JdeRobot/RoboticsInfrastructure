@@ -140,60 +140,6 @@
       </visual>
     </link>
 
-    <link name="caster_back_right_link">
-      <origin rpy="-1.57 0 0" xyz="-0.177 -0.064 -0.004"/>
-      <inertial>
-        <mass value="0.001"/>
-        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
-      </inertial>
-      <collision>
-        <geometry>
-          <sphere radius="0.005"/>
-        </geometry>
-        <gazebo>
-          <surface>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
-      </collision>
-    </link>
-
-    <link name="caster_back_left_link">
-      <origin rpy="-1.57 0 0" xyz="-0.177 0.064 -0.004"/>
-      <inertial>
-        <mass value="0.001"/>
-        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
-      </inertial>
-      <collision>
-        <geometry>
-          <sphere radius="0.005"/>
-        </geometry>
-        <gazebo>
-          <surface>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
-      </collision>
-    </link>
-
     <link name="camera_link"/>
 
     <joint name="base_to_base_link" type="fixed">
@@ -227,17 +173,47 @@
     </joint>
 
     <!-- Ball joints -->
-    <joint name="caster_back_right_joint" type="continuous">
-      <parent link="base_link"/>
-      <child link="caster_back_right_link"/>
-      <limit effort="20" velocity="100"/>
-    </joint>
-
-    <joint name="caster_back_left_joint" type="continuous">
+    <joint name="caster_back_left_joint" type="fixed">
       <parent link="base_link"/>
       <child link="caster_back_left_link"/>
-      <limit effort="20" velocity="100"/>
+      <origin xyz="-0.177 0.064 -0.004" rpy="-1.57 0 0"/>
     </joint>
+
+    <link name="caster_back_left_link">
+      <collision>
+        <origin xyz="0 0.001 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.030 0.009 0.020"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.005" />
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+      </inertial>
+    </link>
+
+    <joint name="caster_back_right_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_back_right_link"/>
+      <origin xyz="-0.177 -0.064 -0.004" rpy="-1.57 0 0"/>
+    </joint>
+
+    <link name="caster_back_right_link">
+      <collision>
+        <origin xyz="0 0.001 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.030 0.009 0.020"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.005" />
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+      </inertial>
+    </link>
 
     <xacro:imu parent="imu_link" topic="turtlebot3/imu" xyz="-0.032 0 0.068" rpy="0 0 0"/>
     <xacro:lidar xyz="-0.064 0 0.121" rpy="0 0 0" name="lidar" parent="base_link" topic="turtlebot3/laser/scan"/>

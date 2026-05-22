@@ -31,25 +31,25 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    # xacro_file = os.path.join(
-    #     package_dir,
-    #     "model",
-    #     "turtlebot3",
-    #     "turtlebot3.urdf.xacro",
-    # )
+    xacro_file = os.path.join(
+        package_dir,
+        "model",
+        "turtlebot3",
+        "turtlebot3.urdf.xacro",
+    )
 
-    # robot_description_content = xacro.process_file(
-    #     xacro_file,
-    #     mappings={
-    #         "camera": "true" if sensor == "camera" else "false",
-    #         "noise_level": gz_noise.perform(context),
-    #     },
-    # ).toxml()
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "camera": "true" if sensor == "camera" else "false",
+            "noise_level": gz_noise.perform(context),
+        },
+    ).toxml()
 
     ## Temporary SDF load
-    sdf_file = os.path.join(package_dir, 'models', 'turtlebot3', 'turtlebot3.sdf')
-    with open(sdf_file, 'r') as infp:
-        robot_description_content = infp.read()
+    # sdf_file = os.path.join(package_dir, 'models', 'turtlebot3', 'turtlebot3.sdf')
+    # with open(sdf_file, 'r') as infp:
+    #     robot_description_content = infp.read()
 
     robot_description = {"robot_description": robot_description_content}
 
