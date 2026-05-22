@@ -31,7 +31,8 @@ t_world_map = xf.quaternion_matrix([math.sqrt(0.5), 0, 0, -math.sqrt(0.5)])
 
 def build_world(name, markers):
     world_file = open(name, "w")
-    world_file.write("""<?xml version="1.0"?>
+    world_file.write(
+        """<?xml version="1.0"?>
 
 <sdf version="1.6">
   <world name="default">
@@ -53,41 +54,50 @@ def build_world(name, markers):
     </include>
 
     <!-- ArUco markers -->
-""")
+"""
+    )
     for marker in markers:
-        world_file.write(f"""    <model name="marker{marker[0]}">
+        world_file.write(
+            f"""    <model name="marker{marker[0]}">
       <include>
         <static>true</static>
         <uri>model://marker_{marker[0]}</uri>
       </include>
       <pose>{marker[1]} {marker[2]} {marker[3]} {marker[4]} {marker[5]} {marker[6]}</pose>
     </model>
-""")
-    world_file.write("""
+"""
+        )
+    world_file.write(
+        """
   </world>
-</sdf>""")
+</sdf>"""
+    )
     world_file.close()
 
 
 def build_map(name, markers):
     map_file = open(name, "w")
-    map_file.write("""# Map for orca.world
+    map_file.write(
+        """# Map for orca.world
 # All marker locations are fixed (f: 1)
 
 marker_length: 0.1778
 markers:
-""")
+"""
+    )
     for marker in markers:
         t_marker_world = xf.euler_matrix(marker[4], marker[5], marker[6])
         t_marker_map = t_marker_world @ t_world_map
         r_marker_map = xf.euler_from_matrix(t_marker_map)
 
-        map_file.write(f"""  - id: {marker[0]}
+        map_file.write(
+            f"""  - id: {marker[0]}
     u: 1
     f: 1
     xyz: [{marker[1]}, {marker[2]}, {marker[3]}]
     rpy: [{r_marker_map[0]}, {r_marker_map[1]}, {r_marker_map[2]}]
-""")
+"""
+        )
     map_file.close()
 
 
