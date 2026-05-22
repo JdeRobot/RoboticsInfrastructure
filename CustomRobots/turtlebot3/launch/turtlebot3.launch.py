@@ -18,6 +18,7 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
+    gz_noise = LaunchConfiguration("noise")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -41,7 +42,7 @@ def launch_setup(context):
     #     xacro_file,
     #     mappings={
     #         "camera": "true" if sensor == "camera" else "false",
-    #         "stereo": "true" if sensor == "stereo" else "false",
+    #         "noise_level": gz_noise.perform(context),
     #     },
     # ).toxml()
 
@@ -98,7 +99,7 @@ def launch_setup(context):
     nodes_to_start.append(gz_ros2_bridge)
 
     # Sensor deppending on sensor arguments
-    if True:
+    if sensor == "camera":
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
@@ -132,7 +133,8 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="stereo"))
+    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
+    declared_arguments.append(DeclareLaunchArgument("noise", default_value="none"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

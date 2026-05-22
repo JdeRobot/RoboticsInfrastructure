@@ -103,6 +103,10 @@ install(
     Turtlebot2/params
     Turtlebot2/launch
 
+    turtlebot3/model
+    turtlebot3/params
+    turtlebot3/launch
+
     logistic_holonomic_robot/models
     logistic_holonomic_robot/params
     logistic_holonomic_robot/launch
@@ -139,9 +143,7 @@ install(
     3d_reconstruction/models
     3d_reconstruction/params
     marker_visual_loc/models
-    turtlebot3/models
     turtlebot3/urdf
-    turtlebot3/params
     laser_mapping/models
     restaurant/models
     pick_place/models

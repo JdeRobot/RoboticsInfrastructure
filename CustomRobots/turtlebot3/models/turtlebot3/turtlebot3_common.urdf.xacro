@@ -1,0 +1,247 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/turtlebo3/turtlebo3_gz.urdf.xacro"/>
+
+  <xacro:macro name="turtlebot3">
+
+    <link name="base_footprint"></link>
+
+    <link name="base_link">
+      <inertial>
+        <mass value="1.373"/>
+        <inertia ixx="4.2111447e-02" ixy="0" ixz="0" iyy="4.2111447e-02" iyz="0" izz="7.5254874e-02"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 0" xyz="-0.064 0 0.048"/>
+        <geometry>
+          <box size="0.265 0.265 0.089"/>
+        </geometry>
+      </collision>
+      <visual >
+        <origin rpy="0 0 0" xyz="-0.064  0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/urtlebot3/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <gazebo>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+            <script>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </gazebo>
+      </visual>
+    </link>
+
+    <link name="wheel_left_link">
+      <inertial>
+        <origin rpy="-1.57 0 0" xyz="0.0 0.144 0.023"/>
+        <mass value="0.1"/>
+        <inertia ixx="1.1175580e-05" ixy="0" ixz="0" iyy="1.1175580e-05" iyz="0" izz="2.0712558e-05"/>
+      </inertial>
+      <collision>
+        <origin rpy="-1.57 0 0" xyz="0.0 0.144 0.023"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.018"/>
+        </geometry>
+        <gazebo>
+          <surface>
+            <!-- This friction pamareter don't contain reliable data!! -->
+            <friction>
+              <ode>
+                <mu>100000.0</mu>
+                <mu2>100000.0</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gazebo>
+      </collision>
+      <visual >
+        <origin rpy="0 0 0" xyz="0.0 0.144 0.023"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/urtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <gazebo>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </gazebo>
+      </visual>
+    </link>
+
+    <link name="wheel_right_link">
+      <inertial>
+        <origin rpy="-1.57 0 0" xyz="0.0 -0.144 0.023"/>
+        <mass value="0.1"/>
+        <inertia ixx="1.1175580e-05" ixy="0" ixz="0" iyy="1.1175580e-05" iyz="0" izz="2.0712558e-05"/>
+      </inertial>
+      <collision>
+        <origin rpy="-1.57 0 0" xyz="0.0 -0.144 0.023"/>
+        <geometry>
+          <cylinder radius="0.033" length="0.018"/>
+        </geometry>
+        <gazebo>
+          <surface>
+            <!-- This friction pamareter don't contain reliable data!! -->
+            <friction>
+              <ode>
+                <mu>100000.0</mu>
+                <mu2>100000.0</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gazebo>
+      </collision>
+      <visual >
+        <origin rpy="0 0 0" xyz="0.0 -0.144 0.023"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/model/urtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <gazebo>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </gazebo>
+      </visual>
+    </link>
+
+    <link name="caster_back_right_link">
+      <origin rpy="-1.57 0 0" xyz="-0.177 -0.064 -0.004"/>
+      <inertial>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+      <collision>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+        <gazebo>
+          <surface>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gazebo>
+      </collision>
+    </link>
+
+    <link name="caster_back_left_link">
+      <origin rpy="-1.57 0 0" xyz="-0.177 0.064 -0.004"/>
+      <inertial>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+      <collision>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+        <gazebo>
+          <surface>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gazebo>
+      </collision>
+    </link>
+
+    <link name="camera_link"/>
+
+    <joint name="base_to_base_link" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <joint name="camera_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0.064 -0.065 0.094" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <joint name="wheel_left_joint" type="continuous">
+      <origin rpy="-1.57 0 0" xyz="0.0 0.144 0.023"/>
+      <parent link="base_link"/>
+      <child link="wheel_left_link"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="20" velocity="100"/>
+    </joint>
+
+    <joint name="wheel_right_joint" type="continuous">
+      <origin rpy="-1.57 0 0" xyz="0.0 -0.144 0.023"/>
+      <parent link="base_link"/>
+      <child link="wheel_right_link"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="20" velocity="100"/>
+    </joint>
+
+    <!-- Ball joints -->
+    <joint name="caster_back_right_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="caster_back_right_link"/>
+      <limit effort="20" velocity="100"/>
+    </joint>
+
+    <joint name="caster_back_left_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="caster_back_left_link"/>
+      <limit effort="20" velocity="100"/>
+    </joint>
+
+    <xacro:imu parent="imu_link" topic="turtlebot3/imu" xyz="-0.032 0 0.068" rpy="0 0 0"/>
+    <xacro:lidar xyz="-0.064 0 0.121" rpy="0 0 0" name="lidar" parent="base_link" topic="turtlebot3/laser/scan"/>
+    <xacro:velocity topic="turtlebot3/cmd_vel"/>
+    <xacro:odom topic="/turtlebot3/odom" freq="50"/>
+  </xacro:macro>
+</robot>

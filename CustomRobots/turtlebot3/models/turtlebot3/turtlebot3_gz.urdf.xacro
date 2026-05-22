@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera" params="xyz rpy name parent topic">
+
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.035"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>/${topic}/image_raw</topic>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <camera name="${name}">
+          <camera_info_topic>/${topic}/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="depth_camera" params="xyz rpy name parent topic">
+
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.035"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="depth_camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <topic>/${topic}/depth</topic>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <camera name="${name}">
+          <camera_info_topic>/${topic}/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R_FLOAT32</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>300</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="laser" params="xyz rpy name parent topic">
+    <link name="${name}_link">
+      <inertial>
+        <origin xyz="-0.052 0 0.111" rpy="0 0 0"/>
+        <mass value="0.114"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin xyz="-0.052 0 0.111" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0508" length="0.055"/>
+        </geometry>
+      </collision>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/lds.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>5</update_rate>
+        <topic>${topic}</topic>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>6.28</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>3.5</max>
+            <resolution>0.015</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="imu" params="parent topic xyz rpy">
+    <gazebo>
+      <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+      </plugin>
+    </gazebo>
+
+    <link name="imu_link"></link>
+
+    <joint name="imu_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="imu_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <gazebo reference="imu_link">
+      <sensor name='imu' type='imu'>
+        <always_on>1</always_on>
+        <update_rate>200</update_rate>
+        <topic>${topic}</topic>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+
+  <xacro:macro name="velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <!-- wheels -->
+        <left_joint>wheel_left_joint</left_joint>
+        <right_joint>wheel_right_joint</right_joint>
+
+        <!-- kinematics -->
+        <wheel_separation>0.287</wheel_separation>
+        <wheel_radius>0.033</wheel_radius>
+
+        <!-- limits -->
+        <max_linear_acceleration>1.0</max_linear_acceleration>
+
+        <topic>${topic}</topic>
+
+        <frame_id>odom</frame_id>
+        <!-- <tf_topic>/tf</tf_topic> -->
+        <odom_publisher_frequency>30</odom_publisher_frequency>
+        <child_frame_id>base_footprint</child_frame_id>
+
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="noise_odom" params="vel_topic topic">
+    <gazebo>
+      <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
+        <ros_topic>${topic}</ros_topic>
+        <gz_cmd_vel_topic>${vel_topic}</gz_cmd_vel_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base</child_frame_id>
+
+        <alpha1>0.01</alpha1>
+        <alpha2>0.01</alpha2>
+        <alpha3>0.005</alpha3>
+        <alpha4>0.005</alpha4>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>
