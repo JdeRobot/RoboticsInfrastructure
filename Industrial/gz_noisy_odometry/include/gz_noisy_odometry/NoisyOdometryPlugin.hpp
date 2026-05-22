@@ -88,10 +88,6 @@ namespace custom_plugins
     // Typical range: 0.01 – 0.05.
     double slip_factor_{0.02};
 
-    // Ratio of actual/commanded motion below which a robot is considered blocked.
-    // Avoids the fixed absolute threshold misfiring on slow robots or low-speed commands.
-    double block_ratio_threshold_{0.15};
-
     // Fraction of longitudinal slip applied as zero-mean lateral noise when blocked.
     // Models imperfect wheel-wall contact (small perpendicular micro-displacements).
     double lateral_slip_ratio_{0.2};

@@ -45,9 +45,8 @@ namespace custom_plugins
     alpha3_ = _sdf->Get<double>("alpha3", gaussian_noise_coeff_).first;
     alpha4_ = _sdf->Get<double>("alpha4", gaussian_noise_coeff_).first;
 
-    slip_factor_           = _sdf->Get<double>("slip_factor",           0.02).first;
-    block_ratio_threshold_ = _sdf->Get<double>("block_ratio_threshold", 0.15).first;
-    lateral_slip_ratio_    = _sdf->Get<double>("lateral_slip_ratio",    0.20).first;
+    slip_factor_        = _sdf->Get<double>("slip_factor",        0.02).first;
+    lateral_slip_ratio_ = _sdf->Get<double>("lateral_slip_ratio", 0.20).first;
 
     gz_node_.Subscribe(gz_cmd_vel_topic_, &NoisyOdometryPlugin::OnCmdVel, this);
 
@@ -128,18 +127,12 @@ namespace custom_plugins
     const double trans_cmd     = v_cmd * dt;
     const double delta_rot_cmd = w_cmd * dt;
 
-    // Ratio-based detection: blocked when a commanded axis achieves less than
-    // block_ratio_threshold_ of the expected increment. More robust than a fixed
-    // absolute threshold, which can misfire on slow robots or tiny commands.
-    // Single-tick detection (no hysteresis): the physics engine makes the robot
-    // bounce on alternate ticks against a wall, so any multi-tick accumulator
-    // would never trigger.
-    const bool is_commanded    = std::abs(trans_cmd) > 1e-4 || std::abs(delta_rot_cmd) > 1e-4;
-    const bool linear_stalled  = std::abs(trans_cmd)     > 1e-4 &&
-                                  trans_true              < block_ratio_threshold_ * std::abs(trans_cmd);
-    const bool angular_stalled = std::abs(delta_rot_cmd) > 1e-4 &&
-                                  std::abs(delta_yaw_true) < block_ratio_threshold_ * std::abs(delta_rot_cmd);
-    const bool is_blocked      = is_commanded && (linear_stalled || angular_stalled);
+    // Blocked when something is commanded but the simulator reports no real
+    // displacement. Single-tick, absolute threshold: ratio-based approaches
+    // misfire during acceleration because trans_true lags trans_cmd legitimately.
+    const bool is_blocked =
+      (std::abs(trans_cmd) > 1e-4 || std::abs(delta_rot_cmd) > 1e-4) &&
+      (trans_true < 1e-4 && std::abs(delta_yaw_true) < 1e-4);
 
     const double trans    = is_blocked ? trans_cmd    * slip_factor_ : trans_true;
     const double delta_yaw = is_blocked ? delta_rot_cmd * slip_factor_ : delta_yaw_true;
