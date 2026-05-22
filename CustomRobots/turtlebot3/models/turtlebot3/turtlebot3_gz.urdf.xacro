@@ -100,6 +100,7 @@
         <geometry>
           <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/lds.dae" scale="0.001 0.001 0.001"/>
         </geometry>
+        <material name="dark"/>
       </visual>
     </link>
 

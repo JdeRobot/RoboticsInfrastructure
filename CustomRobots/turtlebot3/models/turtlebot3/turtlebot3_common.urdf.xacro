@@ -3,6 +3,23 @@
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
 
   <xacro:macro name="turtlebot3">
+    <!-- Init colour -->
+    <material name="black">
+      <color rgba="0.0 0.0 0.0 1.0"/>
+    </material>
+
+    <material name="dark">
+      <color rgba="0.3 0.3 0.3 1.0"/>
+    </material>
+
+    <material name="light_black">
+      <color rgba="0.4 0.4 0.4 1.0"/>
+    </material>
+
+    <material name="white">
+      <color rgba="1.0 1.0 1.0 1.0"/>
+    </material>
+
 
     <link name="base_footprint"></link>
 
@@ -20,30 +37,18 @@
       <visual >
         <origin rpy="0 0 0" xyz="-0.064  0 0"/>
         <geometry>
-          <mesh filename="$(find custom_robots)/model/turtlebot3/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
         </geometry>
-        <gazebo>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-            <emissive>0 0 0 1</emissive>
-            <script>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </gazebo>
+        <material name="light_black"/>
       </visual>
     </link>
 
     <link name="wheel_left_link">
       <inertial>
-        <origin rpy="-1.57 0 0" xyz="0.0 0.144 0.023"/>
         <mass value="0.1"/>
         <inertia ixx="1.1175580e-05" ixy="0" ixz="0" iyy="1.1175580e-05" iyz="0" izz="2.0712558e-05"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0" xyz="0.0 0.144 0.023"/>
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
@@ -73,29 +78,20 @@
         </gazebo>
       </collision>
       <visual >
-        <origin rpy="0 0 0" xyz="0.0 0.144 0.023"/>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="$(find custom_robots)/model/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
         </geometry>
-        <gazebo>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-            <emissive>0 0 0 1</emissive>
-          </material>
-        </gazebo>
+        <material name="black"/>
       </visual>
     </link>
 
     <link name="wheel_right_link">
       <inertial>
-        <origin rpy="-1.57 0 0" xyz="0.0 -0.144 0.023"/>
         <mass value="0.1"/>
         <inertia ixx="1.1175580e-05" ixy="0" ixz="0" iyy="1.1175580e-05" iyz="0" izz="2.0712558e-05"/>
       </inertial>
       <collision>
-        <origin rpy="-1.57 0 0" xyz="0.0 -0.144 0.023"/>
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
@@ -125,18 +121,11 @@
         </gazebo>
       </collision>
       <visual >
-        <origin rpy="0 0 0" xyz="0.0 -0.144 0.023"/>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="$(find custom_robots)/model/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
         </geometry>
-        <gazebo>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-            <emissive>0 0 0 1</emissive>
-          </material>
-        </gazebo>
+        <material name="black"/>
       </visual>
     </link>
 
