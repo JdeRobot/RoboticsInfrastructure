@@ -566,6 +566,8 @@
       <alpha2>0.0005</alpha2>
       <alpha3>0.0002</alpha3>
       <alpha4>0.0002</alpha4>
+      <slip_factor>0.05</slip_factor>
+      <lateral_slip_ratio>0.15</lateral_slip_ratio>
     </plugin>
 
   </model>
