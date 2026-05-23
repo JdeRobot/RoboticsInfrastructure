@@ -43,6 +43,14 @@ LinkAttacher()
 {
   std::cout << "[LinkAttacher] Destructor called" << std::endl;
 
+  {
+    std::lock_guard<std::mutex> lock(jointMutex);
+    shuttingDown = true;
+    cleanupRequested = true;
+  }
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
   if (executor)
   {
     std::cout << "[LinkAttacher] Stopping executor" << std::endl;
@@ -141,14 +149,35 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
+  std::lock_guard<std::mutex> lock(jointMutex);
 
-  if(!initialized)
+  if (cleanupRequested)
+  {
+    std::cout << "[LinkAttacher] Cleanup requested" << std::endl;
+
+    if (activeJoint != kNullEntity)
+    {
+      _ecm.RequestRemoveEntity(activeJoint);
+
+      std::cout << "[LinkAttacher] Active joint removed during cleanup"
+                << std::endl;
+
+      activeJoint = kNullEntity;
+    }
+
+    attachRequested = false;
+    detachRequested = false;
+    cleanupRequested = false;
+    return;
+  }
+
+  if (!initialized)
   {
     std::cout << "[LinkAttacher] First PreUpdate() detected" << std::endl;
     initialized = true;
   }
 
-  if(attachRequested)
+  if (attachRequested)
   {
     std::cout << "\n[LinkAttacher] Processing attach request" << std::endl;
     std::cout << "[LinkAttacher] model1=" << model1
@@ -158,18 +187,17 @@ void PreUpdate(
 
     CreateJoint(_ecm);
 
-    attachRequested=false;
+    attachRequested = false;
   }
 
-  if(detachRequested)
+  if (detachRequested)
   {
     std::cout << "[LinkAttacher] Processing detach request" << std::endl;
 
     RemoveJoint(_ecm);
 
-    detachRequested=false;
+    detachRequested = false;
   }
-
 }
 
 private:
@@ -240,6 +268,12 @@ void CreateJoint(EntityComponentManager &_ecm)
 
   std::cout << "[LinkAttacher] CreateJoint()" << std::endl;
 
+  if (activeJoint != kNullEntity)
+  {
+    std::cout << "[LinkAttacher] Joint already active" << std::endl;
+    return;
+  }
+
   Entity parentLink = FindLink(_ecm, model1, link1);
   Entity childLink  = FindLink(_ecm, model2, link2);
 
@@ -289,27 +323,38 @@ void Attach(
   std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
 {
 
-  std::cout<<"\n==============================="<<std::endl;
-  std::cout<<"[LinkAttacher] ATTACH REQUEST RECEIVED"<<std::endl;
+  std::cout << "\n===============================" << std::endl;
+  std::cout << "[LinkAttacher] ATTACH REQUEST RECEIVED" << std::endl;
 
-  std::cout<<"model1="<<req->model1_name<<std::endl;
-  std::cout<<"link1="<<req->link1_name<<std::endl;
-  std::cout<<"model2="<<req->model2_name<<std::endl;
-  std::cout<<"link2="<<req->link2_name<<std::endl;
+  std::cout << "model1=" << req->model1_name << std::endl;
+  std::cout << "link1=" << req->link1_name << std::endl;
+  std::cout << "model2=" << req->model2_name << std::endl;
+  std::cout << "link2=" << req->link2_name << std::endl;
 
-  model1=req->model1_name;
-  link1=req->link1_name;
+  {
+    std::lock_guard<std::mutex> lock(jointMutex);
 
-  model2=req->model2_name;
-  link2=req->link2_name;
+    if (shuttingDown)
+    {
+      res->success = false;
+      res->message = "Plugin shutting down";
+      return;
+    }
 
-  attachRequested=true;
+    model1 = req->model1_name;
+    link1 = req->link1_name;
 
-  res->success=true;
-  res->message="Attach scheduled";
+    model2 = req->model2_name;
+    link2 = req->link2_name;
 
-  std::cout<<"[LinkAttacher] Response sent"<<std::endl;
-  std::cout<<"===============================\n"<<std::endl;
+    attachRequested = true;
+  }
+
+  res->success = true;
+  res->message = "Attach scheduled";
+
+  std::cout << "[LinkAttacher] Response sent" << std::endl;
+  std::cout << "===============================\n" << std::endl;
 }
 
 void Detach(
@@ -318,17 +363,31 @@ void Detach(
   std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
 {
 
-  std::cout<<"\n[LinkAttacher] DETACH REQUEST RECEIVED"<<std::endl;
+  std::cout << "\n[LinkAttacher] DETACH REQUEST RECEIVED" << std::endl;
 
-  detachRequested=true;
+  {
+    std::lock_guard<std::mutex> lock(jointMutex);
 
-  res->success=true;
-  res->message="Detach scheduled";
+    if (shuttingDown)
+    {
+      res->success = false;
+      res->message = "Plugin shutting down";
+      return;
+    }
 
-  std::cout<<"[LinkAttacher] Detach response sent"<<std::endl;
+    detachRequested = true;
+  }
+
+  res->success = true;
+  res->message = "Detach scheduled";
+
+  std::cout << "[LinkAttacher] Detach response sent" << std::endl;
 }
 
 private:
+std::mutex jointMutex;
+bool shuttingDown{false};
+bool cleanupRequested{false};
 
 rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
