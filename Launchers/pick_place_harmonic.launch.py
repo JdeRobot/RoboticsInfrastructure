@@ -4,60 +4,67 @@ Wraps the spawn_robot_warehouse.launch.py from ur5_gripper_description package
 """
 
 import os
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+
 from ament_index_python.packages import get_package_share_directory
+
+from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     SetEnvironmentVariable,
-    AppendEnvironmentVariable,
 )
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, Command
+from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     package_dir = get_package_share_directory("custom_robots")
-    robotiq_description_pkg = get_package_share_directory("robotiq_description")
+    package_dir2 = get_package_share_directory("robotiq_description")
+
+    ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     gazebo_models_path = os.path.join(package_dir, "models")
+    gazebo_models2_path = os.path.join(package_dir2, "world", "models")
 
-    # Get package directory
-    try:
-        ur5_gripper_pkg = get_package_share_directory("ur5_gripper_description")
-    except Exception as e:
-        print(f"ERROR: Cannot find ur5_gripper_description package: {e}")
-        print("Make sure packages are built in /home/ws")
-        raise
+    world_file_name = "warehouse_arm_harmonic.world"
+    world_path = os.path.join(package_dir2, "world", world_file_name)
 
-    # Path to spawn_robot_warehouse launch file
-    warehouse_launch_file = os.path.join(
-        ur5_gripper_pkg, "launch", "spawn_robot_warehouse.launch.py"
+    resource_path = (
+        gazebo_models_path
+        + ":"
+        + os.path.dirname(package_dir2)
+        + ":"
+        + gazebo_models2_path
     )
 
-    print(f"Including launch file: {warehouse_launch_file}")
-
-    # Include the warehouse launch with launch_rviz=false (Academy launches RViz separately)
-    warehouse_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(warehouse_launch_file),
+    gazebo_server = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+        ),
         launch_arguments={
-            "launch_rviz": "false",  # Academy launches RViz separately
+            "gz_args": ["-s -v4 ", world_path],
+            "on_exit_shutdown": "true",
         }.items(),
+    )
+
+    world_entity_cmd = Node(
+        package="ros_gz_sim",
+        executable="create",
+        arguments=["-name", "world", "-file", world_path],
+        output="screen",
     )
 
     ld = LaunchDescription()
 
     ld.add_action(
-        SetEnvironmentVariable(
-            "GZ_SIM_RESOURCE_PATH",
-            gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
-        )
+        SetEnvironmentVariable(name="GZ_SIM_RESOURCE_PATH", value=resource_path)
     )
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH",
-        gazebo_models_path + ":" + ur5_gripper_pkg + ":" + robotiq_description_pkg,
-    )
-    ld.add_action(set_env_vars_resources)
-    ld.add_action(warehouse_launch)
+
+    ld.add_action(gazebo_server)
+    ld.add_action(world_entity_cmd)
+
     return ld

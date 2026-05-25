@@ -48,12 +48,6 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <!-- Coche -->
-    <include>
-      <uri>model://f1_renault</uri>
-      <pose>27.18 -31.55 0.00 0.00 0.01 -3.12</pose>
-    </include>
-
     <!-- Luz -->
     <light name="sun" type="directional">
       <pose>0 0 10 0 0 0</pose>

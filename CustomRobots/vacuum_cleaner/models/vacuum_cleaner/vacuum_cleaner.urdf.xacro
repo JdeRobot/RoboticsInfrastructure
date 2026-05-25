@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<robot name="vacuum_cleaner"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="camera" default="true"/>
+  <xacro:arg name="laser" default="false"/>
+
+  <xacro:include filename="$(find custom_robots)/models/vacuum_cleaner/vacuum_cleaner_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/vacuum_cleaner/vacuum_cleaner_common.urdf.xacro"/>
+
+  <xacro:vacuum_cleaner/>
+
+  <xacro:if value="$(arg camera)">
+    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" name="camera" parent="base"/>
+  </xacro:if>
+
+  <xacro:if value="$(arg laser)">
+    <xacro:laser xyz="0.139 0 0.0752" rpy="0 0 0" name="laser" parent="base" topic="/roombaROS/laser/scan"/>
+  </xacro:if>
+</robot>

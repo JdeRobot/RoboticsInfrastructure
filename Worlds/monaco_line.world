@@ -4,16 +4,12 @@
 
     <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
     <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
-    <plugin
-      filename="gz-sim-user-commands-system"
-      name="gz::sim::systems::UserCommands">
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
     </plugin>
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-    
+
     <gravity>0 0 -9.8</gravity>
     <atmosphere type="adiabatic"/>
 
@@ -26,14 +22,8 @@
 
     <!-- Circuito -->
     <include>
-	    <uri>model://monaco</uri>
-	    <pose>0 0 0 0 0 0</pose>
-    </include>
-
-    <!-- Coche -->
-    <include>
-      <uri>model://f1_renault</uri>
-      <pose>-105.223 -70.77 -1.8 0 0 1.69</pose>
+      <uri>model://monaco</uri>
+      <pose>0 0 0 0 0 0</pose>
     </include>
 
     <!-- Luz -->
