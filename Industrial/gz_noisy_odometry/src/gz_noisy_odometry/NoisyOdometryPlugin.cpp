@@ -1,5 +1,6 @@
 #include "gz_noisy_odometry/NoisyOdometryPlugin.hpp"
 #include <gz/sim/components/JointPosition.hh>
+#include <gz/sim/components/Pose.hh>
 #include <gz/plugin/Register.hh>
 
 #include <cmath>
@@ -88,6 +89,17 @@ namespace custom_plugins
 
     if (!initialized_)
     {
+      // Seed the estimate with the robot's spawn pose so that odom_noisy starts
+      // at the same position as the perfect-odometry topic.  After this point
+      // the estimate evolves purely from encoder increments — Pose is not read again.
+      auto *poseComp = _ecm.Component<gz::sim::components::Pose>(model_.Entity());
+      if (poseComp)
+      {
+        noisy_x_   = poseComp->Data().Pos().X();
+        noisy_y_   = poseComp->Data().Pos().Y();
+        noisy_yaw_ = poseComp->Data().Rot().Yaw();
+      }
+
       last_left_pos_    = left_pos;
       last_right_pos_   = right_pos;
       last_update_time_ = _info.simTime;
