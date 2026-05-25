@@ -126,6 +126,9 @@
   <xacro:arg name="tf_prefix" default=""/>
   <xacro:property name="tf_prefix" value="$(arg tf_prefix)"/>
 
+  <xacro:arg name="sim_gazebo_classic" default="false"/>
+  <xacro:property name="sim_gazebo_classic" value="$(arg sim_gazebo_classic)"/>
+
   <xacro:macro name="ur5_ros2control" params="bringup robot_ip EE EE_name script_filename input_recipe_filename output_recipe_filename" >
 
     <!-- ROS2_CONTROL tag name: -->
@@ -144,7 +147,12 @@
       <!-- A. GAZEBO SIMULATION: -->
       <xacro:unless value="${bringup}">
         <hardware>
-          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+          <xacro:if value="${sim_gazebo_classic}">
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+          </xacro:if>
+          <xacro:unless value="${sim_gazebo_classic}">
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+          </xacro:unless>
         </hardware>
       </xacro:unless>
 
