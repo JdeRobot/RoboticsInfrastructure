@@ -17,7 +17,7 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    world_file_name = "drone_gymkhana.world"
+    world_file_name = "small_laser_mapping.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 

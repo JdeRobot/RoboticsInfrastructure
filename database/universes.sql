@@ -215,10 +215,10 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 6	Autoparking Simple: In battery	/opt/jderobot/Launchers/prius_bateria.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 7	Autoparking Simple: In line	/opt/jderobot/Launchers/prius_autoparking.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 8	City Large	/opt/jderobot/Launchers/taxi_navigator_followingcam.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-9	City Large Harmonic	/opt/jderobot/Launchers/taxi_navigator.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/global_nav.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,-1.5529944}
+9	City Large Harmonic	/opt/jderobot/Launchers/basic_city.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/basic_city.config"}	ROS2	gz	{0,0,0.1,0,0,-1.5529944}
 10	Follow Person	/opt/jderobot/Launchers/follow_person.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 11	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-12	Laser Mapping Warehouse Low Noise	/opt/jderobot/Launchers/laser_mapping_noise_low.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{14.25,-10.75,0,0,-0,3.14}
 14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}
 16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}
 18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}
@@ -226,29 +226,29 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 20	Rescue Default	/opt/jderobot/Launchers/world.json	None	ROS2	drones	{0.0,0.0,0.0,0.0,0.0,0.0}
 21	Restaurant	/opt/jderobot/Launchers/restaurant.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{53.462,-10.734,0.004,0,0,-1.57}
-24	Vacuums House	/opt/jderobot/Launchers/vacuum_cleaner.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_house.config"}	ROS2	gz	{-1,1.5,0,0.0,0.0,0.0}
-25	Vacuums House Markers	/opt/jderobot/Launchers/marker_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/marker_visual_loc.config"}	ROS2	gz	{1,-1.5,0.43,0,0,0}
-26	Vacuums House Roof	/opt/jderobot/Launchers/montecarlo_visual_loc.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_house_roof.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+24	Small House	/opt/jderobot/Launchers/small_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house.config"}	ROS2	gz	{-1,1.5,0,0.0,0.0,0.0}
+25	Vacuums House Markers	/opt/jderobot/Launchers/detailed_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/detailed_house.config"}	ROS2	gz	{1,-1.5,0.43,0,0,0}
+26	Small House Roof	/opt/jderobot/Launchers/small_house_roof.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house_roof.config"}	ROS2	gz	{-1,1.5,0.0,0.0,0.0,0.0}
 27	Warehouse 1	/opt/jderobot/Launchers/amazon_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 28	Warehouse 1 Ackermann	/opt/jderobot/Launchers/small_warehouse_with_ackermann_logistic_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 29	Warehouse 2	/opt/jderobot/Launchers/pallet_warehouse.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 30	Warehouse 2 Ackermann	/opt/jderobot/Launchers/pallet_warehouse_with_ackermann_logistic_robot.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 31	Rescue People Harmonic	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	gz	{0.0,0.0,1.45,0.0,0.0,0.0}
-32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-33	Small Laser Mapping Warehouse Low Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_low.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+32	Follow Road Harmonic	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{17.96,0.0,0.3,0,0,-2.0}
+33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 34	Pick And Place Arm	/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/moveit2.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/moveit2_rviz2.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-36	Drone Gymkhana Harmonic	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{2.5,-30,0,0,0,0}
+36	Drone Gymkhana Harmonic	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
+37	Tower Inspection Harmonic	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{-21.0,-4.0,1.45,0,0,0}
 38	Machine Vision Industrial	/opt/jderobot/Launchers/machine_vision_classic/machine_vision_classic.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
-39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/obstacle_avoidance.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{-18,-8.5,0.3,0,0,0}
+40	Obstacle Avoidance Harmonic	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{53.462,-10.734,0.004,0,0,-1.57}
 41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
 42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
 43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
 45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-47	Spa	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+47	Spa	Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{146,60,-593.20,0,0,0.35}
 49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}
 50	Simple Circuit Classic	/opt/jderobot/Launchers/simple_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 51	Montmelo Circuit Classic	/opt/jderobot/Launchers/montmelo_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
@@ -257,17 +257,12 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 54	Vacuums House Roof Classic	/opt/jderobot/Launchers/montecarlo_visual_loc_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.15,0.0,0.0,0.0}
 56	Pick And Place Harmonic	/opt/jderobot/Launchers/pick_place_harmonic/world.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
-57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+57	Package delivery world	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	{-1.0,-4.0,0.3,0,0,1.5729}
 58	Warehouse 1 Harmonic	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
 59	Warehouse 2 Harmonic	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{0.0,0.0,0.1,0.0,0.0,0.0}
-62	Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-63	Laser Mapping Warehouse High Noise	/opt/jderobot/Launchers/laser_mapping_noise_high.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-64	Small Laser Mapping Warehouse Medium Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_med.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-65	Small Laser Mapping Warehouse High Noise	/opt/jderobot/Launchers/small_laser_mapping_noise_high.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 66	Follow Person Harmonic	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{-1.0,10.0,0.1,0.0,0.0,0.0}
 67	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse_noise_low.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-69	Rover 4wd Warehouse High Noise	/opt/jderobot/Launchers/rover_4wd_warehouse_noise_high.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 70	Machine Vision Harmonic	/opt/jderobot/Launchers/machine_vision_harmonic/machine_vision_harmonic.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 \.
 
