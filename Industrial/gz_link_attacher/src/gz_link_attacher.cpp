@@ -244,10 +244,10 @@ void CheckGripperContact(
       for (const auto &contact : msgs)
       {
         Entity collision1 =
-          contact.collision1();
+          contact.collision1().id();
 
         Entity collision2 =
-          contact.collision2();
+          contact.collision2().id();
 
         bool finger1 =
           IsFingerTip(_ecm, collision1);
