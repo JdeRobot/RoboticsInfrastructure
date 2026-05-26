@@ -240,18 +240,23 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="vel_topic topic">
+  <xacro:macro name="noise_odom" params="vel_topic topic a1 a2 a3 a4">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
         <ros_topic>${topic}</ros_topic>
-        <gz_cmd_vel_topic>${vel_topic}</gz_cmd_vel_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>base</child_frame_id>
 
-        <alpha1>0.01</alpha1>
-        <alpha2>0.01</alpha2>
-        <alpha3>0.005</alpha3>
-        <alpha4>0.005</alpha4>
+        <!-- must match the DiffDrive plugin values above -->
+        <left_joint>wheel_left_joint</left_joint>
+        <right_joint>wheel_right_joint</right_joint>
+        <wheel_radius>0.033</wheel_radius>
+        <wheel_separation>0.287</wheel_separation>
+
+        <alpha1>${a1}</alpha1>
+        <alpha2>${a2}</alpha2>
+        <alpha3>${a3}</alpha3>
+        <alpha4>${a4}</alpha4>
       </plugin>
     </gazebo>
   </xacro:macro>
