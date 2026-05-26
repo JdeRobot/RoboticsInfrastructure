@@ -248,7 +248,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
 45	Vacuums House Classic	/opt/jderobot/Launchers/vacuum_cleaner_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-47	Spa	Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{146,60,-593.20,0,0,0.35}
+47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{146,60,-593.20,0,0,0.35}
 49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}
 50	Simple Circuit Classic	/opt/jderobot/Launchers/simple_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
 51	Montmelo Circuit Classic	/opt/jderobot/Launchers/montmelo_circuit_classic.launch.py	None	ROS2	gazebo	{0.0,0.0,0.0,0.0,0.0,0.0}
