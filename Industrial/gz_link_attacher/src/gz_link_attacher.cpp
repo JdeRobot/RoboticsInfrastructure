@@ -1,6 +1,4 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
 
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
@@ -12,13 +10,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
 
-#include <linkattacher_msgs/srv/attach_link.hpp>
-#include <linkattacher_msgs/srv/detach_link.hpp>
-
 #include <thread>
 #include <chrono>
 #include <iostream>
-#include <mutex>
 
 using namespace gz;
 using namespace sim;
@@ -92,34 +86,6 @@ void Configure(
 
   executor->add_node(node);
 
-  std::cout << "[LinkAttacher] Creating ATTACH service" << std::endl;
-
-  attachService =
-    node->create_service<linkattacher_msgs::srv::AttachLink>(
-      "/ATTACHLINK",
-      std::bind(
-        &LinkAttacher::Attach,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        std::placeholders::_3));
-
-  std::cout << "[LinkAttacher] ATTACH service created" << std::endl;
-
-  std::cout << "[LinkAttacher] Creating DETACH service" << std::endl;
-
-  detachService =
-    node->create_service<linkattacher_msgs::srv::DetachLink>(
-      "/DETACHLINK",
-      std::bind(
-        &LinkAttacher::Detach,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        std::placeholders::_3));
-
-  std::cout << "[LinkAttacher] DETACH service created" << std::endl;
-
   gripperStateSub =
   node->create_subscription<std_msgs::msg::Bool>(
     "/gripper_auto_attach",
@@ -131,7 +97,11 @@ void Configure(
       if (!autoAttachEnabled)
       {
         contactLatched = false;
-        gripperContactDetected = false;
+
+        if (activeJoint != kNullEntity)
+        {
+          removeJointRequested = true;
+        }
       }
     });
 
@@ -167,28 +137,17 @@ void PreUpdate(
 
   CheckGripperContact(_ecm);
 
-  if(attachRequested)
+  if (createJointRequested)
   {
-    std::cout << "\n[LinkAttacher] Processing attach request" << std::endl;
-    std::cout << "[LinkAttacher] model1=" << model1
-              << " link1=" << link1 << std::endl;
-    std::cout << "[LinkAttacher] model2=" << model2
-              << " link2=" << link2 << std::endl;
-
     CreateJoint(_ecm);
-
-    attachRequested=false;
+    createJointRequested = false;
   }
 
-  if(detachRequested)
+  if (removeJointRequested)
   {
-    std::cout << "[LinkAttacher] Processing detach request" << std::endl;
-
     RemoveJoint(_ecm);
-
-    detachRequested=false;
+    removeJointRequested = false;
   }
-
 }
 
 private:
@@ -223,6 +182,40 @@ bool IsFingerTip(
   );
 }
 
+std::string GetModelNameFromCollision(
+  EntityComponentManager &_ecm,
+  Entity collisionEntity)
+{
+  auto collisionParent =
+    _ecm.Component<components::ParentEntity>(
+      collisionEntity);
+
+  if (!collisionParent)
+    return "";
+
+  Entity linkEntity =
+    collisionParent->Data();
+
+  auto linkParent =
+    _ecm.Component<components::ParentEntity>(
+      linkEntity);
+
+  if (!linkParent)
+    return "";
+
+  Entity modelEntity =
+    linkParent->Data();
+
+  auto nameComp =
+    _ecm.Component<components::Name>(
+      modelEntity);
+
+  if (!nameComp)
+    return "";
+
+  return nameComp->Data();
+}
+
 void CheckGripperContact(
   EntityComponentManager &_ecm)
 {
@@ -233,6 +226,9 @@ void CheckGripperContact(
     return;
 
   if (activeJoint != kNullEntity)
+    return;
+
+  if (createJointRequested)
     return;
 
   _ecm.Each<components::ContactSensorData>(
@@ -248,25 +244,65 @@ void CheckGripperContact(
       for (const auto &contact : msgs)
       {
         Entity collision1 =
-          contact.collision1().id();
+          contact.collision1();
 
         Entity collision2 =
-          contact.collision2().id();
+          contact.collision2();
+
+        bool finger1 =
+          IsFingerTip(_ecm, collision1);
+
+        bool finger2 =
+          IsFingerTip(_ecm, collision2);
+
+        if (!finger1 && !finger2)
+          continue;
+
+        Entity objectCollision =
+          finger1 ? collision2 : collision1;
+
+        std::string objectModel =
+          GetModelNameFromCollision(
+            _ecm,
+            objectCollision);
 
         if (
-          IsFingerTip(_ecm, collision1) ||
-          IsFingerTip(_ecm, collision2)
+          objectModel.empty() ||
+          objectModel == "ur5_robotiq"
         )
         {
-          std::cout
-            << "[LinkAttacher] Finger contact detected"
-            << std::endl;
-
-          gripperContactDetected = true;
-          contactLatched = true;
-
-          return false;
+          continue;
         }
+
+        if (
+          objectModel == "ground_plane" ||
+          objectModel == "sun"
+        )
+        {
+          continue;
+        }
+
+        std::cout
+          << "[LinkAttacher] Contact with object: "
+          << objectModel
+          << std::endl;
+
+        model1 = "ur5_robotiq";
+        link1 = "robotiq_85_base_link";
+
+        model2 = objectModel;
+
+        if (objectModel == "blue_ball")
+          link2 = "link_3";
+        else if (objectModel == "green_cylinder")
+          link2 = "link_2";
+        else
+          link2 = "link";
+
+        createJointRequested = true;
+        contactLatched = true;
+
+        return false;
       }
 
       return true;
@@ -389,87 +425,25 @@ void RemoveJoint(EntityComponentManager &_ecm)
   activeJoint = kNullEntity;
 
   contactLatched = false;
-  gripperContactDetected = false;
 }
 
-void Attach(
-  const std::shared_ptr<rmw_request_id_t>,
-  const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
-  std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
-{
-
-  std::cout<<"\n==============================="<<std::endl;
-  std::cout<<"[LinkAttacher] ATTACH REQUEST RECEIVED"<<std::endl;
-
-  std::cout<<"model1="<<req->model1_name<<std::endl;
-  std::cout<<"link1="<<req->link1_name<<std::endl;
-  std::cout<<"model2="<<req->model2_name<<std::endl;
-  std::cout<<"link2="<<req->link2_name<<std::endl;
-
-  if (!gripperContactDetected)
-  {
-    res->success = false;
-    res->message = "No gripper contact detected";
-
-    std::cout
-      << "[LinkAttacher] Attach rejected: no contact"
-      << std::endl;
-
-    return;
-  }
-
-  model1 = req->model1_name;
-  link1 = req->link1_name;
-
-  model2 = req->model2_name;
-  link2 = req->link2_name;
-
-  attachRequested = true;
-  gripperContactDetected = false;
-  contactLatched = false;
-
-  res->success=true;
-  res->message="Attach scheduled";
-
-  std::cout<<"[LinkAttacher] Response sent"<<std::endl;
-  std::cout<<"===============================\n"<<std::endl;
-}
-
-void Detach(
-  const std::shared_ptr<rmw_request_id_t>,
-  const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
-  std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
-{
-
-  std::cout<<"\n[LinkAttacher] DETACH REQUEST RECEIVED"<<std::endl;
-
-  detachRequested=true;
-
-  res->success=true;
-  res->message="Detach scheduled";
-
-  std::cout<<"[LinkAttacher] Detach response sent"<<std::endl;
-}
 
 private:
 
 rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
-rclcpp::Service<linkattacher_msgs::srv::AttachLink>::SharedPtr attachService;
-rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
 
 std::thread rosThread;
 
 Entity worldEntity{kNullEntity};
 
-bool attachRequested=false;
-bool detachRequested=false;
 bool initialized=false;
 bool autoAttachEnabled = false;
+bool removeJointRequested = false;
 bool contactLatched = false;
-bool gripperContactDetected = false;
+bool createJointRequested = false;
 
 std::string model1;
 std::string link1;
