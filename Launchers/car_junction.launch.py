@@ -16,6 +16,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     gazebo_models_path = os.path.join(package_dir, "models")
+    gazebo_scripts_path = os.path.join(package_dir, "scripts")
 
     world_file_name = "road_junction.world"
     worlds_dir = "/opt/jderobot/Worlds"
@@ -41,10 +42,19 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
+    ld.add_action(
+        SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path)
+    )
+
     set_env_vars_resources = AppendEnvironmentVariable(
         "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
     )
+    set_env_vars_plugin = AppendEnvironmentVariable(
+        "GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path
+    )
+
     ld.add_action(set_env_vars_resources)
+    ld.add_action(set_env_vars_plugin)
 
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
