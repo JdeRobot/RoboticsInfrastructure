@@ -273,7 +273,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 
 COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
 0	None	None	None	None
-1	Ur5	/opt/jderobot/Launchers/pick_place_harmonic/ur5.launch.py	ur5_robotiq	None
+1	Ur5	//home/ws/src/CustomRobots/ur5/launch/ur5.launch.py	ur5_robotiq	None
 2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera

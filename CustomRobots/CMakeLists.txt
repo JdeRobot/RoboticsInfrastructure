@@ -115,6 +115,8 @@ install(
     logistic_ackermann_robot/params
     logistic_ackermann_robot/launch
 
+    ur5/launch
+
     roomba_robot/models
     roomba_robot/params
     ackermann_cars/models
