@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<robot name="logistic_holonomic_robot"
+<robot name="logistic ackermann robot"
   xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find custom_robots)/models/logistic_holonomic_robot/logistic_holonomic_robot_gz.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/models/logistic_holonomic_robot/logistic_holonomic_robot_common.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/logistic_ackermann_robot/logistic_ackermann_robot_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/logistic_ackermann_robot/logistic_ackermann_robot_common.urdf.xacro"/>
 
-  <xacro:logistic_holonomic_robot/>
+  <xacro:logistic_ackermann_robot/>
 </robot>

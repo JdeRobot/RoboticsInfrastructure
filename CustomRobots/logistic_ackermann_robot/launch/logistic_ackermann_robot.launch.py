@@ -27,26 +27,26 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    # xacro_file = os.path.join(
-    #     package_dir,
-    #     "models",
-    #     "logistic_ackermann_robot",
-    #     "logistic_ackermann_robot.urdf.xacro",
-    # )
-
-    # robot_description_content = xacro.process_file(
-    #     xacro_file
-    # ).toxml()
-
-    ## Temporary SDF load
-    sdf_file = os.path.join(
+    xacro_file = os.path.join(
         package_dir,
         "models",
         "logistic_ackermann_robot",
-        "logistic_ackermann_robot.sdf",
+        "logistic_ackermann_robot.urdf.xacro",
     )
-    with open(sdf_file, "r") as infp:
-        robot_description_content = infp.read()
+
+    robot_description_content = xacro.process_file(
+        xacro_file
+    ).toxml()
+
+    ## Temporary SDF load
+    # sdf_file = os.path.join(
+    #     package_dir,
+    #     "models",
+    #     "logistic_ackermann_robot",
+    #     "logistic_ackermann_robot.sdf",
+    # )
+    # with open(sdf_file, "r") as infp:
+    #     robot_description_content = infp.read()
 
     robot_description = {"robot_description": robot_description_content}
 
