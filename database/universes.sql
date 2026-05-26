@@ -154,19 +154,19 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 24 	Montreal Ackermann Circuit	16	4
 25 	Simple Ackermann Circuit	23	4
 26	Autoparking Lidar Simple: In line	5	0
-27	Vacuums House Roof	26	0
+27	Vacuums House Roof	26	10
 28	Restaurant	21	0
 29	Vacuums House Markers	25	17
-30	Small Laser Mapping Warehouse	33	0
+30	Small Laser Mapping Warehouse	33	21
 31	Rescue People Harmonic	31	11
-32	Follow Road Harmonic	32	0
-33	Laser Mapping Warehouse Low Noise	12	0
+32	Follow Road Harmonic	32	11
+33	Laser Mapping Warehouse Low Noise	12	21
 34	Pick And Place World	34	0
-35	Car Junction World	35	0
-36	Drone Gymkhana World	36	0
-37	Tower Inspection World	37	0
+35	Car Junction World	35	6
+36	Drone Gymkhana World	36	11
+37	Tower Inspection World	37	11
 38	Industrial Machine Vision World	38	0
-39	Labyrinth Escape World	39	0
+39	Labyrinth Escape World	39	11
 40	Obstacle Avoidance Harmonic	40	3
 41	Autopark_line	41	8
 42	Autopark_battery	42	8
@@ -174,7 +174,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 44	Autopark Lidar Line	41	7
 45	Vacuums House Classic	45	0
 46 	3d Reconstruction Classic	1	0
-47	Spa Circuit	47	0
+47	Spa Circuit	47	2
 48 	Monaco Ackermann Circuit	49	4
 49 	Monaco Circuit	49	2
 50 	Simple Circuit Classic	50	0
@@ -184,19 +184,19 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 54 	Vacuums House Roof Classic	54	0
 55 	Rover 4wd Warehouse	55	12
 56	Pick And Place Harmonic World	56	1
-57 	Package delivery	57	0
+57 	Package delivery	57	11
 58	Warehouse 1 Harmonic	58	13
 59	Warehouse 2 Harmonic	59	13
 60	Warehouse 1 Ackermann Harmonic	58	14
 61	Warehouse 2 Ackermann Harmonic	61	14
-62	Laser Mapping Warehouse Medium Noise	62	0
-63	Laser Mapping Warehouse High Noise	63	0
-64	Small Laser Mapping Warehouse Medium Noise	64	0
-65	Small Laser Mapping Warehouse High Noise	65	0
+62	Laser Mapping Warehouse Medium Noise	62	22
+63	Laser Mapping Warehouse High Noise	63	23
+64	Small Laser Mapping Warehouse Medium Noise	64	22
+65	Small Laser Mapping Warehouse High Noise	65	23
 66	Follow Person Harmonic	66	15
 67	Follow Person Teleop Harmonic	67	15
-68	Rover 4wd Warehouse Low Noise	68	0
-69	Rover 4wd Warehouse High Noise	69	0
+68	Rover 4wd Warehouse Low Noise	68	19
+69	Rover 4wd Warehouse High Noise	69	20
 70	Machine vision Harmonic world	70	0
 \.
 
@@ -288,9 +288,14 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	None
 14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	None
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
-16	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
+16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
 17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	None
 18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic
+19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=low
+20	Rover 4wd High Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=high
+21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low
+22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
+23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
 \.
 
 --
