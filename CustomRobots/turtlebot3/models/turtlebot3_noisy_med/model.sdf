@@ -567,10 +567,10 @@
       <wheel_radius>0.033</wheel_radius>
       <wheel_separation>0.287</wheel_separation>
 
-      <alpha1>0.2</alpha1>
-      <alpha2>0.2</alpha2>
-      <alpha3>0.1</alpha3>
-      <alpha4>0.1</alpha4>
+      <alpha1>0.5</alpha1>
+      <alpha2>0.5</alpha2>
+      <alpha3>0.25</alpha3>
+      <alpha4>0.25</alpha4>
     </plugin>
 
   </model>
