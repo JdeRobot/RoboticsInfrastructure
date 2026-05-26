@@ -15,11 +15,11 @@
   <xacro:autonomous_car steering="${steering}"/>
 
   <xacro:if value="$(arg camera)">
-    <xacro:camera xyz="0 0.2 1.45" rpy="0 0 1.5708" name="prius_autoparking" parent="base_link"/>
+    <xacro:camera xyz="0 0.2 1.45" rpy="0 0 0" name="prius_autoparking" parent="base_link"/>
   </xacro:if>
 
   <xacro:if value="$(arg lidar)">
-    <xacro:lidar xyz="-1.25 0 1.725" rpy="0 0 0" name="lidar" parent="base_link" topic="/prius_autoparking/pc2"/>
+    <xacro:lidar xyz="-1.25 0 1.725" rpy="0 0 -1.578" name="lidar" parent="base_link" topic="/prius_autoparking/pc2"/>
   </xacro:if>
 
   <xacro:if value="$(arg laser)">
