@@ -205,14 +205,20 @@
     </plugin>
 
     <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
-      <ros_topic>/odom</ros_topic>
-      <gz_cmd_vel_topic>/cmd_vel</gz_cmd_vel_topic>
+      <ros_topic>/odom_noisy</ros_topic>
       <frame_id>odom</frame_id>
       <child_frame_id>base_link</child_frame_id>
-      <alpha1>0.0005</alpha1>
-      <alpha2>0.0005</alpha2>
-      <alpha3>0.0002</alpha3>
-      <alpha4>0.0002</alpha4>
+
+      <!-- must match the DiffDrive plugin values above — one joint per side -->
+      <left_joint>fl_wheel_to_chassis</left_joint>
+      <right_joint>fr_wheel_to_chassis</right_joint>
+      <wheel_separation>0.24</wheel_separation>
+      <wheel_radius>0.122</wheel_radius>
+
+      <alpha1>0.1</alpha1>
+      <alpha2>0.1</alpha2>
+      <alpha3>0.05</alpha3>
+      <alpha4>0.05</alpha4>
     </plugin>
   </gazebo>
 
