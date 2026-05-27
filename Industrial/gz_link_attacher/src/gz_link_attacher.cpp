@@ -180,11 +180,6 @@ bool IsFingerTip(
   const std::string &name =
     nameComp->Data();
 
-  std::cout
-    << "[LinkAttacher] Checking finger link: "
-    << name
-    << std::endl;
-
   return (
     name.find("finger") != std::string::npos
   );
@@ -273,10 +268,6 @@ void CheckGripperContact(
   if (createJointRequested)
     return;
 
-  std::cout
-    << "[LinkAttacher] Searching ContactSensorData..."
-    << std::endl;
-
   _ecm.Each<components::ContactSensorData>(
     [&](const Entity &,
         const components::ContactSensorData *_contacts)
@@ -287,10 +278,13 @@ void CheckGripperContact(
       const auto &msgs =
         _contacts->Data().contact();
 
-      std::cout
-        << "[LinkAttacher] contacts size = "
-        << msgs.size()
-        << std::endl;
+      if (!msgs.empty())
+      {
+        std::cout
+          << "\n[LinkAttacher] CONTACTS DETECTED -> "
+          << msgs.size()
+          << std::endl;
+      }
 
       for (const auto &contact : msgs)
       {
@@ -305,6 +299,13 @@ void CheckGripperContact(
 
         std::string linkName2 =
           GetLinkNameFromCollision(_ecm, collision2);
+
+        std::cout
+          << "[LinkAttacher] link1="
+          << linkName1
+          << " link2="
+          << linkName2
+          << std::endl;
 
         std::cout
           << "[LinkAttacher] collision1="
