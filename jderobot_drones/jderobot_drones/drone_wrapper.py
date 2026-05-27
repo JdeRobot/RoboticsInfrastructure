@@ -187,13 +187,15 @@ class DroneWrapper(DroneInterfaceBase):
         while not self.state_event_service_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("Service not available, waiting...")
 
-        response = await asyncio.gather(*[self.state_event_service_client.call_async(request)])
+        response = self.state_event_service_client.call_async(request)
+        return response
 
         if response is not None:
             self.get_logger().info(f"Success: {response.success}")
             self.get_logger().info(f"Current State: {response.current_state}")
         else:
             self.get_logger().error("Service call failed")
+
 
     def takeoff(self, height: float):
         """
