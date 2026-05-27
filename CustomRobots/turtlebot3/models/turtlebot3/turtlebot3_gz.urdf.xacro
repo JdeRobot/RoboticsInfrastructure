@@ -240,7 +240,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="vel_topic topic a1 a2 a3 a4">
+  <xacro:macro name="noise_odom" params="topic a1 a2 a3 a4">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
         <ros_topic>${topic}</ros_topic>
