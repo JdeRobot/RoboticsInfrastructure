@@ -288,10 +288,10 @@ void OnContact(const gz::msgs::Contacts &_msg)
     const auto &contact = _msg.contact(i);
 
     std::string collision1 =
-      contact.collision1();
+      contact.collision1().name();
 
     std::string collision2 =
-      contact.collision2();
+      contact.collision2().name();
 
     std::cout
       << "[LinkAttacher] collision1="
