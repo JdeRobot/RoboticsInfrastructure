@@ -224,10 +224,20 @@
         </geometry>
       </visual>
       <collision name="${prefix}left_finger_tip_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
+      <visual name="left_debug_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.02 0.02 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="1 0 0 0.5"/>
+        </material>
+      </visual>
       <inertial>
         <mass value="0.019555" />
         <origin xyz="0.0 0.0 0.0" />
@@ -244,10 +254,22 @@
         </geometry>
       </visual>
       <collision name="${prefix}right_finger_tip_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
+
+      <visual name="right_debug_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.02 0.02 0.02"/>
+        </geometry>
+        <material>
+          <color rgba="0 1 0 0.5"/>
+        </material>
+
+      </visual>
       <inertial>
         <mass value="0.019555" />
         <origin xyz="0.0 0.0 0.0" />
