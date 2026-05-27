@@ -245,6 +245,15 @@
              iyx = "0.000000" iyy = "0.000005" iyz = "0.000000"
              izx = "0.000000" izy = "0.000000" izz = "0.000006" />
       </inertial>
+
+      <sensor name="left_finger_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <topic>/left_finger_contact</topic>
+        <contact>
+          <collision>${prefix}left_finger_tip_collision</collision>
+        </contact>
+      </sensor>
     </link> 
 
     <link name="${prefix}robotiq_85_right_finger_tip_link">
@@ -277,47 +286,16 @@
              iyx = "0.000000" iyy = "0.000005" iyz = "0.000000"
              izx = "0.000000" izy = "0.000000" izz = "0.000006" />
       </inertial>
-    </link>
-    
-    <gazebo reference="${prefix}robotiq_85_left_finger_tip_link">
-
-      <kp>1000000.0</kp>
-      <kd>1.0</kd>
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <minDepth>0.001</minDepth>
-
-      <sensor name="${prefix}left_finger_contact" type="contact">
+      <sensor name="right_finger_contact" type="contact">
         <always_on>true</always_on>
         <update_rate>100</update_rate>
-
-        <contact>
-          <collision>${prefix}left_finger_tip_collision</collision>
-        </contact>
-
-      </sensor>
-
-    </gazebo>
-
-    <gazebo reference="${prefix}robotiq_85_right_finger_tip_link">
-
-      <kp>1000000.0</kp>
-      <kd>1.0</kd>
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <minDepth>0.001</minDepth>
-
-      <sensor name="${prefix}right_finger_contact" type="contact">
-        <always_on>true</always_on>
-        <update_rate>100</update_rate>
-
+        <topic>/right_finger_contact</topic>
         <contact>
           <collision>${prefix}right_finger_tip_collision</collision>
         </contact>
-
       </sensor>
+    </link>
 
-    </gazebo>
     
     <xacro:robotiq_85_gripper_transmission prefix="${prefix}" />
 
