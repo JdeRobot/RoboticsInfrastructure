@@ -139,6 +139,10 @@ void PreUpdate(
 
   if (createJointRequested)
   {
+    std::cout
+      << "[LinkAttacher] Executing CreateJoint()"
+      << std::endl;
+
     CreateJoint(_ecm);
     createJointRequested = false;
   }
@@ -176,9 +180,13 @@ bool IsFingerTip(
   const std::string &name =
     nameComp->Data();
 
+  std::cout
+    << "[LinkAttacher] Checking finger link: "
+    << name
+    << std::endl;
+
   return (
-    name == "robotiq_85_left_finger_tip_link" ||
-    name == "robotiq_85_right_finger_tip_link"
+    name.find("finger") != std::string::npos
   );
 }
 
@@ -216,10 +224,37 @@ std::string GetModelNameFromCollision(
   return nameComp->Data();
 }
 
+std::string GetLinkNameFromCollision(
+  EntityComponentManager &_ecm,
+  Entity collisionEntity)
+{
+  auto parentComp =
+    _ecm.Component<components::ParentEntity>(
+      collisionEntity);
+
+  if (!parentComp)
+    return "";
+
+  Entity linkEntity =
+    parentComp->Data();
+
+  auto nameComp =
+    _ecm.Component<components::Name>(
+      linkEntity);
+
+  if (!nameComp)
+    return "";
+
+  return nameComp->Data();
+}
+
 void CheckGripperContact(
   EntityComponentManager &_ecm)
 {
+  std::cout << "[LinkAttacher] CheckGripperContact()" << std::endl;
+
   if (!autoAttachEnabled)
+    std::cout << "[LinkAttacher] autoAttach disabled" << std::endl;
     return;
 
   if (contactLatched)
@@ -231,6 +266,10 @@ void CheckGripperContact(
   if (createJointRequested)
     return;
 
+  std::cout
+    << "[LinkAttacher] Searching ContactSensorData..."
+    << std::endl;
+
   _ecm.Each<components::ContactSensorData>(
     [&](const Entity &,
         const components::ContactSensorData *_contacts)
@@ -241,6 +280,11 @@ void CheckGripperContact(
       const auto &msgs =
         _contacts->Data().contact();
 
+      std::cout
+        << "[LinkAttacher] contacts size = "
+        << msgs.size()
+        << std::endl;
+
       for (const auto &contact : msgs)
       {
         Entity collision1 =
@@ -248,6 +292,19 @@ void CheckGripperContact(
 
         Entity collision2 =
           contact.collision2().id();
+
+        std::string linkName1 =
+          GetLinkNameFromCollision(_ecm, collision1);
+
+        std::string linkName2 =
+          GetLinkNameFromCollision(_ecm, collision2);
+
+        std::cout
+          << "[LinkAttacher] collision1="
+          << collision1
+          << " collision2="
+          << collision2
+          << std::endl;
 
         bool finger1 =
           IsFingerTip(_ecm, collision1);
@@ -265,6 +322,11 @@ void CheckGripperContact(
           GetModelNameFromCollision(
             _ecm,
             objectCollision);
+
+        std::cout
+          << "[LinkAttacher] objectModel="
+          << objectModel
+          << std::endl;
 
         if (
           objectModel.empty() ||
@@ -298,6 +360,10 @@ void CheckGripperContact(
           link2 = "link_2";
         else
           link2 = "link";
+
+        std::cout
+          << "[LinkAttacher] Requesting joint creation"
+          << std::endl;
 
         createJointRequested = true;
         contactLatched = true;
@@ -385,6 +451,13 @@ void CreateJoint(EntityComponentManager &_ecm)
   Entity parentLink = FindLink(_ecm, model1, link1);
   Entity childLink  = FindLink(_ecm, model2, link2);
 
+  std::cout
+    << "[LinkAttacher] parentLink="
+    << parentLink
+    << " childLink="
+    << childLink
+    << std::endl;
+
   if(parentLink == kNullEntity || childLink == kNullEntity)
   {
     std::cout << "[LinkAttacher] ERROR: link entities invalid" << std::endl;
@@ -403,6 +476,10 @@ void CreateJoint(EntityComponentManager &_ecm)
   joint.Data().childLink  = childLink;
 
   _ecm.CreateComponent(jointEntity, joint);
+  
+  std::cout
+    << "[LinkAttacher] JOINT SUCCESSFULLY CREATED"
+    << std::endl;
 
   std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
 }
