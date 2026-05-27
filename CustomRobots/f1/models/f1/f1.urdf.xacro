@@ -23,6 +23,6 @@
   </xacro:if>
 
   <xacro:if value="$(arg laser)">
-    <xacro:f1_laser xyz="0.5 0 0.072" rpy="0 0 0" name="laser" parent="base"/>
+    <xacro:f1_laser xyz="0.5 0 0.072" rpy="0 0 1.57" name="laser" parent="base"/>
   </xacro:if>
 </robot>
