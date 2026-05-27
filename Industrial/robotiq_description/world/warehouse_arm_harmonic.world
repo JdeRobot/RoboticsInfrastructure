@@ -14,6 +14,11 @@
     <plugin
       filename="libgz_link_attacher.so"
       name="gz_link_attacher::LinkAttacher"/>
+    
+    <plugin
+      filename="gz-sim-contact-system"
+      name="gz::sim::systems::Contact">
+    </plugin>
 
     <!-- Scene -->
     <scene>
