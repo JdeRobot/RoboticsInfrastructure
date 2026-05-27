@@ -23,8 +23,8 @@
   </xacro:if>
 
   <xacro:if value="$(arg laser)">
-    <xacro:laser xyz="-0.024 2.39 0.5" rpy="0 0 1.5708" name="laser_front" parent="base_link" topic="/prius_autoparking/scan_front"/>
-    <xacro:laser xyz="1.1 0 0.5" rpy="0 0 0" name="laser_side" parent="base_link" topic="/prius_autoparking/scan_side"/>
-    <xacro:laser xyz="-0.024 -2.6 0.5" rpy="0 0 -1.5708" name="laser_back" parent="base_link" topic="/prius_autoparking/scan_back"/>
+    <xacro:laser xyz="-0.024 2.39 0.5" rpy="0 0 1.5708" name="laser_front" parent="chassis_link" topic="/prius_autoparking/scan_front"/>
+    <xacro:laser xyz="1.1 0 0.5" rpy="0 0 0" name="laser_side" parent="chassis_link" topic="/prius_autoparking/scan_side"/>
+    <xacro:laser xyz="-0.024 -2.6 0.5" rpy="0 0 -1.5708" name="laser_back" parent="chassis_link" topic="/prius_autoparking/scan_back"/>
   </xacro:if>
 </robot>
