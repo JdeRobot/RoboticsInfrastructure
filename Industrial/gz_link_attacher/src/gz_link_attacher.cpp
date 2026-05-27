@@ -3,14 +3,16 @@
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/DetachableJoint.hh>
-#include <gz/sim/components/ContactSensorData.hh>
 
 #include <gz/plugin/Register.hh>
+#include <gz/transport/Node.hh>
+#include <gz/msgs/contacts.pb.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
 
 #include <thread>
+#include <mutex>
 #include <chrono>
 #include <iostream>
 
@@ -92,7 +94,14 @@ void Configure(
     10,
     [this](const std_msgs::msg::Bool::SharedPtr msg)
     {
+      std::lock_guard<std::mutex> lock(mutex);
+
       autoAttachEnabled = msg->data;
+
+      std::cout
+        << "[LinkAttacher] autoAttachEnabled="
+        << autoAttachEnabled
+        << std::endl;
 
       if (!autoAttachEnabled)
       {
@@ -104,6 +113,18 @@ void Configure(
         }
       }
     });
+
+  std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
+
+  gzNode.Subscribe(
+    "/world/default/model/ur5_robotiq/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
+    &LinkAttacher::OnContact,
+    this);
+
+  gzNode.Subscribe(
+    "/world/default/model/ur5_robotiq/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
+    &LinkAttacher::OnContact,
+    this);
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -128,41 +149,13 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
-  static bool printedSensors = false;
-
-  if (!printedSensors)
-  {
-    size_t sensorCount = 0;
-
-    _ecm.Each<components::ContactSensorData>(
-      [&](const Entity &entity,
-          const components::ContactSensorData *)
-      {
-        std::cout
-          << "[LinkAttacher] Contact sensor entity detected: "
-          << entity
-          << std::endl;
-
-        sensorCount++;
-
-        return true;
-      });
-
-    std::cout
-      << "[LinkAttacher] TOTAL CONTACT SENSORS: "
-      << sensorCount
-      << std::endl;
-
-    printedSensors = true;
-  }
+  std::lock_guard<std::mutex> lock(mutex);
 
   if(!initialized)
   {
     std::cout << "[LinkAttacher] First PreUpdate() detected" << std::endl;
     initialized = true;
-  }
-
-  CheckGripperContact(_ecm);
+  } 
 
   if (createJointRequested)
   {
@@ -270,18 +263,9 @@ std::string GetLinkNameFromCollision(
   return nameComp->Data();
 }
 
-void CheckGripperContact(
-  EntityComponentManager &_ecm)
+void OnContact(const gz::msgs::Contacts &_msg)
 {
-  if (autoAttachEnabled != lastAutoAttachState)
-  {
-    std::cout
-      << "[LinkAttacher] autoAttachEnabled changed -> "
-      << autoAttachEnabled
-      << std::endl;
-
-    lastAutoAttachState = autoAttachEnabled;
-  }
+  std::lock_guard<std::mutex> lock(mutex);
 
   if (!autoAttachEnabled)
     return;
@@ -295,120 +279,79 @@ void CheckGripperContact(
   if (createJointRequested)
     return;
 
-  _ecm.Each<components::ContactSensorData>(
-    [&](const Entity &,
-        const components::ContactSensorData *_contacts)
+  std::cout
+    << "\n[LinkAttacher] CONTACT MESSAGE RECEIVED"
+    << std::endl;
+
+  for (int i = 0; i < _msg.contact_size(); ++i)
+  {
+    const auto &contact = _msg.contact(i);
+
+    std::string collision1 =
+      contact.collision1();
+
+    std::string collision2 =
+      contact.collision2();
+
+    std::cout
+      << "[LinkAttacher] collision1="
+      << collision1
+      << std::endl;
+
+    std::cout
+      << "[LinkAttacher] collision2="
+      << collision2
+      << std::endl;
+
+    std::string objectModel;
+
+    if (collision1.find("blue_ball") != std::string::npos)
+      objectModel = "blue_ball";
+    else if (collision2.find("blue_ball") != std::string::npos)
+      objectModel = "blue_ball";
+    else if (collision1.find("green_cylinder") != std::string::npos)
+      objectModel = "green_cylinder";
+    else if (collision2.find("green_cylinder") != std::string::npos)
+      objectModel = "green_cylinder";
+    else
+      continue;
+
+    std::cout
+      << "[LinkAttacher] OBJECT DETECTED -> "
+      << objectModel
+      << std::endl;
+
+    model1 = "ur5_robotiq";
+    if (collision1.find("left_finger") != std::string::npos ||
+        collision2.find("left_finger") != std::string::npos)
     {
-      if (!_contacts)
-        return true;
+      link1 = "robotiq_85_left_finger_tip_link";
+    }
+    else
+    {
+      link1 = "robotiq_85_right_finger_tip_link";
+    }
 
-      const auto &msgs =
-        _contacts->Data().contact();
+    model2 = objectModel;
 
-      if (!msgs.empty())
-      {
-        std::cout
-          << "\n[LinkAttacher] CONTACTS DETECTED -> "
-          << msgs.size()
-          << std::endl;
-      }
+    if (objectModel == "blue_ball")
+      link2 = "link_3";
+    else if (objectModel == "green_cylinder")
+      link2 = "link_2";
+    else
+      link2 = "link";
 
-      for (const auto &contact : msgs)
-      {
-        Entity collision1 =
-          contact.collision1().id();
+    createJointRequested = true;
+    contactLatched = true;
 
-        Entity collision2 =
-          contact.collision2().id();
+    std::cout
+      << "[LinkAttacher] Joint requested"
+      << std::endl;
 
-        std::string linkName1 =
-          GetLinkNameFromCollision(_ecm, collision1);
-
-        std::string linkName2 =
-          GetLinkNameFromCollision(_ecm, collision2);
-
-        std::cout
-          << "[LinkAttacher] link1="
-          << linkName1
-          << " link2="
-          << linkName2
-          << std::endl;
-
-        std::cout
-          << "[LinkAttacher] collision1="
-          << collision1
-          << " collision2="
-          << collision2
-          << std::endl;
-
-        bool finger1 =
-          IsFingerTip(_ecm, collision1);
-
-        bool finger2 =
-          IsFingerTip(_ecm, collision2);
-
-        if (!finger1 && !finger2)
-          continue;
-
-        Entity objectCollision =
-          finger1 ? collision2 : collision1;
-
-        std::string objectModel =
-          GetModelNameFromCollision(
-            _ecm,
-            objectCollision);
-
-        std::cout
-          << "[LinkAttacher] objectModel="
-          << objectModel
-          << std::endl;
-
-        if (
-          objectModel.empty() ||
-          objectModel == "ur5_robotiq"
-        )
-        {
-          continue;
-        }
-
-        if (
-          objectModel == "ground_plane" ||
-          objectModel == "sun"
-        )
-        {
-          continue;
-        }
-
-        std::cout
-          << "[LinkAttacher] Contact with object: "
-          << objectModel
-          << std::endl;
-
-        model1 = "ur5_robotiq";
-        link1 = "robotiq_85_base_link";
-
-        model2 = objectModel;
-
-        if (objectModel == "blue_ball")
-          link2 = "link_3";
-        else if (objectModel == "green_cylinder")
-          link2 = "link_2";
-        else
-          link2 = "link";
-
-        std::cout
-          << "[LinkAttacher] Requesting joint creation"
-          << std::endl;
-
-        createJointRequested = true;
-        contactLatched = true;
-
-        return false;
-      }
-
-      return true;
-    });
+    break;
+  }
 }
+
 
 Entity FindLink(
   EntityComponentManager &_ecm,
@@ -556,12 +499,15 @@ bool autoAttachEnabled = false;
 bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
-bool lastAutoAttachState = false;
+
+gz::transport::Node gzNode;
 
 std::string model1;
 std::string link1;
 std::string model2;
 std::string link2;
+
+std::mutex mutex;
 
 Entity activeJoint{kNullEntity};
 
