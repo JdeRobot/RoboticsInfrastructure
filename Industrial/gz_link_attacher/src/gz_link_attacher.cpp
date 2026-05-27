@@ -128,6 +128,33 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
+  static bool printedSensors = false;
+
+  if (!printedSensors)
+  {
+    size_t sensorCount = 0;
+
+    _ecm.Each<components::ContactSensorData>(
+      [&](const Entity &entity,
+          const components::ContactSensorData *)
+      {
+        std::cout
+          << "[LinkAttacher] Contact sensor entity detected: "
+          << entity
+          << std::endl;
+
+        sensorCount++;
+
+        return true;
+      });
+
+    std::cout
+      << "[LinkAttacher] TOTAL CONTACT SENSORS: "
+      << sensorCount
+      << std::endl;
+
+    printedSensors = true;
+  }
 
   if(!initialized)
   {

@@ -223,7 +223,7 @@
           <mesh filename="package://robotiq_description/meshes/visual/robotiq_85_finger_tip_link.dae"/>
         </geometry>
       </visual>
-      <collision name="collision">
+      <collision name="${prefix}left_finger_tip_collision">
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
@@ -243,7 +243,7 @@
           <mesh filename="package://robotiq_description/meshes/visual/robotiq_85_finger_tip_link.dae"/>
         </geometry>
       </visual>
-      <collision name="collision">
+      <collision name="${prefix}right_finger_tip_collision">
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
@@ -270,7 +270,7 @@
         <update_rate>100</update_rate>
 
         <contact>
-          <collision>collision</collision>
+          <collision>${prefix}left_finger_tip_collision</collision>
         </contact>
 
       </sensor>
@@ -290,7 +290,7 @@
         <update_rate>100</update_rate>
 
         <contact>
-          <collision>collision</collision>
+          <collision>${prefix}right_finger_tip_collision</collision>
         </contact>
 
       </sensor>
