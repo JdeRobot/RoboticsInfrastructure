@@ -251,10 +251,17 @@ std::string GetLinkNameFromCollision(
 void CheckGripperContact(
   EntityComponentManager &_ecm)
 {
-  std::cout << "[LinkAttacher] CheckGripperContact()" << std::endl;
+  if (autoAttachEnabled != lastAutoAttachState)
+  {
+    std::cout
+      << "[LinkAttacher] autoAttachEnabled changed -> "
+      << autoAttachEnabled
+      << std::endl;
+
+    lastAutoAttachState = autoAttachEnabled;
+  }
 
   if (!autoAttachEnabled)
-    std::cout << "[LinkAttacher] autoAttach disabled" << std::endl;
     return;
 
   if (contactLatched)
@@ -521,6 +528,7 @@ bool autoAttachEnabled = false;
 bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
+bool lastAutoAttachState = false;
 
 std::string model1;
 std::string link1;
