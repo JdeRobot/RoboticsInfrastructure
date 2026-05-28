@@ -16,6 +16,7 @@
 #include <mutex>
 #include <chrono>
 #include <iostream>
+#include <vector>
 
 using namespace gz;
 using namespace sim;
