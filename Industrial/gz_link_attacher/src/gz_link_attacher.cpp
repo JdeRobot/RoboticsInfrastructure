@@ -10,13 +10,17 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/string_multi_array.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <thread>
 #include <mutex>
 #include <chrono>
 #include <iostream>
 #include <vector>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <cctype>
 
 using namespace gz;
 using namespace sim;
@@ -117,14 +121,28 @@ void Configure(
     });
 
     graspableObjectsSub =
-    node->create_subscription<std_msgs::msg::StringMultiArray>(
+    node->create_subscription<std_msgs::msg::String>(
       "/graspable_objects",
       10,
-      [this](const std_msgs::msg::StringMultiArray::SharedPtr msg)
+      [this](const std_msgs::msg::String::SharedPtr msg)
       {
         std::lock_guard<std::mutex> lock(mutex);
 
-        graspableObjects = msg->data;
+        graspableObjects.clear();
+
+        std::stringstream ss(msg->data);
+
+        std::string item;
+
+        while (std::getline(ss, item, ','))
+        {
+          item.erase(
+            std::remove_if(item.begin(), item.end(), ::isspace),
+            item.end()
+          );
+
+          graspableObjects.push_back(item);
+        }
 
         std::cout
           << "[LinkAttacher] Updated graspable objects:"
@@ -520,7 +538,7 @@ rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
-rclcpp::Subscription<std_msgs::msg::StringMultiArray>::SharedPtr graspableObjectsSub;
+rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableObjectsSub;
 
 std::thread rosThread;
 
