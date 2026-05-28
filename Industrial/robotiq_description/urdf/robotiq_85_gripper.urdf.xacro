@@ -223,22 +223,6 @@
           <mesh filename="package://robotiq_description/meshes/visual/robotiq_85_finger_tip_link.dae"/>
         </geometry>
       </visual>
-      <collision name="robotiq_85_left_finger_tip_link_collision">
-        <origin xyz="0.03 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.02 0.02 0.02"/>
-        </geometry>
-      </collision>
-      <visual>
-        <origin xyz="0.03 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.02 0.02 0.02"/>
-        </geometry>
-
-        <material name="Red">
-          <color rgba="1 0 0 0.8"/>
-        </material>
-      </visual>
       <inertial>
         <mass value="0.019555" />
         <origin xyz="0.0 0.0 0.0" />
@@ -250,6 +234,32 @@
 
     <gazebo reference="${prefix}robotiq_85_left_finger_tip_link">
 
+      <collision name="robotiq_85_left_finger_tip_link_collision">
+        <pose>0.05 0 0 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="debug_left_contact_visual">
+
+        <pose>0.05 0 0 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 0 0 0.4</ambient>
+          <diffuse>1 0 0 0.4</diffuse>
+        </material>
+
+      </visual>
+
       <sensor name="left_finger_contact" type="contact">
         <always_on>true</always_on>
         <update_rate>100</update_rate>
@@ -257,8 +267,6 @@
         <contact>
           <collision>robotiq_85_left_finger_tip_link_collision</collision>
         </contact>
-
-        <topic>/left_finger_contact</topic>
       </sensor>
 
     </gazebo>
@@ -268,22 +276,6 @@
         <geometry>
           <mesh filename="package://robotiq_description/meshes/visual/robotiq_85_finger_tip_link.dae"/>
         </geometry>
-      </visual>
-      <collision name="robotiq_85_right_finger_tip_link_collision">
-        <origin xyz="0.03 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.02 0.02 0.02"/>
-        </geometry>
-      </collision>
-      <visual>
-        <origin xyz="0.03 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.02 0.02 0.02"/>
-        </geometry>
-
-        <material name="Green">
-          <color rgba="0 1 0 0.8"/>
-        </material>
       </visual>
       <inertial>
         <mass value="0.019555" />
@@ -296,6 +288,32 @@
 
     <gazebo reference="${prefix}robotiq_85_right_finger_tip_link">
 
+      <collision name="robotiq_85_right_finger_tip_link_collision">
+              <pose>0.05 0 0 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="debug_left_contact_visual">
+
+        <pose>0.05 0 0 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 0 0 0.4</ambient>
+          <diffuse>1 0 0 0.4</diffuse>
+        </material>
+
+      </visual>
+
       <sensor name="right_finger_contact" type="contact">
         <always_on>true</always_on>
         <update_rate>100</update_rate>
@@ -303,8 +321,6 @@
         <contact>
           <collision>robotiq_85_right_finger_tip_link_collision</collision>
         </contact>
-
-        <topic>/right_finger_contact</topic>
       </sensor>
 
     </gazebo>
