@@ -10,6 +10,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/string_multi_array.hpp>
 
 #include <thread>
 #include <mutex>
@@ -113,6 +114,26 @@ void Configure(
         }
       }
     });
+
+    graspableObjectsSub =
+    node->create_subscription<std_msgs::msg::StringMultiArray>(
+      "/graspable_objects",
+      10,
+      [this](const std_msgs::msg::StringMultiArray::SharedPtr msg)
+      {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        graspableObjects = msg->data;
+
+        std::cout
+          << "[LinkAttacher] Updated graspable objects:"
+          << std::endl;
+
+        for (const auto &obj : graspableObjects)
+        {
+          std::cout << "  - " << obj << std::endl;
+        }
+      });
 
   std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
 
@@ -319,16 +340,20 @@ void OnContact(const gz::msgs::Contacts &_msg)
 
     std::string objectModel;
 
-    if (collision1.find("blue_ball") != std::string::npos)
-      objectModel = "blue_ball";
-    else if (collision2.find("blue_ball") != std::string::npos)
-      objectModel = "blue_ball";
-    else if (collision1.find("green_cylinder") != std::string::npos)
-      objectModel = "green_cylinder";
-    else if (collision2.find("green_cylinder") != std::string::npos)
-      objectModel = "green_cylinder";
-    else
+    for (const auto &obj : graspableObjects)
+    {
+      if (collision1.find(obj) != std::string::npos ||
+          collision2.find(obj) != std::string::npos)
+      {
+        objectModel = obj;
+        break;
+      }
+    }
+
+    if (objectModel.empty())
+    {
       continue;
+    }
 
     std::cout
       << "[LinkAttacher] OBJECT DETECTED -> "
@@ -348,12 +373,7 @@ void OnContact(const gz::msgs::Contacts &_msg)
 
     model2 = objectModel;
 
-    if (objectModel == "blue_ball")
-      link2 = "link_3";
-    else if (objectModel == "green_cylinder")
-      link2 = "link_2";
-    else
-      link2 = "link";
+    link2 = "link";
 
     createJointRequested = true;
     contactLatched = true;
@@ -503,6 +523,7 @@ rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
+rclcpp::Subscription<std_msgs::msg::StringMultiArray>::SharedPtr graspableObjectsSub;
 
 std::thread rosThread;
 
@@ -522,6 +543,7 @@ std::string model2;
 std::string link2;
 
 std::mutex mutex;
+std::vector<std::string> graspableObjects;
 
 Entity activeJoint{kNullEntity};
 
