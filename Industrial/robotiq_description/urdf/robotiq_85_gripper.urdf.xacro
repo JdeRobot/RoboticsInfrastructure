@@ -224,14 +224,13 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_left_finger_tip_link_collision">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
-
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
@@ -249,6 +248,21 @@
       </inertial>
     </link> 
 
+    <gazebo reference="${prefix}robotiq_85_left_finger_tip_link">
+
+      <sensor name="left_finger_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+
+        <contact>
+          <collision>robotiq_85_left_finger_tip_link_collision</collision>
+        </contact>
+
+        <topic>/left_finger_contact</topic>
+      </sensor>
+
+    </gazebo>
+
     <link name="${prefix}robotiq_85_right_finger_tip_link">
       <visual>
         <geometry>
@@ -256,14 +270,13 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_right_finger_tip_link_collision">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
-
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.02 0.02 0.02"/>
         </geometry>
@@ -280,35 +293,17 @@
              izx = "0.000000" izy = "0.000000" izz = "0.000006" />
       </inertial>
     </link>
-    
-    <gazebo reference="${prefix}robotiq_85_left_finger_tip_link">
-      <kp>1000000.0</kp>
-      <kd>1.0</kd>
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <minDepth>0.001</minDepth>
-      <sensor name="left_finger_contact" type="contact">
-        <always_on>true</always_on>
-        <update_rate>100</update_rate>
-        <contact>
-          <collision>robotiq_85_left_finger_tip_link_collision</collision>
-        </contact>
-        <topic>/left_finger_contact</topic>
-      </sensor>
-    </gazebo>
 
     <gazebo reference="${prefix}robotiq_85_right_finger_tip_link">
-      <kp>1000000.0</kp>
-      <kd>1.0</kd>
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <minDepth>0.001</minDepth>
+
       <sensor name="right_finger_contact" type="contact">
         <always_on>true</always_on>
         <update_rate>100</update_rate>
+
         <contact>
           <collision>robotiq_85_right_finger_tip_link_collision</collision>
         </contact>
+
         <topic>/right_finger_contact</topic>
       </sensor>
 
