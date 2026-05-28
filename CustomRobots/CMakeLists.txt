@@ -118,36 +118,46 @@ install(
     ur5/launch
 
     roomba_robot/models
-    roomba_robot/params
+
     ackermann_cars/models
-    ackermann_cars/params
+
     car_junction/models
     car_junction/scripts
+
     # AMAZON WAREHOUSE ROBOT
     amazon_robot_classic/models
     amazon_robot_classic/urdf
     amazon_robot_classic/meshes
+
     amazon_warehouse_harmonic/models
-    amazon_warehouse_harmonic/params
+
     package_delivery/models
+
     # AMAZON HOSPITAL
     amazon_hospital/models
-    amazon_hospital/hospital_world/launch
-    amazon_hospital/hospital_world/worlds
     amazon_hospital/worlds
+
     ackermann_logistic_robot/models
+
     autoparking/models
+
     autopark_harmonic/models
+
     drone_assets/models
     drone_assets/bridges
+
     taxi_navigator/models
-    taxi_navigator/params
+    
     3d_reconstruction/models
-    3d_reconstruction/params
+    
     marker_visual_loc/models
+
     turtlebot3/urdf
+
     laser_mapping/models
+
     restaurant/models
+    
     pick_place/models
     pick_place/urdf
 
