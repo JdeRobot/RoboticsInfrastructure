@@ -224,16 +224,16 @@
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.04 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.06 0.06 0.06"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.04 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.06 0.06 0.06"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
 
         <material name="Red">
@@ -256,16 +256,16 @@
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.04 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.06 0.06 0.06"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
       </collision>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0.04 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.06 0.06 0.06"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
 
         <material name="Green">
