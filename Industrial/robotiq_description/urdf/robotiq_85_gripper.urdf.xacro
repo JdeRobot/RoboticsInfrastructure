@@ -224,11 +224,27 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_left_finger_tip_link_collision">
-        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.08 0.08 0.08"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
+        <surface>
+          <contact>
+            <collide_without_contact>false</collide_without_contact>
+          </contact>
+        </surface>
       </collision>
+      <visual>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
+
+        <geometry>
+          <box size="0.02 0.02 0.02"/>
+        </geometry>
+
+        <material name="red_debug">
+          <color rgba="1 0 0 0.5"/>
+        </material>
+      </visual>
       <inertial>
         <mass value="0.019555" />
         <origin xyz="0.0 0.0 0.0" />
@@ -257,11 +273,27 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_right_finger_tip_link_collision">
-        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="0.08 0.08 0.08"/>
+          <box size="0.02 0.02 0.02"/>
         </geometry>
+        <surface>
+          <contact>
+            <collide_without_contact>false</collide_without_contact>
+          </contact>
+        </surface>
       </collision>
+      <visual>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
+
+        <geometry>
+          <box size="0.02 0.02 0.02"/>
+        </geometry>
+
+        <material name="red_debug">
+          <color rgba="1 0 0 0.5"/>
+        </material>
+      </visual>
       <inertial>
         <mass value="0.019555" />
         <origin xyz="0.0 0.0 0.0" />
