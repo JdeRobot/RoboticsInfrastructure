@@ -287,10 +287,6 @@ std::string GetLinkNameFromCollision(
 
 void OnContact(const gz::msgs::Contacts &_msg)
 {
-  std::cout
-    << "\n[LinkAttacher] OnContact CALLBACK ENTERED"
-    << std::endl;
-
   std::lock_guard<std::mutex> lock(mutex);
 
   std::cout
