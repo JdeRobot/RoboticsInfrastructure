@@ -224,12 +224,9 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_left_finger_tip_link_collision">
-        <pose>0.05 0 0 0 0 0</pose>
-
+        <origin xyz="0.05 0 0" rpy="0 0 0"/>
         <geometry>
-          <box>
-            <size>0.08 0.08 0.08</size>
-          </box>
+          <box size="0.08 0.08 0.08"/>
         </geometry>
       </collision>
       <inertial>
@@ -260,12 +257,9 @@
         </geometry>
       </visual>
       <collision name="robotiq_85_right_finger_tip_link_collision">
-              <pose>0.05 0 0 0 0 0</pose>
-
+        <origin xyz="0.05 0 0" rpy="0 0 0"/>
         <geometry>
-          <box>
-            <size>0.08 0.08 0.08</size>
-          </box>
+          <box size="0.08 0.08 0.08"/>
         </geometry>
       </collision>
       <inertial>
