@@ -117,12 +117,12 @@ void Configure(
   std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
 
   gzNode.Subscribe(
-    "/left_finger_contact",
+    "/world/default/model/ur5_robotiq/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
     &LinkAttacher::OnContact,
     this);
 
   gzNode.Subscribe(
-    "/right_finger_contact",
+    "/world/default/model/ur5_robotiq/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
     &LinkAttacher::OnContact,
     this);
 
