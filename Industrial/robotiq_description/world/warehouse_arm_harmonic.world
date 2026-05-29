@@ -14,11 +14,6 @@
     <plugin
       filename="libgz_link_attacher.so"
       name="gz_link_attacher::LinkAttacher"/>
-    
-    <plugin
-      filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
-    </plugin>
 
     <plugin
       filename="gz-sim-contact-system"
