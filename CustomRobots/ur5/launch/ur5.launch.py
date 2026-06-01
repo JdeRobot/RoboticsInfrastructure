@@ -12,6 +12,7 @@ import os
 import xacro
 import yaml
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 
 
 def load_file(package_name, file_path):
