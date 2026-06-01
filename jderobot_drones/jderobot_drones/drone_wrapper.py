@@ -167,9 +167,7 @@ class DroneWrapper(DroneInterfaceBase):
             [vx, vy], z, "earth", self.namespace + "/base_link", float(az)
         )
 
-    def call_state_event_service(
-        self, event_value: PlatformStateMachineEvent
-    ) -> None:
+    def call_state_event_service(self, event_value: PlatformStateMachineEvent) -> None:
         """
         Request Aerostack to update state machine for the given event.
 
