@@ -19,6 +19,8 @@ def generate_launch_description():
         gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/humble/lib"
     )
 
+    custom_models_path = "/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/packages/ur5/ros2srrc_ur5_gazebo/models"
+
     resource_path = (
         os.path.dirname(get_package_share_directory("ur5_gripper_description"))
         + ":"
@@ -27,6 +29,8 @@ def generate_launch_description():
         + os.path.join(
             get_package_share_directory("robotiq_description"), "world", "models"
         )
+        + ":"
+        + os.path.join(custom_models_path)
     )
 
     set_resource_path = SetEnvironmentVariable(
