@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera" params="xyz rpy name parent mass namespace">
+
+    <link name="${name}_link">
+      <inertial>
+        <origin rpy="${rpy}" xyz="${xyz}"/>
+        <mass value="${mass}"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>${namespace}/${name}/image_raw</topic>
+        <gz_frame_id>camera_rgb_frame</gz_frame_id>
+        <camera name="camera">
+          <camera_info_topic>${namespace}/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300.0</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="velocity" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-multicopter-control-system" name="gz::sim::systems::MulticopterVelocityControl">
+        <robotNamespace>model/${namespace}</robotNamespace>
+        <commandSubTopic>cmd_vel</commandSubTopic>
+        <motorControlPubTopic>command/motor_speed</motorControlPubTopic>
+        <enableSubTopic>velocity_controller/enable</enableSubTopic>
+        <comLinkName>base_link</comLinkName>
+        <velocityGain>2.7 2.7 2.7</velocityGain>
+        <attitudeGain>2 3 0.15</attitudeGain>
+        <angularRateGain>0.4 0.52 0.18</angularRateGain>
+        <maximumLinearAcceleration>1 1 2</maximumLinearAcceleration>
+        <maximumLinearVelocity>5 5 5</maximumLinearVelocity>
+        <maximumAngularVelocity>3 3 3</maximumAngularVelocity>
+        <linearVelocityNoiseMean>0 0 0.05</linearVelocityNoiseMean>
+        <!-- linearVelocityNoiseStdDev based on error values reported in the paper Shen et. al., -->
+        <!-- Vision-Based State Estimation and Trajectory Control Towards High-Speed Flight with
+            a Quadrotor -->
+        <!-- http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.490.7958&rep=rep1&type=pdf -->
+        <linearVelocityNoiseStdDev>0.1105 0.1261 0.00947</linearVelocityNoiseStdDev>
+        <angularVelocityNoiseMean>0 0 0</angularVelocityNoiseMean>
+        <!-- angularVelocityNoiseStdDev values based on ADIS16448's Rate Noise Density with a
+            sample  -->
+        <!-- time of 0.004 ms. -->
+        <angularVelocityNoiseStdDev>0.004 0.004 0.004</angularVelocityNoiseStdDev>
+        <rotorConfiguration>
+          <rotor>
+            <jointName>rotor_0_joint</jointName>
+            <forceConstant>8.54858e-06</forceConstant>
+            <momentConstant>0.016</momentConstant>
+            <direction>1</direction>
+          </rotor>
+          <rotor>
+            <jointName>rotor_1_joint</jointName>
+            <forceConstant>8.54858e-06</forceConstant>
+            <momentConstant>0.016</momentConstant>
+            <direction>1</direction>
+          </rotor>
+          <rotor>
+            <jointName>rotor_2_joint</jointName>
+            <forceConstant>8.54858e-06</forceConstant>
+            <momentConstant>0.016</momentConstant>
+            <direction>-1</direction>
+          </rotor>
+          <rotor>
+            <jointName>rotor_3_joint</jointName>
+            <forceConstant>8.54858e-06</forceConstant>
+            <momentConstant>0.016</momentConstant>
+            <direction>-1</direction>
+          </rotor>
+        </rotorConfiguration>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="imu" params="parent mass">
+    <gazebo>
+      <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+      </plugin>
+    </gazebo>
+
+    <link name="imu_link">
+      <inertial>
+        <mass value="${mass}"/>
+        <inertia ixx="8.33e-06" ixy="0" ixz="0" iyy="8.33e-06" iyz="0" izz="8.33e-06"/>
+      </inertial>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="imu_link"/>
+    </joint>
+
+    <gazebo reference="imu_link">
+      <sensor name='imu' type='imu'>
+        <always_on>1</always_on>
+        <update_rate>250</update_rate>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.009</stddev>
+                <bias_mean>0.00075</bias_mean>
+                <bias_stddev>0.005</bias_stddev>
+                <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                <precision>0.00025</precision>
+              </noise>
+            </x>
+            <y>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.009</stddev>
+                <bias_mean>0.00075</bias_mean>
+                <bias_stddev>0.005</bias_stddev>
+                <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                <precision>0.00025</precision>
+              </noise>
+            </y>
+            <z>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.009</stddev>
+                <bias_mean>0.00075</bias_mean>
+                <bias_stddev>0.005</bias_stddev>
+                <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                <precision>0.00025</precision>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.021</stddev>
+                <bias_mean>0.05</bias_mean>
+                <bias_stddev>0.0075</bias_stddev>
+                <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                <precision>0.005</precision>
+              </noise>
+            </x>
+            <y>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.021</stddev>
+                <bias_mean>0.05</bias_mean>
+                <bias_stddev>0.0075</bias_stddev>
+                <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                <precision>0.005</precision>
+              </noise>
+            </y>
+            <z>
+              <noise type='gaussian'>
+                <mean>0</mean>
+                <stddev>0.021</stddev>
+                <bias_mean>0.05</bias_mean>
+                <bias_stddev>0.0075</bias_stddev>
+                <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                <precision>0.005</precision>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="tf" params="freq">
+    <gazebo>
+      <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <publish_sensor_pose>true</publish_sensor_pose>
+        <publish_collision_pose>false</publish_collision_pose>
+        <publish_visual_pose>false</publish_visual_pose>
+        <publish_nested_model_pose>true</publish_nested_model_pose>
+        <publish_model_pose>false</publish_model_pose>
+        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <static_publisher>true</static_publisher>
+        <static_update_frequency>${freq}</static_update_frequency>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="motor" params="rotor namespace">
+    <gazebo>
+      <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+        <robotNamespace>model/${namespace}</robotNamespace>
+        <jointName>rotor_${rotor-1}_joint</jointName>
+        <linkName>rotor_${rotor-1}</linkName>
+        <turningDirection>ccw</turningDirection>
+        <timeConstantUp>0.0125</timeConstantUp>
+        <timeConstantDown>0.025</timeConstantDown>
+        <maxRotVelocity>800.0</maxRotVelocity>
+        <motorConstant>8.54858e-06</motorConstant>
+        <momentConstant>0.016</momentConstant>
+        <commandSubTopic>command/motor_speed</commandSubTopic>
+        <motorNumber>${rotor-1}</motorNumber>
+        <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+        <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+        <motorSpeedPubTopic>motor_speed/${rotor-1}</motorSpeedPubTopic>
+        <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+        <motorType>velocity</motorType>
+      </plugin>
+    </gazebo>
+
+    <xacro:if value="${rotor - 1}">
+      <xacro:motor rotor="${rotor-1}" namespace="${namespace}"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <xacro:macro name="motors" params="namespace">
+    <xacro:motor rotor="4" namespace="${namespace}"/>
+  </xacro:macro>
+</robot>

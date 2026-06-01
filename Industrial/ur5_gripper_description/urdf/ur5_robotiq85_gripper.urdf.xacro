@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="ur5"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="name" default="ur"/>
   <xacro:arg name="ur_type" default="ur5"/>

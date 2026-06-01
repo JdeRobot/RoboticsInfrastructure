@@ -1,0 +1,242 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_4wd">
+
+  <!-- ================== Robot Parameters ================== -->
+  <xacro:property name="wheel_z_offset" value="0.020" />
+  <xacro:property name="wheel_x_offset" value="0.145" />
+  <xacro:property name="front_flipper_x_offset" value="-0.0035" />
+  <xacro:property name="wheel_y_offset" value="0.18" />
+  <xacro:property name="track_y_offset" value="0.11" />
+  <xacro:property name="wheel_mass" value="1.25" />
+  <xacro:property name="chassis_mass" value="4.53592" />
+  <xacro:property name="payload_z_offset" value="0.096" />
+
+  <xacro:arg name="noise_level" default="none"/>
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="a1" value="0.1" />
+    <xacro:property name="a2" value="0.1" />
+    <xacro:property name="a3" value="0.05" />
+    <xacro:property name="a4" value="0.05" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="a1" value="1.5" />
+    <xacro:property name="a2" value="1.5" />
+    <xacro:property name="a3" value="0.8" />
+    <xacro:property name="a4" value="0.8" />
+  </xacro:if>
+
+  <xacro:include filename="$(find custom_robots)/model/rover_4wd/rover_4wd_gz.urdf.xacro"/>
+
+
+  <!-- ================== Links ================== -->
+  <link name="base_link" />
+
+  <link name="chassis_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 -0 1.57" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_chassis.dae"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0 ${track_y_offset} 0" rpy="1.57 3.1415 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_track.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 ${track_y_offset} 0" rpy="1.57 3.1415 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_track.dae"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 ${-track_y_offset} 0" rpy="1.57 3.1415 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_track.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 ${-track_y_offset} 0" rpy="1.57 3.1415 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_track.dae"/>
+      </geometry>
+    </collision>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="1.57 -0 1.57" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/flipper_chassis.dae"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${chassis_mass}" />
+      <inertia ixx="0.028064" ixy="0.0" ixz="0.0" iyy="0.08226" iyz="0.0" izz="0.10258" />
+    </inertial>
+  </link>
+
+  <joint name="base_to_chassis" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis_link"/>
+    <origin xyz="0 0 0.125"/>
+  </joint>
+
+  <!-- ================== Wheels ================== -->
+  <!-- Front Right -->
+  <link name="fr_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="-1.57 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="-1.57 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${wheel_mass}" />
+      <inertia ixx="0.005645" ixy="0.0" ixz="0.0" iyy="0.01008" iyz="0.0" izz="0.005645"/>
+    </inertial>
+  </link>
+  <joint name="fr_wheel_to_chassis" type="continuous">
+    <parent link="chassis_link"/>
+    <child link="fr_wheel_link"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="${wheel_x_offset + front_flipper_x_offset} ${-wheel_y_offset} 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Front Left -->
+  <link name="fl_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.57 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${wheel_mass}" />
+      <inertia ixx="0.005645" ixy="0.0" ixz="0.0" iyy="0.01008" iyz="0.0" izz="0.005645"/>
+    </inertial>
+  </link>
+  <joint name="fl_wheel_to_chassis" type="continuous">
+    <parent link="chassis_link"/>
+    <child link="fl_wheel_link"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="${wheel_x_offset + front_flipper_x_offset} ${wheel_y_offset} 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Rear Right -->
+  <link name="rr_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${wheel_mass}" />
+      <inertia ixx="0.005645" ixy="0.0" ixz="0.0" iyy="0.01008" iyz="0.0" izz="0.005645"/>
+    </inertial>
+  </link>
+  <joint name="rr_wheel_to_chassis" type="continuous">
+    <parent link="chassis_link"/>
+    <child link="rr_wheel_link"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="${-wheel_x_offset} ${-wheel_y_offset} 0"/>
+  </joint>
+
+  <!-- Rear Left -->
+  <link name="rl_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/pro_tire.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${wheel_mass}" />
+      <inertia ixx="0.005645" ixy="0.0" ixz="0.0" iyy="0.01008" iyz="0.0" izz="0.005645"/>
+    </inertial>
+  </link>
+  <joint name="rl_wheel_to_chassis" type="continuous">
+    <parent link="chassis_link"/>
+    <child link="rl_wheel_link"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="${-wheel_x_offset} ${wheel_y_offset} 0"/>
+  </joint>
+
+  <!-- ================== Payload ================== -->
+
+  <link name="payload_link">
+    <visual>
+      <origin xyz="0 0.0115 0" rpy="1.57 -0 1.57" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/rover_payload.dae"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0.0115 0" rpy="1.57 -0 1.57" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/model/rover_4wd/meshes/rover_payload.dae"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="-0.01 0 0" rpy="0 0 0"/>
+      <mass value="2.95" />
+      <inertia ixx="0.018398" ixy="0.0" ixz="0.0" iyy="0.04064" iyz="0.0" izz="0.05396" />
+    </inertial>
+  </link>
+
+  <joint name="payload_to_chassis" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="payload_link"/>
+    <origin xyz="0 0 ${payload_z_offset}"/>
+  </joint>
+
+  <!-- ================== Gazebo Plugins ================== -->
+  <xacro:lidar xyz="0.174 0 0.10" rpy="0 0 0" name="lidar" parent="payload_link" topic="scan"/>
+  <xacro:imu xyz="0 0 0" rpy="0 0 0" parent="payload_link" topic="imu/data"/>
+  <xacro:velocity topic="/cmd_vel"/>
+  <xacro:joints topic="/joint_states"/>
+  <xacro:odom topic="/odom"/>
+
+  <xacro:unless value="${noise_level == 'none'}">
+    <xacro:noise_odom topic="/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+  </xacro:unless>
+  <xacro:pose/>
+
+</robot>

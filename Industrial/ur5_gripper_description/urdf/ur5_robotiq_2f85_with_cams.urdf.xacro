@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<robot name="ur5" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="ur5"
+  xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:arg name="hmi" default="false"/>
   <xacro:arg name="EE" default="true"/>
@@ -11,31 +12,20 @@
 
   <xacro:include filename="$(find ros2srrc_robots)/ur5/urdf/ur5_macro.urdf.xacro"/>
 
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>
 
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>	
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>
 
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>	
-  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>
 
-  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>
 
 
-  <xacro:ur5 
-    bringup="false"
-    robot_ip="0.0.0.0"
-    EE="$(arg EE)"
-    EE_name="$(arg EE_name)"
-    script_filename="none"
-    input_recipe_filename="none"
-    output_recipe_filename="none"
-  />
+  <xacro:ur5 bringup="false" robot_ip="0.0.0.0" EE="$(arg EE)" EE_name="$(arg EE_name)" script_filename="none" input_recipe_filename="none" output_recipe_filename="none" />
 
-  <xacro:robotiq_2f85 
-    bringup="false"
-    parent_link="tool0"
-  />
+  <xacro:robotiq_2f85 bringup="false" parent_link="tool0" />
 
 
   <link name="world"/>
@@ -53,8 +43,7 @@
     </collision>
     <inertial>
       <mass value="100"/>
-      <inertia ixx="0.01" iyy="0.01" izz="0.01"
-               ixy="0" ixz="0" iyz="0"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01" ixy="0" ixz="0" iyz="0"/>
     </inertial>
   </link>
 

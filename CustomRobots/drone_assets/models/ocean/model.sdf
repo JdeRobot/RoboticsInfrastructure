@@ -6,7 +6,7 @@
             <visual name="visual">
                 <geometry>
                     <mesh>
-                        <uri>meshes/waterlow.dae</uri>
+                        <uri>meshes/waterlow_small.dae</uri>
                     </mesh>
                 </geometry>
                 <plugin filename="gz-sim-shader-param-system" name="gz::sim::systems::ShaderParam">

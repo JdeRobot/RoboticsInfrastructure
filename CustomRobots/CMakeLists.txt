@@ -78,54 +78,89 @@ install(
   DIRECTORY
     follow_person_harmonic/models
     follow_person_harmonic/params
-    Turtlebot2/turtlebot2_simulated/kobuki_description/launch
-    Turtlebot2/turtlebot2_simulated/kobuki_description/meshes
-    Turtlebot2/turtlebot2_simulated/kobuki_description/rviz
-    Turtlebot2/turtlebot2_simulated/kobuki_description/urdf
-    Turtlebot2/turtlebot2_simulated/turtlebot2/launch
-    Turtlebot2/turtlebot2_simulated/turtlebot2/rviz
-    Turtlebot2/turtlebot2_simulated/turtlebot2/urdf
+    
     f1/models
     f1/params
+    f1/launch
+
+    autonomous_car/models
+    autonomous_car/params
+    autonomous_car/launch
+
+    vacuum_cleaner/models
+    vacuum_cleaner/params
+    vacuum_cleaner/launch
+
+    quadrotor/models
+    quadrotor/params
+    quadrotor/launch
+
+    rover_4wd/model
+    rover_4wd/params
+    rover_4wd/launch
+
+    Turtlebot2/model
+    Turtlebot2/params
+    Turtlebot2/launch
+
+    turtlebot3/models
+    turtlebot3/params
+    turtlebot3/launch
+
+    logistic_holonomic_robot/models
+    logistic_holonomic_robot/params
+    logistic_holonomic_robot/launch
+
+    logistic_ackermann_robot/models
+    logistic_ackermann_robot/params
+    logistic_ackermann_robot/launch
+
+    ur5/launch
+
     roomba_robot/models
-    roomba_robot/params
+
     ackermann_cars/models
-    ackermann_cars/params
+
     car_junction/models
     car_junction/scripts
+
     # AMAZON WAREHOUSE ROBOT
     amazon_robot_classic/models
     amazon_robot_classic/urdf
     amazon_robot_classic/meshes
+
     amazon_warehouse_harmonic/models
-    amazon_warehouse_harmonic/params
+
     package_delivery/models
+
     # AMAZON HOSPITAL
     amazon_hospital/models
-    amazon_hospital/hospital_world/launch
-    amazon_hospital/hospital_world/worlds
     amazon_hospital/worlds
+
     ackermann_logistic_robot/models
+
     autoparking/models
+
     autopark_harmonic/models
-    autopark_harmonic/params
+
     drone_assets/models
     drone_assets/bridges
+
     taxi_navigator/models
-    taxi_navigator/params
+    
     3d_reconstruction/models
-    3d_reconstruction/params
+    
     marker_visual_loc/models
-    turtlebot3/models
+
     turtlebot3/urdf
-    turtlebot3/params
+
     laser_mapping/models
+
     restaurant/models
+    
     pick_place/models
     pick_place/urdf
-    rover_4wd_description/meshes
-    rover_4wd_description/urdf
-    rover_4wd_description/config
+
   DESTINATION share/${PROJECT_NAME})
 
 # install(

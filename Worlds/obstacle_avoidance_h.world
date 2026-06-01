@@ -111,10 +111,7 @@
       <uri>model://simple_circuit_walled</uri>
       <pose>-53.46 11.50 0 0 0 0</pose>
     </include>
-    <include>
-      <uri>model://f1_renault_laser_no_cam</uri>
-      <pose>0.04 0.68 0 0 0 -1.57</pose>
-    </include>
+
     <include>
       <uri>model://f1_dummy_harmonic</uri>
       <name>f1_dummy_1</name>
