@@ -1,0 +1,254 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.8">
+    <model name='quadrotor_dual_cam'>
+        <!-- Platform base model-->
+        <include merge="true">
+            <uri>model://quadrotor_base</uri>
+        </include>
+
+        <!-- TFs -->
+        <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+            <publish_link_pose>true</publish_link_pose>
+            <publish_sensor_pose>true</publish_sensor_pose>
+            <publish_collision_pose>false</publish_collision_pose>
+            <publish_visual_pose>false</publish_visual_pose>
+            <publish_nested_model_pose>true</publish_nested_model_pose>
+            <publish_model_pose>false</publish_model_pose>
+            <use_pose_vector_msg>true</use_pose_vector_msg>
+            <static_publisher>true</static_publisher>
+            <static_update_frequency>100</static_update_frequency>
+        </plugin>
+        <!-- Motors -->
+        <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+            <robotNamespace>model/drone0</robotNamespace>
+            <jointName>rotor_0_joint</jointName>
+            <linkName>rotor_0</linkName>
+            <turningDirection>ccw</turningDirection>
+            <timeConstantUp>0.0125</timeConstantUp>
+            <timeConstantDown>0.025</timeConstantDown>
+            <maxRotVelocity>800.0</maxRotVelocity>
+            <motorConstant>8.54858e-06</motorConstant>
+            <momentConstant>0.016</momentConstant>
+            <commandSubTopic>command/motor_speed</commandSubTopic>
+            <motorNumber>0</motorNumber>
+            <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+            <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+            <motorSpeedPubTopic>motor_speed/0</motorSpeedPubTopic>
+            <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+            <motorType>velocity</motorType>
+        </plugin>
+        <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+            <robotNamespace>model/drone0</robotNamespace>
+            <jointName>rotor_1_joint</jointName>
+            <linkName>rotor_1</linkName>
+            <turningDirection>ccw</turningDirection>
+            <timeConstantUp>0.0125</timeConstantUp>
+            <timeConstantDown>0.025</timeConstantDown>
+            <maxRotVelocity>800.0</maxRotVelocity>
+            <motorConstant>8.54858e-06</motorConstant>
+            <momentConstant>0.016</momentConstant>
+            <commandSubTopic>command/motor_speed</commandSubTopic>
+            <motorNumber>1</motorNumber>
+            <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+            <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+            <motorSpeedPubTopic>motor_speed/1</motorSpeedPubTopic>
+            <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+            <motorType>velocity</motorType>
+        </plugin>
+        <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+            <robotNamespace>model/drone0</robotNamespace>
+            <jointName>rotor_2_joint</jointName>
+            <linkName>rotor_2</linkName>
+            <turningDirection>cw</turningDirection>
+            <timeConstantUp>0.0125</timeConstantUp>
+            <timeConstantDown>0.025</timeConstantDown>
+            <maxRotVelocity>800.0</maxRotVelocity>
+            <motorConstant>8.54858e-06</motorConstant>
+            <momentConstant>0.016</momentConstant>
+            <commandSubTopic>command/motor_speed</commandSubTopic>
+            <motorNumber>2</motorNumber>
+            <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+            <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+            <motorSpeedPubTopic>motor_speed/2</motorSpeedPubTopic>
+            <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+            <motorType>velocity</motorType>
+        </plugin>
+        <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+            <robotNamespace>model/drone0</robotNamespace>
+            <jointName>rotor_3_joint</jointName>
+            <linkName>rotor_3</linkName>
+            <turningDirection>cw</turningDirection>
+            <timeConstantUp>0.0125</timeConstantUp>
+            <timeConstantDown>0.025</timeConstantDown>
+            <maxRotVelocity>800.0</maxRotVelocity>
+            <motorConstant>8.54858e-06</motorConstant>
+            <momentConstant>0.016</momentConstant>
+            <commandSubTopic>command/motor_speed</commandSubTopic>
+            <motorNumber>3</motorNumber>
+            <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+            <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+            <motorSpeedPubTopic>motor_speed/3</motorSpeedPubTopic>
+            <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+            <motorType>velocity</motorType>
+        </plugin>
+
+        <!-- Velocity Controller -->
+        <plugin filename="gz-sim-multicopter-control-system" name="gz::sim::systems::MulticopterVelocityControl">
+            <robotNamespace>model/drone0</robotNamespace>
+            <commandSubTopic>cmd_vel</commandSubTopic>
+            <motorControlPubTopic>command/motor_speed</motorControlPubTopic>
+            <enableSubTopic>velocity_controller/enable</enableSubTopic>
+            <comLinkName>base_link</comLinkName>
+            <velocityGain>2.7 2.7 2.7</velocityGain>
+            <attitudeGain>2 3 0.15</attitudeGain>
+            <angularRateGain>0.4 0.52 0.18</angularRateGain>
+            <maximumLinearAcceleration>1 1 2</maximumLinearAcceleration>
+            <maximumLinearVelocity>5 5 5</maximumLinearVelocity>
+            <maximumAngularVelocity>3 3 3</maximumAngularVelocity>
+            <linearVelocityNoiseMean>0 0 0.05</linearVelocityNoiseMean>
+            <!-- linearVelocityNoiseStdDev based on error values reported in the paper Shen et. al., -->
+            <!-- Vision-Based State Estimation and Trajectory Control Towards High-Speed Flight with
+            a Quadrotor -->
+            <!-- http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.490.7958&rep=rep1&type=pdf -->
+            <linearVelocityNoiseStdDev>0.1105 0.1261 0.00947</linearVelocityNoiseStdDev>
+            <angularVelocityNoiseMean>0 0 0</angularVelocityNoiseMean>
+            <!-- angularVelocityNoiseStdDev values based on ADIS16448's Rate Noise Density with a
+            sample  -->
+            <!-- time of 0.004 ms. -->
+            <angularVelocityNoiseStdDev>0.004 0.004 0.004</angularVelocityNoiseStdDev>
+            <rotorConfiguration>
+                <rotor>
+                    <jointName>rotor_0_joint</jointName>
+                    <forceConstant>8.54858e-06</forceConstant>
+                    <momentConstant>0.016</momentConstant>
+                    <direction>1</direction>
+                </rotor>
+                <rotor>
+                    <jointName>rotor_1_joint</jointName>
+                    <forceConstant>8.54858e-06</forceConstant>
+                    <momentConstant>0.016</momentConstant>
+                    <direction>1</direction>
+                </rotor>
+                <rotor>
+                    <jointName>rotor_2_joint</jointName>
+                    <forceConstant>8.54858e-06</forceConstant>
+                    <momentConstant>0.016</momentConstant>
+                    <direction>-1</direction>
+                </rotor>
+                <rotor>
+                    <jointName>rotor_3_joint</jointName>
+                    <forceConstant>8.54858e-06</forceConstant>
+                    <momentConstant>0.016</momentConstant>
+                    <direction>-1</direction>
+                </rotor>
+            </rotorConfiguration>
+        </plugin>
+
+        <!-- Odometry aka Ground Truth (no noise) -->
+        <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+            <dimensions>3</dimensions>
+            <odom_publish_frequency>100</odom_publish_frequency>
+        </plugin>
+
+        <!-- IMU -->
+        <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+        </plugin>
+
+        <!-- Payload: Frontal and Ventral Cameras -->
+        <link name="frontal_cam">
+            <inertial>
+                <pose>0 0 0.05 0 0 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.035</mass>
+            </inertial>
+
+            <pose>0 0 0.05 0 0 0</pose>
+            <sensor name="camera" type="camera">
+                <always_on>true</always_on>
+                <visualize>true</visualize>
+                <update_rate>30</update_rate>
+                <topic>drone0/frontal_cam/image_raw</topic>
+                <gz_frame_id>camera_rgb_frame</gz_frame_id>
+                <camera name="intel_realsense_r200">
+                    <camera_info_topic>drone0/frontal_cam/camera_info</camera_info_topic>
+                    <horizontal_fov>1.02974</horizontal_fov>
+                    <image>
+                        <width>320</width>
+                        <height>240</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+            </sensor>
+        </link>
+
+        <link name="ventral_cam">
+            <inertial>
+                <pose>0 0 -0.05 0 1.57 0</pose>
+                <inertia>
+                    <ixx>0.001</ixx>
+                    <ixy>0.000</ixy>
+                    <ixz>0.000</ixz>
+                    <iyy>0.001</iyy>
+                    <iyz>0.000</iyz>
+                    <izz>0.001</izz>
+                </inertia>
+                <mass>0.035</mass>
+            </inertial>
+
+            <pose>0 0 -0.05 0 1.57 0</pose>
+            <sensor name="camera" type="camera">
+                <always_on>true</always_on>
+                <visualize>true</visualize>
+                <update_rate>30</update_rate>
+                <topic>drone0/ventral_cam/image_raw</topic>
+                <gz_frame_id>camera_rgb_frame</gz_frame_id>
+                <camera name="intel_realsense_r200">
+                    <camera_info_topic>drone0/ventral_cam/camera_info</camera_info_topic>
+                    <horizontal_fov>1.02974</horizontal_fov>
+                    <image>
+                        <width>320</width>
+                        <height>240</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+            </sensor>
+        </link>
+
+        <joint name="frontal_cam_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>frontal_cam</child>
+        </joint>
+
+        <joint name="ventral_cam_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>ventral_cam</child>
+        </joint>
+
+    </model>
+</sdf>
