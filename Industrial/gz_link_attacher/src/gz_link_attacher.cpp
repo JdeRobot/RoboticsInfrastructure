@@ -1,22 +1,26 @@
 #include <gz/sim/System.hh>
-#include <gz/sim/Model.hh>
-#include <gz/sim/Link.hh>
 
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/DetachableJoint.hh>
 
 #include <gz/plugin/Register.hh>
+#include <gz/transport/Node.hh>
+#include <gz/msgs/contacts.pb.h>
 
 #include <rclcpp/rclcpp.hpp>
-
-#include <linkattacher_msgs/srv/attach_link.hpp>
-#include <linkattacher_msgs/srv/detach_link.hpp>
+#include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <thread>
+#include <mutex>
 #include <chrono>
 #include <iostream>
-#include <mutex>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <cctype>
 
 using namespace gz;
 using namespace sim;
@@ -90,33 +94,77 @@ void Configure(
 
   executor->add_node(node);
 
-  std::cout << "[LinkAttacher] Creating ATTACH service" << std::endl;
+  gripperStateSub =
+  node->create_subscription<std_msgs::msg::Bool>(
+    "/gripper_auto_attach",
+    10,
+    [this](const std_msgs::msg::Bool::SharedPtr msg)
+    {
+      std::lock_guard<std::mutex> lock(mutex);
 
-  attachService =
-    node->create_service<linkattacher_msgs::srv::AttachLink>(
-      "/ATTACHLINK",
-      std::bind(
-        &LinkAttacher::Attach,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        std::placeholders::_3));
+      autoAttachEnabled = msg->data;
 
-  std::cout << "[LinkAttacher] ATTACH service created" << std::endl;
+      std::cout
+        << "[LinkAttacher] autoAttachEnabled="
+        << autoAttachEnabled
+        << std::endl;
 
-  std::cout << "[LinkAttacher] Creating DETACH service" << std::endl;
+      if (!autoAttachEnabled)
+      {
+        contactLatched = false;
 
-  detachService =
-    node->create_service<linkattacher_msgs::srv::DetachLink>(
-      "/DETACHLINK",
-      std::bind(
-        &LinkAttacher::Detach,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        std::placeholders::_3));
+        if (activeJoint != kNullEntity)
+        {
+          removeJointRequested = true;
+        }
+      }
+    });
 
-  std::cout << "[LinkAttacher] DETACH service created" << std::endl;
+    graspableObjectsSub =
+    node->create_subscription<std_msgs::msg::String>(
+      "/graspable_objects",
+      10,
+      [this](const std_msgs::msg::String::SharedPtr msg)
+      {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        graspableObjects.clear();
+
+        std::stringstream ss(msg->data);
+
+        std::string item;
+
+        while (std::getline(ss, item, ','))
+        {
+          item.erase(
+            std::remove_if(item.begin(), item.end(), ::isspace),
+            item.end()
+          );
+
+          graspableObjects.push_back(item);
+        }
+
+        std::cout
+          << "[LinkAttacher] Updated graspable objects:"
+          << std::endl;
+
+        for (const auto &obj : graspableObjects)
+        {
+          std::cout << "  - " << obj << std::endl;
+        }
+      });
+
+  std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
+
+  gzNode.Subscribe(
+    "/world/default/model/ur5_robotiq/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
+    &LinkAttacher::OnContact,
+    this);
+
+  gzNode.Subscribe(
+    "/world/default/model/ur5_robotiq/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
+    &LinkAttacher::OnContact,
+    this);
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -141,38 +189,218 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
+  std::lock_guard<std::mutex> lock(mutex);
 
   if(!initialized)
   {
     std::cout << "[LinkAttacher] First PreUpdate() detected" << std::endl;
     initialized = true;
-  }
+  } 
 
-  if(attachRequested)
+  if (createJointRequested)
   {
-    std::cout << "\n[LinkAttacher] Processing attach request" << std::endl;
-    std::cout << "[LinkAttacher] model1=" << model1
-              << " link1=" << link1 << std::endl;
-    std::cout << "[LinkAttacher] model2=" << model2
-              << " link2=" << link2 << std::endl;
+    std::cout
+      << "[LinkAttacher] Executing CreateJoint()"
+      << std::endl;
 
     CreateJoint(_ecm);
-
-    attachRequested=false;
+    createJointRequested = false;
   }
 
-  if(detachRequested)
+  if (removeJointRequested)
   {
-    std::cout << "[LinkAttacher] Processing detach request" << std::endl;
-
     RemoveJoint(_ecm);
-
-    detachRequested=false;
+    removeJointRequested = false;
   }
-
 }
 
 private:
+
+bool IsFingerTip(
+  EntityComponentManager &_ecm,
+  Entity collisionEntity)
+{
+  auto parentComp =
+    _ecm.Component<components::ParentEntity>(
+      collisionEntity);
+
+  if (!parentComp)
+    return false;
+
+  Entity linkEntity =
+    parentComp->Data();
+
+  auto nameComp =
+    _ecm.Component<components::Name>(
+      linkEntity);
+
+  if (!nameComp)
+    return false;
+
+  const std::string &name =
+    nameComp->Data();
+
+  return (
+    name.find("finger") != std::string::npos
+  );
+}
+
+std::string GetModelNameFromCollision(
+  EntityComponentManager &_ecm,
+  Entity collisionEntity)
+{
+  auto collisionParent =
+    _ecm.Component<components::ParentEntity>(
+      collisionEntity);
+
+  if (!collisionParent)
+    return "";
+
+  Entity linkEntity =
+    collisionParent->Data();
+
+  auto linkParent =
+    _ecm.Component<components::ParentEntity>(
+      linkEntity);
+
+  if (!linkParent)
+    return "";
+
+  Entity modelEntity =
+    linkParent->Data();
+
+  auto nameComp =
+    _ecm.Component<components::Name>(
+      modelEntity);
+
+  if (!nameComp)
+    return "";
+
+  return nameComp->Data();
+}
+
+std::string GetLinkNameFromCollision(
+  EntityComponentManager &_ecm,
+  Entity collisionEntity)
+{
+  auto parentComp =
+    _ecm.Component<components::ParentEntity>(
+      collisionEntity);
+
+  if (!parentComp)
+    return "";
+
+  Entity linkEntity =
+    parentComp->Data();
+
+  auto nameComp =
+    _ecm.Component<components::Name>(
+      linkEntity);
+
+  if (!nameComp)
+    return "";
+
+  return nameComp->Data();
+}
+
+void OnContact(const gz::msgs::Contacts &_msg)
+{
+  std::lock_guard<std::mutex> lock(mutex);
+
+  std::cout
+    << "[LinkAttacher] contact_size="
+    << _msg.contact_size()
+    << std::endl;
+
+  std::cout
+    << "[LinkAttacher] autoAttachEnabled="
+    << autoAttachEnabled
+    << std::endl;
+
+  if (!autoAttachEnabled)
+    return;
+
+  if (contactLatched)
+    return;
+
+  if (activeJoint != kNullEntity)
+    return;
+
+  if (createJointRequested)
+    return;
+
+  std::cout
+    << "\n[LinkAttacher] CONTACT MESSAGE RECEIVED"
+    << std::endl;
+
+  for (int i = 0; i < _msg.contact_size(); ++i)
+  {
+    const auto &contact = _msg.contact(i);
+
+    std::string collision1 =
+      contact.collision1().name();
+
+    std::string collision2 =
+      contact.collision2().name();
+
+    std::cout
+      << "[LinkAttacher] collision1="
+      << collision1
+      << std::endl;
+
+    std::cout
+      << "[LinkAttacher] collision2="
+      << collision2
+      << std::endl;
+
+    std::string objectModel;
+
+    for (const auto &obj : graspableObjects)
+    {
+      if (collision1.find(obj) != std::string::npos ||
+          collision2.find(obj) != std::string::npos)
+      {
+        objectModel = obj;
+        break;
+      }
+    }
+
+    if (objectModel.empty())
+    {
+      continue;
+    }
+
+    std::cout
+      << "[LinkAttacher] OBJECT DETECTED -> "
+      << objectModel
+      << std::endl;
+
+    model1 = "ur5_robotiq";
+    if (collision1.find("left_finger") != std::string::npos ||
+        collision2.find("left_finger") != std::string::npos)
+    {
+      link1 = "robotiq_85_left_finger_tip_link";
+    }
+    else
+    {
+      link1 = "robotiq_85_right_finger_tip_link";
+    }
+
+    model2 = objectModel;
+
+    link2 = "link";
+
+    createJointRequested = true;
+    contactLatched = true;
+
+    std::cout
+      << "[LinkAttacher] Joint requested"
+      << std::endl;
+
+    break;
+  }
+}
+
 
 Entity FindLink(
   EntityComponentManager &_ecm,
@@ -237,11 +465,25 @@ Entity FindLink(
 
 void CreateJoint(EntityComponentManager &_ecm)
 {
+  if (activeJoint != kNullEntity)
+  {
+    std::cout
+      << "[LinkAttacher] Joint already active"
+      << std::endl;
+    return;
+  }
 
   std::cout << "[LinkAttacher] CreateJoint()" << std::endl;
 
   Entity parentLink = FindLink(_ecm, model1, link1);
   Entity childLink  = FindLink(_ecm, model2, link2);
+
+  std::cout
+    << "[LinkAttacher] parentLink="
+    << parentLink
+    << " childLink="
+    << childLink
+    << std::endl;
 
   if(parentLink == kNullEntity || childLink == kNullEntity)
   {
@@ -261,6 +503,10 @@ void CreateJoint(EntityComponentManager &_ecm)
   joint.Data().childLink  = childLink;
 
   _ecm.CreateComponent(jointEntity, joint);
+  
+  std::cout
+    << "[LinkAttacher] JOINT SUCCESSFULLY CREATED"
+    << std::endl;
 
   std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
 }
@@ -281,73 +527,38 @@ void RemoveJoint(EntityComponentManager &_ecm)
   std::cout << "[LinkAttacher] Joint entity removed" << std::endl;
 
   activeJoint = kNullEntity;
+
+  contactLatched = false;
 }
 
-void Attach(
-  const std::shared_ptr<rmw_request_id_t>,
-  const std::shared_ptr<linkattacher_msgs::srv::AttachLink::Request> req,
-  std::shared_ptr<linkattacher_msgs::srv::AttachLink::Response> res)
-{
-
-  std::cout<<"\n==============================="<<std::endl;
-  std::cout<<"[LinkAttacher] ATTACH REQUEST RECEIVED"<<std::endl;
-
-  std::cout<<"model1="<<req->model1_name<<std::endl;
-  std::cout<<"link1="<<req->link1_name<<std::endl;
-  std::cout<<"model2="<<req->model2_name<<std::endl;
-  std::cout<<"link2="<<req->link2_name<<std::endl;
-
-  model1=req->model1_name;
-  link1=req->link1_name;
-
-  model2=req->model2_name;
-  link2=req->link2_name;
-
-  attachRequested=true;
-
-  res->success=true;
-  res->message="Attach scheduled";
-
-  std::cout<<"[LinkAttacher] Response sent"<<std::endl;
-  std::cout<<"===============================\n"<<std::endl;
-}
-
-void Detach(
-  const std::shared_ptr<rmw_request_id_t>,
-  const std::shared_ptr<linkattacher_msgs::srv::DetachLink::Request>,
-  std::shared_ptr<linkattacher_msgs::srv::DetachLink::Response> res)
-{
-
-  std::cout<<"\n[LinkAttacher] DETACH REQUEST RECEIVED"<<std::endl;
-
-  detachRequested=true;
-
-  res->success=true;
-  res->message="Detach scheduled";
-
-  std::cout<<"[LinkAttacher] Detach response sent"<<std::endl;
-}
 
 private:
 
 rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
-rclcpp::Service<linkattacher_msgs::srv::AttachLink>::SharedPtr attachService;
-rclcpp::Service<linkattacher_msgs::srv::DetachLink>::SharedPtr detachService;
+rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
+rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableObjectsSub;
 
 std::thread rosThread;
 
 Entity worldEntity{kNullEntity};
 
-bool attachRequested=false;
-bool detachRequested=false;
 bool initialized=false;
+bool autoAttachEnabled = false;
+bool removeJointRequested = false;
+bool contactLatched = false;
+bool createJointRequested = false;
+
+gz::transport::Node gzNode;
 
 std::string model1;
 std::string link1;
 std::string model2;
 std::string link2;
+
+std::mutex mutex;
+std::vector<std::string> graspableObjects;
 
 Entity activeJoint{kNullEntity};
 
