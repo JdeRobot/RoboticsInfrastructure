@@ -6,12 +6,10 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-    <plugin filename="libgz_link_attacher.so"
-        name="gz_link_attacher::LinkAttacher"/>
-    <plugin filename="gz-sim-contact-system"
-        name="gz::sim::systems::Contact"/>
-      
-    
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+
+
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose frame=''>0 0 10 0 -0 0</pose>
@@ -295,7 +293,7 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose>-0.6 0 0 0 0 1.57</pose>
     </model>
-    
+
     <model name='target_4x4'>
       <link name='link'>
         <self_collide>0</self_collide>
@@ -1045,7 +1043,7 @@
       </link>
       <static>1</static>
     </model>
-   
+
     <model name='blue_sphere'>
       <link name='link'>
         <inertial>
@@ -1159,7 +1157,7 @@
       <pose>0.45 -0.25 1.01 0 -0 0</pose>
     </model>
 
-   
+
     <model name='green_sphere'>
       <link name='link'>
         <inertial>
@@ -1272,8 +1270,8 @@
       <pose>0.45 -0.09 1.01 0 -0 0</pose>
     </model>
 
-   
-    
+
+
 
 
     <model name='green_cylinder'>
