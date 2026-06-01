@@ -26,23 +26,18 @@ def load_yaml(package_name, file_path):
         return yaml.safe_load(f)
 
 
-def generate_launch_description():
-
-    declared_arguments = [
-        DeclareLaunchArgument("x", default_value="0"),
-        DeclareLaunchArgument("y", default_value="0"),
-        DeclareLaunchArgument("z", default_value="0"),
-        DeclareLaunchArgument("R", default_value="0"),
-        DeclareLaunchArgument("P", default_value="0"),
-        DeclareLaunchArgument("Y", default_value="0"),
-    ]
-
+def launch_setup():
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
+    gz_sensor = LaunchConfiguration("sensor")
+
+    sensor = gz_sensor.perform(context)
+
+    nodes = []
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -66,8 +61,10 @@ def generate_launch_description():
             "sim_gazebo": "false",
             "sim_gz": "true",
             "simulation_controllers": controllers_file,
+            "hmi": "false",
             "EE": "true",
             "EE_name": "robotiq_2f85",
+            "camera": "true" if sensor == "camera" else "false",
         },
     ).toxml()
 
@@ -170,7 +167,7 @@ def generate_launch_description():
     }
 
     # =========================
-    # NODOS
+    # NODES
     # =========================
 
     move = Node(
@@ -227,6 +224,10 @@ def generate_launch_description():
         ],
     )
 
+    nodes.append(move)
+    nodes.append(robmove)
+    nodes.append(robpose)
+
     # =========================
     # CORE NODES
     # =========================
@@ -275,6 +276,27 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
+    nodes.append(robot_state_publisher)
+    nodes.append(static_tf)
+    nodes.append(spawn_robot)
+    nodes.append(clock_bridge)
+
+    if sensor == "camera":
+        camera_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "/hand_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
+                "/hand_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+                "/hand_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+                "/base_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
+                "/base_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+                "/base_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+            ],
+            output="screen",
+        )
+        nodes.append(camera_bridge)
+
     # =========================
     # CONTROLLERS
     # =========================
@@ -297,6 +319,10 @@ def generate_launch_description():
         arguments=["gripper_controller"],
     )
 
+    nodes.append(joint_state_broadcaster)
+    nodes.append(joint_trajectory_controller)
+    nodes.append(gripper_controller)
+
     # =========================
     # MOVEIT
     # =========================
@@ -317,26 +343,26 @@ def generate_launch_description():
         ],
     )
 
+    nodes.append(move_group)
+
     # =========================
     # LAUNCH
     # =========================
 
+    return LaunchDescription(nodes)
+
+
+def generate_launch_description():
+    declared_arguments = [
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("sensor", default_value=None),
+    ]
+
     return LaunchDescription(
-        declared_arguments
-        + [
-            # set_gz_plugin_path,
-            # set_ld_library_path,
-            # set_resource_path,
-            clock_bridge,
-            robot_state_publisher,
-            static_tf,
-            spawn_robot,
-            joint_state_broadcaster,
-            joint_trajectory_controller,
-            gripper_controller,
-            move_group,
-            move,
-            robmove,
-            robpose,
-        ]
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
     )

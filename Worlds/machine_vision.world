@@ -1534,12 +1534,6 @@
     </model>
 
 
-    <plugin filename="libgz_link_attacher.so"
-        name="gz_link_attacher::LinkAttacher"/>
-
-
-
-
-
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher"/>
   </world>
 </sdf>
