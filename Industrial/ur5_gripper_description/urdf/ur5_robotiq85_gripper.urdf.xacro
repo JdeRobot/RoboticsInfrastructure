@@ -10,7 +10,7 @@
   <xacro:arg name="sim_gazebo" default="false"/>
   <xacro:arg name="sim_gz" default="true"/>
   <xacro:arg name="simulation_controllers" default=""/>
-  <xacro:arg name="camera" default="true"/>
+  <xacro:arg name="camera" default="false"/>
 
   <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
