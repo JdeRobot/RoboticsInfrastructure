@@ -1,19 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.6">
     <world name="default">
-        <plugin 
-            name="gz::sim::systems::Physics" 
-            filename="gz-sim-physics-system"/>
-        <plugin
-            filename="gz-sim-user-commands-system"
-            name="gz::sim::systems::UserCommands">
+        <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
         </plugin>
-        <plugin 
-            name="gz::sim::systems::SceneBroadcaster" 
-            filename="gz-sim-scene-broadcaster-system"/>
-        <plugin
-            filename="gz-sim-sensors-system"
-            name="gz::sim::systems::Sensors">
+        <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
+        <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
             <render_engine>ogre2</render_engine>
         </plugin>
 
@@ -750,11 +742,6 @@
             <name>person2follow</name>
             <uri>model://PersonToFollow_harmonic</uri>
             <pose>4 10 0 0 0 3.14</pose>
-        </include>
-        <include>
-            <name>robot_follow_person</name>
-            <uri>model://turtlebot2_harmonic</uri>
-            <pose>-1.0 10.0 0.1 0.0 0.0 0</pose>
         </include>
     </world>
 </sdf>

@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<robot name="vacuum_cleaner_gz"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera" params="xyz rpy name parent">
+
+    <link name="${name}_link"></link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>20</update_rate>
+        <topic>/${name}/image_raw</topic>
+        <camera name="camera">
+          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.089</horizontal_fov>
+          <distortion>
+            <k1>0.0</k1>
+            <k2>0.0</k2>
+            <k3>0.0</k3>
+            <p1>0.0</p1>
+            <p2>0.0</p2>
+            <center>0.5 0.5</center>
+          </distortion>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>8.0</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="laser" params="xyz rpy name parent topic">
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae" scale="0.1 0.1 0.1"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>20</update_rate>
+        <topic>${topic}</topic>
+        <gz_frame_id>laser</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.08</min>
+            <max>10</max>
+            <resolution>0.01</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="bumper" params="topic name">
+    <gz>
+      <sensor name='${name}' type='contact'>
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
+        <contact>
+          <collision>${name}_collision</collision>
+          <topic>${topic}</topic>
+        </contact>
+      </sensor>
+    </gz>
+  </xacro:macro>
+
+  <xacro:macro name="velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="noise_odom" params="vel_topic topic">
+    <gazebo>
+      <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
+        <ros_topic>${topic}</ros_topic>
+        <gz_cmd_vel_topic>${vel_topic}</gz_cmd_vel_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base</child_frame_id>
+
+        <alpha1>0.01</alpha1>
+        <alpha2>0.01</alpha2>
+        <alpha3>0.005</alpha3>
+        <alpha4>0.005</alpha4>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>
