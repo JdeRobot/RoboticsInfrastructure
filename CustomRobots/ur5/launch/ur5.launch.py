@@ -27,7 +27,7 @@ def load_yaml(package_name, file_path):
         return yaml.safe_load(f)
 
 
-def launch_setup():
+def launch_setup(context):
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
@@ -350,7 +350,7 @@ def launch_setup():
     # LAUNCH
     # =========================
 
-    return LaunchDescription(nodes)
+    return nodes
 
 
 def generate_launch_description():
