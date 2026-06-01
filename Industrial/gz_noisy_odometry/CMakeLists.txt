@@ -21,14 +21,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
-find_package(tf2 REQUIRED)
 
 find_package(gz-plugin2 REQUIRED COMPONENTS register)
 find_package(gz-sim8 REQUIRED)
-find_package(gz-msgs10 REQUIRED)
 find_package(gz-math7 REQUIRED)
 find_package(gz-common5 REQUIRED)
-find_package(gz-transport13 REQUIRED)
 
 # ============================================================================
 # Noisy Odometry plugin
@@ -42,22 +39,17 @@ target_include_directories(NoisyOdometryPlugin PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-# Dependencias de ROS 2
 ament_target_dependencies(NoisyOdometryPlugin
   rclcpp
   nav_msgs
-  tf2
 )
 
-# Enlace de librerías de Gazebo calcando la sintaxis del proyecto que funciona
 target_link_libraries(NoisyOdometryPlugin
   gz-plugin2::gz-plugin2
   gz-plugin2::register
   gz-sim8::gz-sim8
-  gz-msgs10::gz-msgs10
   gz-math7::gz-math7
   gz-common5::gz-common5
-  gz-transport13::gz-transport13
 )
 
 install(
