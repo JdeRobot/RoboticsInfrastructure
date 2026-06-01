@@ -43,18 +43,11 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    if sensor == "camera":
-        xacro_file = os.path.join(
-            get_package_share_directory("ur5_gripper_description"),
-            "urdf",
-            "ur5_robotiq_2f85_with_cams.urdf.xacro",
-        )
-    else:
-        xacro_file = os.path.join(
-            get_package_share_directory("ur5_gripper_description"),
-            "urdf",
-            "ur5_robotiq85_gripper.urdf.xacro",
-        )
+    xacro_file = os.path.join(
+        get_package_share_directory("ur5_gripper_description"),
+        "urdf",
+        "ur5_robotiq85_gripper.urdf.xacro",
+    )
 
     pkg_share_dir = get_package_share_directory("ur5_gripper_description")
     controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
@@ -72,6 +65,7 @@ def launch_setup(context):
             "hmi": "false",
             "EE": "true",
             "EE_name": "robotiq_2f85",
+            "camera": "true" if sensor == "camera" else "false",
         },
     ).toxml()
 
@@ -302,6 +296,9 @@ def launch_setup(context):
             ],
             output="screen",
         )
+
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
         nodes.append(camera_bridge)
 
     # =========================
@@ -367,7 +364,7 @@ def generate_launch_description():
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
-        DeclareLaunchArgument("sensor", default_value=None),
+        DeclareLaunchArgument("sensor", default_value="none"),
     ]
 
     return LaunchDescription(
