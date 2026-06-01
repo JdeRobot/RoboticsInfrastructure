@@ -6,9 +6,7 @@
     <inertial>
       <origin xyz="-0.00936 -0.00003 -0.00273" rpy="0 0 0"/>
       <mass value="0.2197"/>
-      <inertia ixx="4.29247e-06" ixy="0" ixz="2.565e-08"
-               iyy="8.027e-08" iyz="0"
-               izz="4.27339e-06"/>
+      <inertia ixx="4.29247e-06" ixy="0" ixz="2.565e-08" iyy="8.027e-08" iyz="0" izz="4.27339e-06"/>
     </inertial>
 
     <visual>
@@ -28,8 +26,7 @@
   <joint name="hand_camera_joint" type="fixed">
     <parent link="tool0"/>
     <child link="hand_camera_link"/>
-    <origin xyz="${cam_hand_px} ${cam_hand_py} ${cam_hand_pz}"
-            rpy="${cam_hand_or} ${cam_hand_op} ${cam_hand_oy}"/>
+    <origin xyz="${cam_hand_px} ${cam_hand_py} ${cam_hand_pz}" rpy="${cam_hand_or} ${cam_hand_op} ${cam_hand_oy}"/>
   </joint>
 
   <link name="hand_camera_optical_link"/>
@@ -41,34 +38,25 @@
   </joint>
 
   <gazebo reference="hand_camera_link">
-
-    <sensor name="hand_camera" type="rgbd_camera">
-
+    <sensor name="hand_camera" type="camera">
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>30</update_rate>
-
-      <topic>/hand_camera</topic>
-
-      <camera>
-
+      <topic>/hand_camera/image</topic>
+      <camera name="camera">
+        <camera_info_topic>/hand_camera/camera_info</camera_info_topic>
         <horizontal_fov>1.047</horizontal_fov>
-
         <image>
           <width>640</width>
           <height>480</height>
           <format>R8G8B8</format>
         </image>
-
         <clip>
           <near>0.05</near>
           <far>8.0</far>
         </clip>
-
       </camera>
-
     </sensor>
-
   </gazebo>
 
 </robot>

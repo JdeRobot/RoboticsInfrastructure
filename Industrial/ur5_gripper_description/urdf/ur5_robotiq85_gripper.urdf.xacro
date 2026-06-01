@@ -18,11 +18,12 @@
   <xacro:include filename="$(find ur5_gripper_description)/urdf/ur.ros2_control.xacro" />
 
   <xacro:if value="$(arg camera)">
-    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>
-    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>
+    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>
+    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params_gz.xacro"/>
+    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_gz.xacro"/>
 
-    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>
-    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>
+    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params_gz.xacro"/>
+    <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_gz.xacro"/>
   </xacro:if>
 
   <!-- Coupler -->
