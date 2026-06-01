@@ -374,7 +374,7 @@ def generate_launch_description():
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
-        DeclareLaunchArgument("sensor", default_value="camera"),
+        DeclareLaunchArgument("sensor", default_value="none"),
     ]
 
     return LaunchDescription(
