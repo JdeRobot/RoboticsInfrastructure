@@ -159,14 +159,14 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 29	Vacuums House Markers	25	17
 30	Small Laser Mapping Warehouse	33	21
 31	Rescue People Harmonic	31	11
-32	Follow Road Harmonic	32	11
+32	Follow Road Harmonic	32	0
 33	Laser Mapping Warehouse Low Noise	12	21
 34	Pick And Place World	34	0
 35	Car Junction World	35	6
-36	Drone Gymkhana World	36	11
-37	Tower Inspection World	37	11
+36	Drone Gymkhana World	36	0
+37	Tower Inspection World	37	0
 38	Industrial Machine Vision World	38	0
-39	Labyrinth Escape World	39	11
+39	Labyrinth Escape World	39	0
 40	Obstacle Avoidance Harmonic	40	3
 41	Autopark_line	41	8
 42	Autopark_battery	42	8
