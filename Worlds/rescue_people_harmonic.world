@@ -71,12 +71,5 @@
       <uri>model://ocean</uri>
       <pose>0 0 -0.02 0 0 -1.57</pose>
     </include>
-
-    <include>
-      <uri>model://quadrotor_dual_cam</uri>
-      <name>drone0</name>
-      <pose>0 0 1.45 0 0 0</pose>
-    </include>
-
   </world>
 </sdf>
