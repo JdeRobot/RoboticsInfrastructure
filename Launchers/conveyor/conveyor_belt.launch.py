@@ -15,6 +15,12 @@ def generate_launch_description():
         )
     )
 
+    robot = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(base_dir, "robot.launch.py")
+        )
+    )
+
     spawner = Node(
         package="custom_robots",
         executable="spawn_sausage.py",
@@ -24,5 +30,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         world,
+        robot,
         spawner
     ])

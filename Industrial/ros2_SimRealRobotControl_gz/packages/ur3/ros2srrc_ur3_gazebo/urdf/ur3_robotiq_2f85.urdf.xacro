@@ -79,14 +79,16 @@
   <xacro:unless value="${bringup}">
     
     <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
+      <plugin filename="gz_ros2_control-system"
+              name="gz_ros2_control::GazeboSimROS2ControlPlugin">
 
-        <!-- UR3 Controller -->
-        <parameters>$(find ros2srrc_robots)/ur3/config/controller.yaml</parameters>
+        <parameters>
+          $(find ros2srrc_robots)/ur3/config/controller.yaml
+        </parameters>
 
-        <!-- End-Effector Controller (if needed) -->
-        <parameters>$(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml</parameters>
+        <parameters>
+          $(find ros2srrc_endeffectors)/${EE_name}/config/controller.yaml
+        </parameters>
 
       </plugin>
     </gazebo>
