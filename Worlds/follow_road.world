@@ -30,6 +30,12 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
+    <gui>
+      <camera name='user_camera'>
+        <pose>-25 20 1.5 0 0 -0.785</pose>
+      </camera>
+    </gui>
+
     <!-- Building -->
     <include>
       <uri>model://osrf_first_office</uri>
@@ -159,6 +165,12 @@
       <uri>model://road_plane</uri>
       <name>road_plane_6</name>
       <pose>7.3916501998901367 11.8665771484375 0 0 0 0.81320396213978929</pose>
+    </include>
+
+    <include>
+      <uri>model://quadrotor_dual_cam</uri>
+      <name>drone0</name>
+      <pose>17.96 0.0 0.3 0 0 -2.0</pose>
     </include>
 
   </world>

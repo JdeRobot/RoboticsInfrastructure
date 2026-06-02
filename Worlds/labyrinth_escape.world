@@ -104,5 +104,11 @@
 			<pose>-26.0 0.0 0.0 0.0 0.0 0.0</pose>
 		</include>
 
+		<include>
+			<uri>model://quadrotor_dual_cam</uri>
+			<name>drone0</name>
+			<pose>-18 -8.5 0.3 0 0 0</pose>
+		</include>
+
 	</world>
 </sdf>
