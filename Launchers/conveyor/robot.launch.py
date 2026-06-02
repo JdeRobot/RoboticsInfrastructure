@@ -10,8 +10,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     xacro_file = os.path.join(
-        get_package_share_directory("ros2srrc_robots"),
-        "ur3",
+        get_package_share_directory("ros2srrc_ur3_gazebo"),
         "urdf",
         "ur3.urdf.xacro",
     )
@@ -22,8 +21,12 @@ def generate_launch_description():
             mappings={
                 "bringup": "false",
                 "hmi": "false",
+                "robot_ip": "0.0.0.0",
                 "EE": "false",
                 "EE_name": "none",
+                "script_filename": "none",
+                "input_recipe_filename": "none",
+                "output_recipe_filename": "none",
             },
         ).toxml()
     }
