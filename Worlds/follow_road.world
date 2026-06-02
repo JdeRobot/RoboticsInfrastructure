@@ -30,6 +30,12 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
+    <gui>
+      <camera name='user_camera'>
+        <pose>-25 20 1.5 0 0 -0.785</pose>
+      </camera>
+    </gui>
+
     <!-- Building -->
     <include>
       <uri>model://osrf_first_office</uri>
