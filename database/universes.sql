@@ -199,7 +199,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 69	Rover 4wd Warehouse High Noise	69	20
 70	Machine vision Harmonic world	70	24
 71	Conveyor Belt World	71	0
-
+\.
 
 --
 -- Data for Name: worlds; Type: TABLE DATA; Schema: public; Owner: user-dev
