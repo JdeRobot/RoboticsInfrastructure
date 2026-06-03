@@ -9,7 +9,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae" scale="10 10 10"/>
         </geometry>
         <material name="dark"/>
       </visual>
