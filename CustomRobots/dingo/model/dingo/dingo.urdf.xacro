@@ -7,7 +7,7 @@
   <xacro:property name="PI" value="${math.pi}" />
 
   <xacro:include filename="$(find custom_robots)/model/dingo/attachments/top_plate.urdf.xacro"/>
-  <xacro:include filename="$(find custom_robots)/models/dingo/dingo_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/model/dingo/dingo_gz.urdf.xacro"/>
 
   <!-- D0150 Platform Macro -->
   <xacro:macro name="do150" params="control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
@@ -115,10 +115,10 @@
 
   <!-- Joint State Publisher -->
   <xacro:do150/>
-  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.15">
+  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.1">
     <origin xyz="0 0 0"/>
   </xacro:top_plate>
-  <xacro:laser xyz="0 0 0.121" rpy="0 0 0" name="lidar" parent="chassis_link" topic="turtlebot3/laser/scan"/>
+  <xacro:laser xyz="0 0 0.1" rpy="0 0 0" name="lidar" parent="chassis_link" topic="turtlebot3/laser/scan"/>
   <xacro:imu parent="chassis_link" topic="turtlebot3/imu" xyz="0 0 0" rpy="0 0 0"/>
   <xacro:odom topic="/turtlebot3/odom" freq="50"/>
   <xacro:velocity topic="turtlebot3/cmd_vel"/>
