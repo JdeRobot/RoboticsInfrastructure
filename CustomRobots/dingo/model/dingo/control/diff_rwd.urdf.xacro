@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.org/schema" name="generic_drivetrain_control_diff_rwd">
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+  xmlns:gz="http://gazebosim.org/schema" name="generic_drivetrain_control_diff_rwd">
 
   <xacro:macro name="generic_drivetrain_control_diff_rwd" params="name hardware_plugin">
 
     <!-- Gazebo Controller -->
-    <xacro:include filename="$(find clearpath_platform_description)/urdf/generic/gazebo.urdf.xacro"/>
+    <xacro:include filename="$(find custom_robots)/model/dingo/gazebo.urdf.xacro"/>
 
     <!-- ROS2 controls -->
     <ros2_control name="${name}_hardware" type="system">

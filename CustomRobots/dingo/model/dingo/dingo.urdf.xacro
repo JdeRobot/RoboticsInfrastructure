@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="dingo">
 
   <xacro:arg name="namespace" default="" />
   <xacro:arg name="gazebo_controllers" default="$(find custom_robots)/model/dingo/omni_4wd.yaml"/>
@@ -143,10 +143,9 @@
       <parent link="chassis_link"/>
       <child link="rear_bumper_mount" />
     </joint>
-
-
   </xacro:macro>
 
   <!-- Joint State Publisher -->
+  <xacro:do150/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 </robot>
