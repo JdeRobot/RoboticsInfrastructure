@@ -29,6 +29,14 @@ def generate_launch_description():
         os.path.dirname(
             get_package_share_directory("ros2srrc_ur3_gazebo")
         )
+        + ":"
+        + os.path.dirname(
+            get_package_share_directory("ros2srrc_robots")
+        )
+        + ":"
+        + os.path.dirname(
+            get_package_share_directory("ros2srrc_endeffectors")
+        )
     )
 
     set_resource_path = SetEnvironmentVariable(
@@ -67,8 +75,8 @@ def generate_launch_description():
                 "bringup": "false",
                 "hmi": "false",
                 "robot_ip": "0.0.0.0",
-                "EE": "false",
-                "EE_name": "none",
+                "EE": "true",
+                "EE_name": "robotiq_2f85",
                 "script_filename": "none",
                 "input_recipe_filename": "none",
                 "output_recipe_filename": "none",
@@ -106,9 +114,9 @@ def generate_launch_description():
             "-x",
             "0",
             "-y",
-            "0",
+            "-1.0",
             "-z",
-            "1.0",
+            "0.0",
         ],
     )
 
