@@ -8,10 +8,7 @@
     <xacro:include filename="$(find custom_robots)/model/dingo/gazebo.urdf.xacro"/>
 
     <!-- ROS2 controls -->
-    <ros2_control name="${name}_hardware" type="system">
-      <hardware>
-        <plugin>${hardware_plugin}</plugin>
-      </hardware>
+    <!-- <ros2_control name="${name}_hardware" type="system">
       <joint name="front_left_wheel_joint">
         <command_interface name="velocity"/>
         <state_interface name="position"/>
@@ -32,7 +29,7 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
-    </ros2_control>
+    </ros2_control> -->
   </xacro:macro>
 
 </robot>
