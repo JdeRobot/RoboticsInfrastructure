@@ -1,0 +1,6 @@
+/**:
+  ros__parameters:
+    cmd_freq: 100.0  # how fast platform sends commands
+    info_freq: 10.0  # telemetry publish rate
+    enable_takeoff_platform: false  # these are only for debuging — dont enable in prod
+    enable_land_platform: false

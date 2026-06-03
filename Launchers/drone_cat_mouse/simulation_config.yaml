@@ -1,0 +1,35 @@
+# config for the cat mouse chase — two quads in the city world
+# both use the same quadrotor_base model just with diffrent names
+
+world_name: my_city_v3
+
+drones:
+  - model_type: quadrotor_base
+    model_name: drone_cat
+    xyz:
+      - 0.0
+      - 5.0
+      - 0.2
+    rpy:
+      - 0.0
+      - 0.0
+      - 0.0
+    flight_time: 60  # seconds
+    payload:
+      - model: hd_camera
+        pose: 0.0 0.0 -0.15 0.0 1.5707 0.0  # na dir cam pointing straight down
+
+  - model_type: quadrotor_base
+    model_name: drone_mouse
+    xyz:
+      - 20.0
+      - 5.0
+      - 0.2
+    rpy:
+      - 0.0
+      - 0.0
+      - 0.0
+    flight_time: 60  # seconds
+    payload:
+      - model: hd_camera
+        pose: 0.0 0.0 -0.15 0.0 1.5707 0.0  # na dir cam pointing straight down

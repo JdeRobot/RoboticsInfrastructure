@@ -1,0 +1,8 @@
+/**:
+  ros__parameters:
+    cmd_freq: 100.0  # how fast the controller sends cmds (Hz)
+    info_freq: 10.0  # how often it publishes its internal state
+    odom_frame_id: "odom"  # needs to match what state_estimator publishes
+    base_frame_id: "base_link"
+    use_bypass: true  # bypass lets us send velocity cmds directly without waiting for position convergence
+    tf_timeout_threshold: 0.05  # if TF lookup takes longer than this something is probbaly wrong
