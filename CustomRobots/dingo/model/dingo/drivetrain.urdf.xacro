@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+  xmlns:gz="http://gazebosim.org/schema" name="generic_drivetrain">
+
+  <xacro:macro name="generic_drivetrain" params="name control front_wheels rear_wheels hardware_plugin">
+    <!-- Omni drivetrain -->
+    <xacro:if value="${control == 'omni_4wd'}">
+      <xacro:include filename="$(find custom_robots)/model/dingo/control/omni_4wd.urdf.xacro"/>
+      <xacro:generic_drivetrain_control_omni_4wd name="${name}" hardware_plugin="${hardware_plugin}"/>
+    </xacro:if>
+
+    <!-- Diff 4WD drivetrain -->
+    <xacro:if value="${control == 'diff_4wd'}">
+      <xacro:include filename="$(find custom_robots)/model/dingo/control/diff_4wd.urdf.xacro"/>
+      <xacro:generic_drivetrain_control_diff_4wd name="${name}" hardware_plugin="${hardware_plugin}"/>
+    </xacro:if>
+
+    <!-- Diff FWD drivetrain -->
+    <xacro:if value="${control == 'diff_fwd'}">
+      <xacro:include filename="$(find custom_robots)/model/dingo/control/diff_fwd.urdf.xacro"/>
+      <xacro:generic_drivetrain_control_diff_fwd name="${name}" hardware_plugin="${hardware_plugin}"/>
+    </xacro:if>
+
+    <!-- Diff RWD drivetrain -->
+    <xacro:if value="${control == 'diff_rwd'}">
+      <xacro:include filename="$(find custom_robots)/model/dingo/control/diff_rwd.urdf.xacro"/>
+      <xacro:generic_drivetrain_control_diff_rwd name="${name}" hardware_plugin="${hardware_plugin}"/>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>

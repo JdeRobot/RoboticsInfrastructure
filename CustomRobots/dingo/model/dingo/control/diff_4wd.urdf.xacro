@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.org/schema" name="generic_drivetrain_control_diff_4wd">
+
+  <xacro:macro name="generic_drivetrain_control_diff_4wd" params="name hardware_plugin">
+
+    <!-- This is the same as omni_4wd -->
+    <xacro:include filename="$(find clearpath_platform_description)/urdf/generic/drivetrain/control/omni_4wd.urdf.xacro"/>
+    <xacro:generic_drivetrain_control_omni_4wd name="${name}" hardware_plugin="${hardware_plugin}"/>
+
+  </xacro:macro>
+
+</robot>
