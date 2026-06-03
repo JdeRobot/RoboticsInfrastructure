@@ -6,6 +6,8 @@
 
   <xacro:property name="PI" value="${math.pi}" />
 
+  <xacro:include filename="$(find custom_robots)/model/dingo/attachments/top_plate.urdf.xacro"/>
+
   <!-- D0150 Platform Macro -->
   <xacro:macro name="do150" params="control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
     <!-- Variables -->
@@ -51,16 +53,11 @@
     <xacro:do100_drivetrain_wheels front_wheels="${front_wheels}" rear_wheels="${rear_wheels}"/>
 
     <!-- Add drivetrain -->
-    <xacro:include filename="$(find custom_robots)/model/dingo/drivetrain.urdf.xacro"/>
-
-    <!-- Hardware  -->
-    <xacro:property name="hardware_plugin" value="gz_ros2_control/GazeboSimSystem"/>
-
-    <xacro:unless value="${control == 'omni_4wd' or control == 'diff_4wd'}">
-      <xacro:error message="Invalid drivetrain control ${control}"/>
-    </xacro:unless>
-
-    <xacro:generic_drivetrain name="do150" control="${control}" front_wheels="${front_wheels}" rear_wheels="${rear_wheels}" hardware_plugin="${hardware_plugin}" />
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>/cmd_vel</topic>
+      </plugin>
+    </gazebo>
 
     <!-- Internal IMU -->
     <link name="imu_0_link">
@@ -147,5 +144,6 @@
 
   <!-- Joint State Publisher -->
   <xacro:do150/>
+  <xacro:top_plate name="top_plate" parent_link="default_mount" height="1"/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 </robot>
