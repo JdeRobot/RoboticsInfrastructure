@@ -112,7 +112,7 @@ def generate_launch_description():
             "-name",
             "ur3",
             "-x",
-            "-0.7",
+            "0.5",
             "-y",
             "0.0",
             "-z",
