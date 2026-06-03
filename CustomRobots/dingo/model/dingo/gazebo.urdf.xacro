@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <gazebo>
+    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(arg gazebo_controllers)</parameters>
+      <ros>
+        <remapping>~/odom:=platform/odom</remapping>
+        <remapping>~/cmd_vel:=platform/cmd_vel</remapping>
+        <remapping>/tf:=tf</remapping>
+        <remapping>/tf_static:=tf_static</remapping>
+        <remapping>/diagnostics:=diagnostics</remapping>
+        <remapping>/dynamic_joint_states:=platform/dynamic_joint_states</remapping>
+        <remapping>joint_states:=platform/joint_states</remapping>
+        <remapping>~/reference:=platform/cmd_vel</remapping>
+        <remapping>~/odometry:=platform/odom</remapping>
+        <namespace>$(arg namespace)</namespace>
+      </ros>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="libgz-sim-pose-publisher-system.so" name="gz::sim::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <publish_nested_model_pose>true</publish_nested_model_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg>
+      <update_frequency>50</update_frequency>
+    </plugin>
+  </gazebo>
+</robot>
