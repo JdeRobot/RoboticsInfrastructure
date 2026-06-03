@@ -30,7 +30,7 @@ def launch_setup(context):
     # =========================
     xacro_file = os.path.join(
         package_dir,
-        "models",
+        "model",
         "rover_4wd",
         "rover_4wd.urdf.xacro",
     )
