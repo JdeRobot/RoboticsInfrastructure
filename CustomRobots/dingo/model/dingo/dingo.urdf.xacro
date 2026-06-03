@@ -144,6 +144,8 @@
 
   <!-- Joint State Publisher -->
   <xacro:do150/>
-  <xacro:top_plate name="top_plate" parent_link="default_mount" height="1"/>
+  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.1">
+    <origin xyz="0 0 0"/>
+  </xacro:top_plate>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 </robot>
