@@ -7,6 +7,7 @@
   <xacro:property name="PI" value="${math.pi}" />
 
   <xacro:include filename="$(find custom_robots)/model/dingo/attachments/top_plate.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/dingo/dingo_gz.urdf.xacro"/>
 
   <!-- D0150 Platform Macro -->
   <xacro:macro name="do150" params="control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
@@ -51,36 +52,6 @@
     <!-- Add wheels (Same as DO100) -->
     <xacro:include filename="$(find custom_robots)/model/dingo/wheels.urdf.xacro"/>
     <xacro:do100_drivetrain_wheels front_wheels="${front_wheels}" rear_wheels="${rear_wheels}"/>
-
-    <!-- Add drivetrain -->
-    <gazebo>
-      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-        <topic>/cmd_vel</topic>
-      </plugin>
-    </gazebo>
-
-    <!-- Internal IMU -->
-    <link name="imu_0_link">
-      <inertial>
-        <mass value="0.001"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
-      </inertial>
-    </link>
-    <joint name="imu_joint" type="fixed">
-      <parent link="chassis_link" />
-      <child link="imu_0_link" />
-    </joint>
-
-    <gazebo reference="imu_0_link">
-      <sensor type="imu" name="imu_0">
-        <always_on>true</always_on>
-        <update_rate>50</update_rate>
-        <visualize>true</visualize>
-        <gz_frame_id>imu_0_link</gz_frame_id>
-        <topic>$(arg namespace)/sensors/imu_0/data_raw</topic>
-      </sensor>
-    </gazebo>
 
     <!-- Mounting Hard Points -->
     <link name="default_mount"/>
@@ -144,8 +115,12 @@
 
   <!-- Joint State Publisher -->
   <xacro:do150/>
-  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.1">
+  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.15">
     <origin xyz="0 0 0"/>
   </xacro:top_plate>
+  <xacro:laser xyz="0 0 0.121" rpy="0 0 0" name="lidar" parent="chassis_link" topic="turtlebot3/laser/scan"/>
+  <xacro:imu parent="chassis_link" topic="turtlebot3/imu" xyz="0 0 0" rpy="0 0 0"/>
+  <xacro:odom topic="/turtlebot3/odom" freq="50"/>
+  <xacro:velocity topic="turtlebot3/cmd_vel"/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 </robot>
