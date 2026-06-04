@@ -190,7 +190,7 @@ def launch_setup(context):
             "-name",
             "ur3",
             "-x",
-            "0.5",
+            "-0.5",
             "-y",
             y,
             "-z",
