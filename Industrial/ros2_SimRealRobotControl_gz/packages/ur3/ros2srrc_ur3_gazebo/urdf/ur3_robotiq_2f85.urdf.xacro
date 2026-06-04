@@ -126,13 +126,13 @@
     <collision name='collision'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/> 
       <geometry>
-        <box size = "0.2 0.2 0.8"/>
+        <box size = "0.2 0.2 1.0"/>
       </geometry>
     </collision>
     <visual name='chassis_visual'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <geometry>
-        <box size = "0.2 0.2 0.8"/>
+        <box size = "0.2 0.2 1.0"/>
       </geometry>
     </visual>
   </link>
