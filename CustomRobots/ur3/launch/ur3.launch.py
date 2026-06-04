@@ -212,10 +212,18 @@ def launch_setup(context):
         parameters=[{"use_sim_time": True}],
     )
 
+    sausage_spawner = Node(
+        package="custom_robots",
+        executable="spawn_sausage.py",
+        name="box_spawner",
+        output="screen",
+    )
+
     nodes.append(robot_state_publisher)
     nodes.append(static_tf)
     nodes.append(spawn_robot)
     nodes.append(clock_bridge)
+    nodes.append(sausage_spawner)
 
     if sensor == "camera":
         camera_bridge = Node(

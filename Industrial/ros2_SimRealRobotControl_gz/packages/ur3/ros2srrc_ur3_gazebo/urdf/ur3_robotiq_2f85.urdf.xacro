@@ -60,10 +60,17 @@
   <!-- Include cams -->
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>
 
+  <!-- HAND CAMERA -->
+
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params_gz.xacro"/>
+  <xacro:property name="parent_hand" value="tool0"/>
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_gz.xacro"/>
 
+  <!-- BASE CAMERA -->
+
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params_gz.xacro"/>
+  <xacro:property name="parent_base" value="base_link"/>
+  <xacro:property name="cam_base_pz" value="0.5"/>
   <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_gz.xacro"/>
 
   <!-- Include XACRO-MACRO file of the UR3: -->
@@ -85,11 +92,6 @@
     bringup="${bringup}"
     parent_link="tool0"
   />
-
-  <xacro:if value="${camera}">
-    <xacro:cam_on_hand/>
-    <xacro:cam_on_base/>
-  </xacro:if>
 
   <!-- Load ROS 2 Gazebo Plugin -->
   <xacro:unless value="${bringup}">
