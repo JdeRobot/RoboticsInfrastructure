@@ -198,7 +198,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 68	Rover 4wd Warehouse Low Noise	68	19
 69	Rover 4wd Warehouse High Noise	69	20
 70	Machine vision Harmonic world	70	24
-71	Conveyor Belt World	71	0
+71	Conveyor Belt World	71	26
 \.
 
 --
