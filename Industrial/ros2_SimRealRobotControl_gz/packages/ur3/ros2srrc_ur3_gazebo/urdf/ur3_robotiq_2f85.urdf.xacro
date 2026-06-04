@@ -46,6 +46,8 @@
   <xacro:property name="EE" value="$(arg EE)"/>
   <xacro:arg name="EE_name" default="none"/>
   <xacro:property name="EE_name" value="$(arg EE_name)"/>
+  <xacro:arg name="camera" default="false"/>
+  <xacro:property name="camera" value="$(arg camera)"/>
 
   <!-- UR3 Control ARGUMENTS -->
   <xacro:arg name="script_filename" default="none"/>
@@ -54,6 +56,15 @@
   <xacro:property name="input_recipe_filename" value="$(arg input_recipe_filename)"/>
   <xacro:arg name="output_recipe_filename" default="none"/>
   <xacro:property name="output_recipe_filename" value="$(arg output_recipe_filename)"/>
+
+  <!-- Include cams -->
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/common_properties.xacro"/>
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_hand.xacro"/>
+
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params.xacro"/>
+  <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base.xacro"/>
 
   <!-- Include XACRO-MACRO file of the UR3: -->
   <xacro:include filename="$(find ros2srrc_robots)/ur3/urdf/ur3_macro.urdf.xacro"/>	
@@ -74,6 +85,11 @@
     bringup="${bringup}"
     parent_link="tool0"
   />
+
+  <xacro:if value="${camera}">
+    <xacro:cam_on_hand/>
+    <xacro:cam_on_base/>
+  </xacro:if>
 
   <!-- Load ROS 2 Gazebo Plugin -->
   <xacro:unless value="${bringup}">
@@ -114,7 +130,7 @@
     <visual name='chassis_visual'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <geometry>
-        <box size = "0.2 0.2 1.0"/>
+        <box size = "0.2 0.2 0.8"/>
       </geometry>
     </visual>
   </link>

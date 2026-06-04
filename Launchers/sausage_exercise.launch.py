@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+
 import os
 
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, SetEnvironmentVariable
+
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
@@ -31,7 +35,19 @@ def generate_launch_description():
     # ==================================================
 
     resource_path = (
-        "/home/ws/src/CustomRobots"
+        os.path.dirname(
+            get_package_share_directory("ros2srrc_ur3_gazebo")
+        )
+        + ":"
+        + os.path.dirname(
+            get_package_share_directory("ros2srrc_robots")
+        )
+        + ":"
+        + os.path.dirname(
+            get_package_share_directory("ros2srrc_endeffectors")
+        )
+        + ":"
+        + "/home/ws/src/CustomRobots"
     )
 
     set_resource_path = SetEnvironmentVariable(
@@ -57,15 +73,16 @@ def generate_launch_description():
     # GAZEBO
     # ==================================================
 
-    gazebo = ExecuteProcess(
-        cmd=["gz", "sim", "-r", "-v", "4", world_path],
+    gz = ExecuteProcess(
+        cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],
         output="screen",
-        shell=False,
     )
 
-    return LaunchDescription([
-        set_gz_plugin_path,
-        set_ld_library_path,
-        set_resource_path,
-        gazebo,
-    ])
+    return LaunchDescription(
+        [
+            set_gz_plugin_path,
+            set_ld_library_path,
+            set_resource_path,
+            gz,
+        ]
+    )
