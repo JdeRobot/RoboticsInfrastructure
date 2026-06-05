@@ -188,15 +188,15 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 58	Warehouse 1 Harmonic	58	13
 59	Warehouse 2 Harmonic	59	13
 60	Warehouse 1 Ackermann Harmonic	58	14
-61	Warehouse 2 Ackermann Harmonic	61	14
-62	Laser Mapping Warehouse Medium Noise	62	22
-63	Laser Mapping Warehouse High Noise	63	23
-64	Small Laser Mapping Warehouse Medium Noise	64	22
-65	Small Laser Mapping Warehouse High Noise	65	23
+61	Warehouse 2 Ackermann Harmonic	59	14
+62	Laser Mapping Warehouse Medium Noise	12	22
+63	Laser Mapping Warehouse High Noise	12	23
+64	Small Laser Mapping Warehouse Medium Noise	33	22
+65	Small Laser Mapping Warehouse High Noise	33	23
 66	Follow Person Harmonic	66	15
 67	Follow Person Teleop Harmonic	67	15
 68	Rover 4wd Warehouse Low Noise	68	19
-69	Rover 4wd Warehouse High Noise	69	20
+69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision Harmonic world	70	24
 \.
 
