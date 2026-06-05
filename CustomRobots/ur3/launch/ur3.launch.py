@@ -117,6 +117,71 @@ def launch_setup(context):
     }
 
     # =========================
+    # KINEMATICS
+    # =========================
+    kinematics_yaml = {
+        "robot_description_kinematics": load_yaml(
+            "ros2srrc_robots",
+            "ur3/config/kinematics.yaml"
+        )
+    }
+
+
+    # =========================
+    # Moveit controller
+    # =========================
+    moveit_controllers = load_yaml(
+        "ros2srrc_robots",
+        "ur3/config/moveit_controllers.yaml"
+    )
+
+    moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
+
+    ompl_planning = load_yaml(
+        "ros2srrc_robots",
+        "ur3/config/ompl_planning.yaml"
+    )
+
+    ompl_planning = ompl_planning["/**"]["ros__parameters"]
+            
+    joint_limits_yaml = load_yaml(
+        "ros2srrc_robots",
+        "ur3/config/joint_limits.yaml"
+    )
+
+    pilz_cartesian_limits = load_yaml(
+        "ros2srrc_robots",
+        "ur3/config/pilz_cartesian_limits.yaml"
+    )
+
+    combined_planning = {
+        "robot_description_planning":
+            {**joint_limits_yaml, **pilz_cartesian_limits}
+    }
+
+    planning_pipelines_config = {
+        "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
+        "default_planning_pipeline": "pilz_industrial_motion_planner",
+
+        "ompl": {
+            "planning_plugin": "ompl_interface/OMPLPlanner",
+        },
+
+        "pilz_industrial_motion_planner": {
+            "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
+            "request_adapters": "",
+            "start_state_max_bounds_error": 0.1,
+            "default_planner_config": "PTP",
+        },
+    }
+
+    move_group_capabilities = {
+        "capabilities":
+        "pilz_industrial_motion_planner/MoveGroupSequenceAction "
+        "pilz_industrial_motion_planner/MoveGroupSequenceService"
+    }
+
+    # =========================
     # NODES
     # =========================
 
@@ -128,6 +193,10 @@ def launch_setup(context):
         parameters=[
             robot_description,
             robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            ompl_planning,
+            combined_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"EE_PARAM": "robotiq_2f85"},
@@ -143,6 +212,9 @@ def launch_setup(context):
         parameters=[
             robot_description,
             robot_description_semantic,
+            kinematics_yaml,
+            moveit_controllers,
+            ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"MOVE_GROUP": "ur3_arm"},
@@ -157,6 +229,8 @@ def launch_setup(context):
         parameters=[
             robot_description,
             robot_description_semantic,
+            kinematics_yaml,
+            ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"MOVE_GROUP": "ur3_arm"},
@@ -275,6 +349,24 @@ def launch_setup(context):
 
     nodes.append(joint_state_broadcaster)
     nodes.append(joint_trajectory_controller)
+
+    move_group = Node(
+        package="moveit_ros_move_group",
+        executable="move_group",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            planning_pipelines_config,
+            move_group_capabilities,
+            moveit_controllers,
+            combined_planning,
+            {"use_sim_time": True},
+        ],
+    )
+
+    nodes.append(move_group)
 
     # =========================
     # LAUNCH
