@@ -157,10 +157,10 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 27	Vacuums House Roof	26	10
 28	Restaurant	21	0
 29	Vacuums House Markers	25	17
-30	Small Laser Mapping Warehouse	33	21
+30	Small Laser Mapping Warehouse	33	26
 31	Rescue People Harmonic	31	0
 32	Follow Road Harmonic	32	0
-33	Laser Mapping Warehouse Low Noise	12	21
+33	Laser Mapping Warehouse Low Noise	12	26
 34	Pick And Place World	34	0
 35	Car Junction World	35	6
 36	Drone Gymkhana World	36	0
@@ -188,15 +188,15 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 58	Warehouse 1 Harmonic	58	13
 59	Warehouse 2 Harmonic	59	13
 60	Warehouse 1 Ackermann Harmonic	58	14
-61	Warehouse 2 Ackermann Harmonic	61	14
-62	Laser Mapping Warehouse Medium Noise	62	22
-63	Laser Mapping Warehouse High Noise	63	23
-64	Small Laser Mapping Warehouse Medium Noise	64	22
-65	Small Laser Mapping Warehouse High Noise	65	23
+61	Warehouse 2 Ackermann Harmonic	59	14
+62	Laser Mapping Warehouse Medium Noise	12	27
+63	Laser Mapping Warehouse High Noise	12	28
+64	Small Laser Mapping Warehouse Medium Noise	12	27
+65	Small Laser Mapping Warehouse High Noise	12	28
 66	Follow Person Harmonic	66	15
 67	Follow Person Teleop Harmonic	67	15
 68	Rover 4wd Warehouse Low Noise	68	19
-69	Rover 4wd Warehouse High Noise	69	20
+69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision Harmonic world	70	24
 \.
 
@@ -297,6 +297,10 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
 24	Ur5 Camera	/home/ws/src/CustomRobots/ur5/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
+25	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	None
+26	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low
+27	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med
+28	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high
 \.
 
 --
