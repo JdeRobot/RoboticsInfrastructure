@@ -3,8 +3,31 @@
 
   <xacro:arg name="namespace" default="" />
   <xacro:arg name="gazebo_controllers" default="$(find custom_robots)/model/dingo/omni_4wd.yaml"/>
-
+  <xacro:arg name="noise_level" default="none"/>
   <xacro:property name="PI" value="${math.pi}" />
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="a1" value="0.1" />
+    <xacro:property name="a2" value="0.1" />
+    <xacro:property name="a3" value="0.05" />
+    <xacro:property name="a4" value="0.05" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:property name="a1" value="0.5" />
+    <xacro:property name="a2" value="0.5" />
+    <xacro:property name="a3" value="0.25" />
+    <xacro:property name="a4" value="0.25" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="a1" value="1.5" />
+    <xacro:property name="a2" value="1.5" />
+    <xacro:property name="a3" value="0.8" />
+    <xacro:property name="a4" value="0.8" />
+  </xacro:if>
+
 
   <xacro:include filename="$(find custom_robots)/model/dingo/attachments/top_plate.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/model/dingo/dingo_gz.urdf.xacro"/>
@@ -123,4 +146,8 @@
   <xacro:odom topic="/odom" freq="50"/>
   <xacro:velocity topic="/cmd_vel"/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
+
+  <xacro:unless value="${noise_level == 'none'}">
+    <xacro:noise_odom topic="/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+  </xacro:unless>
 </robot>
