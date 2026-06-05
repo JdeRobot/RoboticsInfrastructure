@@ -196,6 +196,10 @@ def launch_setup(context):
             kinematics_yaml,
             moveit_controllers,
             ompl_planning,
+            {
+                "moveit_controller_manager":
+                "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+            },
             combined_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
@@ -215,6 +219,10 @@ def launch_setup(context):
             kinematics_yaml,
             moveit_controllers,
             ompl_planning,
+            {
+                "moveit_controller_manager":
+                "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+            },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"MOVE_GROUP": "ur3_arm"},
@@ -347,8 +355,15 @@ def launch_setup(context):
         arguments=["joint_trajectory_controller"],
     )
 
+    gripper_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gripper_controller"],
+    )
+
     nodes.append(joint_state_broadcaster)
     nodes.append(joint_trajectory_controller)
+    nodes.append(gripper_controller)
 
     move_group = Node(
         package="moveit_ros_move_group",
