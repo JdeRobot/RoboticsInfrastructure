@@ -17,6 +17,7 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
+    gz_noise = LaunchConfiguration("noise")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -38,6 +39,7 @@ def launch_setup(context):
         xacro_file,
         mappings={
             "namespace": "do150",
+            "noise_level": gz_noise.perform(context),
         },
     ).toxml()
 
@@ -104,6 +106,7 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
+    declared_arguments.append(DeclareLaunchArgument("noise", default_value="none"))
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
