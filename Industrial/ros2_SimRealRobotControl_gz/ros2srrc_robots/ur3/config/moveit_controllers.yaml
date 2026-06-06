@@ -5,6 +5,7 @@
 
       controller_names:
         - joint_trajectory_controller
+        - gripper_controller
 
       joint_trajectory_controller:
         type: FollowJointTrajectory
@@ -18,3 +19,11 @@
           - wrist_1_joint
           - wrist_2_joint
           - wrist_3_joint
+
+      gripper_controller:
+        type: FollowJointTrajectory
+        action_ns: follow_joint_trajectory
+        default: true
+
+        joints:
+          - robotiq_85_left_knuckle_joint
