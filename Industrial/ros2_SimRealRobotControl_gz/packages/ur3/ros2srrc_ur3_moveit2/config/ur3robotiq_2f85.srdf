@@ -35,16 +35,24 @@
 <robot name="ur3">
 
   <group name="ur3_arm">
-    <chain base_link="base_link" tip_link="tool0"/>
+    <chain base_link="base_link" tip_link="EE_robotiq_2f85"/>
   </group>
 
   <group name="robotiq_2f85">
-    <joint name="robotiq_85_left_knuckle_joint"/>
-    <joint name="robotiq_85_right_knuckle_joint"/>
-    <joint name="robotiq_85_left_inner_knuckle_joint"/>
-    <joint name="robotiq_85_right_inner_knuckle_joint"/>
-    <joint name="robotiq_85_left_finger_tip_joint"/>
-    <joint name="robotiq_85_right_finger_tip_joint"/>
+    <joint name="robotiq_coupler_joint" />
+    <joint name="robotiq_85_base_joint" />
+
+    <joint name="robotiq_85_left_knuckle_joint" />
+    <joint name="robotiq_85_right_knuckle_joint" />
+
+    <joint name="robotiq_85_left_finger_joint" />
+    <joint name="robotiq_85_right_finger_joint" />
+
+    <joint name="robotiq_85_left_inner_knuckle_joint" />
+    <joint name="robotiq_85_right_inner_knuckle_joint" />
+
+    <joint name="robotiq_85_left_finger_tip_joint" />
+    <joint name="robotiq_85_right_finger_tip_joint" />
   </group>
 
   <group_state group="ur3_arm" name="home">
