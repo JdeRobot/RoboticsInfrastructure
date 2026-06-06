@@ -89,6 +89,16 @@ def launch_setup(context):
         + os.path.dirname(
             get_package_share_directory("ros2srrc_endeffectors")
         )
+        + ":"
+        + os.path.dirname(
+            get_package_share_directory("robotiq_description")
+        )
+        + ":"
+        + os.path.join(
+            get_package_share_directory("robotiq_description"),
+            "world",
+            "models"
+        )
     )
 
     set_resource_path = SetEnvironmentVariable(
@@ -105,6 +115,10 @@ def launch_setup(context):
         name="LD_LIBRARY_PATH",
         value=gz_plugin_path + ":/usr/lib/x86_64-linux-gnu:" + existing_ld,
     )
+
+    nodes.append(set_resource_path)
+    nodes.append(set_gz_plugin_path)
+    nodes.append(set_ld_library_path)
 
     # =========================
     # SRDF (SEMANTIC)
