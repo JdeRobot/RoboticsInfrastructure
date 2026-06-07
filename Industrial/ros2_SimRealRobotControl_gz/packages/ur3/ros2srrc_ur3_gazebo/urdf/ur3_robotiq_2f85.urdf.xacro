@@ -86,30 +86,11 @@
   />
 
   <!-- Include XACRO-MACRO file of the Robotiq 2f-85: -->
-  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
-  <!-- Coupler -->
-  <link name="robotiq_coupler">
-    <visual>
-      <geometry>
-        <mesh filename="file://$(find ros2srrc_endeffectors)/robotiq_2f85/meshes/robotiq_85_coupler.stl" />
-      </geometry>
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.04" length="0.015"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <joint name="robotiq_coupler_joint" type="fixed">
-    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
-    <parent link="tool0"/>
-    <child link="robotiq_coupler"/>
-  </joint>
-
-  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
-    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
-  </xacro:robotiq_85_gripper>
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>	
+  <xacro:robotiq_2f85 
+    bringup="${bringup}"
+    parent_link="tool0"
+  />
 
 
   <!-- Load ROS 2 Gazebo Plugin -->
