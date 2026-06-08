@@ -177,19 +177,43 @@ private:
         auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
         geometry_msgs::msg::Pose TARGET_POSE;
+
         TARGET_POSE.position.x = GOAL->x;
         TARGET_POSE.position.y = GOAL->y;
         TARGET_POSE.position.z = GOAL->z;
-        TARGET_POSE.orientation.x = GOAL->qx;
-        TARGET_POSE.orientation.y = GOAL->qy;
-        TARGET_POSE.orientation.z = GOAL->qz;
-        TARGET_POSE.orientation.w = GOAL->qw;
+
+        TARGET_POSE.orientation =
+            CURRENT_POSE.pose.orientation;
+
+        RCLCPP_INFO(
+            get_logger(),
+            "TARGET_POSE -> pos(%.3f %.3f %.3f) quat(%.3f %.3f %.3f %.3f)",
+            TARGET_POSE.position.x,
+            TARGET_POSE.position.y,
+            TARGET_POSE.position.z,
+            TARGET_POSE.orientation.x,
+            TARGET_POSE.orientation.y,
+            TARGET_POSE.orientation.z,
+            TARGET_POSE.orientation.w
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Pose reference frame = %s",
+            move_group_interface_ROB.getPoseReferenceFrame().c_str()
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "End effector link = %s",
+            move_group_interface_ROB.getEndEffectorLink().c_str()
+        );
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        move_group_interface_ROB.setPlannerId(GOAL->type);
+        //move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
@@ -296,6 +320,12 @@ int main(int argc, char **argv)
     std::string ROBname = param_MOVE_GROUP;
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
+
+    RCLCPP_INFO(
+        logger,
+        "MoveGroup name = %s",
+        move_group_interface_ROB.getName().c_str()
+    );
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
