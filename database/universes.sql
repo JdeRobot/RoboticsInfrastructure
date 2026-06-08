@@ -284,15 +284,15 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
 11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	quadrotor	sensor:=camera namespace:=drone0
-12	Rover 4wd	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=none
+12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=none
 13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	None
 14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	None
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
 16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
 17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	None
 18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic
-19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=low
-20	Rover 4wd High Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=high
+19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low
+20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high
 21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
