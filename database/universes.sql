@@ -263,7 +263,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 66	Follow Person Harmonic	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{-1.0,10.0,0.1,0.0,0.0,0.0}
 67	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{-1.0,10.0,0.1,0.0,0.0,0.0}
 68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
-70	Machine Vision Harmonic	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/ros2srrc_launch/moveit2/machine_vision_rviz.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
+70	Machine Vision Harmonic	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
 \.
 
 --
@@ -273,7 +273,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 
 COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
 0	None	None	None	None
-1	Ur5	/home/ws/src/CustomRobots/ur5/launch/ur5.launch.py	ur5_robotiq	None
+1	Ur5	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	None
 2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera
@@ -296,7 +296,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
-24	Ur5 Camera	/home/ws/src/CustomRobots/ur5/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
+24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
 \.
 
 --
