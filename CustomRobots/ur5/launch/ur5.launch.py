@@ -36,6 +36,8 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
 
+    package_dir = get_package_share_directory("custom_robots")
+
     sensor = gz_sensor.perform(context)
 
     nodes = []
@@ -44,13 +46,13 @@ def launch_setup(context):
     # ROBOT DESCRIPTION (URDF)
     # =========================
     xacro_file = os.path.join(
-        get_package_share_directory("ur5_gripper_description"),
-        "urdf",
-        "ur5_robotiq85_gripper.urdf.xacro",
+        package_dir,
+        "models",
+        "ur5",
+        "ur5.urdf.xacro",
     )
 
-    pkg_share_dir = get_package_share_directory("ur5_gripper_description")
-    controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
+    controllers_file = os.path.join(package_dir, "config", "ur5_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,

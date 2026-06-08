@@ -23,7 +23,7 @@ def generate_launch_description():
     )
 
     resource_path = (
-        os.path.dirname(get_package_share_directory("ur5_gripper_description"))
+        os.path.dirname(get_package_share_directory("ros2srrc_ur5_gazebo"))
         + ":"
         + os.path.dirname(get_package_share_directory("robotiq_description"))
         + ":"
