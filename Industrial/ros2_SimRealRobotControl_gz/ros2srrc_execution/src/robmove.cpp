@@ -154,6 +154,12 @@ private:
 
         // 0. INFORMATION -> Current Robot Pose:
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Current pose frame = %s",
+            CP_INFO.header.frame_id.c_str()
+        );
         RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
@@ -293,6 +299,18 @@ int main(int argc, char **argv)
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
+
+    RCLCPP_INFO(
+        logger,
+        "Planning frame = %s",
+        move_group_interface_ROB.getPlanningFrame().c_str()
+    );
+
+    RCLCPP_INFO(
+        logger,
+        "End effector link = %s",
+        move_group_interface_ROB.getEndEffectorLink().c_str()
+    );
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
 
