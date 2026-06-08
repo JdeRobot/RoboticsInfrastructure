@@ -188,15 +188,15 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 58	Warehouse 1 Harmonic	58	13
 59	Warehouse 2 Harmonic	59	13
 60	Warehouse 1 Ackermann Harmonic	58	14
-61	Warehouse 2 Ackermann Harmonic	61	14
-62	Laser Mapping Warehouse Medium Noise	62	22
-63	Laser Mapping Warehouse High Noise	63	23
-64	Small Laser Mapping Warehouse Medium Noise	64	22
-65	Small Laser Mapping Warehouse High Noise	65	23
+61	Warehouse 2 Ackermann Harmonic	59	14
+62	Laser Mapping Warehouse Medium Noise	12	22
+63	Laser Mapping Warehouse High Noise	12	23
+64	Small Laser Mapping Warehouse Medium Noise	33	22
+65	Small Laser Mapping Warehouse High Noise	33	23
 66	Follow Person Harmonic	66	15
 67	Follow Person Teleop Harmonic	67	15
 68	Rover 4wd Warehouse Low Noise	68	19
-69	Rover 4wd Warehouse High Noise	69	20
+69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision Harmonic world	70	24
 \.
 
@@ -284,15 +284,15 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
 11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	quadrotor	sensor:=camera namespace:=drone0
-12	Rover 4wd	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=none
+12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=none
 13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	None
 14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	None
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
 16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
 17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	None
 18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic
-19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=low
-20	Rover 4wd High Noise	/home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py	rover_4wd	noise:=high
+19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low
+20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high
 21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
