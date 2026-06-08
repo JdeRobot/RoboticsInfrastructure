@@ -11,6 +11,9 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 
+    package_dir = get_package_share_directory("custom_robots")
+    gazebo_models_path = os.path.join(package_dir, "models")
+
     # Paths
     gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
     gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
@@ -20,13 +23,11 @@ def generate_launch_description():
     )
 
     resource_path = (
-        os.path.dirname(get_package_share_directory("ur5_gripper_description"))
+        os.path.dirname(get_package_share_directory("ros2srrc_ur5_gazebo"))
         + ":"
         + os.path.dirname(get_package_share_directory("robotiq_description"))
         + ":"
-        + os.path.join(
-            get_package_share_directory("robotiq_description"), "world", "models"
-        )
+        + gazebo_models_path
     )
 
     set_resource_path = SetEnvironmentVariable(
