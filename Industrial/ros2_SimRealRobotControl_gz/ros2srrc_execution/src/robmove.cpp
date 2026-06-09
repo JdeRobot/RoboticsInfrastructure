@@ -271,7 +271,16 @@ private:
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        move_group_interface_ROB.setPlannerId(GOAL->type);
+        // Forzar OMPL en lugar de Pilz
+        move_group_interface_ROB.setPlanningPipelineId("ompl");
+        RCLCPP_INFO(
+            this->get_logger(),
+            "Using planning pipeline: OMPL"
+        );
+
+        // NO usar el planner recibido por la acción
+        // move_group_interface_ROB.setPlannerId(GOAL->type);
+
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
