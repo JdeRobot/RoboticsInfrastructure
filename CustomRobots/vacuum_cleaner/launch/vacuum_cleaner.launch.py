@@ -46,12 +46,20 @@ def launch_setup(context):
             },
         ).toxml()
     else:
-        ## Temporary SDF load to fix bumpers
-        sdf_file = os.path.join(
-            package_dir, "models", "vacuum_cleaner", "vacuum_cleaner.sdf"
-        )
-        with open(sdf_file, "r") as infp:
-            robot_description_content = infp.read()
+        ## Temporary SDF load to fix bumpers from world. Just spawn bridge
+        return [
+            Node(
+                package="ros_gz_bridge",
+                executable="parameter_bridge",
+                arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+                output="screen",
+            )
+        ]
+        # sdf_file = os.path.join(
+        #     package_dir, "models", "vacuum_cleaner", "vacuum_cleaner.sdf"
+        # )
+        # with open(sdf_file, "r") as infp:
+        #     robot_description_content = infp.read()
 
     robot_description = {"robot_description": robot_description_content}
 
