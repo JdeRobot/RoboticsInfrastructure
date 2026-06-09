@@ -46,7 +46,6 @@
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
 #include <geometry_msgs/msg/pose.hpp>
-#include <moveit/robot_state/robot_state.h>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -155,12 +154,6 @@ private:
 
         // 0. INFORMATION -> Current Robot Pose:
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
-
-        RCLCPP_INFO(
-            get_logger(),
-            "Current pose frame = %s",
-            CP_INFO.header.frame_id.c_str()
-        );
         RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
@@ -178,110 +171,52 @@ private:
         auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
         geometry_msgs::msg::Pose TARGET_POSE;
-
-        moveit::core::RobotStatePtr current_state =
-            move_group_interface_ROB.getCurrentState();
-
-        bool ik_ok =
-            current_state->setFromIK(
-                current_state->getJointModelGroup(param_MOVE_GROUP),
-                CURRENT_POSE.pose,
-                5.0
-            );
-
-        RCLCPP_INFO(
-            get_logger(),
-            "CURRENT POSE IK = %s",
-            ik_ok ? "SUCCESS" : "FAIL"
-        );
-
         TARGET_POSE.position.x = GOAL->x;
         TARGET_POSE.position.y = GOAL->y;
         TARGET_POSE.position.z = GOAL->z;
-
-        TARGET_POSE.orientation =
-            CURRENT_POSE.pose.orientation;
-
-        RCLCPP_INFO(
-            get_logger(),
-            "TARGET_POSE -> pos(%.3f %.3f %.3f) quat(%.3f %.3f %.3f %.3f)",
-            TARGET_POSE.position.x,
-            TARGET_POSE.position.y,
-            TARGET_POSE.position.z,
-            TARGET_POSE.orientation.x,
-            TARGET_POSE.orientation.y,
-            TARGET_POSE.orientation.z,
-            TARGET_POSE.orientation.w
-        );
-
-        RCLCPP_INFO(
-            get_logger(),
-            "Pose reference frame = %s",
-            move_group_interface_ROB.getPoseReferenceFrame().c_str()
-        );
-
-        RCLCPP_INFO(
-            get_logger(),
-            "End effector link = %s",
-            move_group_interface_ROB.getEndEffectorLink().c_str()
-        );
-
-        // =====================================================
-        // IK TEST
-        // =====================================================
-
-        auto state = move_group_interface_ROB.getCurrentState();
-
-        const moveit::core::JointModelGroup* jmg =
-            state->getJointModelGroup(param_MOVE_GROUP);
-
-        std::vector<double> joints;
-        state->copyJointGroupPositions(jmg, joints);
-
-        RCLCPP_INFO(get_logger(), "Current joints:");
-
-        for (size_t i = 0; i < joints.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "joint[%ld] = %.6f",
-                i,
-                joints[i]
-            );
-        }
-
-        moveit::core::RobotState test_state(*state);
-
-        bool found_ik = test_state.setFromIK(
-            jmg,
-            TARGET_POSE,
-            move_group_interface_ROB.getEndEffectorLink(),
-            5.0
-        );
-
-        RCLCPP_INFO(
-            get_logger(),
-            "MANUAL IK RESULT = %s",
-            found_ik ? "SUCCESS" : "FAIL"
-        );
-
-        // =====================================================
+        TARGET_POSE.orientation.x = GOAL->qx;
+        TARGET_POSE.orientation.y = GOAL->qy;
+        TARGET_POSE.orientation.z = GOAL->qz;
+        TARGET_POSE.orientation.w = GOAL->qw;
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        // Forzar OMPL en lugar de Pilz
-        move_group_interface_ROB.setPlanningPipelineId("ompl");
-        RCLCPP_INFO(
-            this->get_logger(),
-            "Using planning pipeline: OMPL"
+        if (param_ROB == "ur3")
+        {
+            RCLCPP_INFO(
+                this->get_logger(),
+                "Using planning pipeline: OMPL (UR3)"
+            );
+
+            move_group_interface_ROB.setPlanningPipelineId("ompl");
+
+            // opcional:
+            move_group_interface_ROB.setPlannerId(
+                "RRTConnectkConfigDefault"
+            );
+        }
+        else
+        {
+            RCLCPP_INFO(
+                this->get_logger(),
+                "Using planning pipeline: PILZ (%s)",
+                GOAL->type.c_str()
+            );
+
+            move_group_interface_ROB.setPlanningPipelineId(
+                "pilz_industrial_motion_planner"
+            );
+
+            move_group_interface_ROB.setPlannerId(
+                GOAL->type
+            );
+        }
+
+        move_group_interface_ROB.setMaxVelocityScalingFactor(
+            GOAL->speed
         );
-
-        // NO usar el planner recibido por la acción
-        // move_group_interface_ROB.setPlannerId(GOAL->type);
-
-        move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
 
@@ -388,57 +323,10 @@ int main(int argc, char **argv)
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 
-    RCLCPP_INFO(
-        logger,
-        "MoveGroup name = %s",
-        move_group_interface_ROB.getName().c_str()
-    );
-
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
-    RCLCPP_INFO(
-        logger,
-        "Planning frame = %s",
-        move_group_interface_ROB.getPlanningFrame().c_str()
-    );
-
-    RCLCPP_INFO(
-        logger,
-        "Pose reference frame = %s",
-        move_group_interface_ROB.getPoseReferenceFrame().c_str()
-    );
-
-    RCLCPP_INFO(
-        logger,
-        "End effector link = %s",
-        move_group_interface_ROB.getEndEffectorLink().c_str()
-    );
-
-    auto state = move_group_interface_ROB.getCurrentState();
-
-    const moveit::core::JointModelGroup* jmg =
-        state->getJointModelGroup(param_MOVE_GROUP);
-
-    auto links = jmg->getLinkModelNames();
-
-    RCLCPP_INFO(logger, "Links in group:");
-
-    for (const auto& link : links)
-    {
-        RCLCPP_INFO(logger, "  %s", link.c_str());
-    }
-
-    RCLCPP_INFO(
-        logger,
-        "Last link in group = %s",
-        links.back().c_str()
-    );
-
-    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
-
-    rclcpp::spin(node);
-
-    rclcpp::shutdown();
+    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());    
+    rclcpp::spin(node);    
+    rclcpp::shutdown();    
     return 0;
-}
