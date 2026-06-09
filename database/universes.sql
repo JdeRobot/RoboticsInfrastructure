@@ -128,7 +128,7 @@ ALTER TABLE public.tools OWNER TO "user-dev";
 
 
 COPY public.universes (id, name, world_id, robot_id) FROM stdin;
-1	Vacuums House	24	0
+1	Vacuums House	24	9
 2	City Large	8	0
 3	Rescue Default	20	0
 4	Warehouse 1	27	0
