@@ -35,17 +35,11 @@ def generate_launch_description():
     # ==================================================
 
     resource_path = (
-        os.path.dirname(
-            get_package_share_directory("ros2srrc_ur3_gazebo")
-        )
+        os.path.dirname(get_package_share_directory("ros2srrc_ur3_gazebo"))
         + ":"
-        + os.path.dirname(
-            get_package_share_directory("ros2srrc_robots")
-        )
+        + os.path.dirname(get_package_share_directory("ros2srrc_robots"))
         + ":"
-        + os.path.dirname(
-            get_package_share_directory("ros2srrc_endeffectors")
-        )
+        + os.path.dirname(get_package_share_directory("ros2srrc_endeffectors"))
         + ":"
         + "/home/ws/src/CustomRobots"
     )
@@ -64,9 +58,7 @@ def generate_launch_description():
 
     set_ld_library_path = SetEnvironmentVariable(
         name="LD_LIBRARY_PATH",
-        value=gz_plugin_path
-        + ":/usr/lib/x86_64-linux-gnu:"
-        + existing_ld,
+        value=gz_plugin_path + ":/usr/lib/x86_64-linux-gnu:" + existing_ld,
     )
 
     # ==================================================
