@@ -397,9 +397,9 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        DeclareLaunchArgument("x", default_value="0.5")
-        DeclareLaunchArgument("y", default_value="0")
-        DeclareLaunchArgument("z", default_value="0.8")
+        DeclareLaunchArgument("x", default_value="0.5"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0.8"),
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),

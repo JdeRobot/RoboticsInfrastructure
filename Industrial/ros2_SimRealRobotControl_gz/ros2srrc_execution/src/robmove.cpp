@@ -154,6 +154,7 @@ private:
 
         // 0. INFORMATION -> Current Robot Pose:
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
+
         RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
@@ -183,40 +184,8 @@ private:
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
-        if (param_ROB == "ur3")
-        {
-            RCLCPP_INFO(
-                this->get_logger(),
-                "Using planning pipeline: OMPL (UR3)"
-            );
-
-            move_group_interface_ROB.setPlanningPipelineId("ompl");
-
-            // opcional:
-            move_group_interface_ROB.setPlannerId(
-                "RRTConnectkConfigDefault"
-            );
-        }
-        else
-        {
-            RCLCPP_INFO(
-                this->get_logger(),
-                "Using planning pipeline: PILZ (%s)",
-                GOAL->type.c_str()
-            );
-
-            move_group_interface_ROB.setPlanningPipelineId(
-                "pilz_industrial_motion_planner"
-            );
-
-            move_group_interface_ROB.setPlannerId(
-                GOAL->type
-            );
-        }
-
-        move_group_interface_ROB.setMaxVelocityScalingFactor(
-            GOAL->speed
-        );
+        move_group_interface_ROB.setPlannerId(GOAL->type);
+        move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
         MyPlan = plan_ROB();
 
@@ -326,8 +295,9 @@ int main(int argc, char **argv)
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
-    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());    
-    rclcpp::spin(node);    
-    rclcpp::shutdown();    
+    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
+
+    rclcpp::spin(node);
+
+    rclcpp::shutdown();
     return 0;
-}
