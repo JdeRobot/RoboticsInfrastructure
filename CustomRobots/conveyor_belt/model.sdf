@@ -28,7 +28,7 @@
       </visual>
 
       <collision name="collision">
-        <pose>0 0 0.70 0 0 0</pose>
+        <pose>0 0 0.71 0 0 0</pose>
 
         <geometry>
           <box>
@@ -56,7 +56,7 @@
       </collision>
 
       <visual name="collision_debug">
-        <pose>0 0 0.70 0 0 0</pose>
+        <pose>0 0 0.71 0 0 0</pose>
 
         <geometry>
           <box>
