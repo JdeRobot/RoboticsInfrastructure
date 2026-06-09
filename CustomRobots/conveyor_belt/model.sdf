@@ -3,7 +3,7 @@
 
   <model name="conveyor_belt">
 
-    <static>false</static>
+    <static>true</static>
 
     <link name="link">
 
@@ -28,39 +28,39 @@
       </visual>
 
       <collision name="collision">
-        <pose>0 0 0 0 0 0</pose>
+        <pose>0 0 0.74 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.5 1.2 1.48</size>
+            <size>0.50 1.20 0.05</size>
           </box>
         </geometry>
 
         <surface>
           <contact>
             <ode>
-              <kp>100000</kp>
-              <kd>100</kd>
-              <min_depth>0.01</min_depth>
-              <max_vel>0.1</max_vel>
+              <kp>1000000</kp>
+              <kd>1000</kd>
+              <min_depth>0.001</min_depth>
+              <max_vel>1.0</max_vel>
             </ode>
           </contact>
 
           <friction>
             <ode>
-              <mu>0.1</mu>
-              <mu2>0.1</mu2>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
             </ode>
           </friction>
         </surface>
-
       </collision>
 
       <visual name="collision_debug">
+        <pose>0 0 0.74 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.5 1.2 1.48</size>
+            <size>0.50 1.20 0.05</size>
           </box>
         </geometry>
 
@@ -68,7 +68,6 @@
           <ambient>1 0 0 0.3</ambient>
           <diffuse>1 0 0 0.3</diffuse>
         </material>
-
       </visual>
 
     </link>
