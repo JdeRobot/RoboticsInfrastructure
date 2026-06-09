@@ -179,6 +179,22 @@ private:
 
         geometry_msgs::msg::Pose TARGET_POSE;
 
+        moveit::core::RobotStatePtr current_state =
+            move_group_interface_ROB.getCurrentState();
+
+        bool ik_ok =
+            current_state->setFromIK(
+                current_state->getJointModelGroup(param_MOVE_GROUP),
+                CURRENT_POSE.pose,
+                5.0
+            );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "CURRENT POSE IK = %s",
+            ik_ok ? "SUCCESS" : "FAIL"
+        );
+
         TARGET_POSE.position.x = GOAL->x;
         TARGET_POSE.position.y = GOAL->y;
         TARGET_POSE.position.z = GOAL->z;
@@ -376,6 +392,12 @@ int main(int argc, char **argv)
         logger,
         "Planning frame = %s",
         move_group_interface_ROB.getPlanningFrame().c_str()
+    );
+
+    RCLCPP_INFO(
+        logger,
+        "Pose reference frame = %s",
+        move_group_interface_ROB.getPoseReferenceFrame().c_str()
     );
 
     RCLCPP_INFO(

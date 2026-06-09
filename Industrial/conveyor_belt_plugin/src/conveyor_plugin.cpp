@@ -41,8 +41,15 @@ public:
 
         auto pos = _pose->Data().Pos();
 
+                if (name == "box_0" || name == "box_10" || name == "box_20")
+        {
+          std::cout << name
+                    << " z=" << pos.Z()
+                    << std::endl;
+        }
+
         // Eliminar salchichas que han caído al suelo
-        if (pos.Z() < 0.05)
+        if (pos.Z() < 0.01)
         {
           _ecm.RequestRemoveEntity(_entity);
           return true;

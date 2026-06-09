@@ -35,6 +35,10 @@ class sausageSpawner(Node):
             "-file", "/home/ws/src/CustomRobots/conveyor_belt/sausage.sdf"
         ]
 
+        self.get_logger().info(
+            f"Spawning {name} at x={x_random:.3f}, y=0.58, z=0.8"
+        )
+        
         subprocess.run(cmd)
 
         self.get_logger().info(f"Spawned {name}")
