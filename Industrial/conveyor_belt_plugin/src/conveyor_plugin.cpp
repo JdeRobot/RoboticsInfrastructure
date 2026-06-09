@@ -10,7 +10,6 @@
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
 #include <gz/msgs/wrench.pb.h>
-#include <gz/sim/EntityComponentManager.hh>
 
 namespace box_mover
 {
@@ -41,17 +40,8 @@ public:
 
         auto pos = _pose->Data().Pos();
 
-        if (pos.Y() > 0.50)
-        {
-          std::cout << name
-                    << " x=" << pos.X()
-                    << " y=" << pos.Y()
-                    << " z=" << pos.Z()
-                    << std::endl;
-        }
-
         // Eliminar salchichas que han caído al suelo
-        if (pos.Z() < 0.01)
+        if (pos.Z() < 0.05)
         {
           _ecm.RequestRemoveEntity(_entity);
           return true;
@@ -70,7 +60,7 @@ public:
           if (inside)
           {
             ApplyForce(_ecm, link);
-            //StabilizeMotion(_ecm, link);
+            StabilizeMotion(_ecm, link);
           }
         }
 
