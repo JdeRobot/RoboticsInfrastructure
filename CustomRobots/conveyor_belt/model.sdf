@@ -55,21 +55,6 @@
         </surface>
       </collision>
 
-      <visual name="collision_debug">
-        <pose>0 0 0.71 0 0 0</pose>
-
-        <geometry>
-          <box>
-            <size>0.50 1.20 0.05</size>
-          </box>
-        </geometry>
-
-        <material>
-          <ambient>1 0 0 0.3</ambient>
-          <diffuse>1 0 0 0.3</diffuse>
-        </material>
-      </visual>
-
     </link>
 
     <plugin filename="libconveyor_plugin.so"
