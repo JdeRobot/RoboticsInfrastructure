@@ -41,7 +41,7 @@ public:
         auto pos = _pose->Data().Pos();
 
         // Eliminar salchichas que han caído al suelo
-        if (pos.Z() < 0.05)
+        if (pos.Z() < 0.1)
         {
           _ecm.RequestRemoveEntity(_entity);
           return true;
