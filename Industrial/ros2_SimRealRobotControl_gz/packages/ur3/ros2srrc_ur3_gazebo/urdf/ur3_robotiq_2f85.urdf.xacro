@@ -112,6 +112,48 @@
     </gazebo>
 
   </xacro:unless> 
+  
+  <!-- World: LINK -->
+  <link name="world"/>
+
+  <!-- Robot Stand: LINK -->
+  <link name='robot_stand'>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="100"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+               iyy="0.01" iyz="0"
+               izz="0.01" />
+    </inertial>
+
+    <collision name='collision'>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 0.2 1.0"/>
+      </geometry>
+    </collision>
+
+    <visual name='chassis_visual'>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 0.2 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- World -> Stand -->
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="robot_stand"/>
+    <origin xyz="0.0 0.0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Stand -> Robot -->
+  <joint name="stand_joint" type="fixed">
+    <parent link="robot_stand"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.505" rpy="0 0 0"/>
+  </joint>
 
   <!-- ros2srrc_HMI CAMERA -->
   <xacro:if value="${hmi}">
