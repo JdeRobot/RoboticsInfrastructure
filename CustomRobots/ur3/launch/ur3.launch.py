@@ -284,24 +284,15 @@ def launch_setup(context):
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-topic",
-            "robot_description",
-            "-name",
-            "ur3",
-            "-x",
-            "-0.5",
-            "-y",
-            y,
-            "-z",
-            z,
-            "-R",
-            R,
-            "-P",
-            P,
-            "-Y",
-            Y,
+            "-topic", "robot_description",
+            "-name", "ur3",
+            "-x", x,
+            "-y", y,
+            "-z", z,
+            "-R", R,
+            "-P", P,
+            "-Y", Y,
         ],
-        output="screen",
     )
 
     clock_bridge = Node(
@@ -406,9 +397,9 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        DeclareLaunchArgument("x", default_value="0.5"),
-        DeclareLaunchArgument("y", default_value="0"),
-        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("x", default_value="0.5")
+        DeclareLaunchArgument("y", default_value="0")
+        DeclareLaunchArgument("z", default_value="0.8")
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
