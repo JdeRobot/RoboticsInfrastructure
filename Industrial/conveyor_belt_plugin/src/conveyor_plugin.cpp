@@ -41,9 +41,11 @@ public:
 
         auto pos = _pose->Data().Pos();
 
-                if (name == "box_0" || name == "box_10" || name == "box_20")
+        if (pos.Y() > 0.50)
         {
           std::cout << name
+                    << " x=" << pos.X()
+                    << " y=" << pos.Y()
                     << " z=" << pos.Z()
                     << std::endl;
         }
@@ -68,7 +70,7 @@ public:
           if (inside)
           {
             ApplyForce(_ecm, link);
-            StabilizeMotion(_ecm, link);
+            //StabilizeMotion(_ecm, link);
           }
         }
 
