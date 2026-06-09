@@ -10,6 +10,7 @@
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
 #include <gz/msgs/wrench.pb.h>
+#include <gz/sim/EntityComponentManager.hh>
 
 namespace box_mover
 {
@@ -39,6 +40,13 @@ public:
           return true;
 
         auto pos = _pose->Data().Pos();
+
+        // Eliminar salchichas que han caído al suelo
+        if (pos.Z() < 0.05)
+        {
+          _ecm.RequestRemoveEntity(_entity);
+          return true;
+        }
 
         bool inside =
           pos.X() > -0.25 && pos.X() < 0.25 &&

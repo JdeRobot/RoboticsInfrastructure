@@ -46,6 +46,7 @@
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
 #include <geometry_msgs/msg/pose.hpp>
+#include <moveit/robot_state/robot_state.h>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -209,6 +210,47 @@ private:
             move_group_interface_ROB.getEndEffectorLink().c_str()
         );
 
+        // =====================================================
+        // IK TEST
+        // =====================================================
+
+        auto state = move_group_interface_ROB.getCurrentState();
+
+        const moveit::core::JointModelGroup* jmg =
+            state->getJointModelGroup(param_MOVE_GROUP);
+
+        std::vector<double> joints;
+        state->copyJointGroupPositions(jmg, joints);
+
+        RCLCPP_INFO(get_logger(), "Current joints:");
+
+        for (size_t i = 0; i < joints.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "joint[%ld] = %.6f",
+                i,
+                joints[i]
+            );
+        }
+
+        moveit::core::RobotState test_state(*state);
+
+        bool found_ik = test_state.setFromIK(
+            jmg,
+            TARGET_POSE,
+            move_group_interface_ROB.getEndEffectorLink(),
+            5.0
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "MANUAL IK RESULT = %s",
+            found_ik ? "SUCCESS" : "FAIL"
+        );
+
+        // =====================================================
+
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
@@ -340,6 +382,26 @@ int main(int argc, char **argv)
         logger,
         "End effector link = %s",
         move_group_interface_ROB.getEndEffectorLink().c_str()
+    );
+
+    auto state = move_group_interface_ROB.getCurrentState();
+
+    const moveit::core::JointModelGroup* jmg =
+        state->getJointModelGroup(param_MOVE_GROUP);
+
+    auto links = jmg->getLinkModelNames();
+
+    RCLCPP_INFO(logger, "Links in group:");
+
+    for (const auto& link : links)
+    {
+        RCLCPP_INFO(logger, "  %s", link.c_str());
+    }
+
+    RCLCPP_INFO(
+        logger,
+        "Last link in group = %s",
+        links.back().c_str()
     );
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
