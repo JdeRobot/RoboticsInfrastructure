@@ -89,16 +89,25 @@
   </xacro:macro>
 
   <xacro:macro name="bumper" params="topic name">
-    <gz>
-      <sensor name='${name}' type='contact'>
+    <gazebo reference="${name}">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <maxVel>0.01</maxVel>
+      <minDepth>0.001</minDepth>
+      <maxContacts>10</maxContacts>
+      <material>Gazebo/DarkGrey</material>
+      <sensor name='${name}_contact_sensor' type='contact'>
         <always_on>true</always_on>
-        <update_rate>20</update_rate>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
         <contact>
           <collision>${name}_collision</collision>
           <topic>${topic}</topic>
         </contact>
       </sensor>
-    </gz>
+
+    </gazebo>
+
   </xacro:macro>
 
   <xacro:macro name="velocity" params="topic">
@@ -121,13 +130,18 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="vel_topic topic">
+  <xacro:macro name="noise_odom" params="topic">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
         <ros_topic>${topic}</ros_topic>
-        <gz_cmd_vel_topic>${vel_topic}</gz_cmd_vel_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>base</child_frame_id>
+
+        <!-- must match the DiffDrive plugin values above -->
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_radius>0.033</wheel_radius>
+        <wheel_separation>0.287</wheel_separation>
 
         <alpha1>0.01</alpha1>
         <alpha2>0.01</alpha2>
