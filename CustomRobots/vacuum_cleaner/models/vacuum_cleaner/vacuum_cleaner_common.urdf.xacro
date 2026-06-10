@@ -43,7 +43,7 @@
     <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper"/>
 
     <joint name="center_bumper_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0.01 0 0.03"/>
+      <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
       <parent link="base"/>
       <child link="center_bumper"/>
     </joint>
