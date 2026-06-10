@@ -289,7 +289,7 @@ def launch_setup(context):
             "-name",
             "ur3",
             "-x",
-            "-0.5",
+            x,
             "-y",
             y,
             "-z",
@@ -322,7 +322,7 @@ def launch_setup(context):
     nodes.append(static_tf)
     nodes.append(spawn_robot)
     nodes.append(clock_bridge)
-    nodes.append(sausage_spawner)
+    #nodes.append(sausage_spawner)
 
     if sensor == "camera":
         camera_bridge = Node(
@@ -406,7 +406,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        DeclareLaunchArgument("x", default_value="0.5"),
+        DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0"),
         DeclareLaunchArgument("R", default_value="0"),
