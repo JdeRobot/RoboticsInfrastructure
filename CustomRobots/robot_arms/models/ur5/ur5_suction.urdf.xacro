@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot name="ur5"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="fake_sensor_commands" default="false"/>
+  <xacro:arg name="sim_gazebo" default="false"/>
+  <xacro:arg name="sim_gz" default="true"/>
+  <xacro:arg name="simulation_controllers" default=""/>
+
+  <xacro:include filename="$(find custom_robots)/models/ur5/ur.urdf.xacro" />
+  <xacro:include filename="$(find custom_robots)/models/ur5/ur.ros2_control.xacro" />
+
+  <!-- ls_vgr inlined so we can set a URDF material color.
+       The DAE has an embedded COLLADA material that Gazebo Harmonic's ogre2 ignores
+       (renders white); a URDF-level <material><color> is baked into SDF at conversion
+       time and reliably overrides the mesh material. Collision still uses the DAE mesh
+       so the contact sensor footprint matches the visual shape. -->
+  <link name="ls_vgr_link">
+    <inertial>
+      <mass value="0.2"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <collision name="collision">
+      <geometry>
+        <mesh filename="file://$(find ros2srrc_endeffectors)/ls_vgr/meshes/ls_vgr.dae"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <mesh filename="file://$(find ros2srrc_endeffectors)/ls_vgr/meshes/ls_vgr.dae"/>
+      </geometry>
+      <material name="SuctionGrey">
+        <color rgba="0.25 0.25 0.25 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="ls_vgr_joint" type="fixed">
+    <parent link="tool0"/>
+    <child link="ls_vgr_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0 -1.5708 0"/>
+  </joint>
+
+  <link name="EE_ls_vgr">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.00001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="EE_vgr_joint" type="fixed">
+    <parent link="ls_vgr_link"/>
+    <child link="EE_ls_vgr"/>
+    <origin xyz="0.065 0.0 0.1" rpy="0 0 0"/>
+  </joint>
+  <gazebo reference="EE_vgr_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
+  <!-- Contact sensor for gz_link_attacher (collision name matches the DAE collision above) -->
+  <gazebo reference="ls_vgr_link">
+    <sensor name="suction_contact" type="contact">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <contact>
+        <collision>collision</collision>
+      </contact>
+    </sensor>
+  </gazebo>
+
+  <!-- ros2_control UR5 arm only (no gripper actuators) -->
+  <xacro:ur_ros2_control name="ur" prefix="" sim_gz="true" use_fake_hardware="false"
+    script_filename="" output_recipe_filename="" input_recipe_filename=""
+    tf_prefix="" hash_kinematics="" robot_ip="0.0.0.0" />
+
+</robot>

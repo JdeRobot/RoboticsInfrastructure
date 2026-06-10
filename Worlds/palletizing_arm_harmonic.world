@@ -11,7 +11,10 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher"/>
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+      <robot_model_name>ur5_suction</robot_model_name>
+      <gripper_link_name>ls_vgr_link</gripper_link_name>
+    </plugin>
 
     <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
     </plugin>
