@@ -151,14 +151,57 @@ private:
 
     void execute(const std::shared_ptr<GoalHandle> goal_handle)
     {
+        // ================= DEBUG =================
+        RCLCPP_INFO(
+            get_logger(),
+            "Planning frame: %s",
+            move_group_interface_ROB.getPlanningFrame().c_str()
+        );
 
-        // 0. INFORMATION -> Current Robot Pose:
+        RCLCPP_INFO(
+            get_logger(),
+            "End effector link: %s",
+            move_group_interface_ROB.getEndEffectorLink().c_str()
+        );
+
+        auto state = move_group_interface_ROB.getCurrentState();
+
+        if (state)
+        {
+            const Eigen::Isometry3d& t =
+                state->getGlobalLinkTransform("tool0");
+
+            RCLCPP_INFO(
+                get_logger(),
+                "tool0 RobotState -> x=%.3f y=%.3f z=%.3f",
+                t.translation().x(),
+                t.translation().y(),
+                t.translation().z()
+            );
+        }
+
+        auto cp_tool0 =
+            move_group_interface_ROB.getCurrentPose("tool0");
+
+        RCLCPP_INFO(
+            get_logger(),
+            "tool0 CurrentPose -> x=%.3f y=%.3f z=%.3f",
+            cp_tool0.pose.position.x,
+            cp_tool0.pose.position.y,
+            cp_tool0.pose.position.z
+        );
+
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
 
-        RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
-        RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
-        RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
+        RCLCPP_INFO(
+            get_logger(),
+            "Default CurrentPose -> x=%.3f y=%.3f z=%.3f",
+            CP_INFO.pose.position.x,
+            CP_INFO.pose.position.y,
+            CP_INFO.pose.position.z
+        );
 
+        // ================= FIN DEBUG =================
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
 
