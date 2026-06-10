@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <!--
+    Dynamic palletizing box, 0.30 m cube (~30 cm side — realistic carton size).
+
+    Inertia for a solid 0.30 m cube of mass 2.0 kg:
+        I = (1/12) * m * (a^2 + a^2) = (1/12) * 2.0 * (0.09 + 0.09) = 0.030
+  -->
+  <model name="palletizing_box">
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>true</gravity>
+
+      <inertial>
+        <mass>2.0</mass>
+        <inertia>
+          <ixx>0.030</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.030</iyy>
+          <iyz>0</iyz>
+          <izz>0.030</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.30 0.30 0.30</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>10</kd>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <!-- mu=0.8 lets the belt grip and drag the box cleanly. -->
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.30 0.30 0.30</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.35 0.15 1</ambient>
+          <diffuse>0.55 0.35 0.15 1</diffuse>
+          <specular>0.2 0.2 0.2 1</specular>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

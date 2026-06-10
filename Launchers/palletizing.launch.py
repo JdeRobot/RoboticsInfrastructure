@@ -2,7 +2,8 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, SetEnvironmentVariable
+from launch.actions import ExecuteProcess, SetEnvironmentVariable, TimerAction
+from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -50,6 +51,33 @@ def generate_launch_description():
         output="screen",
     )
 
+    # Bridge ROS /conveyor/speed (std_msgs/Float64) → gz TrackController command topic.
+    # YAML config required because ROS and gz topic names differ.
+    bridge_config = os.path.join(package_dir, "params", "conveyor_bridge.yaml")
+    conveyor_speed_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        name="conveyor_speed_bridge",
+        arguments=["--ros-args", "-p", f"config_file:={bridge_config}"],
+        output="screen",
+    )
+
+    # Box feeder: owns the /conveyor/speed publisher and manages the full
+    # spawn → centre → place → restart cycle itself. No separate default_speed
+    # publisher needed — the spawner sets belt speed on startup.
+    box_spawner = Node(
+        package="custom_robots",
+        executable="box_spawner",
+        name="box_spawner",
+        output="screen",
+    )
+
+    # Give gz sim time to initialise before starting the bridge and spawner.
+    delayed = TimerAction(
+        period=5.0,
+        actions=[conveyor_speed_bridge, box_spawner],
+    )
+
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz]
+        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, delayed]
     )

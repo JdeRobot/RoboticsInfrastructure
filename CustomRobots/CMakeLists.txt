@@ -163,7 +163,17 @@ install(
     pick_place/models
     pick_place/urdf
 
+    palletizing/models
+    palletizing/launch
+    palletizing/params
+
   DESTINATION share/${PROJECT_NAME})
+
+# Palletizing box feeder node (ament_cmake package: install python node explicitly)
+install(PROGRAMS
+    palletizing/scripts/box_spawner.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME box_spawner)
 
 # install(
 #   FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py

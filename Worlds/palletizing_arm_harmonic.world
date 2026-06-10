@@ -62,30 +62,13 @@
       </link>
     </model>
 
-    <!-- Conveyor -->
-    <model name="conveyor">
-      <static>true</static>
+    <!-- Conveyor (moving belt, driven by TrackController; see CustomRobots/palletizing/models/conveyor_belt) -->
+    <!-- Named "conveyor" so the command topic is /model/conveyor/link/link/track_cmd_vel -->
+    <include>
+      <uri>model://conveyor_belt</uri>
+      <name>conveyor</name>
       <pose>0.6 0 0 0 0 1.57</pose>
-      <link name="link">
-        <visual name="visual">
-          <pose>0 0 0.95 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>0.45 0.35 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name="collision_0">
-          <pose>0 0 0.95 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>2.4 0.8 0.1</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-    </model>
+    </include>
 
     <!-- Ground Logo Big -->
     <model name="ground_logo_big">
@@ -159,159 +142,9 @@
       </link>
     </model>
 
-    <!-- Palletizing source: 6 identical brown boxes on the conveyor -->
-    <!-- 2 rows along x (0.55 / 0.65), 3 columns along y (-0.2 / 0.0 / 0.2) -->
-    <!-- z = 1.04 sits the boxes just above the conveyor surface (which tops out near 1.00) -->
-
-    <model name="brown_box_1">
-      <pose>0.55 -0.20 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="brown_box_2">
-      <pose>0.55 0.00 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="brown_box_3">
-      <pose>0.55 0.20 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="brown_box_4">
-      <pose>0.65 -0.20 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="brown_box_5">
-      <pose>0.65 0.00 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="brown_box_6">
-      <pose>0.65 0.20 1.04 0 0 0</pose>
-      <link name="link">
-        <inertial>
-          <mass>0.01</mass>
-          <inertia>
-            <ixx>0.00000417</ixx><ixy>0</ixy><ixz>0</ixz>
-            <iyy>0.00000417</iyy><iyz>0</iyz>
-            <izz>0.00000417</izz>
-          </inertia>
-        </inertial>
-        <collision name="collision">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 1</ambient>
-            <diffuse>0.55 0.35 0.15 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    <!-- Palletizing source boxes are spawned at runtime onto the moving belt -->
+    <!-- by the box_spawner node (CustomRobots/palletizing/scripts/box_spawner.py), -->
+    <!-- wired into Launchers/palletizing.launch.py. No static boxes here. -->
 
   </world>
 </sdf>

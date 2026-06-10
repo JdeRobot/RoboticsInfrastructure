@@ -1,0 +1,14 @@
+# ros_gz_bridge config for the palletizing conveyor.
+#
+# Maps a friendly ROS topic (/conveyor/speed) to the gz TrackController command
+# topic. The conveyor model is named "conveyor" with link "link", so gz exposes
+# the command on /model/conveyor/link/link/track_cmd_vel (gz.msgs.Double).
+#
+# Publish a Float64 to /conveyor/speed to set belt surface velocity (m/s):
+#   ros2 topic pub -1 /conveyor/speed std_msgs/msg/Float64 "{data: 0.15}"
+
+- ros_topic_name: "/conveyor/speed"
+  gz_topic_name: "/model/conveyor/link/link/track_cmd_vel"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "gz.msgs.Double"
+  direction: ROS_TO_GZ
