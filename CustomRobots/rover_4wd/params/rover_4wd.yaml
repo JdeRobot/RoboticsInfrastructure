@@ -2,7 +2,7 @@
   gz_topic_name: "/cmd_vel"
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "gz.msgs.Twist"
-  direction: BIDIRECTIONAL
+  direction: ROS_TO_GZ
 
 - ros_topic_name: "/clock"
   gz_topic_name: "/clock"
@@ -40,8 +40,6 @@
   ros_type_name: "sensor_msgs/msg/JointState"
   gz_type_name: "gz.msgs.Model"
   direction: GZ_TO_ROS
-
-
 # - ros_topic_name: "/camera/left_raw"
 #   gz_topic_name: "/camera_left"
 #   ros_type_name: "sensor_msgs/msg/Image"
