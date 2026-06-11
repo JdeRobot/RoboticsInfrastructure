@@ -78,26 +78,18 @@ def launch_setup(context):
     )
 
     resource_path = (
-        os.path.dirname(
-            get_package_share_directory("ros2srrc_ur3_gazebo")
-        )
+        os.path.dirname(get_package_share_directory("ros2srrc_ur3_gazebo"))
         + ":"
-        + os.path.dirname(
-            get_package_share_directory("ros2srrc_robots")
-        )
+        + os.path.dirname(get_package_share_directory("ros2srrc_robots"))
         + ":"
-        + os.path.dirname(
-            get_package_share_directory("ros2srrc_endeffectors")
-        )
+        + os.path.dirname(get_package_share_directory("ros2srrc_endeffectors"))
         + ":"
-        + os.path.dirname(
-            get_package_share_directory("robotiq_description")
-        )
+        + os.path.dirname(get_package_share_directory("robotiq_description"))
         + ":"
         + os.path.join(
             get_package_share_directory("robotiq_description"),
             "world",
-            "models"
+            "models",
         )
     )
 
@@ -408,7 +400,7 @@ def generate_launch_description():
     declared_arguments = [
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
-        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0.9"),
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
