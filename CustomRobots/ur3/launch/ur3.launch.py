@@ -31,6 +31,11 @@ def launch_setup(context):
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
+
+    print("X =", x.perform(context))
+    print("Y =", y.perform(context))
+    print("Z =", z.perform(context))
+
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
@@ -398,7 +403,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("x", default_value="0.5"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0.9"),
         DeclareLaunchArgument("R", default_value="0"),
