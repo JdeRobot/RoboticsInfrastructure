@@ -168,6 +168,7 @@
       <origin rpy="0 0 0" xyz="0.05490451627 -0.03060114443 0.0"/>
       <limit lower="-0.05" upper="0.80285" velocity="0.5" effort="1000"/>
       <dynamics damping="1.0" friction="1.0"/>
+      <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0"/>
     </joint>
 
     <!-- Robotiq: left_finger -->
@@ -254,6 +255,7 @@
       <origin xyz="0.06142 0.0127 0" rpy="${pi} 0.0 0.0" />
       <limit lower="-0.05" upper="0.80285" velocity="0.5" effort="1000"/>
       <dynamics damping="1.0" friction="1.0"/>
+      <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0"/>
     </joint>
 
     <!-- Robotiq: right_inner_knuckle -->
@@ -284,6 +286,7 @@
       <origin xyz="0.06142 -0.0127 0" rpy="0 0 0"/>
       <limit lower="-0.05" upper="0.80285" velocity="0.5" effort="1000"/>
       <dynamics damping="1.0" friction="1.0"/>
+      <mimic joint="robotiq_85_left_knuckle_joint" multiplier="1.0"/>
     </joint>
 
     <!-- Robotiq: left_finger_tip -->
@@ -316,6 +319,7 @@
       <origin xyz="0.04303959807 -0.03759940821 0.0" rpy="0.0 0.0 0.0"/>
       <limit lower="-0.80285" upper="0.05" velocity="0.5" effort="1000"/>
       <dynamics damping="1.0" friction="1.0"/>
+      <mimic joint="robotiq_85_left_knuckle_joint" multiplier="-1.0"/>
     </joint>
 
     <!-- Robotiq: right_finger_tip -->
@@ -348,6 +352,7 @@
       <origin rpy="0.0 0.0 0.0" xyz="0.04303959807 -0.03759940821  0.0"/>
       <limit lower="-0.80285" upper="0.05" velocity="0.5" effort="1000"/>
       <dynamics damping="1.0" friction="1.0"/>
+      <mimic joint="robotiq_85_left_knuckle_joint" multiplier="-1.0"/>
     </joint>
 
     <!-- SMALL CUBE FOR GRIPPER PLUGIN -->
