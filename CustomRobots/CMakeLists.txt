@@ -51,7 +51,7 @@ target_include_directories(
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:include>)
 
-ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
+ament_target_dependencies(personplugin "rclcpp" "pluginlib")
 
 # Causes the visibility macros to use dllexport rather than dllimport, which is
 # appropriate when building the dll but not consuming it.
