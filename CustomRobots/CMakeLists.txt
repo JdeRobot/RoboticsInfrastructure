@@ -46,7 +46,6 @@ endif()
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
 install(
-  TARGETS personplugin
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
