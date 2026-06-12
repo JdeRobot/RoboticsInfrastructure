@@ -28,7 +28,6 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    #gazebo
     pluginlib
     Threads)
 
