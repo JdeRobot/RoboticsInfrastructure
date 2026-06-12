@@ -37,8 +37,6 @@ endforeach()
 
 add_subdirectory(follow_person_harmonic)
 
-find_package(gazebo)
-
 # ============================================================================
 # Person plugin
 if(CMAKE_USE_PTHREADS_INIT)
