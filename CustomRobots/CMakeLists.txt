@@ -45,18 +45,6 @@ endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(
-  personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
-
-ament_target_dependencies(personplugin "rclcpp" "pluginlib")
-
-# Causes the visibility macros to use dllexport rather than dllimport, which is
-# appropriate when building the dll but not consuming it.
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
 install(
   TARGETS personplugin
   EXPORT export_${PROJECT_NAME}
