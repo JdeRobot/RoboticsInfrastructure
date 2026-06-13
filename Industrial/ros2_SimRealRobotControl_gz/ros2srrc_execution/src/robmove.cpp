@@ -52,6 +52,7 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
+std::string param_MOVE_GROUP = "ur5_manipulator";
 
 // Declaration of GLOBAL VARIABLE --> RES:
 std::string RES = "none";
@@ -91,6 +92,21 @@ public:
     explicit ActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions()) : Node("ros2srrc_RobMove", options){
 
         this->declare_parameter("ROB_PARAM", "none");
+
+        this->declare_parameter(
+            "MOVE_GROUP",
+            "ur5_manipulator"
+        );
+
+        param_MOVE_GROUP =
+            this->get_parameter("MOVE_GROUP").as_string();
+
+        RCLCPP_INFO(
+            this->get_logger(),
+            "MOVE_GROUP received -> %s",
+            param_MOVE_GROUP.c_str()
+        );
+
         param_ROB = this->get_parameter("ROB_PARAM").as_string();
         RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
@@ -135,13 +151,57 @@ private:
 
     void execute(const std::shared_ptr<GoalHandle> goal_handle)
     {
+        // ================= DEBUG =================
+        RCLCPP_INFO(
+            get_logger(),
+            "Planning frame: %s",
+            move_group_interface_ROB.getPlanningFrame().c_str()
+        );
 
-        // 0. INFORMATION -> Current Robot Pose:
+        RCLCPP_INFO(
+            get_logger(),
+            "End effector link: %s",
+            move_group_interface_ROB.getEndEffectorLink().c_str()
+        );
+
+        auto state = move_group_interface_ROB.getCurrentState();
+
+        if (state)
+        {
+            const Eigen::Isometry3d& t =
+                state->getGlobalLinkTransform("tool0");
+
+            RCLCPP_INFO(
+                get_logger(),
+                "tool0 RobotState -> x=%.3f y=%.3f z=%.3f",
+                t.translation().x(),
+                t.translation().y(),
+                t.translation().z()
+            );
+        }
+
+        auto cp_tool0 =
+            move_group_interface_ROB.getCurrentPose("tool0");
+
+        RCLCPP_INFO(
+            get_logger(),
+            "tool0 CurrentPose -> x=%.3f y=%.3f z=%.3f",
+            cp_tool0.pose.position.x,
+            cp_tool0.pose.position.y,
+            cp_tool0.pose.position.z
+        );
+
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
-        RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
-        RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
-        RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
 
+        RCLCPP_INFO(
+            get_logger(),
+            "Default CurrentPose -> x=%.3f y=%.3f z=%.3f",
+            CP_INFO.pose.position.x,
+            CP_INFO.pose.position.y,
+            CP_INFO.pose.position.z
+        );
+
+        // ================= FIN DEBUG =================
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
 
@@ -175,7 +235,7 @@ private:
         if (RES == "PLANNING: OK"){
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
-                "ur5_manipulator"
+                param_MOVE_GROUP
             );
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
@@ -271,7 +331,7 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    std::string ROBname = "ur5_manipulator";
+    std::string ROBname = param_MOVE_GROUP;
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 

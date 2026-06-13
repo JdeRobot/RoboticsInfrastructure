@@ -198,7 +198,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 68	Rover 4wd Warehouse Low Noise	68	19
 69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision Harmonic world	70	24
-71	Conveyor Belt World	71	0
+71	Conveyor Belt World	71	26
 \.
 
 --
@@ -265,7 +265,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 67	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{-1.0,10.0,0.1,0.0,0.0,0.0}
 68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 70	Machine Vision Harmonic	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
-71	Conveyor Harmonic	/opt/jderobot/Launchers/sausage_exercise.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+71	Conveyor Harmonic	/opt/jderobot/Launchers/sausage_exercise.launch.py	None	ROS2	gz	{-0.5,0.0,0.95,0.0,0.0,0.0}
 \.
 
 --
@@ -299,6 +299,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
 24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
+25	Ur3	/home/ws/src/CustomRobots/ur3/launch/ur3.launch.py	ur3_robotiq	None
+26	Ur3 Camera	/home/ws/src/CustomRobots/ur3/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
 \.
 
 --

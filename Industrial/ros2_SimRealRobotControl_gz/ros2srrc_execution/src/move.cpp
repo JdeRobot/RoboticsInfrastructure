@@ -76,6 +76,7 @@
 std::string param_ROB = "none";
 std::string param_EE = "none";
 std::string param_ENV = "none";
+std::string param_MOVE_GROUP = "ur5_manipulator";
 
 // Declaration of GLOBAL VARIABLES --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -117,6 +118,29 @@ public:
         RCLCPP_INFO(this->get_logger(), "EE_PARAM received -> %s", param_EE.c_str());
     }
 private:
+};
+
+class ros2_MoveGroupParam : public rclcpp::Node
+{
+public:
+    ros2_MoveGroupParam() : Node("ros2_MoveGroupParam")
+    {
+        this->declare_parameter(
+            "MOVE_GROUP",
+            "ur5_manipulator"
+        );
+
+        param_MOVE_GROUP =
+            this->get_parameter("MOVE_GROUP")
+                .get_parameter_value()
+                .get<std::string>();
+
+        RCLCPP_INFO(
+            this->get_logger(),
+            "MOVE_GROUP received -> %s",
+            param_MOVE_GROUP.c_str()
+        );
+    }
 };
 
 
@@ -402,7 +426,7 @@ private:
 
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
-                "ur5_manipulator"
+                param_MOVE_GROUP
             );
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
@@ -494,6 +518,9 @@ int main(int argc, char ** argv)
     auto node_PARAM_EE = std::make_shared<ros2_EEParam>();
     rclcpp::spin_some(node_PARAM_EE);
 
+    auto node_PARAM_MOVE_GROUP = std::make_shared<ros2_MoveGroupParam>();
+    rclcpp::spin_some(node_PARAM_MOVE_GROUP);
+
     // ================= LOAD SPECS =================
     if (param_ROB != "none"){
         std::string pkgPATH_R =
@@ -559,7 +586,7 @@ int main(int argc, char ** argv)
 
     // ROBOT
     if (param_ROB != "none"){
-        std::string group_name = "ur5_manipulator";
+        std::string group_name = param_MOVE_GROUP;  
 
         move_group_interface_ROB = MoveGroupInterface(node2, group_name);
 
