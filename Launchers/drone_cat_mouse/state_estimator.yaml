@@ -1,6 +1,0 @@
-/**:
-  ros__parameters:
-    base_frame: "base_link"
-    global_ref_frame: "earth"
-    odom_frame: "odom"
-    map_frame: "map"

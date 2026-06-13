@@ -2,7 +2,7 @@
 <!-- drone cat-mouse chase world for the jderobot robotics academy
      maintainer: Anish Kumar (anishkumar59085@gmail.com) -->
 <sdf version="1.9">
-  <world name="my_city_world">
+  <world name="default">
 
     <!-- system plugins that gz needs to run the sim -->
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
@@ -68,17 +68,17 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <!-- drone_cat — the one the student controls -->
+    <!-- drone0 — the one the student controls -->
     <include>
       <uri>model://quadrotor_base</uri>
-      <name>drone_cat</name>
+      <name>drone0</name>
       <pose>0 5 0.2 0 0 0</pose>
 
       <!-- velocity controller — converts cmd_vel twist msgs into rotor forces -->
       <plugin
         filename="gz-sim-multicopter-control-system"
         name="gz::sim::systems::MulticopterVelocityControl">
-        <robotNamespace>model/drone_cat</robotNamespace>
+        <robotNamespace>model/drone0</robotNamespace>
         <commandSubTopic>cmd_vel</commandSubTopic>
         <enableSubTopic>velocity_controller/enable</enableSubTopic>
         <comLinkName>base_link</comLinkName>
@@ -119,7 +119,7 @@
       <!-- motor models — one per rotor, these handle the actual spinning physics -->
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_cat</robotNamespace>
+        <robotNamespace>model/drone0</robotNamespace>
         <jointName>rotor_0_joint</jointName>
         <linkName>rotor_0</linkName>
         <turningDirection>ccw</turningDirection>
@@ -138,7 +138,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_cat</robotNamespace>
+        <robotNamespace>model/drone0</robotNamespace>
         <jointName>rotor_1_joint</jointName>
         <linkName>rotor_1</linkName>
         <turningDirection>ccw</turningDirection>
@@ -157,7 +157,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_cat</robotNamespace>
+        <robotNamespace>model/drone0</robotNamespace>
         <jointName>rotor_2_joint</jointName>
         <linkName>rotor_2</linkName>
         <turningDirection>cw</turningDirection>
@@ -176,7 +176,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_cat</robotNamespace>
+        <robotNamespace>model/drone0</robotNamespace>
         <jointName>rotor_3_joint</jointName>
         <linkName>rotor_3</linkName>
         <turningDirection>cw</turningDirection>
@@ -216,17 +216,17 @@
       </plugin>
     </include>
 
-    <!-- drone_mouse — pre-programmed to fly a lissajous figure-8 pattern -->
+    <!-- drone1 — the mouse, pre-programmed to fly a square so the cat has something to chase -->
     <include>
       <uri>model://quadrotor_base</uri>
-      <name>drone_mouse</name>
+      <name>drone1</name>
       <pose>20 5 0.2 0 0 0</pose>
 
       <!-- same velocity controller setup as the cat -->
       <plugin
         filename="gz-sim-multicopter-control-system"
         name="gz::sim::systems::MulticopterVelocityControl">
-        <robotNamespace>model/drone_mouse</robotNamespace>
+        <robotNamespace>model/drone1</robotNamespace>
         <commandSubTopic>cmd_vel</commandSubTopic>
         <enableSubTopic>velocity_controller/enable</enableSubTopic>
         <comLinkName>base_link</comLinkName>
@@ -267,7 +267,7 @@
       <!-- motor models for mouse (identical config to cat) -->
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_mouse</robotNamespace>
+        <robotNamespace>model/drone1</robotNamespace>
         <jointName>rotor_0_joint</jointName>
         <linkName>rotor_0</linkName>
         <turningDirection>ccw</turningDirection>
@@ -286,7 +286,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_mouse</robotNamespace>
+        <robotNamespace>model/drone1</robotNamespace>
         <jointName>rotor_1_joint</jointName>
         <linkName>rotor_1</linkName>
         <turningDirection>ccw</turningDirection>
@@ -305,7 +305,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_mouse</robotNamespace>
+        <robotNamespace>model/drone1</robotNamespace>
         <jointName>rotor_2_joint</jointName>
         <linkName>rotor_2</linkName>
         <turningDirection>cw</turningDirection>
@@ -324,7 +324,7 @@
       </plugin>
       <plugin filename="gz-sim-multicopter-motor-model-system"
               name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>model/drone_mouse</robotNamespace>
+        <robotNamespace>model/drone1</robotNamespace>
         <jointName>rotor_3_joint</jointName>
         <linkName>rotor_3</linkName>
         <turningDirection>cw</turningDirection>
@@ -364,12 +364,8 @@
       </plugin>
     </include>
 
-    <!-- gui camera — angled to see both drones from above -->
-    <gui fullscreen="0">
-      <camera name="user_camera">
-        <pose>10 -30 30 0 0.5 1.57</pose>
-      </camera>
-    </gui>
+    <!-- gui camera lives in the gui config (drone_cat_mouse.config),
+         not here - gz sim takes the view from there, not from <gui> -->
 
   </world>
 </sdf>
