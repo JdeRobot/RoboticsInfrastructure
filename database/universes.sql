@@ -299,8 +299,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
 24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
-25	Ur3	/home/ws/src/CustomRobots/ur3/launch/ur3.launch.py	ur3_robotiq	None
-26	Ur3 Camera	/home/ws/src/CustomRobots/ur3/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
+25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None
+26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
 \.
 
 --
