@@ -227,6 +227,25 @@ private:
 
         auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
+        auto CURRENT_POSE_TOOL0 =
+            move_group_interface_ROB.getCurrentPose("tool0");
+
+        RCLCPP_INFO(
+            get_logger(),
+            "CURRENT_POSE(default) -> %.6f %.6f %.6f",
+            CURRENT_POSE.pose.position.x,
+            CURRENT_POSE.pose.position.y,
+            CURRENT_POSE.pose.position.z
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "CURRENT_POSE(tool0) -> %.6f %.6f %.6f",
+            CURRENT_POSE_TOOL0.pose.position.x,
+            CURRENT_POSE_TOOL0.pose.position.y,
+            CURRENT_POSE_TOOL0.pose.position.z
+        );
+
         geometry_msgs::msg::Pose TARGET_POSE;
         TARGET_POSE.position.x = GOAL->x;
         TARGET_POSE.position.y = GOAL->y;
