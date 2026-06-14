@@ -418,6 +418,20 @@ private:
 
         RCLCPP_INFO(
             get_logger(),
+            "IK state satisfies bounds = %s",
+            current_state_debug->satisfiesBounds() ? "YES" : "NO"
+        );
+
+        current_state_debug->enforceBounds();
+
+        RCLCPP_INFO(
+            get_logger(),
+            "After enforceBounds = %s",
+            current_state_debug->satisfiesBounds() ? "YES" : "NO"
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
             "Direct IK result = %s",
             ik_ok ? "SUCCESS" : "FAILED"
         );
@@ -471,6 +485,9 @@ private:
                 );
             }
         }
+
+        move_group_interface_ROB.clearPoseTargets();
+        move_group_interface_ROB.clearPathConstraints();
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
