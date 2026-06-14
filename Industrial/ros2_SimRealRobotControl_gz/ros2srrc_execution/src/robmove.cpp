@@ -325,6 +325,25 @@ private:
             move_group_interface_ROB.getEndEffectorLink().c_str()
         );
 
+        auto state = move_group_interface_ROB.getCurrentState();
+
+        std::vector<double> joints;
+
+        state->copyJointGroupPositions(
+            state->getJointModelGroup(param_MOVE_GROUP),
+            joints
+        );
+
+        for (size_t i = 0; i < joints.size(); i++)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "Joint %ld = %.6f",
+                i+1,
+                joints[i]
+            );
+        }
+
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         auto stored_target =
