@@ -311,12 +311,29 @@ private:
             stored_target.header.frame_id.c_str()
         );
 
-        move_group_interface_ROB.setStartStateToCurrentState(); 
+        move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
+        /* NUEVO DEBUG */
+        move_group_interface_ROB.setPlanningTime(10.0);
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Planner ID = %s",
+            move_group_interface_ROB.getPlannerId().c_str()
+        );
+
+        /* PLANIFICAR */
         MyPlan = plan_ROB();
+
+        /* NUEVO DEBUG */
+        RCLCPP_INFO(
+            get_logger(),
+            "Planning result = %s",
+            RES.c_str()
+        );
 
         if (RES == "PLANNING: OK"){
             robot_trajectory::RobotTrajectory rt(
