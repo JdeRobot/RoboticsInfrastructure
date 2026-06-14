@@ -67,7 +67,7 @@ public:
   : Node("ros2srrc_RobPosePUB"), count_(0)
   {
     publisher_ = this->create_publisher<ros2srrc_data::msg::Robpose>("Robpose", 10);
-    timer_ = this->create_wall_timer(50ms, std::bind(&RobPose_PUB::timer_callback, this));
+    timer_ = this->create_wall_timer(2000ms, std::bind(&RobPose_PUB::timer_callback, this));
   }
 
 private:
@@ -79,6 +79,29 @@ private:
     }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "CurrentPose frame_id = %s",
+      CP_INFO.header.frame_id.c_str()
+    );
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "MoveIt Pose -> x=%.6f y=%.6f z=%.6f",
+      CP_INFO.pose.position.x,
+      CP_INFO.pose.position.y,
+      CP_INFO.pose.position.z
+    );
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "MoveIt Quat -> qx=%.6f qy=%.6f qz=%.6f qw=%.6f",
+      CP_INFO.pose.orientation.x,
+      CP_INFO.pose.orientation.y,
+      CP_INFO.pose.orientation.z,
+      CP_INFO.pose.orientation.w
+    );
 
     POSE.x = CP_INFO.pose.position.x;
     POSE.y = CP_INFO.pose.position.y;
