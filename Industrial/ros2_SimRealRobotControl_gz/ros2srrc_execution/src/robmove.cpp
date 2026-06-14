@@ -355,10 +355,46 @@ private:
             return;
         }
 
+        auto jmg =
+            current_state_debug->getJointModelGroup(param_MOVE_GROUP);
+
+        if (!jmg)
+        {
+            RCLCPP_ERROR(
+                get_logger(),
+                "JointModelGroup '%s' NOT FOUND",
+                param_MOVE_GROUP.c_str()
+            );
+            return;
+        }
+
+        RCLCPP_INFO(
+            get_logger(),
+            "JointModelGroup '%s' FOUND",
+            param_MOVE_GROUP.c_str()
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "State satisfies bounds = %s",
+            current_state_debug->satisfiesBounds(jmg)
+                ? "YES"
+                : "NO"
+        );
+
+        if (!current_state_debug)
+        {
+            RCLCPP_ERROR(
+                get_logger(),
+                "getCurrentState() returned nullptr"
+            );
+            return;
+        }
+
         std::vector<double> joints;
 
         current_state_debug->copyJointGroupPositions(
-            current_state_debug->getJointModelGroup(param_MOVE_GROUP),
+            jmg,
             joints
         );
 
@@ -374,10 +410,9 @@ private:
 
         bool ik_ok =
             current_state_debug->setFromIK(
-                current_state_debug->getJointModelGroup(param_MOVE_GROUP),
+                jmg,
                 TARGET_POSE,
-                "tool0",
-                5,
+                std::string("tool0"),
                 0.1
             );
 
@@ -392,7 +427,7 @@ private:
             std::vector<double> ik_joints;
 
             current_state_debug->copyJointGroupPositions(
-                current_state_debug->getJointModelGroup(param_MOVE_GROUP),
+                jmg,
                 ik_joints
             );
 
@@ -403,6 +438,36 @@ private:
                     "IK Joint %ld = %.6f",
                     i + 1,
                     ik_joints[i]
+                );
+            }
+        }
+
+        auto fresh_state =
+            move_group_interface_ROB.getCurrentState(5.0);
+
+        if (!fresh_state)
+        {
+            RCLCPP_ERROR(
+                get_logger(),
+                "Fresh state is NULL"
+            );
+        }
+        else
+        {
+            std::vector<double> fresh_joints;
+
+            fresh_state->copyJointGroupPositions(
+                jmg,
+                fresh_joints
+            );
+
+            for (size_t i = 0; i < fresh_joints.size(); i++)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "Fresh Joint %ld = %.6f",
+                    i + 1,
+                    fresh_joints[i]
                 );
             }
         }
