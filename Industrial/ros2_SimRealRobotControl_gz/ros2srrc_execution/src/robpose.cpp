@@ -148,7 +148,25 @@ int main(int argc, char **argv)
   using moveit::planning_interface::MoveGroupInterface;
   std::string ROBname = param_MOVE_GROUP;
 
-  move_group_interface_ROB = MoveGroupInterface(node, ROBname);
+  auto moveit_node = std::make_shared<rclcpp::Node>(
+      "moveit_helper_node_robpose",
+      rclcpp::NodeOptions()
+          .automatically_declare_parameters_from_overrides(true)
+  );
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(moveit_node);
+
+  std::thread([&executor]() {
+      executor.spin();
+  }).detach();
+
+  move_group_interface_ROB =
+      MoveGroupInterface(moveit_node, ROBname);
+
+  move_group_interface_ROB.startStateMonitor();
+
+  rclcpp::sleep_for(std::chrono::seconds(2));
 
   RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
 
