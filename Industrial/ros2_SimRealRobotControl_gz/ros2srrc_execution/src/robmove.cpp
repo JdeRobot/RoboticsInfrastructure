@@ -275,15 +275,21 @@ private:
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-        std::vector<double> pose_target;
-
-        bool has_target =
-            move_group_interface_ROB.getPoseTarget(pose_target);
+        auto stored_target =
+            move_group_interface_ROB.getPoseTarget();
 
         RCLCPP_INFO(
             get_logger(),
-            "Pose target stored = %s",
-            has_target ? "YES" : "NO"
+            "Stored target -> x=%.6f y=%.6f z=%.6f",
+            stored_target.pose.position.x,
+            stored_target.pose.position.y,
+            stored_target.pose.position.z
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Stored target frame -> %s",
+            stored_target.header.frame_id.c_str()
         );
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
