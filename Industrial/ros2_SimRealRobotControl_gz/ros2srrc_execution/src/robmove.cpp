@@ -223,6 +223,23 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
+        RCLCPP_INFO(
+            get_logger(),
+            "TARGET -> x=%.3f y=%.3f z=%.3f",
+            TARGET_POSE.position.x,
+            TARGET_POSE.position.y,
+            TARGET_POSE.position.z
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "TARGET Q -> %.3f %.3f %.3f %.3f",
+            TARGET_POSE.orientation.x,
+            TARGET_POSE.orientation.y,
+            TARGET_POSE.orientation.z,
+            TARGET_POSE.orientation.w
+        );
+
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
