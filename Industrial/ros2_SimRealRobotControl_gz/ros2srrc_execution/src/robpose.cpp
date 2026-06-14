@@ -129,6 +129,18 @@ int main(int argc, char **argv)
 
   RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
 
+  RCLCPP_INFO(
+    node->get_logger(),
+    "End effector link: %s",
+    move_group_interface_ROB.getEndEffectorLink().c_str()
+  );
+
+  RCLCPP_INFO(
+    node->get_logger(),
+    "Planning frame: %s",
+    move_group_interface_ROB.getPlanningFrame().c_str()
+  );
+
   rclcpp::spin(node);
 
   rclcpp::shutdown();
