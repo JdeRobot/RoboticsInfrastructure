@@ -93,11 +93,29 @@ moveit::planning_interface::MoveGroupInterface::Plan plan_ROB()
 
     if (!success)
     {
-        RCLCPP_ERROR(
-            rclcpp::get_logger("PLAN_DEBUG"),
-            "Planning failed. Error code = %d",
-            result.val
-        );
+        switch(result.val)
+        {
+            case -31:
+                RCLCPP_ERROR(
+                    rclcpp::get_logger("PLAN_DEBUG"),
+                    "NO IK SOLUTION (-31)"
+                );
+                break;
+
+            case -2:
+                RCLCPP_ERROR(
+                    rclcpp::get_logger("PLAN_DEBUG"),
+                    "INVALID MOTION PLAN (-2)"
+                );
+                break;
+
+            default:
+                RCLCPP_ERROR(
+                    rclcpp::get_logger("PLAN_DEBUG"),
+                    "ERROR CODE = %d",
+                    result.val
+                );
+        }
     }
 
     if (success)
@@ -326,7 +344,16 @@ private:
         );
 
         auto current_state_debug =
-            move_group_interface_ROB.getCurrentState();
+            move_group_interface_ROB.getCurrentState(5.0);
+
+        if (!current_state_debug)
+        {
+            RCLCPP_ERROR(
+                get_logger(),
+                "getCurrentState() returned nullptr"
+            );
+            return;
+        }
 
         std::vector<double> joints;
 
@@ -343,6 +370,41 @@ private:
                 i + 1,
                 joints[i]
             );
+        }
+
+        bool ik_ok =
+            current_state_debug->setFromIK(
+                current_state_debug->getJointModelGroup(param_MOVE_GROUP),
+                TARGET_POSE,
+                "tool0",
+                5,
+                0.1
+            );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Direct IK result = %s",
+            ik_ok ? "SUCCESS" : "FAILED"
+        );
+
+        if (ik_ok)
+        {
+            std::vector<double> ik_joints;
+
+            current_state_debug->copyJointGroupPositions(
+                current_state_debug->getJointModelGroup(param_MOVE_GROUP),
+                ik_joints
+            );
+
+            for (size_t i = 0; i < ik_joints.size(); i++)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "IK Joint %ld = %.6f",
+                    i + 1,
+                    ik_joints[i]
+                );
+            }
         }
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
@@ -487,9 +549,18 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
+    RCLCPP_INFO(
+        logger,
+        "param_MOVE_GROUP = %s",
+        param_MOVE_GROUP.c_str()
+    );
+
     std::string ROBname = param_MOVE_GROUP;
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
+    
+    move_group_interface_ROB.startStateMonitor();
+    rclcpp::sleep_for(std::chrono::seconds(2));
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
