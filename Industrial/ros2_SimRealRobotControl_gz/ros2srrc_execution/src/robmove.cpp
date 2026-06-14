@@ -325,12 +325,13 @@ private:
             move_group_interface_ROB.getEndEffectorLink().c_str()
         );
 
-        auto state = move_group_interface_ROB.getCurrentState();
+        auto current_state_debug =
+            move_group_interface_ROB.getCurrentState();
 
         std::vector<double> joints;
 
-        state->copyJointGroupPositions(
-            state->getJointModelGroup(param_MOVE_GROUP),
+        current_state_debug->copyJointGroupPositions(
+            current_state_debug->getJointModelGroup(param_MOVE_GROUP),
             joints
         );
 
@@ -339,7 +340,7 @@ private:
             RCLCPP_INFO(
                 get_logger(),
                 "Joint %ld = %.6f",
-                i+1,
+                i + 1,
                 joints[i]
             );
         }
