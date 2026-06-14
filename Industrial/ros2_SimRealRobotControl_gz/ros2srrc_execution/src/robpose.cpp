@@ -80,12 +80,6 @@ private:
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
 
-    RCLCPP_INFO(
-      this->get_logger(),
-      "CurrentPose frame_id = %s",
-      CP_INFO.header.frame_id.c_str()
-    );
-
     POSE.x = CP_INFO.pose.position.x;
     POSE.y = CP_INFO.pose.position.y;
     POSE.z = CP_INFO.pose.position.z;
@@ -95,6 +89,7 @@ private:
     POSE.qw = CP_INFO.pose.orientation.w;
 
     publisher_->publish(POSE);
+
   }
 
   rclcpp::TimerBase::SharedPtr timer_;
