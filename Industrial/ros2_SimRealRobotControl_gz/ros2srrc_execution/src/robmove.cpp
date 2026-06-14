@@ -183,12 +183,25 @@ private:
         auto cp_tool0 =
             move_group_interface_ROB.getCurrentPose("tool0");
 
+        auto cp_ee =
+            move_group_interface_ROB.getCurrentPose(
+                move_group_interface_ROB.getEndEffectorLink()
+            );
+
         RCLCPP_INFO(
             get_logger(),
-            "tool0 CurrentPose -> x=%.3f y=%.3f z=%.3f",
+            "tool0 -> %.3f %.3f %.3f",
             cp_tool0.pose.position.x,
             cp_tool0.pose.position.y,
             cp_tool0.pose.position.z
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "EEF -> %.3f %.3f %.3f",
+            cp_ee.pose.position.x,
+            cp_ee.pose.position.y,
+            cp_ee.pose.position.z
         );
 
         auto CP_INFO = move_group_interface_ROB.getCurrentPose();
@@ -240,7 +253,38 @@ private:
             TARGET_POSE.orientation.w
         );
 
+        RCLCPP_INFO(
+            get_logger(),
+            "Current pose before planning -> x=%.6f y=%.6f z=%.6f",
+            CURRENT_POSE.pose.position.x,
+            CURRENT_POSE.pose.position.y,
+            CURRENT_POSE.pose.position.z
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Current pose frame -> %s",
+            CURRENT_POSE.header.frame_id.c_str()
+        );
+
+        RCLCPP_INFO(
+            get_logger(),
+            "End effector link = %s",
+            move_group_interface_ROB.getEndEffectorLink().c_str()
+        );
+
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+
+        std::vector<double> pose_target;
+
+        bool has_target =
+            move_group_interface_ROB.getPoseTarget(pose_target);
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Pose target stored = %s",
+            has_target ? "YES" : "NO"
+        );
 
         move_group_interface_ROB.setStartStateToCurrentState(); 
 
