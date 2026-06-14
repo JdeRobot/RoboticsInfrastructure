@@ -60,24 +60,57 @@ std::string RES = "none";
 // =============================================================================== //
 // MoveIt!2 -> MoveGroupInterface/Plan function:
 
-moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
-
+moveit::planning_interface::MoveGroupInterface::Plan plan_ROB()
+{
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
-    // Execute the plan
+    RCLCPP_INFO(
+        rclcpp::get_logger("PLAN_DEBUG"),
+        "Pose target frame = %s",
+        move_group_interface_ROB.getPoseTarget().header.frame_id.c_str()
+    );
+
+    auto cp = move_group_interface_ROB.getCurrentPose();
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("PLAN_DEBUG"),
+        "Current pose = %.3f %.3f %.3f",
+        cp.pose.position.x,
+        cp.pose.position.y,
+        cp.pose.position.z
+    );
+
+    auto result = move_group_interface_ROB.plan(my_plan);
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("PLAN_DEBUG"),
+        "MoveIt plan result code = %d",
+        result.val
+    );
+
+    bool success =
+        (result == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+
+    if (!success)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PLAN_DEBUG"),
+            "Planning failed. Error code = %d",
+            result.val
+        );
+    }
+
     if (success)
     {
         RES = "PLANNING: OK";
-        return(my_plan);
     }
     else
     {
         RES = "PLANNING: ERROR";
-        return(my_plan);
     }
 
-};
+    return my_plan;
+}
 
 // =============================================================================== //
 // ROS2 Action Server to move the ROBOT:
