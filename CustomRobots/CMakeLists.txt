@@ -55,7 +55,6 @@ ament_environment_hooks("hooks/resource_paths.sh")
 install(
   DIRECTORY
     follow_person_harmonic/models
-    follow_person_harmonic/params
     
     f1/models
     f1/params
