@@ -107,7 +107,6 @@ install(
 
     # AMAZON HOSPITAL
     amazon_hospital/models
-    amazon_hospital/worlds
 
     autopark_harmonic/models
 
