@@ -127,7 +127,6 @@ install(
     restaurant/models
     
     pick_place/models
-    pick_place/urdf
 
   DESTINATION share/${PROJECT_NAME})
 
