@@ -99,15 +99,8 @@ install(
 
     roomba_robot/models
 
-    ackermann_cars/models
-
     car_junction/models
     car_junction/scripts
-
-    # AMAZON WAREHOUSE ROBOT
-    amazon_robot_classic/models
-    amazon_robot_classic/urdf
-    amazon_robot_classic/meshes
 
     amazon_warehouse_harmonic/models
 
@@ -116,10 +109,6 @@ install(
     # AMAZON HOSPITAL
     amazon_hospital/models
     amazon_hospital/worlds
-
-    ackermann_logistic_robot/models
-
-    autoparking/models
 
     autopark_harmonic/models
 
