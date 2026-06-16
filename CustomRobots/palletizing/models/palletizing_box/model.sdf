@@ -1,10 +1,17 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
   <!--
-    Dynamic palletizing box, 0.30 m cube (~30 cm side — realistic carton size).
+    Dynamic palletizing box — a 0.40 x 0.30 x 0.20 m carton (X x Y x Z).
 
-    Inertia for a solid 0.30 m cube of mass 2.0 kg:
-        I = (1/12) * m * (a^2 + a^2) = (1/12) * 2.0 * (0.09 + 0.09) = 0.030
+    A cuboid : a distinct footprint and a clear long axis are what make
+    palletizing a real problem — orientation now matters, so layers
+    can interlock / brick-bond instead of stacking as identical columns.
+
+    Anisotropic inertia for a solid cuboid (a=0.40, b=0.30, c=0.20), mass 2.0 kg,
+    I = (1/12) * m * (dim_i^2 + dim_j^2):
+        Ixx = (1/12)*2.0*(0.30^2 + 0.20^2) = 0.0217   (about X)
+        Iyy = (1/12)*2.0*(0.40^2 + 0.20^2) = 0.0333   (about Y)
+        Izz = (1/12)*2.0*(0.40^2 + 0.30^2) = 0.0417   (about Z)
   -->
   <model name="palletizing_box">
     <link name="link">
@@ -14,19 +21,19 @@
       <inertial>
         <mass>2.0</mass>
         <inertia>
-          <ixx>0.030</ixx>
+          <ixx>0.0217</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.030</iyy>
+          <iyy>0.0333</iyy>
           <iyz>0</iyz>
-          <izz>0.030</izz>
+          <izz>0.0417</izz>
         </inertia>
       </inertial>
 
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.30 0.30 0.30</size>
+            <size>0.40 0.30 0.20</size>
           </box>
         </geometry>
         <surface>
@@ -49,7 +56,7 @@
       <visual name="visual">
         <geometry>
           <box>
-            <size>0.30 0.30 0.30</size>
+            <size>0.40 0.30 0.20</size>
           </box>
         </geometry>
         <material>

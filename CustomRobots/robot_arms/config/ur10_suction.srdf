@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot name="ur5">
+<robot name="ur10">
 
-  <group name="ur5_manipulator">
+  <group name="ur10_arm">
     <chain base_link="base_link" tip_link="tool0"/>
   </group>
 
-  <group_state group="ur5_manipulator" name="home">
+  <group_state group="ur10_arm" name="home">
     <joint name="elbow_joint" value="0" />
     <joint name="shoulder_lift_joint" value="-1.5707" />
     <joint name="shoulder_pan_joint" value="0" />
@@ -14,7 +14,7 @@
     <joint name="wrist_3_joint" value="0" />
   </group_state>
 
-  <group_state group="ur5_manipulator" name="up">
+  <group_state group="ur10_arm" name="up">
     <joint name="elbow_joint" value="0" />
     <joint name="shoulder_lift_joint" value="-1.5707" />
     <joint name="shoulder_pan_joint" value="0" />

@@ -39,16 +39,16 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "ur5",
-        "ur5_suction.urdf.xacro",
+        "ur10",
+        "ur10_suction.urdf.xacro",
     )
 
-    controllers_file = os.path.join(package_dir, "config", "ur5_suction_controllers.yaml")
+    controllers_file = os.path.join(package_dir, "config", "ur10_suction_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "ur_type": "ur5",
+            "ur_type": "ur10",
             "name": "ur",
             "prefix": "",
             "use_fake_hardware": "false",
@@ -65,7 +65,7 @@ def launch_setup(context):
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "custom_robots", "config/ur5_suction.srdf"
+            "custom_robots", "config/ur10_suction.srdf"
         )
     }
 
@@ -111,10 +111,10 @@ def launch_setup(context):
     }
 
     pilz_cartesian_limits = load_yaml(
-        "ros2srrc_robots", "ur5/config/pilz_cartesian_limits.yaml"
+        "ros2srrc_robots", "ur10/config/pilz_cartesian_limits.yaml"
     )
 
-    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur5/config/joint_limits.yaml")
+    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur10/config/joint_limits.yaml")
 
     combined_planning = {
         "robot_description_planning": {**joint_limits_yaml, **pilz_cartesian_limits}
@@ -139,8 +139,9 @@ def launch_setup(context):
                 "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
+            {"ROB_PARAM": "ur10"},
             {"EE_PARAM": "ls_vgr"},
+            {"MOVE_GROUP": "ur10_arm"},
         ],
     )
 
@@ -159,7 +160,8 @@ def launch_setup(context):
                 "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
+            {"ROB_PARAM": "ur10"},
+            {"MOVE_GROUP": "ur10_arm"},
         ],
     )
 
@@ -174,7 +176,8 @@ def launch_setup(context):
             kinematics_yaml,
             ompl_planning,
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
+            {"ROB_PARAM": "ur10"},
+            {"MOVE_GROUP": "ur10_arm"},
         ],
     )
 
@@ -206,7 +209,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur5_suction",
+            "ur10_suction",
             "-x",
             x,
             "-y",

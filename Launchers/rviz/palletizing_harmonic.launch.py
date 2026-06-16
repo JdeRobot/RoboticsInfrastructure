@@ -19,13 +19,13 @@ def generate_launch_description():
     moveit_pkg_share = get_package_share_directory(moveit_config_package)
 
     # Robot description — suction gripper (must match the SDF spawned in Gazebo)
-    xacro_file = os.path.join(pkg_share_dir, "models/ur5", "ur5_suction.urdf.xacro")
-    controllers_file = os.path.join(pkg_share_dir, "config", "ur5_suction_controllers.yaml")
+    xacro_file = os.path.join(pkg_share_dir, "models/ur10", "ur10_suction.urdf.xacro")
+    controllers_file = os.path.join(pkg_share_dir, "config", "ur10_suction_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "ur_type": "ur5",
+            "ur_type": "ur10",
             "name": "ur",
             "prefix": "",
             "use_fake_hardware": "false",
@@ -38,7 +38,7 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     # SRDF — suction variant (no finger-gripper group)
-    srdf_file = os.path.join(pkg_share_dir, "config", "ur5_suction.srdf")
+    srdf_file = os.path.join(pkg_share_dir, "config", "ur10_suction.srdf")
     with open(srdf_file, "r") as f:
         robot_description_semantic = {"robot_description_semantic": f.read()}
 

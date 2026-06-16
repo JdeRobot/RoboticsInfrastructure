@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
 """Palletizing conveyor feeder.
 
+Feeds a fixed number of boxes (num_boxes), one at a time, and stacks them into
+a real rows x cols x layers grid on the pallet table. This is the palletizing
+task: a finite supply that must end up in an ordered pattern — not an infinite
+stream.
+
 Lifecycle per box:
   1. Spawn at belt feed end (fixed X, Y = spawn_y).
   2. Belt runs at belt_speed m/s; box rides straight to centre (Y = center_y).
-  3. Belt stops; box is teleported to the target pallet table (dev placeholder
-     for the eventual robot pick-and-place action).
-  4. After a short pause, belt restarts and the next box is spawned.
+  3. Belt stops; box is teleported to its grid cell on the pallet table (a dev
+     placeholder for the eventual robot pick-and-place action).
+  4. After a short pause, belt restarts and the next box is spawned — until
+     num_boxes have been placed, then the belt stops and the feeder idles.
+
+The grid cell for box i is computed in _place_on_table(): boxes fill layer by
+layer, and within a layer row by row, column by column.
 """
 
+import math
 import os
 import subprocess
 
@@ -33,12 +43,29 @@ class BoxSpawner(Node):
         self.declare_parameter("belt_speed", 0.12)    # m/s — slow enough to stop cleanly
         self.declare_parameter("spawn_x", 0.6)        # belt centre in world X
         self.declare_parameter("spawn_y", -0.9)       # feed end in world Y
-        self.declare_parameter("spawn_z", 1.18)       # belt surface ~1.00 m + box half-height 0.15 m + clearance
+        self.declare_parameter("spawn_z", 1.13)       # belt surface ~1.00 m + box half-height 0.10 m + clearance
         self.declare_parameter("center_y", -0.15)     # stop before pickup end so coasting box doesn't fall off
         self.declare_parameter("start_delay", 5.0)    # wait for gz to be ready
         self.declare_parameter("restart_delay", 2.0)  # pause after placing before next box
 
+        # --- Pallet grid (target pattern) -------------------------------------
+        # Box is 0.40 (long) x 0.30 x 0.20 (tall). Placed yawed 1.57 rad so the
+        # 0.40 long axis runs along the table's long axis (world Y) and the 0.30
+        # axis along world X. 2 cols x 2 rows x 2 layers = 8 boxes.
+        self.declare_parameter("num_boxes", 8)
+        self.declare_parameter("grid_cols", 2)        # along world X (0.30 box axis)
+        self.declare_parameter("grid_rows", 2)        # along world Y (0.40 box axis)
+        self.declare_parameter("grid_layers", 2)      # stacked in Z
+        self.declare_parameter("grid_origin_x", -0.70)  # near corner of grid, world X (cols at -0.70,-0.37 fit table X -1.0..-0.2)
+        self.declare_parameter("grid_origin_y", -0.22)  # near corner of grid, world Y (rows centred about table Y=0)
+        self.declare_parameter("grid_base_z", 0.86)   # table surface 0.76 + box half-height 0.10
+        self.declare_parameter("pitch_x", 0.33)       # col spacing: 0.30 box + 0.03 gap
+        self.declare_parameter("pitch_y", 0.43)       # row spacing: 0.40 box + 0.03 gap
+        self.declare_parameter("pitch_z", 0.20)       # layer spacing == box height
+        self.declare_parameter("place_yaw", 1.57)     # long axis along world Y
+
         self.sdf_file = self.get_parameter("sdf_file").value
+        self.num_boxes = int(self.get_parameter("num_boxes").value)
         self.counter = 0
         self._active_timer = None
         # Unique prefix per process so box names never conflict with leftover
@@ -114,17 +141,35 @@ class BoxSpawner(Node):
         self._active_timer = self.create_timer(restart, self._resume)
 
     def _place_on_table(self, name: str):
-        """Teleport box to target pallet table (dev stand-in for robot pick)."""
-        # Table world pose: -0.6 0 0 0 0 1.57, surface top z ≈ 0.76 m.
-        # Lay boxes in a row along table Y, 0.35 m apart (box is 0.30 m wide).
+        """Teleport box to its grid cell on the pallet table.
+
+        Dev stand-in for the eventual robot pick-and-place. Boxes fill the grid
+        layer by layer (bottom first), and within a layer row by row, column by
+        column. Box i (0-based) maps to (layer, row, col) by integer division.
+        """
+        cols = int(self.get_parameter("grid_cols").value)
+        rows = int(self.get_parameter("grid_rows").value)
+        per_layer = cols * rows
+
         idx = self.counter - 1
-        tx = -0.5
-        ty = -0.3 + (idx % 3) * 0.35
-        tz = 0.91   # table surface 0.76 + box half-height 0.15
+        layer = idx // per_layer
+        within = idx % per_layer
+        row = within // cols
+        col = within % cols
+
+        tx = float(self.get_parameter("grid_origin_x").value) + col * float(self.get_parameter("pitch_x").value)
+        ty = float(self.get_parameter("grid_origin_y").value) + row * float(self.get_parameter("pitch_y").value)
+        tz = float(self.get_parameter("grid_base_z").value) + layer * float(self.get_parameter("pitch_z").value)
+
+        # Yaw the box so its long axis aligns with the grid (rotation about Z).
+        yaw = float(self.get_parameter("place_yaw").value)
+        qz = math.sin(yaw / 2.0)
+        qw = math.cos(yaw / 2.0)
 
         req = (
             f'pose: [{{name: "{name}", '
-            f'position: {{x: {tx}, y: {ty}, z: {tz}}}}}]'
+            f'position: {{x: {tx}, y: {ty}, z: {tz}}}, '
+            f'orientation: {{x: 0, y: 0, z: {qz}, w: {qw}}}}}]'
         )
         cmd = [
             "gz", "service",
@@ -136,7 +181,10 @@ class BoxSpawner(Node):
         ]
         result = subprocess.run(cmd, check=False, capture_output=True, text=True)
         if result.returncode == 0:
-            self.get_logger().info(f"placed {name} on table at ({tx:.2f}, {ty:.2f}, {tz:.2f})")
+            self.get_logger().info(
+                f"placed {name} at grid cell L{layer} R{row} C{col} "
+                f"-> ({tx:.2f}, {ty:.2f}, {tz:.2f})"
+            )
         else:
             self.get_logger().warn(f"place {name} failed: {result.stderr.strip()}")
 
@@ -144,6 +192,15 @@ class BoxSpawner(Node):
         if self._active_timer:
             self._active_timer.cancel()
             self._active_timer = None
+
+        # Finite supply: stop once the whole grid has been filled.
+        if self.counter >= self.num_boxes:
+            self._set_belt(0.0)
+            self.get_logger().info(
+                f"all {self.num_boxes} boxes placed — palletizing complete, feeder idle"
+            )
+            return
+
         self._set_belt(float(self.get_parameter("belt_speed").value))
         self._spawn_next()
 

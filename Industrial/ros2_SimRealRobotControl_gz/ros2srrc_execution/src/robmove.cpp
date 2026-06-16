@@ -52,6 +52,7 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
+std::string param_MOVE_GROUP = "ur5_manipulator";
 
 // Declaration of GLOBAL VARIABLE --> RES:
 std::string RES = "none";
@@ -93,6 +94,10 @@ public:
         this->declare_parameter("ROB_PARAM", "none");
         param_ROB = this->get_parameter("ROB_PARAM").as_string();
         RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
+
+        this->declare_parameter("MOVE_GROUP", "ur5_manipulator");
+        param_MOVE_GROUP = this->get_parameter("MOVE_GROUP").as_string();
+        RCLCPP_INFO(this->get_logger(), "MOVE_GROUP received -> %s", param_MOVE_GROUP.c_str());
 
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
@@ -175,7 +180,7 @@ private:
         if (RES == "PLANNING: OK"){
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
-                "ur5_manipulator"
+                param_MOVE_GROUP
             );
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
@@ -271,7 +276,7 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    std::string ROBname = "ur5_manipulator";
+    std::string ROBname = param_MOVE_GROUP;
 
     move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 
