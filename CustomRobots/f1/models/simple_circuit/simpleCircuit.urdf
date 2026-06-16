@@ -11,11 +11,11 @@
   </link>
   <link name="pared">
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <visual>
+    <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://f1/models/simple_circuit/meshes/pared.dae"/>
+        <mesh filename="package://f1/models/simple_circuit/meshes/pared.stl"/>
       </geometry>
-    </visual>
+    </collision>
   </link>
 </robot>

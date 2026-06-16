@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.576</wheel_separation>
+        <wheel_radius>0.1</wheel_radius>
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="joints" params="vel_topic topic">
+    <gazebo>
+      <plugin filename="gz-sim-joint-controller-system" name="gz::sim::systems::JointController">
+        <joint_name>lift_joint</joint_name>
+        <topic>${vel_topic}</topic>
+        <initial_position>0.0</initial_position>
+        <use_force_commands>true</use_force_commands>
+        <p_gain>5.0</p_gain>
+        <i_gain>0.0</i_gain>
+        <d_gain>0.1</d_gain>
+        <cmd_max>20</cmd_max>
+        <cmd_min>-20</cmd_min>
+      </plugin>
+
+      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+        <topic>${topic}</topic>
+        <joint_name>lift_joint</joint_name>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

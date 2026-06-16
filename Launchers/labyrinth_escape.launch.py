@@ -18,7 +18,7 @@ def generate_launch_description():
     # same bridges file as rescue_people exercise
     bridges_path = os.path.join(custom_robots_share, "bridges", "rescue_people.yaml")
 
-    world_file_name = "labyrinth_escape_harmonic.world"
+    world_file_name = "labyrinth_escape.world"
     worlds_dir = "/opt/jderobot/Worlds"
     world_path = os.path.join(worlds_dir, world_file_name)
 

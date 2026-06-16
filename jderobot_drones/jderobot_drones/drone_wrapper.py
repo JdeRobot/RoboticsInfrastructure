@@ -4,7 +4,6 @@ Wrapper around the Aerostack2 drone interface for use in Robotics Academy.
 Provides position/velocity commands, takeoff, land, and sensor access.
 """
 
-import asyncio
 import time
 from typing import List
 
@@ -168,9 +167,7 @@ class DroneWrapper(DroneInterfaceBase):
             [vx, vy], z, "earth", self.namespace + "/base_link", float(az)
         )
 
-    async def call_state_event_service(
-        self, event_value: PlatformStateMachineEvent
-    ) -> None:
+    def call_state_event_service(self, event_value: PlatformStateMachineEvent) -> None:
         """
         Request Aerostack to update state machine for the given event.
 
@@ -187,11 +184,13 @@ class DroneWrapper(DroneInterfaceBase):
         while not self.state_event_service_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("Service not available, waiting...")
 
-        response = await self.state_event_service_client.call_async(request)
+        response = self.state_event_service_client.call_async(request)
+        while not response.done():
+            time.sleep(0.1)
 
         if response is not None:
-            self.get_logger().info(f"Success: {response.success}")
-            self.get_logger().info(f"Current State: {response.current_state}")
+            self.get_logger().info(f"Success: {response.result().success}")
+            self.get_logger().info(f"Current State: {response.result().current_state}")
         else:
             self.get_logger().error("Service call failed")
 
@@ -212,7 +211,7 @@ class DroneWrapper(DroneInterfaceBase):
         self.offboard()
 
         # Starting to take off
-        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.TAKE_OFF))
+        self.call_state_event_service(PlatformStateMachineEvent.TAKE_OFF)
 
         while True:
             if abs(self.position[2] - height) < self.TK_HEIGHT_MARGIN:
@@ -221,7 +220,7 @@ class DroneWrapper(DroneInterfaceBase):
             time.sleep(self.TK_RATE)
 
         # Take off finished
-        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.TOOK_OFF))
+        self.call_state_event_service(PlatformStateMachineEvent.TOOK_OFF)
 
     def land(self) -> None:
         """Send landing command."""
@@ -233,7 +232,7 @@ class DroneWrapper(DroneInterfaceBase):
             return
 
         # Starting to land
-        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.LAND))
+        self.call_state_event_service(PlatformStateMachineEvent.LAND)
 
         height = self.position[2]
         while True:
@@ -248,7 +247,7 @@ class DroneWrapper(DroneInterfaceBase):
                 break
 
         # Land finished
-        asyncio.run(self.call_state_event_service(PlatformStateMachineEvent.LANDED))
+        self.call_state_event_service(PlatformStateMachineEvent.LANDED)
 
         self.disarm()
 

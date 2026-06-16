@@ -1,0 +1,302 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/logistic_ackermann_robot/logistic_ackermann_robot_gz.urdf.xacro"/>
+
+  <xacro:macro name="logistic_ackermann_robot">
+    <link name="base_link" />
+
+    <link name="chassis_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0.07307 -1e-06 0.65096"/>
+        <mass value="1580"/>
+        <inertia ixx="442.769" ixy="0" ixz="62.5206" iyy="1997.86" iyz="0" izz="2238.05"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 -1.5707963" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/chassis.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.5707963" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/chassis.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="chassis_link_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="chassis_link"/>
+    </joint>
+
+
+    <joint name="bl_axle" type="continuous">
+      <origin rpy="0 0 0" xyz="-0.244 0.18 0"/>
+      <parent link="chassis_link"/>
+      <child link="back_left_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+      <dynamics friction="12.0316061502"/>
+    </joint>
+
+    <link name="back_left_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0.0377  0"/>
+        <mass value="24.5"/>
+        <inertia ixx="1.04961" ixy="0" ixz="0" iyy="1.84514" iyz="0" izz="1.04961"/>
+      </inertial>
+      <collision>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.072" length="0.06"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1e+6</mu>
+                <mu2>1e+6</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.57" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/wheel.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="br_axle" type="continuous">
+      <origin rpy="0 0 0" xyz="-0.244 -0.18 0"/>
+      <parent link="chassis_link"/>
+      <child link="back_right_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+      <dynamics friction="12.0316061502"/>
+    </joint>
+
+    <link name="back_right_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0.0377  0"/>
+        <mass value="24.5"/>
+        <inertia ixx="1.04961" ixy="0" ixz="0" iyy="1.84514" iyz="0" izz="1.04961"/>
+      </inertial>
+      <collision>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.072" length="0.06"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1e+6</mu>
+                <mu2>1e+6</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.57" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/wheel.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="l_steer" type="revolute">
+      <origin rpy="0 0 0" xyz="0.244 0.236 0"/>
+      <parent link="chassis_link"/>
+      <child link="l_steer_1"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-0.95" upper="0.95" effort="1e6" velocity="10"/>
+      <dynamics friction="18.0474092253" damping="0.01"/>
+    </joint>
+
+    <link name="l_steer_1">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 -0.003381 0.02162"/>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+      </inertial>
+    </link>
+
+    <joint name="front_left_wheel_joint" type="continuous">
+      <parent link="l_steer_1"/>
+      <child link="front_left_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+      <dynamics friction="12.0316061502"/>
+    </joint>
+
+    <link name="front_left_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0.0377  0"/>
+        <mass value="24.5"/>
+        <inertia ixx="1.04961" ixy="0" ixz="0" iyy="1.84514" iyz="0" izz="1.04961"/>
+      </inertial>
+      <collision>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.072" length="0.06"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1e+6</mu>
+                <mu2>1e+6</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.57" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/wheel.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="r_steer" type="revolute">
+      <origin rpy="0 0 0" xyz="0.244 -0.236 0"/>
+      <parent link="chassis_link"/>
+      <child link="r_steer_1"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-0.95" upper="0.95" effort="1e6" velocity="10"/>
+      <dynamics friction="18.0474092253" damping="0.01"/>
+    </joint>
+
+    <link name="r_steer_1">
+      <origin rpy="0 -0 0" xyz="0 0 0"/>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 -0.003381 0.02162"/>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+      </inertial>
+    </link>
+
+    <joint name="front_right_wheel_joint" type="continuous">
+      <parent link="r_steer_1"/>
+      <child link="front_right_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000" velocity="100"/>
+      <dynamics friction="12.0316061502"/>
+    </joint>
+
+    <link name="front_right_wheel_link">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0.0377  0"/>
+        <mass value="24.5"/>
+        <inertia ixx="1.04961" ixy="0" ixz="0" iyy="1.84514" iyz="0" izz="1.04961"/>
+      </inertial>
+      <collision>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.072" length="0.06"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1e+6</mu>
+                <mu2>1e+6</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.57" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/wheel.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="lift_joint" type="prismatic">
+      <origin rpy="0 0 0" xyz="0 0.0 0.165"/>
+      <parent link="base_link"/>
+      <child link="lift_link"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="100" velocity="0.5" lower="0.0" upper="0.15"/>
+      <dynamics damping="0.1" friction="0" spring_reference="0" spring_stiffness="0"/>
+      <gz>
+        <physics>
+          <provide_feedback>1</provide_feedback>
+          <ode>
+            <implicit_spring_damper>0</implicit_spring_damper>
+            <cfm_damping>0</cfm_damping>
+            <limit>
+              <cfm>0.0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+      </gz>
+    </joint>
+
+    <link name="lift_link">
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <collision>
+        <origin rpy="0 0 -1.5707963" xyz="0 0 0"/>
+        <geometry>
+          <box size="0.2805 0.2 0.03"/>
+        </geometry>
+        <gz>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1000000</mu>
+                <mu2>100000</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+5</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </gz>
+      </collision>
+      <visual>
+        <origin rpy="0 0 -1.5707963" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="$(find custom_robots)/models/logistic_ackermann_robot/meshes/platform.dae" scale="0.5 0.5 0.5"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:velocity topic="/cmd_vel"/>
+    <xacro:odom topic="/model/amazon_robot/odometry" freq="50"/>
+    <xacro:joints topic="/robot/joint_state" vel_topic="/platform/cmd_vel"/>
+  </xacro:macro>
+</robot>

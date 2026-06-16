@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link name="base_camera_link">
+
+    <inertial>
+      <origin xyz="-0.00936 -0.00003 -0.00273" rpy="0 0 0"/>
+      <mass value="0.2197"/>
+      <inertia ixx="4.29247e-06" ixy="0" ixz="2.565e-08" iyy="8.027e-08" iyz="0" izz="4.27339e-06"/>
+    </inertial>
+
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.glb"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <mesh filename="file://$(find ros2srrc_ur5_gazebo)/meshes/kinetic.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+
+  <joint name="base_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_camera_link"/>
+    <origin xyz="${cam_base_px} ${cam_base_py} ${cam_base_pz}" rpy="${cam_base_or} ${cam_base_op} ${cam_base_oy}"/>
+  </joint>
+
+  <link name="base_camera_optical_link"/>
+
+  <joint name="base_camera_optical_joint" type="fixed">
+    <parent link="base_camera_link"/>
+    <child link="base_camera_optical_link"/>
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+  </joint>
+
+  <gazebo reference="base_camera_link">
+    <sensor name="base_camera" type="camera">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>30</update_rate>
+      <topic>/base_camera/image</topic>
+      <camera name="base_camera">
+        <camera_info_topic>/base_camera/camera_info</camera_info_topic>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>8.0</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+</robot>
