@@ -350,13 +350,13 @@ private:
         );
 
         RCLCPP_INFO(
-            logger,
+            get_logger(),
             "Pose reference frame = %s",
             move_group_interface_ROB.getPoseReferenceFrame().c_str()
         );
 
         RCLCPP_INFO(
-            logger,
+            get_logger(),
             "Default planner = %s",
             move_group_interface_ROB.getPlannerId().c_str()
         );
