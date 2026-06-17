@@ -198,7 +198,9 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 68	Rover 4wd Warehouse Low Noise	68	19
 69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision Harmonic world	70	24
-71	Drone Cat Mouse	71	0
+71	Conveyor Belt World	71	0
+72	Drone Cat Mouse	72	0
+
 \.
 
 --
@@ -265,7 +267,9 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 67	Follow Person Teleop Harmonic	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{-1.0,10.0,0.1,0.0,0.0,0.0}
 68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 70	Machine Vision Harmonic	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
-71	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
+71	Conveyor Harmonic	<keep upstream's launch path + columns exactly>
+72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
+
 \.
 
 --
