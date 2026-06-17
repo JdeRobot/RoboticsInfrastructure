@@ -215,6 +215,12 @@ private:
             move_group_interface_ROB.getEndEffectorLink().c_str()
         );
 
+        RCLCPP_INFO(
+            get_logger(),
+            "Pose reference frame = %s",
+            move_group_interface_ROB.getPoseReferenceFrame().c_str()
+        );
+
         auto state = move_group_interface_ROB.getCurrentState();
 
         if (state)
@@ -341,6 +347,18 @@ private:
             get_logger(),
             "End effector link = %s",
             move_group_interface_ROB.getEndEffectorLink().c_str()
+        );
+
+        RCLCPP_INFO(
+            logger,
+            "Pose reference frame = %s",
+            move_group_interface_ROB.getPoseReferenceFrame().c_str()
+        );
+
+        RCLCPP_INFO(
+            logger,
+            "Default planner = %s",
+            move_group_interface_ROB.getPlannerId().c_str()
         );
 
         auto current_state_debug =
@@ -648,6 +666,18 @@ int main(int argc, char **argv)
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
+
+    RCLCPP_INFO(
+        logger,
+        "Planning frame = %s",
+        move_group_interface_ROB.getPlanningFrame().c_str()
+    );
+
+    RCLCPP_INFO(
+        logger,
+        "End effector link = %s",
+        move_group_interface_ROB.getEndEffectorLink().c_str()
+    );
 
     rclcpp::spin(node);
 
