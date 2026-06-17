@@ -1,12 +1,11 @@
 """
 UR3 + Robotiq - RViz Launcher
-Launches ONLY RViz
-Assumes Gazebo, robot and move_group are already running
+Launches ONLY RViz with MoveIt Motion Planning
+Assumes Gazebo and robot are already running
 """
 
 import os
 import xacro
-import yaml
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -15,26 +14,26 @@ from launch.actions import TimerAction
 from ament_index_python.packages import get_package_share_directory
 
 
-def load_file(package_name, file_path):
-    pkg_path = get_package_share_directory(package_name)
-    with open(os.path.join(pkg_path, file_path), "r") as f:
-        return f.read()
-
-
-def load_yaml(package_name, file_path):
-    pkg_path = get_package_share_directory(package_name)
-    with open(os.path.join(pkg_path, file_path), "r") as f:
-        return yaml.safe_load(f)
-
-
 def generate_launch_description():
 
     # =====================================================
-    # ROBOT DESCRIPTION
+    # Packages
+    # =====================================================
+
+    moveit_pkg_share = get_package_share_directory(
+        "ros2srrc_ur3_moveit2"
+    )
+
+    gazebo_pkg_share = get_package_share_directory(
+        "ros2srrc_ur3_gazebo"
+    )
+
+    # =====================================================
+    # URDF
     # =====================================================
 
     xacro_file = os.path.join(
-        get_package_share_directory("ros2srrc_ur3_gazebo"),
+        gazebo_pkg_share,
         "urdf",
         "ur3_robotiq_2f85.urdf.xacro",
     )
@@ -62,42 +61,42 @@ def generate_launch_description():
     # SRDF
     # =====================================================
 
-    robot_description_semantic = {
-        "robot_description_semantic": load_file(
-            "ros2srrc_ur3_moveit2",
-            "config/ur3robotiq_2f85.srdf",
-        )
-    }
-
-    # =====================================================
-    # KINEMATICS
-    # =====================================================
-
-    kinematics_yaml = {
-        "robot_description_kinematics": load_yaml(
-            "ros2srrc_robots",
-            "ur3/config/kinematics.yaml",
-        )
-    }
-
-    # =====================================================
-    # OMPL
-    # =====================================================
-
-    ompl_planning = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/ompl_planning.yaml",
+    srdf_file = os.path.join(
+        moveit_pkg_share,
+        "config",
+        "ur3robotiq_2f85.srdf",
     )
 
-    ompl_planning = ompl_planning["/**"]["ros__parameters"]
+    with open(srdf_file, "r") as file:
+        robot_description_semantic = {
+            "robot_description_semantic": file.read()
+        }
 
     # =====================================================
-    # RVIZ CONFIG
+    # MoveIt Config Files
+    # =====================================================
+
+    kinematics_yaml = os.path.join(
+        get_package_share_directory("ros2srrc_robots"),
+        "ur3",
+        "config",
+        "kinematics.yaml",
+    )
+
+    ompl_planning_yaml = os.path.join(
+        get_package_share_directory("ros2srrc_robots"),
+        "ur3",
+        "config",
+        "ompl_planning.yaml",
+    )
+
+    # =====================================================
+    # RViz Config
     # =====================================================
 
     rviz_config_file = os.path.join(
-        get_package_share_directory("ros2srrc_ur3_moveit2"),
-        "config",
+        moveit_pkg_share,
+        "rviz",
         "moveit.rviz",
     )
 
@@ -110,8 +109,8 @@ def generate_launch_description():
         parameters=[
             robot_description,
             robot_description_semantic,
+            ompl_planning_yaml,
             kinematics_yaml,
-            ompl_planning,
             {"use_sim_time": True},
         ],
     )
@@ -121,6 +120,8 @@ def generate_launch_description():
         actions=[rviz_node],
     )
 
-    return LaunchDescription([
-        delay_rviz,
-    ])
+    return LaunchDescription(
+        [
+            delay_rviz,
+        ]
+    )
