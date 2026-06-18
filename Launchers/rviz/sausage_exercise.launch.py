@@ -101,11 +101,13 @@ def generate_launch_description():
     # RViz Config
     # =====================================================
 
-    rviz_config_file = os.path.join(
-        moveit_pkg_share,
-        "rviz",
-        "moveit.rviz",
+    rviz_config_file = (
+        "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/"
+        "packages/ur3/ros2srrc_ur3_moveit2/rviz/moveit.rviz"
     )
+
+    print("MOVEIT PKG =", moveit_pkg_share)
+    print("RVIZ FILE =", rviz_config_file)
 
     rviz_node = Node(
         package="rviz2",
