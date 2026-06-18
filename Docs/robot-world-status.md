@@ -56,3 +56,22 @@
 | Rover 4wd Warehouse                  |               rover_4wd_warehouse.launch.py               |         0,0,0.15,0,0,0         |       No       |         ok         |              |
 | Pick And Place                       |                   pick_place.launch.py                    |         0,0,0.9,0,0,0          |       No       |         ok         | Reset broken |
 | Machine Vision                       | machine_vision_harmonic/machine_vision_harmonic.launch.py |                                |      Yes       |
+
+## Assets to review
+
+- RoboticsInfrastructure/CustomRobots/drone_assets/models/car_color_beacon
+- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris
+- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris_dual_cam
+- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris_red
+- RoboticsInfrastructure/CustomRobots/drone_assets/plugins/
+- RoboticsInfrastructure/CustomRobots/laser_mapping/models/pallet_box_mobile
+- RoboticsInfrastructure/CustomRobots/laser_mapping/models/small_mapping_warehouse
+- RoboticsInfrastructure/CustomRobots/pick_place/models MATERIALS
+- RoboticsInfrastructure/CustomRobots/quadrotor/models/quadrotor/quadrotor.sdf
+- RoboticsInfrastructure/CustomRobots/roomba_robot/models/ MATERIALS
+- RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
+- RoboticsInfrastructure/CustomRobots/package.xml Replace with gz_ros2_control
+- Is gz_ros2_control the same as gazebo_ros_control
+- RoboticsInfrastructure/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_execution/python/SpawnObject.py
+- RoboticsInfrastructure/Worlds/machine_vision.world
+- RoboticsInfrastructure/Worlds/road_junction.world
