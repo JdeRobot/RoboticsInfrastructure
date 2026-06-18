@@ -171,18 +171,21 @@ def launch_setup(context):
     }
 
     planning_pipelines_config = {
-        "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
-        "default_planning_pipeline": "pilz_industrial_motion_planner",
+        "planning_pipelines": ["ompl"],
+        "default_planning_pipeline": "ompl",
 
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
-        },
 
-        "pilz_industrial_motion_planner": {
-            "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
-            "request_adapters": "",
+            "request_adapters":
+                "default_planner_request_adapters/AddTimeOptimalParameterization "
+                "default_planner_request_adapters/ResolveConstraintFrames "
+                "default_planner_request_adapters/FixWorkspaceBounds "
+                "default_planner_request_adapters/FixStartStateBounds "
+                "default_planner_request_adapters/FixStartStateCollision "
+                "default_planner_request_adapters/FixStartStatePathConstraints",
+
             "start_state_max_bounds_error": 0.1,
-            "default_planner_config": "PTP",
         },
     }
 
