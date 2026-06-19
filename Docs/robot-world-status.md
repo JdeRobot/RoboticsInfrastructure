@@ -61,10 +61,4 @@
 
 - RoboticsInfrastructure/CustomRobots/drone_assets/models/car_color_beacon
 - RoboticsInfrastructure/CustomRobots/drone_assets/plugins/
-
 - RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
-- Is gz_ros2_control the same as gazebo_ros2_control
-
-- RoboticsInfrastructure/Worlds/road_junction.world
-
-ignition

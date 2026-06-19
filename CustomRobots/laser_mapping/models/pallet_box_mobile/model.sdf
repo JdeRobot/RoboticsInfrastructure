@@ -71,7 +71,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/MovAi/models/pallet/tip/files/meshes/pallet.dae</uri>
+                        <uri>model://pallet_box_mobile/meshes/pallet.dae</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -80,7 +80,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/movai/models/pallet_box_mobile/3/files/meshes/boxes.dae</uri>
+                        <uri>model://pallet_box_mobile/meshes/boxes.dae</uri>
                     </mesh>
                 </geometry>
             </visual>
