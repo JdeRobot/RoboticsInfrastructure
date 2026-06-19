@@ -56,9 +56,3 @@
 | Rover 4wd Warehouse                  |               rover_4wd_warehouse.launch.py               |         0,0,0.15,0,0,0         |       No       |         ok         |              |
 | Pick And Place                       |                   pick_place.launch.py                    |         0,0,0.9,0,0,0          |       No       |         ok         | Reset broken |
 | Machine Vision                       | machine_vision_harmonic/machine_vision_harmonic.launch.py |                                |      Yes       |
-
-## Assets to review
-
-- RoboticsInfrastructure/CustomRobots/drone_assets/models/car_color_beacon
-- RoboticsInfrastructure/CustomRobots/drone_assets/plugins/
-- RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
