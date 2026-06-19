@@ -65,7 +65,6 @@
 - RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
 - Is gz_ros2_control the same as gazebo_ros2_control
 
-- RoboticsInfrastructure/Worlds/machine_vision.world
 - RoboticsInfrastructure/Worlds/road_junction.world
 
 ignition
