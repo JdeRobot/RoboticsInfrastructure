@@ -71,7 +71,7 @@
 - RoboticsInfrastructure/CustomRobots/roomba_robot/models/ MATERIALS
 - RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
 - RoboticsInfrastructure/CustomRobots/package.xml Replace with gz_ros2_control
-- Is gz_ros2_control the same as gazebo_ros_control
+- Is gz_ros2_control the same as gazebo_ros2_control
 - RoboticsInfrastructure/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_execution/python/SpawnObject.py
 - RoboticsInfrastructure/Worlds/machine_vision.world
 - RoboticsInfrastructure/Worlds/road_junction.world
