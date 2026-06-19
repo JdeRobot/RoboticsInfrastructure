@@ -66,7 +66,6 @@
 - RoboticsInfrastructure/CustomRobots/drone_assets/plugins/
 
 - RoboticsInfrastructure/CustomRobots/pick_place/models MATERIALS
-- RoboticsInfrastructure/CustomRobots/roomba_robot/models/ MATERIALS
 - RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
 - Is gz_ros2_control the same as gazebo_ros2_control
 
