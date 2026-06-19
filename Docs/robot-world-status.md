@@ -60,16 +60,11 @@
 ## Assets to review
 
 - RoboticsInfrastructure/CustomRobots/drone_assets/models/car_color_beacon
-- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris
-- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris_dual_cam
-- RoboticsInfrastructure/CustomRobots/drone_assets/models/iris_red
 - RoboticsInfrastructure/CustomRobots/drone_assets/plugins/
 
-- RoboticsInfrastructure/CustomRobots/pick_place/models MATERIALS
 - RoboticsInfrastructure/CustomRobots/tello_phy/tello_ros/
 - Is gz_ros2_control the same as gazebo_ros2_control
 
-- RoboticsInfrastructure/Industrial/ros2_SimRealRobotControl_gz/ros2srrc_execution/python/SpawnObject.py
 - RoboticsInfrastructure/Worlds/machine_vision.world
 - RoboticsInfrastructure/Worlds/road_junction.world
 
