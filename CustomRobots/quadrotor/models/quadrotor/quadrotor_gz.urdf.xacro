@@ -232,12 +232,12 @@
         <robotNamespace>model/${namespace}</robotNamespace>
         <jointName>rotor_${rotor-1}_joint</jointName>
         <linkName>rotor_${rotor-1}</linkName>
-        <xacro:if test="$rotor < 2">
+        <xacro:if value="${rotor-1 == 1 or rotor-1 == 0}">
           <turningDirection>ccw</turningDirection>
         </xacro:if>
-        <xacro:unless test="$rotor < 2">
+        <xacro:if value="${rotor-1 == 2 or rotor-1 == 3}">
           <turningDirection>cw</turningDirection>
-        </xacro:unless>
+        </xacro:if>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
         <maxRotVelocity>800.0</maxRotVelocity>
