@@ -2,6 +2,14 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
 
+  <material name="Red">
+    <color rgba="1 0 0 1.0"/>
+  </material>
+
+  <material name="Blue">
+    <color rgba="0 0 1 1.0"/>
+  </material>
+
   <xacro:macro name="rotor" params="rotor parent xyz color">
     <link name='rotor_${rotor}'>
       <inertial>
@@ -18,12 +26,7 @@
         <geometry>
           <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="0.1 0.1 0.1"/>
         </geometry>
-        <gazebo>
-          <material>
-            <diffuse>${color} 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </gazebo>
+        <material name="${color}"/>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
@@ -89,10 +92,10 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="0 0 1"/>
-    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="1 0 0"/>
-    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="0 0 1"/>
-    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="1 0 0"/>
+    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
+    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
+    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
+    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
 
     <xacro:imu mass="0.005" parent="base_link"/>
     <xacro:velocity namespace="${namespace}"/>
