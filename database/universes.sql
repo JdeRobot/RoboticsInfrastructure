@@ -156,7 +156,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 26	Autoparking Lidar Simple: In line	5	0
 27	Vacuums House Roof	26	10
 28	Restaurant	21	0
-29	Vacuums House Markers	25	17
+29	Vacuums House Markers	25	21
 30	Small Laser Mapping Warehouse	33	21
 31	Rescue People Harmonic	31	0
 32	Follow Road Harmonic	32	0
