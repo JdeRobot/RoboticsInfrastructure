@@ -107,15 +107,7 @@ def launch_setup(context):
             output="screen",
         )
 
-        gz_ros2_depth_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            arguments=["/turtlebot3/camera/depth"],
-            output="screen",
-        )
-
         nodes_to_start.append(gz_ros2_image_bridge)
-        nodes_to_start.append(gz_ros2_depth_bridge)
 
     return nodes_to_start
 
