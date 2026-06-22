@@ -44,6 +44,18 @@ def generate_launch_description():
         output="screen",
     )
 
+    as2 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(get_package_share_directory("jderobot_drones"), "launch"),
+                "/as2_default_gazebo_sim.launch.py",
+            ]
+        ),
+        launch_arguments={
+            "namespace": "drone0",
+        }.items(),
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
@@ -54,5 +66,6 @@ def generate_launch_description():
 
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
+    ld.add_action(as2)
 
     return ld

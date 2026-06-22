@@ -127,7 +127,7 @@ def launch_setup(context):
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
     nodes_to_start.append(as2_gt_bridge)
-    nodes_to_start.append(as2)
+    # nodes_to_start.append(as2)
 
     # Sensor deppending on sensor arguments
     if sensor == "camera":
