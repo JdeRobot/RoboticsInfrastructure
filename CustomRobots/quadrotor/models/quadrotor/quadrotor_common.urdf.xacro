@@ -20,10 +20,8 @@
         </geometry>
         <gazebo>
           <material>
-            <diffuse>0 0 1 1</diffuse>
-            <script>
-              <name>Gazebo/${color}</name>
-            </script>
+            <diffuse>${color} 1</diffuse>
+            <specular>0 0 0 1</specular>
           </material>
         </gazebo>
       </visual>
@@ -91,10 +89,10 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
-    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
+    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="0 0 1"/>
+    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="1 0 0"/>
+    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="0 0 1"/>
+    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="1 0 0"/>
 
     <xacro:imu mass="0.005" parent="base_link"/>
     <xacro:velocity namespace="${namespace}"/>
