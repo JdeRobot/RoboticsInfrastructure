@@ -140,7 +140,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 24 	Montreal Ackermann Circuit	16	4
 25 	Simple Ackermann Circuit	23	4
 27	Vacuums House Roof	26	10
-29	Vacuums House Markers	25	17
+29	Vacuums House Markers	25	21
 30	Small Laser Mapping Warehouse	33	21
 31	Rescue People	31	0
 32	Follow Road	32	0

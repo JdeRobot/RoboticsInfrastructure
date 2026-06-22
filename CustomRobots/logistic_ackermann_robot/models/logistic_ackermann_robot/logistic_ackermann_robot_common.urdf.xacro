@@ -236,7 +236,7 @@
       <parent link="base_link"/>
       <child link="lift_link"/>
       <axis xyz="0 0 1"/>
-      <limit effort="100" velocity="0.5" lower="0.0" upper="0.15"/>
+      <limit effort="100" velocity="0.5" lower="0.0" upper="0.25"/>
       <dynamics damping="0.1" friction="0" spring_reference="0" spring_stiffness="0"/>
       <gz>
         <physics>
