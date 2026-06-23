@@ -142,7 +142,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 27	Vacuums House Roof	26	10
 29	Vacuums House Markers	25	21
 30	Small Laser Mapping Warehouse	33	21
-31	Rescue People	31	11
+31	Rescue People	31	0
 32	Follow Road	32	0
 33	Laser Mapping Warehouse Low Noise	12	21
 35	Car Junction World	35	6
