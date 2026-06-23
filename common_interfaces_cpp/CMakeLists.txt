@@ -10,7 +10,6 @@ set(ros2_dependencies
   nav_msgs
   sensor_msgs
   geometry_msgs
-  gazebo_msgs
   rosgraph_msgs
   cv_bridge
   ros_gz_interfaces

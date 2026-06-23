@@ -49,7 +49,7 @@
     <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -79,7 +79,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/left_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/left_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -109,7 +109,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/right_tire.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/right_tire.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -190,7 +190,7 @@
     <visual>
       <origin xyz="0 0 0.0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://amazon_warehouse_harmonic/models/amazon_robot_harmonic/meshes/lds.stl" scale="0.002 0.002 0.002"/>
+        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/lds.stl" scale="0.002 0.002 0.002"/>
       </geometry>
       <material name="dark"/>
     </visual>

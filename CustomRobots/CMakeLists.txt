@@ -28,7 +28,6 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    #gazebo
     pluginlib
     Threads)
 
@@ -38,8 +37,6 @@ endforeach()
 
 add_subdirectory(follow_person_harmonic)
 
-find_package(gazebo)
-
 # ============================================================================
 # Person plugin
 if(CMAKE_USE_PTHREADS_INIT)
@@ -47,25 +44,6 @@ if(CMAKE_USE_PTHREADS_INIT)
 endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
-
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(
-  personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
-
-ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
-
-# Causes the visibility macros to use dllexport rather than dllimport, which is
-# appropriate when building the dll but not consuming it.
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
-install(
-  TARGETS personplugin
-  EXPORT export_${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
 
 # ============================================================================
 # Hooks
@@ -77,7 +55,6 @@ ament_environment_hooks("hooks/resource_paths.sh")
 install(
   DIRECTORY
     follow_person_harmonic/models
-    follow_person_harmonic/params
     
     f1/models
     f1/params
@@ -121,15 +98,8 @@ install(
 
     roomba_robot/models
 
-    ackermann_cars/models
-
     car_junction/models
     car_junction/scripts
-
-    # AMAZON WAREHOUSE ROBOT
-    amazon_robot_classic/models
-    amazon_robot_classic/urdf
-    amazon_robot_classic/meshes
 
     amazon_warehouse_harmonic/models
 
@@ -137,11 +107,6 @@ install(
 
     # AMAZON HOSPITAL
     amazon_hospital/models
-    amazon_hospital/worlds
-
-    ackermann_logistic_robot/models
-
-    autoparking/models
 
     autopark_harmonic/models
 
@@ -161,7 +126,6 @@ install(
     restaurant/models
     
     pick_place/models
-    pick_place/urdf
 
   DESTINATION share/${PROJECT_NAME})
 
@@ -182,9 +146,5 @@ if(BUILD_TESTING)
   #   add_launch_test(${test_file} TIMEOUT 90)
   # endforeach()
 endif()
-
-ament_export_libraries(personplugin)
-
-ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()

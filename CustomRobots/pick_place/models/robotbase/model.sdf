@@ -28,10 +28,6 @@
           </cylinder>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
           <shader type='pixel'>
             <normal_map>__default__</normal_map>
           </shader>
