@@ -123,11 +123,11 @@ def launch_setup(context):
         }.items(),
     )
 
-    nodes_to_start.append(robot_state_publisher_node)
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
     nodes_to_start.append(as2_gt_bridge)
-    # nodes_to_start.append(as2)
+    nodes_to_start.append(as2)
+    nodes_to_start.append(robot_state_publisher_node)
 
     # Sensor deppending on sensor arguments
     if sensor == "camera":
