@@ -129,44 +129,43 @@
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree</uri>
+      <uri>model://Pine</uri>
       <name>tree_1</name>
       <pose>25 5 0.5 0 0 0</pose>
     </include>
 
-
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree</uri>
+      <uri>model://Pine</uri>
       <name>tree_2</name>
       <pose>45 5 0.5 0 0 0</pose>
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree</uri>
+      <uri>model://Pine</uri>
       <name>tree_3</name>
       <pose>65 5 0.5 0 0 0</pose>
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Lamp Post</uri>
+      <uri>model://lamp_post</uri>
       <name>lp_1</name>
       <pose>-5 30 0.5 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Lamp Post</uri>
+      <uri>model://lamp_post</uri>
       <name>lp_2</name>
       <pose>-5 50 0.5 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Lamp Post</uri>
+      <uri>model://lamp_post</uri>
       <name>lp_3</name>
       <pose>-5 -30 0.5 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Lamp Post</uri>
+      <uri>model://lamp_post</uri>
       <name>lp_4</name>
       <pose>-5 -50 0.5 0 0 1.57</pose>
     </include>

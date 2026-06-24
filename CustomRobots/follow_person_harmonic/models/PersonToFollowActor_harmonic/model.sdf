@@ -1,7 +1,7 @@
 <sdf version="1.9">
   <actor name="PersonToFollowActor_harmonic">
     <skin>
-      <filename>model://PersonToFollowActor_harmonic/meshes/standing.dae</filename>
+      <filename>model://PersonToControl_harmonic/meshes/standing.dae</filename>
     </skin>
     <script>
       <loop>true</loop>
