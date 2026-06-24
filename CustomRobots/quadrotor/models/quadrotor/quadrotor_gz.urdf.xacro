@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="camera" params="xyz rpy name parent mass namespace">
 
-    <link name="${name}_link">
+    <link name="${namespace}/${name}_link">
       <inertial>
         <origin rpy="${rpy}" xyz="${xyz}"/>
         <mass value="${mass}"/>
@@ -10,13 +10,13 @@
       </inertial>
     </link>
 
-    <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
+    <joint name="${namespace}/${name}_to_${parent}" type="fixed">
+      <parent link="${namespace}/${parent}"/>
+      <child link="${namespace}/${name}_link"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
     </joint>
 
-    <gazebo reference="${name}_link">
+    <gazebo reference="${namespace}/${name}_link">
       <sensor name="${name}" type="camera">
         <always_on>true</always_on>
         <visualize>true</visualize>
@@ -52,7 +52,7 @@
         <commandSubTopic>cmd_vel</commandSubTopic>
         <motorControlPubTopic>command/motor_speed</motorControlPubTopic>
         <enableSubTopic>velocity_controller/enable</enableSubTopic>
-        <comLinkName>base_link</comLinkName>
+        <comLinkName>${namespace}/base_link</comLinkName>
         <velocityGain>2.7 2.7 2.7</velocityGain>
         <attitudeGain>2 3 0.15</attitudeGain>
         <angularRateGain>0.4 0.52 0.18</angularRateGain>
@@ -112,25 +112,25 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="imu" params="parent mass">
+  <xacro:macro name="imu" params="parent mass namespace">
     <gazebo>
       <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
       </plugin>
     </gazebo>
 
-    <link name="imu_link">
+    <link name="${namespace}/imu_link">
       <inertial>
         <mass value="${mass}"/>
         <inertia ixx="8.33e-06" ixy="0" ixz="0" iyy="8.33e-06" iyz="0" izz="8.33e-06"/>
       </inertial>
     </link>
 
-    <joint name="imu_joint" type="fixed">
-      <parent link="${parent}"/>
-      <child link="imu_link"/>
+    <joint name="${namespace}/imu_joint" type="fixed">
+      <parent link="${namespace}/${parent}"/>
+      <child link="${namespace}/imu_link"/>
     </joint>
 
-    <gazebo reference="imu_link">
+    <gazebo reference="${namespace}/imu_link">
       <sensor name='imu' type='imu'>
         <always_on>1</always_on>
         <update_rate>250</update_rate>
@@ -244,7 +244,7 @@
         <motorConstant>8.54858e-06</motorConstant>
         <momentConstant>0.016</momentConstant>
         <commandSubTopic>command/motor_speed</commandSubTopic>
-        <motorNumber>${rotor-1}</motorNumber>
+        <actuator_number>${rotor-1}</actuator_number>
         <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
         <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
         <motorSpeedPubTopic>motor_speed/${rotor-1}</motorSpeedPubTopic>

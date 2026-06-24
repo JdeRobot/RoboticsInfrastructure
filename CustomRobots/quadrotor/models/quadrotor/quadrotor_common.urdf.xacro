@@ -86,7 +86,7 @@
       </visual>
     </link>
 
-    <joint name="${namespace}_base_to_base_link" type="fixed">
+    <joint name="${namespace}/base_to_base_link" type="fixed">
       <parent link="${namespace}/base"/>
       <child link="${namespace}/base_link"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -98,9 +98,9 @@
     <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red" namespace="${namespace}"/>
 
     <xacro:imu mass="0.005" parent="${namespace}/base_link"/>
-    <xacro:velocity namespace="${namespace}"/>
     <xacro:tf freq="100"/>
     <xacro:odom topic="/${namespace}/odom" freq="100"/>
+    <xacro:velocity namespace="${namespace}"/>
     <xacro:motors namespace="${namespace}"/>
   </xacro:macro>
 </robot>

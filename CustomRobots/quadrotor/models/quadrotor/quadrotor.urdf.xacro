@@ -12,7 +12,7 @@
   <xacro:quadrotor namespace="${namespace}"/>
 
   <xacro:if value="$(arg camera)">
-    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="frontal_cam" parent="${namespace}/base_link" namespace="${namespace}"/>
-    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="ventral_cam" parent="${namespace}/base_link" namespace="${namespace}"/>
+    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>
+    <xacro:camera xyz="0 0 0" rpy="0 -1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
 </robot>
