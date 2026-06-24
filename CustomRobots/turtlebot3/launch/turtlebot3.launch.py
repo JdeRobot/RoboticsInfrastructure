@@ -4,7 +4,12 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import DeclareLaunchArgument, OpaqueFunction, RegisterEventHandler
+from launch.actions import (
+    DeclareLaunchArgument,
+    OpaqueFunction,
+    RegisterEventHandler,
+    TimerAction,
+)
 from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -95,12 +100,13 @@ def launch_setup(context):
         output="screen",
     )
 
-    # Spawn the robot only once robot_state_publisher is up, so /robot_description
-    # is already being published when `create` reads it (avoids a spawn race).
+    # Spawn the robot a few seconds after robot_state_publisher starts, so both
+    # /robot_description and the Gazebo server are ready when `create` runs
+    # (avoids a spawn race that left the robot missing on some launches).
     spawn_after_rsp = RegisterEventHandler(
         OnProcessStart(
             target_action=robot_state_publisher_node,
-            on_start=[gz_spawn_entity],
+            on_start=[TimerAction(period=5.0, actions=[gz_spawn_entity])],
         )
     )
 
