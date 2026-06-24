@@ -100,7 +100,7 @@
     <xacro:velocity namespace="${namespace}"/>
     <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
     <xacro:tf freq="100"/>
-    <xacro:odom topic="/${namespace}/odom" freq="100"/>
+    <xacro:odom topic="odom" freq="100" namespace="${namespace}"/>
     <xacro:motors namespace="${namespace}"/>
   </xacro:macro>
 </robot>
