@@ -94,45 +94,15 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <!-- <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue" namespace="${namespace}"/> -->
+    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue" namespace="${namespace}"/>
     <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red" namespace="${namespace}"/>
     <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue" namespace="${namespace}"/>
     <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red" namespace="${namespace}"/>
 
-    <link name='${namespace}/rotor_0'>
-      <inertial>
-        <mass value="0.005"/>
-        <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="4.17041e-05" iyz="0" izz="4.26041e-05"/>
-      </inertial>
-
-      <collision>
-        <geometry>
-          <cylinder length="0.005" radius="0.1"/>
-        </geometry>
-      </collision>
-      <visual>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="0.1 0.1 0.1"/>
-        </geometry>
-        <material name="Blue"/>
-      </visual>
-      <gravity>1</gravity>
-      <velocity_decay/>
-    </link>
-
-    <joint name='${namespace}/rotor_0_joint' type="revolute">
-      <origin rpy="0 0 0" xyz="0.13 -0.22 0.023"/>
-      <parent link="${namespace}/base_link"/>
-      <child link="${namespace}/rotor_0"/>
-      <axis xyz="0 0 1" expressed_in="__model__"/>
-      <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="100"/>
-      <dynamics spring_reference="0" spring_stiffness="0" friction="0" damping="0"/>
-    </joint>
-
     <xacro:tf freq="100"/>
-    <xacro:velocity namespace="${namespace}"/>
     <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
     <xacro:odom topic="odom" freq="100" namespace="${namespace}"/>
     <xacro:motors namespace="${namespace}"/>
+    <xacro:velocity namespace="${namespace}"/>
   </xacro:macro>
 </robot>
