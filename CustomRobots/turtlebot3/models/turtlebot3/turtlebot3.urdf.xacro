@@ -7,10 +7,10 @@
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
 
   <xacro:if value="${noise_level == 'low'}">
-    <xacro:property name="a1" value="0.1" />
-    <xacro:property name="a2" value="0.1" />
-    <xacro:property name="a3" value="0.05" />
-    <xacro:property name="a4" value="0.05" />
+    <xacro:property name="a1" value="0.01" />
+    <xacro:property name="a2" value="0.01" />
+    <xacro:property name="a3" value="0.005" />
+    <xacro:property name="a4" value="0.005" />
   </xacro:if>
 
   <xacro:if value="${noise_level == 'med'}">
