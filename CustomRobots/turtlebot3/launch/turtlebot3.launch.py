@@ -4,7 +4,8 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, RegisterEventHandler
+from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
@@ -94,8 +95,17 @@ def launch_setup(context):
         output="screen",
     )
 
+    # Spawn the robot only once robot_state_publisher is up, so /robot_description
+    # is already being published when `create` reads it (avoids a spawn race).
+    spawn_after_rsp = RegisterEventHandler(
+        OnProcessStart(
+            target_action=robot_state_publisher_node,
+            on_start=[gz_spawn_entity],
+        )
+    )
+
     nodes_to_start.append(robot_state_publisher_node)
-    nodes_to_start.append(gz_spawn_entity)
+    nodes_to_start.append(spawn_after_rsp)
     nodes_to_start.append(gz_ros2_bridge)
 
     # Sensor deppending on sensor arguments
