@@ -120,7 +120,7 @@ def launch_setup(context):
             ]
         ),
         launch_arguments={
-            "namespace": namespace,
+            "namespace": gz_namespace,
         }.items(),
     )
 
