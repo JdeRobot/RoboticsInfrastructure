@@ -105,9 +105,9 @@ def launch_setup(context):
         output="screen",
         parameters=[
             {
-                "name_space": gz_namespace,
+                "name_space": namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": [gz_namespace, "/base_link"],
+                "twist_frame_id": [namespace, "/base_link"],
             },
         ],
     )

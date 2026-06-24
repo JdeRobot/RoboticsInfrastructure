@@ -175,7 +175,6 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 70	Machine vision world	70	24
 71	Conveyor Belt World	71	0
 72	Drone Cat Mouse	72	0
-
 \.
 
 --
