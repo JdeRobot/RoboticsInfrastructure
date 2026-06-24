@@ -66,9 +66,10 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            namespace + "/robot_description",
+            "robot_description",
             "-name",
             "quadrotor",
             "-allow_renaming",
