@@ -113,6 +113,10 @@ install(
     drone_assets/models
     drone_assets/bridges
 
+    # drone cat-mouse city model (my_city_v3); its bridge yaml lives in
+    # drone_assets/bridges above
+    drone_cat_mouse/models
+
     taxi_navigator/models
     
     3d_reconstruction/models
