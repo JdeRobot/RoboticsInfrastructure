@@ -40,6 +40,8 @@
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
 
   <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_ros2_control.xacro"/>
+
   <xacro:robotiq_2f85
     bringup="false"
     parent_link="tool0"/>
@@ -58,4 +60,10 @@
     tf_prefix=""
     hash_kinematics=""
     robot_ip="$(arg robot_ip)"/>
+
+  <xacro:robotiq_2f85_ros2_control
+    name="robotiq"
+    sim_gz="true"
+    use_fake_hardware="false"/>
+    
 </robot>
