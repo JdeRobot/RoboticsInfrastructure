@@ -1,113 +1,85 @@
 """
-UR3 + Robotiq - RViz Launcher
-Launches ONLY RViz with MoveIt Motion Planning
+Pick Place Harmonic - RViz + MoveIt Launcher
+Launches ONLY: MoveIt move_group + RViz with motion planning
 Assumes Gazebo and robot are already running
 """
 
 import os
-import xacro
-import yaml
-
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import TimerAction
-
 from ament_index_python.packages import get_package_share_directory
-
-def load_yaml(package_name, file_path):
-    pkg_path = get_package_share_directory(package_name)
-    with open(os.path.join(pkg_path, file_path), "r") as f:
-        return yaml.safe_load(f)
+import xacro
 
 
 def generate_launch_description():
+    # Get package directories
+    pkg_share_dir = get_package_share_directory("custom_robots")
+    moveit_config_package = "ur3_gripper_moveit_config"
 
-    # =====================================================
-    # Packages
-    # =====================================================
-
-    moveit_pkg_share = get_package_share_directory(
-        "ros2srrc_ur3_moveit2"
-    )
-    
-
-    gazebo_pkg_share = get_package_share_directory(
-        "ros2srrc_ur3_gazebo"
-    )
-
-    # =====================================================
-    # URDF
-    # =====================================================
-
-    xacro_file = os.path.join(
-        gazebo_pkg_share,
-        "urdf",
-        "ur3_robotiq_2f85.urdf.xacro",
-    )
+    # Robot description (must match what's in Gazebo)
+    xacro_file = os.path.join(pkg_share_dir, "models/ur3", "ur3.urdf.xacro")
+    controllers_file = os.path.join(pkg_share_dir, "config", "ur3_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "bringup": "false",
-            "hmi": "false",
-            "robot_ip": "0.0.0.0",
-            "EE": "true",
-            "EE_name": "robotiq_2f85",
-            "camera": "false",
-            "script_filename": "none",
-            "input_recipe_filename": "none",
-            "output_recipe_filename": "none",
+            "ur_type": "ur3",
+            "name": "ur",
+            "prefix": "",
+            "use_fake_hardware": "false",
+            "sim_gazebo": "false",
+            "sim_gz": "true",
+            "simulation_controllers": controllers_file,
         },
     ).toxml()
 
-    robot_description = {
-        "robot_description": robot_description_content
-    }
+    robot_description = {"robot_description": robot_description_content}
 
-    # =====================================================
     # SRDF
-    # =====================================================
-
-    srdf_file = os.path.join(
-        moveit_pkg_share,
-        "config",
-        "ur3robotiq_2f85.srdf",
-    )
-
+    srdf_file = os.path.join("ros2srrc_ur3_moveit2", "config", "ur5_robotiq.srdf")
     with open(srdf_file, "r") as file:
-        robot_description_semantic = {
-            "robot_description_semantic": file.read()
-        }
+        robot_description_semantic = {"robot_description_semantic": file.read()}
 
-    # =====================================================
-    # MoveIt Config Files
-    # =====================================================
+    # Kinematics
+    kinematics_yaml = os.path.join(moveit_pkg_share, "config", "kinematics.yaml")
 
-    kinematics_yaml = {
-        "robot_description_kinematics": load_yaml(
-            "ros2srrc_robots",
-            "ur3/config/kinematics.yaml",
-        )
+    # OMPL planning
+    ompl_planning_yaml = os.path.join(moveit_pkg_share, "config", "ompl_planning.yaml")
+
+    # MoveIt controllers
+    moveit_controllers = os.path.join(moveit_pkg_share, "config", "controllers.yaml")
+
+    # Planning pipeline
+    planning_pipelines_config = {
+        "planning_pipelines": ["ompl"],
+        "default_planning_pipeline": "ompl",
+        "ompl": {
+            "planning_plugin": "ompl_interface/OMPLPlanner",
+            "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints",
+            "start_state_max_bounds_error": 0.1,
+        },
     }
 
-    ompl_planning = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/ompl_planning.yaml",
-    )
+    # Trajectory execution
+    trajectory_execution = {
+        "moveit_manage_controllers": True,
+        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
+        "trajectory_execution.allowed_goal_duration_margin": 0.5,
+        "trajectory_execution.allowed_start_tolerance": 0.01,
+    }
 
-    ompl_planning = ompl_planning["/**"]["ros__parameters"]
+    planning_scene_monitor_parameters = {
+        "publish_planning_scene": True,
+        "publish_geometry_updates": True,
+        "publish_state_updates": True,
+        "publish_transforms_updates": True,
+    }
 
-    # =====================================================
-    # RViz Config
-    # =====================================================
+    # MoveIt move_group node
 
-    rviz_config_file = (
-        "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/"
-        "packages/ur3/ros2srrc_ur3_moveit2/rviz/moveit.rviz"
-    )
-
-    print("MOVEIT PKG =", moveit_pkg_share)
-    print("RVIZ FILE =", rviz_config_file)
+    # RViz with MoveIt configuration
+    rviz_config_file = os.path.join(moveit_pkg_share, "rviz", "moveit.rviz")
 
     rviz_node = Node(
         package="rviz2",
@@ -118,12 +90,13 @@ def generate_launch_description():
         parameters=[
             robot_description,
             robot_description_semantic,
-            ompl_planning,
+            ompl_planning_yaml,
             kinematics_yaml,
             {"use_sim_time": True},
         ],
     )
 
+    # Delay RViz after MoveIt
     delay_rviz = TimerAction(
         period=3.0,
         actions=[rviz_node],

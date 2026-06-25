@@ -43,8 +43,6 @@
     bringup="false"
     parent_link="tool0"/>
 
-
-
   <!-- ros2_control UR3 -->
   <xacro:ur_ros2_control
     name="ur"
