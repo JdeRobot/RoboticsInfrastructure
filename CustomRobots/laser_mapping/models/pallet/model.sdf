@@ -43,7 +43,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/movai/models/pallet/2/files/meshes/pallet.dae</uri>
+                        <uri>model://pallet/meshes/pallet.dae</uri>
                     </mesh>
                 </geometry>
             </visual>

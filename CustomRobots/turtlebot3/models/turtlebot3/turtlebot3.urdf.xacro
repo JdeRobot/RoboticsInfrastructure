@@ -35,7 +35,6 @@
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera_rgb" parent="camera_link" topic="turtlebot3/camera"/>
-    <xacro:depth_camera xyz="0.074 -0.029 0.12" rpy="0 0 0" name="camera_depth" parent="base_link" topic="turtlebot3/camera"/>
   </xacro:if>
 
   <xacro:unless value="${noise_level == 'none'}">

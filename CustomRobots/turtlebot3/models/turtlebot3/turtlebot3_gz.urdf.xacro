@@ -26,58 +26,19 @@
           <camera_info_topic>/${topic}/camera_info</camera_info_topic>
           <horizontal_fov>1.02974</horizontal_fov>
           <image>
-            <width>1920</width>
-            <height>1080</height>
+            <width>640</width>
+            <height>480</height>
             <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.02</near>
-            <far>300</far>
+            <far>30</far>
           </clip>
           <noise>
             <type>gaussian</type>
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
-        </camera>
-      </sensor>
-    </gazebo>
-  </xacro:macro>
-
-  <xacro:macro name="depth_camera" params="xyz rpy name parent topic">
-
-    <link name="${name}_link">
-      <inertial>
-        <mass value="0.035"/>
-        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-      </inertial>
-    </link>
-
-    <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${xyz}" rpy="${rpy}"/>
-    </joint>
-
-    <gazebo reference="${name}_link">
-      <sensor name="${name}" type="depth_camera">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <update_rate>10</update_rate>
-        <topic>/${topic}/depth</topic>
-        <gz_frame_id>${name}_link</gz_frame_id>
-        <camera name="${name}">
-          <camera_info_topic>/${topic}/camera_info</camera_info_topic>
-          <horizontal_fov>1.02974</horizontal_fov>
-          <image>
-            <width>1920</width>
-            <height>1080</height>
-            <format>R_FLOAT32</format>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>300</far>
-          </clip>
         </camera>
       </sensor>
     </gazebo>
