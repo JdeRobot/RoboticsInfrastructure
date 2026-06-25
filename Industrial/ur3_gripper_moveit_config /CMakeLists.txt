@@ -12,7 +12,7 @@ find_package(robotiq_description REQUIRED)
 find_package(urdf REQUIRED)
 find_package(xacro REQUIRED)
 
-install(DIRECTORY config rviz srdf
+install(DIRECTORY config
   DESTINATION share/${PROJECT_NAME}
 )
 
