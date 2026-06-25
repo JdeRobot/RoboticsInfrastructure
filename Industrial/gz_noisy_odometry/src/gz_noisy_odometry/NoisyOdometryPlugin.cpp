@@ -127,11 +127,10 @@ namespace custom_plugins
     const double ds     = wheel_radius_ * (d_right + d_left)  / 2.0;
     const double dtheta = wheel_radius_ * (d_right - d_left) / wheel_separation_;
 
-    // Odometry motion-model noise (Probabilistic Robotics, Ch. 5).
-    // Translation error grows with distance and heading change; rotation error
-    // grows with heading change and distance — both accumulate over time.
-    const double sigma_trans = alpha3_ * std::abs(ds)     + alpha4_ * std::abs(dtheta);
-    const double sigma_rot   = alpha1_ * std::abs(dtheta) + alpha2_ * std::abs(ds);
+    // Motion-model noise: per-tick std scales with sqrt(increment), so drift
+    // variance grows linearly with travelled distance (step-rate independent).
+    const double sigma_trans = alpha3_ * std::sqrt(std::abs(ds))     + alpha4_ * std::sqrt(std::abs(dtheta));
+    const double sigma_rot   = alpha1_ * std::sqrt(std::abs(dtheta)) + alpha2_ * std::sqrt(std::abs(ds));
 
     const double ds_noisy     = ds     + gz::math::Rand::DblNormal(0.0, sigma_trans);
     const double dtheta_noisy = dtheta + gz::math::Rand::DblNormal(0.0, sigma_rot);
