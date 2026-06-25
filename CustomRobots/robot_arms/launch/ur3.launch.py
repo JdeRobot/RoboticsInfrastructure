@@ -218,7 +218,7 @@ def launch_setup(context):
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"EE_PARAM": "robotiq_2f85"},
-            {"MOVE_GROUP": "ur3_arm"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
@@ -239,7 +239,7 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
-            {"MOVE_GROUP": "ur3_arm"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
@@ -255,7 +255,7 @@ def launch_setup(context):
             ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
-            {"MOVE_GROUP": "ur3_arm"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
