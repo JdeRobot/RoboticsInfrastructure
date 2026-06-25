@@ -5,7 +5,11 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    OpaqueFunction,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node, SetParameter
@@ -31,16 +35,17 @@ def _launch_setup(context, *args, **kwargs):
     # first and drone1 just inherits drone0's - both ended up driving
     # /gz/drone0/cmd_vel and the second drone never moved. easiest way out is to
     # skip that file and start the node ourselves with the real topic strings.
-    cmd_vel = LaunchConfiguration("cmd_vel_topic").perform(context) \
+    cmd_vel = (
+        LaunchConfiguration("cmd_vel_topic").perform(context)
         or f"/gz/{namespace}/cmd_vel"
-    arm = LaunchConfiguration("arm_topic").perform(context) \
-        or f"/gz/{namespace}/arm"
-    acro = LaunchConfiguration("acro_topic").perform(context) \
-        or f"/gz/{namespace}/acro"
+    )
+    arm = LaunchConfiguration("arm_topic").perform(context) or f"/gz/{namespace}/arm"
+    acro = LaunchConfiguration("acro_topic").perform(context) or f"/gz/{namespace}/acro"
 
     control_modes = os.path.join(
         get_package_share_directory("as2_platform_gazebo"),
-        "config", "control_modes.yaml",
+        "config",
+        "control_modes.yaml",
     )
     platform_gazebo = Node(
         package="as2_platform_gazebo",
@@ -51,11 +56,11 @@ def _launch_setup(context, *args, **kwargs):
         emulate_tty=True,
         parameters=[
             {
-                "use_sim_time":       True,
+                "use_sim_time": True,
                 "control_modes_file": control_modes,
-                "cmd_vel_topic":      cmd_vel,
-                "arm_topic":          arm,
-                "acro_topic":         acro,
+                "cmd_vel_topic": cmd_vel,
+                "arm_topic": arm,
+                "acro_topic": acro,
             },
             as2_sim_config,
         ],
@@ -111,15 +116,18 @@ def generate_launch_description():
                 "namespace", default_value="drone0", description="Drone namespace."
             ),
             DeclareLaunchArgument(
-                "cmd_vel_topic", default_value="",
+                "cmd_vel_topic",
+                default_value="",
                 description="Gazebo cmd_vel topic. Empty = auto-derive from namespace.",
             ),
             DeclareLaunchArgument(
-                "arm_topic", default_value="",
+                "arm_topic",
+                default_value="",
                 description="Gazebo arm topic. Empty = auto-derive from namespace.",
             ),
             DeclareLaunchArgument(
-                "acro_topic", default_value="",
+                "acro_topic",
+                default_value="",
                 description="Gazebo acro topic. Empty = auto-derive from namespace.",
             ),
             OpaqueFunction(function=_launch_setup),
