@@ -52,7 +52,8 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
-std::string param_MOVE_GROUP = "ur5_manipulator";
+
+std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLE --> ROBOT POSE:
 ros2srrc_data::msg::Robpose POSE; 
@@ -67,7 +68,7 @@ public:
   : Node("ros2srrc_RobPosePUB"), count_(0)
   {
     publisher_ = this->create_publisher<ros2srrc_data::msg::Robpose>("Robpose", 10);
-    timer_ = this->create_wall_timer(2000ms, std::bind(&RobPose_PUB::timer_callback, this));
+    timer_ = this->create_wall_timer(50ms, std::bind(&RobPose_PUB::timer_callback, this));
   }
 
 private:
@@ -79,29 +80,6 @@ private:
     }
 
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
-
-    RCLCPP_INFO(
-      this->get_logger(),
-      "CurrentPose frame_id = %s",
-      CP_INFO.header.frame_id.c_str()
-    );
-
-    RCLCPP_INFO(
-      this->get_logger(),
-      "MoveIt Pose -> x=%.6f y=%.6f z=%.6f",
-      CP_INFO.pose.position.x,
-      CP_INFO.pose.position.y,
-      CP_INFO.pose.position.z
-    );
-
-    RCLCPP_INFO(
-      this->get_logger(),
-      "MoveIt Quat -> qx=%.6f qy=%.6f qz=%.6f qw=%.6f",
-      CP_INFO.pose.orientation.x,
-      CP_INFO.pose.orientation.y,
-      CP_INFO.pose.orientation.z,
-      CP_INFO.pose.orientation.w
-    );
 
     POSE.x = CP_INFO.pose.position.x;
     POSE.y = CP_INFO.pose.position.y;
@@ -133,54 +111,20 @@ int main(int argc, char **argv)
 
   // === PARAM ===
   node->declare_parameter("ROB_PARAM", "none");
-  node->declare_parameter(
-    "MOVE_GROUP",
-    "ur5_manipulator"
-  );
-
   param_ROB = node->get_parameter("ROB_PARAM").as_string();
-
-  param_MOVE_GROUP = node->get_parameter("MOVE_GROUP").as_string();
 
   RCLCPP_INFO(node->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
+  node->declare_parameter("ROB_GROUP", "none");
+  param_ROB_GROUP =
+      node->get_parameter("ROB_GROUP").as_string();
+
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
-  std::string ROBname = param_MOVE_GROUP;
-
-  auto moveit_node = std::make_shared<rclcpp::Node>(
-      "moveit_helper_node_robpose",
-      rclcpp::NodeOptions()
-          .automatically_declare_parameters_from_overrides(true)
-  );
-
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(moveit_node);
-
-  std::thread([&executor]() {
-      executor.spin();
-  }).detach();
-
   move_group_interface_ROB =
-      MoveGroupInterface(moveit_node, ROBname);
-
-  move_group_interface_ROB.startStateMonitor();
-
-  rclcpp::sleep_for(std::chrono::seconds(2));
+    MoveGroupInterface(node, param_ROB_GROUP);
 
   RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
-
-  RCLCPP_INFO(
-    node->get_logger(),
-    "End effector link: %s",
-    move_group_interface_ROB.getEndEffectorLink().c_str()
-  );
-
-  RCLCPP_INFO(
-    node->get_logger(),
-    "Planning frame: %s",
-    move_group_interface_ROB.getPlanningFrame().c_str()
-  );
 
   rclcpp::spin(node);
 
