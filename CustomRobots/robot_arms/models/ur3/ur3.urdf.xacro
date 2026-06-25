@@ -41,7 +41,8 @@
 
   <xacro:robotiq_2f85
     bringup="false"
-    parent_link="tool0"/>
+    parent_link="tool0"
+    prefix=""/>
 
   <!-- ros2_control UR3 -->
   <xacro:ur_ros2_control
@@ -58,6 +59,7 @@
 
   <xacro:robotiq_2f85_ros2_control
     name="robotiq"
+    prefix=""
     sim_gz="true"
     use_fake_hardware="false"/>
 

@@ -2,10 +2,11 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="robotiq_2f85_ros2_control"
-               params="
-               name:=robotiq
-               sim_gz:=true
-               use_fake_hardware:=false">
+                params="
+                name
+                prefix
+                sim_gz:=true
+                use_fake_hardware:=false">
 
     <ros2_control name="${name}_gripper" type="system">
 
@@ -23,7 +24,7 @@
 
       <!-- actuated joint -->
 
-      <joint name="robotiq_85_left_knuckle_joint">
+      <joint name="${prefix}robotiq_85_left_knuckle_joint">
 
         <command_interface name="position">
           <param name="min">0.0</param>
@@ -41,43 +42,58 @@
 
       <!-- mimic joints -->
 
-      <joint name="robotiq_85_right_knuckle_joint">
-        <param name="mimic">robotiq_85_left_knuckle_joint</param>
+      <joint name="${prefix}robotiq_85_right_knuckle_joint">
+        <param name="mimic">${prefix}robotiq_85_left_knuckle_joint</param>
         <param name="multiplier">1.0</param>
-
+        <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">0.80285</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
 
-      <joint name="robotiq_85_left_inner_knuckle_joint">
-        <param name="mimic">robotiq_85_left_knuckle_joint</param>
+      <joint name="${prefix}robotiq_85_left_inner_knuckle_joint">
+        <param name="mimic">${prefix}robotiq_85_left_knuckle_joint</param>
         <param name="multiplier">1.0</param>
-
+        <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">0.80285</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
-      <joint name="robotiq_85_right_inner_knuckle_joint">
-        <param name="mimic">robotiq_85_left_knuckle_joint</param>
+      <joint name="${prefix}robotiq_85_right_inner_knuckle_joint">
+        <param name="mimic">${prefix}robotiq_85_left_knuckle_joint</param>
         <param name="multiplier">1.0</param>
-
+        <command_interface name="position">
+            <param name="min">0.0</param>
+            <param name="max">0.80285</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
-      <joint name="robotiq_85_left_finger_tip_joint">
-        <param name="mimic">robotiq_85_left_knuckle_joint</param>
+      <joint name="${prefix}robotiq_85_left_finger_tip_joint">
+        <param name="mimic">${prefix}robotiq_85_left_knuckle_joint</param>
         <param name="multiplier">-1.0</param>
-
+        <command_interface name="position">
+            <param name="min">-0.80285</param>
+            <param name="max">0.0</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
-      <joint name="robotiq_85_right_finger_tip_joint">
-        <param name="mimic">robotiq_85_left_knuckle_joint</param>
+      <joint name="${prefix}robotiq_85_right_finger_tip_joint">
+        <param name="mimic">${prefix}robotiq_85_left_knuckle_joint</param>
         <param name="multiplier">-1.0</param>
-
+        <command_interface name="position">
+            <param name="min">-0.80285</param>
+            <param name="max">0.0</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
