@@ -31,15 +31,12 @@ def launch_setup(context):
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
-
-    print("X =", x.perform(context))
-    print("Y =", y.perform(context))
-    print("Z =", z.perform(context))
-
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
+
+    package_dir = get_package_share_directory("custom_robots")
 
     sensor = gz_sensor.perform(context)
 
@@ -49,150 +46,91 @@ def launch_setup(context):
     # ROBOT DESCRIPTION (URDF)
     # =========================
     xacro_file = os.path.join(
-        get_package_share_directory("ros2srrc_ur3_gazebo"),
-        "urdf",
-        "ur3_robotiq_2f85.urdf.xacro",
+        package_dir,
+        "models",
+        "ur3",
+        "ur3.urdf.xacro",
     )
+
+    controllers_file = os.path.join(package_dir, "config", "ur3_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "bringup": "false",
+            "ur_type": "ur3",
+            "name": "ur",
+            "prefix": "",
+            "use_fake_hardware": "false",
+            "sim_gazebo": "false",
+            "sim_gz": "true",
+            "simulation_controllers": controllers_file,
             "hmi": "false",
-            "robot_ip": "0.0.0.0",
             "EE": "true",
             "EE_name": "robotiq_2f85",
             "camera": "true" if sensor == "camera" else "false",
-            "script_filename": "none",
-            "input_recipe_filename": "none",
-            "output_recipe_filename": "none",
         },
     ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
 
     # =========================
-    # ENVIROMENT
-    # =========================
-
-    gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
-    gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
-
-    gz_plugin_path = (
-        gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/humble/lib"
-    )
-
-    resource_path = (
-        os.path.dirname(get_package_share_directory("ros2srrc_ur3_gazebo"))
-        + ":"
-        + os.path.dirname(get_package_share_directory("ros2srrc_robots"))
-        + ":"
-        + os.path.dirname(get_package_share_directory("ros2srrc_endeffectors"))
-        + ":"
-        + os.path.dirname(get_package_share_directory("robotiq_description"))
-        + ":"
-        + os.path.join(
-            get_package_share_directory("robotiq_description"),
-            "world",
-            "models",
-        )
-    )
-
-    set_resource_path = SetEnvironmentVariable(
-        name="GZ_SIM_RESOURCE_PATH", value=resource_path
-    )
-
-    set_gz_plugin_path = SetEnvironmentVariable(
-        name="GZ_SIM_SYSTEM_PLUGIN_PATH", value=gz_plugin_path
-    )
-
-    existing_ld = os.environ.get("LD_LIBRARY_PATH", "")
-
-    set_ld_library_path = SetEnvironmentVariable(
-        name="LD_LIBRARY_PATH",
-        value=gz_plugin_path + ":/usr/lib/x86_64-linux-gnu:" + existing_ld,
-    )
-
-    nodes.append(set_resource_path)
-    nodes.append(set_gz_plugin_path)
-    nodes.append(set_ld_library_path)
-
-    # =========================
     # SRDF (SEMANTIC)
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_ur3_moveit2",
-            "config/ur3robotiq_2f85.srdf"
+            "ros2srrc_ur3_moveit2", "config/ur3robotiq_2f85.srdf"
         )
     }
 
     # =========================
     # KINEMATICS
     # =========================
+    kinematics_yaml = load_yaml("ur3_gripper_moveit_config", "config/kinematics.yaml")
+
     kinematics_yaml = {
-        "robot_description_kinematics": load_yaml(
-            "ros2srrc_robots",
-            "ur3/config/kinematics.yaml"
-        )
+        "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
 
-
     # =========================
-    # Moveit controller
+    # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/moveit_controllers.yaml"
+        "ur3_gripper_moveit_config", "config/moveit_controllers.yaml"
     )
+
+    ompl_planning = load_yaml("ur3_gripper_moveit_config", "config/ompl_planning.yaml")
+
+    ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
-    ompl_planning = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/ompl_planning.yaml"
-    )
-
-    ompl_planning = ompl_planning["/**"]["ros__parameters"]
-            
-    joint_limits_yaml = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/joint_limits.yaml"
-    )
-
-    pilz_cartesian_limits = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/pilz_cartesian_limits.yaml"
-    )
-
-    combined_planning = {
-        "robot_description_planning":
-            {**joint_limits_yaml, **pilz_cartesian_limits}
-    }
-
     planning_pipelines_config = {
-        "planning_pipelines": ["ompl"],
-        "default_planning_pipeline": "ompl",
-
+        "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
+        "default_planning_pipeline": "pilz_industrial_motion_planner",
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
-
-            "request_adapters":
-                "default_planner_request_adapters/AddTimeOptimalParameterization "
-                "default_planner_request_adapters/ResolveConstraintFrames "
-                "default_planner_request_adapters/FixWorkspaceBounds "
-                "default_planner_request_adapters/FixStartStateBounds "
-                "default_planner_request_adapters/FixStartStateCollision "
-                "default_planner_request_adapters/FixStartStatePathConstraints",
-
+        },
+        "pilz_industrial_motion_planner": {
+            "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
+            "request_adapters": "",
             "start_state_max_bounds_error": 0.1,
+            "default_planner_config": "PTP",
         },
     }
 
     move_group_capabilities = {
-        "capabilities":
-        "pilz_industrial_motion_planner/MoveGroupSequenceAction "
+        "capabilities": "pilz_industrial_motion_planner/MoveGroupSequenceAction "
         "pilz_industrial_motion_planner/MoveGroupSequenceService"
+    }
+
+    pilz_cartesian_limits = load_yaml(
+        "ros2srrc_robots", "ur3/config/pilz_cartesian_limits.yaml"
+    )
+
+    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur3/config/joint_limits.yaml")
+
+    combined_planning = {
+        "robot_description_planning": {**joint_limits_yaml, **pilz_cartesian_limits}
     }
 
     # =========================
@@ -211,10 +149,8 @@ def launch_setup(context):
             moveit_controllers,
             ompl_planning,
             {
-                "moveit_controller_manager":
-                "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+                "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
-            combined_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
             {"EE_PARAM": "robotiq_2f85"},
@@ -234,8 +170,7 @@ def launch_setup(context):
             moveit_controllers,
             ompl_planning,
             {
-                "moveit_controller_manager":
-                "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+                "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur3"},
@@ -287,7 +222,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur3",
+            "ur3_robotiq",
             "-x",
             x,
             "-y",
@@ -311,18 +246,10 @@ def launch_setup(context):
         parameters=[{"use_sim_time": True}],
     )
 
-    sausage_spawner = Node(
-        package="custom_robots",
-        executable="spawn_sausage.py",
-        name="box_spawner",
-        output="screen",
-    )
-
     nodes.append(robot_state_publisher)
     nodes.append(static_tf)
     nodes.append(spawn_robot)
     nodes.append(clock_bridge)
-    #nodes.append(sausage_spawner)
 
     if sensor == "camera":
         camera_bridge = Node(
@@ -379,6 +306,10 @@ def launch_setup(context):
     nodes.append(joint_trajectory_controller)
     nodes.append(gripper_controller)
 
+    # =========================
+    # MOVEIT
+    # =========================
+
     move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
@@ -406,7 +337,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        DeclareLaunchArgument("x", default_value="-0.5"),
+        DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0.9"),
         DeclareLaunchArgument("R", default_value="0"),
