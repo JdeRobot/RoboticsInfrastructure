@@ -40,7 +40,7 @@
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
 
   <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>
-  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_ros2_control.xacro"/>
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_ros2control.xacro"/>
 
   <xacro:robotiq_2f85
     bringup="false"
@@ -65,5 +65,5 @@
     name="robotiq"
     sim_gz="true"
     use_fake_hardware="false"/>
-    
+
 </robot>
