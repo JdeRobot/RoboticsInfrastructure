@@ -187,6 +187,21 @@
     <xacro:property name="forearm_radius" value="${sec_inertia_parameters['forearm_radius']}" scope="parent"/>
     <xacro:property name="wrist_radius" value="${sec_inertia_parameters['wrist_radius']}" scope="parent"/>
 
+    <xacro:property
+        name="wrist_1_visual_offset"
+        value="${sec_mesh_files['wrist_1']['visual_offset']}"
+        scope="parent"/>
+
+    <xacro:property
+        name="wrist_2_visual_offset"
+        value="${sec_mesh_files['wrist_2']['visual_offset']}"
+        scope="parent"/>
+
+    <xacro:property
+        name="wrist_3_visual_offset"
+        value="${sec_mesh_files['wrist_3']['visual_offset']}"
+        scope="parent"/>
+
     <!--KINEMATICS HASH-->
     <xacro:property name="kinematics_hash" value="${sec_kinematics['hash']}" scope="parent"/>
   </xacro:macro>

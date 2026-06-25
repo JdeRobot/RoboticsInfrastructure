@@ -35,56 +35,20 @@
   <xacro:include filename="$(find custom_robots)/models/ur3/ur.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/ur3/ur.ros2_control.xacro"/>
 
+  <!-- Include XACRO-MACRO file of the Robotiq 2f-85: -->
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
 
-  <!-- UR3 -->
-  <xacro:ur_robot
-    name="ur3"
-    tf_prefix=""
-  />
+  <xacro:include filename="$(find ros2srrc_endeffectors)/robotiq_2f85/urdf/robotiq_2f85_macro.urdf.xacro"/>
+  <xacro:robotiq_2f85
+    bringup="false"
+    parent_link="tool0"/>
 
-  <!-- Coupler -->
-  <link name="robotiq_coupler">
-    <visual>
-      <geometry>
-        <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
-      </geometry>
-    </visual>
 
-    <collision>
-      <geometry>
-        <cylinder radius="0.04" length="0.015"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <joint name="robotiq_coupler_joint" type="fixed">
-    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}"/>
-    <parent link="tool0"/>
-    <child link="robotiq_coupler"/>
-  </joint>
-
-  <!-- Gripper -->
-  <xacro:robotiq_85_gripper
-    prefix=""
-    parent="robotiq_coupler">
-
-    <origin xyz="0 0 0.004"
-            rpy="0 ${-pi/2} ${pi}"/>
-
-  </xacro:robotiq_85_gripper>
-
-  <!-- ros2_control GRIPPER -->
-  <xacro:robotiq_85_ros2_control
-    name="robotiq"
-    prefix=""
-    sim_gz="true"
-    use_fake_hardware="false"/>
 
   <!-- ros2_control UR3 -->
   <xacro:ur_ros2_control
-    name="ur3"
+    name="ur"
     prefix=""
     sim_gz="true"
     use_fake_hardware="false"
