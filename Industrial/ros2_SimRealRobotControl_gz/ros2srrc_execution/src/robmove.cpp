@@ -389,6 +389,7 @@ int main(int argc, char **argv)
     move_group_interface_ROB.setPlanningTime(5.0);
     move_group_interface_ROB.setNumPlanningAttempts(10);
 
+    // Esperar a tener el estado actual
     if (!move_group_interface_ROB.getCurrentState(10.0))
     {
         RCLCPP_ERROR(logger, "Failed to get current state!");
@@ -396,6 +397,18 @@ int main(int argc, char **argv)
     else
     {
         RCLCPP_INFO(logger, "Current state received.");
+
+        // ===== IMPRIMIR LOS JOINTS DEL GRUPO =====
+        const auto *jmg =
+            move_group_interface_ROB.getCurrentState()
+                ->getJointModelGroup(param_ROB_GROUP);
+
+        RCLCPP_INFO(logger, "Joints in planning group '%s':", param_ROB_GROUP.c_str());
+
+        for (const auto &name : jmg->getVariableNames())
+        {
+            RCLCPP_INFO(logger, "  %s", name.c_str());
+        }
     }
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB_GROUP.c_str());
