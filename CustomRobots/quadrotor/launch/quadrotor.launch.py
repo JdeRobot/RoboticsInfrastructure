@@ -71,7 +71,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "drone0",
+            "quadrotor",
             "-allow_renaming",
             "true",
             "-x",
