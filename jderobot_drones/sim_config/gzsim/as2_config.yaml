@@ -3,10 +3,10 @@
     use_sim_time: True
   platform:
     ros__parameters:
-      cmd_freq: 30.0  # Hz of platform commands send
-      info_freq: 10.0  # Hz of platform info publish
-      enable_takeoff_platform: false  # Enable takeoff platform, only for debugging purposes
-      enable_land_platform: false  # Enable land platform, only for debugging purposes
+      cmd_freq: 30.0 # Hz of platform commands send
+      info_freq: 10.0 # Hz of platform info publish
+      enable_takeoff_platform: false # Enable takeoff platform, only for debugging purposes
+      enable_land_platform: false # Enable land platform, only for debugging purposes
   state_estimator:
     ros__parameters:
       # plugin_name: ground_truth
@@ -14,12 +14,12 @@
   controller_manager:
     ros__parameters:
       # plugin_name: pid_speed_controller
-      cmd_freq: 30.0  # Hz of platform commands send
-      info_freq: 10.0  # Hz of platform info publish
+      cmd_freq: 30.0 # Hz of platform commands send
+      info_freq: 10.0 # Hz of platform info publish
       odom_frame_id: "odom"
       base_frame_id: "base_link"
       use_bypass: true
-      tf_timeout_threshold: 0.05  # seconds
+      tf_timeout_threshold: 0.05 # seconds
       proportional_limitation: true
       position_control:
         reset_integral: false
@@ -37,9 +37,59 @@
           x: 0.0
           y: 0.0
           z: 0.0
+      speed_control:
+        reset_integral: false
+        antiwindup_cte: 1.0
+        alpha: 0.3
+        kp:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+        kd:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+        ki:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+      speed_in_a_plane_control:
+        reset_integral: false
+        antiwindup_cte: 1.0
+        alpha: 0.3
+        height:
+          kp: 1.0
+          kd: 1.0
+          ki: 1.0
+        speed:
+          kp:
+            x: 0.0
+            y: 0.0
+          kd:
+            x: 0.0
+            y: 0.0
+          ki:
+            x: 0.0
+            y: 0.0
+      trajectory_control:
+        reset_integral: false
+        antiwindup_cte: 0.0
+        alpha: 0.0
+        kp:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+        kd:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+        ki:
+          x: 0.0
+          y: 0.0
+          z: 0.0
       yaw_control:
         reset_integral: false
-        antiwindup_cte : 1.0
+        antiwindup_cte: 1.0
         alpha: 0.3
         kp: 1.0
         kd: 0.001

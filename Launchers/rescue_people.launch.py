@@ -3,25 +3,13 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    IncludeLaunchDescription,
-    SetEnvironmentVariable,
-    AppendEnvironmentVariable,
-)
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
-from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
-
-    gazebo_models_path = os.path.join(package_dir, "models")
 
     world_file_name = "rescue_people_harmonic.world"
     worlds_dir = "/opt/jderobot/Worlds"
@@ -44,28 +32,8 @@ def generate_launch_description():
         output="screen",
     )
 
-    # as2 = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         [
-    #             os.path.join(get_package_share_directory("jderobot_drones"), "launch"),
-    #             "/as2_default_gazebo_sim.launch.py",
-    #         ]
-    #     ),
-    #     launch_arguments={
-    #         "namespace": "drone0",
-    #     }.items(),
-    # )
-
     ld = LaunchDescription()
-
-    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
-    )
-    ld.add_action(set_env_vars_resources)
-
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
-    # ld.add_action(as2)
 
     return ld
