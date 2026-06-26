@@ -198,8 +198,6 @@ private:
         moveit::core::RobotStatePtr state =
             move_group_interface_ROB.getCurrentState();
 
-        auto state = move_group_interface_ROB.getCurrentState();
-
         std::vector<double> seed;
         state->copyJointGroupPositions(
             state->getJointModelGroup(param_ROB_GROUP),
