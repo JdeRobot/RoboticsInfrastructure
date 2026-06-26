@@ -71,7 +71,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            namespace,
+            "drone0",
             "-allow_renaming",
             "true",
             "-x",
