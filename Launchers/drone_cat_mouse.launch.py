@@ -14,9 +14,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     custom_robots_share = get_package_share_directory("custom_robots")
-    bridges_path = os.path.join(
-        custom_robots_share, "bridges", "drone_cat_mouse.yaml"
-    )
+    bridges_path = os.path.join(custom_robots_share, "bridges", "drone_cat_mouse.yaml")
 
     world_file_name = "drone_cat_mouse_city.world"
     worlds_dir = "/opt/jderobot/Worlds"
@@ -34,9 +32,7 @@ def generate_launch_description():
 
     # gazebo + the ros_gz bridges. the one bridges file covers both drones.
     gzsim = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [jderobot_drones_launch, "/gz_sim.launch.py"]
-        ),
+        PythonLaunchDescriptionSource([jderobot_drones_launch, "/gz_sim.launch.py"]),
         condition=IfCondition(LaunchConfiguration("use_simulator")),
         launch_arguments={
             "namespace": "drone0",
