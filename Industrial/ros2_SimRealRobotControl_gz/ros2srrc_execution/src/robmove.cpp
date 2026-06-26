@@ -148,6 +148,19 @@ private:
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
 
+        auto joints = move_group_interface_ROB.getCurrentJointValues();
+
+        RCLCPP_INFO(get_logger(), "MoveGroup current joints:");
+
+        for (size_t i = 0; i < joints.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "joint[%zu] = %.6f",
+                i,
+                joints[i]);
+        }
+
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
 
@@ -157,6 +170,19 @@ private:
         // 3. Robot Movement -> EXECUTION:
 
         moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
+
+        auto joints = move_group_interface_ROB.getCurrentJointValues();
+
+        RCLCPP_INFO(get_logger(), "MoveGroup current joints:");
+
+        for (size_t i = 0; i < joints.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "MG joint[%zu] = %.6f",
+                i,
+                joints[i]);
+        }
 
         auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
@@ -173,6 +199,9 @@ private:
 
         move_group_interface_ROB.clearPoseTargets();
         move_group_interface_ROB.clearPathConstraints();
+
+        move_group_interface_ROB.getCurrentState(10.0);
+        move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setStartStateToCurrentState();
 
@@ -313,6 +342,15 @@ int main(int argc, char **argv)
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
     move_group_interface_ROB.setPlanningTime(5.0);
     move_group_interface_ROB.setNumPlanningAttempts(10);
+
+    if (!move_group_interface_ROB.getCurrentState(10.0))
+    {
+        RCLCPP_ERROR(logger, "Failed to get current state!");
+    }
+    else
+    {
+        RCLCPP_INFO(logger, "Current state received.");
+    }
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB_GROUP.c_str());
 
