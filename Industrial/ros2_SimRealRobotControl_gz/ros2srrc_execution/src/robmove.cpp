@@ -171,19 +171,6 @@ private:
 
         moveit::planning_interface::MoveGroupInterface::Plan MyPlan;
 
-        auto joints = move_group_interface_ROB.getCurrentJointValues();
-
-        RCLCPP_INFO(get_logger(), "MoveGroup current joints:");
-
-        for (size_t i = 0; i < joints.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "MG joint[%zu] = %.6f",
-                i,
-                joints[i]);
-        }
-
         auto CURRENT_POSE = move_group_interface_ROB.getCurrentPose();
 
         geometry_msgs::msg::Pose TARGET_POSE;
@@ -212,11 +199,6 @@ private:
 
         auto current_state = move_group_interface_ROB.getCurrentState();
 
-        std::vector<double> joints;
-        current_state->copyJointGroupPositions(
-            current_state->getJointModelGroup(param_ROB_GROUP),
-            joints);
-
         RCLCPP_INFO(get_logger(), "Current joints:");
 
         for (size_t i = 0; i < joints.size(); ++i)
@@ -233,6 +215,27 @@ private:
             TARGET_POSE.orientation.y,
             TARGET_POSE.orientation.z,
             TARGET_POSE.orientation.w);
+
+        auto state = move_group_interface_ROB.getCurrentState();
+        if (state)
+        {
+            std::vector<double> start;
+
+            state->copyJointGroupPositions(
+                state->getJointModelGroup(param_ROB_GROUP),
+                start);
+
+            RCLCPP_INFO(get_logger(), "Planning start state:");
+
+            for (size_t i = 0; i < start.size(); ++i)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "start[%zu] = %.6f",
+                    i,
+                    start[i]);
+            }
+        }
 
         MyPlan = plan_ROB();
 
