@@ -239,7 +239,7 @@ private:
                 ik_joints[i]);
         }
 
-        move_group_interface_ROB.setJointValueTarget(*state);
+        move_group_interface_ROB.setJointValueTarget(ik_joints);
 
         auto current_state = move_group_interface_ROB.getCurrentState();
 
@@ -278,6 +278,23 @@ private:
                     i,
                     start[i]);
             }
+        }
+
+        moveit_msgs::msg::Constraints goal =
+            move_group_interface_ROB.getGoalConstraints();
+
+        RCLCPP_INFO(
+            get_logger(),
+            "Goal constraints: %zu joint constraints",
+            goal.joint_constraints.size());
+
+        for (const auto &jc : goal.joint_constraints)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "%s -> %.6f",
+                jc.joint_name.c_str(),
+                jc.position);
         }
 
         MyPlan = plan_ROB();
