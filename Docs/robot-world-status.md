@@ -8,7 +8,7 @@
 | F1 car             |                       /home/ws/src/CustomRobots/f1/launch/f1.launch.py                       |            f1            |      mode=(holo/ackermann) sensor=(camera/laser)       |   URDF   |                          |
 | Autonomous car     |           /home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py           |      autonomous_car      | mode=(holonomic/ackermann) sensor=(camera/laser/lidar) |   URDF   |                          |
 | Vacuum cleaner     |           /home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py           |      vacuum_cleaner      |                 sensor=(camera/laser)                  | URDF/SDF | Broken bumper in URDF    |
-| Quadrotor          |                /home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py                |        quadrotor         |               sensor=(camera) namespace                | URDF/SDF | Does not fly             |
+| Quadrotor          |                /home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py                |        drone0         |               sensor=(camera) namespace                | URDF |              |
 | Rover 4wd          |                /home/ws/src/CustomRobots/quadrotor/launch/rover_4wd.launch.py                |        rover_4wd         |               noise=(none/low/med/high)                |   URDF   |                          |
 | Logistic Holonomic | /home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py | logistic_holonomic_robot |                                                        | URDF/SDF | Ball joint fails in URDF |
 | Logistic Ackermann | /home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py | logistic_ackermann_robot |                                                        |   URDF   |                          |
@@ -38,7 +38,7 @@
 | Montreal Circuit                     |                montreal_circuit.launch.py                 |   -200.88,-90.72,0,0,0,-2.83   |       No       |         ok         |              |
 | Nurburgring Circuit                  |               nurburgring_circuit.launch.py               |    -74.29,37.74,0,0,0,-0.51    |       No       |         ok         |              |
 | Monaco Circuit                       |                 monaco_circuit.launch.py                  | -105.223,-70.77,-1.8,0,0,1.69  |       No       |         ok         |              |
-| Spa Circuit                          |                   spa_circuit.launch.py                   |                                |      Yes       |                    |              |
+| Spa Circuit                          |                   spa_circuit.launch.py                   |                                |      No       |                    |              |
 | Obstacle Avoidance                   |              obstacle_avoidance_h.launch.py               |     0.04,0.68,0,0,0,-1.57      |       No       |         ok         |              |
 | Rescue People                        |                  rescue_people.launch.py                  |         0,0,1.45,0,0,0         |       No       |         ok         |              |
 | Warehouse 1                          |                   warehouse1.launch.py                    |         0,0,0.1,0,0,0          |       No       |         ok         |              |
@@ -55,4 +55,4 @@
 | Package delivery world               |                package_delivery.launch.py                 |    -1.0,-4.0,0.3,0,0,1.5729    |       No       |         ok         |              |
 | Rover 4wd Warehouse                  |               rover_4wd_warehouse.launch.py               |         0,0,0.15,0,0,0         |       No       |         ok         |              |
 | Pick And Place                       |                   pick_place.launch.py                    |         0,0,0.9,0,0,0          |       No       |         ok         | Reset broken |
-| Machine Vision                       | machine_vision_harmonic/machine_vision_harmonic.launch.py |                                |      Yes       |
+| Machine Vision                       | machine_vision_harmonic/machine_vision_harmonic.launch.py |         0,0,0.9,0,0,0          |      No       | ok | Reset broken |
