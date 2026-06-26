@@ -44,8 +44,6 @@
 
   <xacro:macro name="quadrotor" params="namespace">
 
-    <link name="base"></link>
-
     <!-- This is from quadrotor_base from as2 -->
     <link name="base_link">
       <gazebo>
@@ -87,12 +85,6 @@
         </geometry>
       </visual>
     </link>
-
-    <joint name="base_to_base_link" type="fixed">
-      <parent link="base"/>
-      <child link="base_link"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
 
     <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue" namespace="${namespace}"/>
     <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red" namespace="${namespace}"/>
