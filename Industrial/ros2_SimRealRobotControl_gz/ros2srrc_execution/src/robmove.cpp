@@ -169,12 +169,41 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+        move_group_interface_ROB.stop();
 
-        move_group_interface_ROB.setStartStateToCurrentState(); 
+        move_group_interface_ROB.clearPoseTargets();
+        move_group_interface_ROB.clearPathConstraints();
+
+        move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
+
+        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+
+        auto current_state = move_group_interface_ROB.getCurrentState();
+
+        std::vector<double> joints;
+        current_state->copyJointGroupPositions(
+            current_state->getJointModelGroup(param_ROB_GROUP),
+            joints);
+
+        RCLCPP_INFO(get_logger(), "Current joints:");
+
+        for (size_t i = 0; i < joints.size(); ++i)
+        {
+            RCLCPP_INFO(get_logger(), "joint[%zu] = %.6f", i, joints[i]);
+        }
+
+        RCLCPP_INFO(get_logger(),
+            "Target pose: %.3f %.3f %.3f | %.3f %.3f %.3f %.3f",
+            TARGET_POSE.position.x,
+            TARGET_POSE.position.y,
+            TARGET_POSE.position.z,
+            TARGET_POSE.orientation.x,
+            TARGET_POSE.orientation.y,
+            TARGET_POSE.orientation.z,
+            TARGET_POSE.orientation.w);
 
         MyPlan = plan_ROB();
 
@@ -282,6 +311,8 @@ int main(int argc, char **argv)
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
+    move_group_interface_ROB.setPlanningTime(5.0);
+    move_group_interface_ROB.setNumPlanningAttempts(10);
 
     RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB_GROUP.c_str());
 
