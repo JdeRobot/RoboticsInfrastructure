@@ -101,6 +101,7 @@ def launch_setup(context):
     as2_gt_bridge = Node(
         package="as2_gazebo_assets",
         executable="ground_truth_bridge",
+        namespace=gz_namespace,
         output="screen",
         parameters=[
             {
