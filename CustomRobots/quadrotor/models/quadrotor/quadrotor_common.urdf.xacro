@@ -11,7 +11,7 @@
   </material>
 
   <xacro:macro name="rotor" params="rotor parent xyz color namespace">
-    <link name='${namespace}/rotor_${rotor}'>
+    <link name='rotor_${rotor}'>
       <inertial>
         <mass value="0.005"/>
         <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="4.17041e-05" iyz="0" izz="4.26041e-05"/>
@@ -32,10 +32,10 @@
       <velocity_decay/>
     </link>
 
-    <joint name='${namespace}/rotor_${rotor}_joint' type="revolute">
+    <joint name='rotor_${rotor}_joint' type="revolute">
       <origin rpy="0 0 0" xyz="${xyz}"/>
-      <parent link="${namespace}/${parent}"/>
-      <child link="${namespace}/rotor_${rotor}"/>
+      <parent link="${parent}"/>
+      <child link="rotor_${rotor}"/>
       <axis xyz="0 0 1" expressed_in="__model__"/>
       <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="100"/>
       <dynamics spring_reference="0" spring_stiffness="0" friction="0" damping="0"/>
@@ -44,10 +44,10 @@
 
   <xacro:macro name="quadrotor" params="namespace">
 
-    <link name="${namespace}/base"></link>
+    <link name="base"></link>
 
     <!-- This is from quadrotor_base from as2 -->
-    <link name="${namespace}/base_link">
+    <link name="base_link">
       <gazebo>
         <enable_wind>true</enable_wind>
       </gazebo>
@@ -88,9 +88,9 @@
       </visual>
     </link>
 
-    <joint name="${namespace}/base_to_base_link" type="fixed">
-      <parent link="${namespace}/base"/>
-      <child link="${namespace}/base_link"/>
+    <joint name="base_to_base_link" type="fixed">
+      <parent link="base"/>
+      <child link="base_link"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
