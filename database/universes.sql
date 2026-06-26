@@ -142,13 +142,13 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 27	Vacuums House Roof	26	10
 29	Vacuums House Markers	25	21
 30	Small Laser Mapping Warehouse	33	21
-31	Rescue People	31	0
-32	Follow Road	32	0
+31	Rescue People	31	11
+32	Follow Road	32	11
 33	Laser Mapping Warehouse Low Noise	12	21
 35	Car Junction World	35	6
-36	Drone Gymkhana World	36	0
-37	Tower Inspection World	37	0
-39	Labyrinth Escape World	39	0
+36	Drone Gymkhana World	36	11
+37	Tower Inspection World	37	11
+39	Labyrinth Escape World	39	11
 40	Obstacle Avoidance	40	3
 41	Autopark_line	41	8
 42	Autopark_battery	42	8
@@ -159,7 +159,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 49 	Monaco Circuit	49	2
 55 	Rover 4wd Warehouse	55	12
 56	Pick And Place World	56	1
-57 	Package delivery	57	0
+57 	Package delivery	57	11
 58	Warehouse 1	58	13
 59	Warehouse 2	59	13
 60	Warehouse 1 Ackermann	58	14
@@ -174,6 +174,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 69	Rover 4wd Warehouse High Noise	68	20
 70	Machine vision world	70	24
 71	Conveyor Belt World	71	0
+72	Drone Cat Mouse	72	0
 \.
 
 --
@@ -196,8 +197,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{17.96,0.0,0.3,0,0,-2.0}
 33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{2.5,-30,0.1,0,0,1.57}
-36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
-37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{-21.0,-4.0,1.45,0,0,0}
+36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,1.05,0.0,0.0,0.0}
+37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{-21.0,-4.0,0.15,0,0,0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{-18,-8.5,0.3,0,0,0}
 40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz	{0.04,0.68,0,0,0,-1.57}
 41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
@@ -216,6 +217,7 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{0.0,0.0,0.9,0.0,0.0,0.0}
 71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	None	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
+72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
 \.
 
 --
@@ -235,7 +237,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser
 9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera
-11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	quadrotor	sensor:=camera namespace:=drone0
+11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone0	sensor:=camera namespace:=drone0
 12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=none
 13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	None
 14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	None
