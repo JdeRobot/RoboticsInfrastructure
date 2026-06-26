@@ -42,9 +42,14 @@ def generate_launch_description():
     with open(srdf_file, "r") as f:
         robot_description_semantic = {"robot_description_semantic": f.read()}
 
-    # Kinematics / planning configs (shared with pick-and-place)
-    kinematics_yaml = os.path.join(moveit_pkg_share, "config", "kinematics.yaml")
-    ompl_planning_yaml = os.path.join(moveit_pkg_share, "config", "ompl_planning.yaml")
+    # Kinematics / planning configs — UR10 suction specific (isolated from
+    # ur5_gripper_moveit_config so Pick & Place stays untouched).
+    kinematics_yaml = os.path.join(
+        pkg_share_dir, "config", "ur10_suction_kinematics.yaml"
+    )
+    ompl_planning_yaml = os.path.join(
+        pkg_share_dir, "config", "ur10_suction_ompl_planning.yaml"
+    )
 
     planning_pipelines_config = {
         "planning_pipelines": ["ompl"],

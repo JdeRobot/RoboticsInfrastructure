@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="ur5"
+<robot name="ur10"
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="name" default="ur"/>
@@ -44,6 +44,13 @@
     <child link="ls_vgr_link"/>
     <origin xyz="0.0 0.0 0.0" rpy="0 -1.5708 0"/>
   </joint>
+  <!-- Keep ls_vgr_link a distinct SDF link. Without this, the URDF->SDF
+       conversion lumps fixed-joint child links into their parent, so the
+       suction_contact sensor ends up on wrist_3_link and the link-attacher
+       (which subscribes to the .../ls_vgr_link/sensor/... topic) never fires. -->
+  <gazebo reference="ls_vgr_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
 
   <link name="EE_ls_vgr">
     <inertial>

@@ -72,7 +72,9 @@ def launch_setup(context):
     # =========================
     # KINEMATICS
     # =========================
-    kinematics_yaml = load_yaml("ur5_gripper_moveit_config", "config/kinematics.yaml")
+    kinematics_yaml = load_yaml(
+        "custom_robots", "config/ur10_suction_kinematics.yaml"
+    )
 
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
@@ -82,10 +84,12 @@ def launch_setup(context):
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "ur5_gripper_moveit_config", "config/moveit_controllers_suction.yaml"
+        "custom_robots", "config/ur10_suction_moveit_controllers.yaml"
     )
 
-    ompl_planning = load_yaml("ur5_gripper_moveit_config", "config/ompl_planning.yaml")
+    ompl_planning = load_yaml(
+        "custom_robots", "config/ur10_suction_ompl_planning.yaml"
+    )
 
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
@@ -96,6 +100,17 @@ def launch_setup(context):
         "default_planning_pipeline": "pilz_industrial_motion_planner",
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
+            # AddTimeOptimalParameterization assigns timestamps to the planned
+            # waypoints. Without it, OMPL plans have all-zero times and the
+            # joint_trajectory_controller rejects them ("Time between points ...
+            # is not strictly increasing").
+            "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization "
+            "default_planner_request_adapters/ResolveConstraintFrames "
+            "default_planner_request_adapters/FixWorkspaceBounds "
+            "default_planner_request_adapters/FixStartStateBounds "
+            "default_planner_request_adapters/FixStartStateCollision "
+            "default_planner_request_adapters/FixStartStatePathConstraints",
+            "start_state_max_bounds_error": 0.1,
         },
         "pilz_industrial_motion_planner": {
             "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
@@ -140,7 +155,11 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur10"},
-            {"EE_PARAM": "ls_vgr"},
+            # Suction has no actuated end-effector joint, so there is no
+            # ros2srrc_endeffectors/ls_vgr/config/joint_specifications.yaml to load.
+            # "none" makes the move server skip the EE block (it otherwise crashes
+            # with YAML::BadFile). Gripping is handled by gz_link_attacher, not MoveG.
+            {"EE_PARAM": "none"},
             {"MOVE_GROUP": "ur10_arm"},
         ],
     )
@@ -229,7 +248,7 @@ def launch_setup(context):
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"],
+        arguments=["/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock"],
         parameters=[{"use_sim_time": True}],
     )
 

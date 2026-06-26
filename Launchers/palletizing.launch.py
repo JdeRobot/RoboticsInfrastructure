@@ -15,12 +15,17 @@ def generate_launch_description():
     package_dir = get_package_share_directory("custom_robots")
     gazebo_models_path = os.path.join(package_dir, "models")
 
-    # Paths
-    gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
+    # Paths. The apt ros-humble-gz-ros2-control is built against Ignition Fortress
+    # (gz-sim6, exports IgnitionPluginHook) — it CANNOT load under Gazebo Harmonic
+    # (gz-sim8), which needs GzPluginHook, so the controller_manager never starts.
+    # The workspace build of gz_ros2_control, compiled with GZ_VERSION=harmonic,
+    # exports GzPluginHook and links libgz-sim8 — it MUST come first on the path so
+    # gz picks it over the broken apt one. gz_link_attacher is also workspace-built.
     gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
+    gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
 
     gz_plugin_path = (
-        gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/humble/lib"
+        gz_ros2_control_path + ":" + gz_link_attacher_path + ":" + "/opt/ros/humble/lib"
     )
 
     resource_path = (
