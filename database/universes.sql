@@ -197,8 +197,8 @@ COPY public.worlds (id, name, launch_file_path, tools_config, ros_version, type,
 32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{17.96,0.0,0.3,0,0,-2.0}
 33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{0.0,0.0,0.0,0.0,0.0,0.0}
 35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{2.5,-30,0.1,0,0,1.57}
-36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,1.0,0.0,0.0,0.0}
-37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{-21.0,-4.0,1.45,0,0,0}
+36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{0.0,0.0,1.05,0.0,0.0,0.0}
+37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{-21.0,-4.0,0.15,0,0,0}
 39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{-18,-8.5,0.3,0,0,0}
 40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz	{0.04,0.68,0,0,0,-1.57}
 41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{-7,2.5,0.004,0.0,0.0,0}
