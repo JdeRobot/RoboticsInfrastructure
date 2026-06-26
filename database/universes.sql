@@ -143,12 +143,12 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 29	Vacuums House Markers	25	21
 30	Small Laser Mapping Warehouse	33	21
 31	Rescue People	31	11
-32	Follow Road	32	0
+32	Follow Road	32	11
 33	Laser Mapping Warehouse Low Noise	12	21
 35	Car Junction World	35	6
-36	Drone Gymkhana World	36	0
-37	Tower Inspection World	37	0
-39	Labyrinth Escape World	39	0
+36	Drone Gymkhana World	36	11
+37	Tower Inspection World	37	11
+39	Labyrinth Escape World	39	11
 40	Obstacle Avoidance	40	3
 41	Autopark_line	41	8
 42	Autopark_battery	42	8
@@ -159,7 +159,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 49 	Monaco Circuit	49	2
 55 	Rover 4wd Warehouse	55	12
 56	Pick And Place World	56	1
-57 	Package delivery	57	0
+57 	Package delivery	57	11
 58	Warehouse 1	58	13
 59	Warehouse 2	59	13
 60	Warehouse 1 Ackermann	58	14
