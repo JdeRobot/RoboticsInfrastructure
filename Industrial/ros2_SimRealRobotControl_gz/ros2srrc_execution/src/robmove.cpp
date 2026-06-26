@@ -260,7 +260,6 @@ private:
             TARGET_POSE.orientation.z,
             TARGET_POSE.orientation.w);
 
-        auto state = move_group_interface_ROB.getCurrentState();
         if (state)
         {
             std::vector<double> start;
