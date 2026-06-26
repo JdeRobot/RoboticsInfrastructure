@@ -71,7 +71,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "quadrotor",
+            namespace,
             "-allow_renaming",
             "true",
             "-x",
