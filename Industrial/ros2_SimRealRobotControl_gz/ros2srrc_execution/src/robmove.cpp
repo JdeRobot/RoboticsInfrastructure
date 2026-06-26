@@ -195,7 +195,53 @@ private:
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
-        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+        moveit::core::RobotStatePtr state =
+            move_group_interface_ROB.getCurrentState();
+
+        auto state = move_group_interface_ROB.getCurrentState();
+
+        std::vector<double> seed;
+        state->copyJointGroupPositions(
+            state->getJointModelGroup(param_ROB_GROUP),
+            seed);
+
+        RCLCPP_INFO(get_logger(),"IK seed:");
+
+        for(size_t i=0;i<seed.size();i++)
+        {
+            RCLCPP_INFO(get_logger(),
+                "%zu -> %.6f",
+                i,
+                seed[i]);
+        }
+
+        bool found = state->setFromIK(
+            state->getJointModelGroup(param_ROB_GROUP),
+            TARGET_POSE);
+
+        if (!found)
+        {
+            RCLCPP_ERROR(get_logger(), "IK failed!");
+            RES = "PLANNING: ERROR";
+            return;
+        }
+
+        std::vector<double> ik_joints;
+        state->copyJointGroupPositions(
+            state->getJointModelGroup(param_ROB_GROUP),
+            ik_joints);
+
+        RCLCPP_INFO(get_logger(), "IK solution:");
+
+        for (size_t i = 0; i < ik_joints.size(); i++)
+        {
+            RCLCPP_INFO(get_logger(),
+                "ik[%zu] = %.6f",
+                i,
+                ik_joints[i]);
+        }
+
+        move_group_interface_ROB.setJointValueTarget(*state);
 
         auto current_state = move_group_interface_ROB.getCurrentState();
 
