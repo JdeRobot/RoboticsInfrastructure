@@ -444,19 +444,6 @@ private:
 
             // ============================
 
-            const auto& last = MyPlan.trajectory_.joint_trajectory.points.back();
-
-            RCLCPP_INFO(get_logger(), "FINAL TRAJECTORY POINT");
-
-            for (size_t i = 0; i < last.positions.size(); ++i)
-            {
-                RCLCPP_INFO(
-                    get_logger(),
-                    "%s = %.6f",
-                    MyPlan.trajectory_.joint_trajectory.joint_names[i].c_str(),
-                    last.positions[i]);
-            }
-
             bool ExecSUCCESS =
                 (move_group_interface_ROB.execute(MyPlan)
                 == moveit::planning_interface::MoveItErrorCode::SUCCESS);
