@@ -59,6 +59,21 @@ std::string RES = "none";
 // Declaration of GLOBAL VARIABLE --> ROBOT GROUP:
 std::string param_ROB_GROUP = "none";
 
+#include <cmath>
+
+void normalizeToNearest(std::vector<double>& target,
+                        const std::vector<double>& current)
+{
+    for (size_t i = 0; i < target.size(); ++i)
+    {
+        while (target[i] - current[i] > M_PI)
+            target[i] -= 2.0 * M_PI;
+
+        while (target[i] - current[i] < -M_PI)
+            target[i] += 2.0 * M_PI;
+    }
+}
+
 // =============================================================================== //
 // MoveIt!2 -> MoveGroupInterface/Plan function:
 
@@ -233,27 +248,54 @@ private:
             std::vector<double> vals;
             state->copyJointGroupPositions(jmg, vals);
 
-            for (size_t i = 0; i < vals.size(); ++i)
-                RCLCPP_INFO(get_logger(), "IK[%zu] = %.6f", i, vals[i]);
+            // Estado actual del robot
+            std::vector<double> current =
+                move_group_interface_ROB.getCurrentJointValues();
 
+            RCLCPP_INFO(get_logger(), "CURRENT JOINTS:");
+            for (size_t i = 0; i < current.size(); ++i)
+            {
+                RCLCPP_INFO(get_logger(),
+                    "CURRENT[%zu] = %.6f",
+                    i,
+                    current[i]);
+            }
+
+            RCLCPP_INFO(get_logger(), "IK BEFORE NORMALIZATION:");
+            for (size_t i = 0; i < vals.size(); ++i)
+            {
+                RCLCPP_INFO(get_logger(),
+                    "IK[%zu] = %.6f",
+                    i,
+                    vals[i]);
+            }
+
+            // -------- NORMALIZACIÓN --------
+            normalizeToNearest(vals, current);
+
+            RCLCPP_INFO(get_logger(), "IK AFTER NORMALIZATION:");
+            for (size_t i = 0; i < vals.size(); ++i)
+            {
+                RCLCPP_INFO(get_logger(),
+                    "IKN[%zu] = %.6f",
+                    i,
+                    vals[i]);
+            }
+
+            // Pasar esos joints al planificador
             bool ok = move_group_interface_ROB.setJointValueTarget(vals);
 
-            RCLCPP_INFO(
-                get_logger(),
-                "setJointValueTarget() = %d",
+            RCLCPP_INFO(get_logger(),
+                "setJointValueTarget = %d",
                 ok);
-
-            move_group_interface_ROB.setJointValueTarget(vals);
 
             std::vector<double> target;
             move_group_interface_ROB.getJointValueTarget(target);
 
             RCLCPP_INFO(get_logger(), "TARGET JOINTS:");
-
             for (size_t i = 0; i < target.size(); ++i)
             {
-                RCLCPP_INFO(
-                    get_logger(),
+                RCLCPP_INFO(get_logger(),
                     "TARGET[%zu] = %.6f",
                     i,
                     target[i]);
@@ -271,7 +313,7 @@ private:
             tf.translation().y(),
             tf.translation().z());
 
-        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+        //move_group_interface_ROB.setPoseTarget(TARGET_POSE);
         move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
