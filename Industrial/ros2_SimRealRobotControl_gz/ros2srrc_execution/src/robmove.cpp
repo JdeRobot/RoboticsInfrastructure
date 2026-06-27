@@ -176,10 +176,38 @@ private:
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-        move_group_interface_ROB.setStartStateToCurrentState(); 
+        move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
+
+        // ===== DEBUG =====
+        auto joints = move_group_interface_ROB.getCurrentJointValues();
+
+        RCLCPP_INFO(get_logger(), "CURRENT JOINTS:");
+
+        for (size_t i = 0; i < joints.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "CURRENT[%zu] = %.6f",
+                i,
+                joints[i]);
+        }
+
+        auto target = move_group_interface_ROB.getJointValueTarget();
+
+        RCLCPP_INFO(get_logger(), "TARGET JOINTS:");
+
+        for (size_t i = 0; i < target.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "TARGET[%zu] = %.6f",
+                i,
+                target[i]);
+        }
+        // ==================
 
         MyPlan = plan_ROB();
 
@@ -206,6 +234,19 @@ private:
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+
+            auto end_joints = move_group_interface_ROB.getCurrentJointValues();
+
+            RCLCPP_INFO(get_logger(), "FINAL JOINTS:");
+
+            for (size_t i = 0; i < end_joints.size(); ++i)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "FINAL[%zu] = %.6f",
+                    i,
+                    end_joints[i]);
+            }
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "ROBOT MOVEMENT (%s) has been CANCELED.", GOAL->type.c_str());
