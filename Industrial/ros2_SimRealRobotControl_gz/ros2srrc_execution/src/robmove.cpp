@@ -202,7 +202,8 @@ private:
             TARGET_POSE.position.y,
             TARGET_POSE.position.z);
 
-        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+        move_group_interface_ROB.clearPoseTargets();
+        move_group_interface_ROB.clearPathConstraints();
 
         const moveit::core::JointModelGroup* jmg =
             state->getJointModelGroup(param_ROB_GROUP);
@@ -234,6 +235,29 @@ private:
 
             for (size_t i = 0; i < vals.size(); ++i)
                 RCLCPP_INFO(get_logger(), "IK[%zu] = %.6f", i, vals[i]);
+
+            bool ok = move_group_interface_ROB.setJointValueTarget(vals);
+
+            RCLCPP_INFO(
+                get_logger(),
+                "setJointValueTarget() = %d",
+                ok);
+
+            move_group_interface_ROB.setJointValueTarget(vals);
+
+            std::vector<double> target;
+            move_group_interface_ROB.getJointValueTarget(target);
+
+            RCLCPP_INFO(get_logger(), "TARGET JOINTS:");
+
+            for (size_t i = 0; i < target.size(); ++i)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "TARGET[%zu] = %.6f",
+                    i,
+                    target[i]);
+            }
         }
         
         state->update();
@@ -247,6 +271,7 @@ private:
             tf.translation().y(),
             tf.translation().z());
 
+        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
         move_group_interface_ROB.setStartStateToCurrentState();
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
@@ -312,6 +337,9 @@ private:
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
             bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+
+            move_group_interface_ROB.clearPoseTargets();
+            move_group_interface_ROB.clearPathConstraints();
 
             auto end_joints = move_group_interface_ROB.getCurrentJointValues();
 
