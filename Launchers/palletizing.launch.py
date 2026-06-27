@@ -21,8 +21,16 @@ def generate_launch_description():
     # The workspace build of gz_ros2_control, compiled with GZ_VERSION=harmonic,
     # exports GzPluginHook and links libgz-sim8 — it MUST come first on the path so
     # gz picks it over the broken apt one. gz_link_attacher is also workspace-built.
-    gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
-    gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
+    from ament_index_python.packages import get_package_prefix
+    try:
+        gz_link_attacher_path = os.path.join(get_package_prefix("gz_link_attacher"), "lib")
+    except:
+        gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
+        
+    try:
+        gz_ros2_control_path = os.path.join(get_package_prefix("gz_ros2_control"), "lib")
+    except:
+        gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
 
     gz_plugin_path = (
         gz_ros2_control_path + ":" + gz_link_attacher_path + ":" + "/opt/ros/humble/lib"
@@ -52,7 +60,7 @@ def generate_launch_description():
     )
 
     gz = ExecuteProcess(
-        cmd=["gz", "sim", "-r", "-s", "-v", "4", world_path],
+        cmd=["gz", "sim", "-r", "-v", "4", world_path],
         output="screen",
     )
 

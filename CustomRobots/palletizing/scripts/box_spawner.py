@@ -131,13 +131,18 @@ class BoxSpawner(Node):
             self._active_timer.cancel()
             self._active_timer = None
 
-        # Hand the box off to the robot and wait for /box_done. No timer here:
-        # the feeder stays idle until _on_box_done fires.
+        # Hand the box off to the robot and wait for /box_done. Publish continuously
+        # so a late-started solution.py doesn't miss the message!
         self._pending_box = name
+        self._active_timer = self.create_timer(1.0, lambda: self._ready_pub.publish(String(data=self._pending_box)))
         self._ready_pub.publish(String(data=name))
         self.get_logger().info(f"{name} ready for pickup — waiting for robot")
 
     def _on_box_done(self, msg: String):
+        if self._active_timer:
+            self._active_timer.cancel()
+            self._active_timer = None
+
         # Ignore stray/duplicate acks not matching the box we're waiting on.
         if msg.data != self._pending_box:
             self.get_logger().warn(

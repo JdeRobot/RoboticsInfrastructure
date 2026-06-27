@@ -373,13 +373,20 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << std::endl;
 
     std::string objectModel;
+    std::string hitCollision;
 
     for (const auto &obj : graspableObjects)
     {
-      if (collision1.find(obj) != std::string::npos ||
-          collision2.find(obj) != std::string::npos)
+      if (collision1.find(obj) != std::string::npos)
       {
         objectModel = obj;
+        hitCollision = collision1;
+        break;
+      }
+      else if (collision2.find(obj) != std::string::npos)
+      {
+        objectModel = obj;
+        hitCollision = collision2;
         break;
       }
     }
@@ -410,7 +417,13 @@ void OnContact(const gz::msgs::Contacts &_msg)
       link1 = "robotiq_85_right_finger_tip_link";
     }
 
-    model2 = objectModel;
+    // Extract actual model name from collision string (e.g. "box_89_0::link::collision")
+    size_t pos = hitCollision.find("::");
+    if (pos != std::string::npos) {
+        model2 = hitCollision.substr(0, pos);
+    } else {
+        model2 = objectModel;
+    }
 
     link2 = "link";
 

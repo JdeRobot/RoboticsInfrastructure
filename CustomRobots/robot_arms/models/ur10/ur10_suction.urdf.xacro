@@ -26,8 +26,10 @@
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
     </inertial>
     <collision name="collision">
+      <!-- Dartsim cannot parse .dae meshes for collision geometry. Using a primitive box. -->
+      <origin xyz="0.03 0.0 0.05" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find ros2srrc_endeffectors)/ls_vgr/meshes/ls_vgr.dae"/>
+        <box size="0.1 0.1 0.1"/>
       </geometry>
     </collision>
     <visual name="visual">
@@ -79,7 +81,7 @@
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
-        <collision>collision</collision>
+        <collision>ls_vgr_link_fixed_joint_lump__collision_collision</collision>
       </contact>
     </sensor>
   </gazebo>
