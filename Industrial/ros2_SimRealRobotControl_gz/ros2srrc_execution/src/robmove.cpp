@@ -153,7 +153,7 @@ private:
         auto state = move_group_interface_ROB.getCurrentState();
         state->update();
 
-        const auto& tf = state->getGlobalLinkTransform("tool0");
+        const auto& current_tf = state->getGlobalLinkTransform("tool0");
 
         RCLCPP_INFO(get_logger(),
             "CURRENTPOSE = %.3f %.3f %.3f",
@@ -162,10 +162,10 @@ private:
             CP_INFO.pose.position.z);
 
         RCLCPP_INFO(get_logger(),
-            "STATE TOOL  = %.3f %.3f %.3f",
-            tf.translation().x(),
-            tf.translation().y(),
-            tf.translation().z());
+            "STATE TOOL = %.3f %.3f %.3f",
+            current_tf.translation().x(),
+            current_tf.translation().y(),
+            current_tf.translation().z());
 
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
