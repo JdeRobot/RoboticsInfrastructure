@@ -444,9 +444,39 @@ private:
 
             // ============================
 
+            const auto& last = MyPlan.trajectory_.joint_trajectory.points.back();
+
+            RCLCPP_INFO(get_logger(), "FINAL TRAJECTORY POINT");
+
+            for (size_t i = 0; i < last.positions.size(); ++i)
+            {
+                RCLCPP_INFO(
+                    get_logger(),
+                    "%s = %.6f",
+                    MyPlan.trajectory_.joint_trajectory.joint_names[i].c_str(),
+                    last.positions[i]);
+            }
+
             bool ExecSUCCESS =
                 (move_group_interface_ROB.execute(MyPlan)
                 == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+
+            auto state = move_group_interface_ROB.getCurrentState();
+
+            std::vector<double> q;
+            state->copyJointGroupPositions(
+                state->getJointModelGroup(param_ROB_GROUP),
+                q);
+
+            RCLCPP_INFO(get_logger(), "ROBOT AFTER EXECUTION");
+
+            for(size_t i=0;i<q.size();i++)
+            {
+                RCLCPP_INFO(get_logger(),
+                    "Q[%zu]=%.6f",
+                    i,
+                    q[i]);
+            }
 
             move_group_interface_ROB.clearPoseTargets();
             move_group_interface_ROB.clearPathConstraints();
