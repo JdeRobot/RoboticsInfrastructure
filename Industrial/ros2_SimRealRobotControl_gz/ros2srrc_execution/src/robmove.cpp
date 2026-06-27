@@ -174,7 +174,49 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
+        RCLCPP_INFO(
+            get_logger(),
+            "TARGET POSE = %.3f %.3f %.3f",
+            TARGET_POSE.position.x,
+            TARGET_POSE.position.y,
+            TARGET_POSE.position.z);
+
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
+
+        moveit::core::RobotStatePtr state =
+            move_group_interface_ROB.getCurrentState();
+
+        const moveit::core::JointModelGroup* jmg =
+            state->getJointModelGroup(param_ROB_GROUP);
+
+        bool found_ik = state->setFromIK(jmg, TARGET_POSE);
+
+        RCLCPP_INFO(get_logger(), "IK FOUND = %d", found_ik);
+
+        if (!found_ik)
+        {
+            RCLCPP_ERROR(get_logger(), "NO IK SOLUTION");
+        }
+
+        if (found_ik)
+        {
+            std::vector<double> vals;
+            state->copyJointGroupPositions(jmg, vals);
+
+            for (size_t i = 0; i < vals.size(); ++i)
+                RCLCPP_INFO(get_logger(), "IK[%zu] = %.6f", i, vals[i]);
+        }
+        
+        state->update();
+
+        const auto &tf = state->getGlobalLinkTransform("tool0");
+
+        RCLCPP_INFO(
+            get_logger(),
+            "IK TOOL = %.3f %.3f %.3f",
+            tf.translation().x(),
+            tf.translation().y(),
+            tf.translation().z());
 
         move_group_interface_ROB.setStartStateToCurrentState();
 
@@ -193,19 +235,6 @@ private:
                 "CURRENT[%zu] = %.6f",
                 i,
                 joints[i]);
-        }
-
-        auto target = move_group_interface_ROB.getJointValueTarget();
-
-        RCLCPP_INFO(get_logger(), "TARGET JOINTS:");
-
-        for (size_t i = 0; i < target.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "TARGET[%zu] = %.6f",
-                i,
-                target[i]);
         }
         // ==================
 
