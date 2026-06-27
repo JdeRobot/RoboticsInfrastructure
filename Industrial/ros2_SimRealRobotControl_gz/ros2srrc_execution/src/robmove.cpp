@@ -56,6 +56,7 @@ std::string param_ROB = "none";
 // Declaration of GLOBAL VARIABLE --> RES:
 std::string RES = "none";
 
+// Declaration of GLOBAL VARIABLE --> ROBOT GROUP:
 std::string param_ROB_GROUP = "none";
 
 // =============================================================================== //
@@ -97,8 +98,12 @@ public:
         RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
         this->declare_parameter("ROB_GROUP", "none");
-        param_ROB_GROUP =
-            this->get_parameter("ROB_GROUP").as_string();
+        param_ROB_GROUP = this->get_parameter("ROB_GROUP").as_string();
+
+        RCLCPP_INFO(
+            this->get_logger(),
+            "ROB_GROUP received -> %s",
+            param_ROB_GROUP.c_str());
 
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
@@ -148,19 +153,6 @@ private:
         RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
         RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
 
-        auto joints = move_group_interface_ROB.getCurrentJointValues();
-
-        RCLCPP_INFO(get_logger(), "MoveGroup current joints:");
-
-        for (size_t i = 0; i < joints.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "joint[%zu] = %.6f",
-                i,
-                joints[i]);
-        }
-
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
 
@@ -182,104 +174,13 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        move_group_interface_ROB.stop();
+        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-        move_group_interface_ROB.clearPoseTargets();
-        move_group_interface_ROB.clearPathConstraints();
-
-        move_group_interface_ROB.getCurrentState(10.0);
-        move_group_interface_ROB.setStartStateToCurrentState();
-
-        move_group_interface_ROB.setStartStateToCurrentState();
+        move_group_interface_ROB.setStartStateToCurrentState(); 
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
-        moveit::core::RobotStatePtr state =
-            move_group_interface_ROB.getCurrentState();
-
-        std::vector<double> seed;
-        state->copyJointGroupPositions(
-            state->getJointModelGroup(param_ROB_GROUP),
-            seed);
-
-        RCLCPP_INFO(get_logger(),"IK seed:");
-
-        for(size_t i=0;i<seed.size();i++)
-        {
-            RCLCPP_INFO(get_logger(),
-                "%zu -> %.6f",
-                i,
-                seed[i]);
-        }
-
-        bool found = state->setFromIK(
-            state->getJointModelGroup(param_ROB_GROUP),
-            TARGET_POSE);
-
-        if (!found)
-        {
-            RCLCPP_ERROR(get_logger(), "IK failed!");
-            RES = "PLANNING: ERROR";
-            return;
-        }
-
-        std::vector<double> ik_joints;
-        state->copyJointGroupPositions(
-            state->getJointModelGroup(param_ROB_GROUP),
-            ik_joints);
-
-        RCLCPP_INFO(get_logger(), "IK solution:");
-
-        for (size_t i = 0; i < ik_joints.size(); i++)
-        {
-            RCLCPP_INFO(get_logger(),
-                "ik[%zu] = %.6f",
-                i,
-                ik_joints[i]);
-        }
-        
-        move_group_interface_ROB.setJointValueTarget(*state);
-
-
-        auto current_state = move_group_interface_ROB.getCurrentState();
-
-        RCLCPP_INFO(get_logger(), "Current joints:");
-
-        for (size_t i = 0; i < joints.size(); ++i)
-        {
-            RCLCPP_INFO(get_logger(), "joint[%zu] = %.6f", i, joints[i]);
-        }
-
-        RCLCPP_INFO(get_logger(),
-            "Target pose: %.3f %.3f %.3f | %.3f %.3f %.3f %.3f",
-            TARGET_POSE.position.x,
-            TARGET_POSE.position.y,
-            TARGET_POSE.position.z,
-            TARGET_POSE.orientation.x,
-            TARGET_POSE.orientation.y,
-            TARGET_POSE.orientation.z,
-            TARGET_POSE.orientation.w);
-
-        if (state)
-        {
-            std::vector<double> start;
-
-            state->copyJointGroupPositions(
-                state->getJointModelGroup(param_ROB_GROUP),
-                start);
-
-            RCLCPP_INFO(get_logger(), "Planning start state:");
-
-            for (size_t i = 0; i < start.size(); ++i)
-            {
-                RCLCPP_INFO(
-                    get_logger(),
-                    "start[%zu] = %.6f",
-                    i,
-                    start[i]);
-            }
-        }
         MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
@@ -382,36 +283,15 @@ int main(int argc, char **argv)
     using moveit::planning_interface::MoveGroupInterface;
 
     move_group_interface_ROB =
-        MoveGroupInterface(moveit_node, param_ROB_GROUP);
+    MoveGroupInterface(moveit_node, param_ROB_GROUP);
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
-    move_group_interface_ROB.setPlanningTime(5.0);
-    move_group_interface_ROB.setNumPlanningAttempts(10);
 
-    // Esperar a tener el estado actual
-    if (!move_group_interface_ROB.getCurrentState(10.0))
-    {
-        RCLCPP_ERROR(logger, "Failed to get current state!");
-    }
-    else
-    {
-        RCLCPP_INFO(logger, "Current state received.");
-
-        // ===== IMPRIMIR LOS JOINTS DEL GRUPO =====
-        const auto *jmg =
-            move_group_interface_ROB.getCurrentState()
-                ->getJointModelGroup(param_ROB_GROUP);
-
-        RCLCPP_INFO(logger, "Joints in planning group '%s':", param_ROB_GROUP.c_str());
-
-        for (const auto &name : jmg->getVariableNames())
-        {
-            RCLCPP_INFO(logger, "  %s", name.c_str());
-        }
-    }
-
-    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB_GROUP.c_str());
+    RCLCPP_INFO(
+        logger,
+        "MoveGroupInterface object created for ROBOT: %s",
+        param_ROB_GROUP.c_str());
 
     rclcpp::spin(node);
 
