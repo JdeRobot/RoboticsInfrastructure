@@ -148,10 +148,24 @@ private:
     {
 
         // 0. INFORMATION -> Current Robot Pose:
-        auto CP_INFO = move_group_interface_ROB.getCurrentPose();
-        RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
-        RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
-        RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
+       auto CP_INFO = move_group_interface_ROB.getCurrentPose();
+
+        auto state = move_group_interface_ROB.getCurrentState();
+        state->update();
+
+        const auto& tf = state->getGlobalLinkTransform("tool0");
+
+        RCLCPP_INFO(get_logger(),
+            "CURRENTPOSE = %.3f %.3f %.3f",
+            CP_INFO.pose.position.x,
+            CP_INFO.pose.position.y,
+            CP_INFO.pose.position.z);
+
+        RCLCPP_INFO(get_logger(),
+            "STATE TOOL  = %.3f %.3f %.3f",
+            tf.translation().x(),
+            tf.translation().y(),
+            tf.translation().z());
 
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
@@ -183,13 +197,21 @@ private:
 
         move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-        moveit::core::RobotStatePtr state =
-            move_group_interface_ROB.getCurrentState();
-
         const moveit::core::JointModelGroup* jmg =
             state->getJointModelGroup(param_ROB_GROUP);
 
         bool found_ik = state->setFromIK(jmg, TARGET_POSE);
+
+        state->update();
+
+        const auto& ik_tf = state->getGlobalLinkTransform("tool0");
+
+        RCLCPP_INFO(
+            get_logger(),
+            "IK TOOL = %.3f %.3f %.3f",
+            ik_tf.translation().x(),
+            ik_tf.translation().y(),
+            ik_tf.translation().z());
 
         RCLCPP_INFO(get_logger(), "IK FOUND = %d", found_ik);
 
