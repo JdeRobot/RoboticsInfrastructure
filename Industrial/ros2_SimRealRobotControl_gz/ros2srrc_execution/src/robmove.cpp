@@ -65,7 +65,14 @@ std::string param_ROB_GROUP = "none";
 moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    auto code = move_group_interface_ROB.plan(my_plan);
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("RobMove"),
+        "MoveIt error code = %d",
+        code.val);
+
+    bool success = (code == moveit::core::MoveItErrorCode::SUCCESS);
 
     // Execute the plan
     if (success)
