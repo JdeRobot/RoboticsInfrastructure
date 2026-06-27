@@ -236,6 +236,26 @@ private:
                 i,
                 joints[i]);
         }
+
+        // Estado interno de MoveIt
+        auto planning_state = move_group_interface_ROB.getCurrentState();
+
+        std::vector<double> planning_vals;
+
+        planning_state->copyJointGroupPositions(
+            planning_state->getJointModelGroup(param_ROB_GROUP),
+            planning_vals);
+
+        RCLCPP_INFO(get_logger(), "PLANNING STATE:");
+
+        for (size_t i = 0; i < planning_vals.size(); ++i)
+        {
+            RCLCPP_INFO(
+                get_logger(),
+                "STATE[%zu] = %.6f",
+                i,
+                planning_vals[i]);
+        }
         // ==================
 
         MyPlan = plan_ROB();
