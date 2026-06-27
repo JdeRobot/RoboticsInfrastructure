@@ -46,6 +46,7 @@
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
 #include <geometry_msgs/msg/pose.hpp>
+#include <sstream>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -357,6 +358,30 @@ private:
         MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
+
+            const auto& pts = MyPlan.trajectory_.joint_trajectory.points;
+            RCLCPP_INFO(get_logger(), "Trajectory has %zu points", pts.size());
+            const auto& names = MyPlan.trajectory_.joint_trajectory.joint_names;
+
+            std::stringstream ns;
+            ns << "Joint order: ";
+
+            for (const auto& n : names)
+                ns << n << " ";
+
+            RCLCPP_INFO(get_logger(), "%s", ns.str().c_str());
+
+            for (size_t p = 0; p < pts.size(); ++p)
+            {
+                std::stringstream ss;
+                ss << "Point " << p << ": ";
+
+                for (double q : pts[p].positions)
+                    ss << q << " ";
+
+                RCLCPP_INFO(get_logger(), "%s", ss.str().c_str());
+            }
+
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
                 param_ROB_GROUP
