@@ -199,4 +199,21 @@
   <disable_collisions link1="hand_camera_link" link2="robotiq_85_right_knuckle_link" reason="Never"/>
   <disable_collisions link1="hand_camera_link" link2="wrist_3_link" reason="Never"/>
 
+  <!-- UR3 + Robotiq -->
+  <disable_collisions link1="forearm_link" link2="robotiq_coupler" reason="Never"/>
+
+  <disable_collisions link1="forearm_link" link2="robotiq_85_base_link" reason="Never"/>
+
+  <disable_collisions link1="forearm_link" link2="robotiq_85_left_knuckle_link" reason="Never"/>
+  <disable_collisions link1="forearm_link" link2="robotiq_85_right_knuckle_link" reason="Never"/>
+
+  <disable_collisions link1="forearm_link" link2="robotiq_85_left_inner_knuckle_link" reason="Never"/>
+  <disable_collisions link1="forearm_link" link2="robotiq_85_right_inner_knuckle_link" reason="Never"/>
+
+  <disable_collisions link1="forearm_link" link2="robotiq_85_left_finger_link" reason="Never"/>
+  <disable_collisions link1="forearm_link" link2="robotiq_85_right_finger_link" reason="Never"/>
+
+  <disable_collisions link1="forearm_link" link2="robotiq_85_left_finger_tip_link" reason="Never"/>
+  <disable_collisions link1="forearm_link" link2="robotiq_85_right_finger_tip_link" reason="Never"/>
+
 </robot>
