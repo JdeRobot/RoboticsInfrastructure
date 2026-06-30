@@ -431,8 +431,8 @@ private:
 
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
-            RCLCPP_INFO(logger, "============================");
-            RCLCPP_INFO(logger, "Trajectory joints:");
+            RCLCPP_INFO(this->get_logger(), "============================");
+            RCLCPP_INFO(this->get_logger(), "Trajectory joints:");
 
             for (const auto &j : MyPlan.trajectory_.joint_trajectory.joint_names)
             {
@@ -453,19 +453,19 @@ private:
                 for (double q : p.positions)
                     ss << q << " ";
 
-                RCLCPP_INFO(logger,
+                RCLCPP_INFO(this->get_logger(),
                     "Point %ld: %s",
                     i,
                     ss.str().c_str());
             }
 
-            auto result = move_group_interface_ROB.execute(MyPlan);
+            auto exec_result = move_group_interface_ROB.execute(MyPlan);
 
-            RCLCPP_INFO(logger,
+            RCLCPP_INFO(this->get_logger(),
                 "Execute returned %d",
-                result.val);
+                exec_result.val);
 
-            bool ExecSUCCESS = (result== moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            bool ExecSUCCESS = (exec_result== moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");
