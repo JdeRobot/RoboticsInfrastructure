@@ -436,10 +436,10 @@ private:
 
             for (const auto &j : MyPlan.trajectory_.joint_trajectory.joint_names)
             {
-                RCLCPP_INFO(logger, "  %s", j.c_str());
+                RCLCPP_INFO(this->get_logger(), "  %s", j.c_str());
             }
 
-            RCLCPP_INFO(logger, "Trajectory points: %ld",
+            RCLCPP_INFO(this->get_logger(), "Trajectory points: %ld",
                 MyPlan.trajectory_.joint_trajectory.points.size());
 
             for (size_t i = 0;
