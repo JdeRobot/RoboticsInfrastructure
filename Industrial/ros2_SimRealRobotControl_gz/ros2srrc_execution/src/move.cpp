@@ -431,7 +431,41 @@ private:
 
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
-            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            RCLCPP_INFO(logger, "============================");
+            RCLCPP_INFO(logger, "Trajectory joints:");
+
+            for (const auto &j : MyPlan.trajectory_.joint_trajectory.joint_names)
+            {
+                RCLCPP_INFO(logger, "  %s", j.c_str());
+            }
+
+            RCLCPP_INFO(logger, "Trajectory points: %ld",
+                MyPlan.trajectory_.joint_trajectory.points.size());
+
+            for (size_t i = 0;
+                i < MyPlan.trajectory_.joint_trajectory.points.size();
+                ++i)
+            {
+                auto &p = MyPlan.trajectory_.joint_trajectory.points[i];
+
+                std::stringstream ss;
+
+                for (double q : p.positions)
+                    ss << q << " ";
+
+                RCLCPP_INFO(logger,
+                    "Point %ld: %s",
+                    i,
+                    ss.str().c_str());
+            }
+
+            auto result = move_group_interface_ROB.execute(MyPlan);
+
+            RCLCPP_INFO(logger,
+                "Execute returned %d",
+                result.val);
+
+            bool ExecSUCCESS = (result== moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");

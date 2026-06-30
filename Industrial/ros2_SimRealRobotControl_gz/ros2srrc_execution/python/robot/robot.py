@@ -135,8 +135,6 @@ class MoveCLIENT(Node):
 
     def send_goal(self, ACTION):
 
-        print("send_goal")
-
         goal_msg = Move.Goal()
         goal_msg.action = ACTION.action
         goal_msg.speed = ACTION.speed
@@ -151,7 +149,6 @@ class MoveCLIENT(Node):
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
     def goal_response_callback(self, future):
-        print("goal_response_callback")
 
         self.goal_handle = future.result()
 
@@ -165,7 +162,6 @@ class MoveCLIENT(Node):
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
-        print("get_result_callback")
 
         global RES
 
@@ -204,22 +200,12 @@ class RBT:
         RES["Message"] = "null"
         RES["ExecTime"] = -1.0
 
-        print("1")
-
         self.MoveClient.send_goal(ACTION)
-
-        print("2")
-
         while rclpy.ok():
-            print("3")
-
             rclpy.spin_once(self.MoveClient)
-
-            print("4", RES)
 
             if RES["Message"] != "null":
                 break
-        print("5")
 
         print("[CLIENT - robot.py]: Move ACTION EXECUTED -> Result: " + RES["Message"])
         print("")
