@@ -71,10 +71,11 @@ def generate_launch_description():
         output="screen",
     )
 
-    sausage_spawner = Node(
-        package="conveyor_belt_plugin",
-        executable="sausage_spawner",
-        name="sausage_spawner",
+    sausage_spawner = ExecuteProcess(
+        cmd=[
+            "python3",
+            "home/ws/src/CustomRobots/conveyor_belt/spawn_sausage.py"
+        ],
         output="screen",
     )
     
