@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, SetEnvironmentVariable
 
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -70,11 +71,19 @@ def generate_launch_description():
         output="screen",
     )
 
+    sausage_spawner = Node(
+        package="conveyor_belt_plugin",
+        executable="sausage_spawner",
+        name="sausage_spawner",
+        output="screen",
+    )
+    
     return LaunchDescription(
         [
             set_gz_plugin_path,
             set_ld_library_path,
             set_resource_path,
             gz,
+            sausage_spawner,
         ]
     )

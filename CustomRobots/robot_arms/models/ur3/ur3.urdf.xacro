@@ -27,7 +27,14 @@
     <!-- BASE CAMERA -->
     <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_params_gz.xacro"/>
     <xacro:property name="parent_base" value="base_link"/>
-    <xacro:property name="cam_base_pz" value="0.5"/>
+    <!-- Posición -->
+    <xacro:property name="cam_base_px" value="0.8"/>
+    <xacro:property name="cam_base_py" value="-0.2"/>
+    <xacro:property name="cam_base_pz" value="1.2"/>
+    <!-- Orientación -->
+    <xacro:property name="cam_base_or" value="1.57"/>
+    <xacro:property name="cam_base_op" value="0.2"/>
+    <xacro:property name="cam_base_oy" value="3.14"/>
     <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_gz.xacro"/>
 
   </xacro:if>
