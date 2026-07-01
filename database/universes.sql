@@ -159,7 +159,7 @@ COPY public.universes (id, name, world_id, robot_id) FROM stdin;
 49 	Monaco Circuit	49	2
 55 	Rover 4wd Warehouse	55	12
 56	Pick And Place World	56	1
-57 	Package delivery	57	11
+57 	Package delivery	57	25
 58	Warehouse 1	58	13
 59	Warehouse 2	59	13
 60	Warehouse 1 Ackermann	58	14
@@ -251,6 +251,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
 23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
 24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
+25	Quadrotor Gripper	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone0	sensor:=camera namespace:=drone0 gripper:=true
 \.
 
 --

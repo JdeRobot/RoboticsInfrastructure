@@ -47,7 +47,8 @@ namespace drone_gripper
 class DroneGripper :
   public System,
   public ISystemConfigure,
-  public ISystemPreUpdate
+  public ISystemPreUpdate,
+  public ISystemReset
 {
 
 public:
@@ -125,6 +126,16 @@ void PreUpdate(
   const UpdateInfo &_info,
   EntityComponentManager &_ecm) override
 {
+  // If the gripper model disappears (e.g. the drone is removed on reset),
+  // drop the joint so it never dangles and wedges the server. Runs even
+  // while paused, because reset removes the model with the world paused.
+  if (this->activeJoint != kNullEntity &&
+      this->FindModel(_ecm, this->gripperModelName) == kNullEntity)
+  {
+    _ecm.RequestRemoveEntity(this->activeJoint);
+    this->activeJoint = kNullEntity;
+  }
+
   if (_info.paused)
     return;
 
@@ -147,6 +158,23 @@ void PreUpdate(
     m.data = (this->activeJoint != kNullEntity);
     this->statePub->publish(m);
   }
+}
+
+// Called on world reset: drop any joint and clear state so nothing
+// references the drone that reset removes and re-creates.
+void Reset(
+  const UpdateInfo &,
+  EntityComponentManager &_ecm) override
+{
+  if (this->activeJoint != kNullEntity)
+  {
+    _ecm.RequestRemoveEntity(this->activeJoint);
+    this->activeJoint = kNullEntity;
+  }
+
+  std::lock_guard<std::mutex> lock(this->mutex);
+  this->magnetEnabled = false;
+  this->publishCounter = 0;
 }
 
 private:
@@ -264,5 +292,6 @@ GZ_ADD_PLUGIN(
   drone_gripper::DroneGripper,
   gz::sim::System,
   gz::sim::ISystemConfigure,
-  gz::sim::ISystemPreUpdate
+  gz::sim::ISystemPreUpdate,
+  gz::sim::ISystemReset
 )

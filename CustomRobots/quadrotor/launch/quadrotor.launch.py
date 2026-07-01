@@ -24,6 +24,7 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
     gz_namespace = LaunchConfiguration("namespace")
+    gz_gripper = LaunchConfiguration("gripper")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -31,6 +32,7 @@ def launch_setup(context):
 
     sensor = gz_sensor.perform(context)
     namespace = gz_namespace.perform(context)
+    gripper = gz_gripper.perform(context)
 
     bridge_yaml = os.path.join(package_dir, "params", f"quadrotor_{sensor}.yaml")
 
@@ -49,6 +51,7 @@ def launch_setup(context):
         mappings={
             "camera": "true" if sensor == "camera" else "false",
             "namespace": namespace,
+            "gripper": gripper,
         },
     ).toxml()
 
@@ -166,6 +169,7 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
+    declared_arguments.append(DeclareLaunchArgument("gripper", default_value="false"))
     declared_arguments.append(
         DeclareLaunchArgument(
             "namespace", description="Namespace to use", default_value="drone0"
