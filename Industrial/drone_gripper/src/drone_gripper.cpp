@@ -126,11 +126,12 @@ void PreUpdate(
   const UpdateInfo &_info,
   EntityComponentManager &_ecm) override
 {
-  // If the gripper model disappears (e.g. the drone is removed on reset),
-  // drop the joint so it never dangles and wedges the server. Runs even
-  // while paused, because reset removes the model with the world paused.
-  if (this->activeJoint != kNullEntity &&
-      this->FindModel(_ecm, this->gripperModelName) == kNullEntity)
+  // Drop the joint if the gripper (drone) is gone OR is being removed this
+  // very cycle. Reset removes drone0 first; detaching in the SAME cycle as the
+  // removal keeps the DetachableJoint from outliving the drone links, which
+  // would wedge the physics server and stop the drone re-spawning. Runs even
+  // while paused, because reset happens with the world paused.
+  if (this->activeJoint != kNullEntity && this->GripperGoneOrRemoving(_ecm))
   {
     _ecm.RequestRemoveEntity(this->activeJoint);
     this->activeJoint = kNullEntity;
@@ -182,6 +183,25 @@ private:
 Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName)
 {
   return _ecm.EntityByComponents(components::Name(modelName), components::Model());
+}
+
+// True if the gripper model no longer exists, or is marked for removal in the
+// current update cycle (EachRemoved reports entities that will be erased at the
+// end of this cycle).
+bool GripperGoneOrRemoving(EntityComponentManager &_ecm)
+{
+  if (this->FindModel(_ecm, this->gripperModelName) == kNullEntity)
+    return true;
+
+  bool removing = false;
+  _ecm.EachRemoved<components::Model, components::Name>(
+    [&](const Entity &, const components::Model *, const components::Name *_name)
+    {
+      if (_name->Data() == this->gripperModelName)
+        removing = true;
+      return true;
+    });
+  return removing;
 }
 
 Entity FindLink(
