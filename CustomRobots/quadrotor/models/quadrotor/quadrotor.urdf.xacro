@@ -10,6 +10,26 @@
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_common.urdf.xacro"/>
 
+  <material name="MagnetBlack">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+
+  <!-- One box segment of the magnet ring. The ring leaves an open center
+       so it does not block the downward-facing ventral camera. -->
+  <xacro:macro name="magnet_ring_seg" params="i n radius">
+    <xacro:if value="${i &lt; n}">
+      <xacro:property name="ang" value="${2*pi*i/n}"/>
+      <visual name="magnet_seg_${i}">
+        <origin xyz="${radius*cos(ang)} ${radius*sin(ang)} 0" rpy="0 0 ${ang + pi/2}"/>
+        <geometry>
+          <box size="${2*radius*sin(pi/n)} 0.02 0.02"/>
+        </geometry>
+        <material name="MagnetBlack"/>
+      </visual>
+      <xacro:magnet_ring_seg i="${i+1}" n="${n}" radius="${radius}"/>
+    </xacro:if>
+  </xacro:macro>
+
   <xacro:quadrotor namespace="${namespace}"/>
 
   <xacro:if value="$(arg camera)">
@@ -17,24 +37,18 @@
     <xacro:camera xyz="0 0 0" rpy="0 1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
 
-  <!-- Electromagnet plate: flat disc under the drone (package_delivery). -->
+  <!-- Electromagnet: flat ring hugging the drone belly, with an open center
+       so the downward ventral camera is not blocked (package_delivery). -->
   <xacro:if value="$(arg gripper)">
     <link name="magnet">
       <inertial>
-        <mass value="0.01"/>
-        <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+        <mass value="0.02"/>
+        <inertia ixx="2e-5" ixy="0" ixz="0" iyy="2e-5" iyz="0" izz="4e-5"/>
       </inertial>
-      <visual>
-        <geometry>
-          <cylinder length="0.02" radius="0.06"/>
-        </geometry>
-        <material name="MagnetBlack">
-          <color rgba="0.05 0.05 0.05 1.0"/>
-        </material>
-      </visual>
+      <xacro:magnet_ring_seg i="0" n="12" radius="0.06"/>
     </link>
     <joint name="magnet_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 -0.07"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.05"/>
       <parent link="base_link"/>
       <child link="magnet"/>
     </joint>
