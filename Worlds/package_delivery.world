@@ -14,6 +14,14 @@
 		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
 			<render_engine>ogre2</render_engine>
 		</plugin>
+		<plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
+			<gripper_model>drone0</gripper_model>
+			<gripper_link>base_link</gripper_link>
+			<graspable_models>package_box_01</graspable_models>
+			<attach_distance>1.0</attach_distance>
+			<magnet_topic>/drone0/gripper/magnet</magnet_topic>
+			<state_topic>/drone0/gripper/attached</state_topic>
+		</plugin>
 
 		<!--light-->
 		<light type="directional" name="sun">
