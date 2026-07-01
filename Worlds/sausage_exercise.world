@@ -12,8 +12,10 @@
     <plugin filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster"/>
 
-    <plugin filename="gz-sim-factory-system"
-            name="gz::sim::systems::Factory"/>
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
 
     <gravity>0 0 -9.8</gravity>
 
