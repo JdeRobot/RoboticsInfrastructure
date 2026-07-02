@@ -9,6 +9,8 @@
 
   <depend>rclpy</depend>
   <depend>trajectory_msgs</depend>
+  <depend>control_msgs</depend>
+  <depend>rclpy_action</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
