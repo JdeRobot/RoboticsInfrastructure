@@ -150,6 +150,8 @@
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 
   <xacro:unless value="${noise_level == 'none'}">
-    <xacro:noise_odom topic="/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+    <!-- ROS topic name matches the laser_mapping exercise interface. The plugin
+         publishes to ROS directly (not through the gz bridge). -->
+    <xacro:noise_odom topic="/turtlebot3/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
   </xacro:unless>
 </robot>
