@@ -7,27 +7,28 @@
   <xacro:property name="PI" value="${math.pi}" />
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
 
-  <!-- Odometry noise per difficulty — kept identical to the turtlebot3 levels
-       (drift std ~ alpha*sqrt(distance)). -->
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)).
+       Tuned lower than the turtlebot3 levels: the dingo estimate drifts faster,
+       so the whole scale is shifted down one notch (0.005 / 0.01 / 0.05). -->
   <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="a1" value="0.005" />
+    <xacro:property name="a2" value="0.005" />
+    <xacro:property name="a3" value="0.005" />
+    <xacro:property name="a4" value="0.005" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
     <xacro:property name="a1" value="0.01" />
     <xacro:property name="a2" value="0.01" />
     <xacro:property name="a3" value="0.01" />
     <xacro:property name="a4" value="0.01" />
   </xacro:if>
 
-  <xacro:if value="${noise_level == 'med'}">
+  <xacro:if value="${noise_level == 'high'}">
     <xacro:property name="a1" value="0.05" />
     <xacro:property name="a2" value="0.05" />
     <xacro:property name="a3" value="0.05" />
     <xacro:property name="a4" value="0.05" />
-  </xacro:if>
-
-  <xacro:if value="${noise_level == 'high'}">
-    <xacro:property name="a1" value="0.25" />
-    <xacro:property name="a2" value="0.25" />
-    <xacro:property name="a3" value="0.25" />
-    <xacro:property name="a4" value="0.25" />
   </xacro:if>
 
 
