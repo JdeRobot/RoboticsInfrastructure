@@ -42,7 +42,14 @@ namespace custom_plugins
     std::string frame_id_;
     std::string child_frame_id_;
 
-    // Wheel joint entities resolved once in Configure.
+    // Odometry source: reconstruct from wheel encoders ("wheels", default) or
+    // from the model pose delta ("pose"). Pose mode works for any drivetrain
+    // (diff, ackermann, mecanum/omni) since it does not assume wheel kinematics.
+    bool use_pose_source_{false};
+    // Track lateral (y) motion — required for omnidirectional/mecanum robots.
+    bool holonomic_{false};
+
+    // Wheel joint entities resolved once in Configure (wheels source only).
     gz::sim::Entity left_joint_entity_{gz::sim::kNullEntity};
     gz::sim::Entity right_joint_entity_{gz::sim::kNullEntity};
 
@@ -53,6 +60,11 @@ namespace custom_plugins
     // Last joint positions used to compute per-tick angle deltas.
     double last_left_pos_{0.0};
     double last_right_pos_{0.0};
+
+    // Last model pose (world frame) used in pose-source mode.
+    double last_pose_x_{0.0};
+    double last_pose_y_{0.0};
+    double last_pose_yaw_{0.0};
 
     std::chrono::steady_clock::duration last_update_time_{0};
 
