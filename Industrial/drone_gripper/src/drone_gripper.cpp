@@ -1,17 +1,22 @@
 // Drone magnetic gripper system plugin for gz-sim (Harmonic).
 //
-// Behaves like an electromagnet: while energized it attaches the nearest
-// graspable model within a configurable distance to the gripper link using a
-// physical DetachableJoint, and releases it when de-energized. It is driven
-// through ROS2 topics so the same interface works for Python and C++ user code.
+// This is a MODEL plugin: it is attached to the drone in its own SDF/URDF, so
+// it knows which robot it belongs to (no hard-coded model name) and works with
+// renamed models and several drones at once. It behaves like an electromagnet:
+// while energized it attaches the nearest graspable model within a configurable
+// distance to the gripper link with a physical DetachableJoint, and releases it
+// when de-energized. It is driven through ROS2 topics, so the same interface
+// works for Python and C++ user code.
+//
+// The graspable models are NOT baked into the robot: the exercise publishes
+// them on the graspable topic, keeping the robot independent of any world.
 //
 // SDF parameters (all optional):
-//   <gripper_model>    model that carries the magnet         (default: drone0)
-//   <gripper_link>     link the payload is attached to       (default: base_link)
-//   <graspable_models> comma separated model names to grab   (default: "")
-//   <attach_distance>  max distance to grab a payload, in m  (default: 1.0)
-//   <magnet_topic>     std_msgs/Bool, energize/de-energize   (default: /drone0/gripper/magnet)
-//   <state_topic>      std_msgs/Bool, currently carrying?    (default: /drone0/gripper/attached)
+//   <gripper_link>     link the payload is attached to      (default: base_link)
+//   <attach_distance>  max distance to grab a payload, in m (default: 0.15)
+//   <magnet_topic>     std_msgs/Bool, energize/de-energize  (default: /<model>/gripper/magnet)
+//   <state_topic>      std_msgs/Bool, currently carrying?   (default: /<model>/gripper/attached)
+//   <graspable_topic>  std_msgs/String, CSV grabbable names (default: /<model>/gripper/graspable)
 
 #include <gz/sim/System.hh>
 #include <gz/sim/Util.hh>
@@ -27,6 +32,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <thread>
 #include <mutex>
@@ -65,27 +71,24 @@ DroneGripper() = default;
 }
 
 void Configure(
-  const Entity &,
+  const Entity &_entity,
   const std::shared_ptr<const sdf::Element> &_sdf,
-  EntityComponentManager &,
+  EntityComponentManager &_ecm,
   EventManager &) override
 {
-  this->gripperModelName = _sdf->Get<std::string>("gripper_model", "drone0").first;
-  this->gripperLinkName  = _sdf->Get<std::string>("gripper_link", "base_link").first;
-  this->attachDistance   = _sdf->Get<double>("attach_distance", 1.0).first;
+  // Model plugin: _entity is the drone model that carries the magnet.
+  this->modelEntity = _entity;
 
-  const std::string graspable = _sdf->Get<std::string>("graspable_models", "").first;
-  std::stringstream ss(graspable);
-  std::string item;
-  while (std::getline(ss, item, ','))
-  {
-    item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
-    if (!item.empty())
-      this->graspableModels.push_back(item);
-  }
+  auto nameComp = _ecm.Component<components::Name>(_entity);
+  const std::string modelName = nameComp ? nameComp->Data() : "drone";
 
-  const std::string magnetTopic = _sdf->Get<std::string>("magnet_topic", "/drone0/gripper/magnet").first;
-  const std::string stateTopic  = _sdf->Get<std::string>("state_topic", "/drone0/gripper/attached").first;
+  this->gripperLinkName = _sdf->Get<std::string>("gripper_link", "base_link").first;
+  this->attachDistance  = _sdf->Get<double>("attach_distance", 0.15).first;
+
+  const std::string ns = "/" + modelName + "/gripper";
+  const std::string magnetTopic    = _sdf->Get<std::string>("magnet_topic", ns + "/magnet").first;
+  const std::string stateTopic     = _sdf->Get<std::string>("state_topic", ns + "/attached").first;
+  const std::string graspableTopic = _sdf->Get<std::string>("graspable_topic", ns + "/graspable").first;
 
   if (!rclcpp::ok())
   {
@@ -94,7 +97,7 @@ void Configure(
     rclcpp::init(argc, argv);
   }
 
-  this->node = std::make_shared<rclcpp::Node>("drone_gripper");
+  this->node = std::make_shared<rclcpp::Node>("drone_gripper_" + modelName);
   this->executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
   this->executor->add_node(this->node);
 
@@ -104,6 +107,26 @@ void Configure(
     {
       std::lock_guard<std::mutex> lock(this->mutex);
       this->magnetEnabled = msg->data;
+    });
+
+  // The exercise defines what can be grabbed, so the robot stays independent
+  // of any world/object. Latched QoS so a list published once is not missed.
+  rclcpp::QoS graspableQos(10);
+  graspableQos.transient_local();
+  this->graspableSub = this->node->create_subscription<std_msgs::msg::String>(
+    graspableTopic, graspableQos,
+    [this](const std_msgs::msg::String::SharedPtr msg)
+    {
+      std::lock_guard<std::mutex> lock(this->mutex);
+      this->graspableModels.clear();
+      std::stringstream ss(msg->data);
+      std::string item;
+      while (std::getline(ss, item, ','))
+      {
+        item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
+        if (!item.empty())
+          this->graspableModels.push_back(item);
+      }
     });
 
   this->statePub = this->node->create_publisher<std_msgs::msg::Bool>(stateTopic, 10);
@@ -117,8 +140,8 @@ void Configure(
     }
   });
 
-  std::cout << "[DroneGripper] Configured: " << this->gripperModelName
-            << "::" << this->gripperLinkName
+  std::cout << "[DroneGripper] Configured on model " << modelName
+            << " link=" << this->gripperLinkName
             << " attach_distance=" << this->attachDistance << std::endl;
 }
 
@@ -126,11 +149,11 @@ void PreUpdate(
   const UpdateInfo &_info,
   EntityComponentManager &_ecm) override
 {
-  // Drop the joint if the gripper (drone) is gone OR is being removed this
-  // very cycle. Reset removes drone0 first; detaching in the SAME cycle as the
-  // removal keeps the DetachableJoint from outliving the drone links, which
-  // would wedge the physics server and stop the drone re-spawning. Runs even
-  // while paused, because reset happens with the world paused.
+  // Drop the joint if the drone is gone OR is being removed this very cycle.
+  // Reset removes the drone first; detaching in the SAME cycle as the removal
+  // keeps the DetachableJoint from outliving the drone links, which would wedge
+  // the physics server and stop the drone re-spawning. Runs even while paused,
+  // because reset happens with the world paused.
   if (this->activeJoint != kNullEntity && this->GripperGoneOrRemoving(_ecm))
   {
     _ecm.RequestRemoveEntity(this->activeJoint);
@@ -161,8 +184,8 @@ void PreUpdate(
   }
 }
 
-// Called on world reset: drop any joint and clear state so nothing
-// references the drone that reset removes and re-creates.
+// Called on world reset: drop any joint and clear state so nothing references
+// the drone that reset removes and re-creates.
 void Reset(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
@@ -185,48 +208,43 @@ Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName)
   return _ecm.EntityByComponents(components::Name(modelName), components::Model());
 }
 
-// True if the gripper model no longer exists, or is marked for removal in the
-// current update cycle (EachRemoved reports entities that will be erased at the
-// end of this cycle).
+// True if our own drone model no longer exists, or is marked for removal in the
+// current update cycle (EachRemoved reports entities erased at cycle end).
 bool GripperGoneOrRemoving(EntityComponentManager &_ecm)
 {
-  if (this->FindModel(_ecm, this->gripperModelName) == kNullEntity)
+  if (!_ecm.HasEntity(this->modelEntity))
     return true;
 
   bool removing = false;
-  _ecm.EachRemoved<components::Model, components::Name>(
-    [&](const Entity &, const components::Model *, const components::Name *_name)
+  _ecm.EachRemoved<components::Model>(
+    [&](const Entity &_e, const components::Model *)
     {
-      if (_name->Data() == this->gripperModelName)
+      if (_e == this->modelEntity)
         removing = true;
       return true;
     });
   return removing;
 }
 
-Entity FindLink(
+// Find a link by name inside a given model.
+Entity FindLinkInModel(
   EntityComponentManager &_ecm,
-  const std::string &modelName,
+  Entity model,
   const std::string &linkName)
 {
-  const Entity modelEntity = this->FindModel(_ecm, modelName);
-  if (modelEntity == kNullEntity)
-    return kNullEntity;
-
   Entity result{kNullEntity};
   _ecm.Each<components::Name, components::ParentEntity>(
     [&](const Entity &_entity,
         const components::Name *_name,
         const components::ParentEntity *_parent)
     {
-      if (_name->Data() == linkName && _parent->Data() == modelEntity)
+      if (_name->Data() == linkName && _parent->Data() == model)
       {
         result = _entity;
         return false;
       }
       return true;
     });
-
   return result;
 }
 
@@ -234,8 +252,16 @@ Entity FindLink(
 void TryAttach(EntityComponentManager &_ecm)
 {
   const Entity gripperLink =
-    this->FindLink(_ecm, this->gripperModelName, this->gripperLinkName);
+    this->FindLinkInModel(_ecm, this->modelEntity, this->gripperLinkName);
   if (gripperLink == kNullEntity)
+    return;
+
+  std::vector<std::string> graspables;
+  {
+    std::lock_guard<std::mutex> lock(this->mutex);
+    graspables = this->graspableModels;
+  }
+  if (graspables.empty())
     return;
 
   const math::Pose3d gripperPose = worldPose(gripperLink, _ecm);
@@ -243,7 +269,7 @@ void TryAttach(EntityComponentManager &_ecm)
   Entity bestChild = kNullEntity;
   double bestDist = this->attachDistance;
 
-  for (const auto &name : this->graspableModels)
+  for (const auto &name : graspables)
   {
     const Entity modelEntity = this->FindModel(_ecm, name);
     if (modelEntity == kNullEntity)
@@ -291,13 +317,14 @@ private:
 rclcpp::Node::SharedPtr node;
 rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr magnetSub;
+rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableSub;
 rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr statePub;
 std::thread rosThread;
 
-std::string gripperModelName;
+Entity modelEntity{kNullEntity};
 std::string gripperLinkName;
 std::vector<std::string> graspableModels;
-double attachDistance{1.0};
+double attachDistance{0.15};
 
 std::mutex mutex;
 bool magnetEnabled{false};
