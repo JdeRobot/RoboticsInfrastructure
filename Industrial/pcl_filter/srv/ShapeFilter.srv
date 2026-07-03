@@ -1,0 +1,9 @@
+# ShapeFilter service definition
+# Request
+bool status
+int32 color
+int32 shape
+float32 radius
+---
+# Response
+bool status

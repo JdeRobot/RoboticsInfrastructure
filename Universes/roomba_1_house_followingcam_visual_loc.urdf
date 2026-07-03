@@ -17,7 +17,7 @@
     <visual>
       <origin rpy="1.57 0 0" xyz="-1 1.5 0"/>
       <geometry>
-        <mesh filename="package://roomba_robot/models/roombaROS/untitled.obj" scale="0.25 0.25 0.25"/>
+        <mesh filename="package://vacuum_cleaner/models/vacuum_cleaner/meshes/create_body.dae" scale="0.25 0.25 0.25"/>
       </geometry>
     </visual>
   </link>

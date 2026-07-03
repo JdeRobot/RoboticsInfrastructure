@@ -8,7 +8,6 @@ endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 list(APPEND CMAKE_PREFIX_PATH "/home/drones_ws/install")
-list(APPEND CMAKE_PREFIX_PATH "/home/dev_ws/install")
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)

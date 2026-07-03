@@ -1,11 +1,54 @@
 <?xml version="1.0" ?>
 <robot name="taxi_navigation_city_large">
 
-  <link name="taxi">
+  <link name="autopark"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="autopark"/>
+    <child link="prius_autoparking" />
+    <origin rpy="1.57 0 -1.57" xyz="0 0 0.6"/>
+  </joint>
+
+  <link name="prius_autoparking">
     <visual>
-      <origin xyz="0 0 0.6" rpy="1.57 0 -1.57"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://taxi_navigator/models/taxi_holo_ROS_harmonic/meshes/taxi_holo.obj" scale="1 1 1"/>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.793 1.45 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="-0.767 -1.41 0.3" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <visual>
+      <origin xyz="0.357734 -0.627868 0.988243" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
