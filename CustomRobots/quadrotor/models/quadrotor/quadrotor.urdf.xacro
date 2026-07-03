@@ -6,36 +6,18 @@
   <xacro:arg name="gripper" default="false"/>
   <xacro:arg name="namespace" default="drone0"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
+  <xacro:property name="gripper" value="$(arg gripper)"/>
 
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_common.urdf.xacro"/>
 
-  <material name="MagnetBlack">
-    <color rgba="0.05 0.05 0.05 1.0"/>
-  </material>
-
-  <!-- One box segment of the magnet ring. The ring leaves an open center
-       so it does not block the downward-facing ventral camera. -->
-  <xacro:macro name="magnet_ring_seg" params="i n radius">
-    <xacro:if value="${i &lt; n}">
-      <xacro:property name="ang" value="${2*pi*i/n}"/>
-      <visual name="magnet_seg_${i}">
-        <origin xyz="${radius*cos(ang)} ${radius*sin(ang)} 0" rpy="0 0 ${ang + pi/2}"/>
-        <geometry>
-          <box size="${2*radius*sin(pi/n)} 0.02 0.02"/>
-        </geometry>
-        <material name="MagnetBlack"/>
-      </visual>
-      <xacro:magnet_ring_seg i="${i+1}" n="${n}" radius="${radius}"/>
-    </xacro:if>
-  </xacro:macro>
-
-  <xacro:quadrotor namespace="${namespace}"/>
+  <xacro:quadrotor namespace="${namespace}" gripper="${gripper}"/>
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0 0 0" rpy="0 0 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>
     <xacro:camera xyz="0 0 0" rpy="0 1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
+<<<<<<< HEAD
 
   <!-- Electromagnet: flat ring hugging the drone belly, with an open center
        so the downward ventral camera is not blocked (package_delivery). -->
@@ -66,4 +48,6 @@
       </plugin>
     </gazebo>
   </xacro:if>
+=======
+>>>>>>> upstream/drone-amazon-delivery
 </robot>
