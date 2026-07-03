@@ -11,9 +11,8 @@ find_package(ament_cmake_python REQUIRED)
 find_package(robotiq_description REQUIRED)
 find_package(urdf REQUIRED)
 find_package(xacro REQUIRED)
-find_package(ur5_gripper_description REQUIRED)
 
-install(DIRECTORY config launch rviz srdf
+install(DIRECTORY config rviz srdf
   DESTINATION share/${PROJECT_NAME}
 )
 

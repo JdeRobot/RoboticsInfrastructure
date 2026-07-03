@@ -37,25 +37,20 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    # xacro_file = os.path.join(
-    #     package_dir,
-    #     "models",
-    #     "quadrotor",
-    #     "quadrotor.urdf.xacro",
-    # )
+    xacro_file = os.path.join(
+        package_dir,
+        "models",
+        "quadrotor",
+        "quadrotor.urdf.xacro",
+    )
 
-    # robot_description_content = xacro.process_file(
-    #     xacro_file,
-    #     mappings={
-    #         "camera": "true" if sensor == "camera" else "false",
-    #         "namespace": namespace,
-    #     },
-    # ).toxml()
-
-    ## Temporary SDF load to fix bumpers
-    sdf_file = os.path.join(package_dir, "models", "quadrotor", "quadrotor.sdf")
-    with open(sdf_file, "r") as infp:
-        robot_description_content = infp.read()
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "camera": "true" if sensor == "camera" else "false",
+            "namespace": namespace,
+        },
+    ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
 
@@ -71,11 +66,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            namespace + "/robot_description",
+            "robot_description",
             "-name",
-            "quadrotor",
+            namespace,
             "-allow_renaming",
             "true",
             "-x",
@@ -109,9 +105,9 @@ def launch_setup(context):
         output="screen",
         parameters=[
             {
-                "name_space": gz_namespace,
+                "name_space": namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": [gz_namespace, "/base_link"],
+                "twist_frame_id": namespace + "/base_link",
             },
         ],
     )
@@ -124,15 +120,15 @@ def launch_setup(context):
             ]
         ),
         launch_arguments={
-            "namespace": namespace,
+            "namespace": gz_namespace,
         }.items(),
     )
 
-    nodes_to_start.append(robot_state_publisher_node)
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
     nodes_to_start.append(as2_gt_bridge)
     nodes_to_start.append(as2)
+    nodes_to_start.append(robot_state_publisher_node)
 
     # Sensor deppending on sensor arguments
     if sensor == "camera":

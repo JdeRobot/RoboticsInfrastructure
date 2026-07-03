@@ -30,28 +30,28 @@ def launch_setup(context):
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    if sensor == "camera":
-        xacro_file = os.path.join(
-            package_dir,
-            "models",
-            "vacuum_cleaner",
-            "vacuum_cleaner.urdf.xacro",
-        )
+    xacro_file = os.path.join(
+        package_dir,
+        "models",
+        "vacuum_cleaner",
+        "vacuum_cleaner.urdf.xacro",
+    )
 
-        robot_description_content = xacro.process_file(
-            xacro_file,
-            mappings={
-                "camera": "true" if sensor == "camera" else "false",
-                "laser": "true" if sensor == "laser" else "false",
-            },
-        ).toxml()
-    else:
-        ## Temporary SDF load to fix bumpers
-        sdf_file = os.path.join(
-            package_dir, "models", "vacuum_cleaner", "vacuum_cleaner.sdf"
-        )
-        with open(sdf_file, "r") as infp:
-            robot_description_content = infp.read()
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "camera": "true" if sensor == "camera" else "false",
+            "laser": "true" if sensor == "laser" else "false",
+        },
+    ).toxml()
+    # if sensor == "camera":
+    # else:
+    #     # Temporary SDF load to fix bumpers from world. Just spawn bridge
+    #     sdf_file = os.path.join(
+    #         package_dir, "models", "vacuum_cleaner", "vacuum_cleaner.sdf"
+    #     )
+    #     with open(sdf_file, "r") as infp:
+    #         robot_description_content = infp.read()
 
     robot_description = {"robot_description": robot_description_content}
 

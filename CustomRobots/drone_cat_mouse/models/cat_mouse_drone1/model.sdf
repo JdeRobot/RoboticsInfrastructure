@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<!-- cat-mouse drone (drone1 = mouse). its own model, included by the world
+     instead of copy-pasted into it. drone0 is the same with the namespace
+     swapped. -->
+<sdf version="1.9">
+  <model name='drone1'>
+
+    <!-- the physical quadrotor (links, rotors, meshes) from aerostack2 -->
+    <include merge="true">
+      <uri>model://quadrotor_base</uri>
+    </include>
+
+    <!-- TF tree: link + sensor poses -->
+    <plugin filename="gz-sim-pose-publisher-system"
+            name="gz::sim::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <publish_sensor_pose>true</publish_sensor_pose>
+      <publish_collision_pose>false</publish_collision_pose>
+      <publish_visual_pose>false</publish_visual_pose>
+      <publish_nested_model_pose>true</publish_nested_model_pose>
+      <publish_model_pose>false</publish_model_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg>
+      <static_publisher>true</static_publisher>
+      <static_update_frequency>100</static_update_frequency>
+    </plugin>
+
+    <!-- one motor model per rotor (does the actual spinning physics) -->
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <robotNamespace>model/drone1</robotNamespace>
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>800.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/0</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <robotNamespace>model/drone1</robotNamespace>
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>800.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/1</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <robotNamespace>model/drone1</robotNamespace>
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>800.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/2</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <robotNamespace>model/drone1</robotNamespace>
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>800.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/3</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+
+    <!-- velocity controller: turns cmd_vel into rotor forces -->
+    <plugin filename="gz-sim-multicopter-control-system"
+            name="gz::sim::systems::MulticopterVelocityControl">
+      <robotNamespace>model/drone1</robotNamespace>
+      <commandSubTopic>cmd_vel</commandSubTopic>
+      <enableSubTopic>velocity_controller/enable</enableSubTopic>
+      <comLinkName>base_link</comLinkName>
+      <velocityGain>2.7 2.7 2.7</velocityGain>
+      <attitudeGain>2 3 0.15</attitudeGain>
+      <angularRateGain>0.4 0.52 0.18</angularRateGain>
+      <maximumLinearAcceleration>1 1 2</maximumLinearAcceleration>
+      <maximumLinearVelocity>5 5 5</maximumLinearVelocity>
+      <maximumAngularVelocity>3 3 3</maximumAngularVelocity>
+      <rotorConfiguration>
+        <rotor>
+          <jointName>rotor_0_joint</jointName>
+          <forceConstant>8.54858e-06</forceConstant>
+          <momentConstant>0.016</momentConstant>
+          <direction>1</direction>
+        </rotor>
+        <rotor>
+          <jointName>rotor_1_joint</jointName>
+          <forceConstant>8.54858e-06</forceConstant>
+          <momentConstant>0.016</momentConstant>
+          <direction>1</direction>
+        </rotor>
+        <rotor>
+          <jointName>rotor_2_joint</jointName>
+          <forceConstant>8.54858e-06</forceConstant>
+          <momentConstant>0.016</momentConstant>
+          <direction>-1</direction>
+        </rotor>
+        <rotor>
+          <jointName>rotor_3_joint</jointName>
+          <forceConstant>8.54858e-06</forceConstant>
+          <momentConstant>0.016</momentConstant>
+          <direction>-1</direction>
+        </rotor>
+      </rotorConfiguration>
+    </plugin>
+
+    <!-- ground-truth odometry at 100Hz (picked up by the bridge) -->
+    <plugin filename="gz-sim-odometry-publisher-system"
+            name="gz::sim::systems::OdometryPublisher">
+      <dimensions>3</dimensions>
+      <odom_publish_frequency>100</odom_publish_frequency>
+    </plugin>
+
+    <!-- frontal camera, looking forward -->
+    <model name='frontal_cam'>
+      <pose relative_to="base_link">0.1 0 0 0 0 0</pose>
+      <link name="hd_camera">
+        <inertial>
+          <mass>0.005</mass>
+          <inertia>
+            <ixx>8.33e-06</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>8.33e-06</iyy><iyz>0</iyz><izz>8.33e-06</izz>
+          </inertia>
+        </inertial>
+        <sensor name="camera" type="camera">
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <camera name="camera">
+            <horizontal_fov>1.0472</horizontal_fov>
+            <image><width>320</width><height>240</height><format>R8G8B8</format></image>
+            <clip><near>0.01</near><far>300</far></clip>
+            <optical_frame_id>/drone1/frontal_cam/hd_camera/camera/optical_frame</optical_frame_id>
+          </camera>
+        </sensor>
+      </link>
+    </model>
+    <joint name="frontal_cam_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>frontal_cam</child>
+    </joint>
+
+    <!-- ventral camera, looking straight down (pitched 90 deg) -->
+    <model name='ventral_cam'>
+      <pose relative_to="base_link">0 0 -0.05 0 1.57 0</pose>
+      <link name="hd_camera">
+        <inertial>
+          <mass>0.005</mass>
+          <inertia>
+            <ixx>8.33e-06</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>8.33e-06</iyy><iyz>0</iyz><izz>8.33e-06</izz>
+          </inertia>
+        </inertial>
+        <sensor name="camera" type="camera">
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <camera name="camera">
+            <horizontal_fov>1.0472</horizontal_fov>
+            <image><width>320</width><height>240</height><format>R8G8B8</format></image>
+            <clip><near>0.01</near><far>300</far></clip>
+            <optical_frame_id>/drone1/ventral_cam/hd_camera/camera/optical_frame</optical_frame_id>
+          </camera>
+        </sensor>
+      </link>
+    </model>
+    <joint name="ventral_cam_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>ventral_cam</child>
+    </joint>
+
+    <!-- IMU -->
+    <plugin filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu">
+    </plugin>
+
+  </model>
+</sdf>

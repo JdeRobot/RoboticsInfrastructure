@@ -35,10 +35,8 @@ endif()
 install(
   DIRECTORY 
     meshes
-    models
     config
     urdf 
-    worlds
   DESTINATION 
     share/${PROJECT_NAME}
 )

@@ -14,12 +14,12 @@ import xacro
 
 def generate_launch_description():
     # Get package directories
-    pkg_share_dir = get_package_share_directory("ur5_gripper_description")
+    pkg_share_dir = get_package_share_directory("custom_robots")
     moveit_config_package = "ur5_gripper_moveit_config"
     moveit_pkg_share = get_package_share_directory(moveit_config_package)
 
     # Robot description (must match what's in Gazebo)
-    xacro_file = os.path.join(pkg_share_dir, "urdf", "ur5_robotiq85_gripper.urdf.xacro")
+    xacro_file = os.path.join(pkg_share_dir, "models/ur5", "ur5.urdf.xacro")
     controllers_file = os.path.join(pkg_share_dir, "config", "ur5_controllers.yaml")
 
     robot_description_content = xacro.process_file(

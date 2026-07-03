@@ -52,35 +52,10 @@
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
-        <gazebo>
-          <surface>
-            <!-- This friction pamareter don't contain reliable data!! -->
-            <friction>
-              <ode>
-                <mu>100000.0</mu>
-                <mu2>100000.0</mu2>
-                <fdir1>0 0 0</fdir1>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-              </ode>
-            </friction>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
       </collision>
       <visual >
-        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <cylinder radius="0.033" length="0.018"/>
         </geometry>
         <material name="black"/>
       </visual>
@@ -95,35 +70,10 @@
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
-        <gazebo>
-          <surface>
-            <!-- This friction pamareter don't contain reliable data!! -->
-            <friction>
-              <ode>
-                <mu>100000.0</mu>
-                <mu2>100000.0</mu2>
-                <fdir1>0 0 0</fdir1>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-              </ode>
-            </friction>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
       </collision>
       <visual >
-        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <cylinder radius="0.033" length="0.018"/>
         </geometry>
         <material name="black"/>
       </visual>
