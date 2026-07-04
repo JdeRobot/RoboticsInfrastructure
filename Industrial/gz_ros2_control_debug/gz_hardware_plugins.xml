@@ -1,4 +1,4 @@
-<library path="gz_hardware_plugins">
+<library path="gz_hardware_plugins_debug">
   <class
     name="gz_ros2_control/GazeboSimSystem"
     type="gz_ros2_control::GazeboSimSystem"
