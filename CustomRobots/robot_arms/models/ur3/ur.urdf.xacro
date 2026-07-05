@@ -14,16 +14,16 @@
   <xacro:arg name="prefix" default="" />
 
   <xacro:arg name="joint_limit_params"
-            default="$(find custom_robots)/config/ur3/joint_limits.yaml"/>
+            default="$(find custom_robots)/config/$(arg ur_type)/joint_limits.yaml"/>
 
   <xacro:arg name="kinematics_params"
-            default="$(find custom_robots)/config/ur3/default_kinematics.yaml"/>
+            default="$(find custom_robots)/config/$(arg ur_type)/default_kinematics.yaml"/>
 
   <xacro:arg name="physical_params"
-            default="$(find custom_robots)/config/ur3/physical_parameters.yaml"/>
+            default="$(find custom_robots)/config/$(arg ur_type)/physical_parameters.yaml"/>
 
   <xacro:arg name="visual_params"
-            default="$(find custom_robots)/config/ur3/visual_parameters.yaml"/>
+            default="$(find custom_robots)/config/$(arg ur_type)/visual_parameters.yaml"/>
 
   <xacro:arg name="transmission_hw_interface" default=""/>
 
@@ -56,7 +56,7 @@
   <xacro:arg name="fake_sensor_commands" default="false"/>
 
   <xacro:arg name="sim_gazebo" default="false"/>
-  <xacro:arg name="sim_gz" default="true"/>
+  <xacro:arg name="sim_gz" default="false"/>
 
   <xacro:arg name="simulation_controllers" default=""/>
 
