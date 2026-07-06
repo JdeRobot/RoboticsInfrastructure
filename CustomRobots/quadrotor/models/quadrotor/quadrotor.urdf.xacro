@@ -17,18 +17,4 @@
     <xacro:camera xyz="0 0 0" rpy="0 0 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>
     <xacro:camera xyz="0 0 0" rpy="0 1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
-  <!-- Magnetic gripper model plugin. The magnet visual is added by the
-       quadrotor macro (quadrotor_common); this adds the grabbing behavior.
-       The exercise publishes the graspable list on the graspable topic. -->
-  <xacro:if value="$(arg gripper)">
-    <gazebo>
-      <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
-        <gripper_link>base_link</gripper_link>
-        <attach_distance>0.15</attach_distance>
-        <magnet_topic>/${namespace}/gripper/magnet</magnet_topic>
-        <state_topic>/${namespace}/gripper/attached</state_topic>
-        <graspable_topic>/${namespace}/gripper/graspable</graspable_topic>
-      </plugin>
-    </gazebo>
-  </xacro:if>
 </robot>

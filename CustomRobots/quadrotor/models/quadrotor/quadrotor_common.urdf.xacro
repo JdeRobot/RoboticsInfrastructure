@@ -126,6 +126,7 @@
         <parent link="base_link"/>
         <child link="magnet"/>
       </joint>
+      <xacro:magnetic_gripper namespace="${namespace}"/>
     </xacro:if>
 
     <xacro:tf freq="100"/>
