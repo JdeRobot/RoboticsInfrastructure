@@ -57,18 +57,6 @@
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:ur_robot>
 
-  <xacro:if value="$(arg sim_gazebo)">
-    <!-- Gazebo plugins -->
-    <!-- update the plugin  -->
-    <gazebo reference="world">
-    </gazebo>
-    <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <parameters>$(arg simulation_controllers)</parameters>
-      </plugin>
-    </gazebo>
-  </xacro:if>
-
   <xacro:if value="$(arg sim_gz)">
     <!-- Gazebo Sim (Harmonic) plugins -->
     <gazebo reference="world">

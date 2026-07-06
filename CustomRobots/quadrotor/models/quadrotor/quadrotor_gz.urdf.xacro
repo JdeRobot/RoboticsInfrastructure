@@ -100,19 +100,19 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic freq">
+  <xacro:macro name="odom" params="topic freq namespace">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-        <odom_frame>odom</odom_frame>
-        <robot_base_frame>base</robot_base_frame>
+        <!-- <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_link</robot_base_frame>
+        <odom_topic>${topic}</odom_topic> -->
         <odom_publish_frequency>${freq}</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="imu" params="parent mass">
+  <xacro:macro name="imu" params="parent mass namespace">
     <gazebo>
       <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
       </plugin>
@@ -232,14 +232,19 @@
         <robotNamespace>model/${namespace}</robotNamespace>
         <jointName>rotor_${rotor-1}_joint</jointName>
         <linkName>rotor_${rotor-1}</linkName>
-        <turningDirection>ccw</turningDirection>
+        <xacro:if value="${rotor-1 == 1 or rotor-1 == 0}">
+          <turningDirection>ccw</turningDirection>
+        </xacro:if>
+        <xacro:if value="${rotor-1 == 2 or rotor-1 == 3}">
+          <turningDirection>cw</turningDirection>
+        </xacro:if>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
         <maxRotVelocity>800.0</maxRotVelocity>
         <motorConstant>8.54858e-06</motorConstant>
         <momentConstant>0.016</momentConstant>
         <commandSubTopic>command/motor_speed</commandSubTopic>
-        <motorNumber>${rotor-1}</motorNumber>
+        <actuator_number>${rotor-1}</actuator_number>
         <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
         <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
         <motorSpeedPubTopic>motor_speed/${rotor-1}</motorSpeedPubTopic>

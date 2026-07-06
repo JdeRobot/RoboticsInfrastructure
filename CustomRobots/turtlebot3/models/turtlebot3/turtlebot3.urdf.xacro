@@ -6,25 +6,26 @@
   <xacro:arg name="noise_level" default="none"/>
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
 
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)). -->
   <xacro:if value="${noise_level == 'low'}">
-    <xacro:property name="a1" value="0.1" />
-    <xacro:property name="a2" value="0.1" />
+    <xacro:property name="a1" value="0.01" />
+    <xacro:property name="a2" value="0.01" />
+    <xacro:property name="a3" value="0.01" />
+    <xacro:property name="a4" value="0.01" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:property name="a1" value="0.05" />
+    <xacro:property name="a2" value="0.05" />
     <xacro:property name="a3" value="0.05" />
     <xacro:property name="a4" value="0.05" />
   </xacro:if>
 
-  <xacro:if value="${noise_level == 'med'}">
-    <xacro:property name="a1" value="0.5" />
-    <xacro:property name="a2" value="0.5" />
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="a1" value="0.25" />
+    <xacro:property name="a2" value="0.25" />
     <xacro:property name="a3" value="0.25" />
     <xacro:property name="a4" value="0.25" />
-  </xacro:if>
-
-  <xacro:if value="${noise_level == 'high'}">
-    <xacro:property name="a1" value="1.5" />
-    <xacro:property name="a2" value="1.5" />
-    <xacro:property name="a3" value="0.8" />
-    <xacro:property name="a4" value="0.8" />
   </xacro:if>
 
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
@@ -34,7 +35,6 @@
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera_rgb" parent="camera_link" topic="turtlebot3/camera"/>
-    <xacro:depth_camera xyz="0.074 -0.029 0.12" rpy="0 0 0" name="camera_depth" parent="base_link" topic="turtlebot3/camera"/>
   </xacro:if>
 
   <xacro:unless value="${noise_level == 'none'}">

@@ -1,10 +1,10 @@
 <?xml version='1.0'?>
 <sdf version='1.4'>
   <model name='road_plane'>
-  <static>true</static>
+    <static>true</static>
     <link name='link'>
       <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>  
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <plane>
             <normal>0 0 1</normal>
@@ -30,17 +30,16 @@
             <size>2 10</size>
           </plane>
         </geometry>
-          <material>
-         <diffuse>1.0 1.0 1.0</diffuse>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
           <specular>1.0 1.0 1.0</specular>
-		  <pbr>
-			<metal>
-			   <albedo_map>materials/textures/Road_Albedo.png</albedo_map>
-			   <normal_map>materials/textures/Road_Normal.png</normal_map>
-			   <roughness_map>materials/textures/Road_Roughness.png</roughness_map>
-			</metal>
-		  </pbr>
-		</material>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Road_Albedo.png</albedo_map>
+              <roughness_map>materials/textures/Road_Roughness.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
       </visual>
 
     </link>
