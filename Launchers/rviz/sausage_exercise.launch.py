@@ -14,6 +14,7 @@ from launch.actions import TimerAction
 
 from ament_index_python.packages import get_package_share_directory
 
+
 def load_yaml(package_name, file_path):
     pkg_path = get_package_share_directory(package_name)
     with open(os.path.join(pkg_path, file_path), "r") as f:
@@ -63,9 +64,7 @@ def generate_launch_description():
         },
     ).toxml()
 
-    robot_description = {
-        "robot_description": robot_description_content
-    }
+    robot_description = {"robot_description": robot_description_content}
 
     # =====================================================
     # SRDF
@@ -78,9 +77,7 @@ def generate_launch_description():
     )
 
     with open(srdf_file, "r") as file:
-        robot_description_semantic = {
-            "robot_description_semantic": file.read()
-        }
+        robot_description_semantic = {"robot_description_semantic": file.read()}
 
     # =====================================================
     # MoveIt Config Files
@@ -92,8 +89,7 @@ def generate_launch_description():
     )
 
     kinematics_yaml = {
-        "robot_description_kinematics":
-            kinematics_yaml["/**"]["ros__parameters"]
+        "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
 
     ompl_planning = load_yaml(
