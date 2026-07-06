@@ -52,7 +52,7 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
-std::string param_ROB_GROUP = "none"
+std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLE --> ROBOT POSE:
 ros2srrc_data::msg::Robpose POSE; 
