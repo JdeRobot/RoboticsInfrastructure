@@ -36,6 +36,7 @@
 
 #include <thread>
 #include <mutex>
+#include <atomic>
 #include <chrono>
 #include <vector>
 #include <sstream>
@@ -63,6 +64,11 @@ DroneGripper() = default;
 
 ~DroneGripper()
 {
+  // Stop the ROS thread first. As a MODEL plugin this destructor runs every
+  // time the drone is removed (e.g. on reset), so it must return promptly; a
+  // hanging join would wedge gz and stop the drone re-spawning.
+  this->running_ = false;
+
   if (this->executor)
     this->executor->cancel();
 
@@ -133,7 +139,7 @@ void Configure(
 
   this->rosThread = std::thread([this]()
   {
-    while (rclcpp::ok())
+    while (this->running_ && rclcpp::ok())
     {
       this->executor->spin_some();
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
@@ -320,6 +326,7 @@ rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr magnetSub;
 rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableSub;
 rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr statePub;
 std::thread rosThread;
+std::atomic<bool> running_{true};
 
 Entity modelEntity{kNullEntity};
 std::string gripperLinkName;
