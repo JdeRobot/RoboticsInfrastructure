@@ -17,27 +17,10 @@
     <xacro:camera xyz="0 0 0" rpy="0 0 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>
     <xacro:camera xyz="0 0 0" rpy="0 1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
-<<<<<<< HEAD
-
-  <!-- Electromagnet: flat ring hugging the drone belly, with an open center
-       so the downward ventral camera is not blocked (package_delivery). -->
+  <!-- Magnetic gripper model plugin. The magnet visual is added by the
+       quadrotor macro (quadrotor_common); this adds the grabbing behavior.
+       The exercise publishes the graspable list on the graspable topic. -->
   <xacro:if value="$(arg gripper)">
-    <link name="magnet">
-      <inertial>
-        <mass value="0.02"/>
-        <inertia ixx="2e-5" ixy="0" ixz="0" iyy="2e-5" iyz="0" izz="4e-5"/>
-      </inertial>
-      <xacro:magnet_ring_seg i="0" n="12" radius="0.06"/>
-    </link>
-    <joint name="magnet_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 -0.05"/>
-      <parent link="base_link"/>
-      <child link="magnet"/>
-    </joint>
-
-    <!-- Magnetic gripper: model plugin, so it belongs to this drone (works
-         with renames / several drones). The exercise publishes the graspable
-         list on the graspable topic. -->
     <gazebo>
       <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
         <gripper_link>base_link</gripper_link>
@@ -48,6 +31,4 @@
       </plugin>
     </gazebo>
   </xacro:if>
-=======
->>>>>>> upstream/drone-amazon-delivery
 </robot>
