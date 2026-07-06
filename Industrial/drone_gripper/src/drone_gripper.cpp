@@ -144,6 +144,15 @@ void Configure(
       this->executor->spin_some();
       std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
+    // Tear down our ROS node from this thread (no race with spinning) so a
+    // plugin instance whose model was removed on reset does not linger as a
+    // zombie with a duplicate node name that corrupts the ROS graph.
+    if (this->executor && this->node)
+      this->executor->remove_node(this->node);
+    this->statePub.reset();
+    this->magnetSub.reset();
+    this->graspableSub.reset();
+    this->node.reset();
   });
 
   std::cout << "[DroneGripper] Configured on model " << modelName
@@ -155,6 +164,26 @@ void PreUpdate(
   const UpdateInfo &_info,
   EntityComponentManager &_ecm) override
 {
+  // Already shut down (our model was removed on reset): do nothing.
+  if (this->dead_)
+    return;
+
+  // Our own model was removed (e.g. reset removed the drone). Release the box
+  // and shut ourselves down: stop the ROS thread so this instance stops being
+  // a zombie with a duplicate node name. gz recreates a fresh plugin for the
+  // re-spawned drone.
+  if (!_ecm.HasEntity(this->modelEntity))
+  {
+    if (this->activeJoint != kNullEntity)
+    {
+      _ecm.RequestRemoveEntity(this->activeJoint);
+      this->activeJoint = kNullEntity;
+    }
+    this->running_ = false;
+    this->dead_ = true;
+    return;
+  }
+
   // Drop the joint if the drone is gone OR is being removed this very cycle.
   // Reset removes the drone first; detaching in the SAME cycle as the removal
   // keeps the DetachableJoint from outliving the drone links, which would wedge
@@ -341,6 +370,7 @@ rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableSub;
 rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr statePub;
 std::thread rosThread;
 std::atomic<bool> running_{true};
+bool dead_{false};
 
 Entity modelEntity{kNullEntity};
 std::string gripperLinkName;
