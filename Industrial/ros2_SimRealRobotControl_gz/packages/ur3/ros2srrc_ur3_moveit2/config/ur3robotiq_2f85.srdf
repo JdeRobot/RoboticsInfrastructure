@@ -216,4 +216,13 @@
   <disable_collisions link1="forearm_link" link2="robotiq_85_left_finger_tip_link" reason="Never"/>
   <disable_collisions link1="forearm_link" link2="robotiq_85_right_finger_tip_link" reason="Never"/>
 
+  <!-- Hand camera -->
+  <disable_collisions link1="hand_camera_link" link2="forearm_link" reason="Never"/>
+  <disable_collisions link1="hand_camera_link" link2="upper_arm_link" reason="Never"/>
+
+  <!-- Robotiq -->
+  <disable_collisions link1="upper_arm_link" link2="robotiq_85_left_finger_tip_link" reason="Never"/>
+
+  <disable_collisions link1="upper_arm_link" link2="robotiq_85_right_finger_tip_link" reason="Never"/>
+
 </robot>
