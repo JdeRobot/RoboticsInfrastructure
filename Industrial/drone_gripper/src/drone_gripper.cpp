@@ -167,7 +167,15 @@ void PreUpdate(
   }
 
   if (_info.paused)
+  {
+    // Reset pauses the world BEFORE removing the drone. Detach here so the box
+    // is never still jointed to the drone when it is removed (that leaves the
+    // box in a broken state and it never re-appears). It re-attaches on unpause
+    // via TryAttach below if the magnet is still energized.
+    if (this->activeJoint != kNullEntity)
+      this->Detach(_ecm);
     return;
+  }
 
   bool enabled;
   {
