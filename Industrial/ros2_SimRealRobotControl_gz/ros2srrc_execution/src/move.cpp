@@ -76,7 +76,6 @@
 std::string param_ROB = "none";
 std::string param_EE = "none";
 std::string param_ENV = "none";
-std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLES --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -99,22 +98,13 @@ ros2srrc_data::msg::Specs eeSPECS;
 class ros2_RobotParam : public rclcpp::Node
 {
 public:
-    ros2_RobotParam() : Node("ros2_RobotParam")
+    ros2_RobotParam() : Node("ros2_RobotParam") 
     {
         this->declare_parameter("ROB_PARAM", "none");
-        param_ROB = this->get_parameter("ROB_PARAM").as_string();
-
-        this->declare_parameter("ROB_GROUP", "none");
-        param_ROB_GROUP = this->get_parameter("ROB_GROUP").as_string();
-
-        RCLCPP_INFO(this->get_logger(),
-                    "ROB_PARAM received -> %s",
-                    param_ROB.c_str());
-
-        RCLCPP_INFO(this->get_logger(),
-                    "ROB_GROUP received -> %s",
-                    param_ROB_GROUP.c_str());
+        param_ROB = this->get_parameter("ROB_PARAM").get_parameter_value().get<std::string>();
+        RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
     }
+private:
 };
 
 class ros2_EEParam : public rclcpp::Node
@@ -412,7 +402,7 @@ private:
 
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
-                param_ROB_GROUP
+                "ur5_manipulator"
             );
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
@@ -431,41 +421,7 @@ private:
 
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
-            RCLCPP_INFO(this->get_logger(), "============================");
-            RCLCPP_INFO(this->get_logger(), "Trajectory joints:");
-
-            for (const auto &j : MyPlan.trajectory_.joint_trajectory.joint_names)
-            {
-                RCLCPP_INFO(this->get_logger(), "  %s", j.c_str());
-            }
-
-            RCLCPP_INFO(this->get_logger(), "Trajectory points: %ld",
-                MyPlan.trajectory_.joint_trajectory.points.size());
-
-            for (size_t i = 0;
-                i < MyPlan.trajectory_.joint_trajectory.points.size();
-                ++i)
-            {
-                auto &p = MyPlan.trajectory_.joint_trajectory.points[i];
-
-                std::stringstream ss;
-
-                for (double q : p.positions)
-                    ss << q << " ";
-
-                RCLCPP_INFO(this->get_logger(),
-                    "Point %ld: %s",
-                    i,
-                    ss.str().c_str());
-            }
-
-            auto exec_result = move_group_interface_ROB.execute(MyPlan);
-
-            RCLCPP_INFO(this->get_logger(),
-                "Execute returned %d",
-                exec_result.val);
-
-            bool ExecSUCCESS = (exec_result== moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");
@@ -603,8 +559,9 @@ int main(int argc, char ** argv)
 
     // ROBOT
     if (param_ROB != "none"){
-        move_group_interface_ROB =
-            MoveGroupInterface(node2, param_ROB_GROUP);
+        std::string group_name = "ur5_manipulator";
+
+        move_group_interface_ROB = MoveGroupInterface(node2, group_name);
 
         move_group_interface_ROB.setMaxVelocityScalingFactor(0.5);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(0.5);
@@ -615,11 +572,11 @@ int main(int argc, char ** argv)
 
         joint_model_group_ROB =
             move_group_interface_ROB.getCurrentState()
-                ->getJointModelGroup(param_ROB_GROUP);
+                ->getJointModelGroup(group_name);
 
         RCLCPP_INFO(logger,
             "MoveGroupInterface created for ROBOT group: %s",
-            param_ROB_GROUP.c_str());
+            group_name.c_str());
     }
 
     // END EFFECTOR

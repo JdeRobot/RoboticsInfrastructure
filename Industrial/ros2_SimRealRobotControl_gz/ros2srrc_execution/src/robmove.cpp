@@ -46,7 +46,6 @@
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/robot_trajectory/robot_trajectory.h>
 #include <geometry_msgs/msg/pose.hpp>
-#include <sstream>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -57,38 +56,13 @@ std::string param_ROB = "none";
 // Declaration of GLOBAL VARIABLE --> RES:
 std::string RES = "none";
 
-// Declaration of GLOBAL VARIABLE --> ROBOT GROUP:
-std::string param_ROB_GROUP = "none";
-
-#include <cmath>
-
-void normalizeToNearest(std::vector<double>& target,
-                        const std::vector<double>& current)
-{
-    for (size_t i = 0; i < target.size(); ++i)
-    {
-        while (target[i] - current[i] > M_PI)
-            target[i] -= 2.0 * M_PI;
-
-        while (target[i] - current[i] < -M_PI)
-            target[i] += 2.0 * M_PI;
-    }
-}
-
 // =============================================================================== //
 // MoveIt!2 -> MoveGroupInterface/Plan function:
 
 moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    auto code = move_group_interface_ROB.plan(my_plan);
-
-    RCLCPP_INFO(
-        rclcpp::get_logger("RobMove"),
-        "MoveIt error code = %d",
-        code.val);
-
-    bool success = (code == moveit::core::MoveItErrorCode::SUCCESS);
+    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
     // Execute the plan
     if (success)
@@ -119,14 +93,6 @@ public:
         this->declare_parameter("ROB_PARAM", "none");
         param_ROB = this->get_parameter("ROB_PARAM").as_string();
         RCLCPP_INFO(this->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
-
-        this->declare_parameter("ROB_GROUP", "none");
-        param_ROB_GROUP = this->get_parameter("ROB_GROUP").as_string();
-
-        RCLCPP_INFO(
-            this->get_logger(),
-            "ROB_GROUP received -> %s",
-            param_ROB_GROUP.c_str());
 
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
@@ -171,24 +137,10 @@ private:
     {
 
         // 0. INFORMATION -> Current Robot Pose:
-       auto CP_INFO = move_group_interface_ROB.getCurrentPose();
-
-        auto state = move_group_interface_ROB.getCurrentState();
-        state->update();
-
-        const auto& current_tf = state->getGlobalLinkTransform("tool0");
-
-        RCLCPP_INFO(get_logger(),
-            "CURRENTPOSE = %.3f %.3f %.3f",
-            CP_INFO.pose.position.x,
-            CP_INFO.pose.position.y,
-            CP_INFO.pose.position.z);
-
-        RCLCPP_INFO(get_logger(),
-            "STATE TOOL = %.3f %.3f %.3f",
-            current_tf.translation().x(),
-            current_tf.translation().y(),
-            current_tf.translation().z());
+        auto CP_INFO = move_group_interface_ROB.getCurrentPose();
+        RCLCPP_INFO(get_logger(), "INFORMATION -> Current Robot Pose:");
+        RCLCPP_INFO(get_logger(), "POSITION -> (x: %.3f, y: %.3f, z: %.3f)", CP_INFO.pose.position.x, CP_INFO.pose.position.y, CP_INFO.pose.position.z);
+        RCLCPP_INFO(get_logger(), "ORIENTATION -> (qx: %.3f, qy: %.3f, qz: %.3f, qw: %.3f)", CP_INFO.pose.orientation.x, CP_INFO.pose.orientation.y, CP_INFO.pose.orientation.z, CP_INFO.pose.orientation.w);
 
         // 1. OBTAIN INPUT PARAMETERS:
         const auto GOAL = goal_handle->get_goal();
@@ -211,180 +163,19 @@ private:
         TARGET_POSE.orientation.z = GOAL->qz;
         TARGET_POSE.orientation.w = GOAL->qw;
 
-        RCLCPP_INFO(
-            get_logger(),
-            "TARGET POSE = %.3f %.3f %.3f",
-            TARGET_POSE.position.x,
-            TARGET_POSE.position.y,
-            TARGET_POSE.position.z);
+        move_group_interface_ROB.setPoseTarget(TARGET_POSE);
 
-        move_group_interface_ROB.clearPoseTargets();
-        move_group_interface_ROB.clearPathConstraints();
-
-        const moveit::core::JointModelGroup* jmg =
-            state->getJointModelGroup(param_ROB_GROUP);
-
-        bool found_ik = state->setFromIK(jmg, TARGET_POSE);
-
-        state->update();
-
-        const auto& ik_tf = state->getGlobalLinkTransform("tool0");
-
-        RCLCPP_INFO(
-            get_logger(),
-            "IK TOOL = %.3f %.3f %.3f",
-            ik_tf.translation().x(),
-            ik_tf.translation().y(),
-            ik_tf.translation().z());
-
-        RCLCPP_INFO(get_logger(), "IK FOUND = %d", found_ik);
-
-        if (!found_ik)
-        {
-            RCLCPP_ERROR(get_logger(), "NO IK SOLUTION");
-        }
-
-        if (found_ik)
-        {
-            std::vector<double> vals;
-            state->copyJointGroupPositions(jmg, vals);
-
-            // Estado actual del robot
-            std::vector<double> current =
-                move_group_interface_ROB.getCurrentJointValues();
-
-            RCLCPP_INFO(get_logger(), "CURRENT JOINTS:");
-            for (size_t i = 0; i < current.size(); ++i)
-            {
-                RCLCPP_INFO(get_logger(),
-                    "CURRENT[%zu] = %.6f",
-                    i,
-                    current[i]);
-            }
-
-            RCLCPP_INFO(get_logger(), "IK BEFORE NORMALIZATION:");
-            for (size_t i = 0; i < vals.size(); ++i)
-            {
-                RCLCPP_INFO(get_logger(),
-                    "IK[%zu] = %.6f",
-                    i,
-                    vals[i]);
-            }
-
-            // -------- NORMALIZACIÓN --------
-            normalizeToNearest(vals, current);
-
-            RCLCPP_INFO(get_logger(), "IK AFTER NORMALIZATION:");
-            for (size_t i = 0; i < vals.size(); ++i)
-            {
-                RCLCPP_INFO(get_logger(),
-                    "IKN[%zu] = %.6f",
-                    i,
-                    vals[i]);
-            }
-
-            // Pasar esos joints al planificador
-            bool ok = move_group_interface_ROB.setJointValueTarget(vals);
-
-            RCLCPP_INFO(get_logger(),
-                "setJointValueTarget = %d",
-                ok);
-
-            std::vector<double> target;
-            move_group_interface_ROB.getJointValueTarget(target);
-
-            RCLCPP_INFO(get_logger(), "TARGET JOINTS:");
-            for (size_t i = 0; i < target.size(); ++i)
-            {
-                RCLCPP_INFO(get_logger(),
-                    "TARGET[%zu] = %.6f",
-                    i,
-                    target[i]);
-            }
-        }
-        
-        state->update();
-
-        const auto &tf = state->getGlobalLinkTransform("tool0");
-
-        RCLCPP_INFO(
-            get_logger(),
-            "IK TOOL = %.3f %.3f %.3f",
-            tf.translation().x(),
-            tf.translation().y(),
-            tf.translation().z());
-
-        //move_group_interface_ROB.setPoseTarget(TARGET_POSE);
-        move_group_interface_ROB.setStartStateToCurrentState();
+        move_group_interface_ROB.setStartStateToCurrentState(); 
 
         move_group_interface_ROB.setPlannerId(GOAL->type);
         move_group_interface_ROB.setMaxVelocityScalingFactor(GOAL->speed);
 
-        // ===== DEBUG =====
-        auto joints = move_group_interface_ROB.getCurrentJointValues();
-
-        RCLCPP_INFO(get_logger(), "CURRENT JOINTS:");
-
-        for (size_t i = 0; i < joints.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "CURRENT[%zu] = %.6f",
-                i,
-                joints[i]);
-        }
-
-        // Estado interno de MoveIt
-        auto planning_state = move_group_interface_ROB.getCurrentState();
-
-        std::vector<double> planning_vals;
-
-        planning_state->copyJointGroupPositions(
-            planning_state->getJointModelGroup(param_ROB_GROUP),
-            planning_vals);
-
-        RCLCPP_INFO(get_logger(), "PLANNING STATE:");
-
-        for (size_t i = 0; i < planning_vals.size(); ++i)
-        {
-            RCLCPP_INFO(
-                get_logger(),
-                "STATE[%zu] = %.6f",
-                i,
-                planning_vals[i]);
-        }
-        // ==================
-
         MyPlan = plan_ROB();
 
         if (RES == "PLANNING: OK"){
-
-            const auto& pts = MyPlan.trajectory_.joint_trajectory.points;
-            RCLCPP_INFO(get_logger(), "Trajectory has %zu points", pts.size());
-            const auto& names = MyPlan.trajectory_.joint_trajectory.joint_names;
-
-            std::stringstream ns;
-            ns << "Joint order: ";
-
-            for (const auto& n : names)
-                ns << n << " ";
-
-            RCLCPP_INFO(get_logger(), "%s", ns.str().c_str());
-
-            for (size_t p = 0; p < pts.size(); ++p)
-            {
-                std::stringstream ss;
-                ss << "Point " << p << ": ";
-
-                for (double q : pts[p].positions)
-                    ss << q << " ";
-
-                RCLCPP_INFO(get_logger(), "%s", ss.str().c_str());
-            }
-
             robot_trajectory::RobotTrajectory rt(
                 move_group_interface_ROB.getRobotModel(),
-                param_ROB_GROUP
+                "ur5_manipulator"
             );
 
             moveit::core::RobotStatePtr current_state = move_group_interface_ROB.getCurrentState();
@@ -403,83 +194,7 @@ private:
 
             rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
 
-            // ===== DEBUG TRAJECTORY =====
-
-            RCLCPP_INFO(get_logger(), "Joint names:");
-
-            for (auto &j : MyPlan.trajectory_.joint_trajectory.joint_names)
-            {
-                RCLCPP_INFO(get_logger(), "%s", j.c_str());
-            }
-
-            RCLCPP_INFO(
-                get_logger(),
-                "Trajectory has %zu points",
-                MyPlan.trajectory_.joint_trajectory.points.size());
-
-            auto &first = MyPlan.trajectory_.joint_trajectory.points.front();
-            auto &last  = MyPlan.trajectory_.joint_trajectory.points.back();
-
-            RCLCPP_INFO(get_logger(), "FIRST POINT");
-
-            for (size_t i = 0; i < first.positions.size(); ++i)
-            {
-                RCLCPP_INFO(
-                    get_logger(),
-                    "%s = %.6f",
-                    MyPlan.trajectory_.joint_trajectory.joint_names[i].c_str(),
-                    first.positions[i]);
-            }
-
-            RCLCPP_INFO(get_logger(), "LAST POINT");
-
-            for (size_t i = 0; i < last.positions.size(); ++i)
-            {
-                RCLCPP_INFO(
-                    get_logger(),
-                    "%s = %.6f",
-                    MyPlan.trajectory_.joint_trajectory.joint_names[i].c_str(),
-                    last.positions[i]);
-            }
-
-            // ============================
-
-            bool ExecSUCCESS =
-                (move_group_interface_ROB.execute(MyPlan)
-                == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
-            auto state = move_group_interface_ROB.getCurrentState();
-
-            std::vector<double> q;
-            state->copyJointGroupPositions(
-                state->getJointModelGroup(param_ROB_GROUP),
-                q);
-
-            RCLCPP_INFO(get_logger(), "ROBOT AFTER EXECUTION");
-
-            for(size_t i=0;i<q.size();i++)
-            {
-                RCLCPP_INFO(get_logger(),
-                    "Q[%zu]=%.6f",
-                    i,
-                    q[i]);
-            }
-
-            move_group_interface_ROB.clearPoseTargets();
-            move_group_interface_ROB.clearPathConstraints();
-
-            auto end_joints = move_group_interface_ROB.getCurrentJointValues();
-
-            RCLCPP_INFO(get_logger(), "FINAL JOINTS:");
-
-            for (size_t i = 0; i < end_joints.size(); ++i)
-            {
-                RCLCPP_INFO(
-                    get_logger(),
-                    "FINAL[%zu] = %.6f",
-                    i,
-                    end_joints[i]);
-            }
+            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "ROBOT MOVEMENT (%s) has been CANCELED.", GOAL->type.c_str());
@@ -556,16 +271,14 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    move_group_interface_ROB =
-    MoveGroupInterface(moveit_node, param_ROB_GROUP);
+    std::string ROBname = "ur5_manipulator";
+
+    move_group_interface_ROB = MoveGroupInterface(moveit_node, ROBname);
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
-    RCLCPP_INFO(
-        logger,
-        "MoveGroupInterface object created for ROBOT: %s",
-        param_ROB_GROUP.c_str());
+    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", ROBname.c_str());
 
     rclcpp::spin(node);
 
