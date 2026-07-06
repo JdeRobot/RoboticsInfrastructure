@@ -48,16 +48,16 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "ur5",
-        "ur5.urdf.xacro",
+        "ur3",
+        "ur3.urdf.xacro",
     )
 
-    controllers_file = os.path.join(package_dir, "config", "ur5_controllers.yaml")
+    controllers_file = os.path.join(package_dir, "config", "ur3_controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "ur_type": "ur5",
+            "ur_type": "ur3",
             "name": "ur",
             "prefix": "",
             "use_fake_hardware": "false",
@@ -78,14 +78,14 @@ def launch_setup(context):
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_ur5_moveit2", "config/ur5robotiq_2f85.srdf"
+            "ros2srrc_ur3_moveit2", "config/ur3robotiq_2f85.srdf"
         )
     }
 
     # =========================
     # KINEMATICS
     # =========================
-    kinematics_yaml = load_yaml("ur5_gripper_moveit_config", "config/kinematics.yaml")
+    kinematics_yaml = load_yaml("ur3_gripper_moveit_config", "config/kinematics.yaml")
 
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
@@ -95,10 +95,10 @@ def launch_setup(context):
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "ur5_gripper_moveit_config", "config/moveit_controllers.yaml"
+        "ur3_gripper_moveit_config", "config/moveit_controllers.yaml"
     )
 
-    ompl_planning = load_yaml("ur5_gripper_moveit_config", "config/ompl_planning.yaml")
+    ompl_planning = load_yaml("ur3_gripper_moveit_config", "config/ompl_planning.yaml")
 
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
@@ -124,10 +124,10 @@ def launch_setup(context):
     }
 
     pilz_cartesian_limits = load_yaml(
-        "ros2srrc_robots", "ur5/config/pilz_cartesian_limits.yaml"
+        "ros2srrc_robots", "ur3/config/pilz_cartesian_limits.yaml"
     )
 
-    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur5/config/joint_limits.yaml")
+    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur3/config/joint_limits.yaml")
 
     combined_planning = {
         "robot_description_planning": {**joint_limits_yaml, **pilz_cartesian_limits}
@@ -152,9 +152,9 @@ def launch_setup(context):
                 "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
+            {"ROB_PARAM": "ur3"},
             {"EE_PARAM": "robotiq_2f85"},
-            {"ROB_GROUP": "ur5_manipulator"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
@@ -173,8 +173,8 @@ def launch_setup(context):
                 "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
-            {"ROB_GROUP": "ur5_manipulator"},
+            {"ROB_PARAM": "ur3"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
@@ -189,8 +189,8 @@ def launch_setup(context):
             kinematics_yaml,
             ompl_planning,
             {"use_sim_time": True},
-            {"ROB_PARAM": "ur5"},
-            {"ROB_GROUP": "ur5_manipulator"},
+            {"ROB_PARAM": "ur3"},
+            {"ROB_GROUP": "ur3_arm"},
         ],
     )
 
@@ -222,7 +222,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur5_robotiq",
+            "ur3_robotiq",
             "-x",
             x,
             "-y",

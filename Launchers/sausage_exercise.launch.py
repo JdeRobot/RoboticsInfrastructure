@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, SetEnvironmentVariable
 
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -70,11 +71,21 @@ def generate_launch_description():
         output="screen",
     )
 
+    # ==================================================
+    # SAUSAGE SPAWNER
+    # ==================================================
+
+    sausage_spawner = ExecuteProcess(
+        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_sausage.py"],
+        output="screen",
+    )
+
     return LaunchDescription(
         [
             set_gz_plugin_path,
             set_ld_library_path,
             set_resource_path,
             gz,
+            sausage_spawner,
         ]
     )

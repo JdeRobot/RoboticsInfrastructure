@@ -1,7 +1,6 @@
 controller_manager:
   ros__parameters:
-
-    update_rate: 100
+    update_rate: 100  # Hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -12,10 +11,8 @@ controller_manager:
     gripper_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-
 joint_state_broadcaster:
   ros__parameters:
-
     joints:
       - shoulder_pan_joint
       - shoulder_lift_joint
@@ -30,10 +27,8 @@ joint_state_broadcaster:
       - velocity
       - effort
 
-
 joint_trajectory_controller:
   ros__parameters:
-
     joints:
       - shoulder_pan_joint
       - shoulder_lift_joint
@@ -51,7 +46,6 @@ joint_trajectory_controller:
 
     state_publish_rate: 100.0
     action_monitor_rate: 20.0
-
     allow_partial_joints_goal: false
     allow_nonzero_velocity_at_trajectory_end: true
     allow_integration_in_goal_trajectories: true
@@ -60,10 +54,8 @@ joint_trajectory_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
-
 gripper_controller:
   ros__parameters:
-
     joints:
       - robotiq_85_left_knuckle_joint
 
@@ -76,14 +68,12 @@ gripper_controller:
 
     state_publish_rate: 100.0
     action_monitor_rate: 20.0
-
     allow_partial_joints_goal: false
     allow_integration_in_goal_trajectories: true
 
     constraints:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
-
       robotiq_85_left_knuckle_joint:
         trajectory: 0.5
         goal: 0.5
