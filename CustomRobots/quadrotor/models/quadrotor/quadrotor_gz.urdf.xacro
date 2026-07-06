@@ -51,7 +51,7 @@
     <gazebo>
       <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
         <gripper_link>base_link</gripper_link>
-        <attach_distance>0.15</attach_distance>
+        <attach_distance>0.2</attach_distance>
         <magnet_topic>/${namespace}/gripper/magnet</magnet_topic>
         <state_topic>/${namespace}/gripper/attached</state_topic>
         <graspable_topic>/${namespace}/gripper/graspable</graspable_topic>
