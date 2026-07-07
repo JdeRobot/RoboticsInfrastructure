@@ -148,7 +148,7 @@
   <xacro:laser xyz="0 0 0.1" rpy="0 0 0" name="lidar" parent="chassis_link" topic="/${namespace}/laser/scan"/>
   <xacro:imu parent="chassis_link" topic="/imu" xyz="0 0 0" rpy="0 0 0"/>
   <xacro:odom topic="/${namespace}/odom" freq="50"/>
-  <xacro:velocity topic="/cmd_vel"/>
+  <xacro:velocity topic="/${namespace}/cmd_vel"/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 
   <xacro:unless value="${noise_level == 'none'}">
