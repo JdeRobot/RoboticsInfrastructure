@@ -1,4 +1,4 @@
-# Table of robots, worlds and universes
+# Table of robots, scenes and worlds
 
 ## Robots
 
@@ -15,9 +15,9 @@
 | TurtleBot 2        |               /home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py               |        turtlebot2        |                 sensor=(camera/stereo)                 |   URDF   |                          |
 | TurtleBot 3        |               /home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py               |        turtlebot3        |               noise=(none/low/med/high)                |   URDF   |                          |
 
-## Worlds
+## Scenes
 
-"Robot included" means that the world launcher only launches the world and not the robot.
+"Robot included" means that the scene launcher only launches the scene and not the robot.
 
 | World ID                             |           Launch path (/opt/jderobot/Launchers)           |          Spawn point           | Robot included | 🟧 Gazebo Harmonic | Notes        |
 | ------------------------------------ | :-------------------------------------------------------: | :----------------------------: | :------------: | :----------------: | ------------ |

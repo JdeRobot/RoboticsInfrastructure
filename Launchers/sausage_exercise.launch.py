@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    world_path = "/opt/jderobot/Worlds/sausage_exercise.world"
+    world_path = "/opt/jderobot/Scenes/sausage_exercise.world"
 
     # ==================================================
     # PLUGIN PATHS
