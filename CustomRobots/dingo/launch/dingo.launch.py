@@ -61,7 +61,7 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            "robot_description",
             "-name",
             namespace,
             "-allow_renaming",
