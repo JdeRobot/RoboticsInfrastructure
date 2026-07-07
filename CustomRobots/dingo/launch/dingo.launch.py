@@ -18,12 +18,13 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_noise = LaunchConfiguration("noise")
+    gz_namespace = LaunchConfiguration("namespace")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
-    bridge_yaml = os.path.join(package_dir, "params", f"dingo.yaml")
+    namespace = gz_namespace.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -38,7 +39,7 @@ def launch_setup(context):
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "namespace": "do150",
+            "namespace": namespace,
             "noise_level": gz_noise.perform(context),
         },
     ).toxml()
@@ -49,6 +50,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -56,11 +58,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
             "/robot_description",
             "-name",
-            "do150",
+            namespace,
             "-allow_renaming",
             "true",
             "-x",
@@ -82,7 +85,11 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        arguments=[
+            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+        ],
         output="screen",
     )
 
@@ -107,6 +114,11 @@ def generate_launch_description():
     declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
     declared_arguments.append(DeclareLaunchArgument("noise", default_value="none"))
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "namespace", description="Namespace to use", default_value="do150"
+        )
+    )
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

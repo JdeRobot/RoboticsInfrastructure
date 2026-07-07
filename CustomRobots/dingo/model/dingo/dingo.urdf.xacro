@@ -6,6 +6,7 @@
   <xacro:arg name="noise_level" default="none"/>
   <xacro:property name="PI" value="${math.pi}" />
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)).
        Tuned lower than the turtlebot3 levels: the dingo estimate drifts faster,
@@ -153,6 +154,6 @@
   <xacro:unless value="${noise_level == 'none'}">
     <!-- ROS topic name matches the laser_mapping exercise interface. The plugin
          publishes to ROS directly (not through the gz bridge). -->
-    <xacro:noise_odom topic="/turtlebot3/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+    <xacro:noise_odom topic="/${namespace}/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
   </xacro:unless>
 </robot>
