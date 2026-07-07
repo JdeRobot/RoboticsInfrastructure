@@ -145,9 +145,9 @@
   <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.1">
     <origin xyz="0 0 0"/>
   </xacro:top_plate>
-  <xacro:laser xyz="0 0 0.1" rpy="0 0 0" name="lidar" parent="chassis_link" topic="/laser/scan"/>
+  <xacro:laser xyz="0 0 0.1" rpy="0 0 0" name="lidar" parent="chassis_link" topic="/${namespace}/laser/scan"/>
   <xacro:imu parent="chassis_link" topic="/imu" xyz="0 0 0" rpy="0 0 0"/>
-  <xacro:odom topic="/odom" freq="50"/>
+  <xacro:odom topic="/${namespace}/odom" freq="50"/>
   <xacro:velocity topic="/cmd_vel"/>
   <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
 
