@@ -15,7 +15,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     world_file_name = "warehouse2.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     gazebo_server = IncludeLaunchDescription(

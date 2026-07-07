@@ -17,7 +17,7 @@ def generate_launch_description():
     bridges_path = os.path.join(custom_robots_share, "bridges", "drone_cat_mouse.yaml")
 
     world_file_name = "drone_cat_mouse_city.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     jderobot_drones_launch = os.path.join(
