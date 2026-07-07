@@ -50,7 +50,6 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
