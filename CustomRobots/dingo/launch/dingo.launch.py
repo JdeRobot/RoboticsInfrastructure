@@ -87,7 +87,7 @@ def launch_setup(context):
         executable="parameter_bridge",
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
             f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
         ],
         output="screen",
