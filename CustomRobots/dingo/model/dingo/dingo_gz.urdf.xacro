@@ -100,11 +100,12 @@
         <frame_id>odom</frame_id>
         <child_frame_id>chassis_link</child_frame_id>
 
-        <!-- must match the DiffDrive plugin values above -->
-        <left_joint>front_left_wheel_joint</left_joint>
-        <right_joint>front_right_wheel_joint</right_joint>
-        <wheel_radius>0.050</wheel_radius>
-        <wheel_separation>0.3708</wheel_separation>
+        <!-- Dingo is an omnidirectional (mecanum) platform driven kinematically by
+             the VelocityControl plugin, so wheel-encoder diff-drive reconstruction
+             does not apply. Derive the estimate from the model pose delta and track
+             lateral motion. -->
+        <odom_source>pose</odom_source>
+        <holonomic>true</holonomic>
 
         <alpha1>${a1}</alpha1>
         <alpha2>${a2}</alpha2>
