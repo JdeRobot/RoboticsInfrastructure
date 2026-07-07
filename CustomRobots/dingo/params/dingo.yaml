@@ -1,0 +1,28 @@
+# ROS-facing topic names use the /turtlebot3/* namespace expected by the
+# laser_mapping exercise (HAL/WebGUI/academy). The internal gz topics keep the
+# dingo's native names; the bridge adapts them to the exercise interface.
+
+# gz topic published by the OdometryPublisher plugin (perfect odometry)
+- ros_topic_name: "/turtlebot3/odom"
+  gz_topic_name: "/odom"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "gz.msgs.Odometry"
+  direction: GZ_TO_ROS
+
+# NOTE: /turtlebot3/odom_noisy is NOT bridged here. The NoisyOdometryPlugin
+# (gz_noisy_odometry) publishes that ROS topic directly. Bridging it would
+# create a second, empty publisher with mismatched QoS.
+
+# gz topic subscribed to by the VelocityControl plugin
+- ros_topic_name: "/turtlebot3/cmd_vel"
+  gz_topic_name: "/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: ROS_TO_GZ
+
+# gz topic published by Sensors plugin (LIDAR)
+- ros_topic_name: "/turtlebot3/laser/scan"
+  gz_topic_name: "/laser/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS

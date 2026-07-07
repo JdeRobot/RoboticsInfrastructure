@@ -141,10 +141,10 @@ COPY public.worlds (id, name, scene_id, robot_id) FROM stdin;
 25 	Simple Ackermann Circuit	23	4
 27	Vacuums House Roof	26	10
 29	Vacuums House Markers	25	21
-30	Small Laser Mapping Warehouse	33	21
+30	Small Laser Mapping Warehouse	33	28
 31	Rescue People	31	11
 32	Follow Road	32	11
-33	Laser Mapping Warehouse Low Noise	12	21
+33	Laser Mapping Warehouse Low Noise	12	28
 35	Car Junction World	35	6
 36	Drone Gymkhana World	36	11
 37	Tower Inspection World	37	11
@@ -164,10 +164,10 @@ COPY public.worlds (id, name, scene_id, robot_id) FROM stdin;
 59	Warehouse 2	59	13
 60	Warehouse 1 Ackermann	58	14
 61	Warehouse 2 Ackermann	59	14
-62	Laser Mapping Warehouse Medium Noise	12	22
-63	Laser Mapping Warehouse High Noise	12	23
-64	Small Laser Mapping Warehouse Medium Noise	33	22
-65	Small Laser Mapping Warehouse High Noise	33	23
+62	Laser Mapping Warehouse Medium Noise	12	29
+63	Laser Mapping Warehouse High Noise	12	30
+64	Small Laser Mapping Warehouse Medium Noise	33	29
+65	Small Laser Mapping Warehouse High Noise	33	30
 66	Follow Person	66	15
 67	Follow Person Teleop	67	15
 68	Rover 4wd Warehouse Low Noise	68	19
@@ -253,6 +253,10 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
 25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None
 26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
+27	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	namespace:=do150
+28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150
+29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150
+30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150
 \.
 
 --
