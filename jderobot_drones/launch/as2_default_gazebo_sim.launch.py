@@ -72,7 +72,7 @@ def _launch_setup(context, *args, **kwargs):
                 os.path.join(
                     get_package_share_directory("as2_state_estimator"), "launch"
                 ),
-                "/ground_truth-state_estimator.launch.py",
+                "/ground_truth_state_estimator.launch.py",
             ]
         ),
         launch_arguments={
@@ -88,7 +88,7 @@ def _launch_setup(context, *args, **kwargs):
                 os.path.join(
                     get_package_share_directory("as2_motion_controller"), "launch"
                 ),
-                "/pid_speed_controller-motion_controller.launch.py",
+                "/pid_speed_controller.launch.py",
             ]
         ),
         launch_arguments={
