@@ -88,11 +88,12 @@ def _launch_setup(context, *args, **kwargs):
                 os.path.join(
                     get_package_share_directory("as2_motion_controller"), "launch"
                 ),
-                "/pid_speed_controller.launch.py",
+                "/controller_launch.py",
             ]
         ),
         launch_arguments={
             "namespace": namespace,
+            "plugin_name": "pid_speed_controller",
             "config_file": as2_sim_config,
             "use_sim_time": "true",
         }.items(),
