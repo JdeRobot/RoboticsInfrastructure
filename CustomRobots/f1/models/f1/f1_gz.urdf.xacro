@@ -22,9 +22,9 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>20.000000</update_rate>
-        <topic>/${name}/image_raw</topic>
+        <topic>/$(arg namespace)/${name}/image_raw</topic>
         <camera name="cleft">
-          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <camera_info_topic>/$(arg namespace)/${name}/camera_info</camera_info_topic>
           <horizontal_fov>1.570000</horizontal_fov>
           <image>
             <width>640</width>
@@ -65,7 +65,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>20</update_rate>
-        <topic>f1/laser/scan</topic>
+        <topic>/$(arg namespace)/f1/laser/scan</topic>
         <gz_frame_id>base_scan</gz_frame_id>
         <lidar>
           <scan>

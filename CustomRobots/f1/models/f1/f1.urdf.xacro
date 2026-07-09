@@ -6,6 +6,8 @@
   <xacro:arg name="ackermann" default="false"/>
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="laser" default="false"/>
+  <!-- entity name = ROS/gz namespace, so N cars don't share topics -->
+  <xacro:arg name="namespace" default="f1"/>
 
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/f1/f1_common.urdf.xacro"/>
