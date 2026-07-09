@@ -26,6 +26,21 @@ from rclpy.qos import (
 )
 
 
+class MotionReferenceHandler(MotionReferenceHandlerModule):
+    """
+    Temporary fix to Motion Reference Handlers module in Aerostack2 v1.1.3.
+
+    More info:
+    https://github.com/aerostack2/aerostack2/commit/c4094c1070fbf14ba2b28ee1d81e73e383e12df1
+    """
+
+    def __init__(self, drone: DroneInterfaceBase):
+        super().__init__(drone)
+
+    def __call__(self, *args, **kwargs):
+        return super().__call__(*args, **kwargs)
+
+
 class DroneWrapper(DroneInterfaceBase):
     """
     Wrapper around DroneInterfaceBase for Robotics Academy exercises.
@@ -67,7 +82,7 @@ class DroneWrapper(DroneInterfaceBase):
         )
         self.yaw_subscription  # prevent unused variable warning
 
-        self.motion_ref_handler = MotionReferenceHandlerModule(drone=self)
+        self.motion_ref_handler = MotionReferenceHandler(drone=self)
 
         self.state_event_service_client = self.create_client(
             SetPlatformStateMachineEvent,
