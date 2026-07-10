@@ -3,7 +3,7 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
 
-  <xacro:macro name="holonomic">
+  <xacro:macro name="holonomic" params="namespace">
 
     <link name="base">
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -24,11 +24,11 @@
       </visual>
     </link>
 
-    <xacro:f1_velocity topic="/F1ROS/cmd_vel"/>
-    <xacro:f1_odom topic="/F1ROS/odom" freq="50"/>
+    <xacro:f1_velocity topic="/${namespace}/cmd_vel"/>
+    <xacro:f1_odom topic="/${namespace}/odom" freq="50"/>
   </xacro:macro>
 
-  <xacro:macro name="ackermann">
+  <xacro:macro name="ackermann" params="namespace">
 
     <link name="base"/>
 
@@ -216,9 +216,9 @@
       </visual>
     </link> -->
 
-    <xacro:f1_ackermann_steering topic="/F1ROS/cmd_vel"/>
+    <xacro:f1_ackermann_steering topic="/${namespace}/cmd_vel"/>
     <xacro:f1_joints/>
-    <xacro:f1_odom topic="/F1ROS/odom" freq="50"/>
+    <xacro:f1_odom topic="/${namespace}/odom" freq="50"/>
     <!-- <xacro:f1_steer_controller topic="/model/f1_renault_ackermann_harmonic/steering_wheel_cmd" joint="steering_joint"/> -->
   </xacro:macro>
 </robot>
