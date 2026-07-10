@@ -43,7 +43,15 @@ def launch_setup(context):
         "ur10_suction.urdf.xacro",
     )
 
-    controllers_file = os.path.join(package_dir, "config", "ur10_suction_controllers.yaml")
+    controllers_file = os.path.join(package_dir, "config", "ur10_suction", "controllers.yaml")
+
+    # Palletizing-specific joint limits (asymmetric shoulder_pan -> predictable
+    # clockwise pick->place; wrists kept at +-180 to kill 360 spins). Overrides
+    # the ur.urdf.xacro default (config/<ur_type>/joint_limits.yaml) WITHOUT
+    # touching the shared stock UR10 limits, so other UR10 uses are unaffected.
+    joint_limits_file = os.path.join(
+        package_dir, "config", "ur10_suction", "joint_limits.yaml"
+    )
 
     robot_description_content = xacro.process_file(
         xacro_file,
@@ -55,6 +63,7 @@ def launch_setup(context):
             "sim_gazebo": "false",
             "sim_gz": "true",
             "simulation_controllers": controllers_file,
+            "joint_limit_params": joint_limits_file,
         },
     ).toxml()
 
@@ -65,7 +74,7 @@ def launch_setup(context):
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "custom_robots", "config/ur10_suction.srdf"
+            "custom_robots", "config/ur10_suction/robot.srdf"
         )
     }
 
@@ -73,7 +82,7 @@ def launch_setup(context):
     # KINEMATICS
     # =========================
     kinematics_yaml = load_yaml(
-        "custom_robots", "config/ur10_suction_kinematics.yaml"
+        "custom_robots", "config/ur10_suction/kinematics.yaml"
     )
 
     kinematics_yaml = {
@@ -84,11 +93,11 @@ def launch_setup(context):
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "custom_robots", "config/ur10_suction_moveit_controllers.yaml"
+        "custom_robots", "config/ur10_suction/moveit_controllers.yaml"
     )
 
     ompl_planning = load_yaml(
-        "custom_robots", "config/ur10_suction_ompl_planning.yaml"
+        "custom_robots", "config/ur10_suction/ompl_planning.yaml"
     )
 
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
@@ -299,10 +308,26 @@ def launch_setup(context):
     nodes.append(move_group)
 
     # =========================
+    # PLANNING-SCENE OBSTACLES
+    # =========================
+    # Inject the conveyor + pallet as collision objects so the planner routes
+    # around them natively (no hand-tuned via-waypoints in the student solution).
+    # Behind-the-scenes: the exercise/HAL code never touches the planning scene.
+    palletizing_scene = Node(
+        package="custom_robots",
+        executable="palletizing_scene",
+        name="palletizing_scene",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
+    )
+
+    nodes.append(palletizing_scene)
+
+    # =========================
     # RVIZ
     # =========================
-    rviz_config_file = os.path.join(package_dir, "config", "ur10_moveit.rviz")
-    
+    rviz_config_file = os.path.join(package_dir, "config", "ur10_suction", "moveit.rviz")
+
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -317,7 +342,7 @@ def launch_setup(context):
             {"use_sim_time": True},
         ],
     )
-    
+
     nodes.append(rviz_node)
 
     return nodes

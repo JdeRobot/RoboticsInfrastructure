@@ -1,5 +1,4 @@
 # OMPL planner config for the palletizing UR10 + suction gripper.
-# Isolated from ur5_gripper_moveit_config so Pick & Place stays untouched.
 # The "ur10_arm" group block MUST exist here: without planner_configs bound to
 # the group name, OMPL falls back to defaults and produces wild/contorted paths
 # or PLANNING FAILED, even though IK (kinematics) succeeds.

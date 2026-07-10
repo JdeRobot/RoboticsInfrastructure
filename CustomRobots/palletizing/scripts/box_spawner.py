@@ -7,8 +7,8 @@ task: a finite supply that must end up in an ordered pattern — not an infinite
 stream.
 
 Lifecycle per box:
-  1. Spawn at belt feed end (fixed X, Y = spawn_y).
-  2. Belt runs at belt_speed m/s; box rides straight to centre (Y = center_y).
+  1. Spawn at belt feed end (far end: X = spawn_x, on belt centre Y = spawn_y).
+  2. Belt runs at belt_speed m/s; box rides along X to the pickup point (X = pickup_x).
   3. Belt stops; the box name is published on /box_ready. The robot (the
      student/reference exercise code) picks the box and stacks it on the pallet,
      then signals completion by publishing the box name on /box_done.
@@ -40,12 +40,19 @@ class BoxSpawner(Node):
         except Exception as exc:
             self.get_logger().warn(f"could not resolve custom_robots share: {exc}")
 
+        # Belt runs along world X (conveyor yaw 0), radially away from the robot at
+        # the origin. Boxes feed from the FAR end (large X) and ride toward the robot,
+        # stopping at the pickup point (near end). The lateral axis is now Y (belt
+        # centre = 0). belt_speed sign sets travel direction — a positive value must
+        # push boxes toward -X (toward the robot); flip the sign if sim shows the
+        # belt running the wrong way (Track:fdir1 vs commanded-velocity sign).
         self.declare_parameter("sdf_file", default_file)
-        self.declare_parameter("belt_speed", 0.12)    # m/s — slow enough to stop cleanly
-        self.declare_parameter("spawn_x", 0.6)        # belt centre in world X
-        self.declare_parameter("spawn_y", -0.9)       # feed end in world Y
+        # Negative so boxes travel -X, from spawn_x (2.2) toward pickup_x (1.0).
+        self.declare_parameter("belt_speed", -0.25)   # m/s
+        self.declare_parameter("spawn_x", 2.2)        # feed end in world X (far from robot)
+        self.declare_parameter("spawn_y", 0.0)        # belt centre in world Y
         self.declare_parameter("spawn_z", 1.13)       # belt surface ~1.00 m + box half-height 0.10 m + clearance
-        self.declare_parameter("center_y", -0.15)     # stop before pickup end so coasting box doesn't fall off
+        self.declare_parameter("pickup_x", 1.0)       # near end, kept clear of the belt edge (0.60) so the 0.40 m box doesn't overhang
         self.declare_parameter("start_delay", 5.0)    # wait for gz to be ready
         self.declare_parameter("settle_delay", 0.3)   # let physics settle the box before signalling
         # Total boxes to feed. Placement (grid pattern) is the robot's job now.
@@ -106,9 +113,10 @@ class BoxSpawner(Node):
 
         self.get_logger().info(f"spawned {name} at ({x:.2f}, {y:.2f}, {z:.2f})")
 
-        # Time for box to travel from spawn_y to center_y at belt_speed.
+        # Time for box to travel from spawn_x to pickup_x along the belt. Use the
+        # speed MAGNITUDE — belt_speed may be negative (sets travel direction).
         belt_speed = float(self.get_parameter("belt_speed").value)
-        travel = abs(float(self.get_parameter("center_y").value) - y) / belt_speed
+        travel = abs(float(self.get_parameter("pickup_x").value) - x) / abs(belt_speed)
         self.get_logger().info(f"{name}: belt stops in {travel:.1f} s")
         self._active_timer = self.create_timer(travel, lambda: self._box_at_centre(name))
         self.counter += 1
@@ -132,7 +140,7 @@ class BoxSpawner(Node):
             self._active_timer = None
 
         # Hand the box off to the robot and wait for /box_done. Publish continuously
-        # so a late-started solution.py doesn't miss the message!
+        # so late-starting exercise code doesn't miss the message!
         self._pending_box = name
         self._active_timer = self.create_timer(1.0, lambda: self._ready_pub.publish(String(data=self._pending_box)))
         self._ready_pub.publish(String(data=name))

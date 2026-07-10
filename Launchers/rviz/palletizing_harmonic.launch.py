@@ -15,12 +15,10 @@ import yaml
 
 def generate_launch_description():
     pkg_share_dir = get_package_share_directory("custom_robots")
-    moveit_config_package = "ur5_gripper_moveit_config"
-    moveit_pkg_share = get_package_share_directory(moveit_config_package)
 
     # Robot description — suction gripper (must match the SDF spawned in Gazebo)
     xacro_file = os.path.join(pkg_share_dir, "models/ur10", "ur10_suction.urdf.xacro")
-    controllers_file = os.path.join(pkg_share_dir, "config", "ur10_suction_controllers.yaml")
+    controllers_file = os.path.join(pkg_share_dir, "config", "ur10_suction", "controllers.yaml")
 
     robot_description_content = xacro.process_file(
         xacro_file,
@@ -38,17 +36,16 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     # SRDF — suction variant (no finger-gripper group)
-    srdf_file = os.path.join(pkg_share_dir, "config", "ur10_suction.srdf")
+    srdf_file = os.path.join(pkg_share_dir, "config", "ur10_suction", "robot.srdf")
     with open(srdf_file, "r") as f:
         robot_description_semantic = {"robot_description_semantic": f.read()}
 
-    # Kinematics / planning configs — UR10 suction specific (isolated from
-    # ur5_gripper_moveit_config so Pick & Place stays untouched).
+    # Kinematics / planning configs — UR10 suction specific
     kinematics_yaml = os.path.join(
-        pkg_share_dir, "config", "ur10_suction_kinematics.yaml"
+        pkg_share_dir, "config", "ur10_suction", "kinematics.yaml"
     )
     ompl_planning_yaml = os.path.join(
-        pkg_share_dir, "config", "ur10_suction_ompl_planning.yaml"
+        pkg_share_dir, "config", "ur10_suction", "ompl_planning.yaml"
     )
 
     planning_pipelines_config = {
@@ -61,7 +58,9 @@ def generate_launch_description():
         },
     }
 
-    rviz_config_file = os.path.join(moveit_pkg_share, "rviz", "moveit.rviz")
+    rviz_config_file = os.path.join(
+        pkg_share_dir, "config", "ur10_suction", "moveit.rviz"
+    )
 
     rviz_node = Node(
         package="rviz2",

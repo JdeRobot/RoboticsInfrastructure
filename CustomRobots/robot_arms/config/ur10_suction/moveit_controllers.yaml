@@ -1,6 +1,4 @@
 # MoveIt controller manager config for the palletizing UR10 + suction gripper.
-# Isolated from ur5_gripper_moveit_config so Pick & Place stays untouched.
-# Suction has no finger-gripper controller — only the arm trajectory controller.
 /**:
   ros__parameters:
     moveit_simple_controller_manager:

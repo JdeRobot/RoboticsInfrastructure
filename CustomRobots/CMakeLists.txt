@@ -175,6 +175,13 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
   RENAME box_spawner)
 
+# Palletizing planning-scene publisher (injects conveyor + pallet as MoveIt
+# collision objects so the planner routes around them; not student-facing).
+install(PROGRAMS
+    palletizing/scripts/palletizing_scene.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME palletizing_scene)
+
 # install(
 #   FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py
 #         ${RI_ROOT_DIR}/Launchers/rescue_people.launch.py

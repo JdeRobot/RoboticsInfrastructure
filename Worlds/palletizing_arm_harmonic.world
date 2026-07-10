@@ -65,12 +65,15 @@
       </link>
     </model>
 
-    <!-- Conveyor (moving belt, driven by TrackController; see CustomRobots/palletizing/models/conveyor_belt) -->
-    <!-- Named "conveyor" so the command topic is /model/conveyor/link/link/track_cmd_vel -->
+    <!-- Conveyor: moving belt driven by TrackController. The model name "conveyor"
+         sets the command topic /model/conveyor/link/link/track_cmd_vel.
+         Runs along +X, away from the robot at the origin; 2.4 m long, centred at
+         X=1.80 (spans X in [0.60, 3.00]). Boxes feed from the far end and ride
+         toward the robot for pickup. -->
     <include>
       <uri>model://conveyor_belt</uri>
       <name>conveyor</name>
-      <pose>0.6 0 0 0 0 1.57</pose>
+      <pose>1.80 0 0 0 0 0</pose>
     </include>
 
     <!-- Ground Logo Big -->
@@ -90,25 +93,58 @@
       </link>
     </model>
 
-    <!-- Pallet Table (target platform for stacking) -->
-    <model name="target_table">
+    <!-- Wooden pallet on a low stand: the target platform for stacking. Placed on
+         the robot's right (-Y) so pick (front, +X) -> place (right, -Y) is a ~90 deg
+         swing. Deck top sits at world z=0.30. Centre at Y=-0.88 keeps the whole
+         stacking area inside the UR10's ~1.30 m reach while clearing the robot base.
+         The place coordinates in the exercise code must match this pose. -->
+    <model name="target_pallet">
       <static>true</static>
-      <pose>-0.6 0 0 0 0 1.57</pose>
+      <pose>0 -0.88 0 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
-          <pose>0 0 0.73 0 0 1.57</pose>
-          <geometry>
-            <mesh>
-              <scale>1 1 1</scale>
-              <uri>model://target_table/meshes/target_table.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name="collision_0">
-          <pose>0 0 0.73 0 0 0</pose>
+        <!-- Pallet deck (top board the boxes rest on): 1.60 x 1.30 x 0.10, sized
+             so the finished box stack fits well inside. Top face at world z=0.30. -->
+        <visual name="deck_visual">
+          <pose>0 0 0.25 0 0 0</pose>
           <geometry>
             <box>
-              <size>0.8 1.6 0.06</size>
+              <size>1.60 1.30 0.10</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.40 0.26 0.13 1</ambient>
+            <diffuse>0.55 0.36 0.18 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <collision name="deck_collision">
+          <pose>0 0 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.60 1.30 0.10</size>
+            </box>
+          </geometry>
+        </collision>
+        <!-- Solid stand block under the deck (0 -> 0.20 m). Simple box to keep the
+             collision geometry cheap for the planner. -->
+        <visual name="stand_visual">
+          <pose>0 0 0.10 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.50 1.20 0.20</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.30 0.20 0.10 1</ambient>
+            <diffuse>0.45 0.30 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <collision name="stand_collision">
+          <pose>0 0 0.10 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.50 1.20 0.20</size>
             </box>
           </geometry>
         </collision>
@@ -145,9 +181,8 @@
       </link>
     </model>
 
-    <!-- Palletizing source boxes are spawned at runtime onto the moving belt -->
-    <!-- by the box_spawner node (CustomRobots/palletizing/scripts/box_spawner.py), -->
-    <!-- wired into Launchers/palletizing.launch.py. No static boxes here. -->
+    <!-- Source boxes are spawned onto the belt at runtime by the box_spawner node
+         (CustomRobots/palletizing/scripts/box_spawner.py), so none are defined here. -->
 
   </world>
 </sdf>

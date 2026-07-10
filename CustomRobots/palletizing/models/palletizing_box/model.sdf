@@ -59,10 +59,13 @@
             <size>0.40 0.30 0.20</size>
           </box>
         </geometry>
+        <!-- Kraft-cardboard carton: a realistic shipping-box brown. Deliberately
+             LIGHTER/warmer than the darker wood-tone pallet below it, so the box
+             stack reads clearly apart from the platform (they no longer blend). -->
         <material>
-          <ambient>0.55 0.35 0.15 1</ambient>
-          <diffuse>0.55 0.35 0.15 1</diffuse>
-          <specular>0.2 0.2 0.2 1</specular>
+          <ambient>0.52 0.40 0.24 1</ambient>
+          <diffuse>0.76 0.58 0.36 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
         </material>
       </visual>
     </link>
