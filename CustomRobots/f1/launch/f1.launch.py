@@ -93,7 +93,6 @@ def launch_setup(context):
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
-            f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
         ],
         output="screen",
     )
@@ -111,6 +110,17 @@ def launch_setup(context):
             output="screen",
         )
         nodes_to_start.append(gz_ros2_image_bridge)
+    else:
+        gz_ros2_laser_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            namespace=gz_namespace,
+            arguments=[
+                f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            ],
+            output="screen",
+        )
+        nodes_to_start.append(gz_ros2_laser_bridge)
 
     return nodes_to_start
 
