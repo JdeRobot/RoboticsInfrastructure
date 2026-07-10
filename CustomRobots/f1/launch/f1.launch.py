@@ -65,7 +65,7 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
             namespace,
             "-allow_renaming",
@@ -89,6 +89,7 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
+        namespace=gz_namespace,
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
@@ -106,7 +107,7 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/cam_f1_left/image_raw"],
+            arguments=[f"/{namespace}/camera/image_raw"],
             output="screen",
         )
         nodes_to_start.append(gz_ros2_image_bridge)
@@ -115,21 +116,19 @@ def launch_setup(context):
 
 
 def generate_launch_description():
-    declared_arguments = []
-
     # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("mode", default_value="holo"))
-    declared_arguments.append(DeclareLaunchArgument("namespace", default_value="f1"))
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("sensor", default_value="camera"),
+        DeclareLaunchArgument("mode", default_value="holo"),
+        DeclareLaunchArgument("namespace", default_value="f1"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
