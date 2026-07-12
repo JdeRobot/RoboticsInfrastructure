@@ -24,7 +24,7 @@ def generate_launch_description():
 
     # Set the path to the world file
     world_file_name = "restaurant.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     # Set the path to the SDF model files.

@@ -169,7 +169,7 @@ def launch_setup(context):
             # "none" makes the move server skip the EE block (it otherwise crashes
             # with YAML::BadFile). Gripping is handled by gz_link_attacher, not MoveG.
             {"EE_PARAM": "none"},
-            {"MOVE_GROUP": "ur10_arm"},
+            {"ROB_GROUP": "ur10_arm"},
         ],
     )
 
@@ -189,7 +189,7 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur10"},
-            {"MOVE_GROUP": "ur10_arm"},
+            {"ROB_GROUP": "ur10_arm"},
         ],
     )
 
@@ -205,7 +205,7 @@ def launch_setup(context):
             ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur10"},
-            {"MOVE_GROUP": "ur10_arm"},
+            {"ROB_GROUP": "ur10_arm"},
         ],
     )
 

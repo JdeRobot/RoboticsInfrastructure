@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     world_file_name = "palletizing_arm_harmonic.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     package_dir = get_package_share_directory("custom_robots")
