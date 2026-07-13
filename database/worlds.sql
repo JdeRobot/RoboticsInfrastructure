@@ -257,7 +257,6 @@ COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin;
 44	70	24	1
 45	71	26	1
 46	72	11	2
-\.
 
 --
 -- Data for Name: scenes; Type: TABLE DATA; Schema: public; Owner: user-dev
