@@ -336,7 +336,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150
 29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150
-31	UR3_real	/home/ws/src/CustomRobots/robot_arms/launch/ur3_real.launch.py  ur3_robotiq None
+31	UR3_real	/home/ws/src/CustomRobots/robot_arms/launch/ur3_real.launch.py	ur3_robotiq	None
 \.
 
 --
