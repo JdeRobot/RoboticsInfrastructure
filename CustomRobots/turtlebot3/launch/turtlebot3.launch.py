@@ -107,7 +107,7 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/turtlebot3/camera/image_raw"],
+            arguments=[f"/{namespace}/camera/image_raw"],
             output="screen",
         )
 
