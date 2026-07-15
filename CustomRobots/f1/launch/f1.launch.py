@@ -20,6 +20,7 @@ def launch_setup(context):
     gz_sensor = LaunchConfiguration("sensor")
     gz_mode = LaunchConfiguration("mode")
     gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -28,6 +29,7 @@ def launch_setup(context):
     sensor = gz_sensor.perform(context)
     mode = gz_mode.perform(context)
     namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
     f1_sensor = "laser" if sensor == "laser" else "camera"
     f1_model = "ackermann" if mode == "ackermann" else "holonomic"
@@ -67,7 +69,7 @@ def launch_setup(context):
             "-topic",
             f"/{namespace}/robot_description",
             "-name",
-            namespace,
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -138,6 +140,7 @@ def generate_launch_description():
         DeclareLaunchArgument("sensor", default_value="camera"),
         DeclareLaunchArgument("mode", default_value="holo"),
         DeclareLaunchArgument("namespace", default_value="f1"),
+        DeclareLaunchArgument("entity", default_value="f1"),
     ]
 
     return LaunchDescription(
