@@ -235,9 +235,9 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1
 4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera namespace:=f1
 5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser namespace:=f1
-6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera 
-7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar 
-8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser 
+6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera namespace:=autonomous_car 
+7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar namespace:=autonomous_car 
+8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser namespace:=autonomous_car 
 9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser namespace:=vacuum_cleaner 
 10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera namespace:=vacuum_cleaner 
 11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone0	sensor:=camera namespace:=drone0
