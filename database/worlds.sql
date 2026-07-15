@@ -246,13 +246,13 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	None
 15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera
 16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo
-17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	None
+17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	namespace:=turtlebot3
 18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic namespace:=autonomous_car
 19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low
 20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high
-21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low
-22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med
-23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high
+21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low namespace:=turtlebot3
+22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med namespace:=turtlebot3
+23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high namespace:=turtlebot3
 24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
 25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None
 26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
