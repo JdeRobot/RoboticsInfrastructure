@@ -12,6 +12,7 @@ from launch.actions import (
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ros_gz_bridge.actions import RosGzBridge
 
 
 def launch_setup(context):
@@ -89,55 +90,13 @@ def launch_setup(context):
         ],
         output="screen",
     )
+    bridge_yaml = os.path.join(package_dir, "params", f"quadrotor_{sensor}.yaml")
 
-    nodes_to_start.append(
-        Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            namespace=gz_namespace,
-            arguments=[
-                f"/model/{namespace}/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            ],
-            output="screen",
-        )
-    )
-
-    gz_ros2_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
+    gz_ros2_bridge = RosGzBridge(
+        bridge_name="bridge1",
         namespace=gz_namespace,
-        parameters=[
-            {
-                "bridge_names": [
-                    "cmd_vel_bridge",
-                    "arm_bridge",
-                    "tf_bridge",
-                    "tfs_bridge",
-                ]
-            },
-            {"bridges.cmd_vel_bridge.ros_topic_name": f"/gz/{namespace}/cmd_vel"},
-            {"bridges.cmd_vel_bridge.gz_topic_name": f"/model/{namespace}/cmd_vel"},
-            {"bridges.cmd_vel_bridge.ros_type_name": "geometry_msgs/msg/Twist"},
-            {"bridges.cmd_vel_bridge.gz_type_name": "gz.msgs.Twist"},
-            {"bridges.cmd_vel_bridge.direction": "ROS_TO_GZ"},
-            {"bridges.arm_bridge.ros_topic_name": f"/gz/{namespace}/arm"},
-            {
-                "bridges.arm_bridge.gz_topic_name": f"/model/{namespace}/velocity_controller/enable"
-            },
-            {"bridges.arm_bridge.ros_type_name": "std_msgs/msg/Bool"},
-            {"bridges.arm_bridge.gz_type_name": "gz.msgs.Boolean"},
-            {"bridges.arm_bridge.direction": "ROS_TO_GZ"},
-            {"bridges.tf_bridge.ros_topic_name": f"/tf"},
-            {"bridges.tf_bridge.gz_topic_name": f"/{namespace}/tf"},
-            {"bridges.tf_bridge.ros_type_name": "tf2_msgs/msg/TFMessage"},
-            {"bridges.tf_bridge.gz_type_name": "gz.msgs.Pose_V"},
-            {"bridges.tf_bridge.direction": "GZ_TO_ROS"},
-            {"bridges.tfs_bridge.ros_topic_name": f"/tf"},
-            {"bridges.tfs_bridge.gz_topic_name": f"/{namespace}/tf_static"},
-            {"bridges.tfs_bridge.ros_type_name": "tf2_msgs/msg/TFMessage"},
-            {"bridges.tfs_bridge.gz_type_name": "gz.msgs.Pose_V"},
-            {"bridges.tfs_bridge.direction": "GZ_TO_ROS"},
-        ],
+        config_file=bridge_yaml,
+        use_composition=str(True),
     )
 
     as2_gt_bridge = Node(
