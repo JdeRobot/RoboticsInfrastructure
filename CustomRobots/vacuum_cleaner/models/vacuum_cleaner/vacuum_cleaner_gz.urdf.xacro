@@ -130,7 +130,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="topic namespace">
+  <xacro:macro name="noise_odom" params="namespace">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
         <ros_topic>/${namespace}/odom_noisy</ros_topic>
