@@ -69,7 +69,7 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             "-topic",
-            f"/{namespace}/robot_description",
+            "/robot_description",
             "-name",
             entity,
             "-allow_renaming",
@@ -96,7 +96,7 @@ def launch_setup(context):
             executable="parameter_bridge",
             namespace=gz_namespace,
             arguments=[
-                f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+                f"/model/{namespace}/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             ],
             output="screen",
         )
@@ -149,7 +149,7 @@ def launch_setup(context):
             {
                 "name_space": namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": namespace + "/base_link",
+                "twist_frame_id": f"/{namespace}/base_link",
             },
         ],
     )
