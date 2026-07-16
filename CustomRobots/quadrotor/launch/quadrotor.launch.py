@@ -149,7 +149,7 @@ def launch_setup(context):
             {
                 "name_space": namespace,
                 "pose_frame_id": "earth",
-                "twist_frame_id": f"/{namespace}/base_link",
+                "twist_frame_id": f"{namespace}/base_link",
             },
         ],
     )
