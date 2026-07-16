@@ -91,7 +91,7 @@
     <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
     <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
 
-    <xacro:tf freq="100" namespace="${namespace}"/>
+    <xacro:tf freq="100"/>
     <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
     <xacro:odom freq="100" namespace="${namespace}"/>
     <xacro:motors namespace="${namespace}"/>
