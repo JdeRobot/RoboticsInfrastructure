@@ -104,7 +104,7 @@ def launch_setup(context):
 
     # Sensor deppending on sensor arguments
     if sensor == "stereo":
-        gz_ros2_image_left_bridge = Node(
+        gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
             arguments=[
@@ -114,15 +114,8 @@ def launch_setup(context):
             output="screen",
         )
 
-        gz_ros2_image_right_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            arguments=[f"/{namespace}/camera_right/image_raw"],
-            output="screen",
-        )
+        nodes_to_start.append(gz_ros2_image_bridge)
 
-        nodes_to_start.append(gz_ros2_image_left_bridge)
-        nodes_to_start.append(gz_ros2_image_right_bridge)
     elif sensor == "camera":
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
