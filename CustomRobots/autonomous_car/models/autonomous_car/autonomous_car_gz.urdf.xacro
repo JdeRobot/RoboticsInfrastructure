@@ -208,7 +208,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
         <topic>/${namespace}/cmd_vel</topic>
