@@ -129,9 +129,24 @@ int main(int argc, char **argv)
   using moveit::planning_interface::MoveGroupInterface;
   move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
 
+  move_group_interface_ROB.startStateMonitor();
+
+  RCLCPP_INFO(node->get_logger(), "Waiting for current robot state...");
+
+  rclcpp::sleep_for(std::chrono::seconds(2));
+
+  auto current_state = move_group_interface_ROB.getCurrentState(10.0);
+
+  if (!current_state)
+  {
+      RCLCPP_ERROR(node->get_logger(), "Failed to get current robot state!");
+      rclcpp::shutdown();
+      return 1;
+  }
+
   RCLCPP_INFO(
       node->get_logger(),
-      "MoveGroupInterface created for ROBOT group: %s",
+      "MoveGroupInterface ready for ROBOT group: %s",
       param_ROB_GROUP.c_str()
   );
 

@@ -288,7 +288,22 @@ int main(int argc, char **argv)
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
 
-    RCLCPP_INFO(logger, "MoveGroupInterface object created for ROBOT: %s", param_ROB_GROUP.c_str());
+    move_group_interface_ROB.startStateMonitor();
+
+    RCLCPP_INFO(logger, "Waiting for current robot state...");
+
+    rclcpp::sleep_for(std::chrono::seconds(2));
+
+    auto current_state = move_group_interface_ROB.getCurrentState(10.0);
+
+    if (!current_state)
+    {
+        RCLCPP_ERROR(logger, "Failed to get current robot state!");
+        rclcpp::shutdown();
+        return 1;
+    }
+
+    RCLCPP_INFO(logger, "MoveGroupInterface ready.");
 
     rclcpp::spin(node);
 

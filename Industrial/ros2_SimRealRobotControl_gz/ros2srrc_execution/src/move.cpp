@@ -575,13 +575,26 @@ int main(int argc, char ** argv)
         move_group_interface_ROB.setMaxVelocityScalingFactor(0.5);
         move_group_interface_ROB.setMaxAccelerationScalingFactor(0.5);
 
-        if (!move_group_interface_ROB.getCurrentState()) {
-            RCLCPP_ERROR(logger, "Failed to get current state!");
+        // Esperar a que MoveIt empiece a recibir joint_states
+        move_group_interface_ROB.startStateMonitor();
+
+        RCLCPP_INFO(logger, "Waiting for current robot state...");
+
+        rclcpp::sleep_for(std::chrono::seconds(2));
+
+        auto current_state = move_group_interface_ROB.getCurrentState(10.0);
+
+        if (!current_state)
+        {
+            RCLCPP_ERROR(logger, "Failed to get current robot state!");
+            rclcpp::shutdown();
+            return 1;
         }
 
         joint_model_group_ROB =
-            move_group_interface_ROB.getCurrentState()
-                ->getJointModelGroup(param_ROB_GROUP);
+            current_state->getJointModelGroup(param_ROB_GROUP);
+
+        RCLCPP_INFO(logger, "Current robot state received.");
 
         RCLCPP_INFO(logger,
             "MoveGroupInterface created for ROBOT group: %s",
