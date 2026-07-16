@@ -48,7 +48,7 @@ def launch_setup(context):
                 "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {
-                "ROB_PARAM": "ur"
+                "ROB_PARAM": "ur3"
             },
             {
                 "EE_PARAM": "none"
@@ -77,7 +77,7 @@ def launch_setup(context):
                 "moveit_simple_controller_manager/MoveItSimpleControllerManager"
             },
             {
-                "ROB_PARAM": "ur"
+                "ROB_PARAM": "ur3"
             },
             {
                 "ROB_GROUP": "ur_manipulator"
@@ -99,7 +99,7 @@ def launch_setup(context):
         parameters=[
             ompl_planning,
             {
-                "ROB_PARAM": "ur"
+                "ROB_PARAM": "ur3"
             },
             {
                 "ROB_GROUP": "ur_manipulator"
