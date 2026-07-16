@@ -79,7 +79,7 @@
       </visual>
     </link>
 
-    <link name="camera_link"/>
+    <link name="camera_base_link"/>
 
     <joint name="base_to_base_link" type="fixed">
       <parent link="base_footprint"/>
@@ -90,7 +90,7 @@
 
     <joint name="camera_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="camera_link"/>
+      <child link="camera_base_link"/>
       <origin xyz="0.064 -0.065 0.094" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
