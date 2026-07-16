@@ -203,7 +203,7 @@ def launch_setup(context):
     robot_description_semantic = {
         "robot_description_semantic": load_file(
             "ros2srrc_ur3_moveit2",
-            "config/ur3.srdf",
+            "config/ur3_real.srdf",
         )
     }
 
