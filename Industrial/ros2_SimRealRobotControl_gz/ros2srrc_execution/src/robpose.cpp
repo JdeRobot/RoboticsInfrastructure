@@ -43,6 +43,8 @@ using namespace std::chrono_literals;
 // Include MoveIt!2:
 #include <moveit/move_group_interface/move_group_interface_improved.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <moveit_msgs/action/move_group.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
 
 // Include the Robpose ROS2 Message:
 #include "ros2srrc_data/msg/robpose.hpp"
@@ -113,6 +115,16 @@ int main(int argc, char **argv)
 
   auto node = std::make_shared<RobPose_PUB>();
 
+  auto moveit_node = std::make_shared<rclcpp::Node>(
+      "moveit_helper_node_robpose",
+      rclcpp::NodeOptions()
+          .automatically_declare_parameters_from_overrides(true)
+  );
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(moveit_node);
+  std::thread([&executor]() { executor.spin(); }).detach();
+
   // === PARAM ===
   node->declare_parameter("ROB_PARAM", "none");
   param_ROB = node->get_parameter("ROB_PARAM").as_string();
@@ -130,31 +142,45 @@ int main(int argc, char **argv)
       param_ROB_GROUP.c_str()
   );
 
-  // === MOVEIT ===
-  using moveit::planning_interface::MoveGroupInterface;
-  move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
-  RCLCPP_INFO(node->get_logger(), "Waiting for current robot state...");
-
-  while (rclcpp::ok() && !move_group_interface_ROB.getCurrentState(2.0))
-  {
-      RCLCPP_WARN(
-          node->get_logger(),
-          "Waiting for current robot state..."
+  auto move_group_client =
+      rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(
+          moveit_node,
+          "move_action"
       );
-  }
 
   RCLCPP_INFO(
       node->get_logger(),
-      "MoveGroupInterface ready."
+      "Waiting for MoveGroup action server..."
   );
+
+  if (!move_group_client->wait_for_action_server(std::chrono::seconds(10)))
+  {
+      RCLCPP_ERROR(
+          node->get_logger(),
+          "MoveGroup action server not available!"
+      );
+
+      rclcpp::shutdown();
+      return 1;
+  }
+
+  // === MOVEIT ===
+  using moveit::planning_interface::MoveGroupInterface;
+
+  move_group_interface_ROB =
+      MoveGroupInterface(moveit_node, param_ROB_GROUP);
 
   move_group_interface_ROB.startStateMonitor();
 
-  RCLCPP_INFO(node->get_logger(), "Waiting for current robot state...");
+  RCLCPP_INFO(
+      node->get_logger(),
+      "Waiting for current robot state..."
+  );
 
-  rclcpp::sleep_for(std::chrono::seconds(2));
+  rclcpp::sleep_for(std::chrono::seconds(3));
 
-  auto current_state = move_group_interface_ROB.getCurrentState(10.0);
+  auto current_state =
+      move_group_interface_ROB.getCurrentState(20.0);
 
   if (!current_state)
   {
