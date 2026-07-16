@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="ur3" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur3"/>
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="fake_sensor_commands" default="false"/>
+  <xacro:arg name="sim_gazebo" default="false"/>
+  <xacro:arg name="sim_gz" default="false"/>
+
+  <!-- Robot -->
+  <xacro:include filename="$(find custom_robots)/models/ur3/ur.urdf.xacro"/>
+
+</robot>

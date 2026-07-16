@@ -32,8 +32,8 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "ur3",
-        "ur3.urdf.xacro",
+        "ur3_real",
+        "ur3_real.urdf.xacro",
     )
 
     controllers_file = os.path.join(
@@ -70,7 +70,7 @@ def launch_setup(context):
     robot_description_semantic = {
         "robot_description_semantic": load_file(
             "ros2srrc_ur3_moveit2",
-            "config/ur3robotiq_2f85.srdf",
+            "config/ur3.srdf",
         )
     }
 
@@ -80,7 +80,7 @@ def launch_setup(context):
 
     kinematics_yaml = load_yaml(
         "ur3_gripper_moveit_config",
-        "config/kinematics.yaml",
+        "config/real_robot/kinematics_real.yaml",
     )
 
     kinematics_yaml = {
@@ -94,7 +94,7 @@ def launch_setup(context):
 
     moveit_controllers = load_yaml(
         "ur3_gripper_moveit_config",
-        "config/moveit_controllers_real.yaml",
+        "config/real_robot/moveit_controllers_real.yaml",
     )
 
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
