@@ -53,8 +53,7 @@ def launch_setup(context):
             "sim_gz": "false",
             "simulation_controllers": controllers_file,
             "hmi": "false",
-            "EE": "true",
-            "EE_name": "robotiq_2f85",
+            "EE": "false",
             "camera": "false",
         },
     ).toxml()
