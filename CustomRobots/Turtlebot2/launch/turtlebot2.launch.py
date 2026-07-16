@@ -107,6 +107,7 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
+            namespace=gz_namespace,
             arguments=[
                 f"/{namespace}/camera_left/image_raw",
                 f"/{namespace}/camera_right/image_raw",
@@ -120,6 +121,7 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
+            namespace=gz_namespace,
             arguments=[f"/{namespace}/camera/image_raw"],
             output="screen",
         )
