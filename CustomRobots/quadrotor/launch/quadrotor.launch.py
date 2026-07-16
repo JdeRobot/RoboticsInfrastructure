@@ -94,11 +94,21 @@ def launch_setup(context):
         package="ros_gz_bridge",
         executable="parameter_bridge",
         namespace=gz_namespace,
-        arguments=[
-            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
+        parameters=[
+            {"bridge_names": ["cmd_vel_bridge", "arm_bridge", "battery_bridge"]},
+            {"bridges.cmd_vel_bridge.ros_topic_name": f"/gz/{namespace}/cmd_vel"},
+            {"bridges.cmd_vel_bridge.gz_topic_name": f"/model/{namespace}/cmd_vel"},
+            {"bridges.cmd_vel_bridge.ros_type_name": "geometry_msgs/msg/Twist"},
+            {"bridges.cmd_vel_bridge.gz_type_name": "gz.msgs.Twist"},
+            {"bridges.cmd_vel_bridge.direction": "ROS_TO_GZ"},
+            {"bridges.arm_bridge.ros_topic_name": f"/gz/{namespace}/arm"},
+            {
+                "bridges.arm_bridge.gz_topic_name": f"/model/{namespace}/velocity_controller/enable"
+            },
+            {"bridges.arm_bridge.ros_type_name": "std_msgs/msg/Bool"},
+            {"bridges.arm_bridge.gz_type_name": "gz.msgs.Boolean"},
+            {"bridges.arm_bridge.direction": "ROS_TO_GZ"},
         ],
-        output="screen",
     )
 
     as2_gt_bridge = Node(
@@ -122,13 +132,11 @@ def launch_setup(context):
                 "/as2_default_gazebo_sim.launch.py",
             ]
         ),
-        launch_arguments={
-            "namespace": gz_namespace,
-        }.items(),
+        launch_arguments={"namespace": gz_namespace}.items(),
     )
 
     nodes_to_start.append(gz_spawn_entity)
-    # nodes_to_start.append(gz_ros2_bridge)
+    nodes_to_start.append(gz_ros2_bridge)
     nodes_to_start.append(as2_gt_bridge)
     nodes_to_start.append(as2)
     nodes_to_start.append(robot_state_publisher_node)
