@@ -36,9 +36,7 @@ def generate_launch_description():
     # ==================================================
 
     resource_path = (
-        os.path.dirname(get_package_share_directory("ros2srrc_ur3_gazebo"))
-        + ":"
-        + os.path.dirname(get_package_share_directory("ros2srrc_robots"))
+        os.path.dirname(get_package_share_directory("ros2srrc_robots"))
         + ":"
         + os.path.dirname(get_package_share_directory("ros2srrc_endeffectors"))
         + ":"
