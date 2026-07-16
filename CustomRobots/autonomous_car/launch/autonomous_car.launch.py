@@ -134,7 +134,7 @@ def launch_setup(context):
             executable="parameter_bridge",
             namespace=gz_namespace,
             arguments=[
-                f"/{namespace}/lidar/pc2@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+                f"/{namespace}/lidar/pc2/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             ],
             output="screen",
         )
