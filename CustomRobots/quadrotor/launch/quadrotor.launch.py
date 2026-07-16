@@ -90,6 +90,18 @@ def launch_setup(context):
         output="screen",
     )
 
+    nodes_to_start.append(
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            namespace=gz_namespace,
+            arguments=[
+                f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            ],
+            output="screen",
+        )
+    )
+
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
