@@ -95,7 +95,7 @@ def launch_setup(context):
         executable="parameter_bridge",
         namespace=gz_namespace,
         parameters=[
-            {"bridge_names": ["cmd_vel_bridge", "arm_bridge", "battery_bridge"]},
+            {"bridge_names": ["cmd_vel_bridge", "arm_bridge"]},
             {"bridges.cmd_vel_bridge.ros_topic_name": f"/gz/{namespace}/cmd_vel"},
             {"bridges.cmd_vel_bridge.gz_topic_name": f"/model/{namespace}/cmd_vel"},
             {"bridges.cmd_vel_bridge.ros_type_name": "geometry_msgs/msg/Twist"},
