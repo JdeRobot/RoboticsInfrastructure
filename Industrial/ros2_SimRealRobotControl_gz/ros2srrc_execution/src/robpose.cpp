@@ -78,6 +78,11 @@ private:
       return;
     }
 
+    if (!move_group_interface_ROB.getCurrentState(0.5))
+    {
+        return;
+    }
+
     auto CP_INFO = move_group_interface_ROB.getCurrentPose();
 
     POSE.x = CP_INFO.pose.position.x;
@@ -128,6 +133,20 @@ int main(int argc, char **argv)
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
   move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
+  RCLCPP_INFO(node->get_logger(), "Waiting for current robot state...");
+
+  while (rclcpp::ok() && !move_group_interface_ROB.getCurrentState(2.0))
+  {
+      RCLCPP_WARN(
+          node->get_logger(),
+          "Waiting for current robot state..."
+      );
+  }
+
+  RCLCPP_INFO(
+      node->get_logger(),
+      "MoveGroupInterface ready."
+  );
 
   move_group_interface_ROB.startStateMonitor();
 
