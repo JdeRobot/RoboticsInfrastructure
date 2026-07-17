@@ -1,84 +1,25 @@
 <?xml version="1.0" ?>
-<robot name="global_nav">
+<robot name="marker_visual_loc">
 
-  <link name="Lake House">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+  <link name="grass_link">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 -6.5"/>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://marker_visual_loc/models/Lake House/meshes/house.dae" scale="1 1 1"/>
+        <box size="15 15 0.01"/>
       </geometry>
       <material>
-        <diffuse>1.0 1.0 1.0</diffuse>
-        <specular>1.0 1.0 1.0</specular>
+        <texture filename="package://marker_visual_loc/models/grasspatch/materials/textures/grass_dry.png"/>
       </material>
     </visual>
   </link>
 
-  <!-- <include>
-    <name>Grass</name>
-    <uri>model://grasspatch</uri>
-  </include>
-  <include>
-    <name>Armchair_01</name>
-    <pose>-0.24 -0.13 0.4 0 0 -0.77</pose>
-    <uri>model://Armchair</uri>
-  </include>
-  <include>
-    <name>Armchair_02</name>
-    <pose>-0.12 -1.44 0.4 0 0 -1.75</pose>
-    <uri>model://Armchair</uri>
-  </include>
-  <include>
-    <pose>3.45 -3.88 0.4 0 0 -1.57</pose>
-    <name>Dining Table</name>
-    <uri>model://Dining Table</uri>
-  </include>
-  <include>
-    <pose>2.9 -3.34 0.4 0 0 -0.03</pose>
-    <name>Dining Chair 01</name>
-    <uri>model://Dining Chair</uri>
-  </include>
-  <include>
-    <pose>3.87 -3.19 0.4 0 0 -0.32</pose>
-    <name>Dining Chair 02</name>
-    <uri>model://Dining Chair</uri>
-  </include>
-  <include>
-    <pose>3.81 -4.43 0.4 0 0 -2.69</pose>
-    <name>Dining Chair 03</name>
-    <uri>model://Dining Chair</uri>
-  </include>
-  <include>
-    <pose>2.88 -4.60 0.4 0 0 2.87</pose>
-    <name>Dining Chair 04</name>
-    <uri>model://Dining Chair</uri>
-  </include>
-  <include>
-    <pose>1.75 -3.89 0.4 0 0 0</pose>
-    <name>Fridge</name>
-    <uri>model://Fridge</uri>
-  </include>
-  <include>
-    <pose>4.34 -6.36 0.33 0 0 1.57</pose>
-    <name>Oven</name>
-    <uri>model://Oven</uri>
-  </include>
-  <include>
-    <pose>2.98 0.85 0.411 0 0 -2.37</pose>
-    <name>Piano</name>
-    <uri>model://Piano</uri>
-  </include>
-  <include>
-    <pose>0 0 0 0 0 2.6</pose>
-    <name>Sky</name>
-    <uri>model://Sky</uri>
-  </include>
-  <include>
-    <pose>0 0 -6.5 0 0 0</pose>
-    <name>posAprilTags</name>
-    <uri>model://posAprilTags</uri>
-  </include> -->
-
+  <link name="marker_visual_loc_link">
+    <visual>
+      <origin xyz="0 0 -0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://marker_visual_loc/models/Lake House/meshes/house.dae" scale="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
 
 </robot>
