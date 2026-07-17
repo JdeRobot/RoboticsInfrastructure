@@ -68,19 +68,5 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <!-- the drones are their own models in jderobot_drones/models, just
-         pulled in here. cat = drone0, mouse = drone1 -->
-    <include>
-      <uri>model://cat_mouse_drone0</uri>
-      <pose>0 5 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://cat_mouse_drone1</uri>
-      <pose>20 5 0 0 0 0</pose>
-    </include>
-
-    <!-- gui camera lives in the gui config (drone_cat_mouse.config),
-         not here - gz sim takes the view from there, not from <gui> -->
-
   </world>
 </sdf>

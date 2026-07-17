@@ -17,12 +17,15 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
+    gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
-    bridge_yaml = os.path.join(package_dir, "params", f"logistic_ackermann_robot.yaml")
+    namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -34,17 +37,12 @@ def launch_setup(context):
         "logistic_ackermann_robot.urdf.xacro",
     )
 
-    robot_description_content = xacro.process_file(xacro_file).toxml()
-
-    ## Temporary SDF load
-    # sdf_file = os.path.join(
-    #     package_dir,
-    #     "models",
-    #     "logistic_ackermann_robot",
-    #     "logistic_ackermann_robot.sdf",
-    # )
-    # with open(sdf_file, "r") as infp:
-    #     robot_description_content = infp.read()
+    robot_description_content = xacro.process_file(
+        xacro_file,
+        mappings={
+            "namespace": namespace,
+        },
+    ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
 
@@ -52,6 +50,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -59,11 +58,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
-            "logistic_ackermann_robot",
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -85,7 +85,12 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        namespace=gz_namespace,
+        arguments=[
+            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/platform/cmd_vel@std_msgs/msg/Float64]gz.msgs.Double",
+        ],
         output="screen",
     )
 
@@ -97,18 +102,17 @@ def launch_setup(context):
 
 
 def generate_launch_description():
-    declared_arguments = []
-
-    # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("namespace", default_value="logistic_robot"),
+        DeclareLaunchArgument("entity", default_value="logistic_ackermann_robot"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
