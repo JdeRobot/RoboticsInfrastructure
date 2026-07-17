@@ -12,8 +12,6 @@ from launch.actions import (
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from ros_gz_bridge.actions import RosGzBridge
-from launch_ros.actions import SetRemap
 
 
 def launch_setup(context):
@@ -92,16 +90,6 @@ def launch_setup(context):
         output="screen",
     )
 
-    cmd_vel_remap = SetRemap(
-        src=f"/model/{namespace}/cmd_vel", dst=f"/gz/{namespace}/cmd_vel"
-    )
-    arm_remap = SetRemap(
-        src=f"/model/{namespace}/velocity_controller/enable",
-        dst=f"/gz/{namespace}/arm",
-    )
-    pose_remap = SetRemap(src=f"/model/{namespace}/pose", dst=f"/tf")
-    pose_static_remap = SetRemap(src=f"/model/{namespace}/pose_static", dst=f"/tf")
-
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -111,6 +99,12 @@ def launch_setup(context):
             f"/model/{namespace}/pose_static@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
             f"/model/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
             f"/model/{namespace}/velocity_controller/enable@std_msgs/msg/Bool]gz.msgs.Boolean",
+        ],
+        remappings=[
+            (f"/model/{namespace}/cmd_vel", f"/gz/{namespace}/cmd_vel"),
+            (f"/model/{namespace}/velocity_controller/enable", f"/gz/{namespace}/arm"),
+            (f"/model/{namespace}/pose", f"/tf"),
+            (f"/model/{namespace}/pose_static", f"/tf"),
         ],
         output="screen",
     )
@@ -141,10 +135,6 @@ def launch_setup(context):
 
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
-    nodes_to_start.append(cmd_vel_remap)
-    nodes_to_start.append(arm_remap)
-    nodes_to_start.append(pose_remap)
-    nodes_to_start.append(pose_static_remap)
     nodes_to_start.append(as2_gt_bridge)
     nodes_to_start.append(as2)
     nodes_to_start.append(robot_state_publisher_node)
