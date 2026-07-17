@@ -473,23 +473,23 @@
       <right_joint>right_wheel_joint</right_joint>
       <wheel_separation>0.576</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
-      <topic>/cmd_vel</topic>
+      <topic>/logistic_robot/cmd_vel</topic>
 
-      <odom_topic>/model/amazon_robot/odometry_noisy</odom_topic>
-      <odom_publish_frequency>0</odom_publish_frequency>
+      <!-- <odom_topic>/model/amazon_robot/odometry_noisy</odom_topic>
+      <odom_publish_frequency>0</odom_publish_frequency> -->
     </plugin>
 
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_frame>odom</odom_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
       <odom_publish_frequency>50</odom_publish_frequency>
-      <odom_topic>/model/amazon_robot/odometry</odom_topic>
+      <odom_topic>/logistic_robot/odom</odom_topic>
       <dimensions>3</dimensions>
     </plugin>
 
     <plugin filename="gz-sim-joint-controller-system" name="gz::sim::systems::JointController">
       <joint_name>lift_joint</joint_name>
-      <topic>/platform/cmd_vel</topic>
+      <topic>/logistic_robot/platform/cmd_vel</topic>
       <initial_position>0.0</initial_position>
       <use_force_commands>true</use_force_commands>
       <p_gain>5.0</p_gain>
@@ -500,7 +500,7 @@
     </plugin>
 
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
-      <topic>/robot/joint_state</topic>
+      <topic>/logistic_robot/joint_state</topic>
       <joint_name>lift_joint</joint_name>
     </plugin>
   </model>

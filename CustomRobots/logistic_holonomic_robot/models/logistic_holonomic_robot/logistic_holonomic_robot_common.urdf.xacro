@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/logistic_holonomic_robot/logistic_holonomic_robot_gz.urdf.xacro"/>
 
-  <xacro:macro name="logistic_holonomic_robot">
+  <xacro:macro name="logistic_holonomic_robot" params="namespace">
     <link name="base_footprint" />
 
     <link name="base">
@@ -347,8 +347,8 @@
       </visual>
     </link>
 
-    <xacro:velocity topic="/cmd_vel"/>
-    <xacro:odom topic="/model/amazon_robot/odometry" freq="50"/>
-    <xacro:joints topic="/robot/joint_state" vel_topic="/platform/cmd_vel"/>
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom namespace="${namespace}" freq="50"/>
+    <xacro:joints topic="joint_state" vel_topic="platform/cmd_vel" namespace="${namespace}"/>
   </xacro:macro>
 </robot>
