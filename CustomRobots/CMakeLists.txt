@@ -72,6 +72,10 @@ install(
     quadrotor/params
     quadrotor/launch
 
+    dingo/model
+    dingo/params
+    dingo/launch
+
     rover_4wd/model
     rover_4wd/params
     rover_4wd/launch

@@ -52,6 +52,7 @@ moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
+std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLE --> ROBOT POSE:
 ros2srrc_data::msg::Robpose POSE; 
@@ -113,13 +114,26 @@ int main(int argc, char **argv)
 
   RCLCPP_INFO(node->get_logger(), "ROB_PARAM received -> %s", param_ROB.c_str());
 
+  node->declare_parameter("ROB_GROUP", "none");
+
+  param_ROB_GROUP =
+      node->get_parameter("ROB_GROUP").as_string();
+
+  RCLCPP_INFO(
+      node->get_logger(),
+      "ROB_GROUP received -> %s",
+      param_ROB_GROUP.c_str()
+  );
+
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
-  std::string ROBname = "ur5_manipulator";
+  move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
 
-  move_group_interface_ROB = MoveGroupInterface(node, ROBname);
-
-  RCLCPP_INFO(node->get_logger(), "MoveGroupInterface created");
+  RCLCPP_INFO(
+      node->get_logger(),
+      "MoveGroupInterface created for ROBOT group: %s",
+      param_ROB_GROUP.c_str()
+  );
 
   rclcpp::spin(node);
 

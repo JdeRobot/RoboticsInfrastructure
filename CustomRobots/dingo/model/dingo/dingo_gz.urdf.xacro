@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="laser" params="xyz rpy name parent topic">
+    <link name="${name}_link">
+      <inertial>
+        <origin xyz="-0.052 0 0.111" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae" scale="10 10 10"/>
+        </geometry>
+        <material name="dark"/>
+      </visual>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>5</update_rate>
+        <topic>${topic}</topic>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>6.28</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>3.5</max>
+            <resolution>0.015</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="imu" params="parent topic xyz rpy">
+    <gazebo>
+      <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+      </plugin>
+    </gazebo>
+
+    <link name="imu_link"></link>
+
+    <joint name="imu_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="imu_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <gazebo reference="imu_link">
+      <sensor name='imu' type='imu'>
+        <topic>${topic}</topic>
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <gz_frame_id>imu_link</gz_frame_id>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="velocity" params="topic">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>${topic}</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="topic freq">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>chassis_link</robot_base_frame>
+        <odom_publish_frequency>${freq}</odom_publish_frequency>
+        <odom_topic>${topic}</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="noise_odom" params="topic a1 a2 a3 a4">
+    <gazebo>
+      <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
+        <ros_topic>${topic}</ros_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>chassis_link</child_frame_id>
+
+        <!-- Dingo is an omnidirectional (mecanum) platform driven kinematically by
+             the VelocityControl plugin, so wheel-encoder diff-drive reconstruction
+             does not apply. Derive the estimate from the model pose delta and track
+             lateral motion. -->
+        <odom_source>pose</odom_source>
+        <holonomic>true</holonomic>
+
+        <alpha1>${a1}</alpha1>
+        <alpha2>${a2}</alpha2>
+        <alpha3>${a3}</alpha3>
+        <alpha4>${a4}</alpha4>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

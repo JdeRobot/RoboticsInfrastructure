@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+    xmlns:gz="http://gazebosim.org/schema" name="do100_drivetrain_wheels">
+
+    <xacro:macro name="do100_drivetrain_wheels" params="front_wheels rear_wheels">
+        <xacro:include filename="$(find custom_robots)/model/dingo/wheels/mecanum.urdf.xacro"/>
+        <!-- Front Wheels -->
+        <xacro:if value="${front_wheels == 'mecanum'}">
+            <xacro:property name="front_wheel_radius" value="${do100_mecanum_wheel_radius}" scope="parent"/>
+            <xacro:property name="front_wheel_width" value="${do100_mecanum_wheel_width}" scope="parent"/>
+            <xacro:do100_mecanum_wheel prefix="front_left" side="-1">
+                <origin xyz="${wheelbase/2} ${track/2+front_wheel_width/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+            </xacro:do100_mecanum_wheel>
+
+            <xacro:do100_mecanum_wheel prefix="front_right" side="1">
+                <origin xyz="${wheelbase/2} ${-track/2-front_wheel_width/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+            </xacro:do100_mecanum_wheel>
+        </xacro:if>
+        <xacro:unless value="${front_wheels == 'mecanum'}">
+            <xacro:error message="Invalid Dingo-O front wheels ${front_wheels}"/>
+        </xacro:unless>
+
+        <!-- Rear Wheels -->
+        <xacro:if value="${rear_wheels == 'mecanum'}">
+            <xacro:property name="rear_wheel_radius" value="${do100_mecanum_wheel_radius}" scope="parent"/>
+            <xacro:property name="rear_wheel_width" value="${do100_mecanum_wheel_width}" scope="parent"/>
+            <xacro:do100_mecanum_wheel prefix="rear_left" side="1">
+                <origin xyz="${-wheelbase/2} ${track/2+rear_wheel_width/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+            </xacro:do100_mecanum_wheel>
+
+            <xacro:do100_mecanum_wheel prefix="rear_right" side="-1">
+                <origin xyz="${-wheelbase/2} ${-track/2-rear_wheel_width/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+            </xacro:do100_mecanum_wheel>
+        </xacro:if>
+        <xacro:unless value="${rear_wheels == 'mecanum'}">
+            <xacro:error message="Invalid Dingo-O rear wheels ${rear_wheels}"/>
+        </xacro:unless>
+
+    </xacro:macro>
+
+</robot>
