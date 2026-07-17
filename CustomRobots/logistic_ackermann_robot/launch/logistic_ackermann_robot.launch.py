@@ -111,7 +111,7 @@ def generate_launch_description():
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("namespace", default_value="logistic_robot"),
-        DeclareLaunchArgument("entity", default_value="logistic_robot"),
+        DeclareLaunchArgument("entity", default_value="logistic_ackermann_robot"),
     ]
 
     return LaunchDescription(
