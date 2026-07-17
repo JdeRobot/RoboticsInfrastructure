@@ -71,6 +71,15 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
     # ==================================================
     # SAUSAGE SPAWNER
     # ==================================================
@@ -86,6 +95,7 @@ def generate_launch_description():
             set_ld_library_path,
             set_resource_path,
             gz,
+            gz_ros2_bridge,
             sausage_spawner,
         ]
     )

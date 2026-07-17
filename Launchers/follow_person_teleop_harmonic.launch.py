@@ -37,6 +37,7 @@ def generate_launch_description():
         executable="parameter_bridge",
         arguments=[
             "/person/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
         ],
         output="screen",
     )
