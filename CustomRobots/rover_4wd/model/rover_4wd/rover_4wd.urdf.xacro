@@ -12,7 +12,9 @@
   <xacro:property name="payload_z_offset" value="0.096" />
 
   <xacro:arg name="noise_level" default="none"/>
+  <xacro:arg name="namespace" default="rover_4wd"/>
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <xacro:if value="${noise_level == 'low'}">
     <xacro:property name="a1" value="0.1" />
@@ -228,15 +230,15 @@
   </joint>
 
   <!-- ================== Gazebo Plugins ================== -->
-  <xacro:lidar xyz="0.174 0 0.10" rpy="0 0 0" name="lidar" parent="payload_link" topic="scan"/>
-  <xacro:imu xyz="0 0 0" rpy="0 0 0" parent="payload_link" topic="imu/data"/>
-  <xacro:velocity topic="/cmd_vel"/>
-  <xacro:joints topic="/joint_states"/>
-  <xacro:odom topic="/odom"/>
+  <xacro:lidar xyz="0.174 0 0.10" rpy="0 0 0" name="lidar" parent="payload_link" namespace="${namespace}"/>
+  <xacro:imu xyz="0 0 0" rpy="0 0 0" parent="payload_link" namespace="${namespace}"/>
+  <xacro:velocity namespace="${namespace}"/>
+  <xacro:joints namespace="${namespace}"/>
+  <xacro:odom namespace="${namespace}"/>
+  <xacro:pose namespace="${namespace}"/>
 
   <xacro:unless value="${noise_level == 'none'}">
-    <xacro:noise_odom topic="/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+    <xacro:noise_odom namespace="${namespace}" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
   </xacro:unless>
-  <xacro:pose/>
 
 </robot>
