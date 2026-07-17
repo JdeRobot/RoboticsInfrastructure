@@ -203,11 +203,24 @@ void PreUpdate(
     // on unpause, leaving the gripper stuck "carrying" a stale/reset box so it
     // never grabs again. The exercise re-energizes the magnet when it wants to
     // grab, so a fresh run works normally.
+    const bool wasCarrying = (this->activeJoint != kNullEntity);
     if (this->activeJoint != kNullEntity)
       this->Detach(_ecm);
     {
       std::lock_guard<std::mutex> lock(this->mutex);
       this->magnetEnabled = false;
+    }
+    // Announce the release immediately: this instance is about to be torn
+    // down (reset removes the drone next), so it never reaches the periodic
+    // publish below. Without this, HAL's cached "carrying" state stays stale
+    // (true) until the respawned drone's fresh plugin instance publishes its
+    // first heartbeat, which can make exercise code skip re-enabling the
+    // magnet right after a reset performed mid-carry.
+    if (wasCarrying)
+    {
+      std_msgs::msg::Bool m;
+      m.data = false;
+      this->statePub->publish(m);
     }
     return;
   }
