@@ -97,14 +97,16 @@ def launch_setup(context):
         arguments=[
             f"/model/{namespace}/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
             f"/model/{namespace}/pose_static@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+            f"/model/{namespace}/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
             f"/model/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
             f"/model/{namespace}/velocity_controller/enable@std_msgs/msg/Bool]gz.msgs.Boolean",
         ],
         remappings=[
             (f"/model/{namespace}/cmd_vel", f"/gz/{namespace}/cmd_vel"),
             (f"/model/{namespace}/velocity_controller/enable", f"/gz/{namespace}/arm"),
-            (f"/model/{namespace}/pose", f"/tf"),
-            (f"/model/{namespace}/pose_static", f"/tf"),
+            (f"/model/{namespace}/pose", "/tf"),
+            (f"/model/{namespace}/pose_static", "/tf"),
+            (f"/model/{namespace}/imu", f"/gz/{namespace}/imu"),
         ],
         output="screen",
     )
