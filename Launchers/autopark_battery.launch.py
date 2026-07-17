@@ -31,7 +31,7 @@ def generate_launch_description():
         arguments=["-name", "world", "-file", world_path],
         output="screen",
     )
-    
+
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",

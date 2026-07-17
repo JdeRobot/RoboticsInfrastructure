@@ -58,7 +58,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
-    
+
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz,gz_ros2_bridge]
+        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, gz_ros2_bridge]
     )
