@@ -2,7 +2,7 @@
 <robot name="logistic ackermann robot"
   xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:arg name="namespace" default="f1"/>
+  <xacro:arg name="namespace" default="logistic_robot"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <xacro:include filename="$(find custom_robots)/models/logistic_ackermann_robot/logistic_ackermann_robot_gz.urdf.xacro"/>
