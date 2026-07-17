@@ -94,7 +94,7 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
         ],
         output="screen",
     )
