@@ -3,7 +3,7 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:arg name="camera" default="true"/>
-  <xacro:arg name="namespace" default="drone0"/>
+  <xacro:arg name="namespace" default="drone"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>

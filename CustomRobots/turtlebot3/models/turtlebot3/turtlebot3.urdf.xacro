@@ -4,7 +4,9 @@
 
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="noise_level" default="none"/>
+  <xacro:arg name="namespace" default="vacuum_cleaner"/>
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)). -->
   <xacro:if value="${noise_level == 'low'}">
@@ -31,13 +33,13 @@
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_common.urdf.xacro"/>
 
-  <xacro:turtlebot3/>
+  <xacro:turtlebot3 namespace="${namespace}"/>
 
   <xacro:if value="$(arg camera)">
-    <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera_rgb" parent="camera_link" topic="turtlebot3/camera"/>
+    <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera" parent="camera_base_link" namespace="${namespace}"/>
   </xacro:if>
 
   <xacro:unless value="${noise_level == 'none'}">
-    <xacro:noise_odom topic="/turtlebot3/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+    <xacro:noise_odom a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}" namespace="${namespace}"/>
   </xacro:unless>
 </robot>

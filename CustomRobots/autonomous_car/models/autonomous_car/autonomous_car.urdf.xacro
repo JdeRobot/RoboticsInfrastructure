@@ -6,25 +6,27 @@
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="laser" default="false"/>
   <xacro:arg name="steering" default="ackermann"/>
+  <xacro:arg name="namespace" default="autonomous_car"/>
 
   <xacro:property name="steering" value="$(arg steering)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
 
   <xacro:include filename="$(find custom_robots)/models/autonomous_car/autonomous_car_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/autonomous_car/autonomous_car_common.urdf.xacro"/>
 
-  <xacro:autonomous_car steering="${steering}"/>
+  <xacro:autonomous_car steering="${steering}" namespace="${namespace}"/>
 
   <xacro:if value="$(arg camera)">
-    <xacro:camera xyz="0 0.2 1.45" rpy="0 0 0" name="prius_autoparking" parent="base_link"/>
+    <xacro:camera xyz="0 0.2 1.45" rpy="0 0 0" parent="base_link" name="camera" namespace="${namespace}"/>
   </xacro:if>
 
   <xacro:if value="$(arg lidar)">
-    <xacro:lidar xyz="-1.25 0 1.725" rpy="0 0 -1.578" name="lidar" parent="base_link" topic="/prius_autoparking/pc2"/>
+    <xacro:lidar xyz="-1.25 0 1.725" rpy="0 0 -1.578" name="lidar" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
 
   <xacro:if value="$(arg laser)">
-    <xacro:laser xyz="-0.024 2.39 0.5" rpy="0 0 1.5708" name="laser_front" parent="chassis_link" topic="/prius_autoparking/scan_front"/>
-    <xacro:laser xyz="1.1 0 0.5" rpy="0 0 0" name="laser_side" parent="chassis_link" topic="/prius_autoparking/scan_side"/>
-    <xacro:laser xyz="-0.024 -2.6 0.5" rpy="0 0 -1.5708" name="laser_back" parent="chassis_link" topic="/prius_autoparking/scan_back"/>
+    <xacro:laser xyz="-0.024 2.39 0.5" rpy="0 0 1.5708" name="laser_front" parent="chassis_link" namespace="${namespace}"/>
+    <xacro:laser xyz="1.1 0 0.5" rpy="0 0 0" name="laser_side" parent="chassis_link" namespace="${namespace}"/>
+    <xacro:laser xyz="-0.024 -2.6 0.5" rpy="0 0 -1.5708" name="laser_back" parent="chassis_link" namespace="${namespace}"/>
   </xacro:if>
 </robot>

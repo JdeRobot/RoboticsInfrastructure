@@ -19,6 +19,8 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
     gz_mode = LaunchConfiguration("mode")
+    gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -26,10 +28,8 @@ def launch_setup(context):
 
     sensor = gz_sensor.perform(context)
     mode = gz_mode.perform(context)
-
-    bridge_yaml = os.path.join(
-        package_dir, "params", f"autonomous_car_{mode}_{sensor}.yaml"
-    )
+    namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -48,6 +48,7 @@ def launch_setup(context):
             "lidar": "true" if sensor == "lidar" else "false",
             "laser": "true" if sensor == "laser" else "false",
             "steering": mode,
+            "namespace": namespace,
         },
     ).toxml()
 
@@ -57,6 +58,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -64,11 +66,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
-            "autonomous_car",
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -90,7 +93,11 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        namespace=gz_namespace,
+        arguments=[
+            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
+        ],
         output="screen",
     )
 
@@ -103,29 +110,53 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/prius_autoparking/image_raw"],
+            namespace=gz_namespace,
+            arguments=[f"/{namespace}/camera/image_raw"],
             output="screen",
         )
         nodes_to_start.append(gz_ros2_image_bridge)
+    elif sensor == "laser":
+        gz_ros2_laser_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            namespace=gz_namespace,
+            arguments=[
+                f"/{namespace}/laser_front/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+                f"/{namespace}/laser_side/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+                f"/{namespace}/laser_back/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            ],
+            output="screen",
+        )
+        nodes_to_start.append(gz_ros2_laser_bridge)
+    elif sensor == "lidar":
+        gz_ros2_lidar_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            namespace=gz_namespace,
+            arguments=[
+                f"/{namespace}/lidar/pc2/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+            ],
+            output="screen",
+        )
+        nodes_to_start.append(gz_ros2_lidar_bridge)
 
     return nodes_to_start
 
 
 def generate_launch_description():
-    declared_arguments = []
-
-    # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="none"))
-    declared_arguments.append(DeclareLaunchArgument("mode", default_value="ackermann"))
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("sensor", default_value="none"),
+        DeclareLaunchArgument("mode", default_value="ackermann"),
+        DeclareLaunchArgument("namespace", default_value="autonomous_car"),
+        DeclareLaunchArgument("entity", default_value="autonomous_car"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="camera" params="xyz rpy name parent topic">
+  <xacro:macro name="camera" params="xyz rpy name parent namespace">
 
     <link name="${name}_link">
       <inertial>
@@ -20,10 +20,10 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>30</update_rate>
-        <topic>/${topic}/image_raw</topic>
+        <topic>/${namespace}/${name}/image_raw</topic>
         <gz_frame_id>${name}_link</gz_frame_id>
         <camera name="${name}">
-          <camera_info_topic>/${topic}/camera_info</camera_info_topic>
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
           <horizontal_fov>1.02974</horizontal_fov>
           <image>
             <width>640</width>
@@ -44,7 +44,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="laser" params="xyz rpy name parent topic">
+  <xacro:macro name="laser" params="xyz rpy name parent namespace">
     <link name="${name}_link">
       <inertial>
         <origin xyz="-0.052 0 0.111" rpy="0 0 0"/>
@@ -76,7 +76,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>5</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/${name}/scan</topic>
         <gz_frame_id>${name}_link</gz_frame_id>
         <lidar>
           <scan>
@@ -97,7 +97,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="imu" params="parent topic xyz rpy">
+  <xacro:macro name="imu" params="parent namespace xyz rpy">
     <gazebo>
       <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
       </plugin>
@@ -116,7 +116,7 @@
       <sensor name='imu' type='imu'>
         <always_on>1</always_on>
         <update_rate>200</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/imu</topic>
         <imu>
           <angular_velocity>
             <x>
@@ -164,7 +164,7 @@
   </xacro:macro>
 
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
         <!-- wheels -->
@@ -178,7 +178,7 @@
         <!-- limits -->
         <max_linear_acceleration>1.0</max_linear_acceleration>
 
-        <topic>${topic}</topic>
+        <topic>/${namespace}/cmd_vel</topic>
 
         <frame_id>odom</frame_id>
         <!-- <tf_topic>/tf</tf_topic> -->
@@ -189,22 +189,22 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic freq">
+  <xacro:macro name="odom" params="namespace freq">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
         <robot_base_frame>base_footprint</robot_base_frame>
         <odom_publish_frequency>${freq}</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
+        <odom_topic>/${namespace}/odom</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="topic a1 a2 a3 a4">
+  <xacro:macro name="noise_odom" params="namespace a1 a2 a3 a4">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
-        <ros_topic>${topic}</ros_topic>
+        <ros_topic>/${namespace}/odom_noisy</ros_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>base</child_frame_id>
 
