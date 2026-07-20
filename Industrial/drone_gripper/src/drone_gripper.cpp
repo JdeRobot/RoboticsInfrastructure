@@ -255,27 +255,24 @@ private:
 
 // Detach because reset is tearing things down (drone removal or world pause),
 // as opposed to a normal exercise-triggered disable_magnet(). Announces the
-// release immediately (the periodic heartbeat below never gets there, since
-// this instance is about to die) and removes the payload model itself: a
-// link that was ever the child of a DetachableJoint is left with corrupted
-// physics-engine bookkeeping once that joint is removed, so a later
-// DetachableJoint on the SAME link is created fine at the ECM level (state
-// topic reports attached=true) but the constraint is never actually
-// enforced, and the payload just sits on the ground. The WorldReset(all=true)
-// the backend issues right after this recreates any entity missing relative
-// to the world's initial snapshot, giving the payload a fresh physics body -
-// the same way the drone itself is removed and respawned on every reset.
+// release immediately: the periodic heartbeat below never gets there, since
+// this instance is about to die, so without this HAL's cached "carrying"
+// state stays stale (true) until the respawned drone's fresh plugin instance
+// publishes its first heartbeat.
+//
+// NOTE: this used to also RequestRemoveEntity() the payload model itself, to
+// work around a DetachableJoint that silently stops enforcing on a link that
+// was jointed once before. That was reverted - removing a model entity
+// during the paused/reset transition looks like the cause of gzserver dying
+// after repeated carry-then-reset cycles. The stale-physics bug is still
+// open; needs a safer fix.
 void HandleResetDetach(EntityComponentManager &_ecm)
 {
-  const Entity carriedModel = this->carriedModel;
   this->Detach(_ecm);
 
   std_msgs::msg::Bool m;
   m.data = false;
   this->statePub->publish(m);
-
-  if (carriedModel != kNullEntity)
-    _ecm.RequestRemoveEntity(carriedModel);
 }
 
 Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName)
