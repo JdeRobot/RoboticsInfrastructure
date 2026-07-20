@@ -1,0 +1,5 @@
+bool open
+---
+bool success
+---
+string status
