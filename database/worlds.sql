@@ -202,64 +202,6 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 70	Machine vision world	70
 71	Conveyor Belt World	71
 72	Drone Cat Mouse	72
-<<<<<<< HEAD
-=======
-\.
-
---
--- Data for Name: worlds_robots; Type: TABLE DATA; Schema: public; Owner: user-dev
---
-
-
-COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin; 
-0	1	9	1
-1	5	2	1
-2	6	2	1
-3	11 	18	1
-4	12 	16	1
-5	20 	2	1
-6	21 	2	1
-7	22 	4	1
-8	23 	4	1
-9	24 	4	1
-10	25 	4	1
-11	27	10	1
-12	29	21	1
-13	30	28	1
-14	31	11	1
-15	32	11	1
-16	33	28	1
-17	35	6	1
-18	36	11	1
-19	37	11	1
-20	39	11	1
-21	40	3	1
-22	41	8	1
-23	42	8	1
-24	43	8	1
-25	44	7	1
-26	47	2	1
-27	48 	4	1
-28	49 	2	1
-29	55 	12	1
-30	56	1	1
-31	57 	11	1
-32	58	13	1
-33	59	13	1
-34	60	14	1
-35	61	14	1
-36	62	29	1
-37	63	30	1
-38	64	29	1
-39	65	30	1
-40	66	15	1
-41	67	15	1
-42	68	19	1
-43	69	20	1
-44	70	24	1
-45	71	0	1
-46	72	11	2
->>>>>>> b8e69b4a6 (Delete empty world and use conveyor universe without robot)
 \.
 
 --
@@ -315,6 +257,7 @@ COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin;
 44	70	24	1
 45	71	26	1
 46	72	11	2
+\.
 
 --
 -- Data for Name: scenes; Type: TABLE DATA; Schema: public; Owner: user-dev
