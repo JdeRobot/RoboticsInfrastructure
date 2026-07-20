@@ -202,7 +202,6 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 70	Machine vision world	70
 71	Conveyor Belt World	71
 72	Drone Cat Mouse	72
-73	ur3e_real	73
 \.
 
 --
