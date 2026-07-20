@@ -391,11 +391,23 @@ def launch_setup(context):
         ],
     )
 
+    ########################################################
+    # ZIMMER GRIPPER ACTION SERVER
+    ########################################################
+
+    zimmer_gripper = Node(
+        package="zimmer_gripper",
+        executable="gripper_server",
+        name="zimmer_gripper",
+        output="screen",
+    )
+
     return [
         move,
         robmove,
         robpose,
         move_group,
+        zimmer_gripper,
     ]
 
 
