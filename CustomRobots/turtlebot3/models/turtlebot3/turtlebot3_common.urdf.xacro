@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
 
-  <xacro:macro name="turtlebot3">
+  <xacro:macro name="turtlebot3" params="namespace">
     <!-- Init colour -->
     <material name="black">
       <color rgba="0.0 0.0 0.0 1.0"/>
@@ -79,7 +79,7 @@
       </visual>
     </link>
 
-    <link name="camera_link"/>
+    <link name="camera_base_link"/>
 
     <joint name="base_to_base_link" type="fixed">
       <parent link="base_footprint"/>
@@ -90,7 +90,7 @@
 
     <joint name="camera_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="camera_link"/>
+      <child link="camera_base_link"/>
       <origin xyz="0.064 -0.065 0.094" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
@@ -154,9 +154,9 @@
       </inertial>
     </link>
 
-    <xacro:imu parent="imu_link" topic="turtlebot3/imu" xyz="-0.032 0 0.068" rpy="0 0 0"/>
-    <xacro:laser xyz="-0.064 0 0.121" rpy="0 0 0" name="lidar" parent="base_link" topic="turtlebot3/laser/scan"/>
-    <xacro:velocity topic="turtlebot3/cmd_vel"/>
-    <xacro:odom topic="/turtlebot3/odom" freq="50"/>
+    <xacro:imu parent="imu_link" xyz="-0.032 0 0.068" rpy="0 0 0" namespace="${namespace}"/>
+    <xacro:laser xyz="-0.064 0 0.121" rpy="0 0 0" name="laser" parent="base_link" namespace="${namespace}"/>
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom namespace="${namespace}" freq="50"/>
   </xacro:macro>
 </robot>

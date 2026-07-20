@@ -191,8 +191,7 @@ void PreUpdate(
   // because reset happens with the world paused.
   if (this->activeJoint != kNullEntity && this->GripperGoneOrRemoving(_ecm))
   {
-    _ecm.RequestRemoveEntity(this->activeJoint);
-    this->activeJoint = kNullEntity;
+    this->HandleResetDetach(_ecm);
   }
 
   if (_info.paused)
@@ -202,25 +201,13 @@ void PreUpdate(
     // the magnet. De-energizing is key: otherwise TryAttach would auto-re-attach
     // on unpause, leaving the gripper stuck "carrying" a stale/reset box so it
     // never grabs again. The exercise re-energizes the magnet when it wants to
-    // grab, so a fresh run works normally.
-    const bool wasCarrying = (this->activeJoint != kNullEntity);
+    // grab, so a fresh run works normally. If GripperGoneOrRemoving already
+    // handled it above this cycle, activeJoint is already null here.
     if (this->activeJoint != kNullEntity)
-      this->Detach(_ecm);
+      this->HandleResetDetach(_ecm);
     {
       std::lock_guard<std::mutex> lock(this->mutex);
       this->magnetEnabled = false;
-    }
-    // Announce the release immediately: this instance is about to be torn
-    // down (reset removes the drone next), so it never reaches the periodic
-    // publish below. Without this, HAL's cached "carrying" state stays stale
-    // (true) until the respawned drone's fresh plugin instance publishes its
-    // first heartbeat, which can make exercise code skip re-enabling the
-    // magnet right after a reset performed mid-carry.
-    if (wasCarrying)
-    {
-      std_msgs::msg::Bool m;
-      m.data = false;
-      this->statePub->publish(m);
     }
     return;
   }
@@ -257,6 +244,7 @@ void Reset(
     _ecm.RequestRemoveEntity(this->activeJoint);
     this->activeJoint = kNullEntity;
   }
+  this->carriedModel = kNullEntity;
 
   std::lock_guard<std::mutex> lock(this->mutex);
   this->magnetEnabled = false;
@@ -264,6 +252,31 @@ void Reset(
 }
 
 private:
+
+// Detach because reset is tearing things down (drone removal or world pause),
+// as opposed to a normal exercise-triggered disable_magnet(). Announces the
+// release immediately (the periodic heartbeat below never gets there, since
+// this instance is about to die) and removes the payload model itself: a
+// link that was ever the child of a DetachableJoint is left with corrupted
+// physics-engine bookkeeping once that joint is removed, so a later
+// DetachableJoint on the SAME link is created fine at the ECM level (state
+// topic reports attached=true) but the constraint is never actually
+// enforced, and the payload just sits on the ground. The WorldReset(all=true)
+// the backend issues right after this recreates any entity missing relative
+// to the world's initial snapshot, giving the payload a fresh physics body -
+// the same way the drone itself is removed and respawned on every reset.
+void HandleResetDetach(EntityComponentManager &_ecm)
+{
+  const Entity carriedModel = this->carriedModel;
+  this->Detach(_ecm);
+
+  std_msgs::msg::Bool m;
+  m.data = false;
+  this->statePub->publish(m);
+
+  if (carriedModel != kNullEntity)
+    _ecm.RequestRemoveEntity(carriedModel);
+}
 
 Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName)
 {
@@ -329,15 +342,16 @@ void TryAttach(EntityComponentManager &_ecm)
   const math::Pose3d gripperPose = worldPose(gripperLink, _ecm);
 
   Entity bestChild = kNullEntity;
+  Entity bestModel = kNullEntity;
   double bestDist = this->attachDistance;
 
   for (const auto &name : graspables)
   {
-    const Entity modelEntity = this->FindModel(_ecm, name);
-    if (modelEntity == kNullEntity)
+    const Entity candidateModel = this->FindModel(_ecm, name);
+    if (candidateModel == kNullEntity)
       continue;
 
-    const Entity childLink = Model(modelEntity).CanonicalLink(_ecm);
+    const Entity childLink = Model(candidateModel).CanonicalLink(_ecm);
     if (childLink == kNullEntity)
       continue;
 
@@ -347,6 +361,7 @@ void TryAttach(EntityComponentManager &_ecm)
     {
       bestDist = dist;
       bestChild = childLink;
+      bestModel = candidateModel;
     }
   }
 
@@ -361,6 +376,7 @@ void TryAttach(EntityComponentManager &_ecm)
   _ecm.CreateComponent(jointEntity, joint);
 
   this->activeJoint = jointEntity;
+  this->carriedModel = bestModel;
   std::cout << "[DroneGripper] Attached payload (dist=" << bestDist << ")" << std::endl;
 }
 
@@ -371,6 +387,7 @@ void Detach(EntityComponentManager &_ecm)
 
   _ecm.RequestRemoveEntity(this->activeJoint);
   this->activeJoint = kNullEntity;
+  this->carriedModel = kNullEntity;
   std::cout << "[DroneGripper] Released payload" << std::endl;
 }
 
@@ -393,6 +410,7 @@ double attachDistance{0.15};
 std::mutex mutex;
 bool magnetEnabled{false};
 Entity activeJoint{kNullEntity};
+Entity carriedModel{kNullEntity};
 int publishCounter{0};
 
 };

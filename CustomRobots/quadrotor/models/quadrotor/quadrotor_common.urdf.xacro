@@ -30,7 +30,7 @@
     </xacro:if>
   </xacro:macro>
 
-  <xacro:macro name="rotor" params="rotor parent xyz color namespace">
+  <xacro:macro name="rotor" params="rotor parent xyz color">
     <link name='rotor_${rotor}'>
       <inertial>
         <mass value="0.005"/>
@@ -106,10 +106,10 @@
       </visual>
     </link>
 
-    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue" namespace="${namespace}"/>
-    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red" namespace="${namespace}"/>
-    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue" namespace="${namespace}"/>
-    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red" namespace="${namespace}"/>
+    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
+    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
+    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
+    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
 
     <!-- Electromagnet: flat ring hugging the drone belly, with an open center
         so the downward ventral camera is not blocked (package_delivery). -->
@@ -129,9 +129,9 @@
       <xacro:magnetic_gripper namespace="${namespace}"/>
     </xacro:if>
 
-    <xacro:tf freq="100"/>
+    <xacro:tf freq="100" namespace="${namespace}"/>
     <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
-    <xacro:odom topic="odom" freq="100" namespace="${namespace}"/>
+    <xacro:odom freq="100" namespace="${namespace}"/>
     <xacro:motors namespace="${namespace}"/>
     <xacro:velocity namespace="${namespace}"/>
   </xacro:macro>

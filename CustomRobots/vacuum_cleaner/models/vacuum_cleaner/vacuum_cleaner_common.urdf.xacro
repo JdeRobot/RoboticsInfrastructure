@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/vacuum_cleaner/vacuum_cleaner_gz.urdf.xacro"/>
 
-  <xacro:macro name="vacuum_cleaner">
+  <xacro:macro name="vacuum_cleaner" params="namespace">
     <gazebo>
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"></plugin>
     </gazebo>
@@ -40,7 +40,7 @@
         </geometry>
       </collision>
     </link>
-    <xacro:bumper topic="/roombaROS/events/right_bumper" name="right_bumper"/>
+    <xacro:bumper topic="events/right_bumper" name="right_bumper" namespace="${namespace}"/>
 
     <joint name="center_bumper_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
@@ -55,7 +55,7 @@
         </geometry>
       </collision>
     </link>
-    <xacro:bumper topic="/roombaROS/events/center_bumper" name="center_bumper"/>
+    <xacro:bumper topic="events/center_bumper" name="center_bumper" namespace="${namespace}"/>
 
     <joint name="left_bumper_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.01 0 0.03"/>
@@ -70,7 +70,7 @@
         </geometry>
       </collision>
     </link>
-    <xacro:bumper topic="/roombaROS/events/left_bumper" name="left_bumper"/>
+    <xacro:bumper topic="events/left_bumper" name="left_bumper" namespace="${namespace}"/>
 
     <joint name="front_wheel_joint" type="fixed">
       <origin rpy="0 1.570700 1.570700" xyz="0.13 0 0.017"/>
@@ -170,8 +170,8 @@
       </visual>
     </link>
 
-    <xacro:velocity topic="/roombaROS/cmd_vel"/>
-    <xacro:odom topic="/roombaROS/odom" freq="20"/>
-    <xacro:noise_odom topic="/odom_noisy"/>
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom freq="20" namespace="${namespace}"/>
+    <xacro:noise_odom namespace="${namespace}"/>
   </xacro:macro>
 </robot>

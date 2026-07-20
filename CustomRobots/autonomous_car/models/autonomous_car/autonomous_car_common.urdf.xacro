@@ -3,7 +3,7 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/autonomous_car/autonomous_car_gz.urdf.xacro"/>
 
-  <xacro:macro name="autonomous_car" params="steering">
+  <xacro:macro name="autonomous_car" params="steering namespace">
 
     <link name="base_link"/>
 
@@ -209,15 +209,15 @@
     </link> -->
 
     <xacro:if value="${steering == 'holonomic'}">
-      <xacro:velocity topic="/cmd_vel"/>
+      <xacro:velocity namespace="${namespace}"/>
     </xacro:if>
 
     <xacro:if value="${steering == 'ackermann'}">
-      <xacro:ackermann_steering topic="/prius_autoparking/cmd_vel"/>
+      <xacro:ackermann_steering namespace="${namespace}"/>
     </xacro:if>
 
     <xacro:joints/>
-    <xacro:odom topic="/prius_autoparking/odom" freq="50"/>
+    <xacro:odom namespace="${namespace}" freq="50"/>
     <!-- <xacro:f1_steer_controller topic="/model/prius_autoparking/steering_wheel_cmd" joint="steering_joint"/> -->
   </xacro:macro>
 </robot>

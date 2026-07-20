@@ -4,7 +4,7 @@
 
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="gripper" default="false"/>
-  <xacro:arg name="namespace" default="drone0"/>
+  <xacro:arg name="namespace" default="drone"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
   <xacro:property name="gripper" value="$(arg gripper)"/>
 
