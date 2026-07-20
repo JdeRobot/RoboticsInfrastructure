@@ -300,7 +300,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
 72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
 73	ur3e_real	/opt/jderobot/Launchers/ur3e_real.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur3e_real.launch.py"}	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-
+\.
 --
 -- Data for Name: robots; Type: TABLE DATA; Schema: public; Owner: user-dev
 --
