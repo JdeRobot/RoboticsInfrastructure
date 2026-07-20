@@ -337,7 +337,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin
 28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150
 29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150
-31	Quadrotor Gripper	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone0	sensor:=camera namespace:=drone0 gripper:=true
+31	Quadrotor Gripper	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone entity:=drone gripper:=true
 \.
 
 --
