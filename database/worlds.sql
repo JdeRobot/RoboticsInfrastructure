@@ -63,7 +63,7 @@ CREATE TABLE public.worlds_robots (
     id bigint NOT NULL,
     world_id bigint NOT NULL,
     robot_id bigint NOT NULL,
-    instances SMALLINT NOT NULL
+    poses real[] [6] NOT NULL
 );
 
 ALTER TABLE public.worlds_robots OWNER TO "user-dev";
@@ -90,13 +90,8 @@ CREATE TABLE public.scenes (
     launch_file_path character varying(200) NOT NULL,
     tools_config character varying(200) NOT NULL,
     ros_version character varying(4) NOT NULL,
-    type character varying(50) NOT NULL,
-    start_pose real[] [6] NOT NULL
+    type character varying(50) NOT NULL
 );
-
---
--- start_pose is '{X,Y,Z,Roll,Pitch,Yaw}'
---
 
 ALTER TABLE public.scenes OWNER TO "user-dev";
 
@@ -209,54 +204,54 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 --
 
 
-COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin; 
-0	1	9	1
-1	5	2	1
-2	6	2	1
-3	11 	18	1
-4	12 	16	1
-5	20 	2	1
-6	21 	2	1
-7	22 	4	1
-8	23 	4	1
-9	24 	4	1
-10	25 	4	1
-11	27	10	1
-12	29	21	1
-13	30	28	1
-14	31	11	1
-15	32	11	1
-16	33	28	1
-17	35	6	1
-18	36	11	1
-19	37	11	1
-20	39	11	1
-21	40	3	1
-22	41	8	1
-23	42	8	1
-24	43	8	1
-25	44	7	1
-26	47	2	1
-27	48 	4	1
-28	49 	2	1
-29	55 	12	1
-30	56	1	1
-31	57 	11	1
-32	58	13	1
-33	59	13	1
-34	60	14	1
-35	61	14	1
-36	62	29	1
-37	63	30	1
-38	64	29	1
-39	65	30	1
-40	66	15	1
-41	67	15	1
-42	68	19	1
-43	69	20	1
-44	70	24	1
-45	71	26	1
-46	72	11	2
+COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin; 
+0	1	9	{{-1,1.5,0,0.0,0.0,0.0}}
+1	5	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+2	6	2	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
+3	11 	18	{{0,0,0.1,0,0,-1.5529944}}
+4	12 	16	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+5	20 	2	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
+6	21 	2	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
+7	22 	4	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
+8	23 	4	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
+9	24 	4	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
+10	25 	4	{{53.462,-10.734,0.004,0,0,-1.57}}
+11	27	10	{{-1,1.5,0.0,0.0,0.0,0.0}}
+12	29	21	{{1,-1.5,0.43,0,0,0}}
+13	30	28	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+14	31	11	{{0.0,0.0,1.45,0.0,0.0,0.0}}
+15	32	11	{{17.96,0.0,0.3,0,0,-2.0}}
+16	33	28	{{14.25,-10.75,0.1,0,-0,3.14}}
+17	35	6	{{2.5,-30,0.1,0,0,1.57}}
+18	36	11	{{0.0,0.0,1.05,0.0,0.0,0.0}}
+19	37	11	{{-21.0,-4.0,0.15,0,0,0}}
+20	39	11	{{-18,-8.5,0.3,0,0,0}}
+21	40	3	{{0.04,0.68,0,0,0,-1.57}}
+22	41	8	{{-7,2.5,0.004,0.0,0.0,0}}
+23	42	8	{{-7,2.5,0.004,0.0,0.0,0}}
+24	43	8	{{-7,2.5,0.004,0.0,0.0,0}}
+25	44	7	{{-7,2.5,0.004,0.0,0.0,0}}
+26	47	2	{{146,60,-593.20,0,0,0.35}}
+27	48 	4	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
+28	49 	2	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
+29	55 	12	{{0.0,0.0,0.15,0.0,0.0,0.0}}
+30	56	1	{{0.0,0.0,0.9,0.0,0.0,0.0}}
+31	57 	11	{{-1.0,-4.0,0.3,0,0,1.5729}}
+32	58	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+33	59	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+34	60	14	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+35	61	14	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+36	62	29	{{14.25,-10.75,0.1,0,-0,3.14}}
+37	63	30	{{14.25,-10.75,0.1,0,-0,3.14}}
+38	64	29	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+39	65	30	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+40	66	15	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
+41	67	15	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
+42	68	19	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+43	69	20	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+44	70	24	{{0.0,0.0,0.9,0.0,0.0,0.0}}
+45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
+46	72	11	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
 \.
 
 --
@@ -264,41 +259,41 @@ COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin;
 --
 
 
-COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
-9	City Large	/opt/jderobot/Launchers/basic_city.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/basic_city.config"}	ROS2	gz	{{0,0,0.1,0,0,-1.5529944}}
-12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{{14.25,-10.75,0.1,0,-0,3.14}}
-14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
-16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
-18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
-23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{{53.462,-10.734,0.004,0,0,-1.57}}
-24	Small House	/opt/jderobot/Launchers/small_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house.config"}	ROS2	gz	{{-1,1.5,0,0.0,0.0,0.0}}
-25	Vacuums House Markers	/opt/jderobot/Launchers/detailed_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/detailed_house.config"}	ROS2	gz	{{1,-1.5,0.43,0,0,0}}
-26	Small House Roof	/opt/jderobot/Launchers/small_house_roof.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house_roof.config"}	ROS2	gz	{{-1,1.5,0.0,0.0,0.0,0.0}}
-31	Rescue People	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	gz	{{0.0,0.0,1.45,0.0,0.0,0.0}}
-32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{{17.96,0.0,0.3,0,0,-2.0}}
-33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{{2.5,-30,0.1,0,0,1.57}}
-36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{{0.0,0.0,1.05,0.0,0.0,0.0}}
-37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{{-21.0,-4.0,0.15,0,0,0}}
-39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{{-18,-8.5,0.3,0,0,0}}
-40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz	{{0.04,0.68,0,0,0,-1.57}}
-41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{{146,60,-593.20,0,0,0.35}}
-49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
-55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{{0.0,0.0,0.15,0.0,0.0,0.0}}
-56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{{0.0,0.0,0.9,0.0,0.0,0.0}}
-57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	{{-1.0,-4.0,0.3,0,0,1.5729}}
-58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{{0.0,0.0,0.1,0.0,0.0,0.0}}
-59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{{0.0,0.0,0.1,0.0,0.0,0.0}}
-66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
-67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
-68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{{0.0,0.0,0.9,0.0,0.0,0.0}}
-71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
-72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
+COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type) FROM stdin;
+9	City Large	/opt/jderobot/Launchers/basic_city.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/basic_city.config"}	ROS2	gz
+12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz
+14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz
+16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz
+18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz
+23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz
+24	Small House	/opt/jderobot/Launchers/small_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house.config"}	ROS2	gz
+25	Vacuums House Markers	/opt/jderobot/Launchers/detailed_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/detailed_house.config"}	ROS2	gz
+26	Small House Roof	/opt/jderobot/Launchers/small_house_roof.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house_roof.config"}	ROS2	gz
+31	Rescue People	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	gz
+32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz
+33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz
+35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz
+36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz
+37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz
+39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz
+40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz
+46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz
+47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz
+49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz
+55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz
+56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz
+57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz
+58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz
+59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz
+66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz
+67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz
+68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz
+70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz
+71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz
+72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz
 \.
 
 --
@@ -410,8 +405,8 @@ CREATE INDEX exercises_world_name_459df99a_like ON public.worlds USING btree (na
 -- Name: worlds_robots worlds_robots_world_id_robot_id_155bee4e_uniq; Type: CONSTRAINT; Schema: public; Owner: user-dev
 --
 
-ALTER TABLE ONLY public.worlds_robots
-ADD CONSTRAINT worlds_robots_world_id_robot_id_155bee4e_uniq UNIQUE (world_id, robot_id);
+-- ALTER TABLE ONLY public.worlds_robots
+-- ADD CONSTRAINT worlds_robots_world_id_robot_id_155bee4e_uniq UNIQUE (world_id, robot_id);
 
 --
 -- Name: worlds_robots worlds_robots_pkey; Type: CONSTRAINT; Schema: public; Owner: user-dev
