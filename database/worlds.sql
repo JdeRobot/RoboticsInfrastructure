@@ -117,7 +117,8 @@ CREATE TABLE public.robots (
     name character varying(100) NOT NULL,
     launch_file_path character varying(200) NOT NULL,
     entity character varying(32) NOT NULL,
-    extra_config character varying(256) NOT NULL
+    extra_config character varying(256) NOT NULL,
+    model_path character varying(200) NOT NULL
 );
 
 ALTER TABLE public.robots OWNER TO "user-dev";
@@ -301,37 +302,37 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 --
 
 
-COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
-1	Ur5	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	None
-2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera namespace:=f1
-3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1
-4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera namespace:=f1
-5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser namespace:=f1
-6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera namespace:=autonomous_car 
-7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar namespace:=autonomous_car 
-8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser namespace:=autonomous_car 
-9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser namespace:=vacuum_cleaner 
-10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera namespace:=vacuum_cleaner 
-11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone
-12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	namespace:=rover_4wd
-13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	namespace:=logistic_robot
-14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	namespace:=logistic_robot
-15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera namespace:=turtlebot2
-16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo namespace:=turtlebot2
-17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	namespace:=turtlebot3
-18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic namespace:=autonomous_car
-19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low namespace:=rover_4wd
-20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high namespace:=rover_4wd
-21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low namespace:=turtlebot3
-22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med namespace:=turtlebot3
-23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high namespace:=turtlebot3
-24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
-25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None
-26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
-27	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	namespace:=do150
-28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150
-29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150
-30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150
+COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path) FROM stdin;
+1	Ur5	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5.urdf.xacro
+2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera namespace:=f1	f1/models/f1/f1.urdf.xacro
+3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1	f1/models/f1/f1.urdf.xacro
+4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera namespace:=f1	f1/models/f1/f1.urdf.xacro
+5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser namespace:=f1	f1/models/f1/f1.urdf.xacro
+6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser namespace:=vacuum_cleaner 	vacuum_cleaner/models/vacuum_cleaner/vacuum_cleaner.urdf.xacro
+10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera namespace:=vacuum_cleaner 	vacuum_cleaner/models/vacuum_cleaner/vacuum_cleaner.urdf.xacro
+11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	namespace:=logistic_robot	logistic_holonomic_robot/models/logistic_holonomic_robot/logistic_holonomic_robot.urdf.xacro
+14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	namespace:=logistic_robot	logistic_ackermann_robot/models/logistic_ackermann_robot/logistic_ackermann_robot.urdf.xacro
+15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera namespace:=turtlebot2	Turtlebot2/model/turtlebot2/turtlebot2.urdf.xacro
+16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo namespace:=turtlebot2	Turtlebot2/model/turtlebot2/turtlebot2.urdf.xacro
+17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic namespace:=autonomous_car	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera	robot_arms/models/ur5/ur5.urdf.xacro
+25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None	robot_arms/models/ur3/ur3.urdf.xacro
+26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3.urdf.xacro
+27	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 \.
 
 --
