@@ -413,9 +413,18 @@ def launch_setup(context):
             combined_planning,
             servo_yaml,
             {
+                "moveit_controller_manager":
+                "moveit_simple_controller_manager/MoveItSimpleControllerManager"
+            },
+            {
                 "use_sim_time": False,
             },
         ],
+        arguments=[
+            "--ros-args",
+            "--log-level",
+            "moveit_servo:=debug",
+        ]
     )
 
     ########################################################
