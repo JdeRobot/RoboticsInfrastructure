@@ -35,15 +35,6 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Make the drone_gripper system plugin discoverable by gz.
-    drone_gripper_path = "/home/ws/install/drone_gripper/lib"
-    set_gz_plugin_path = AppendEnvironmentVariable(
-        name="GZ_SIM_SYSTEM_PLUGIN_PATH", value=drone_gripper_path
-    )
-    set_ld_library_path = AppendEnvironmentVariable(
-        name="LD_LIBRARY_PATH", value=drone_gripper_path
-    )
-
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -52,6 +43,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
+    
     # Make the drone_gripper system plugin discoverable by gz.
     drone_gripper_path = "/home/ws/install/drone_gripper/lib"
     set_gz_plugin_path = AppendEnvironmentVariable(
