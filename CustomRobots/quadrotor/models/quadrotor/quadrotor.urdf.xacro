@@ -18,40 +18,4 @@
     <xacro:camera xyz="0 0 0" rpy="0 0 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>
     <xacro:camera xyz="0 0 0" rpy="0 1.57 0" mass="0.035" name="ventral_cam" parent="base_link" namespace="${namespace}"/>
   </xacro:if>
-
-  <!-- Electromagnet plate: flat disc under the drone (package_delivery). -->
-  <xacro:if value="$(arg gripper)">
-    <link name="magnet">
-      <inertial>
-        <mass value="0.01"/>
-        <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
-      </inertial>
-      <visual>
-        <geometry>
-          <cylinder length="0.02" radius="0.06"/>
-        </geometry>
-        <material name="MagnetBlack">
-          <color rgba="0.05 0.05 0.05 1.0"/>
-        </material>
-      </visual>
-    </link>
-    <joint name="magnet_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 -0.07"/>
-      <parent link="base_link"/>
-      <child link="magnet"/>
-    </joint>
-
-    <!-- Magnetic gripper: model plugin, so it belongs to this drone (works
-         with renames / several drones). The exercise publishes the graspable
-         list on the graspable topic. -->
-    <gazebo>
-      <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
-        <gripper_link>base_link</gripper_link>
-        <attach_distance>0.15</attach_distance>
-        <magnet_topic>/${namespace}/gripper/magnet</magnet_topic>
-        <state_topic>/${namespace}/gripper/attached</state_topic>
-        <graspable_topic>/${namespace}/gripper/graspable</graspable_topic>
-      </plugin>
-    </gazebo>
-  </xacro:if>
 </robot>
