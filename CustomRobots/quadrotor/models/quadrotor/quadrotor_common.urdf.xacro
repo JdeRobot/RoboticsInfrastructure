@@ -30,109 +30,113 @@
     </xacro:if>
   </xacro:macro>
 
+  <<<<<<< HEAD
   <xacro:macro name="rotor" params="rotor parent xyz color">
-    <link name='rotor_${rotor}'>
-      <inertial>
-        <mass value="0.005"/>
-        <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="4.17041e-05" iyz="0" izz="4.26041e-05"/>
-      </inertial>
-
-      <collision>
-        <geometry>
-          <cylinder length="0.005" radius="0.1"/>
-        </geometry>
-      </collision>
-      <visual>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="0.1 0.1 0.1"/>
-        </geometry>
-        <material name="${color}"/>
-      </visual>
-      <gravity>1</gravity>
-      <velocity_decay/>
-    </link>
-
-    <joint name='rotor_${rotor}_joint' type="revolute">
-      <origin rpy="0 0 0" xyz="${xyz}"/>
-      <parent link="${parent}"/>
-      <child link="rotor_${rotor}"/>
-      <axis xyz="0 0 1" expressed_in="__model__"/>
-      <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="100"/>
-      <dynamics spring_reference="0" spring_stiffness="0" friction="0" damping="0"/>
-    </joint>
-  </xacro:macro>
-
-  <xacro:macro name="quadrotor" params="namespace gripper">
-
-    <!-- This is from quadrotor_base from as2 -->
-    <link name="base_link">
-      <gazebo>
-        <enable_wind>true</enable_wind>
-      </gazebo>
-      <inertial>
-        <mass value="1.5"/>
-        <inertia ixx="0.025" ixy="0" ixz="0" iyy="0.009" iyz="0" izz="0.033"/>
-      </inertial>
-      <collision>
-        <geometry>
-          <box size="0.47 0.47 0.11"/>
-        </geometry>
-      </collision>
-      <visual>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae"/>
-        </geometry>
-      </visual>
-
-      <visual name='marker_visual_1'>
-        <origin rpy="0 0 0" xyz="-0.07 0 0.065"/>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
-        </geometry>
-      </visual>
-
-      <visual name='marker_visual_2'>
-        <origin rpy="-1.0472 -0 0.2" xyz="-0.08 0.037 0.04"/>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
-        </geometry>
-      </visual>
-
-      <visual name='marker_visual_3'>
-        <origin rpy="1.0472 -0 -0.1" xyz="-0.08 -0.035 0.04"/>
-        <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
-        </geometry>
-      </visual>
-    </link>
-
-    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
-    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
-
-    <!-- Electromagnet: flat ring hugging the drone belly, with an open center
-        so the downward ventral camera is not blocked (package_delivery). -->
-    <xacro:if value="${gripper}">
-      <link name="magnet">
+=======
+    <xacro:macro name="rotor" params="rotor parent xyz color namespace">
+>>>>>>> 75f31203e (Rebase)
+      <link name='rotor_${rotor}'>
         <inertial>
-          <mass value="0.02"/>
-          <inertia ixx="2e-5" ixy="0" ixz="0" iyy="2e-5" iyz="0" izz="4e-5"/>
+          <mass value="0.005"/>
+          <inertia ixx="9.75e-07" ixy="0" ixz="0" iyy="4.17041e-05" iyz="0" izz="4.26041e-05"/>
         </inertial>
-        <xacro:magnet_ring_seg i="0" n="12" radius="0.06"/>
-      </link>
-      <joint name="magnet_joint" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0 -0.05"/>
-        <parent link="base_link"/>
-        <child link="magnet"/>
-      </joint>
-      <xacro:magnetic_gripper namespace="${namespace}"/>
-    </xacro:if>
 
-    <xacro:tf freq="100" namespace="${namespace}"/>
-    <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
-    <xacro:odom freq="100" namespace="${namespace}"/>
-    <xacro:motors namespace="${namespace}"/>
-    <xacro:velocity namespace="${namespace}"/>
-  </xacro:macro>
-</robot>
+        <collision>
+          <geometry>
+            <cylinder length="0.005" radius="0.1"/>
+          </geometry>
+        </collision>
+        <visual>
+          <geometry>
+            <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="0.1 0.1 0.1"/>
+          </geometry>
+          <material name="${color}"/>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+      </link>
+
+      <joint name='rotor_${rotor}_joint' type="revolute">
+        <origin rpy="0 0 0" xyz="${xyz}"/>
+        <parent link="${parent}"/>
+        <child link="rotor_${rotor}"/>
+        <axis xyz="0 0 1" expressed_in="__model__"/>
+        <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="100"/>
+        <dynamics spring_reference="0" spring_stiffness="0" friction="0" damping="0"/>
+      </joint>
+    </xacro:macro>
+
+    <xacro:macro name="quadrotor" params="namespace gripper">
+
+      <!-- This is from quadrotor_base from as2 -->
+      <link name="base_link">
+        <gazebo>
+          <enable_wind>true</enable_wind>
+        </gazebo>
+        <inertial>
+          <mass value="1.5"/>
+          <inertia ixx="0.025" ixy="0" ixz="0" iyy="0.009" iyz="0" izz="0.033"/>
+        </inertial>
+        <collision>
+          <geometry>
+            <box size="0.47 0.47 0.11"/>
+          </geometry>
+        </collision>
+        <visual>
+          <geometry>
+            <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae"/>
+          </geometry>
+        </visual>
+
+        <visual name='marker_visual_1'>
+          <origin rpy="0 0 0" xyz="-0.07 0 0.065"/>
+          <geometry>
+            <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          </geometry>
+        </visual>
+
+        <visual name='marker_visual_2'>
+          <origin rpy="-1.0472 -0 0.2" xyz="-0.08 0.037 0.04"/>
+          <geometry>
+            <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          </geometry>
+        </visual>
+
+        <visual name='marker_visual_3'>
+          <origin rpy="1.0472 -0 -0.1" xyz="-0.08 -0.035 0.04"/>
+          <geometry>
+            <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          </geometry>
+        </visual>
+      </link>
+
+      <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
+      <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
+      <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
+      <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
+
+      <!-- Electromagnet: flat ring hugging the drone belly, with an open center
+        so the downward ventral camera is not blocked (package_delivery). -->
+      <xacro:if value="${gripper}">
+        <link name="magnet">
+          <inertial>
+            <mass value="0.02"/>
+            <inertia ixx="2e-5" ixy="0" ixz="0" iyy="2e-5" iyz="0" izz="4e-5"/>
+          </inertial>
+          <xacro:magnet_ring_seg i="0" n="12" radius="0.06"/>
+        </link>
+        <joint name="magnet_joint" type="fixed">
+          <origin rpy="0 0 0" xyz="0 0 -0.05"/>
+          <parent link="base_link"/>
+          <child link="magnet"/>
+        </joint>
+        <xacro:magnetic_gripper namespace="${namespace}"/>
+      </xacro:if>
+
+      <xacro:tf freq="100" namespace="${namespace}"/>
+      <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>
+      <xacro:odom freq="100" namespace="${namespace}"/>
+      <xacro:motors namespace="${namespace}"/>
+      <xacro:velocity namespace="${namespace}"/>
+    </xacro:macro>
+  </robot>
