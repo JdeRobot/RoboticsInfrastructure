@@ -18,7 +18,7 @@
 			<gripper_model>drone0</gripper_model>
 			<gripper_link>base_link</gripper_link>
 			<graspable_models>package_box_01</graspable_models>
-			<attach_distance>1.0</attach_distance>
+			<attach_distance>0.3</attach_distance>
 			<magnet_topic>/drone0/gripper/magnet</magnet_topic>
 			<state_topic>/drone0/gripper/attached</state_topic>
 		</plugin>
