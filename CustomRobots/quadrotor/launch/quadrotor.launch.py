@@ -50,8 +50,8 @@ def launch_setup(context):
         xacro_file,
         mappings={
             "camera": "true" if sensor == "camera" else "false",
-            "namespace": namespace,
             "gripper": gripper,
+            "namespace": namespace,
         },
     ).toxml()
 

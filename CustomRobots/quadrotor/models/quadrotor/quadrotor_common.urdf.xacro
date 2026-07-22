@@ -30,7 +30,7 @@
     </xacro:if>
   </xacro:macro>
 
-  <xacro:macro name="rotor" params="rotor parent xyz color namespace">
+  <xacro:macro name="rotor" params="rotor parent xyz color">
     <link name='rotor_${rotor}'>
       <inertial>
         <mass value="0.005"/>
