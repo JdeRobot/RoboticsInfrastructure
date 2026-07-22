@@ -40,5 +40,18 @@
       <parent link="base_link"/>
       <child link="magnet"/>
     </joint>
+
+    <!-- Magnetic gripper: model plugin, so it belongs to this drone (works
+         with renames / several drones). The exercise publishes the graspable
+         list on the graspable topic. -->
+    <gazebo>
+      <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
+        <gripper_link>base_link</gripper_link>
+        <attach_distance>0.15</attach_distance>
+        <magnet_topic>/${namespace}/gripper/magnet</magnet_topic>
+        <state_topic>/${namespace}/gripper/attached</state_topic>
+        <graspable_topic>/${namespace}/gripper/graspable</graspable_topic>
+      </plugin>
+    </gazebo>
   </xacro:if>
 </robot>

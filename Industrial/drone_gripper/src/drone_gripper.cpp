@@ -370,10 +370,129 @@ private:
   std::atomic<bool> running_{true};
   bool dead_{false};
 
+<<<<<<< HEAD
   Entity modelEntity{kNullEntity};
   std::string gripperLinkName;
   std::vector<std::string> graspableModels;
   double attachDistance{0.15};
+=======
+  Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName) {
+    return _ecm.EntityByComponents(components::Name(modelName),
+                                   components::Model());
+  }
+
+  // True if our own drone model no longer exists, or is marked for
+  // removal in the current update cycle (EachRemoved reports entities
+  // erased at cycle end).
+  bool GripperGoneOrRemoving(EntityComponentManager &_ecm) {
+    if (!_ecm.HasEntity(this->modelEntity))
+      return true;
+
+    bool removing = false;
+    _ecm.EachRemoved<components::Model>(
+        [&](const Entity &_e, const components::Model *) {
+          if (_e == this->modelEntity)
+            removing = true;
+          return true;
+        });
+    return removing;
+  }
+
+  // Find a link by name inside a given model.
+  Entity FindLinkInModel(EntityComponentManager &_ecm, Entity model,
+                         const std::string &linkName) {
+    Entity result{kNullEntity};
+    _ecm.Each<components::Name, components::ParentEntity>(
+        [&](const Entity &_entity, const components::Name *_name,
+            const components::ParentEntity *_parent) {
+          if (_name->Data() == linkName && _parent->Data() == model) {
+            result = _entity;
+            return false;
+          }
+          return true;
+        });
+    return result;
+  }
+
+  // Energized magnet: attach the closest graspable model within range.
+  void TryAttach(EntityComponentManager &_ecm) {
+    const Entity gripperLink =
+        this->FindLinkInModel(_ecm, this->modelEntity, this->gripperLinkName);
+    if (gripperLink == kNullEntity)
+      return;
+
+    std::vector<std::string> graspables;
+    {
+      std::lock_guard<std::mutex> lock(this->mutex);
+      graspables = this->graspableModels;
+    }
+    if (graspables.empty())
+      return;
+
+    const math::Pose3d gripperPose = worldPose(gripperLink, _ecm);
+
+    Entity bestChild = kNullEntity;
+    double bestDist = this->attachDistance;
+
+    for (const auto &name : graspables) {
+      const Entity modelEntity = this->FindModel(_ecm, name);
+      if (modelEntity == kNullEntity)
+        continue;
+
+      const Entity childLink = Model(modelEntity).CanonicalLink(_ecm);
+      if (childLink == kNullEntity)
+        continue;
+
+      const math::Pose3d childPose = worldPose(childLink, _ecm);
+      const double dist = (gripperPose.Pos() - childPose.Pos()).Length();
+      if (dist <= bestDist) {
+        bestDist = dist;
+        bestChild = childLink;
+      }
+    }
+
+    if (bestChild == kNullEntity)
+      return;
+
+    const Entity jointEntity = _ecm.CreateEntity();
+    components::DetachableJoint joint;
+    joint.Data().parentLink = gripperLink;
+    joint.Data().childLink = bestChild;
+    joint.Data().jointType = "fixed";
+    _ecm.CreateComponent(jointEntity, joint);
+
+    this->activeJoint = jointEntity;
+    std::cout << "[DroneGripper] Attached payload (dist=" << bestDist << ")"
+              << std::endl;
+  }
+
+  void Detach(EntityComponentManager &_ecm) {
+    if (this->activeJoint == kNullEntity)
+      return;
+
+    _ecm.RequestRemoveEntity(this->activeJoint);
+    this->activeJoint = kNullEntity;
+    std::cout << "[DroneGripper] Released payload" << std::endl;
+  }
+
+private:
+  rclcpp::Node::SharedPtr node;
+  rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr magnetSub;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableSub;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr statePub;
+  std::thread rosThread;
+
+  Entity modelEntity{kNullEntity};
+  std::string gripperLinkName;
+  std::vector<std::string> graspableModels;
+  double attachDistance{0.15};
+
+  std::mutex mutex;
+  bool magnetEnabled{false};
+  Entity activeJoint{kNullEntity};
+  int publishCounter{0};
+>>>>>>> eb9540d6e (make robot, world independent)
 
   std::mutex mutex;
   bool magnetEnabled{false};
