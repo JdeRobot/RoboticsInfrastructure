@@ -212,6 +212,15 @@ def launch_setup(context):
         "config/real_robot/kinematics_real.yaml",
     )
 
+    servo_yaml = load_yaml(
+        "ur3_gripper_moveit_config",
+        "config/real_robot/ur_servo.yaml",
+    )
+
+    servo_yaml = {
+        "moveit_servo": servo_yaml
+    }
+
     kinematics_yaml = {
         "robot_description_kinematics":
             kinematics_yaml["/**"]["ros__parameters"]
@@ -391,6 +400,24 @@ def launch_setup(context):
         ],
     )
 
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            planning_pipelines_config,
+            moveit_controllers,
+            combined_planning,
+            servo_yaml,
+            {
+                "use_sim_time": False,
+            },
+        ],
+    )
+
     ########################################################
     # ZIMMER GRIPPER ACTION SERVER
     ########################################################
@@ -407,6 +434,7 @@ def launch_setup(context):
         robmove,
         robpose,
         move_group,
+        servo_node,
         zimmer_gripper,
     ]
 
