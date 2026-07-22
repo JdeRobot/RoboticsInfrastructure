@@ -371,10 +371,14 @@ private:
   bool dead_{false};
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e73d670a0 (Rebase)
   Entity modelEntity{kNullEntity};
   std::string gripperLinkName;
   std::vector<std::string> graspableModels;
   double attachDistance{0.15};
+<<<<<<< HEAD
 =======
   Entity FindModel(EntityComponentManager &_ecm, const std::string &modelName) {
     return _ecm.EntityByComponents(components::Name(modelName),
@@ -493,11 +497,16 @@ private:
   Entity activeJoint{kNullEntity};
   int publishCounter{0};
 >>>>>>> eb9540d6e (make robot, world independent)
+=======
+>>>>>>> e73d670a0 (Rebase)
 
   std::mutex mutex;
   bool magnetEnabled{false};
   Entity activeJoint{kNullEntity};
+<<<<<<< HEAD
   Entity carriedModel{kNullEntity};
+=======
+>>>>>>> e73d670a0 (Rebase)
   int publishCounter{0};
 };
 
