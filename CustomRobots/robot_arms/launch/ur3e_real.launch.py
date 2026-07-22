@@ -214,7 +214,7 @@ def launch_setup(context):
 
     servo_yaml = load_yaml(
         "ur3_gripper_moveit_config",
-        "config/real_robot/ur_servo.yaml",
+        "config/ur_servo.yaml"
     )
 
     servo_yaml = {
