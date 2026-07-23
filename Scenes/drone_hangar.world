@@ -64,5 +64,74 @@
 			<pose>0 -6 0 0 0 0</pose>
 		</include>
 
+		<!-- Progressive obstacle course, drone spawns at y=44 flying toward the exit at y~-9.
+		     Difficulty ramps up as y decreases (spacing, speed and amplitude), ending in the
+		     original static wall1-4 maze right at the exit as the final precision section.
+		     Each gate is the same reusable geometry (moving_panel / moving_shutter /
+		     rotating_blades / cheese_wall) with its own hangar_obstacles::ObstacleMover
+		     plugin params (mode/axis/amplitude/period) - adding more gates is just
+		     copy-pasting one of these blocks with new numbers/position. -->
+
+		<!-- Gate 1 (y=38, warm-up): static wall with 3 staggered holes, no timing needed -->
+		<include>
+			<uri>model://cheese_wall</uri>
+			<name>cheese_1</name>
+			<pose>0 38 0 0 0 0</pose>
+		</include>
+
+		<!-- Gate 2 (y=31, easy): door slides left-right, slow and small swing -->
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>panel_lr_1</name>
+			<pose>0 31 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>1 0 0</axis>
+				<amplitude>1.5</amplitude>
+				<period>6.0</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 3 (y=24, easy-medium): slow spinning blades, generous gaps between passes -->
+		<include>
+			<uri>model://rotating_blades</uri>
+			<name>blades_1</name>
+			<pose>0 24 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>rotate</mode>
+				<axis>0 1 0</axis>
+				<period>4.0</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 4 (y=17, medium): shutter sweeps floor-to-ceiling, alternating which side is open -->
+		<include>
+			<uri>model://moving_shutter</uri>
+			<name>shutter_1</name>
+			<pose>0 17 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>0 0 1</axis>
+				<amplitude>2.2</amplitude>
+				<period>3.0</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 5 (y=10, medium-hard): door slides left-right, faster and wider swing
+		     (momentarily closes almost edge-to-edge) -->
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>panel_lr_2</name>
+			<pose>0 10 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>1 0 0</axis>
+				<amplitude>3.3</amplitude>
+				<period>2.0</period>
+			</plugin>
+		</include>
+
+		<!-- Finale (y=5 down to -6, hard): the original static wall1-4 maze right at the exit -->
+
 	</world>
 </sdf>

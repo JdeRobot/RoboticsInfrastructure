@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+<model name="cheese_wall">
+  <!-- Static: this wall never moves, so unlike moving_panel/rotating_blades
+       it needs no ObstacleMover plugin and can stay static (collision is
+       only a problem for bodies whose pose changes at runtime). 5x3 grid of
+       2m cells, 12 filled (holes at col1/row0, col3/row1, col2/row2). -->
+  <static>true</static>
+  <link name="link">
+
+    <collision name="cell_c0_r0"><pose>-4 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c0_r0_v"><pose>-4 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c0_r1"><pose>-4 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c0_r1_v"><pose>-4 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c0_r2"><pose>-4 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c0_r2_v"><pose>-4 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <!-- col1/row0 is the hole -->
+    <collision name="cell_c1_r1"><pose>-2 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c1_r1_v"><pose>-2 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c1_r2"><pose>-2 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c1_r2_v"><pose>-2 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c2_r0"><pose>0 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c2_r0_v"><pose>0 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c2_r1"><pose>0 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c2_r1_v"><pose>0 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <!-- col2/row2 is the hole -->
+    <collision name="cell_c3_r0"><pose>2 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c3_r0_v"><pose>2 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <!-- col3/row1 is the hole -->
+    <collision name="cell_c3_r2"><pose>2 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c3_r2_v"><pose>2 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c4_r0"><pose>4 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c4_r0_v"><pose>4 0 1 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c4_r1"><pose>4 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c4_r1_v"><pose>4 0 3 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+    <collision name="cell_c4_r2"><pose>4 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry></collision>
+    <visual name="cell_c4_r2_v"><pose>4 0 5 0 0 0</pose><geometry><box><size>2 0.3 2</size></box></geometry><material><ambient>0.5 0.52 0.55 1</ambient><diffuse>0.55 0.57 0.6 1</diffuse><specular>0.2 0.2 0.2 1</specular></material></visual>
+
+  </link>
+</model>
+</sdf>

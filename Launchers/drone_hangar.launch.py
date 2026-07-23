@@ -3,7 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import AppendEnvironmentVariable, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -14,6 +14,19 @@ def generate_launch_description():
     world_file_name = "drone_hangar.world"
     worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
+
+    # Moving obstacles (panels/blades) plugin, built by RADI into /home/ws
+    obstacles_plugin_path = "/home/ws/install/hangar_obstacles/lib"
+
+    set_gz_plugin_path = AppendEnvironmentVariable(
+        name="GZ_SIM_SYSTEM_PLUGIN_PATH",
+        value=obstacles_plugin_path,
+    )
+
+    set_ld_library_path = AppendEnvironmentVariable(
+        name="LD_LIBRARY_PATH",
+        value=obstacles_plugin_path,
+    )
 
     gazebo_server = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -42,6 +55,8 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+    ld.add_action(set_gz_plugin_path)
+    ld.add_action(set_ld_library_path)
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)

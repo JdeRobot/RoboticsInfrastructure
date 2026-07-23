@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+<model name="moving_panel">
+  <!-- Floor-mounted door: wide across X (the corridor width, the axis it
+       slides on) and thin along Y (the flight direction), spanning most of
+       the corridor height so there's no easy "fly over it" shortcut.
+       Place instances with pose z=4 (half the 8m height) so it sits on
+       the floor. Must stay dynamic (not static) with gravity off: only
+       dynamic links get their collisions re-checked every physics step
+       when moved via the hangar_obstacles::ObstacleMover plugin. -->
+  <static>false</static>
+  <link name="link">
+    <gravity>false</gravity>
+    <inertial>
+      <mass>10</mass>
+      <inertia>
+        <ixx>5</ixx><iyy>5</iyy><izz>5</izz>
+        <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+      </inertia>
+    </inertial>
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>8 0.3 8</size>
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>8 0.3 8</size>
+        </box>
+      </geometry>
+      <material>
+        <ambient>0.85 0.45 0.05 1</ambient>
+        <diffuse>0.9 0.5 0.05 1</diffuse>
+        <specular>0.2 0.2 0.2 1</specular>
+      </material>
+    </visual>
+  </link>
+</model>
+</sdf>
