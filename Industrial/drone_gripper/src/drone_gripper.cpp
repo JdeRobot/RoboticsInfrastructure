@@ -189,6 +189,7 @@ void PreUpdate(
   // keeps the DetachableJoint from outliving the drone links, which would wedge
   // the physics server and stop the drone re-spawning. Runs even while paused,
   // because reset happens with the world paused.
+  //TODO: review
   if (this->activeJoint != kNullEntity && this->GripperGoneOrRemoving(_ecm))
   {
     this->HandleResetDetach(_ecm);
@@ -196,6 +197,7 @@ void PreUpdate(
 
   if (_info.paused)
   {
+    // TODO: wrong
     // A reset pauses the world before removing/resetting the drone. Detach the
     // box (so it is not jointed to the drone when it is removed) AND de-energize
     // the magnet. De-energizing is key: otherwise TryAttach would auto-re-attach
