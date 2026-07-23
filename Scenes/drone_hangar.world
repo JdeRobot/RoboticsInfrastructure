@@ -34,10 +34,12 @@
 			<direction>-0.5 0.1 -0.9</direction>
 		</light>
 
-		<!-- Hangar building: open-top steel walls + concrete floor + funnel entrance -->
+		<!-- Hangar building (mesh, scaled x1.3 wide / x3 long / x1.8 tall) + concrete floor + funnel entrance.
+		     Pose shifted to Y=12 vs. the original (-2) to compensate for the Y-stretch,
+		     so the entrance funnel stays aligned with the obstacle course below. -->
 		<include>
 			<uri>model://hangar</uri>
-			<pose>0 -2 0 0 0 0</pose>
+			<pose>0 12 0 0 0 0</pose>
 		</include>
 
 		<!-- Obstacle course walls near the hangar exit -->
