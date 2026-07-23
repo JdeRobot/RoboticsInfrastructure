@@ -63,7 +63,7 @@ CREATE TABLE public.worlds_robots (
     id bigint NOT NULL,
     world_id bigint NOT NULL,
     robot_id bigint NOT NULL,
-    instances SMALLINT NOT NULL
+    poses real[] [6] NOT NULL
 );
 
 ALTER TABLE public.worlds_robots OWNER TO "user-dev";
@@ -91,12 +91,8 @@ CREATE TABLE public.scenes (
     tools_config character varying(200) NOT NULL,
     ros_version character varying(4) NOT NULL,
     type character varying(50) NOT NULL,
-    start_pose real[] [6] NOT NULL
+    model_path character varying(200) NOT NULL
 );
-
---
--- start_pose is '{X,Y,Z,Roll,Pitch,Yaw}'
---
 
 ALTER TABLE public.scenes OWNER TO "user-dev";
 
@@ -121,7 +117,8 @@ CREATE TABLE public.robots (
     name character varying(100) NOT NULL,
     launch_file_path character varying(200) NOT NULL,
     entity character varying(32) NOT NULL,
-    extra_config character varying(256) NOT NULL
+    extra_config character varying(256) NOT NULL,
+    model_path character varying(200) NOT NULL
 );
 
 ALTER TABLE public.robots OWNER TO "user-dev";
@@ -209,54 +206,54 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 --
 
 
-COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin; 
-0	1	9	1
-1	5	2	1
-2	6	2	1
-3	11 	18	1
-4	12 	16	1
-5	20 	2	1
-6	21 	2	1
-7	22 	4	1
-8	23 	4	1
-9	24 	4	1
-10	25 	4	1
-11	27	10	1
-12	29	21	1
-13	30	28	1
-14	31	11	1
-15	32	11	1
-16	33	28	1
-17	35	6	1
-18	36	11	1
-19	37	11	1
-20	39	11	1
-21	40	3	1
-22	41	8	1
-23	42	8	1
-24	43	8	1
-25	44	7	1
-26	47	2	1
-27	48 	4	1
-28	49 	2	1
-29	55 	12	1
-30	56	1	1
-31	57 	11	1
-32	58	13	1
-33	59	13	1
-34	60	14	1
-35	61	14	1
-36	62	29	1
-37	63	30	1
-38	64	29	1
-39	65	30	1
-40	66	15	1
-41	67	15	1
-42	68	19	1
-43	69	20	1
-44	70	24	1
-45	71	26	1
-46	72	11	2
+COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin; 
+0	1	9	{{-1,1.5,0,0.0,0.0,0.0}}
+1	5	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+2	6	2	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
+3	11 	18	{{0,0,0.1,0,0,-1.5529944}}
+4	12 	16	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+5	20 	2	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
+6	21 	2	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
+7	22 	4	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
+8	23 	4	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
+9	24 	4	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
+10	25 	4	{{53.462,-10.734,0.004,0,0,-1.57}}
+11	27	10	{{-1,1.5,0.0,0.0,0.0,0.0}}
+12	29	21	{{1,-1.5,0.43,0,0,0}}
+13	30	28	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+14	31	11	{{0.0,0.0,1.45,0.0,0.0,0.0}}
+15	32	11	{{17.96,0.0,0.3,0,0,-2.0}}
+16	33	28	{{14.25,-10.75,0.1,0,-0,3.14}}
+17	35	6	{{2.5,-30,0.1,0,0,1.57}}
+18	36	11	{{0.0,0.0,1.05,0.0,0.0,0.0}}
+19	37	11	{{-21.0,-4.0,0.15,0,0,0}}
+20	39	11	{{-18,-8.5,0.3,0,0,0}}
+21	40	3	{{0.04,0.68,0,0,0,-1.57}}
+22	41	8	{{-7,2.5,0.004,0.0,0.0,0}}
+23	42	8	{{-7,2.5,0.004,0.0,0.0,0}}
+24	43	8	{{-7,2.5,0.004,0.0,0.0,0}}
+25	44	7	{{-7,2.5,0.004,0.0,0.0,0}}
+26	47	2	{{146,60,-593.20,0,0,0.35}}
+27	48 	4	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
+28	49 	2	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
+29	55 	12	{{0.0,0.0,0.15,0.0,0.0,0.0}}
+30	56	1	{{0.0,0.0,0.9,0.0,0.0,0.0}}
+31	57 	11	{{-1.0,-4.0,0.3,0,0,1.5729}}
+32	58	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+33	59	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+34	60	14	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+35	61	14	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+36	62	29	{{14.25,-10.75,0.1,0,-0,3.14}}
+37	63	30	{{14.25,-10.75,0.1,0,-0,3.14}}
+38	64	29	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+39	65	30	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+40	66	15	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
+41	67	15	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
+42	68	19	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+43	69	20	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+44	70	24	{{0.0,0.0,0.9,0.0,0.0,0.0}}
+45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
+46	72	11	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
 \.
 
 --
@@ -264,41 +261,40 @@ COPY public.worlds_robots (id, world_id, robot_id, instances) FROM stdin;
 --
 
 
-COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type, start_pose) FROM stdin;
-9	City Large	/opt/jderobot/Launchers/basic_city.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/basic_city.config"}	ROS2	gz	{{0,0,0.1,0,0,-1.5529944}}
-12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	{{14.25,-10.75,0.1,0,-0,3.14}}
-14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	{{27.18, -31.55, 0.0, 0.0, 0.01, -3.12}}
-16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
-18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	{{-74.29, 37.74, 0.0, 0.0, 0.0, -0.51}}
-23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	{{53.462,-10.734,0.004,0,0,-1.57}}
-24	Small House	/opt/jderobot/Launchers/small_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house.config"}	ROS2	gz	{{-1,1.5,0,0.0,0.0,0.0}}
-25	Vacuums House Markers	/opt/jderobot/Launchers/detailed_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/detailed_house.config"}	ROS2	gz	{{1,-1.5,0.43,0,0,0}}
-26	Small House Roof	/opt/jderobot/Launchers/small_house_roof.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house_roof.config"}	ROS2	gz	{{-1,1.5,0.0,0.0,0.0,0.0}}
-31	Rescue People	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	gz	{{0.0,0.0,1.45,0.0,0.0,0.0}}
-32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	{{17.96,0.0,0.3,0,0,-2.0}}
-33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	{{2.5,-30,0.1,0,0,1.57}}
-36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	{{0.0,0.0,1.05,0.0,0.0,0.0}}
-37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	{{-21.0,-4.0,0.15,0,0,0}}
-39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	{{-18,-8.5,0.3,0,0,0}}
-40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz	{{0.04,0.68,0,0,0,-1.57}}
-41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	{{-7,2.5,0.004,0.0,0.0,0}}
-46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	{{146,60,-593.20,0,0,0.35}}
-49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
-55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{{0.0,0.0,0.15,0.0,0.0,0.0}}
-56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{{0.0,0.0,0.9,0.0,0.0,0.0}}
-57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	{{-1.0,-4.0,0.3,0,0,1.5729}}
-58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{{0.0,0.0,0.1,0.0,0.0,0.0}}
-59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	{{0.0,0.0,0.1,0.0,0.0,0.0}}
-66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
-67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	{{-1.0,10.0,0.1,0.0,0.0,0.0}}
-68	Rover 4wd Warehouse Low Noise	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	{{0.0,0.0,0.0,0.0,0.0,0.0}}
-70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	{{0.0,0.0,0.9,0.0,0.0,0.0}}
-71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
-72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
+COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type, model_path) FROM stdin;
+9	City Large	/opt/jderobot/Launchers/basic_city.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/basic_city.config"}	ROS2	gz	basic_city.urdf
+12	Laser Mapping Warehouse	/opt/jderobot/Launchers/laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/laser_mapping.config"}	ROS2	gz	laser_map.urdf
+14	Montmelo Circuit	/opt/jderobot/Launchers/montmelo_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
+16	Montreal Circuit	/opt/jderobot/Launchers/montreal_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montreal_circuit.config"}	ROS2	gz	montreal_line.urdf
+18	Nurburgring Circuit	/opt/jderobot/Launchers/nurburgring_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/nurburgring_circuit.config"}	ROS2	gz	nurburgring_line.urdf
+23	Simple Circuit	/opt/jderobot/Launchers/simple_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
+24	Small House	/opt/jderobot/Launchers/small_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house.config"}	ROS2	gz	small_house.urdf
+25	Vacuums House Markers	/opt/jderobot/Launchers/detailed_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/detailed_house.config"}	ROS2	gz	detailed_house.urdf
+26	Small House Roof	/opt/jderobot/Launchers/small_house_roof.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_house_roof.config"}	ROS2	gz	small_house_roof.urdf
+31	Rescue People	/opt/jderobot/Launchers/rescue_people.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/rescue_people.config"}	ROS2	gz	rescue_people.urdf
+32	Follow Road	/opt/jderobot/Launchers/follow_road.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_road.config"}	ROS2	gz	follow_road.urdf
+33	Small Laser Mapping Warehouse	/opt/jderobot/Launchers/small_laser_mapping.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/small_laser_mapping.config"}	ROS2	gz	small_laser_mapping.urdf
+35	Car Junction	/opt/jderobot/Launchers/car_junction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/car_junction.config"}	ROS2	gz	car_junction.urdf
+36	Drone Gymkhana	/opt/jderobot/Launchers/drone_gymkhana.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_gymkhana.config"}	ROS2	gz	drone_gymkhana.urdf
+37	Tower Inspection	/opt/jderobot/Launchers/power_tower_inspection.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/power_tower_inspection.config"}	ROS2	gz	power_tower_inspection.urdf
+39	Labyrinth Escape	/opt/jderobot/Launchers/labyrinth_escape.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/labyrinth_escape.config"}	ROS2	gz	labyrinth_escape.urdf
+40	Obstacle Avoidance	/opt/jderobot/Launchers/obstacle_avoidance_h.launch.py	None	ROS2	gz	simple_circuit_obstacles.urdf
+41	Autopark_line	/opt/jderobot/Launchers/autopark_line.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	autopark_line.urdf
+42	Autopark_battery	/opt/jderobot/Launchers/autopark_battery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	autopark_battery.urdf
+43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	autopark_sideways.urdf
+46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	kobuki_1_reconstruction3d.urdf
+47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	spa_circuit.urdf
+49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	monaco_circuit.urdf
+55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	rover4wd_warehouse.urdf
+56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	pick_place.urdf
+57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	package_delivery.urdf
+58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse1.urdf
+59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse2.urdf
+66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
+67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
+70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	machine_vision.urdf
+71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise.urdf
+72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 \.
 
 --
@@ -306,37 +302,37 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 --
 
 
-COPY public.robots (id, name, launch_file_path, entity, extra_config) FROM stdin;
-1	Ur5	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	None
-2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera namespace:=f1
-3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1
-4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera namespace:=f1
-5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser namespace:=f1
-6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera namespace:=autonomous_car 
-7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar namespace:=autonomous_car 
-8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser namespace:=autonomous_car 
-9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser namespace:=vacuum_cleaner 
-10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera namespace:=vacuum_cleaner 
-11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone
-12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	namespace:=rover_4wd
-13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	namespace:=logistic_robot
-14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	namespace:=logistic_robot
-15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera namespace:=turtlebot2
-16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo namespace:=turtlebot2
-17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	namespace:=turtlebot3
-18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic namespace:=autonomous_car
-19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low namespace:=rover_4wd
-20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high namespace:=rover_4wd
-21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low namespace:=turtlebot3
-22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med namespace:=turtlebot3
-23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high namespace:=turtlebot3
-24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera
-25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None
-26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera
-27	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	namespace:=do150
-28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150
-29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150
-30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150
+COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path) FROM stdin;
+1	Ur5	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5.urdf.xacro
+2	F1 Holonomic Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera namespace:=f1	f1/models/f1/f1.urdf.xacro
+3	F1 Holonomic Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1	f1/models/f1/f1.urdf.xacro
+4	F1 Ackermann Camera	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=camera namespace:=f1	f1/models/f1/f1.urdf.xacro
+5	F1 Ackermann Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=ackermann sensor:=laser namespace:=f1	f1/models/f1/f1.urdf.xacro
+6	Autonomous car Camera	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=camera namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+7	Autonomous car Lidar	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=lidar namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+8	Autonomous car 3 Lasers	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	sensor:=laser namespace:=autonomous_car 	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+9	Vacuum cleaner Laser	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=laser namespace:=vacuum_cleaner 	vacuum_cleaner/models/vacuum_cleaner/vacuum_cleaner.urdf.xacro
+10	Vacuum cleaner Camera	/home/ws/src/CustomRobots/vacuum_cleaner/launch/vacuum_cleaner.launch.py	vacuum_cleaner	sensor:=camera namespace:=vacuum_cleaner 	vacuum_cleaner/models/vacuum_cleaner/vacuum_cleaner.urdf.xacro
+11	Quadrotor	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+12	Rover 4wd	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+13	Holonomic Logistic	/home/ws/src/CustomRobots/logistic_holonomic_robot/launch/logistic_holonomic_robot.launch.py	logistic_holonomic_robot	namespace:=logistic_robot	logistic_holonomic_robot/models/logistic_holonomic_robot/logistic_holonomic_robot.urdf.xacro
+14	Ackermann Logistic	/home/ws/src/CustomRobots/logistic_ackermann_robot/launch/logistic_ackermann_robot.launch.py	logistic_ackermann_robot	namespace:=logistic_robot	logistic_ackermann_robot/models/logistic_ackermann_robot/logistic_ackermann_robot.urdf.xacro
+15	TurtleBot 2	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=camera namespace:=turtlebot2	Turtlebot2/model/turtlebot2/turtlebot2.urdf.xacro
+16	TurtleBot 2 Stereo	/home/ws/src/CustomRobots/Turtlebot2/launch/turtlebot2.launch.py	turtlebot2	sensor:=stereo namespace:=turtlebot2	Turtlebot2/model/turtlebot2/turtlebot2.urdf.xacro
+17	Turtlebot 3	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+18	Autonomous holonomic car	/home/ws/src/CustomRobots/autonomous_car/launch/autonomous_car.launch.py	autonomous_car	mode:=holonomic namespace:=autonomous_car	autonomous_car/models/autonomous_car/autonomous_car.urdf.xacro
+19	Rover 4wd Low Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=low namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+20	Rover 4wd High Noise	/home/ws/src/CustomRobots/rover_4wd/launch/rover_4wd.launch.py	rover_4wd	noise:=high namespace:=rover_4wd	rover_4wd/model/rover_4wd/rover_4wd.urdf.xacro
+21	Turtlebot 3 Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+22	Turtlebot 3 Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=med namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+23	Turtlebot 3 High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	noise:=high namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+24	Ur5 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_robotiq	sensor:=camera	robot_arms/models/ur5/ur5.urdf.xacro
+25	Ur3	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	None	robot_arms/models/ur3/ur3.urdf.xacro
+26	Ur3 Camera	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3.urdf.xacro
+27	Dingo	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+28	Dingo Low Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=low namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
+30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 \.
 
 --
@@ -410,8 +406,8 @@ CREATE INDEX exercises_world_name_459df99a_like ON public.worlds USING btree (na
 -- Name: worlds_robots worlds_robots_world_id_robot_id_155bee4e_uniq; Type: CONSTRAINT; Schema: public; Owner: user-dev
 --
 
-ALTER TABLE ONLY public.worlds_robots
-ADD CONSTRAINT worlds_robots_world_id_robot_id_155bee4e_uniq UNIQUE (world_id, robot_id);
+-- ALTER TABLE ONLY public.worlds_robots
+-- ADD CONSTRAINT worlds_robots_world_id_robot_id_155bee4e_uniq UNIQUE (world_id, robot_id);
 
 --
 -- Name: worlds_robots worlds_robots_pkey; Type: CONSTRAINT; Schema: public; Owner: user-dev
