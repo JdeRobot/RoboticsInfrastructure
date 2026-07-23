@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="default">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<!-- Hangar building (self-contained walls + roof + funnel entrance) -->
+		<include>
+			<uri>model://hangar</uri>
+			<pose>0 -2 0 0 0 0</pose>
+		</include>
+
+		<!-- Obstacle course walls outside the hangar exit -->
+		<include>
+			<uri>model://wall1</uri>
+			<name>wall1</name>
+			<pose>0 5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall2</uri>
+			<name>wall2</name>
+			<pose>0 0 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall3</uri>
+			<name>wall3</name>
+			<pose>0 -6 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall4</uri>
+			<name>wall4</name>
+			<pose>0 -6 0 0 0 0</pose>
+		</include>
+
+		<!-- Grass plane -->
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+	</world>
+</sdf>
