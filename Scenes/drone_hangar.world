@@ -15,6 +15,10 @@
 			<render_engine>ogre2</render_engine>
 		</plugin>
 
+		<scene>
+			<grid>false</grid>
+		</scene>
+
 		<!--light-->
 		<light type="directional" name="sun">
 			<cast_shadows>true</cast_shadows>
@@ -30,13 +34,13 @@
 			<direction>-0.5 0.1 -0.9</direction>
 		</light>
 
-		<!-- Hangar building (self-contained walls + roof + funnel entrance) -->
+		<!-- Hangar building: open-top steel walls + concrete floor + funnel entrance -->
 		<include>
 			<uri>model://hangar</uri>
 			<pose>0 -2 0 0 0 0</pose>
 		</include>
 
-		<!-- Obstacle course walls outside the hangar exit -->
+		<!-- Obstacle course walls near the hangar exit -->
 		<include>
 			<uri>model://wall1</uri>
 			<name>wall1</name>
@@ -56,11 +60,6 @@
 			<uri>model://wall4</uri>
 			<name>wall4</name>
 			<pose>0 -6 0 0 0 0</pose>
-		</include>
-
-		<!-- Grass plane -->
-		<include>
-			<uri>model://grass_plane</uri>
 		</include>
 
 	</world>
