@@ -200,6 +200,10 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 71	Conveyor Belt World	71
 72	Drone Cat Mouse	72
 73	Drone Hangar	73
+74	Drone Hangar - Obstacle 1	73
+75	Drone Hangar - Obstacle 2	73
+76	Drone Hangar - Obstacle 3	73
+77	Drone Hangar - Obstacle 4	73
 \.
 
 --
@@ -256,6 +260,10 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
 46	72	11	{{0,5,0.2,0.0,0.0,0.0},{20,5,0.2,0.0,0.0,0.0}}
 47	73	11	{{0.0,44.0,0.3,0.0,0.0,-1.57}}
+48	74	11	{{0.0,29.0,0.3,0.0,0.0,-1.57}}
+49	75	11	{{0.0,19.0,0.3,0.0,0.0,-1.57}}
+50	76	11	{{0.0,9.0,0.3,0.0,0.0,-1.57}}
+51	77	11	{{0.0,-1.0,0.3,0.0,0.0,-1.57}}
 \.
 
 --

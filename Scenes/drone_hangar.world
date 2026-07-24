@@ -59,39 +59,96 @@
 		     (mode/axis/amplitude/period) - adding more gates is just copy-pasting one of
 		     these blocks with new numbers/position. -->
 
-		<!-- Gate 1 (y=36, warm-up): static wall with 3 staggered holes, no timing needed -->
+		<!-- Warm-up (y=36): static wall with 3 staggered holes, no timing needed.
+		     8x4 grid now spans 16m wide x 9m tall - most of the corridor cross
+		     section, so there's no easy bypass around the sides or over the top. -->
 		<include>
 			<uri>model://cheese_wall</uri>
 			<name>cheese_1</name>
 			<pose>0 36 0 0 0 0</pose>
 		</include>
 
-		<!-- Gate 2 (y=26, easy): door slides left-right, slow and small swing -->
+		<!-- Numbered spawn pads: one ~3m before each of the 4 timed gates below, so the
+		     drone can be spawned directly in front of a specific obstacle for testing
+		     (see database/worlds.sql - each pad has its own world/robot-pose entry,
+		     reusing this same scene, picked from the exercise's world selector). -->
+		<include>
+			<uri>model://numbered_pad_1</uri>
+			<name>pad_1</name>
+			<pose>0 29 0.05 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_2</uri>
+			<name>pad_2</name>
+			<pose>0 19 0.05 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_3</uri>
+			<name>pad_3</name>
+			<pose>0 9 0.05 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_4</uri>
+			<name>pad_4</name>
+			<pose>0 -1 0.05 0 0 0</pose>
+		</include>
+
+		<!-- Gate 1 (y=26, easy): sliding double door - two red leaves that meet at the
+		     center when closed and slide apart (mirrored motion) to open a gap in the
+		     middle. Slow and modest swing. -->
 		<include>
 			<uri>model://moving_panel</uri>
-			<name>panel_lr_1</name>
-			<pose>0 26 4 0 0 0</pose>
+			<name>door_1_left</name>
+			<pose>-3 26 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>-1 0 0</axis>
+				<amplitude>2.2</amplitude>
+				<period>9.0</period>
+			</plugin>
+		</include>
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>door_1_right</name>
+			<pose>3 26 4 0 0 0</pose>
 			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
 				<mode>oscillate</mode>
 				<axis>1 0 0</axis>
-				<amplitude>1.3</amplitude>
+				<amplitude>2.2</amplitude>
 				<period>9.0</period>
 			</plugin>
 		</include>
 
-		<!-- Gate 3 (y=16, easy-medium): very slow spinning blades, plenty of reaction time -->
+		<!-- Gate 2 (y=16, easy-medium): two counter-rotating blade sets, side by side.
+		     Their swept circles don't touch each other (2m clear lane between them) and
+		     stop short of the walls (0.7m margin) - covering far more of the corridor
+		     than a single centered blade would, without ever colliding with each other.
+		     Very slow (10s/turn), plenty of reaction time. -->
 		<include>
 			<uri>model://rotating_blades</uri>
-			<name>blades_1</name>
-			<pose>0 16 5.4 0 0 0</pose>
+			<name>blades_2_left</name>
+			<pose>-4.5 16 5.4 0 0 0</pose>
 			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
 				<mode>rotate</mode>
 				<axis>0 1 0</axis>
 				<period>10.0</period>
 			</plugin>
 		</include>
+		<include>
+			<uri>model://rotating_blades</uri>
+			<name>blades_2_right</name>
+			<pose>4.5 16 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>rotate</mode>
+				<axis>0 -1 0</axis>
+				<period>10.0</period>
+			</plugin>
+		</include>
 
-		<!-- Gate 4 (y=6, medium): shutter sweeps floor-to-ceiling, alternating which side is open -->
+		<!-- Gate 3 (y=6, medium): shutter sweeps floor-to-ceiling, alternating which side is
+		     open. Its highest point (z~9.4) stays a clear 1.4m below the roof's invisible
+		     collision slab (z~10.8) - the visual closeness to the mesh's decorative trusses
+		     up there is cosmetic only, not a physics overlap. -->
 		<include>
 			<uri>model://moving_shutter</uri>
 			<name>shutter_1</name>
@@ -104,8 +161,8 @@
 			</plugin>
 		</include>
 
-		<!-- Gate 5 (y=-4, hardest/final): door slides left-right, wide swing that closes
-		     almost edge-to-edge, but still the slowest-moving of the two red doors -->
+		<!-- Gate 4 (y=-4, hardest/final): single door, wide swing that closes almost
+		     edge-to-edge, but still the slowest-moving of the two red doors. -->
 		<include>
 			<uri>model://moving_panel</uri>
 			<name>panel_lr_2</name>
