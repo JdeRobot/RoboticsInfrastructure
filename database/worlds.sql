@@ -335,7 +335,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 31	Quadrotor Cat	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone color:=Orange	quadrotor/models/quadrotor/quadrotor.urdf.xacro
-32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Majenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 \.
 
 --
