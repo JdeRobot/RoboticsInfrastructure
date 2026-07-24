@@ -58,9 +58,7 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="quadrotor" params="namespace color:='Blue'">
-
-    <!-- This is from quadrotor_base from as2 -->
+  <xacro:macro name="quadrotor" params="namespace color:='Orange'">
     <link name="base_link">
       <gazebo>
         <enable_wind>true</enable_wind>
