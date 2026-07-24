@@ -174,7 +174,7 @@ def generate_launch_description():
         DeclareLaunchArgument("sensor", default_value="camera"),
         DeclareLaunchArgument("namespace", default_value="drone"),
         DeclareLaunchArgument("entity", default_value="drone"),
-        DeclareLaunchArgument("color", default_value="Blue"),
+        DeclareLaunchArgument("color", default_value=""),
     ]
 
     return LaunchDescription(

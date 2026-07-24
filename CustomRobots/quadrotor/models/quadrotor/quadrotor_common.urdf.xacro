@@ -26,6 +26,10 @@
     <color rgba="1 1 1 1.0"/>
   </material>
 
+  <material name="Magenta">
+    <color rgba="1 0 1 1.0"/>
+  </material>
+
   <xacro:macro name="rotor" params="rotor parent xyz color">
     <link name='rotor_${rotor}'>
       <inertial>
@@ -58,7 +62,8 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="quadrotor" params="namespace color:='Orange'">
+  <xacro:macro name="quadrotor" params="namespace color:=''">
+    <!-- This is from quadrotor_base from as2 -->
     <link name="base_link">
       <gazebo>
         <enable_wind>true</enable_wind>
@@ -76,7 +81,9 @@
         <geometry>
           <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae"/>
         </geometry>
-        <material name="${color}"/>
+        <xacro:if value="${color != ''}">
+          <material name="${color}"/>
+        </xacro:if>
       </visual>
 
       <visual name='marker_visual_1'>
