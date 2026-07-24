@@ -15,6 +15,7 @@
       </geometry>
     </collision>
     <visual name="visual">
+      <cast_shadows>false</cast_shadows>
       <geometry>
         <plane>
           <size>100 100</size>
@@ -32,6 +33,11 @@
       </material>
     </visual>
     <visual name="visual_mesh">
+      <!-- Shadows off: this mesh is dozens of overlapping thin planes now
+           stretched over a much bigger area - shadow-mapping it is one of
+           the biggest render-cost knobs we control (physics itself is not
+           the bottleneck, confirmed at RTF~1.0 server-side). -->
+      <cast_shadows>false</cast_shadows>
       <geometry>
         <mesh>
           <uri>model://hangar/meshes/hangar.dae</uri>

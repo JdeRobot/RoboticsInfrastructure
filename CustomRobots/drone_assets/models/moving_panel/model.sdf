@@ -7,7 +7,8 @@
        Place instances with pose z=4 (half the 8m height) so it sits on
        the floor. Must stay dynamic (not static) with gravity off: only
        dynamic links get their collisions re-checked every physics step
-       when moved via the hangar_obstacles::ObstacleMover plugin. -->
+       when moved via the hangar_obstacles::ObstacleMover plugin.
+       Color: red, so horizontal-sliding obstacles read as one family. -->
   <static>false</static>
   <link name="link">
     <gravity>false</gravity>
@@ -21,19 +22,20 @@
     <collision name="collision">
       <geometry>
         <box>
-          <size>8 0.3 8</size>
+          <size>6 0.3 8</size>
         </box>
       </geometry>
     </collision>
     <visual name="visual">
+      <cast_shadows>false</cast_shadows>
       <geometry>
         <box>
-          <size>8 0.3 8</size>
+          <size>6 0.3 8</size>
         </box>
       </geometry>
       <material>
-        <ambient>0.85 0.45 0.05 1</ambient>
-        <diffuse>0.9 0.5 0.05 1</diffuse>
+        <ambient>0.75 0.08 0.08 1</ambient>
+        <diffuse>0.8 0.12 0.12 1</diffuse>
         <specular>0.2 0.2 0.2 1</specular>
       </material>
     </visual>

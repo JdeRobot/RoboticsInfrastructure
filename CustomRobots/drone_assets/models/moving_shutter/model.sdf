@@ -8,7 +8,8 @@
        <amplitude> in the ObstacleMover plugin sweeps it from near-floor to
        near-ceiling, alternating which side is open. Must stay dynamic (not
        static) with gravity off: only dynamic links get their collisions
-       re-checked every physics step when moved via the plugin. -->
+       re-checked every physics step when moved via the plugin.
+       Color: blue, so vertical-sliding obstacles read as one family. -->
   <static>false</static>
   <link name="link">
     <gravity>false</gravity>
@@ -27,14 +28,15 @@
       </geometry>
     </collision>
     <visual name="visual">
+      <cast_shadows>false</cast_shadows>
       <geometry>
         <box>
           <size>16 0.3 4</size>
         </box>
       </geometry>
       <material>
-        <ambient>0.85 0.45 0.05 1</ambient>
-        <diffuse>0.9 0.5 0.05 1</diffuse>
+        <ambient>0.08 0.25 0.75 1</ambient>
+        <diffuse>0.12 0.3 0.8 1</diffuse>
         <specular>0.2 0.2 0.2 1</specular>
       </material>
     </visual>
