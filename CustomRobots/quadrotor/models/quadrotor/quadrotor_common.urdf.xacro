@@ -30,7 +30,7 @@
     <color rgba="1 0 1 1.0"/>
   </material>
 
-  <xacro:macro name="rotor" params="rotor parent xyz color">
+  <xacro:macro name="rotor" params="rotor parent xyz color scale:='1.0'">
     <link name='rotor_${rotor}'>
       <inertial>
         <mass value="0.005"/>
@@ -39,12 +39,12 @@
 
       <collision>
         <geometry>
-          <cylinder length="0.005" radius="0.1"/>
+          <cylinder length="${0.005 * scale}" radius="${0.1 * scale}"/>
         </geometry>
       </collision>
       <visual>
         <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="0.1 0.1 0.1"/>
+          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/propeller_ccw.dae" scale="${0.1 * scale} ${0.1 * scale} ${0.1 * scale}"/>
         </geometry>
         <material name="${color}"/>
       </visual>
@@ -62,7 +62,8 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="quadrotor" params="namespace color:=''">
+  <xacro:macro name="quadrotor" params="namespace color:='' scale:='1.0'">
+
     <!-- This is from quadrotor_base from as2 -->
     <link name="base_link">
       <gazebo>
@@ -74,12 +75,12 @@
       </inertial>
       <collision>
         <geometry>
-          <box size="0.47 0.47 0.11"/>
+          <box size="${0.47 * scale} ${0.47 * scale} ${0.11 * scale}"/>
         </geometry>
       </collision>
       <visual>
         <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae"/>
+          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <xacro:if value="${color != ''}">
           <material name="${color}"/>
@@ -87,31 +88,31 @@
       </visual>
 
       <visual name='marker_visual_1'>
-        <origin rpy="0 0 0" xyz="-0.07 0 0.065"/>
+        <origin rpy="0 0 0" xyz="${-0.07*scale} 0 ${0.065*scale}"/>
         <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae" scale="${scale} ${scale} ${scale}"/>
         </geometry>
       </visual>
 
       <visual name='marker_visual_2'>
-        <origin rpy="-1.0472 -0 0.2" xyz="-0.08 0.037 0.04"/>
+        <origin rpy="-1.0472 -0 0.2" xyz="${-0.08*scale} ${0.037*scale} ${0.04*scale}"/>
         <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae" scale="${scale} ${scale} ${scale}"/>
         </geometry>
       </visual>
 
       <visual name='marker_visual_3'>
-        <origin rpy="1.0472 -0 -0.1" xyz="-0.08 -0.035 0.04"/>
+        <origin rpy="1.0472 -0 -0.1" xyz="${-0.08*scale} ${-0.035*scale} ${0.04*scale}"/>
         <geometry>
-          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae"/>
+          <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/led.dae" scale="${scale} ${scale} ${scale}"/>
         </geometry>
       </visual>
     </link>
 
-    <xacro:rotor rotor="0" parent="base_link" xyz="0.13 -0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="1" parent="base_link" xyz="-0.13 0.2 0.023" color="Red"/>
-    <xacro:rotor rotor="2" parent="base_link" xyz="0.13 0.22 0.023" color="Blue"/>
-    <xacro:rotor rotor="3" parent="base_link" xyz="-0.13 -0.2 0.023" color="Red"/>
+    <xacro:rotor rotor="0" parent="base_link" xyz="${0.13*scale} ${-0.22*scale} ${0.023*scale}" color="Blue" scale="${scale}"/>
+    <xacro:rotor rotor="1" parent="base_link" xyz="${-0.13*scale} ${0.2*scale} ${0.023*scale}" color="Red" scale="${scale}"/>
+    <xacro:rotor rotor="2" parent="base_link" xyz="${0.13*scale} ${0.22*scale} ${0.023*scale}" color="Blue" scale="${scale}"/>
+    <xacro:rotor rotor="3" parent="base_link" xyz="${-0.13*scale} ${-0.2*scale} ${0.023*scale}" color="Red" scale="${scale}"/>
 
     <xacro:tf freq="100" namespace="${namespace}"/>
     <xacro:imu mass="0.005" parent="base_link" namespace="${namespace}"/>

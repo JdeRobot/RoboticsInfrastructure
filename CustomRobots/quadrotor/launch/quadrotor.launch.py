@@ -26,6 +26,7 @@ def launch_setup(context):
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
     gz_color = LaunchConfiguration("color")
+    gz_scale = LaunchConfiguration("scale")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -35,6 +36,7 @@ def launch_setup(context):
     namespace = gz_namespace.perform(context)
     entity = gz_entity.perform(context)
     color = gz_color.perform(context)
+    scale = gz_scale.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -52,6 +54,7 @@ def launch_setup(context):
             "camera": "true" if sensor == "camera" else "false",
             "namespace": namespace,
             "color": color,
+            "scale": scale,
         },
     ).toxml()
 
@@ -175,6 +178,7 @@ def generate_launch_description():
         DeclareLaunchArgument("namespace", default_value="drone"),
         DeclareLaunchArgument("entity", default_value="drone"),
         DeclareLaunchArgument("color", default_value=""),
+        DeclareLaunchArgument("scale", default_value="1.0"),
     ]
 
     return LaunchDescription(
