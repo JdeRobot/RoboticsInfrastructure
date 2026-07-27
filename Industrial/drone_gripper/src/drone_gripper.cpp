@@ -197,7 +197,7 @@ void PreUpdate(
 
   if (_info.paused)
   {
-    // TODO: wrong
+    // TODO: commented because it detaches when the user presses pause
     // A reset pauses the world before removing/resetting the drone. Detach the
     // box (so it is not jointed to the drone when it is removed) AND de-energize
     // the magnet. De-energizing is key: otherwise TryAttach would auto-re-attach
@@ -205,12 +205,12 @@ void PreUpdate(
     // never grabs again. The exercise re-energizes the magnet when it wants to
     // grab, so a fresh run works normally. If GripperGoneOrRemoving already
     // handled it above this cycle, activeJoint is already null here.
-    if (this->activeJoint != kNullEntity)
-      this->HandleResetDetach(_ecm);
-    {
-      std::lock_guard<std::mutex> lock(this->mutex);
-      this->magnetEnabled = false;
-    }
+    // if (this->activeJoint != kNullEntity)
+    //   this->HandleResetDetach(_ecm);
+    // {
+    //   std::lock_guard<std::mutex> lock(this->mutex);
+    //   this->magnetEnabled = false;
+    // }
     return;
   }
 
