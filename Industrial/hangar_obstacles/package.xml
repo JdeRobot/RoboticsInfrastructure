@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+
+  <name>hangar_obstacles</name>
+  <version>0.0.1</version>
+
+  <description>Gazebo Harmonic kinematic movers (oscillate/rotate) for drone_hangar obstacles</description>
+
+  <maintainer email="dev@todo.com">dev</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>gz-sim</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>

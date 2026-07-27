@@ -199,6 +199,11 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 70	Machine vision world	70
 71	Conveyor Belt World	71
 72	Drone Cat Mouse	72
+73	Drone Hangar	73
+74	Drone Hangar - Obstacle 1	73
+75	Drone Hangar - Obstacle 2	73
+76	Drone Hangar - Obstacle 3	73
+77	Drone Hangar - Obstacle 4	73
 \.
 
 --
@@ -255,6 +260,11 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
 46	72	31	{{0,5,0,0.0,0.0,0.0}}
 47	72	32	{{20,5,0,0.0,0.0,0.0}}
+48	73	11	{{0.0,44.0,0.3,0.0,0.0,-1.57}}
+49	74	11	{{0.0,32.0,0.3,0.0,0.0,-1.57}}
+50	75	11	{{0.0,22.0,0.3,0.0,0.0,-1.57}}
+51	76	11	{{0.0,12.0,0.3,0.0,0.0,-1.57}}
+52	77	11	{{0.0,2.0,0.3,0.0,0.0,-1.57}}
 \.
 
 --
@@ -296,6 +306,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	machine_vision.urdf
 71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise.urdf
 72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
+73	Drone Hangar	/opt/jderobot/Launchers/drone_hangar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_hangar.config"}	ROS2	gz	drone_hangar.urdf
 \.
 
 --
