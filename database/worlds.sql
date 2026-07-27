@@ -243,7 +243,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 28	49 	2	{{-105.223, -70.77, -1.8, 0.0, 0.0, 1.69}}
 29	55 	12	{{0.0,0.0,0.15,0.0,0.0,0.0}}
 30	56	1	{{0.0,0.0,0.9,0.0,0.0,0.0}}
-31	57 	11	{{-1.0,-4.0,0.3,0,0,1.5729}}
+31	57 	33	{{-1.0,-4.0,0.3,0,0,1.5729}}
 32	58	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 33	59	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 34	60	14	{{0.0,0.0,0.1,0.0,0.0,0.0}}
@@ -347,6 +347,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 31	Quadrotor Cat	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone color:=Orange	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 \.
 
 --

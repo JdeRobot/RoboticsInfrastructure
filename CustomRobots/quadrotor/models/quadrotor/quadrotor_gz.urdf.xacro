@@ -45,6 +45,20 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Magnetic gripper: model plugin driven by ROS2 topics. The magnet visual
+       is added separately; this provides the grabbing behavior. -->
+  <xacro:macro name="magnetic_gripper" params="namespace">
+    <gazebo>
+      <plugin filename="libdrone_gripper.so" name="drone_gripper::DroneGripper">
+        <gripper_link>base_link</gripper_link>
+        <attach_distance>0.2</attach_distance>
+        <magnet_topic>/${namespace}/gripper/magnet</magnet_topic>
+        <state_topic>/${namespace}/gripper/attached</state_topic>
+        <graspable_topic>/${namespace}/gripper/graspable</graspable_topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
   <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-multicopter-control-system" name="gz::sim::systems::MulticopterVelocityControl">

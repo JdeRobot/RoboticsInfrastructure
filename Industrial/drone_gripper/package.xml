@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+
+  <name>drone_gripper</name>
+  <version>0.0.1</version>
+
+  <description>Gazebo Harmonic magnetic gripper system plugin for drones</description>
+
+  <maintainer email="dev@todo.com">dev</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+
+  <depend>std_msgs</depend>
+
+  <depend>gz-sim</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>
