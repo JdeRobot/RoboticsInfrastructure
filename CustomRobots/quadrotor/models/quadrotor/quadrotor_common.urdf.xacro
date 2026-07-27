@@ -29,6 +29,25 @@
       <xacro:magnet_ring_seg i="${i+1}" n="${n}" radius="${radius}"/>
     </xacro:if>
   </xacro:macro>
+  <material name="Green">
+    <color rgba="0 0.8 0 1.0"/>
+  </material>
+
+  <material name="Yellow">
+    <color rgba="1 0.9 0 1.0"/>
+  </material>
+
+  <material name="Orange">
+    <color rgba="1 0.5 0 1.0"/>
+  </material>
+
+  <material name="White">
+    <color rgba="1 1 1 1.0"/>
+  </material>
+
+  <material name="Magenta">
+    <color rgba="1 0 1 1.0"/>
+  </material>
 
   <xacro:macro name="rotor" params="rotor parent xyz color">
     <link name='rotor_${rotor}'>
@@ -62,8 +81,7 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="quadrotor" params="namespace gripper">
-
+  <xacro:macro name="quadrotor" params="namespace gripper color:=''">
     <!-- This is from quadrotor_base from as2 -->
     <link name="base_link">
       <gazebo>
@@ -82,6 +100,9 @@
         <geometry>
           <mesh filename="$(find as2_gazebo_assets)/models/quadrotor_base/meshes/quadrotor.dae"/>
         </geometry>
+        <xacro:if value="${color != ''}">
+          <material name="${color}"/>
+        </xacro:if>
       </visual>
 
       <visual name='marker_visual_1'>

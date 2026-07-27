@@ -127,49 +127,17 @@
       </visual>
     </link>
 
-    <link name="back_right_caster_roll_link">
-      <inertial>
-        <mass value="0.0001"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
-    </link>
-
-    <link name="back_right_caster_pitch_link">
-      <inertial>
-        <mass value="0.0001"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
-    </link>
-
-    <joint name="back_right_caster_joint_roll" type="continuous">
+    <!-- Caster is a fixed sphere since the rotating joint chain made the physics unstable -->
+    <joint name="back_right_caster_joint" type="fixed">
       <origin rpy="0 0 0" xyz="-0.23 -0.13 -0.0175"/>
       <parent link="base"/>
-      <child link="back_right_caster_roll_link"/>
-      <axis xyz="1 0 0"/>
-      <limit effort="1000" velocity="100"/>
-    </joint>
-
-    <joint name="back_right_caster_joint_pitch" type="continuous">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <parent link="back_right_caster_roll_link"/>
-      <child link="back_right_caster_pitch_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="1000" velocity="100"/>
-    </joint>
-
-
-    <joint name="back_right_caster_joint_yaw" type="continuous">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <parent link="back_right_caster_pitch_link"/>
       <child link="back_right_caster_link"/>
-      <axis xyz="0 0 1"/>
-      <limit effort="1000" velocity="100"/>
     </joint>
 
     <link name="back_right_caster_link">
       <inertial>
-        <mass value="0.8"/>
-        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
         <geometry>
@@ -197,48 +165,16 @@
       </visual>
     </link>
 
-    <link name="back_left_caster_roll_link">
-      <inertial>
-        <mass value="0.0001"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
-    </link>
-
-    <link name="back_left_caster_pitch_link">
-      <inertial>
-        <mass value="0.0001"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
-    </link>
-
-    <joint name="back_left_caster_joint_roll" type="continuous">
-      <origin rpy="0 0 0" xyz="-0.23  0.13 -0.0175"/>
+    <joint name="back_left_caster_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.23 0.13 -0.0175"/>
       <parent link="base"/>
-      <child link="back_left_caster_roll_link"/>
-      <axis xyz="0 0 1"/>
-      <limit effort="1000" velocity="100"/>
-    </joint>
-
-    <joint name="back_left_caster_joint_pitch" type="continuous">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <parent link="back_left_caster_roll_link"/>
-      <child link="back_left_caster_pitch_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="1000" velocity="100"/>
-    </joint>
-
-    <joint name="back_left_caster_joint_yaw" type="continuous">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <parent link="back_left_caster_pitch_link"/>
       <child link="back_left_caster_link"/>
-      <axis xyz="1 0 0"/>
-      <limit effort="1000" velocity="100"/>
     </joint>
 
     <link name="back_left_caster_link">
       <inertial>
-        <mass value="0.8"/>
-        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
       </inertial>
       <collision>
         <geometry>

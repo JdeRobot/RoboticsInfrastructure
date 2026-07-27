@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+<model name="cheese_wall">
+  <!-- Static: this wall never moves, so unlike moving_panel/rotating_blades
+       it needs no ObstacleMover plugin and can stay static (collision is
+       only a problem for bodies whose pose changes at runtime). 8x4
+       grid of 2.00m x 2.25m cells spanning 16m wide x
+       9m tall (most of the corridor cross-section, so there's no
+       easy side/top bypass) with 3 staggered holes at (col,row) = [(1, 0), (4, 2), (6, 1)].
+       Color: green, so this static/navigable-hole obstacle reads as its own
+       family, distinct from the red/blue/yellow moving hazards. -->
+  <static>true</static>
+  <link name="link">
+
+    <collision name="cell_c0_r0"><pose>-7.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c0_r0_v"><cast_shadows>false</cast_shadows><pose>-7.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c2_r0"><pose>-3.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c2_r0_v"><cast_shadows>false</cast_shadows><pose>-3.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c3_r0"><pose>-1.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c3_r0_v"><cast_shadows>false</cast_shadows><pose>-1.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c4_r0"><pose>1.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c4_r0_v"><cast_shadows>false</cast_shadows><pose>1.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c5_r0"><pose>3.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c5_r0_v"><cast_shadows>false</cast_shadows><pose>3.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c6_r0"><pose>5.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c6_r0_v"><cast_shadows>false</cast_shadows><pose>5.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c7_r0"><pose>7.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c7_r0_v"><cast_shadows>false</cast_shadows><pose>7.0000 0 1.1250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c0_r1"><pose>-7.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c0_r1_v"><cast_shadows>false</cast_shadows><pose>-7.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c1_r1"><pose>-5.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c1_r1_v"><cast_shadows>false</cast_shadows><pose>-5.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c2_r1"><pose>-3.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c2_r1_v"><cast_shadows>false</cast_shadows><pose>-3.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c3_r1"><pose>-1.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c3_r1_v"><cast_shadows>false</cast_shadows><pose>-1.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c4_r1"><pose>1.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c4_r1_v"><cast_shadows>false</cast_shadows><pose>1.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c5_r1"><pose>3.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c5_r1_v"><cast_shadows>false</cast_shadows><pose>3.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c7_r1"><pose>7.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c7_r1_v"><cast_shadows>false</cast_shadows><pose>7.0000 0 3.3750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c0_r2"><pose>-7.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c0_r2_v"><cast_shadows>false</cast_shadows><pose>-7.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c1_r2"><pose>-5.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c1_r2_v"><cast_shadows>false</cast_shadows><pose>-5.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c2_r2"><pose>-3.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c2_r2_v"><cast_shadows>false</cast_shadows><pose>-3.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c3_r2"><pose>-1.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c3_r2_v"><cast_shadows>false</cast_shadows><pose>-1.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c5_r2"><pose>3.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c5_r2_v"><cast_shadows>false</cast_shadows><pose>3.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c6_r2"><pose>5.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c6_r2_v"><cast_shadows>false</cast_shadows><pose>5.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c7_r2"><pose>7.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c7_r2_v"><cast_shadows>false</cast_shadows><pose>7.0000 0 5.6250 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c0_r3"><pose>-7.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c0_r3_v"><cast_shadows>false</cast_shadows><pose>-7.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c1_r3"><pose>-5.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c1_r3_v"><cast_shadows>false</cast_shadows><pose>-5.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c2_r3"><pose>-3.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c2_r3_v"><cast_shadows>false</cast_shadows><pose>-3.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c3_r3"><pose>-1.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c3_r3_v"><cast_shadows>false</cast_shadows><pose>-1.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c4_r3"><pose>1.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c4_r3_v"><cast_shadows>false</cast_shadows><pose>1.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c5_r3"><pose>3.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c5_r3_v"><cast_shadows>false</cast_shadows><pose>3.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c6_r3"><pose>5.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c6_r3_v"><cast_shadows>false</cast_shadows><pose>5.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+    <collision name="cell_c7_r3"><pose>7.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry></collision>
+    <visual name="cell_c7_r3_v"><cast_shadows>false</cast_shadows><pose>7.0000 0 7.8750 0 0 0</pose><geometry><box><size>2.0000 0.3 2.2500</size></box></geometry><material><ambient>0.15 0.4 0.2 1</ambient><diffuse>0.2 0.5 0.25 1</diffuse><specular>0.15 0.15 0.15 1</specular></material></visual>
+
+  </link>
+</model>
+</sdf>

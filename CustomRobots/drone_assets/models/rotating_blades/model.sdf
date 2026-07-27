@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+<model name="rotating_blades">
+  <!-- Rest orientation: the two arms lie in the local XZ plane, so the
+       natural spin axis is the local Y. Must stay dynamic (not static) with
+       gravity off: only dynamic links get their collisions re-checked every
+       physics step when moved via the hangar_obstacles::ObstacleMover plugin.
+       Color: yellow, so rotating obstacles read as one family. -->
+  <static>false</static>
+  <link name="link">
+    <gravity>false</gravity>
+    <inertial>
+      <mass>8</mass>
+      <inertia>
+        <ixx>4</ixx><iyy>4</iyy><izz>4</izz>
+        <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+      </inertia>
+    </inertial>
+
+    <collision name="arm_a_collision">
+      <pose>0 0 0 0 0.785398 0</pose>
+      <geometry>
+        <box>
+          <size>7 0.5 0.15</size>
+        </box>
+      </geometry>
+    </collision>
+    <visual name="arm_a_visual">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 0 0 0.785398 0</pose>
+      <geometry>
+        <box>
+          <size>7 0.5 0.15</size>
+        </box>
+      </geometry>
+      <material>
+        <ambient>0.85 0.75 0.05 1</ambient>
+        <diffuse>0.9 0.8 0.1 1</diffuse>
+        <specular>0.3 0.3 0.3 1</specular>
+      </material>
+    </visual>
+
+    <collision name="arm_b_collision">
+      <pose>0 0 0 0 -0.785398 0</pose>
+      <geometry>
+        <box>
+          <size>7 0.5 0.15</size>
+        </box>
+      </geometry>
+    </collision>
+    <visual name="arm_b_visual">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 0 0 -0.785398 0</pose>
+      <geometry>
+        <box>
+          <size>7 0.5 0.15</size>
+        </box>
+      </geometry>
+      <material>
+        <ambient>0.85 0.75 0.05 1</ambient>
+        <diffuse>0.9 0.8 0.1 1</diffuse>
+        <specular>0.3 0.3 0.3 1</specular>
+      </material>
+    </visual>
+  </link>
+</model>
+</sdf>
