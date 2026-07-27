@@ -43,7 +43,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
-    
+
     # Make the drone_gripper system plugin discoverable by gz.
     drone_gripper_path = "/home/ws/install/drone_gripper/lib"
     set_gz_plugin_path = AppendEnvironmentVariable(
