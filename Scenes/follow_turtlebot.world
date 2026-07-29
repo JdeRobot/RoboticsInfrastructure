@@ -41,32 +41,209 @@
 
 		<include>
 			<uri>model://logoJdeRobot</uri>
-			<pose>-7 7 0 0 0 -2.35</pose>
+			<pose>-10 7 0 0 0 -2.35</pose>
 		</include>
 
-		<!-- Patrol waypoints, matches the order the turtlebot driver visits them -->
+		<!-- Loop track, clockwise from waypoint_1: south edge is a cone slalom,
+		     west/east edges are fast transit straights, north edge crosses the
+		     bridge. Coordinates here must match the WAYPOINTS list in
+		     patrol_turtlebot.py and the spawn pose in follow_turtlebot.launch.py. -->
 		<include>
 			<uri>model://numbered_pad_1</uri>
 			<name>waypoint_1</name>
-			<pose>4 2.5 0.05 0 0 0</pose>
+			<pose>7 -4 0.05 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://numbered_pad_2</uri>
 			<name>waypoint_2</name>
-			<pose>4 -2.5 0.05 0 0 0</pose>
+			<pose>-7 -4 0.05 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://numbered_pad_3</uri>
 			<name>waypoint_3</name>
-			<pose>-4 -2.5 0.05 0 0 0</pose>
+			<pose>-7 4 0.05 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://numbered_pad_4</uri>
 			<name>waypoint_4</name>
-			<pose>-4 2.5 0.05 0 0 0</pose>
+			<pose>7 4 0.05 0 0 0</pose>
 		</include>
 
-		<!-- Drone takeoff pad, centered over the patrol rectangle -->
+		<!-- Cone slalom on the south edge, spaced 3m apart along x. Cones are
+		     dynamic by default (no <static> in their own model.sdf), overridden
+		     to static here since they never move, this keeps their cost near
+		     zero regardless of how many get added later. -->
+		<include>
+			<uri>model://construction_cone</uri>
+			<name>cone_1</name>
+			<pose>4 -4 0 0 0 0</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>model://construction_cone</uri>
+			<name>cone_2</name>
+			<pose>1 -4 0 0 0 0</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>model://construction_cone</uri>
+			<name>cone_3</name>
+			<pose>-2 -4 0 0 0 0</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>model://construction_cone</uri>
+			<name>cone_4</name>
+			<pose>-5 -4 0 0 0 0</pose>
+			<static>true</static>
+		</include>
+
+		<!-- Small covered bridge on the north edge, open sided, just a roof on
+		     4 legs. The turtlebot passes underneath in a straight line, the
+		     roof blocks the drone's ventral camera for a couple of seconds so
+		     the follow algorithm has to recover the beacon on its own. Plain
+		     boxes only, no meshes, kept as cheap as the cones. -->
+		<model name="bridge_roof">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>3.0 2.5 0.05</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>3.0 2.5 0.05</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.28 0.12 1</ambient>
+						<diffuse>0.45 0.28 0.12 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0 4 0.55 0 0 0</pose>
+		</model>
+		<model name="bridge_leg_1">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.3 0.18 0.08 1</ambient>
+						<diffuse>0.3 0.18 0.08 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.3 3.0 0.275 0 0 0</pose>
+		</model>
+		<model name="bridge_leg_2">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.3 0.18 0.08 1</ambient>
+						<diffuse>0.3 0.18 0.08 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>1.3 3.0 0.275 0 0 0</pose>
+		</model>
+		<model name="bridge_leg_3">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.3 0.18 0.08 1</ambient>
+						<diffuse>0.3 0.18 0.08 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.3 5.0 0.275 0 0 0</pose>
+		</model>
+		<model name="bridge_leg_4">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>0.1 0.1 0.55</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.3 0.18 0.08 1</ambient>
+						<diffuse>0.3 0.18 0.08 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>1.3 5.0 0.275 0 0 0</pose>
+		</model>
+
+		<!-- River strip under the bridge, purely decorative, no collision -->
+		<model name="river">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>2.2 9.0 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.1 0.35 0.6 1</ambient>
+						<diffuse>0.1 0.35 0.6 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0 4 0.001 0 0 0</pose>
+		</model>
+
+		<!-- Drone takeoff pad, centered over the whole track -->
 		<include>
 			<uri>model://logoPadGreen</uri>
 			<pose>0 0 0.05 0 0 0</pose>

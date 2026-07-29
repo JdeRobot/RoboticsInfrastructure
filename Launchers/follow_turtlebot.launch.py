@@ -41,6 +41,24 @@ def generate_launch_description():
         output="screen",
     )
 
+    # The turtlebot is spawned here directly, not through the robots table, RAM only
+    # launches one robot per world and that slot is reserved for the drone the
+    # exercise's HAL.py expects (see database/worlds.sql robot 11 on world 78)
+    turtlebot_spawn = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            "/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py"
+        ),
+        launch_arguments={
+            "x": "7.0",
+            "y": "-4.0",
+            "z": "0.1",
+            "Y": "2.76",
+            "sensor": "laser",
+            "marker": "true",
+            "namespace": "turtlebot3",
+        }.items(),
+    )
+
     # Drives the turtlebot around the patrol waypoints, the drone has no control over it
     turtlebot_patrol = ExecuteProcess(
         cmd=["python3", "/home/ws/src/CustomRobots/turtlebot3/patrol_turtlebot.py"],
@@ -51,6 +69,7 @@ def generate_launch_description():
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(turtlebot_spawn)
     ld.add_action(turtlebot_patrol)
 
     return ld
