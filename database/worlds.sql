@@ -198,7 +198,9 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 69	Rover 4wd Warehouse High Noise	68
 70	Machine vision world	70
 71	Conveyor Belt World	71
-72	Drone Cat Mouse	72
+72	Drone Cat Mouse Easy	72
+78	Drone Cat Mouse Medium	72
+79	Drone Cat Mouse Hard	72
 73	Drone Hangar	73
 74	Drone Hangar - Obstacle 1	73
 75	Drone Hangar - Obstacle 2	73
@@ -259,7 +261,11 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 44	70	24	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
 46	72	31	{{0,5,0,0.0,0.0,0.0}}
-47	72	32	{{20,5,0,0.0,0.0,0.0}}
+47	72	32	{{8,5,0,0.0,0.0,0.0}}
+53	78	31	{{0,5,0,0.0,0.0,0.0}}
+54	78	34	{{8,5,0,0.0,0.0,0.0}}
+55	79	31	{{0,5,0,0.0,0.0,0.0}}
+56	79	35	{{8,5,0,0.0,0.0,0.0}}
 48	73	11	{{0.0,44.0,0.3,0.0,0.0,-1.57}}
 49	74	11	{{0.0,32.0,0.3,0.0,0.0,-1.57}}
 50	75	11	{{0.0,22.0,0.3,0.0,0.0,-1.57}}
@@ -346,7 +352,9 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 29	Dingo Medium Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=med namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 31	Quadrotor Cat	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone color:=Orange	quadrotor/models/quadrotor/quadrotor.urdf.xacro
-32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+32	Quadrotor Mouse Easy	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta course:=easy	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+34	Quadrotor Mouse Medium	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta course:=medium	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+35	Quadrotor Mouse Hard	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta course:=hard	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 \.
 

@@ -27,6 +27,7 @@ def launch_setup(context):
     gz_entity = LaunchConfiguration("entity")
     gz_gripper = LaunchConfiguration("gripper")
     gz_color = LaunchConfiguration("color")
+    gz_course = LaunchConfiguration("course")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -37,6 +38,7 @@ def launch_setup(context):
     entity = gz_entity.perform(context)
     gripper = gz_gripper.perform(context)
     color = gz_color.perform(context)
+    course = gz_course.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -66,7 +68,7 @@ def launch_setup(context):
         name="robot_state_publisher",
         namespace=gz_namespace,
         output="screen",
-        parameters=[robot_description, {"use_sim_time": True}],
+        parameters=[robot_description, {"use_sim_time": True}, {"course": course}],
     )
 
     gz_spawn_entity = Node(
@@ -179,6 +181,7 @@ def generate_launch_description():
         DeclareLaunchArgument("namespace", default_value="drone"),
         DeclareLaunchArgument("entity", default_value="drone"),
         DeclareLaunchArgument("color", default_value=""),
+        DeclareLaunchArgument("course", default_value=""),
     ]
 
     return LaunchDescription(
