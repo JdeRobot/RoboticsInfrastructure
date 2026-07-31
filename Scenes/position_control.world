@@ -1,0 +1,459 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="default">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<scene>
+			<grid>false</grid>
+		</scene>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- ================= BEACON TRAIL =================
+		     5 beacons, ground truth poses hardcoded in HAL.py (init_beacons),
+		     must match the visual markers below exactly:
+		       initial (0,0,0.3)   beacon1 (0,7,0.5)   beacon2 (7,0,2.0)
+		       beacon3 (0,-7,3.5)  beacon4 (-7,0,5.0)  beacon5 (9,9,6.5)
+		     Deliberately flat->vertical progression: beacon1 is still at
+		     ground level (introductory, matches the legacy exercise's plain
+		     cross), then each following beacon sits higher on top of a
+		     progressively taller wooden post, ending in a tall lookout post
+		     deep in the forest (beacon5, off the cardinal axis on purpose so
+		     it isn't a simple straight continuation of the cross). -->
+
+		<!-- Drone takeoff pad, center of the clearing -->
+		<include>
+			<uri>model://logoPadGreen</uri>
+			<name>takeoff_pad</name>
+			<pose>0 0 0.05 0 0 0</pose>
+		</include>
+
+		<!-- beacon1: flat, ground level, branded beacon marker (plane collision
+		     here is harmless, it sits flush with the real ground) -->
+		<include>
+			<uri>model://logoBeacon</uri>
+			<name>beacon1_marker</name>
+			<pose>0 7 0.05 0 0 0</pose>
+		</include>
+
+		<!-- beacon2: low post (2.0m) -->
+		<model name="beacon2_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.15</radius>
+							<length>2.0</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<cylinder>
+							<radius>0.15</radius>
+							<length>2.0</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>7 0 1.0 0 0 0</pose>
+		</model>
+		<!-- Marker on top is visual-only (model://number1 has no <collision>),
+		     placed exactly at its final world height, no offset math needed:
+		     an <include>'s <pose> is the model's absolute world pose, it does
+		     NOT add to the pose baked into the model's own model.sdf (see
+		     drone_gymkhana.world for the same convention). Confirmed by
+		     experiment that an ELEVATED <plane> collision (e.g. logoBeacon)
+		     behaves as an infinite horizontal floor at that height across the
+		     whole world, not just above its footprint, so elevated markers
+		     must stay visual-only. -->
+		<include>
+			<uri>model://number1</uri>
+			<name>beacon2_marker</name>
+			<pose>7 0 2.0 0 0 0</pose>
+		</include>
+
+		<!-- beacon3: medium post (3.5m) -->
+		<model name="beacon3_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.18</radius>
+							<length>3.5</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<cylinder>
+							<radius>0.18</radius>
+							<length>3.5</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0 -7 1.75 0 0 0</pose>
+		</model>
+		<include>
+			<uri>model://number2</uri>
+			<name>beacon3_marker</name>
+			<pose>0 -7 3.5 0 0 0</pose>
+		</include>
+
+		<!-- beacon4: tall post (5.0m) -->
+		<model name="beacon4_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.2</radius>
+							<length>5.0</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<cylinder>
+							<radius>0.2</radius>
+							<length>5.0</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>-7 0 2.5 0 0 0</pose>
+		</model>
+		<include>
+			<uri>model://number3</uri>
+			<name>beacon4_marker</name>
+			<pose>-7 0 5.0 0 0 0</pose>
+		</include>
+
+		<!-- beacon5: tallest lookout post (6.5m), deep in the forest, off the
+		     cardinal axis so the last leg is a genuine diagonal, not just a
+		     longer straight continuation of the cross -->
+		<model name="beacon5_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.25</radius>
+							<length>6.5</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<cylinder>
+							<radius>0.25</radius>
+							<length>6.5</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>9 9 3.25 0 0 0</pose>
+		</model>
+		<include>
+			<uri>model://number4</uri>
+			<name>beacon5_marker</name>
+			<pose>9 9 6.5 0 0 0</pose>
+		</include>
+
+		<!-- ================= DIRT TRAIL =================
+		     Decorative strips only (no collision, same trick as the "river"
+		     in follow_turtlebot.world), hub-and-spoke from the takeoff pad
+		     out to the base of each post. -->
+		<model name="trail_north">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>1.2 7.4 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.34 0.2 1</ambient>
+						<diffuse>0.45 0.34 0.2 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0 3.5 0.001 0 0 0</pose>
+		</model>
+		<model name="trail_east">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>7.4 1.2 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.34 0.2 1</ambient>
+						<diffuse>0.45 0.34 0.2 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>3.5 0 0.001 0 0 0</pose>
+		</model>
+		<model name="trail_south">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>1.2 7.4 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.34 0.2 1</ambient>
+						<diffuse>0.45 0.34 0.2 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0 -3.5 0.001 0 0 0</pose>
+		</model>
+		<model name="trail_west">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>7.4 1.2 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.34 0.2 1</ambient>
+						<diffuse>0.45 0.34 0.2 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>-3.5 0 0.001 0 0 0</pose>
+		</model>
+		<model name="trail_diagonal">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<geometry>
+						<box>
+							<size>1.2 13.1 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>0.45 0.34 0.2 1</ambient>
+						<diffuse>0.45 0.34 0.2 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>4.5 4.5 0.001 0 0 0.7854</pose>
+		</model>
+
+		<!-- ================= FOREST =================
+		     Perimeter ring (radius ~13m, outside every beacon/post/trail) plus
+		     a few closer clusters that stay clear of the cross+diagonal flight
+		     corridors. Pine/Oak trees are static by default (OpenRobotics Fuel
+		     models), so unlike the rocks below they need no <static> override.
+		     Scale varies for a less uniform, more organic tree line. -->
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_1</name>
+			<pose>13 3 0 0 0 0.3</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_2</name>
+			<pose>12 6 0 0 0 1.1</pose>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_3</name>
+			<pose>4 13 0 0 0 2.0</pose>
+			<scale>1.2 1.2 1.2</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_4</name>
+			<pose>-4 13 0 0 0 0.5</pose>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_5</name>
+			<pose>-12 6 0 0 0 2.6</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_6</name>
+			<pose>-13 -3 0 0 0 1.7</pose>
+			<scale>1.15 1.15 1.15</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_7</name>
+			<pose>-6 -12 0 0 0 0.9</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_8</name>
+			<pose>3 -13 0 0 0 3.0</pose>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_9</name>
+			<pose>13 -4 0 0 0 1.4</pose>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_10</name>
+			<pose>9 -10 0 0 0 2.2</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_ring_11</name>
+			<pose>-9 10 0 0 0 0.2</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_ring_12</name>
+			<pose>-2 -13 0 0 0 1.9</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+
+		<!-- Closer clusters flanking (not blocking) the last diagonal leg
+		     toward beacon5, and the SW quadrant which has no beacon at all -->
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_cluster_1</name>
+			<pose>11 6.5 0 0 0 0.6</pose>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_cluster_2</name>
+			<pose>6.5 11 0 0 0 1.3</pose>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Pine Tree</uri>
+			<name>tree_cluster_3</name>
+			<pose>-8 -5 0 0 0 2.4</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Oak tree</uri>
+			<name>tree_cluster_4</name>
+			<pose>-5 -8 0 0 0 0.4</pose>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+
+		<!-- Scattered rocks for ground clutter. "Falling Rock" is dynamic by
+		     default (real mass/inertia, meant to actually fall in demos), so
+		     it's forced static here the same way construction_cone is in
+		     follow_turtlebot.world, otherwise it would just drop/roll away. -->
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_1</name>
+			<pose>2.5 4.5 0 0 0 0.4</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_2</name>
+			<pose>5 -2 0 0 0 1.8</pose>
+			<static>true</static>
+			<scale>1.3 1.3 1.3</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_3</name>
+			<pose>-2.3 -5.2 0 0 0 2.5</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_4</name>
+			<pose>-5.5 2.2 0 0 0 0.9</pose>
+			<static>true</static>
+			<scale>0.8 0.8 0.8</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_5</name>
+			<pose>10.5 10 0 0 0 3.0</pose>
+			<static>true</static>
+			<scale>1.4 1.4 1.4</scale>
+		</include>
+		<include>
+			<uri>https://fuel.gazebosim.org/1.0/openrobotics/models/Falling Rock 1</uri>
+			<name>rock_6</name>
+			<pose>-9 -6 0 0 0 1.1</pose>
+			<static>true</static>
+		</include>
+
+		<!-- Branding -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<name>jderobot_logo</name>
+			<pose>-13 -10 0 0 0 0.8</pose>
+		</include>
+
+	</world>
+</sdf>
