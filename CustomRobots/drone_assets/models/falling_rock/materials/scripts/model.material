@@ -1,0 +1,13 @@
+material FallingRocks/FallingRocks_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture FallingRocks_Albedo.jpg
+      }
+    }
+  }
+}

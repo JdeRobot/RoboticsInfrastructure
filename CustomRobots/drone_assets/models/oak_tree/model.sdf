@@ -1,0 +1,63 @@
+<sdf version="1.7">
+    <model name="oak_tree">
+        <static>true</static>
+        <link name="link">
+            <collision name="collision">
+                <geometry>
+                    <mesh>
+                        <uri>model://oak_tree/meshes/oak_tree.dae</uri>
+                    </mesh>
+                </geometry>
+            </collision>
+            <visual name="branch">
+                <cast_shadows>false</cast_shadows>
+                <geometry>
+                    <mesh>
+                        <uri>model://oak_tree/meshes/oak_tree.dae</uri>
+                        <submesh>
+                            <name>Branch</name>
+                        </submesh>
+                    </mesh>
+                </geometry>
+                <material>
+                    <double_sided>true</double_sided>
+                    <diffuse>1.0 1.0 1.0</diffuse>
+                    <script>
+                        <uri>model://oak_tree/materials/scripts/</uri>
+                        <uri>model://oak_tree/materials/textures/</uri>
+                        <name>OakTree/Branch</name>
+                    </script>
+                    <pbr>
+                        <metal>
+                            <albedo_map>model://oak_tree/materials/textures/branch_diffuse.png</albedo_map>
+                        </metal>
+                    </pbr>
+                </material>
+            </visual>
+            <visual name="bark">
+                <cast_shadows>false</cast_shadows>
+                <geometry>
+                    <mesh>
+                        <uri>model://oak_tree/meshes/oak_tree.dae</uri>
+                        <submesh>
+                            <name>Bark</name>
+                        </submesh>
+                    </mesh>
+                </geometry>
+                <material>
+                    <diffuse>1.0 1.0 1.0</diffuse>
+                    <script>
+                        <uri>model://oak_tree/materials/scripts/</uri>
+                        <uri>model://oak_tree/materials/textures/</uri>
+                        <name>OakTree/Bark</name>
+                    </script>
+                    <pbr>
+                        <metal>
+                            <albedo_map>model://oak_tree/materials/textures/bark_diffuse.png</albedo_map>
+                        </metal>
+                    </pbr>
+                </material>
+            </visual>
+        </link>
+    </model>
+</sdf>
