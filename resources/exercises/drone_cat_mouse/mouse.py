@@ -230,7 +230,7 @@ TIME_LIMIT = {
     "hard": 90.0,
 }
 
-course_name = HAL.get_course()
+course_name = get_course()
 course = COURSES.get(course_name, COURSES["medium"])
 LIMIT = TIME_LIMIT[course_name]
 print(
@@ -281,7 +281,7 @@ def score_for(seconds):
     return max(10, int(round(100 * left)))
 
 
-HAL.takeoff(TAKEOFF_HEIGHT)
+takeoff(TAKEOFF_HEIGHT)
 
 gate_index = 0
 speed_x = speed_y = speed_z = 0.0
@@ -290,7 +290,7 @@ juke_side = 1.0
 last_flip = 0.0
 
 recover_height = TAKEOFF_HEIGHT
-checkpoint = HAL.get_position()
+checkpoint = get_position()
 last_progress = time.time()
 recovering = False
 current_speed = 0.0
@@ -300,8 +300,8 @@ closest = 1e9
 
 while True:
     elapsed = time.time() - started
-    position = HAL.get_position()
-    cat = HAL.get_cat_position()
+    position = get_position()
+    cat = get_cat_position()
     now = time.time()
 
     cat_known = any(abs(c) > 1e-6 for c in cat)
@@ -334,7 +334,7 @@ while True:
 
     if caught:
         if not landed:
-            HAL.land()
+            land()
             landed = True
         time.sleep(0.05)
         continue
@@ -348,7 +348,7 @@ while True:
         recovering = True
         recover_height = min(TAKEOFF_HEIGHT, recover_height + 0.5)
     if recovering:
-        HAL.set_cmd_vel(0.0, 0.0, 1.5, 0.0)
+        set_cmd_vel(0.0, 0.0, 1.5, 0.0)
         if position[2] >= recover_height - 0.2:
             recovering = False
             checkpoint = position
@@ -419,8 +419,8 @@ while True:
 
     yaw = 0.0
     if math.hypot(speed_x, speed_y) > 0.3:
-        yaw = YAW_GAIN * wrap(math.atan2(speed_y, speed_x) - HAL.get_yaw())
+        yaw = YAW_GAIN * wrap(math.atan2(speed_y, speed_x) - get_yaw())
 
     current_speed = math.sqrt(speed_x**2 + speed_y**2 + speed_z**2)
-    HAL.set_cmd_vel(speed_x, speed_y, speed_z, yaw)
+    set_cmd_vel(speed_x, speed_y, speed_z, yaw)
     time.sleep(0.05)
