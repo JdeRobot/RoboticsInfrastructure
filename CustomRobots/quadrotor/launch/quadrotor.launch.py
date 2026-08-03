@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
 from launch.actions import (
     DeclareLaunchArgument,
+    ExecuteProcess,
     OpaqueFunction,
     IncludeLaunchDescription,
 )
@@ -68,7 +69,7 @@ def launch_setup(context):
         name="robot_state_publisher",
         namespace=gz_namespace,
         output="screen",
-        parameters=[robot_description, {"use_sim_time": True}, {"course": course}],
+        parameters=[robot_description, {"use_sim_time": True}],
     )
 
     gz_spawn_entity = Node(
@@ -148,6 +149,24 @@ def launch_setup(context):
     nodes_to_start.append(as2_gt_bridge)
     nodes_to_start.append(as2)
     nodes_to_start.append(robot_state_publisher_node)
+
+    # Tells a pre programmed robot which variant of its exercise is running.
+    if course:
+        nodes_to_start.append(
+            ExecuteProcess(
+                cmd=[
+                    "ros2",
+                    "topic",
+                    "pub",
+                    "--qos-durability",
+                    "transient_local",
+                    f"/{namespace}/course",
+                    "std_msgs/msg/String",
+                    f"data: {course}",
+                ],
+                output="screen",
+            )
+        )
 
     # Sensor deppending on sensor arguments
     if sensor == "camera":
