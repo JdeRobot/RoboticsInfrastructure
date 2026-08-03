@@ -27,7 +27,6 @@ COURSE_TIMEOUT = 10.0
 
 ### HAL INIT ###
 
-print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
 
