@@ -10,7 +10,7 @@
         <geometry>
           <mesh>
             <uri>model://my_city_v3/meshes/city.glb</uri>
-            <scale>1 1 1</scale>
+            <scale>0.33 0.33 0.33</scale>
           </mesh>
         </geometry>
       </visual>
@@ -18,7 +18,7 @@
         <geometry>
           <mesh>
             <uri>model://my_city_v3/meshes/city.glb</uri>
-            <scale>1 1 1</scale>
+            <scale>0.33 0.33 0.33</scale>
           </mesh>
         </geometry>
       </collision>
