@@ -12,7 +12,7 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     # Which lap the pre programmed mouse flies. One launcher per world, so the
-    course = "easy"
+    course = "medium"
 
     world_file_name = "drone_cat_mouse_city.world"
     worlds_dir = "/opt/jderobot/Scenes"
