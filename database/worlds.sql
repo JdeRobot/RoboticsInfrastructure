@@ -198,13 +198,15 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 69	Rover 4wd Warehouse High Noise	68
 70	Machine vision world	70
 71	Conveyor Belt World	71
-72	Drone Cat Mouse	72
+72	Drone Cat Mouse Easy	72
 73	Drone Hangar	73
 74	Drone Hangar - Obstacle 1	73
 75	Drone Hangar - Obstacle 2	73
 76	Drone Hangar - Obstacle 3	73
 77	Drone Hangar - Obstacle 4	73
 78	Position Control	74
+79	Drone Cat Mouse Medium	75
+80	Drone Cat Mouse Hard	76
 \.
 
 --
@@ -260,13 +262,17 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 44	70	24	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 45	71	26	{{-0.4,-0.5,0.8,0.0,0.0,0.0}}
 46	72	11	{{0,5,0,0.0,0.0,0.0}}
-47	72	32	{{20,5,0,0.0,0.0,0.0}}
+47	72	32	{{8,5,0,0.0,0.0,0.0}}
 48	73	11	{{0.0,44.0,0.3,0.0,0.0,-1.57}}
 49	74	11	{{0.0,32.0,0.3,0.0,0.0,-1.57}}
 50	75	11	{{0.0,22.0,0.3,0.0,0.0,-1.57}}
 51	76	11	{{0.0,12.0,0.3,0.0,0.0,-1.57}}
 52	77	11	{{0.0,2.0,0.3,0.0,0.0,-1.57}}
 53	78	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
+54	79	11	{{0,5,0,0.0,0.0,0.0}}
+55	79	32	{{8,5,0,0.0,0.0,0.0}}
+56	80	11	{{0,5,0,0.0,0.0,0.0}}
+57	80	32	{{8,5,0,0.0,0.0,0.0}}
 \.
 
 --
@@ -307,9 +313,11 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
 70	Machine Vision	/opt/jderobot/Launchers/machine_vision.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	machine_vision.urdf
 71	Conveyor	/opt/jderobot/Launchers/sausage_exercise.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise.urdf
-72	Drone Cat Mouse	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
+72	Drone Cat Mouse Easy	/opt/jderobot/Launchers/drone_cat_mouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 73	Drone Hangar	/opt/jderobot/Launchers/drone_hangar.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_hangar.config"}	ROS2	gz	drone_hangar.urdf
 74	Position Control	/opt/jderobot/Launchers/position_control.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/position_control.config"}	ROS2	gz	position_control.urdf
+75	Drone Cat Mouse Medium	/opt/jderobot/Launchers/drone_cat_mouse_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
+76	Drone Cat Mouse Hard	/opt/jderobot/Launchers/drone_cat_mouse_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 \.
 
 --
