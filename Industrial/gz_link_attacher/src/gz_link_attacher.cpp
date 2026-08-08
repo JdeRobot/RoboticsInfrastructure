@@ -62,7 +62,6 @@ LinkAttacher()
 
 void Configure(
   const Entity &_entity,
-  const std::shared_ptr<const sdf::Element> &,
   const std::shared_ptr<const sdf::Element> &_sdf,
   EntityComponentManager &,
   EventManager &) override
@@ -402,7 +401,7 @@ void OnContact(const gz::msgs::Contacts &_msg)
         rightObjectModel = objectModel;
 
         std::cout << "[LinkAttacher] RIGHT finger touched "
-                  << objectModel << std::endl
+                  << objectModel << std::endl;
     }
     if (leftFingerContact &&
         rightFingerContact &&
