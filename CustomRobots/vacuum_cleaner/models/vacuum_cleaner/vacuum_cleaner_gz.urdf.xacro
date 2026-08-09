@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="vacuum_cleaner_gz"
   xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="camera" params="xyz rpy name parent">
+  <xacro:macro name="camera" params="xyz rpy name parent namespace">
 
     <link name="${name}_link"></link>
 
@@ -16,9 +16,9 @@
         <always_on>true</always_on>
         <visualize>false</visualize>
         <update_rate>20</update_rate>
-        <topic>/${name}/image_raw</topic>
+        <topic>/${namespace}/${name}/image_raw</topic>
         <camera name="camera">
-          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
           <horizontal_fov>1.089</horizontal_fov>
           <distortion>
             <k1>0.0</k1>
@@ -47,7 +47,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="laser" params="xyz rpy name parent topic">
+  <xacro:macro name="laser" params="xyz rpy name parent namespace">
     <link name="${name}_link">
       <visual>
         <geometry>
@@ -67,7 +67,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>20</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/laser/scan</topic>
         <gz_frame_id>laser</gz_frame_id>
         <lidar>
           <scan>
@@ -88,7 +88,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="bumper" params="topic name">
+  <xacro:macro name="bumper" params="topic name namespace">
     <gazebo reference="${name}">
       <mu1>0.1</mu1>
       <mu2>0.1</mu2>
@@ -102,7 +102,7 @@
         <visualize>true</visualize>
         <contact>
           <collision>${name}_collision</collision>
-          <topic>${topic}</topic>
+          <topic>/${namespace}/${topic}</topic>
         </contact>
       </sensor>
 
@@ -110,30 +110,30 @@
 
   </xacro:macro>
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-        <topic>${topic}</topic>
+        <topic>/${namespace}/cmd_vel</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic freq">
+  <xacro:macro name="odom" params="freq namespace">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
         <robot_base_frame>base</robot_base_frame>
         <odom_publish_frequency>${freq}</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
+        <odom_topic>/${namespace}/odom</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="topic">
+  <xacro:macro name="noise_odom" params="namespace">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
-        <ros_topic>${topic}</ros_topic>
+        <ros_topic>/${namespace}/odom_noisy</ros_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>base</child_frame_id>
 

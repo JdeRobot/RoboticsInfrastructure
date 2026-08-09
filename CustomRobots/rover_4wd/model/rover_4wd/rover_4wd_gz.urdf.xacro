@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="lidar" params="xyz rpy name parent topic">
+  <xacro:macro name="lidar" params="xyz rpy name parent namespace">
 
     <link name="${name}_link">
       <visual>
@@ -30,7 +30,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>10</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/laser/scan</topic>
         <gz_frame_id>base_link</gz_frame_id>
         <lidar>
           <scan>
@@ -62,7 +62,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="imu" params="xyz rpy parent topic">
+  <xacro:macro name="imu" params="xyz rpy parent namespace">
     <link name="imu_link"/>
 
     <joint name="imu_to_payload" type="fixed">
@@ -76,7 +76,7 @@
         <always_on>1</always_on>
         <update_rate>50</update_rate>
         <visualize>true</visualize>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/imu</topic>
         <enable_metrics>true</enable_metrics>
         <frame_id>imu_link</frame_id>
       </sensor>
@@ -88,7 +88,7 @@
   </xacro:macro>
 
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">
         <num_wheel_pairs>2</num_wheel_pairs>
@@ -111,47 +111,48 @@
         <child_frame_id>base_link</child_frame_id>
 
         <!-- Topics -->
-        <topic>${topic}</topic>
-        <odom_topic>/odometry/wheels</odom_topic>
-        <tf_topic>/tf_gazebo</tf_topic>
+        <topic>/${namespace}/cmd_vel</topic>
+        <odom_topic>/${namespace}/odometry/wheels</odom_topic>
+        <tf_topic>/${namespace}/tf</tf_topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="joints" params="topic">
+  <xacro:macro name="joints" params="namespace">
     <gazebo>
       <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
-        <topic>${topic}</topic>
+        <topic>/${namespace}/joint_states</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="pose">
+  <xacro:macro name="pose" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
         <publish_model_pose>true</publish_model_pose>
         <publish_nested_model>true</publish_nested_model>
         <publish_nested_model_pose>true</publish_nested_model_pose>
         <use_pose_vector_msg>true</use_pose_vector_msg>
+        <topic>/model/${namespace}/pose</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic">
+  <xacro:macro name="odom" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
         <robot_base_frame>base_link</robot_base_frame>
-        <odom_topic>${topic}</odom_topic>
+        <odom_topic>/${namespace}/odom</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="noise_odom" params="vel_topic topic a1 a2 a3 a4">
+  <xacro:macro name="noise_odom" params="namespace a1 a2 a3 a4">
     <gazebo>
       <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
-        <ros_topic>${topic}</ros_topic>
+        <ros_topic>/${namespace}/odom_noisy</ros_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>base_link</child_frame_id>
 

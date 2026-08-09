@@ -114,7 +114,7 @@ def generate_launch_description():
             # ground. so force sim time on for everything we start here.
             SetParameter(name="use_sim_time", value=True),
             DeclareLaunchArgument(
-                "namespace", default_value="drone0", description="Drone namespace."
+                "namespace", default_value="drone", description="Drone namespace."
             ),
             DeclareLaunchArgument(
                 "cmd_vel_topic",

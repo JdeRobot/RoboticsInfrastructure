@@ -19,12 +19,14 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_noise = LaunchConfiguration("noise")
     gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
     namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -50,6 +52,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -60,9 +63,9 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
-            namespace,
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -84,6 +87,7 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
+        namespace=gz_namespace,
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
@@ -100,24 +104,18 @@ def launch_setup(context):
 
 
 def generate_launch_description():
-    declared_arguments = []
-
-    # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("noise", default_value="none"))
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "namespace", description="Namespace to use", default_value="do150"
-        )
-    )
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("noise", default_value="none"),
+        DeclareLaunchArgument("namespace", default_value="do150"),
+        DeclareLaunchArgument("entity", default_value="do150"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
