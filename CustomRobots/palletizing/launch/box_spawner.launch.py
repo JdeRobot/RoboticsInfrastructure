@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
-"""Standalone launcher for the palletizing box feeder.
+"""Launch the feeder against an already-running Gazebo world."""
 
-Useful for testing the spawner against an already-running gz sim (the world must
-already be up). The main flow wires box_spawner directly into
-Launchers/palletizing.launch.py; this file is a convenience for isolated testing.
+import os
 
-    ros2 launch custom_robots box_spawner.launch.py
-"""
-
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    package_dir = get_package_share_directory("custom_robots")
+    task_config = os.path.join(package_dir, "config", "palletizing_task.yaml")
+
     box_spawner = Node(
         package="custom_robots",
         executable="box_spawner",
         name="box_spawner",
         output="screen",
-        parameters=[{"use_sim_time": True}],
+        parameters=[{"use_sim_time": True}, {"task_config": task_config}],
     )
 
     return LaunchDescription([box_spawner])

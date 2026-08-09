@@ -64,8 +64,7 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Bridge ROS /conveyor/speed (std_msgs/Float64) → gz TrackController command topic.
-    # YAML config required because ROS and gz topic names differ.
+    # YAML maps the differing ROS and Gazebo conveyor topic names.
     bridge_config = os.path.join(package_dir, "params", "conveyor_bridge.yaml")
     conveyor_speed_bridge = Node(
         package="ros_gz_bridge",
@@ -75,14 +74,17 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Box feeder: owns the /conveyor/speed publisher and manages the full
-    # spawn → centre → place → restart cycle itself. No separate default_speed
-    # publisher needed — the spawner sets belt speed on startup.
+    # Feeder owns conveyor speed and the spawn/ready/done lifecycle.
+    task_config = os.path.join(package_dir, "config", "palletizing_task.yaml")
     box_spawner = Node(
         package="custom_robots",
         executable="box_spawner",
         name="box_spawner",
         output="screen",
+        parameters=[
+            {"use_sim_time": True},
+            {"task_config": task_config},
+        ],
     )
 
     # Give gz sim time to initialise before starting the bridge and spawner.

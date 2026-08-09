@@ -138,6 +138,7 @@ install(
     palletizing/models
     palletizing/launch
     palletizing/params
+    palletizing/config
 
   DESTINATION share/${PROJECT_NAME})
 
@@ -146,6 +147,10 @@ install(PROGRAMS
     palletizing/scripts/box_spawner.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME box_spawner)
+
+install(
+  DIRECTORY palletizing/scripts/feeder
+  DESTINATION lib/${PROJECT_NAME})
 
 # Palletizing planning-scene publisher (injects conveyor + pallet as MoveIt
 # collision objects so the planner routes around them; not student-facing).

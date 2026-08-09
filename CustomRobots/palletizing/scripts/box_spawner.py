@@ -1,181 +1,228 @@
 #!/usr/bin/env python3
-"""Palletizing conveyor feeder.
+"""ROS integration for the palletizing feeder."""
 
-Feeds a fixed number of boxes (num_boxes), one at a time, and stacks them into
-a real rows x cols x layers grid on the pallet table. This is the palletizing
-task: a finite supply that must end up in an ordered pattern — not an infinite
-stream.
-
-Lifecycle per box:
-  1. Spawn at belt feed end (far end: X = spawn_x, on belt centre Y = spawn_y).
-  2. Belt runs at belt_speed m/s; box rides along X to the pickup point (X = pickup_x).
-  3. Belt stops; the box name is published on /box_ready. The robot (the
-     student/reference exercise code) picks the box and stacks it on the pallet,
-     then signals completion by publishing the box name on /box_done.
-  4. On /box_done the belt restarts and the next box is spawned — until
-     num_boxes have been fed, then the belt stops and the feeder idles.
-
-This node no longer places boxes itself: picking and palletizing is the robot's
-job. The feeder only meters one box at a time and waits for the robot before
-releasing the next, so boxes never pile up at the pickup point.
-"""
-
+import json
 import os
 import subprocess
+import tempfile
+from typing import Any
 
 import rclpy
+from ament_index_python.packages import get_package_share_directory
+from feeder.box_model_generator import BoxModelGenerator
+from feeder.gazebo_pose_tracker import GazeboPoseTracker
+from feeder.state_machine import BoxFeederStateMachine
+from feeder.task_loader import PalletizingTaskConfig
 from rclpy.node import Node
 from std_msgs.msg import Float64, String
-from ament_index_python.packages import get_package_share_directory
 
 
 class BoxSpawner(Node):
     def __init__(self):
         super().__init__("box_spawner")
 
-        default_file = ""
-        try:
-            share = get_package_share_directory("custom_robots")
-            default_file = f"{share}/models/palletizing_box/model.sdf"
-        except Exception as exc:
-            self.get_logger().warn(f"could not resolve custom_robots share: {exc}")
+        default_config = os.path.join(
+            get_package_share_directory("custom_robots"),
+            "config",
+            "palletizing_task.yaml",
+        )
+        self.declare_parameter("task_config", default_config)
+        config_path = str(self.get_parameter("task_config").value)
 
-        # Belt runs along world X (conveyor yaw 0), radially away from the robot at
-        # the origin. Boxes feed from the FAR end (large X) and ride toward the robot,
-        # stopping at the pickup point (near end). The lateral axis is now Y (belt
-        # centre = 0). belt_speed sign sets travel direction — a positive value must
-        # push boxes toward -X (toward the robot); flip the sign if sim shows the
-        # belt running the wrong way (Track:fdir1 vs commanded-velocity sign).
-        self.declare_parameter("sdf_file", default_file)
-        # Negative so boxes travel -X, from spawn_x (2.2) toward pickup_x (1.0).
-        self.declare_parameter("belt_speed", -0.25)   # m/s
-        self.declare_parameter("spawn_x", 2.2)        # feed end in world X (far from robot)
-        self.declare_parameter("spawn_y", 0.0)        # belt centre in world Y
-        self.declare_parameter("spawn_z", 1.13)       # belt surface ~1.00 m + box half-height 0.10 m + clearance
-        self.declare_parameter("pickup_x", 1.0)       # near end, kept clear of the belt edge (0.60) so the 0.40 m box doesn't overhang
-        self.declare_parameter("start_delay", 5.0)    # wait for gz to be ready
-        self.declare_parameter("settle_delay", 0.3)   # let physics settle the box before signalling
-        # Total boxes to feed. Placement (grid pattern) is the robot's job now.
-        self.declare_parameter("num_boxes", 8)
+        self.task = PalletizingTaskConfig(config_path)
+        self.state = BoxFeederStateMachine(self.task.box_count)
+        self.conveyor = self.task.conveyor
 
-        self.sdf_file = self.get_parameter("sdf_file").value
-        self.num_boxes = int(self.get_parameter("num_boxes").value)
-        self.counter = 0
-        self._active_timer = None
-        self._pending_box = None      # box currently awaiting /box_done
-        # Unique prefix per process so box names never conflict with leftover
-        # entities from a previous (not-fully-cleaned) gz sim session.
-        self._run_id = os.getpid() % 1000
+        self.run_id = os.getpid() % 1000
+        self.sdf_dir = tempfile.TemporaryDirectory(prefix=f"palletizing_boxes_{self.run_id}_")
+        self.model_generator = BoxModelGenerator(self.sdf_dir.name)
 
-        self._speed_pub = self.create_publisher(Float64, "/conveyor/speed", 10)
-        # Handshake with the robot: announce a box is at the pickup point, then
-        # wait for the robot to report it has been palletized before feeding next.
-        self._ready_pub = self.create_publisher(String, "/box_ready", 10)
-        self._done_sub = self.create_subscription(
-            String, "/box_done", self._on_box_done, 10
+        self.belt_speed = float(self.conveyor["belt_speed"])
+        self.spawn_x = float(self.conveyor["spawn_x"])
+        self.spawn_y = float(self.conveyor["spawn_y"])
+        self.pickup_x = float(self.conveyor["pickup_x"])
+        self.pickup_timeout = float(self.conveyor.get("pickup_timeout", 20.0))
+        self.settle_delay = float(self.conveyor["settle_delay"])
+        start_delay = float(self.conveyor["start_delay"])
+
+        self.pose_tracker = GazeboPoseTracker()
+        self.pickup_started_at = None
+        self.pickup_world_position = None
+
+        self.ready_timer = None
+        self.event_timer = None
+
+        self.speed_pub = self.create_publisher(Float64, "/conveyor/speed", 10)
+        self.ready_pub = self.create_publisher(String, "/box_ready", 10)
+        self.box_info_pub = self.create_publisher(String, "/box_info", 10)
+        self.pallet_info_pub = self.create_publisher(String, "/pallet_info", 10)
+        self.done_sub = self.create_subscription(String, "/box_done", self._on_box_done, 10)
+
+        self.pallet_timer = self.create_timer(2.0, self._publish_pallet_info)
+        self.start_timer = self.create_timer(start_delay, self._start)
+
+        self._publish_pallet_info()
+        self.get_logger().info(
+            f"loaded {self.task.box_count} SKU boxes from {config_path}: {self.task.sequence}"
         )
 
-        delay = float(self.get_parameter("start_delay").value)
-        self._init_timer = self.create_timer(delay, self._start)
+    def _start(self) -> None:
+        self.start_timer.cancel()
+        self._spawn_next_box()
 
-    # ------------------------------------------------------------------
+    def _spawn_next_box(self) -> None:
+        if not self.state.has_next_box():
+            self._finish()
+            return
 
-    def _start(self):
-        self._init_timer.cancel()
-        self._set_belt(float(self.get_parameter("belt_speed").value))
-        self._spawn_next()
+        box = self.task.box_at(self.state.index, self.run_id)
+        sdf_path = self.model_generator.write_model(box)
+        spawn_z = self.task.spawn_z(box)
 
-    def _set_belt(self, speed: float):
-        msg = Float64()
-        msg.data = speed
-        self._speed_pub.publish(msg)
-        self.get_logger().info(f"belt speed → {speed:.2f} m/s")
+        if not self._spawn_model(box, sdf_path, spawn_z):
+            self._set_belt(0.0)
+            return
 
-    def _spawn_next(self):
-        name = f"box_{self._run_id}_{self.counter}"
-        x = float(self.get_parameter("spawn_x").value)
-        y = float(self.get_parameter("spawn_y").value)
-        z = float(self.get_parameter("spawn_z").value)
+        self.state.begin_spawn(box)
+        self.pose_tracker.track(box["name"])
+        self._start_belt_to_pickup(box["name"])
 
+    def _spawn_model(self, box: dict[str, Any], sdf_path: str, spawn_z: float) -> bool:
         cmd = [
             "ros2", "run", "ros_gz_sim", "create",
-            "-name", name,
-            "-x", str(x), "-y", str(y), "-z", str(z),
+            "-name", box["name"],
+            "-x", str(self.spawn_x), "-y", str(self.spawn_y), "-z", str(spawn_z),
             "-R", "0", "-P", "0", "-Y", "0",
-            "-file", self.sdf_file,
+            "-file", sdf_path,
         ]
         result = subprocess.run(cmd, check=False, capture_output=True, text=True)
         if result.returncode != 0:
             self.get_logger().error(
-                f"spawn {name} failed (rc={result.returncode}): {result.stderr.strip()}"
+                f"failed to spawn {box['name']} ({box['sku']}): {result.stderr.strip()}"
             )
-            return
+            return False
 
-        self.get_logger().info(f"spawned {name} at ({x:.2f}, {y:.2f}, {z:.2f})")
+        self.get_logger().info(
+            f"spawned {box['name']} sku={box['sku']} size={box['size']}"
+        )
+        return True
 
-        # Time for box to travel from spawn_x to pickup_x along the belt. Use the
-        # speed MAGNITUDE — belt_speed may be negative (sets travel direction).
-        belt_speed = float(self.get_parameter("belt_speed").value)
-        travel = abs(float(self.get_parameter("pickup_x").value) - x) / abs(belt_speed)
-        self.get_logger().info(f"{name}: belt stops in {travel:.1f} s")
-        self._active_timer = self.create_timer(travel, lambda: self._box_at_centre(name))
-        self.counter += 1
-
-    def _box_at_centre(self, name: str):
-        if self._active_timer:
-            self._active_timer.cancel()
-            self._active_timer = None
-
-        self.get_logger().info(f"{name} reached centre — stopping belt")
-        self._set_belt(0.0)
-
-        # Give the physics engine a moment to settle the box before telling the
-        # robot to pick it (a box still drifting makes the grasp pose stale).
-        settle = float(self.get_parameter("settle_delay").value)
-        self._active_timer = self.create_timer(settle, lambda: self._announce_ready(name))
-
-    def _announce_ready(self, name: str):
-        if self._active_timer:
-            self._active_timer.cancel()
-            self._active_timer = None
-
-        # Hand the box off to the robot and wait for /box_done. Publish continuously
-        # so late-starting exercise code doesn't miss the message!
-        self._pending_box = name
-        self._active_timer = self.create_timer(1.0, lambda: self._ready_pub.publish(String(data=self._pending_box)))
-        self._ready_pub.publish(String(data=name))
-        self.get_logger().info(f"{name} ready for pickup — waiting for robot")
-
-    def _on_box_done(self, msg: String):
-        if self._active_timer:
-            self._active_timer.cancel()
-            self._active_timer = None
-
-        # Ignore stray/duplicate acks not matching the box we're waiting on.
-        if msg.data != self._pending_box:
-            self.get_logger().warn(
-                f"ignoring /box_done '{msg.data}' (waiting on '{self._pending_box}')"
-            )
-            return
-
-        self.get_logger().info(f"{msg.data} palletized by robot")
-        self._pending_box = None
-        self._resume()
-
-    def _resume(self):
-        # Finite supply: stop once every box has been fed and palletized.
-        if self.counter >= self.num_boxes:
+    def _start_belt_to_pickup(self, name: str) -> None:
+        if abs(self.belt_speed) < 1e-6:
+            self.get_logger().error("belt_speed is zero; cannot move box to pickup")
             self._set_belt(0.0)
-            self.get_logger().info(
-                f"all {self.num_boxes} boxes palletized — task complete, feeder idle"
+            return
+
+        self.pickup_started_at = self.get_clock().now()
+        self.pickup_world_position = None
+        self._set_belt(self.belt_speed)
+        self.event_timer = self.create_timer(0.05, lambda: self._check_pickup_pose(name))
+
+    def _check_pickup_pose(self, name: str) -> None:
+        position = self.pose_tracker.position(name)
+        if position is not None and position["x"] <= self.pickup_x:
+            self._box_at_pickup(name, position)
+            return
+
+        if self.pickup_started_at is None:
+            return
+
+        elapsed = (self.get_clock().now() - self.pickup_started_at).nanoseconds / 1e9
+        if elapsed >= self.pickup_timeout:
+            self._cancel_event_timer()
+            self._set_belt(0.0)
+            self.pose_tracker.clear()
+            self.get_logger().error(
+                f"{name} did not reach pickup_x={self.pickup_x:.3f} within "
+                f"{self.pickup_timeout:.1f}s; last pose={position}"
+            )
+
+    def _box_at_pickup(self, name: str, position: dict[str, float]) -> None:
+        self._cancel_event_timer()
+        self._set_belt(0.0)
+        self.pickup_world_position = position
+        self.state.reached_pickup()
+        self.get_logger().info(
+            f"{name} reached pickup point at world "
+            f"x={position['x']:.3f}, y={position['y']:.3f}, z={position['z']:.3f}"
+        )
+        self.event_timer = self.create_timer(
+            self.settle_delay,
+            lambda: self._announce_ready(name),
+        )
+
+    def _announce_ready(self, name: str) -> None:
+        self._cancel_event_timer()
+        settled_position = self.pose_tracker.position(name)
+        if settled_position is not None:
+            self.pickup_world_position = settled_position
+        self.pose_tracker.clear()
+
+        self.state.ready()
+        self.ready_timer = self.create_timer(1.0, self._publish_ready)
+        self._publish_ready()
+        self.get_logger().info(
+            f"{name} ready for pickup at world pose {self.pickup_world_position} "
+            "— waiting for /box_done"
+        )
+
+    def _publish_ready(self) -> None:
+        box = self.state.pending_box
+        if box is None:
+            return
+        if self.pickup_world_position is None:
+            self.get_logger().error(f"missing observed pickup pose for {box['name']}")
+            return
+
+        self.ready_pub.publish(String(data=box["name"]))
+        info = self.task.box_info(box, self.pickup_world_position)
+        self.box_info_pub.publish(String(data=json.dumps(info)))
+
+    def _publish_pallet_info(self) -> None:
+        self.pallet_info_pub.publish(String(data=json.dumps(self.task.pallet_info())))
+
+    def _on_box_done(self, msg: String) -> None:
+        expected = self.state.expected_name()
+        if not self.state.accept_done(msg.data):
+            self.get_logger().warn(
+                f"ignoring /box_done '{msg.data}' (waiting on '{expected}')"
             )
             return
 
-        self._set_belt(float(self.get_parameter("belt_speed").value))
-        self._spawn_next()
+        self._cancel_ready_timer()
+        self.pickup_world_position = None
+        self.pickup_started_at = None
+        self.pose_tracker.clear()
+        self.get_logger().info(f"{msg.data} picked by robot")
+        self._spawn_next_box()
+
+    def _set_belt(self, speed: float) -> None:
+        self.speed_pub.publish(Float64(data=float(speed)))
+        self.get_logger().info(f"belt speed → {speed:.2f} m/s")
+
+    def _finish(self) -> None:
+        self._set_belt(0.0)
+        self.get_logger().info(f"all {self.task.box_count} boxes fed — task complete")
+
+    def _cancel_event_timer(self) -> None:
+        if self.event_timer is not None:
+            self.event_timer.cancel()
+            self.event_timer = None
+
+    def _cancel_ready_timer(self) -> None:
+        if self.ready_timer is not None:
+            self.ready_timer.cancel()
+            self.ready_timer = None
+
+    def destroy_node(self) -> None:
+        self._cancel_event_timer()
+        self._cancel_ready_timer()
+        self.pose_tracker.clear()
+        self.sdf_dir.cleanup()
+        super().destroy_node()
 
 
-def main():
+def main() -> None:
     rclpy.init()
     node = BoxSpawner()
     try:

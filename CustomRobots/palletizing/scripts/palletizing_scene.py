@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
-"""Palletizing planning-scene publisher (behind the scenes — not student-facing).
+"""Publish static conveyor and pallet obstacles in MoveIt's base_link frame.
 
-Injects the static workcell obstacles (conveyor, pallet) into MoveIt's planning
-scene so the planner routes around them, instead of hand-tuning via-waypoints in
-the exercise code. Publishes a PlanningScene diff on /planning_scene (which
-move_group subscribes to), transient_local and repeated a few times so a
-late-starting move_group still receives it.
-
-Objects are given in Gazebo world coordinates and published in `base_link` (the
-frame the robot's motion targets use); base_link sits at world z = BASE_MOUNT_Z.
+Dynamic, carried, and placed boxes are not modeled.
 """
 
 import rclpy
@@ -19,7 +12,7 @@ from moveit_msgs.msg import PlanningScene, CollisionObject
 from shape_msgs.msg import SolidPrimitive
 from geometry_msgs.msg import Pose
 
-BASE_MOUNT_Z = 0.9        # robot base height in world; must match the world file
+BASE_MOUNT_Z = 0.9        # world z of robot base_link; must match the world file
 PLANNING_FRAME = "base_link"
 
 
@@ -27,9 +20,8 @@ def _world_to_base_z(world_z):
     return world_z - BASE_MOUNT_Z
 
 
-# Workcell obstacles in Gazebo world coordinates (matching the model SDFs).
-# The pallet box is trimmed ~3 cm below the real deck top (world 0.30 -> 0.27) so a
-# box placed flush on the deck isn't rejected as a touching-contact collision.
+# Gazebo world geometry; keep synchronized with the scene.
+# The pallet collision ends below the deck top to allow flush placement.
 OBSTACLES = [
     {
         "id": "conveyor",
@@ -81,8 +73,7 @@ class PalletizingScene(Node):
         for spec in OBSTACLES:
             self._scene.world.collision_objects.append(_make_collision_object(spec))
 
-        # Republish a few times so the scene monitor catches it regardless of
-        # start-up ordering, then stop; the objects persist in the scene.
+        # Republish to tolerate move_group startup ordering.
         self._count = 0
         self._max_publishes = 5
         self._timer = self.create_timer(1.0, self._publish_once)
@@ -97,9 +88,10 @@ class PalletizingScene(Node):
         self._count += 1
         if self._count >= self._max_publishes:
             self.get_logger().info(
-                "palletizing_scene: obstacles injected; done republishing."
+                "palletizing_scene: obstacles injected; shutting down publisher."
             )
             self._timer.cancel()
+            rclpy.shutdown()
 
 
 def main():
