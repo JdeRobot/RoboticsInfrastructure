@@ -45,10 +45,8 @@ def launch_setup(context):
 
     controllers_file = os.path.join(package_dir, "config", "ur10_suction", "controllers.yaml")
 
-    # Palletizing-specific joint limits (asymmetric shoulder_pan -> predictable
-    # clockwise pick->place; wrists kept at +-180 to kill 360 spins). Overrides
-    # the ur.urdf.xacro default (config/<ur_type>/joint_limits.yaml) WITHOUT
-    # touching the shared stock UR10 limits, so other UR10 uses are unaffected.
+    # Use palletizing-only limits to avoid long wrist turns without changing
+    # the shared UR10 configuration.
     joint_limits_file = os.path.join(
         package_dir, "config", "ur10_suction", "joint_limits.yaml"
     )
@@ -109,10 +107,7 @@ def launch_setup(context):
         "default_planning_pipeline": "pilz_industrial_motion_planner",
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
-            # AddTimeOptimalParameterization assigns timestamps to the planned
-            # waypoints. Without it, OMPL plans have all-zero times and the
-            # joint_trajectory_controller rejects them ("Time between points ...
-            # is not strictly increasing").
+            # Required so OMPL trajectories have increasing timestamps for controller execution.
             "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization "
             "default_planner_request_adapters/ResolveConstraintFrames "
             "default_planner_request_adapters/FixWorkspaceBounds "
@@ -164,10 +159,8 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur10"},
-            # Suction has no actuated end-effector joint, so there is no
-            # ros2srrc_endeffectors/ls_vgr/config/joint_specifications.yaml to load.
-            # "none" makes the move server skip the EE block (it otherwise crashes
-            # with YAML::BadFile). Gripping is handled by gz_link_attacher, not MoveG.
+            # Suction has no actuated end-effector joint; gz_link_attacher handles attachment.
+            # "none" skips loading a non-existent gripper joint specification.
             {"EE_PARAM": "none"},
             {"ROB_GROUP": "ur10_arm"},
         ],
@@ -254,17 +247,9 @@ def launch_setup(context):
         output="screen",
     )
 
-    clock_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock"],
-        parameters=[{"use_sim_time": True}],
-    )
-
     nodes.append(robot_state_publisher)
     nodes.append(static_tf)
     nodes.append(spawn_robot)
-    nodes.append(clock_bridge)
 
     # =========================
     # CONTROLLERS (arm only — no gripper)
@@ -310,9 +295,8 @@ def launch_setup(context):
     # =========================
     # PLANNING-SCENE OBSTACLES
     # =========================
-    # Inject the conveyor + pallet as collision objects so the planner routes
-    # around them natively (no hand-tuned via-waypoints in the student solution).
-    # Behind-the-scenes: the exercise/HAL code never touches the planning scene.
+    # Add static conveyor and pallet obstacles to MoveIt.
+    # Dynamic, carried, and placed boxes remain unmodeled.
     palletizing_scene = Node(
         package="custom_robots",
         executable="palletizing_scene",
