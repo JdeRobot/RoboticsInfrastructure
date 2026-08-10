@@ -26,7 +26,7 @@ def generate_launch_description():
         gz_link_attacher_path = os.path.join(get_package_prefix("gz_link_attacher"), "lib")
     except:
         gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
-        
+
     try:
         gz_ros2_control_path = os.path.join(get_package_prefix("gz_ros2_control"), "lib")
     except:
@@ -87,6 +87,16 @@ def generate_launch_description():
         ],
     )
 
+    clock_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        name="clock_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
     # Give gz sim time to initialise before starting the bridge and spawner.
     delayed = TimerAction(
         period=5.0,
@@ -94,5 +104,5 @@ def generate_launch_description():
     )
 
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, delayed]
+        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, clock_bridge, delayed]
     )
