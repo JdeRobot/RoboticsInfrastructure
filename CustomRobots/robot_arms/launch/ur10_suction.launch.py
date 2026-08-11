@@ -307,28 +307,7 @@ def launch_setup(context):
 
     nodes.append(palletizing_scene)
 
-    # =========================
-    # RVIZ
-    # =========================
-    rviz_config_file = os.path.join(package_dir, "config", "ur10_suction", "moveit.rviz")
-
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        arguments=["-d", rviz_config_file],
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            ompl_planning,
-            kinematics_yaml,
-            {"use_sim_time": True},
-        ],
-    )
-
-    nodes.append(rviz_node)
-
+    # Keep the robot launcher headless; runtime tool orchestration owns RViz.
     return nodes
 
 
