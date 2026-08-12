@@ -18,7 +18,9 @@ def generate_launch_description():
 
     # Robot description — suction gripper (must match the SDF spawned in Gazebo)
     xacro_file = os.path.join(pkg_share_dir, "models/ur10", "ur10_suction.urdf.xacro")
-    controllers_file = os.path.join(pkg_share_dir, "config", "ur10_suction", "controllers.yaml")
+    controllers_file = os.path.join(
+        pkg_share_dir, "config", "ur10_suction", "controllers.yaml"
+    )
 
     robot_description_content = xacro.process_file(
         xacro_file,

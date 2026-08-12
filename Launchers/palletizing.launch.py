@@ -19,13 +19,18 @@ def generate_launch_description():
     # Fortress-built gz_ros2_control, which is ABI-incompatible with Harmonic.
     # Keep gz_ros2_control first so Gazebo loads the Harmonic-compatible plugin.
     from ament_index_python.packages import get_package_prefix
+
     try:
-        gz_link_attacher_path = os.path.join(get_package_prefix("gz_link_attacher"), "lib")
+        gz_link_attacher_path = os.path.join(
+            get_package_prefix("gz_link_attacher"), "lib"
+        )
     except:
         gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
 
     try:
-        gz_ros2_control_path = os.path.join(get_package_prefix("gz_ros2_control"), "lib")
+        gz_ros2_control_path = os.path.join(
+            get_package_prefix("gz_ros2_control"), "lib"
+        )
     except:
         gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
 
@@ -101,5 +106,12 @@ def generate_launch_description():
     )
 
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, clock_bridge, delayed]
+        [
+            set_gz_plugin_path,
+            set_ld_library_path,
+            set_resource_path,
+            gz,
+            clock_bridge,
+            delayed,
+        ]
     )

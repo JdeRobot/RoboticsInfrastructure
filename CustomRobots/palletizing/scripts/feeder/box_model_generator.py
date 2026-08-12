@@ -18,7 +18,7 @@ def make_box_sdf(name: str, size: list[float], mass: float, color: list[float]) 
     r, g, b, a = color
     ixx, iyy, izz = cuboid_inertia(size, mass)
 
-    return f'''<?xml version="1.0" ?>
+    return f"""<?xml version="1.0" ?>
 <sdf version="1.8">
   <model name="{name}">
     <link name="link">
@@ -70,7 +70,7 @@ def make_box_sdf(name: str, size: list[float], mass: float, color: list[float]) 
     </link>
   </model>
 </sdf>
-'''
+"""
 
 
 class BoxModelGenerator:

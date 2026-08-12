@@ -43,7 +43,9 @@ def launch_setup(context):
         "ur10_suction.urdf.xacro",
     )
 
-    controllers_file = os.path.join(package_dir, "config", "ur10_suction", "controllers.yaml")
+    controllers_file = os.path.join(
+        package_dir, "config", "ur10_suction", "controllers.yaml"
+    )
 
     # Use palletizing-only limits to avoid long wrist turns without changing
     # the shared UR10 configuration.
@@ -79,9 +81,7 @@ def launch_setup(context):
     # =========================
     # KINEMATICS
     # =========================
-    kinematics_yaml = load_yaml(
-        "custom_robots", "config/ur10_suction/kinematics.yaml"
-    )
+    kinematics_yaml = load_yaml("custom_robots", "config/ur10_suction/kinematics.yaml")
 
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
@@ -94,9 +94,7 @@ def launch_setup(context):
         "custom_robots", "config/ur10_suction/moveit_controllers.yaml"
     )
 
-    ompl_planning = load_yaml(
-        "custom_robots", "config/ur10_suction/ompl_planning.yaml"
-    )
+    ompl_planning = load_yaml("custom_robots", "config/ur10_suction/ompl_planning.yaml")
 
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 

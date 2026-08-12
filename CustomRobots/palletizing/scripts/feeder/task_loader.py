@@ -77,7 +77,11 @@ class PalletizingTaskConfig:
             "frame": "base_link",
             "size": [float(v) for v in self.pallet["physical_size"]],
             "usable_size": [float(v) for v in self.pallet["usable_size"]],
-            "center": [placement_center[0], placement_center[1], placement_center[2] - base_z],
+            "center": [
+                placement_center[0],
+                placement_center[1],
+                placement_center[2] - base_z,
+            ],
             "top_z": deck_top_world_z - base_z,
             "max_layers": int(self.pallet["max_layers"]),
         }

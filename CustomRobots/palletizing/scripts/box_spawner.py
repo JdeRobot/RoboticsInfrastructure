@@ -34,7 +34,9 @@ class BoxSpawner(Node):
         self.conveyor = self.task.conveyor
 
         self.run_id = os.getpid() % 1000
-        self.sdf_dir = tempfile.TemporaryDirectory(prefix=f"palletizing_boxes_{self.run_id}_")
+        self.sdf_dir = tempfile.TemporaryDirectory(
+            prefix=f"palletizing_boxes_{self.run_id}_"
+        )
         self.model_generator = BoxModelGenerator(self.sdf_dir.name)
 
         self.belt_speed = float(self.conveyor["belt_speed"])
@@ -56,7 +58,9 @@ class BoxSpawner(Node):
         self.ready_pub = self.create_publisher(String, "/box_ready", 10)
         self.box_info_pub = self.create_publisher(String, "/box_info", 10)
         self.pallet_info_pub = self.create_publisher(String, "/pallet_info", 10)
-        self.done_sub = self.create_subscription(String, "/box_done", self._on_box_done, 10)
+        self.done_sub = self.create_subscription(
+            String, "/box_done", self._on_box_done, 10
+        )
 
         self.pallet_timer = self.create_timer(2.0, self._publish_pallet_info)
         self.start_timer = self.create_timer(start_delay, self._start)
@@ -89,11 +93,26 @@ class BoxSpawner(Node):
 
     def _spawn_model(self, box: dict[str, Any], sdf_path: str, spawn_z: float) -> bool:
         cmd = [
-            "ros2", "run", "ros_gz_sim", "create",
-            "-name", box["name"],
-            "-x", str(self.spawn_x), "-y", str(self.spawn_y), "-z", str(spawn_z),
-            "-R", "0", "-P", "0", "-Y", "0",
-            "-file", sdf_path,
+            "ros2",
+            "run",
+            "ros_gz_sim",
+            "create",
+            "-name",
+            box["name"],
+            "-x",
+            str(self.spawn_x),
+            "-y",
+            str(self.spawn_y),
+            "-z",
+            str(spawn_z),
+            "-R",
+            "0",
+            "-P",
+            "0",
+            "-Y",
+            "0",
+            "-file",
+            sdf_path,
         ]
         result = subprocess.run(cmd, check=False, capture_output=True, text=True)
         if result.returncode != 0:
@@ -116,7 +135,9 @@ class BoxSpawner(Node):
         self.pickup_started_at = self.get_clock().now()
         self.pickup_world_position = None
         self._set_belt(self.belt_speed)
-        self.event_timer = self.create_timer(0.05, lambda: self._check_pickup_pose(name))
+        self.event_timer = self.create_timer(
+            0.05, lambda: self._check_pickup_pose(name)
+        )
 
     def _check_pickup_pose(self, name: str) -> None:
         position = self.pose_tracker.position(name)

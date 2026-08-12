@@ -48,7 +48,10 @@ class GazeboPoseTracker:
         now = time.monotonic()
         with self._lock:
             active_model = self._active_model
-            if active_model is None or now - self._last_sample_time < self._sample_period:
+            if (
+                active_model is None
+                or now - self._last_sample_time < self._sample_period
+            ):
                 return
             self._last_sample_time = now
 

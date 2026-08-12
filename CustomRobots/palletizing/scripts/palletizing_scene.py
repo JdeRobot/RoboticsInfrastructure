@@ -11,7 +11,7 @@ from moveit_msgs.srv import ApplyPlanningScene
 from rclpy.node import Node
 from shape_msgs.msg import SolidPrimitive
 
-BASE_MOUNT_Z = 0.9        # world z of robot base_link; must match the world file
+BASE_MOUNT_Z = 0.9  # world z of robot base_link; must match the world file
 PLANNING_FRAME = "base_link"
 
 
