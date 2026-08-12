@@ -117,6 +117,7 @@ def generate_launch_description():
             combined_planning,
             {"use_sim_time": True},
         ],
+        arguments=["--ros-args", "--log-level", "debug"],
         output="screen",
     )
 
