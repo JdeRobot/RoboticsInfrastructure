@@ -5,12 +5,11 @@ Dynamic, carried, and placed boxes are not modeled.
 """
 
 import rclpy
-from rclpy.node import Node
-from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
-
-from moveit_msgs.msg import PlanningScene, CollisionObject
-from shape_msgs.msg import SolidPrimitive
 from geometry_msgs.msg import Pose
+from moveit_msgs.msg import CollisionObject, PlanningScene
+from moveit_msgs.srv import ApplyPlanningScene
+from rclpy.node import Node
+from shape_msgs.msg import SolidPrimitive
 
 BASE_MOUNT_Z = 0.9        # world z of robot base_link; must match the world file
 PLANNING_FRAME = "base_link"
@@ -62,48 +61,62 @@ class PalletizingScene(Node):
     def __init__(self):
         super().__init__("palletizing_scene")
 
-        qos = QoSProfile(depth=1)
-        qos.durability = QoSDurabilityPolicy.TRANSIENT_LOCAL
-        qos.reliability = QoSReliabilityPolicy.RELIABLE
-
-        self._pub = self.create_publisher(PlanningScene, "/planning_scene", qos)
+        self._client = self.create_client(
+            ApplyPlanningScene,
+            "/apply_planning_scene",
+        )
 
         self._scene = PlanningScene()
         self._scene.is_diff = True
         for spec in OBSTACLES:
             self._scene.world.collision_objects.append(_make_collision_object(spec))
 
-        # Republish to tolerate move_group startup ordering.
-        self._count = 0
-        self._max_publishes = 5
-        self._timer = self.create_timer(1.0, self._publish_once)
+    def apply(self, timeout_sec=30.0):
+        obstacle_ids = [obj.id for obj in self._scene.world.collision_objects]
         self.get_logger().info(
-            f"palletizing_scene: publishing {len(OBSTACLES)} obstacle(s) "
-            f"[{', '.join(o['id'] for o in OBSTACLES)}] to /planning_scene "
-            f"in frame '{PLANNING_FRAME}'"
+            "waiting for MoveIt /apply_planning_scene service to apply "
+            f"{obstacle_ids} in frame '{PLANNING_FRAME}'"
         )
 
-    def _publish_once(self):
-        self._pub.publish(self._scene)
-        self._count += 1
-        if self._count >= self._max_publishes:
-            self.get_logger().info(
-                "palletizing_scene: obstacles injected; shutting down publisher."
+        if not self._client.wait_for_service(timeout_sec=timeout_sec):
+            raise RuntimeError(
+                "MoveIt /apply_planning_scene service unavailable after "
+                f"{timeout_sec:.1f}s"
             )
-            self._timer.cancel()
-            rclpy.shutdown()
+
+        request = ApplyPlanningScene.Request()
+        request.scene = self._scene
+        future = self._client.call_async(request)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=timeout_sec)
+
+        if not future.done():
+            raise RuntimeError(
+                "timed out while applying the palletizing planning scene"
+            )
+
+        if future.exception() is not None:
+            raise RuntimeError(
+                "failed to apply the palletizing planning scene: "
+                f"{future.exception()}"
+            )
+
+        response = future.result()
+        if response is None or not response.success:
+            raise RuntimeError("MoveIt rejected the palletizing planning scene")
+
+        self.get_logger().info(
+            f"confirmed MoveIt planning-scene objects: {obstacle_ids}"
+        )
 
 
 def main():
-    try:
-        rclpy.init()
-    except RuntimeError:
-        pass
+    rclpy.init()
     node = PalletizingScene()
     try:
-        rclpy.spin(node)
-    except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException):
-        pass
+        node.apply()
+    except Exception as error:
+        node.get_logger().fatal(str(error))
+        raise
     finally:
         node.destroy_node()
         if rclpy.ok():
