@@ -86,7 +86,7 @@ from collections import deque
 # CONFIGURACIÓN
 # ============================================================
 
-DIAGNOSTIC_DURATION = 30.0
+DIAGNOSTIC_DURATION = 60.0
 
 EXPECTED_JOINTS = [
     "shoulder_pan_joint",
