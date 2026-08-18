@@ -2,13 +2,16 @@
 
 """
 ============================================================
- MOVEIT SERVO / UR5 / GAZEBO HARMONIC
- ADVANCED DIAGNOSTIC TOOL
+ MOVEIT SERVO DEEP DIAGNOSTIC
+ UR5 / GAZEBO HARMONIC / ROS 2
 ============================================================
 
 Este nodo NO controla el robot.
 
-Su objetivo es diagnosticar toda la cadena:
+Su objetivo es descubrir por qué MoveIt Servo genera
+movimientos articulares extremadamente pequeños.
+
+Cadena analizada:
 
     HAL.ServoForTime()
             |
@@ -16,7 +19,7 @@ Su objetivo es diagnosticar toda la cadena:
     /servo_node/delta_twist_cmds
             |
             v
-        MoveIt Servo
+        MOVEIT SERVO
             |
             v
     /joint_trajectory_controller/joint_trajectory
@@ -28,80 +31,36 @@ Su objetivo es diagnosticar toda la cadena:
        /joint_states
 
 
-El diagnóstico diferencia especialmente entre:
-
-OPCIÓN A
---------
-
-Servo genera trayectorias con cambios articulares
-muy pequeños.
-
-En este caso:
-
-    Twist              -> OK
-    Trajectories       -> OK
-    Desired positions  -> Cambian muy poco
-    Actual positions   -> Cambian poco o correctamente
-
-El problema estaría relacionado con:
-
-    - command_in_type
-    - publish_period
-    - scale.linear
-    - incoming_command_timeout
-    - Servo velocity scaling
-    - velocidad cartesiana demasiado pequeña
-    - frame de referencia
-    - configuración cinemática
-
-
-OPCIÓN B
---------
-
-Servo genera trayectorias correctas, pero estas no son
-ejecutadas correctamente por el controller.
-
-En este caso:
-
-    Twist              -> OK
-    Trajectories       -> OK
-    Desired positions  -> Cambian
-    Actual positions   -> No cambian o no siguen
-    Controller error   -> Alto
-
-El problema estaría entre:
-
-    joint_trajectory_controller
-
-y:
-
-    ros2_control
-            |
-            v
-    gz_ros2_control
-            |
-            v
-         Gazebo
-
-
 IMPORTANTE:
 
-El nodo detecta automáticamente el inicio del Servo.
+El diagnóstico distingue entre:
 
-Todo el movimiento producido antes del primer Twist,
-por ejemplo:
+1. Movimiento producido por MoveAbsJ()
+2. Movimiento producido posteriormente por ServoForTime()
 
-    HAL.MoveAbsJ(HOME, ...)
+Esto es importante porque el movimiento inicial hacia HOME
+no debe confundirse con el movimiento generado por Servo.
 
-NO se utiliza para evaluar el movimiento producido
-por Servo.
 
-============================================================
+NUEVAS COMPROBACIONES:
+
+- Frame del Twist
+- Frecuencia del Twist
+- Duración real de recepción de comandos
+- Posición del robot antes de Servo
+- Posición del robot después de Servo
+- Cambio individual por articulación
+- Cambio máximo entre trayectorias consecutivas
+- Cambio medio entre trayectorias consecutivas
+- Cambio acumulado de Servo
+- Velocidades articulares generadas
+- Trayectorias repetidas o casi idénticas
+- Posición deseada del controlador
+- Posición real del controlador
+- Error entre desired y actual
+- Parámetros disponibles de /servo_node
+- Detección automática de posibles problemas
 """
-
-import math
-import time
-import subprocess
 
 import rclpy
 
@@ -114,19 +73,16 @@ from rclpy.qos import (
 )
 
 from sensor_msgs.msg import JointState
-
 from geometry_msgs.msg import TwistStamped
-
 from control_msgs.msg import JointJog
-
 from trajectory_msgs.msg import JointTrajectory
-
 from control_msgs.msg import JointTrajectoryControllerState
 
-from tf2_ros import (
-    Buffer,
-    TransformListener
-)
+import time
+import math
+import subprocess
+
+from collections import deque
 
 
 # ============================================================
@@ -137,258 +93,211 @@ DIAGNOSTIC_DURATION = 60.0
 
 
 EXPECTED_JOINTS = [
-
     "shoulder_pan_joint",
-
     "shoulder_lift_joint",
-
     "elbow_joint",
-
     "wrist_1_joint",
-
     "wrist_2_joint",
-
     "wrist_3_joint",
 ]
 
 
-IMPORTANT_TFS = [
+# Tolerancias
 
-    ("base_link", "tool0"),
+TRAJECTORY_IDENTICAL_THRESHOLD = 1e-8
 
-]
+VERY_SMALL_MOVEMENT_THRESHOLD = 1e-4
 
+SMALL_MOVEMENT_THRESHOLD = 1e-3
 
-IMPORTANT_TOPICS = [
-
-    "/joint_states",
-
-    "/servo_node/delta_twist_cmds",
-
-    "/servo_node/delta_joint_cmds",
-
-    "/joint_trajectory_controller/joint_trajectory",
-
-    "/joint_trajectory_controller/state",
-
-]
-
-
-IMPORTANT_NODES = [
-
-    "/servo_node",
-
-    "/move_group",
-
-    "/controller_manager",
-
-]
-
-
-IMPORTANT_SERVICES = [
-
-    "/servo_node/start_servo",
-
-    "/servo_node/stop_servo",
-
-]
-
-
-IMPORTANT_ACTIONS = [
-
-    "/move_action",
-
-    "/joint_trajectory_controller/follow_joint_trajectory",
-
-]
+SIGNIFICANT_MOVEMENT_THRESHOLD = 1e-2
 
 
 # ============================================================
-# UMBRALES
+# FUNCIONES AUXILIARES
 # ============================================================
 
-# Movimiento mínimo para considerar
-# que una articulación realmente se ha movido.
+def vector_difference(a, b):
 
-REAL_MOVEMENT_THRESHOLD = 0.001
+    result = []
+
+    size = min(len(a), len(b))
+
+    for i in range(size):
+
+        result.append(
+            a[i] - b[i]
+        )
+
+    return result
 
 
-# Cambio entre trayectorias consecutivas.
+def vector_abs_max(values):
 
-SMALL_TRAJECTORY_CHANGE = 0.0001
+    if len(values) == 0:
+        return 0.0
 
-MEDIUM_TRAJECTORY_CHANGE = 0.001
+    return max(
+        abs(v)
+        for v in values
+    )
 
-LARGE_TRAJECTORY_CHANGE = 0.01
+
+def vector_norm(values):
+
+    return math.sqrt(
+        sum(
+            v * v
+            for v in values
+        )
+    )
 
 
-# Error máximo deseado-real considerado aceptable.
+def format_vector(values, precision=8):
 
-CONTROLLER_ERROR_GOOD = 0.01
-
-CONTROLLER_ERROR_WARNING = 0.05
+    return "[" + ", ".join(
+        f"{v:.{precision}f}"
+        for v in values
+    ) + "]"
 
 
 # ============================================================
 # NODO
 # ============================================================
 
-class ServoDiagnostic(Node):
+class ServoDeepDiagnostic(Node):
 
     def __init__(self):
 
         super().__init__(
-            "servo_diagnostic"
+            "servo_deep_diagnostic"
         )
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # QoS
-        # ====================================================
+        # ----------------------------------------------------
 
-        best_effort_qos = QoSProfile(
-
+        sensor_qos = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
-
             history=HistoryPolicy.KEEP_LAST,
-
-            depth=10
-
+            depth=50
         )
-
 
         reliable_qos = QoSProfile(
-
             reliability=ReliabilityPolicy.RELIABLE,
-
             history=HistoryPolicy.KEEP_LAST,
-
-            depth=10
-
+            depth=100
         )
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # TIEMPO
-        # ====================================================
+        # ----------------------------------------------------
 
         self.start_time = time.time()
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # JOINT STATES
-        # ====================================================
+        # ----------------------------------------------------
 
         self.joint_state_count = 0
 
-        self.first_joint_state = None
+        self.last_joint_positions = None
 
-        self.last_joint_state = None
+        self.last_joint_names = None
 
+        self.joint_state_times = deque(
+            maxlen=1000
+        )
 
-        self.expected_joints_found = False
+        # ----------------------------------------------------
+        # POSICIÓN ANTES DE SERVO
+        # ----------------------------------------------------
 
+        self.servo_start_positions = None
 
-        # Posiciones actuales.
+        self.servo_start_joint_names = None
 
-        self.current_joint_positions = {}
+        self.servo_end_positions = None
 
-
-        # ====================================================
-        # MOVIMIENTO ANTES DE SERVO
-        # ====================================================
-
-        # Este movimiento NO se utiliza para evaluar Servo.
-
-        self.initial_positions = {}
-
-        self.max_total_joint_change = 0.0
-
-
-        # ====================================================
-        # INICIO DE SERVO
-        # ====================================================
-
-        self.servo_started = False
-
-        self.servo_start_time = None
-
-
-        # Posiciones articulares justo antes del primer Twist.
-
-        self.servo_initial_positions = {}
-
-
-        # Máximo movimiento desde que empezó Servo.
-
-        self.servo_max_joint_change = 0.0
-
-        self.servo_joint_changes = {
-
-            joint: 0.0
-
-            for joint in EXPECTED_JOINTS
-
-        }
-
-
-        # ====================================================
+        # ----------------------------------------------------
         # TWIST
-        # ====================================================
+        # ----------------------------------------------------
 
         self.twist_count = 0
 
         self.first_twist_time = None
 
+        self.last_twist_time = None
+
         self.last_twist = None
 
+        self.twist_times = deque(
+            maxlen=2000
+        )
 
-        # ====================================================
+        self.twist_frames = set()
+
+        self.twist_linear_values = []
+
+        self.twist_angular_values = []
+
+        # ----------------------------------------------------
         # JOINT JOG
-        # ====================================================
+        # ----------------------------------------------------
 
         self.joint_jog_count = 0
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # TRAYECTORIAS
-        # ====================================================
+        # ----------------------------------------------------
 
         self.trajectory_count = 0
 
         self.first_trajectory_time = None
 
-
-        # Última posición objetivo recibida.
+        self.last_trajectory_time = None
 
         self.last_trajectory_positions = None
 
+        self.last_trajectory_velocities = None
 
-        # Máximo cambio entre trayectorias consecutivas.
+        self.first_trajectory_positions = None
 
-        self.max_trajectory_step = 0.0
+        self.trajectory_joint_names = None
 
+        # Cambios entre trayectorias consecutivas
 
-        # Suma de cambios para obtener promedio.
+        self.trajectory_step_max = 0.0
 
         self.trajectory_step_sum = 0.0
 
         self.trajectory_step_count = 0
 
+        self.identical_trajectory_count = 0
 
-        # Cambio total desde la primera trayectoria.
-
-        self.first_servo_trajectory_positions = None
+        # Cambio total desde primera trayectoria
 
         self.max_total_trajectory_change = 0.0
 
+        # Movimiento individual por joint
 
-        # ====================================================
-        # CONTROLLER
-        # ====================================================
+        self.max_trajectory_joint_change = {
+            joint: 0.0
+            for joint in EXPECTED_JOINTS
+        }
+
+        # Velocidades máximas
+
+        self.max_joint_velocity = {
+            joint: 0.0
+            for joint in EXPECTED_JOINTS
+        }
+
+        # ----------------------------------------------------
+        # CONTROLLER STATE
+        # ----------------------------------------------------
 
         self.controller_state_count = 0
-
 
         self.last_actual_positions = None
 
@@ -396,197 +305,95 @@ class ServoDiagnostic(Node):
 
         self.last_error_positions = None
 
-
-        # Posiciones iniciales del controller
-        # cuando comienza Servo.
-
-        self.servo_initial_actual_positions = None
-
-        self.servo_initial_desired_positions = None
-
-
-        # Movimiento de actual.
-
-        self.max_actual_change_during_servo = 0.0
-
-
-        # Movimiento de desired.
-
-        self.max_desired_change_during_servo = 0.0
-
-
-        # Error máximo.
-
         self.max_controller_error = 0.0
 
         self.controller_error_sum = 0.0
 
         self.controller_error_count = 0
 
+        # ----------------------------------------------------
+        # FLAGS
+        # ----------------------------------------------------
 
-        # Número de veces que desired cambia.
+        self.servo_started = False
 
-        self.desired_changed_count = 0
-
-
-        # Número de veces que actual cambia.
-
-        self.actual_changed_count = 0
-
-
-        # ====================================================
-        # FRECUENCIA
-        # ====================================================
-
-        self.joint_state_times = []
-
-        self.max_frequency_samples = 500
-
-
-        # ====================================================
-        # TF
-        # ====================================================
-
-        self.tf_buffer = Buffer()
-
-        self.tf_listener = TransformListener(
-
-            self.tf_buffer,
-
-            self
-
-        )
-
-
-        # ====================================================
+        # ----------------------------------------------------
         # SUBSCRIBERS
-        # ====================================================
+        # ----------------------------------------------------
 
         self.create_subscription(
-
             JointState,
-
             "/joint_states",
-
             self.joint_state_callback,
-
-            best_effort_qos
-
+            sensor_qos
         )
 
-
         self.create_subscription(
-
             TwistStamped,
-
             "/servo_node/delta_twist_cmds",
-
             self.twist_callback,
-
             reliable_qos
-
         )
 
-
         self.create_subscription(
-
             JointJog,
-
             "/servo_node/delta_joint_cmds",
-
             self.joint_jog_callback,
-
             reliable_qos
-
         )
 
-
         self.create_subscription(
-
             JointTrajectory,
-
             "/joint_trajectory_controller/joint_trajectory",
-
             self.trajectory_callback,
-
             reliable_qos
-
         )
-
 
         self.create_subscription(
-
             JointTrajectoryControllerState,
-
             "/joint_trajectory_controller/state",
-
             self.controller_state_callback,
-
             reliable_qos
-
         )
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # TIMER
-        # ====================================================
+        # ----------------------------------------------------
 
         self.create_timer(
-
-            1.0,
-
+            2.0,
             self.print_live_status
-
         )
 
-
-        # ====================================================
+        # ----------------------------------------------------
         # INICIO
-        # ====================================================
+        # ----------------------------------------------------
 
+        self.get_logger().info("")
         self.get_logger().info(
-            ""
+            "=================================================="
         )
-
+        self.get_logger().info(
+            "MOVEIT SERVO DEEP DIAGNOSTIC STARTED"
+        )
         self.get_logger().info(
             "=================================================="
         )
 
         self.get_logger().info(
-            "ADVANCED MOVEIT SERVO DIAGNOSTIC STARTED"
+            f"Duration: {DIAGNOSTIC_DURATION} seconds"
         )
 
         self.get_logger().info(
-            "=================================================="
+            "Execute your HAL program now."
         )
 
         self.get_logger().info(
-            f"Diagnostic duration: "
-            f"{DIAGNOSTIC_DURATION} seconds"
+            "The node will automatically separate HOME movement"
         )
 
         self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "IMPORTANT:"
-        )
-
-        self.get_logger().info(
-            "Movement before the first Servo Twist"
-        )
-
-        self.get_logger().info(
-            "will NOT be used to evaluate Servo."
-        )
-
-        self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "Now execute your HAL program."
+            "from Servo movement."
         )
 
         self.get_logger().info(
@@ -604,293 +411,163 @@ class ServoDiagnostic(Node):
 
         self.joint_state_count += 1
 
-        self.last_joint_state = msg
+        self.joint_state_times.append(
+            now
+        )
 
+        positions = list(
+            msg.position
+        )
 
-        # ----------------------------------------------------
-        # FRECUENCIA
-        # ----------------------------------------------------
+        names = list(
+            msg.name
+        )
 
-        self.joint_state_times.append(now)
+        self.last_joint_positions = positions
 
-        if len(
-            self.joint_state_times
-        ) > self.max_frequency_samples:
+        self.last_joint_names = names
 
-            self.joint_state_times.pop(0)
+        # ------------------------------------------------
+        # PRIMER TWIST = INICIO DE SERVO
+        # ------------------------------------------------
 
+        if (
+            self.servo_started
+            and self.servo_start_positions is not None
+        ):
 
-        # ----------------------------------------------------
-        # CONVERTIR A DICCIONARIO
-        # ----------------------------------------------------
-
-        positions = {
-
-            name: position
-
-            for name, position in zip(
-
-                msg.name,
-
-                msg.position
-
-            )
-
-        }
-
-
-        self.current_joint_positions = positions
-
-
-        # ----------------------------------------------------
-        # PRIMER MENSAJE
-        # ----------------------------------------------------
-
-        if self.first_joint_state is None:
-
-            self.first_joint_state = msg
-
-            self.initial_positions = positions.copy()
-
-
-            self.get_logger().info(
-                "[JOINT STATES] First message received"
-            )
-
-
-            missing = []
-
-
-            for joint in EXPECTED_JOINTS:
-
-                if joint not in positions:
-
-                    missing.append(
-                        joint
-                    )
-
-
-            if len(missing) == 0:
-
-                self.expected_joints_found = True
-
-
-                self.get_logger().info(
-                    "[JOINT STATES] "
-                    "All expected UR joints found"
-                )
-
-            else:
-
-                self.get_logger().warn(
-                    f"[JOINT STATES] "
-                    f"Missing joints: {missing}"
-                )
-
-
-        # ----------------------------------------------------
-        # MOVIMIENTO TOTAL
-        # ----------------------------------------------------
-
-        for joint in EXPECTED_JOINTS:
-
-            if (
-                joint in positions
-                and
-                joint in self.initial_positions
-            ):
-
-                difference = abs(
-
-                    positions[joint]
-
-                    -
-
-                    self.initial_positions[joint]
-
-                )
-
-
-                if difference > self.max_total_joint_change:
-
-                    self.max_total_joint_change = difference
-
-
-        # ----------------------------------------------------
-        # MOVIMIENTO DURANTE SERVO
-        # ----------------------------------------------------
-
-        if self.servo_started:
-
-            for joint in EXPECTED_JOINTS:
-
-                if (
-
-                    joint in positions
-
-                    and
-
-                    joint in self.servo_initial_positions
-
-                ):
-
-                    difference = abs(
-
-                        positions[joint]
-
-                        -
-
-                        self.servo_initial_positions[
-                            joint
-                        ]
-
-                    )
-
-
-                    if difference > self.servo_joint_changes[
-                        joint
-                    ]:
-
-                        self.servo_joint_changes[
-                            joint
-                        ] = difference
-
-
-                    if difference > self.servo_max_joint_change:
-
-                        self.servo_max_joint_change = difference
+            self.servo_end_positions = positions
 
 
     # ========================================================
-    # TWIST CALLBACK
+    # TWIST
     # ========================================================
 
     def twist_callback(self, msg):
+
+        now = time.time()
 
         self.twist_count += 1
 
         self.last_twist = msg
 
+        self.twist_times.append(
+            now
+        )
 
-        # ----------------------------------------------------
-        # DETECTAR INICIO DE SERVO
-        # ----------------------------------------------------
+        self.last_twist_time = now
 
-        if not self.servo_started:
-
-            self.servo_started = True
-
-            self.servo_start_time = time.time()
-
-
-            # Guardamos las posiciones JUSTO antes
-            # de empezar Servo.
-
-            self.servo_initial_positions = (
-
-                self.current_joint_positions.copy()
-
-            )
-
-
-            self.get_logger().info(
-                ""
-            )
-
-            self.get_logger().info(
-                "=================================================="
-            )
-
-            self.get_logger().info(
-                "[SERVO START DETECTED]"
-            )
-
-            self.get_logger().info(
-                "From this moment, movement is measured"
-            )
-
-            self.get_logger().info(
-                "ONLY for Servo."
-            )
-
-            self.get_logger().info(
-                ""
-            )
-
-            self.get_logger().info(
-                "Servo initial joint positions:"
-            )
-
-            for joint in EXPECTED_JOINTS:
-
-                if joint in self.servo_initial_positions:
-
-                    self.get_logger().info(
-
-                        f"  {joint}: "
-
-                        f"{self.servo_initial_positions[joint]:.6f}"
-
-                    )
-
-
-            self.get_logger().info(
-                "=================================================="
-            )
-
-
-        # ----------------------------------------------------
+        # ------------------------------------------------
         # PRIMER TWIST
-        # ----------------------------------------------------
+        # ------------------------------------------------
 
         if self.first_twist_time is None:
 
-            self.first_twist_time = time.time()
+            self.first_twist_time = now
 
+            self.servo_started = True
 
+            # Guardamos posición justo antes de Servo
+
+            if self.last_joint_positions is not None:
+
+                self.servo_start_positions = list(
+                    self.last_joint_positions
+                )
+
+                self.servo_start_joint_names = list(
+                    self.last_joint_names
+                )
+
+            self.get_logger().info("")
             self.get_logger().info(
-                "[SERVO INPUT] "
-                "First Twist command received"
+                "=========================================="
+            )
+            self.get_logger().info(
+                "[SERVO START DETECTED]"
+            )
+            self.get_logger().info(
+                "=========================================="
             )
 
+            if self.servo_start_positions is not None:
 
-        # ----------------------------------------------------
-        # MOSTRAR PRIMEROS COMANDOS
-        # ----------------------------------------------------
+                self.get_logger().info(
+                    "Robot position captured before Servo:"
+                )
+
+                self.get_logger().info(
+                    format_vector(
+                        self.servo_start_positions,
+                        6
+                    )
+                )
+
+        # ------------------------------------------------
+        # FRAME
+        # ------------------------------------------------
+
+        frame = msg.header.frame_id
+
+        if frame:
+            self.twist_frames.add(
+                frame
+            )
+
+        # ------------------------------------------------
+        # MAGNITUD
+        # ------------------------------------------------
+
+        linear = msg.twist.linear
+
+        angular = msg.twist.angular
+
+        linear_norm = math.sqrt(
+            linear.x ** 2 +
+            linear.y ** 2 +
+            linear.z ** 2
+        )
+
+        angular_norm = math.sqrt(
+            angular.x ** 2 +
+            angular.y ** 2 +
+            angular.z ** 2
+        )
+
+        self.twist_linear_values.append(
+            linear_norm
+        )
+
+        self.twist_angular_values.append(
+            angular_norm
+        )
+
+        # ------------------------------------------------
+        # PRIMEROS MENSAJES
+        # ------------------------------------------------
 
         if self.twist_count <= 3:
 
-            linear = msg.twist.linear
-
-            angular = msg.twist.angular
-
-
             self.get_logger().info(
-                "[SERVO INPUT] Twist:"
+                "[TWIST INPUT]"
             )
 
             self.get_logger().info(
-
-                f"  linear: "
-
-                f"[{linear.x:.6f}, "
-
-                f"{linear.y:.6f}, "
-
-                f"{linear.z:.6f}]"
-
+                f"Frame: '{frame}'"
             )
 
             self.get_logger().info(
+                "Linear: "
+                f"[{linear.x:.8f}, "
+                f"{linear.y:.8f}, "
+                f"{linear.z:.8f}]"
+            )
 
-                f"  angular: "
-
-                f"[{angular.x:.6f}, "
-
-                f"{angular.y:.6f}, "
-
-                f"{angular.z:.6f}]"
-
+            self.get_logger().info(
+                "Angular: "
+                f"[{angular.x:.8f}, "
+                f"{angular.y:.8f}, "
+                f"{angular.z:.8f}]"
             )
 
 
@@ -903,195 +580,173 @@ class ServoDiagnostic(Node):
         self.joint_jog_count += 1
 
 
-        if self.joint_jog_count == 1:
-
-            self.get_logger().info(
-                "[SERVO INPUT] "
-                "JointJog commands detected"
-            )
-
-
     # ========================================================
-    # TRAJECTORY
+    # TRAYECTORIAS
     # ========================================================
 
     def trajectory_callback(self, msg):
 
+        now = time.time()
+
         self.trajectory_count += 1
 
+        self.last_trajectory_time = now
 
-        # ----------------------------------------------------
+        # ------------------------------------------------
         # PRIMERA TRAYECTORIA
-        # ----------------------------------------------------
+        # ------------------------------------------------
 
         if self.first_trajectory_time is None:
 
-            self.first_trajectory_time = time.time()
-
+            self.first_trajectory_time = now
 
             self.get_logger().info(
-                "[SERVO OUTPUT] "
-                "First JointTrajectory received"
+                "[SERVO OUTPUT] First trajectory detected"
             )
 
-
-        # ----------------------------------------------------
-        # COMPROBAR QUE EXISTEN PUNTOS
-        # ----------------------------------------------------
+        # ------------------------------------------------
+        # VALIDAR
+        # ------------------------------------------------
 
         if len(msg.points) == 0:
-
             return
 
-
         positions = list(
-
             msg.points[0].positions
-
         )
 
+        velocities = list(
+            msg.points[0].velocities
+        )
 
-        # ----------------------------------------------------
-        # PRIMERA TRAYECTORIA
-        # ----------------------------------------------------
+        joint_names = list(
+            msg.joint_names
+        )
 
-        if self.first_servo_trajectory_positions is None:
+        if len(joint_names) == 0:
+            return
 
-            self.first_servo_trajectory_positions = (
+        # ------------------------------------------------
+        # GUARDAR PRIMERA
+        # ------------------------------------------------
 
-                positions.copy()
+        if self.first_trajectory_positions is None:
 
-            )
-
-
-            self.get_logger().info(
-                "[SERVO OUTPUT] "
-                "First trajectory joint positions:"
-            )
-
-            for name, position in zip(
-
-                msg.joint_names,
-
+            self.first_trajectory_positions = list(
                 positions
+            )
 
-            ):
+            self.trajectory_joint_names = list(
+                joint_names
+            )
 
-                self.get_logger().info(
-
-                    f"  {name}: "
-
-                    f"{position:.8f}"
-
-                )
-
-
-        # ----------------------------------------------------
+        # ------------------------------------------------
         # CAMBIO ENTRE TRAYECTORIAS
-        # ----------------------------------------------------
+        # ------------------------------------------------
 
-        if (
+        if self.last_trajectory_positions is not None:
 
-            self.last_trajectory_positions is not None
-
-            and
-
-            len(
-                self.last_trajectory_positions
-            ) == len(positions)
-
-        ):
-
-            max_step = 0.0
-
-
-            for current, previous in zip(
-
+            differences = vector_difference(
                 positions,
-
                 self.last_trajectory_positions
+            )
 
-            ):
+            step_max = vector_abs_max(
+                differences
+            )
 
-                difference = abs(
+            self.trajectory_step_max = max(
+                self.trajectory_step_max,
+                step_max
+            )
 
-                    current
-
-                    -
-
-                    previous
-
-                )
-
-
-                if difference > max_step:
-
-                    max_step = difference
-
+            self.trajectory_step_sum += step_max
 
             self.trajectory_step_count += 1
 
-            self.trajectory_step_sum += max_step
+            if step_max < TRAJECTORY_IDENTICAL_THRESHOLD:
 
+                self.identical_trajectory_count += 1
 
-            if max_step > self.max_trajectory_step:
+        # ------------------------------------------------
+        # CAMBIO TOTAL
+        # ------------------------------------------------
 
-                self.max_trajectory_step = max_step
+        if self.first_trajectory_positions is not None:
 
-
-        # ----------------------------------------------------
-        # CAMBIO TOTAL DESDE LA PRIMERA
-        # ----------------------------------------------------
-
-        if (
-
-            self.first_servo_trajectory_positions
-
-            is not None
-
-        ):
-
-            for current, initial in zip(
-
+            total_differences = vector_difference(
                 positions,
+                self.first_trajectory_positions
+            )
 
-                self.first_servo_trajectory_positions
+            total_max = vector_abs_max(
+                total_differences
+            )
 
+            self.max_total_trajectory_change = max(
+                self.max_total_trajectory_change,
+                total_max
+            )
+
+        # ------------------------------------------------
+        # CAMBIO POR JOINT
+        # ------------------------------------------------
+
+        for i, joint in enumerate(joint_names):
+
+            if i >= len(positions):
+                continue
+
+            if joint not in EXPECTED_JOINTS:
+                continue
+
+            if self.first_trajectory_positions is None:
+                continue
+
+            if i >= len(
+                self.first_trajectory_positions
             ):
+                continue
 
-                difference = abs(
+            difference = abs(
+                positions[i]
+                -
+                self.first_trajectory_positions[i]
+            )
 
-                    current
+            self.max_trajectory_joint_change[joint] = max(
+                self.max_trajectory_joint_change[joint],
+                difference
+            )
 
-                    -
+        # ------------------------------------------------
+        # VELOCIDADES
+        # ------------------------------------------------
 
-                    initial
+        for i, joint in enumerate(joint_names):
 
-                )
+            if joint not in EXPECTED_JOINTS:
+                continue
 
+            if i >= len(velocities):
+                continue
 
-                if difference > (
+            velocity = abs(
+                velocities[i]
+            )
 
-                    self.max_total_trajectory_change
+            self.max_joint_velocity[joint] = max(
+                self.max_joint_velocity[joint],
+                velocity
+            )
 
-                ):
-
-                    self.max_total_trajectory_change = (
-
-                        difference
-
-                    )
-
-
-        # ----------------------------------------------------
+        # ------------------------------------------------
         # GUARDAR
-        # ----------------------------------------------------
+        # ------------------------------------------------
 
-        self.last_trajectory_positions = (
+        self.last_trajectory_positions = positions
 
-            positions.copy()
-
-        )
+        self.last_trajectory_velocities = velocities
 
 
     # ========================================================
@@ -1102,521 +757,136 @@ class ServoDiagnostic(Node):
 
         self.controller_state_count += 1
 
-
         try:
 
             actual = list(
-
                 msg.actual.positions
-
             )
-
 
             desired = list(
-
                 msg.desired.positions
-
             )
-
 
             error = list(
-
                 msg.error.positions
-
             )
 
+            self.last_actual_positions = actual
 
-        except Exception as e:
+            self.last_desired_positions = desired
 
-            self.get_logger().warn(
+            self.last_error_positions = error
 
-                f"Error reading controller state: {e}"
+            # ------------------------------------------------
+            # ERROR
+            # ------------------------------------------------
 
-            )
+            if len(error) > 0:
 
-            return
-
-
-        # ----------------------------------------------------
-        # GUARDAR
-        # ----------------------------------------------------
-
-        self.last_actual_positions = actual
-
-        self.last_desired_positions = desired
-
-        self.last_error_positions = error
-
-
-        # ----------------------------------------------------
-        # SOLO ANALIZAMOS SERVO DESPUÉS DE SU INICIO
-        # ----------------------------------------------------
-
-        if not self.servo_started:
-
-            return
-
-
-        # ----------------------------------------------------
-        # POSICIONES INICIALES
-        # ----------------------------------------------------
-
-        if self.servo_initial_actual_positions is None:
-
-            self.servo_initial_actual_positions = (
-
-                actual.copy()
-
-            )
-
-
-        if self.servo_initial_desired_positions is None:
-
-            self.servo_initial_desired_positions = (
-
-                desired.copy()
-
-            )
-
-
-        # ----------------------------------------------------
-        # CAMBIO DE ACTUAL
-        # ----------------------------------------------------
-
-        if (
-
-            len(actual)
-
-            ==
-
-            len(
-                self.servo_initial_actual_positions
-            )
-
-        ):
-
-            max_change = 0.0
-
-
-            for current, initial in zip(
-
-                actual,
-
-                self.servo_initial_actual_positions
-
-            ):
-
-                difference = abs(
-
-                    current
-
-                    -
-
-                    initial
-
+                max_error = vector_abs_max(
+                    error
                 )
 
-
-                if difference > max_change:
-
-                    max_change = difference
-
-
-            if max_change > self.max_actual_change_during_servo:
-
-                self.max_actual_change_during_servo = (
-
-                    max_change
-
+                self.max_controller_error = max(
+                    self.max_controller_error,
+                    max_error
                 )
 
+                self.controller_error_sum += max_error
 
-            if max_change > REAL_MOVEMENT_THRESHOLD:
+                self.controller_error_count += 1
 
-                self.actual_changed_count += 1
-
-
-        # ----------------------------------------------------
-        # CAMBIO DE DESIRED
-        # ----------------------------------------------------
-
-        if (
-
-            len(desired)
-
-            ==
-
-            len(
-                self.servo_initial_desired_positions
-            )
-
-        ):
-
-            max_change = 0.0
-
-
-            for current, initial in zip(
-
-                desired,
-
-                self.servo_initial_desired_positions
-
-            ):
-
-                difference = abs(
-
-                    current
-
-                    -
-
-                    initial
-
-                )
-
-
-                if difference > max_change:
-
-                    max_change = difference
-
-
-            if max_change > self.max_desired_change_during_servo:
-
-                self.max_desired_change_during_servo = (
-
-                    max_change
-
-                )
-
-
-            if max_change > REAL_MOVEMENT_THRESHOLD:
-
-                self.desired_changed_count += 1
-
-
-        # ----------------------------------------------------
-        # ERROR DEL CONTROLLER
-        # ----------------------------------------------------
-
-        for value in error:
-
-            absolute_error = abs(value)
-
-
-            self.controller_error_sum += (
-
-                absolute_error
-
-            )
-
-
-            self.controller_error_count += 1
-
-
-            if absolute_error > self.max_controller_error:
-
-                self.max_controller_error = (
-
-                    absolute_error
-
-                )
+        except Exception:
+            pass
 
 
     # ========================================================
     # FRECUENCIA
     # ========================================================
 
-    def get_joint_state_frequency(self):
+    def calculate_frequency(self, times):
 
-        if len(self.joint_state_times) < 2:
+        if len(times) < 2:
 
             return 0.0
 
-
         elapsed = (
-
-            self.joint_state_times[-1]
-
+            times[-1]
             -
-
-            self.joint_state_times[0]
-
+            times[0]
         )
-
 
         if elapsed <= 0:
 
             return 0.0
 
-
         return (
-
-            len(self.joint_state_times) - 1
-
+            len(times) - 1
         ) / elapsed
 
 
     # ========================================================
-    # PROMEDIO CAMBIO DE TRAYECTORIA
-    # ========================================================
-
-    def get_average_trajectory_step(self):
-
-        if self.trajectory_step_count == 0:
-
-            return 0.0
-
-
-        return (
-
-            self.trajectory_step_sum
-
-            /
-
-            self.trajectory_step_count
-
-        )
-
-
-    # ========================================================
-    # ERROR MEDIO
-    # ========================================================
-
-    def get_average_controller_error(self):
-
-        if self.controller_error_count == 0:
-
-            return 0.0
-
-
-        return (
-
-            self.controller_error_sum
-
-            /
-
-            self.controller_error_count
-
-        )
-
-
-    # ========================================================
-    # ESTADO EN VIVO
+    # LIVE STATUS
     # ========================================================
 
     def print_live_status(self):
 
         elapsed = (
-
             time.time()
-
             -
-
             self.start_time
-
         )
 
-
-        frequency = (
-
-            self.get_joint_state_frequency()
-
+        joint_frequency = self.calculate_frequency(
+            self.joint_state_times
         )
 
-
-        self.get_logger().info(
-            ""
+        twist_frequency = self.calculate_frequency(
+            self.twist_times
         )
 
+        self.get_logger().info("")
         self.get_logger().info(
             "------------------------------------------"
         )
 
         self.get_logger().info(
-
             f"TIME: {elapsed:.1f} / "
-
             f"{DIAGNOSTIC_DURATION:.1f} s"
-
         )
 
-
         self.get_logger().info(
-
-            f"Servo started: "
-
-            f"{self.servo_started}"
-
+            f"joint_states: {self.joint_state_count} "
+            f"({joint_frequency:.1f} Hz)"
         )
 
-
         self.get_logger().info(
-
-            f"joint_states: "
-
-            f"{self.joint_state_count} "
-
-            f"({frequency:.1f} Hz)"
-
+            f"Twist: {self.twist_count} "
+            f"({twist_frequency:.1f} Hz)"
         )
 
-
         self.get_logger().info(
-
-            f"Twist commands: "
-
-            f"{self.twist_count}"
-
+            f"JointJog: {self.joint_jog_count}"
         )
 
-
         self.get_logger().info(
-
-            f"Trajectories: "
-
-            f"{self.trajectory_count}"
-
+            f"Trajectories: {self.trajectory_count}"
         )
 
-
         self.get_logger().info(
-
             f"Controller states: "
-
             f"{self.controller_state_count}"
-
         )
 
-
-        if self.servo_started:
-
-            self.get_logger().info(
-                ""
-            )
-
-            self.get_logger().info(
-                "SERVO-ONLY MEASUREMENTS:"
-            )
-
-
-            self.get_logger().info(
-
-                f"Max trajectory step: "
-
-                f"{self.max_trajectory_step:.8f} rad"
-
-            )
-
-
-            self.get_logger().info(
-
-                f"Average trajectory step: "
-
-                f"{self.get_average_trajectory_step():.8f} rad"
-
-            )
-
-
-            self.get_logger().info(
-
-                f"Total trajectory change: "
-
-                f"{self.max_total_trajectory_change:.8f} rad"
-
-            )
-
-
-            self.get_logger().info(
-
-                f"Desired movement: "
-
-                f"{self.max_desired_change_during_servo:.8f} rad"
-
-            )
-
-
-            self.get_logger().info(
-
-                f"Actual movement: "
-
-                f"{self.max_actual_change_during_servo:.8f} rad"
-
-            )
-
-
-            self.get_logger().info(
-
-                f"Max controller error: "
-
-                f"{self.max_controller_error:.8f} rad"
-
-            )
-
-
-    # ========================================================
-    # TF CHECK
-    # ========================================================
-
-    def check_tf(self):
-
-        results = []
-
-
-        for source, target in IMPORTANT_TFS:
-
-            try:
-
-                transform = (
-
-                    self.tf_buffer.lookup_transform(
-
-                        source,
-
-                        target,
-
-                        rclpy.time.Time()
-
-                    )
-
-                )
-
-
-                results.append(
-
-                    (
-
-                        source,
-
-                        target,
-
-                        True,
-
-                        transform
-
-                    )
-
-                )
-
-
-            except Exception as e:
-
-                results.append(
-
-                    (
-
-                        source,
-
-                        target,
-
-                        False,
-
-                        str(e)
-
-                    )
-
-                )
-
-
-        return results
+        self.get_logger().info(
+            f"Max trajectory step: "
+            f"{self.trajectory_step_max:.10f} rad"
+        )
+
+        self.get_logger().info(
+            f"Max total trajectory change: "
+            f"{self.max_total_trajectory_change:.10f} rad"
+        )
 
 
     # ========================================================
@@ -1628,26 +898,132 @@ class ServoDiagnostic(Node):
         try:
 
             result = subprocess.run(
-
                 command,
-
                 shell=True,
-
                 capture_output=True,
-
                 text=True,
-
                 timeout=5
-
             )
 
+            output = result.stdout.strip()
 
-            return result.stdout.strip()
+            if result.stderr.strip():
 
+                output += (
+                    "\nSTDERR:\n"
+                    +
+                    result.stderr.strip()
+                )
+
+            return output
 
         except Exception as e:
 
             return f"ERROR: {e}"
+
+
+    # ========================================================
+    # PARÁMETROS DE SERVO
+    # ========================================================
+
+    def check_servo_parameters(self):
+
+        self.get_logger().info("")
+        self.get_logger().info(
+            "=================================================="
+        )
+        self.get_logger().info(
+            "MOVEIT SERVO PARAMETER CHECK"
+        )
+        self.get_logger().info(
+            "=================================================="
+        )
+
+        output = self.run_command(
+            "ros2 param list /servo_node"
+        )
+
+        if (
+            output == ""
+            or output.startswith("ERROR")
+        ):
+
+            self.get_logger().warn(
+                "Could not obtain Servo parameters"
+            )
+
+            return
+
+        parameters = output.splitlines()
+
+        self.get_logger().info(
+            f"Parameters found: {len(parameters)}"
+        )
+
+        interesting_words = [
+
+            "scale",
+
+            "linear",
+
+            "angular",
+
+            "singularity",
+
+            "joint_limit",
+
+            "collision",
+
+            "publish_period",
+
+            "incoming_command_timeout",
+
+            "command_in_type",
+
+            "planning_frame",
+
+            "robot_link_command_frame",
+
+            "move_group",
+
+            "status"
+        ]
+
+        interesting_parameters = []
+
+        for parameter in parameters:
+
+            parameter_lower = parameter.lower()
+
+            for word in interesting_words:
+
+                if word in parameter_lower:
+
+                    interesting_parameters.append(
+                        parameter
+                    )
+
+                    break
+
+        if len(interesting_parameters) == 0:
+
+            self.get_logger().warn(
+                "No obvious scaling parameters found"
+            )
+
+        else:
+
+            for parameter in interesting_parameters:
+
+                value = self.run_command(
+                    f"ros2 param get "
+                    f"/servo_node "
+                    f"'{parameter}'"
+                )
+
+                self.get_logger().info(
+                    f"{parameter}: {value}"
+                )
 
 
     # ========================================================
@@ -1656,56 +1032,70 @@ class ServoDiagnostic(Node):
 
     def check_ros_graph(self):
 
-        nodes_output = self.run_command(
-
-            "ros2 node list"
-
+        self.get_logger().info("")
+        self.get_logger().info(
+            "=================================================="
+        )
+        self.get_logger().info(
+            "IMPORTANT ROS TOPICS"
+        )
+        self.get_logger().info(
+            "=================================================="
         )
 
-
-        topics_output = self.run_command(
-
+        topics = self.run_command(
             "ros2 topic list"
+        ).splitlines()
 
+        important_topics = [
+
+            "/joint_states",
+
+            "/servo_node/delta_twist_cmds",
+
+            "/servo_node/delta_joint_cmds",
+
+            "/joint_trajectory_controller/joint_trajectory",
+
+            "/joint_trajectory_controller/state",
+
+            "/servo_node/status"
+        ]
+
+        for topic in important_topics:
+
+            if topic in topics:
+
+                self.get_logger().info(
+                    f"[OK] {topic}"
+                )
+
+            else:
+
+                self.get_logger().warn(
+                    f"[MISSING] {topic}"
+                )
+
+
+    # ========================================================
+    # MOVIMIENTO REAL DE SERVO
+    # ========================================================
+
+    def calculate_real_servo_movement(self):
+
+        if (
+            self.servo_start_positions is None
+            or self.servo_end_positions is None
+        ):
+
+            return None
+
+        differences = vector_difference(
+            self.servo_end_positions,
+            self.servo_start_positions
         )
 
-
-        services_output = self.run_command(
-
-            "ros2 service list"
-
-        )
-
-
-        actions_output = self.run_command(
-
-            "ros2 action list"
-
-        )
-
-
-        return {
-
-            "nodes":
-
-                nodes_output.splitlines(),
-
-
-            "topics":
-
-                topics_output.splitlines(),
-
-
-            "services":
-
-                services_output.splitlines(),
-
-
-            "actions":
-
-                actions_output.splitlines(),
-
-        }
+        return differences
 
 
     # ========================================================
@@ -1714,660 +1104,513 @@ class ServoDiagnostic(Node):
 
     def print_final_report(self):
 
+        self.get_logger().info("")
         self.get_logger().info(
-            ""
+            "=================================================="
         )
-
+        self.get_logger().info(
+            "FINAL MOVEIT SERVO DEEP DIAGNOSTIC"
+        )
         self.get_logger().info(
             "=================================================="
         )
 
+        # --------------------------------------------------
+        # TWIST
+        # --------------------------------------------------
+
+        self.get_logger().info("")
         self.get_logger().info(
-            "FINAL ADVANCED DIAGNOSTIC REPORT"
+            "1. TWIST INPUT ANALYSIS"
         )
-
-        self.get_logger().info(
-            "=================================================="
-        )
-
-
-        # ----------------------------------------------------
-        # RESUMEN DE LA CADENA
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "SERVO PIPELINE"
-        )
-
         self.get_logger().info(
             "--------------------------------------------------"
         )
 
+        twist_frequency = self.calculate_frequency(
+            self.twist_times
+        )
 
         self.get_logger().info(
-
-            f"Twist messages: "
-
+            f"Total Twist messages: "
             f"{self.twist_count}"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Generated trajectories: "
-
-            f"{self.trajectory_count}"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Controller state messages: "
-
-            f"{self.controller_state_count}"
-
-        )
-
-
-        # ----------------------------------------------------
-        # MOVIMIENTO POR ARTICULACIÓN
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
         )
 
         self.get_logger().info(
-            "REAL MOVEMENT DURING SERVO"
+            f"Twist frequency: "
+            f"{twist_frequency:.4f} Hz"
         )
-
-        self.get_logger().info(
-            "--------------------------------------------------"
-        )
-
-
-        for joint in EXPECTED_JOINTS:
-
-            change = (
-
-                self.servo_joint_changes.get(
-
-                    joint,
-
-                    0.0
-
-                )
-
-            )
-
-
-            self.get_logger().info(
-
-                f"{joint}: "
-
-                f"{change:.8f} rad"
-
-            )
-
-
-        # ----------------------------------------------------
-        # TRAYECTORIAS
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "TRAJECTORY ANALYSIS"
-        )
-
-        self.get_logger().info(
-            "--------------------------------------------------"
-        )
-
-
-        self.get_logger().info(
-
-            f"Maximum step between trajectories: "
-
-            f"{self.max_trajectory_step:.10f} rad"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Average step between trajectories: "
-
-            f"{self.get_average_trajectory_step():.10f} rad"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Maximum total trajectory change: "
-
-            f"{self.max_total_trajectory_change:.10f} rad"
-
-        )
-
-
-        # ----------------------------------------------------
-        # CONTROLLER
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "CONTROLLER ANALYSIS"
-        )
-
-        self.get_logger().info(
-            "--------------------------------------------------"
-        )
-
-
-        self.get_logger().info(
-
-            f"Desired movement: "
-
-            f"{self.max_desired_change_during_servo:.10f} rad"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Actual movement: "
-
-            f"{self.max_actual_change_during_servo:.10f} rad"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Maximum controller error: "
-
-            f"{self.max_controller_error:.10f} rad"
-
-        )
-
-
-        self.get_logger().info(
-
-            f"Average controller error: "
-
-            f"{self.get_average_controller_error():.10f} rad"
-
-        )
-
-
-        # ----------------------------------------------------
-        # MOVIMIENTO REAL
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
-        )
-
-        self.get_logger().info(
-            "MOVEMENT RESULT"
-        )
-
-        self.get_logger().info(
-            "--------------------------------------------------"
-        )
-
 
         if (
-
-            self.servo_max_joint_change
-
-            >
-
-            REAL_MOVEMENT_THRESHOLD
-
+            self.first_twist_time is not None
+            and self.last_twist_time is not None
         ):
 
-            self.get_logger().info(
-
-                "[OK] Robot moved during Servo"
-
+            twist_duration = (
+                self.last_twist_time
+                -
+                self.first_twist_time
             )
 
+            self.get_logger().info(
+                f"Twist command duration: "
+                f"{twist_duration:.6f} s"
+            )
+
+        if len(self.twist_frames) > 0:
+
+            self.get_logger().info(
+                f"Twist frame(s): "
+                f"{list(self.twist_frames)}"
+            )
+
+        if len(self.twist_linear_values) > 0:
+
+            max_linear = max(
+                self.twist_linear_values
+            )
+
+            avg_linear = sum(
+                self.twist_linear_values
+            ) / len(
+                self.twist_linear_values
+            )
+
+            self.get_logger().info(
+                f"Maximum linear Twist magnitude: "
+                f"{max_linear:.10f}"
+            )
+
+            self.get_logger().info(
+                f"Average linear Twist magnitude: "
+                f"{avg_linear:.10f}"
+            )
+
+        # --------------------------------------------------
+        # TRAJECTORY ANALYSIS
+        # --------------------------------------------------
+
+        self.get_logger().info("")
+        self.get_logger().info(
+            "2. TRAJECTORY ANALYSIS"
+        )
+        self.get_logger().info(
+            "--------------------------------------------------"
+        )
+
+        self.get_logger().info(
+            f"Total trajectories: "
+            f"{self.trajectory_count}"
+        )
+
+        self.get_logger().info(
+            f"Maximum step between trajectories: "
+            f"{self.trajectory_step_max:.10f} rad"
+        )
+
+        if self.trajectory_step_count > 0:
+
+            average_step = (
+                self.trajectory_step_sum
+                /
+                self.trajectory_step_count
+            )
+
+            self.get_logger().info(
+                f"Average step between trajectories: "
+                f"{average_step:.10f} rad"
+            )
 
         else:
 
-            self.get_logger().error(
+            average_step = 0.0
 
-                "[FAIL] Robot did NOT move significantly "
+        self.get_logger().info(
+            f"Maximum total trajectory change: "
+            f"{self.max_total_trajectory_change:.10f} rad"
+        )
 
-                "during Servo"
+        self.get_logger().info(
+            f"Almost identical trajectories: "
+            f"{self.identical_trajectory_count}"
+        )
 
+        if self.trajectory_count > 1:
+
+            identical_percentage = (
+                100.0
+                *
+                self.identical_trajectory_count
+                /
+                (self.trajectory_count - 1)
             )
 
+            self.get_logger().info(
+                f"Identical percentage: "
+                f"{identical_percentage:.4f}%"
+            )
 
-        # ----------------------------------------------------
-        # TF
-        # ----------------------------------------------------
+        # --------------------------------------------------
+        # MOVIMIENTO POR ARTICULACIÓN
+        # --------------------------------------------------
 
+        self.get_logger().info("")
         self.get_logger().info(
-            ""
+            "3. MOVEMENT GENERATED BY EACH JOINT"
         )
-
-        self.get_logger().info(
-            "TF CHECK"
-        )
-
         self.get_logger().info(
             "--------------------------------------------------"
         )
 
+        for joint in EXPECTED_JOINTS:
 
-        tf_results = self.check_tf()
+            movement = (
+                self.max_trajectory_joint_change[
+                    joint
+                ]
+            )
 
+            self.get_logger().info(
+                f"{joint}: "
+                f"{movement:.10f} rad "
+                f"({math.degrees(movement):.8f} deg)"
+            )
 
-        for source, target, success, data in tf_results:
+        # --------------------------------------------------
+        # VELOCIDADES
+        # --------------------------------------------------
 
-            if success:
+        self.get_logger().info("")
+        self.get_logger().info(
+            "4. MAXIMUM GENERATED JOINT VELOCITIES"
+        )
+        self.get_logger().info(
+            "--------------------------------------------------"
+        )
 
-                self.get_logger().info(
+        for joint in EXPECTED_JOINTS:
 
-                    f"[OK] TF: "
+            velocity = (
+                self.max_joint_velocity[
+                    joint
+                ]
+            )
 
-                    f"{source} -> {target}"
+            self.get_logger().info(
+                f"{joint}: "
+                f"{velocity:.10f} rad/s"
+            )
 
+        # --------------------------------------------------
+        # MOVIMIENTO REAL DURANTE SERVO
+        # --------------------------------------------------
+
+        self.get_logger().info("")
+        self.get_logger().info(
+            "5. REAL MOVEMENT DURING SERVO ONLY"
+        )
+        self.get_logger().info(
+            "--------------------------------------------------"
+        )
+
+        real_movement = (
+            self.calculate_real_servo_movement()
+        )
+
+        real_movement_max = 0.0
+
+        if real_movement is not None:
+
+            real_movement_max = vector_abs_max(
+                real_movement
+            )
+
+            self.get_logger().info(
+                "Joint differences "
+                "(after Servo - before Servo):"
+            )
+
+            self.get_logger().info(
+                format_vector(
+                    real_movement,
+                    10
                 )
+            )
 
-            else:
+            self.get_logger().info(
+                f"Maximum real Servo movement: "
+                f"{real_movement_max:.10f} rad"
+            )
 
-                self.get_logger().error(
+            self.get_logger().info(
+                f"Maximum real Servo movement: "
+                f"{math.degrees(real_movement_max):.10f} deg"
+            )
 
-                    f"[FAIL] TF missing: "
+        else:
 
-                    f"{source} -> {target}"
+            self.get_logger().warn(
+                "Could not calculate Servo-only movement"
+            )
 
-                )
+        # --------------------------------------------------
+        # CONTROLLER ERROR
+        # --------------------------------------------------
 
+        self.get_logger().info("")
+        self.get_logger().info(
+            "6. CONTROLLER FOLLOWING ANALYSIS"
+        )
+        self.get_logger().info(
+            "--------------------------------------------------"
+        )
 
-        # ----------------------------------------------------
+        self.get_logger().info(
+            f"Controller state messages: "
+            f"{self.controller_state_count}"
+        )
+
+        self.get_logger().info(
+            f"Maximum controller error: "
+            f"{self.max_controller_error:.10f} rad"
+        )
+
+        if self.controller_error_count > 0:
+
+            average_error = (
+                self.controller_error_sum
+                /
+                self.controller_error_count
+            )
+
+            self.get_logger().info(
+                f"Average controller error: "
+                f"{average_error:.10f} rad"
+            )
+
+        # --------------------------------------------------
+        # COMPARACIÓN
+        # --------------------------------------------------
+
+        self.get_logger().info("")
+        self.get_logger().info(
+            "7. COMPLETE CHAIN COMPARISON"
+        )
+        self.get_logger().info(
+            "--------------------------------------------------"
+        )
+
+        if self.last_twist is not None:
+
+            linear = (
+                self.last_twist.twist.linear
+            )
+
+            self.get_logger().info(
+                "Last Twist:"
+            )
+
+            self.get_logger().info(
+                f"linear.x = {linear.x:.10f}"
+            )
+
+            self.get_logger().info(
+                f"linear.y = {linear.y:.10f}"
+            )
+
+            self.get_logger().info(
+                f"linear.z = {linear.z:.10f}"
+            )
+
+        self.get_logger().info(
+            f"Trajectory maximum movement: "
+            f"{self.max_total_trajectory_change:.10f} rad"
+        )
+
+        self.get_logger().info(
+            f"Real robot movement: "
+            f"{real_movement_max:.10f} rad"
+        )
+
+        # --------------------------------------------------
         # ROS GRAPH
-        # ----------------------------------------------------
+        # --------------------------------------------------
 
+        self.check_ros_graph()
+
+        # --------------------------------------------------
+        # PARÁMETROS SERVO
+        # --------------------------------------------------
+
+        self.check_servo_parameters()
+
+        # --------------------------------------------------
+        # CONCLUSIÓN
+        # --------------------------------------------------
+
+        self.get_logger().info("")
         self.get_logger().info(
-            ""
+            "=================================================="
         )
-
         self.get_logger().info(
-            "ROS GRAPH"
+            "AUTOMATIC DIAGNOSIS"
         )
-
-        self.get_logger().info(
-            "--------------------------------------------------"
-        )
-
-
-        graph = self.check_ros_graph()
-
-
-        for node in IMPORTANT_NODES:
-
-            if node in graph["nodes"]:
-
-                self.get_logger().info(
-
-                    f"[OK] Node: {node}"
-
-                )
-
-            else:
-
-                self.get_logger().warn(
-
-                    f"[WARN] Node missing: {node}"
-
-                )
-
-
-        for topic in IMPORTANT_TOPICS:
-
-            if topic in graph["topics"]:
-
-                self.get_logger().info(
-
-                    f"[OK] Topic: {topic}"
-
-                )
-
-            else:
-
-                self.get_logger().warn(
-
-                    f"[WARN] Topic missing: {topic}"
-
-                )
-
-
-        # ----------------------------------------------------
-        # CONCLUSIÓN AUTOMÁTICA
-        # ----------------------------------------------------
-
-        self.get_logger().info(
-            ""
-        )
-
         self.get_logger().info(
             "=================================================="
         )
 
-        self.get_logger().info(
-            "AUTOMATIC CONCLUSION"
-        )
-
-        self.get_logger().info(
-            "=================================================="
-        )
-
-
+        # --------------------------------------------------
         # CASO 1
-        # ------------------------------------------------
+        # --------------------------------------------------
 
         if self.twist_count == 0:
 
             self.get_logger().error(
-                ""
+                "FAIL: HAL is not sending Twist commands"
             )
 
-            self.get_logger().error(
-                "PROBLEM 1: NO SERVO INPUT"
-            )
-
-            self.get_logger().error(
-
-                "HAL is not publishing Twist commands."
-
-            )
-
-
+        # --------------------------------------------------
         # CASO 2
-        # ------------------------------------------------
+        # --------------------------------------------------
 
         elif self.trajectory_count == 0:
 
             self.get_logger().error(
-                ""
+                "FAIL: Servo receives Twist but "
+                "does not generate trajectories"
             )
 
-            self.get_logger().error(
-                "PROBLEM 2: SERVO DOES NOT GENERATE OUTPUT"
-            )
-
-            self.get_logger().error(
-
-                "Twist commands reach Servo, but no "
-
-                "JointTrajectory is generated."
-
-            )
-
-
+        # --------------------------------------------------
         # CASO 3
-        # ------------------------------------------------
+        # --------------------------------------------------
 
         elif (
-
             self.max_total_trajectory_change
-
             <
-
-            SMALL_TRAJECTORY_CHANGE
-
+            VERY_SMALL_MOVEMENT_THRESHOLD
         ):
 
-            self.get_logger().warn(
-                ""
+            self.get_logger().error(
+                "MAIN PROBLEM DETECTED:"
             )
 
-            self.get_logger().warn(
-                "PROBLEM 3: TRAJECTORIES ARE ALMOST STATIC"
+            self.get_logger().error(
+                "MoveIt Servo is generating an "
+                "EXTREMELY SMALL joint motion."
             )
 
-            self.get_logger().warn(
-
-                "Servo generates trajectories, but their "
-
-                "total joint change is extremely small."
-
+            self.get_logger().error(
+                f"Maximum generated motion: "
+                f"{self.max_total_trajectory_change:.10f} rad"
             )
 
-            self.get_logger().warn(
-                ""
+            self.get_logger().error(
+                "The controller is probably NOT the problem."
             )
 
-            self.get_logger().warn(
-                "LIKELY CAUSE:"
+            self.get_logger().error(
+                "Investigate:"
             )
 
-            self.get_logger().warn(
-
-                "The Servo configuration or command scaling "
-
-                "is producing movements too small to observe."
-
+            self.get_logger().error(
+                "- Servo velocity scaling"
             )
 
+            self.get_logger().error(
+                "- Linear/angular scale"
+            )
 
+            self.get_logger().error(
+                "- Singularity scaling"
+            )
+
+            self.get_logger().error(
+                "- Joint limit scaling"
+            )
+
+            self.get_logger().error(
+                "- Collision scaling"
+            )
+
+            self.get_logger().error(
+                "- Incorrect command frame"
+            )
+
+            self.get_logger().error(
+                "- Incorrect planning frame"
+            )
+
+            self.get_logger().error(
+                "- HAL command interpretation"
+            )
+
+        # --------------------------------------------------
         # CASO 4
-        # ------------------------------------------------
+        # --------------------------------------------------
 
         elif (
-
-            self.max_desired_change_during_servo
-
-            >
-
-            REAL_MOVEMENT_THRESHOLD
-
-            and
-
-            self.max_actual_change_during_servo
-
-            <=
-
-            REAL_MOVEMENT_THRESHOLD
-
+            real_movement_max
+            <
+            self.max_total_trajectory_change
+            *
+            0.1
         ):
 
             self.get_logger().error(
-                ""
+                "PROBLEM DETECTED:"
             )
 
             self.get_logger().error(
-                "PROBLEM 4: CONTROLLER DOES NOT EXECUTE COMMANDS"
+                "Servo generates significant trajectories"
             )
 
             self.get_logger().error(
-                ""
+                "but the real robot barely follows them."
             )
 
             self.get_logger().error(
-
-                "Desired positions change, but actual "
-
-                "positions remain almost constant."
-
+                "Likely problem:"
             )
 
             self.get_logger().error(
-                ""
+                "joint_trajectory_controller / ros2_control"
             )
 
-            self.get_logger().error(
-                "THE PROBLEM IS LIKELY BETWEEN:"
-            )
-
-            self.get_logger().error(
-                ""
-            )
-
-            self.get_logger().error(
-
-                "joint_trajectory_controller"
-
-            )
-
-            self.get_logger().error(
-                "        |"
-            )
-
-            self.get_logger().error(
-                "        v"
-            )
-
-            self.get_logger().error(
-                "ros2_control / gz_ros2_control"
-            )
-
-
+        # --------------------------------------------------
         # CASO 5
-        # ------------------------------------------------
+        # --------------------------------------------------
 
         elif (
-
-            self.max_actual_change_during_servo
-
-            >
-
-            REAL_MOVEMENT_THRESHOLD
-
-            and
-
             self.max_controller_error
-
             >
-
-            CONTROLLER_ERROR_WARNING
-
+            0.01
         ):
 
-            self.get_logger().warn(
-                ""
+            self.get_logger().error(
+                "PROBLEM DETECTED:"
             )
 
-            self.get_logger().warn(
-                "PROBLEM 5: ROBOT MOVES BUT CONTROLLER ERROR IS HIGH"
+            self.get_logger().error(
+                "The controller is receiving trajectories"
             )
 
-            self.get_logger().warn(
-                ""
+            self.get_logger().error(
+                "but cannot accurately follow them."
             )
 
-            self.get_logger().warn(
-
-                "The controller executes the commands, "
-
-                "but actual positions do not follow desired "
-
-                "positions accurately."
-
-            )
-
-
-        # CASO 6
-        # ------------------------------------------------
-
-        elif (
-
-            self.max_actual_change_during_servo
-
-            >
-
-            REAL_MOVEMENT_THRESHOLD
-
-        ):
-
-            self.get_logger().info(
-                ""
-            )
-
-            self.get_logger().info(
-                "SUCCESS: COMPLETE SERVO CHAIN IS WORKING"
-            )
-
-            self.get_logger().info(
-                ""
-            )
-
-            self.get_logger().info(
-
-                "Servo generates changing trajectories and "
-
-                "the robot actually follows them."
-
-            )
-
-
-            if (
-
-                self.max_total_trajectory_change
-
-                <
-
-                MEDIUM_TRAJECTORY_CHANGE
-
-            ):
-
-                self.get_logger().warn(
-                    ""
-                )
-
-                self.get_logger().warn(
-
-                    "However, the generated movement is "
-
-                    "very small."
-
-                )
-
-
-        # CASO DESCONOCIDO
-        # ------------------------------------------------
+        # --------------------------------------------------
+        # SUCCESS
+        # --------------------------------------------------
 
         else:
 
-            self.get_logger().warn(
-                ""
+            self.get_logger().info(
+                "Servo chain appears to be functioning."
             )
 
-            self.get_logger().warn(
-                "INCONCLUSIVE RESULT"
+            self.get_logger().info(
+                "No obvious transmission failure detected."
             )
-
-            self.get_logger().warn(
-
-                "Servo and controller activity were detected, "
-
-                "but the movement pattern does not match a "
-
-                "clear failure category."
-
-            )
-
-
-        self.get_logger().info(
-            ""
-        )
 
         self.get_logger().info(
             "=================================================="
@@ -2380,54 +1623,36 @@ class ServoDiagnostic(Node):
 
 def main(args=None):
 
-    rclpy.init(
-        args=args
-    )
+    rclpy.init(args=args)
 
-
-    node = ServoDiagnostic()
-
+    node = ServoDeepDiagnostic()
 
     start = time.time()
-
 
     try:
 
         while rclpy.ok():
 
             rclpy.spin_once(
-
                 node,
-
                 timeout_sec=0.1
-
             )
-
 
             elapsed = (
-
                 time.time()
-
                 -
-
                 start
-
             )
-
 
             if elapsed >= DIAGNOSTIC_DURATION:
 
                 break
 
-
     except KeyboardInterrupt:
 
         node.get_logger().warn(
-
-            "Diagnostic interrupted by user"
-
+            "Diagnostic interrupted"
         )
-
 
     finally:
 
