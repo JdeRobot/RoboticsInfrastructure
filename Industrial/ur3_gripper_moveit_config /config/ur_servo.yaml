@@ -17,7 +17,7 @@ scale:
 system_latency_compensation: 0.04
 
 ## Properties of outgoing commands
-publish_period: 0.004  # 1/Nominal publish rate [seconds]
+publish_period: 0.01  # 1/Nominal publish rate [seconds]
 low_latency_mode: false  # Set this to true to publish as soon as an incoming Twist command is received (publish_period is ignored)
 
 # What type of topic does your robot driver expect?
@@ -41,7 +41,7 @@ planning_frame: base_link  # The MoveIt planning frame. Often 'base_link' or 'wo
 
 ## Other frames
 ee_frame_name: tool0  # The name of the end effector link, used to return the EE pose
-robot_link_command_frame:  tool0  # commands must be given in the frame of a robot link. Usually either the base or end effector
+robot_link_command_frame:  base_link  # commands must be given in the frame of a robot link. Usually either the base or end effector
 
 ## Stopping behaviour
 incoming_command_timeout:  0.1  # Stop servoing if X seconds elapse without a new command
@@ -62,7 +62,7 @@ status_topic: ~/status # Publish status to this topic
 command_out_topic: /joint_trajectory_controller/joint_trajectory # Publish outgoing commands here
 
 ## Collision checking for the entire robot body
-check_collisions: true # Check collisions?
+check_collisions: false # Check collisions?
 collision_check_rate: 5.0 # [Hz] Collision-checking can easily bog down a CPU if done too often.
 # Two collision check algorithms are available:
 # "threshold_distance" begins slowing down when nearer than a specified distance. Good if you want to tune collision thresholds manually.

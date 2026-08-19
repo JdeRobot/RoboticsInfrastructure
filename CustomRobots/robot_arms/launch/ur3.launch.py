@@ -134,6 +134,19 @@ def launch_setup(context):
     }
 
     # =========================
+    # MOVEIT SERVO CONFIGURATION
+    # =========================
+
+    servo_yaml = load_yaml(
+        "ur3_gripper_moveit_config",
+        "config/ur_servo.yaml"
+    )
+
+    servo_params = {
+        "moveit_servo": servo_yaml
+    }
+
+    # =========================
     # NODES
     # =========================
 
@@ -335,6 +348,32 @@ def launch_setup(context):
     )
 
     nodes.append(move_group)
+
+    # =========================
+    # MOVEIT SERVO
+    # =========================
+
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        name="servo_node",
+        output="screen",
+        parameters=[
+            servo_params,
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            combined_planning,
+            {"use_sim_time": True},
+        ],
+        arguments=[
+            "--ros-args",
+            "--log-level",
+            "debug",
+        ],
+    )
+
+    nodes.append(servo_node)
 
     # =========================
     # LAUNCH
