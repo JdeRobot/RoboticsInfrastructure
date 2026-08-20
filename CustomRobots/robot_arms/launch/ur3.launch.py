@@ -366,11 +366,7 @@ def launch_setup(context):
             combined_planning,
             {"use_sim_time": True},
         ],
-        arguments=[
-            "--ros-args",
-            "--log-level",
-            "debug",
-        ],
+        output="screen",
     )
 
     nodes.append(servo_node)
