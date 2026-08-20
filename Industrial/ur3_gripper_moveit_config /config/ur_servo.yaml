@@ -26,8 +26,8 @@ command_out_type: trajectory_msgs/JointTrajectory
 
 # What to publish? Can save some bandwidth as most robots only require positions or velocities
 publish_joint_positions: true
-publish_joint_velocities: true
-publish_joint_accelerations: true
+publish_joint_velocities: false
+publish_joint_accelerations: false
 
 ## Plugins for smoothing outgoing commands
 smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
@@ -50,8 +50,8 @@ incoming_command_timeout:  0.1  # Stop servoing if X seconds elapse without a ne
 num_outgoing_halt_msgs_to_publish: 4
 
 ## Configure handling of singularities and joint limits
-lower_singularity_threshold:  100.0  # Start decelerating when the condition number hits this (close to singularity)
-hard_stop_singularity_threshold: 200.0 # Stop when the condition number hits this
+lower_singularity_threshold:  1000.0  # Start decelerating when the condition number hits this (close to singularity)
+hard_stop_singularity_threshold: 2000.0 # Stop when the condition number hits this
 joint_limit_margin: 0.1 # added as a buffer to joint limits [radians]. If moving quickly, make this larger.
 
 ## Topic names
