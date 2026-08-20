@@ -14,11 +14,11 @@ scale:
 # This is a fudge factor to account for any latency in the system, e.g. network latency or poor low-level
 # controller performance. It essentially increases the timestep when calculating the target pose, to move the target
 # pose farther away. [seconds]
-system_latency_compensation: 0.04
+system_latency_compensation: 0.1
 
 ## Properties of outgoing commands
-publish_period: 0.3  # 1/Nominal publish rate [seconds]
-low_latency_mode: true  # Set this to true to publish as soon as an incoming Twist command is received (publish_period is ignored)
+publish_period: 0.05  # 1/Nominal publish rate [seconds]
+low_latency_mode: false  # Set this to true to publish as soon as an incoming Twist command is received (publish_period is ignored)
 
 # What type of topic does your robot driver expect?
 # Currently supported are std_msgs/Float64MultiArray or trajectory_msgs/JointTrajectory
@@ -26,7 +26,7 @@ command_out_type: trajectory_msgs/JointTrajectory
 
 # What to publish? Can save some bandwidth as most robots only require positions or velocities
 publish_joint_positions: true
-publish_joint_velocities: false
+publish_joint_velocities: true
 publish_joint_accelerations: false
 
 ## Plugins for smoothing outgoing commands
