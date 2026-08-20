@@ -366,7 +366,6 @@ def launch_setup(context):
             combined_planning,
             {"use_sim_time": True},
         ],
-        output="screen",
     )
 
     nodes.append(servo_node)
