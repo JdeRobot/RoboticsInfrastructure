@@ -57,10 +57,19 @@ public:
 
         for (auto link : links)
         {
-          if (inside)
+          if (!inside)
+            continue;
+
+          const double STOP_Y = -0.55;
+
+          if (pos.Y() > STOP_Y)
           {
             ApplyForce(_ecm, link);
             StabilizeMotion(_ecm, link);
+          }
+          else
+          {
+            StopMotion(_ecm, link);
           }
         }
 
@@ -126,6 +135,65 @@ public:
     {
       cmdComp->Data() = vel;
     }
+  }
+
+  void StopMotion(
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::Entity entity)
+  {
+      // Eliminar la fuerza
+      gz::msgs::Wrench wrenchMsg;
+
+      wrenchMsg.mutable_force()->set_x(0);
+      wrenchMsg.mutable_force()->set_y(0);
+      wrenchMsg.mutable_force()->set_z(0);
+
+      wrenchMsg.mutable_torque()->set_x(0);
+      wrenchMsg.mutable_torque()->set_y(0);
+      wrenchMsg.mutable_torque()->set_z(0);
+
+      auto wrenchComp =
+          _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(entity);
+
+      if (!wrenchComp)
+      {
+          _ecm.CreateComponent(
+              entity,
+              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg));
+      }
+      else
+      {
+          wrenchComp->Data() = wrenchMsg;
+      }
+
+      // Anular la velocidad residual
+      auto velComp =
+          _ecm.Component<gz::sim::components::LinearVelocity>(entity);
+
+      if (!velComp)
+          return;
+
+      auto vel = velComp->Data();
+
+      // Sólo parar el movimiento horizontal de la cinta
+      vel.X() = 0;
+      vel.Y() = 0;
+
+      // Mantener la velocidad vertical
+
+      auto cmdComp =
+          _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
+
+      if (!cmdComp)
+      {
+          _ecm.CreateComponent(
+              entity,
+              gz::sim::components::LinearVelocityCmd(vel));
+      }
+      else
+      {
+          cmdComp->Data() = vel;
+      }
   }
 };
 

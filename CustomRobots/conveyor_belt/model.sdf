@@ -32,7 +32,7 @@
 
         <geometry>
           <box>
-            <size>0.50 1.20 0.05</size>
+            <size>0.50 1.20 0.055</size>
           </box>
         </geometry>
 

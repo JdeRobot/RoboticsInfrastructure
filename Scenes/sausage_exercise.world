@@ -17,6 +17,16 @@
       <render_engine>ogre2</render_engine>
     </plugin>
 
+    <plugin filename="libgz_link_attacher.so"
+            name="gz_link_attacher::LinkAttacher">
+
+      <robot_model>ur3_robotiq</robot_model>
+
+    </plugin>
+
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
+    </plugin>
+
     <gravity>0 0 -9.8</gravity>
 
     <physics name="default" type="ode">
@@ -70,13 +80,20 @@
 
     <include>
       <uri>model://conveyor_belt</uri>
+      <name>conveyor_belt_1</name>
       <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://conveyor_belt</uri>
+      <name>conveyor_belt_2</name>
+      <pose>0.9 -0.85 0 0 0 1.57079632679</pose>
     </include>
 
     <!-- Robot Base (Placeholder) -->
     <model name="robotbase">
       <static>true</static>
-      <pose>-0.4 -0.5 0 0 0 0</pose>
+      <pose>0.0 -0.85 0 0 0 0</pose>
       <link name="link">
         <pose>0 0 0.45 0 0 0</pose>
         <visual name="visual">

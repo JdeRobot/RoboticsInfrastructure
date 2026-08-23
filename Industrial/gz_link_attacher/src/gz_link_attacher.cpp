@@ -62,7 +62,7 @@ LinkAttacher()
 
 void Configure(
   const Entity &_entity,
-  const std::shared_ptr<const sdf::Element> &,
+  const std::shared_ptr<const sdf::Element> &_sdf,
   EntityComponentManager &,
   EventManager &) override
 {
@@ -70,6 +70,11 @@ void Configure(
   std::cout << "\n[LinkAttacher] Configure() START\n";
 
   worldEntity = _entity;
+
+  if (_sdf && _sdf->HasElement("robot_model"))
+  {
+      robotModelName = _sdf->Get<std::string>("robot_model");
+  }
 
   std::cout << "[LinkAttacher] World entity: " << worldEntity << std::endl;
 
@@ -113,9 +118,15 @@ void Configure(
       {
         contactLatched = false;
 
+        leftFingerContact = false;
+        rightFingerContact = false;
+
+        leftObjectModel.clear();
+        rightObjectModel.clear();
+
         if (activeJoint != kNullEntity)
         {
-          removeJointRequested = true;
+            removeJointRequested = true;
         }
       }
     });
@@ -143,28 +154,25 @@ void Configure(
 
           graspableObjects.push_back(item);
         }
-
-        std::cout
-          << "[LinkAttacher] Updated graspable objects:"
-          << std::endl;
-
-        for (const auto &obj : graspableObjects)
-        {
-          std::cout << "  - " << obj << std::endl;
-        }
       });
 
   std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
 
-  gzNode.Subscribe(
-    "/world/default/model/ur5_robotiq/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
-    &LinkAttacher::OnContact,
-    this);
+  std::string leftTopic =
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact";
 
-  gzNode.Subscribe(
-    "/world/default/model/ur5_robotiq/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
-    &LinkAttacher::OnContact,
-    this);
+  std::string rightTopic =
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact";
+
+  gzNode.Subscribe(leftTopic,
+                  &LinkAttacher::OnContact,
+                  this);
+
+  gzNode.Subscribe(rightTopic,
+                  &LinkAttacher::OnContact,
+                  this);
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -375,29 +383,64 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << objectModel
       << std::endl;
 
-    model1 = "ur5_robotiq";
-    if (collision1.find("left_finger") != std::string::npos ||
-        collision2.find("left_finger") != std::string::npos)
+    bool leftFinger =
+        collision1.find("left_finger") != std::string::npos ||
+        collision2.find("left_finger") != std::string::npos;
+
+    if (leftFinger)
     {
-      link1 = "robotiq_85_left_finger_tip_link";
+      leftFingerContact = true;
+        leftObjectModel = objectModel;
+
+        std::cout << "[LinkAttacher] LEFT finger touched "
+                  << objectModel << std::endl;
     }
     else
     {
-      link1 = "robotiq_85_right_finger_tip_link";
+      rightFingerContact = true;
+        rightObjectModel = objectModel;
+
+        std::cout << "[LinkAttacher] RIGHT finger touched "
+                  << objectModel << std::endl;
     }
+    if (leftFingerContact &&
+        rightFingerContact &&
+        leftObjectModel != rightObjectModel)
+    {
+        leftFingerContact = false;
+        rightFingerContact = false;
 
-    model2 = objectModel;
+        leftObjectModel.clear();
+        rightObjectModel.clear();
 
-    link2 = "link";
+        continue;
+    }
+    if (leftFingerContact &&
+        rightFingerContact &&
+        leftObjectModel == rightObjectModel)
+    {
+        model1 = robotModelName;
 
-    createJointRequested = true;
-    contactLatched = true;
+        link1 = "robotiq_85_left_finger_tip_link";
 
-    std::cout
-      << "[LinkAttacher] Joint requested"
-      << std::endl;
+        model2 = leftObjectModel;
+        link2 = "link";
 
-    break;
+        createJointRequested = true;
+        contactLatched = true;
+
+        leftFingerContact = false;
+        rightFingerContact = false;
+
+        leftObjectModel.clear();
+        rightObjectModel.clear();
+
+        std::cout
+            << "[LinkAttacher] BOTH fingers touching -> creating joint"
+            << std::endl; 
+
+        break;
+    }
   }
 }
 
@@ -529,6 +572,13 @@ void RemoveJoint(EntityComponentManager &_ecm)
   activeJoint = kNullEntity;
 
   contactLatched = false;
+
+
+  leftFingerContact = false;
+  rightFingerContact = false;
+
+  leftObjectModel.clear();
+  rightObjectModel.clear();
 }
 
 
@@ -549,6 +599,12 @@ bool autoAttachEnabled = false;
 bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
+
+bool leftFingerContact = false;
+bool rightFingerContact = false;
+
+std::string leftObjectModel;
+std::string rightObjectModel;
 
 gz::transport::Node gzNode;
 
