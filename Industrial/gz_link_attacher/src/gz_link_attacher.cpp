@@ -76,6 +76,20 @@ void Configure(
       robotModelName = _sdf->Get<std::string>("robot_model");
   }
 
+  if (robotModelName.empty())
+  {
+      std::cerr
+          << "[LinkAttacher] ERROR: robot_model parameter not provided"
+          << std::endl;
+
+      return;
+  }
+
+  std::cout
+      << "[LinkAttacher] Robot model: "
+      << robotModelName
+      << std::endl;
+
   std::cout << "[LinkAttacher] World entity: " << worldEntity << std::endl;
 
   if (!rclcpp::ok())
@@ -607,6 +621,9 @@ std::string leftObjectModel;
 std::string rightObjectModel;
 
 gz::transport::Node gzNode;
+
+std::string robotModelName;
+
 
 std::string model1;
 std::string link1;
