@@ -35,48 +35,8 @@ class sausageSpawner(Node):
 
         self.graspable_pub.publish(msg)
 
-    def spawn_sausage(self):
-
-        if self.counter >= 4:
-            return
-
-        name = f"box_{self.counter}"
-
-        x_random = random.uniform(-0.18, 0.18)
-        yaw = random.uniform(-2 * math.pi, 2 * math.pi)
-
-        cmd = [
-            "ros2",
-            "run",
-            "ros_gz_sim",
-            "create",
-            "-name",
-            name,
-            "-x",
-            str(x_random),
-            "-y",
-            "0.58",
-            "-z",
-            "0.78",
-            "-R",
-            "0",
-            "-P",
-            "0",
-            "-Y",
-            str(yaw),
-            "-file",
-            "/home/ws/src/CustomRobots/conveyor_belt/sausage.sdf",
-        ]
-
-        subprocess.run(cmd)
-
-        self.get_logger().info(f"Spawned {name}")
-        time.sleep(0.2)
-        self.counter += 1
-        self.publish_graspable_objects()
-        self.get_logger().info(f"Spawned {name}")
-
     def spawn_all_sausages(self):
+
         NUM_SAUSAGES = 4
 
         MIN_X = -0.18
@@ -102,7 +62,25 @@ class sausageSpawner(Node):
 
         positions.sort()
 
-        for x in positions:
+        # ==========================================================
+        # Instantes de aparición de las 4 salchichas.
+        # Todas aparecerán dentro del intervalo [0, 1] segundos.
+        # ==========================================================
+
+        spawn_times = sorted(
+            random.uniform(0.0, 1.0)
+            for _ in range(NUM_SAUSAGES)
+        )
+
+        start_time = time.time()
+
+        for i, x in enumerate(positions):
+
+            # Esperar hasta el instante de aparición correspondiente
+            target_time = start_time + spawn_times[i]
+
+            while time.time() < target_time:
+                time.sleep(0.005)
 
             name = f"box_{self.counter}"
 
@@ -133,14 +111,17 @@ class sausageSpawner(Node):
 
             subprocess.run(cmd)
 
-            self.counter += 1
+            self.get_logger().info(
+                f"Spawned {name} at t={spawn_times[i]:.2f}s"
+            )
 
-        time.sleep(0.5)
+            self.counter += 1
 
         self.publish_graspable_objects()
 
-        self.get_logger().info("Spawned 4 sausages")
-
+        self.get_logger().info(
+            "Spawned 4 sausages within the first second"
+        )
 
 def main():
     rclpy.init()
