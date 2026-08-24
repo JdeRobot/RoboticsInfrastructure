@@ -15,7 +15,8 @@
           <ixx>1.0</ixx>
           <iyy>1.0</iyy>
           <izz>1.0</izz>
-        </inertial>
+        </inertia>
+      </inertial>
 
       <visual name="visual">
         <pose>0 0 0 0 0 0</pose>
@@ -36,7 +37,6 @@
         </geometry>
 
         <surface>
-
           <contact>
             <ode>
               <kp>1000000</kp>
@@ -48,12 +48,10 @@
 
           <friction>
             <ode>
-              <mu>2.0</mu>
-              <mu2>0.5</mu2>
-              <fdir1>0 -1 0</fdir1>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
             </ode>
           </friction>
-
         </surface>
       </collision>
 
@@ -61,9 +59,9 @@
 
     <plugin filename="gz-sim-track-controller-system"
             name="gz::sim::systems::TrackController">
-      <link>link</link>
-      <min_velocity>-1.0</min_velocity>
-      <max_velocity>1.0</max_velocity>
+        <link>link</link>
+        <min_velocity>-1.0</min_velocity>
+        <max_velocity>1.0</max_velocity>
     </plugin>
 
   </model>
