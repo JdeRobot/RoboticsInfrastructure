@@ -44,6 +44,10 @@ class sausageSpawner(Node):
 
         MIN_DISTANCE = 0.08      # 8 cm entre salchichas
 
+        # ==========================================================
+        # GENERAR POSICIONES X ALEATORIAS
+        # ==========================================================
+
         positions = []
 
         while len(positions) < NUM_SAUSAGES:
@@ -60,11 +64,12 @@ class sausageSpawner(Node):
             if valid:
                 positions.append(x)
 
-        positions.sort()
+        # IMPORTANTE:
+        # NO ordenar las posiciones.
+        # El orden de la lista será aleatorio.
 
         # ==========================================================
-        # Instantes de aparición de las 4 salchichas.
-        # Todas aparecerán dentro del intervalo [0, 1] segundos.
+        # GENERAR ORDEN DE APARICIÓN ALEATORIO
         # ==========================================================
 
         spawn_times = sorted(
@@ -72,17 +77,28 @@ class sausageSpawner(Node):
             for _ in range(NUM_SAUSAGES)
         )
 
+        # Mezclamos los nombres de las salchichas
+        box_names = [
+            f"box_{i}" for i in range(NUM_SAUSAGES)
+        ]
+
+        random.shuffle(box_names)
+
+        # ==========================================================
+        # SPAWN
+        # ==========================================================
+
         start_time = time.time()
 
         for i, x in enumerate(positions):
 
-            # Esperar hasta el instante de aparición correspondiente
+            # Esperar hasta el instante de aparición
             target_time = start_time + spawn_times[i]
 
             while time.time() < target_time:
                 time.sleep(0.005)
 
-            name = f"box_{self.counter}"
+            name = box_names[i]
 
             yaw = random.uniform(-math.pi, math.pi)
 
@@ -112,7 +128,8 @@ class sausageSpawner(Node):
             subprocess.run(cmd)
 
             self.get_logger().info(
-                f"Spawned {name} at t={spawn_times[i]:.2f}s"
+                f"Spawned {name} at x={x:.3f}, "
+                f"t={spawn_times[i]:.2f}s"
             )
 
             self.counter += 1
