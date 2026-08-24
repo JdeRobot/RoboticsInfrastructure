@@ -10,6 +10,7 @@
 #include <gz/plugin/Register.hh>
 #include <gz/math/Vector3.hh>
 #include <gz/msgs/wrench.pb.h>
+#include <chrono>
 
 namespace box_mover
 {
@@ -21,8 +22,8 @@ class BoxMoverPlugin:
 public:
 
   void PreUpdate(
-    const gz::sim::UpdateInfo &,
-    gz::sim::EntityComponentManager &_ecm) override
+  const gz::sim::UpdateInfo &_info,
+  gz::sim::EntityComponentManager &_ecm) override
   {
     _ecm.Each<
       gz::sim::components::Model,
@@ -60,9 +61,12 @@ public:
           if (!inside)
             continue;
 
-          const double STOP_Y = -0.55;
+          const double STOP_TIME = 30.0;
 
-          if (pos.Y() > STOP_Y)
+          double simTime =
+            std::chrono::duration<double>(_info.simTime).count();
+
+          if (simTime < STOP_TIME)
           {
             ApplyForce(_ecm, link);
             StabilizeMotion(_ecm, link);

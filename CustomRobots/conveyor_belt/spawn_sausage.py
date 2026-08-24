@@ -68,7 +68,7 @@ class sausageSpawner(Node):
         # ==========================================================
 
         spawn_times = sorted(
-            random.uniform(0.0, 1.0)
+            random.uniform(0.0, 2.0)
             for _ in range(NUM_SAUSAGES)
         )
 
