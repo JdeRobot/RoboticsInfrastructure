@@ -124,10 +124,7 @@ public:
 
     auto vel = velComp->Data();
 
-    // Mantener la salchicha a velocidad constante
     vel.X() = 0;
-    vel.Y() = -0.05;
-    vel.Z() = 0;
 
     auto cmdComp =
       _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
