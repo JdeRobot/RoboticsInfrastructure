@@ -61,7 +61,7 @@ public:
           if (!inside)
             continue;
 
-          const double STOP_TIME = 28.0;
+          const double STOP_TIME = 26.0;
 
           double simTime =
             std::chrono::duration<double>(_info.simTime).count();
