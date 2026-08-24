@@ -61,14 +61,13 @@ public:
           if (!inside)
             continue;
 
-          const double STOP_TIME = 27.0;
+          const double STOP_TIME = 26.5;
 
           double simTime =
             std::chrono::duration<double>(_info.simTime).count();
 
           if (simTime < STOP_TIME)
           {
-            ApplyForce(_ecm, link);
             StabilizeMotion(_ecm, link);
           }
           else
@@ -124,7 +123,9 @@ public:
 
     auto vel = velComp->Data();
 
+    // Mantener la salchicha a velocidad constante
     vel.X() = 0;
+    vel.Y() = -0.15;
 
     auto cmdComp =
       _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
