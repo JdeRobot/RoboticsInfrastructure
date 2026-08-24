@@ -1,214 +1,226 @@
 #include <gz/sim/System.hh>
+
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/Model.hh>
-#include <gz/sim/components/Link.hh>
 #include <gz/sim/components/Pose.hh>
-#include <gz/sim/components/ExternalWorldWrenchCmd.hh>
-#include <gz/sim/components/LinearVelocity.hh>
-#include <gz/sim/components/LinearVelocityCmd.hh>
 
 #include <gz/plugin/Register.hh>
-#include <gz/math/Vector3.hh>
-#include <gz/msgs/wrench.pb.h>
+#include <gz/transport/Node.hh>
+#include <gz/msgs/double.pb.h>
+#include <gz/sim/System.hh>
 
 namespace box_mover
 {
 
 class BoxMoverPlugin:
   public gz::sim::System,
+  public gz::sim::ISystemConfigure,
   public gz::sim::ISystemPreUpdate
 {
 public:
 
-  bool stopAll = false;
+  // ============================================================
+  // CONFIGURACIÓN
+  // ============================================================
+
+  // Velocidad de la cinta.
+  // Negativa porque la cinta se mueve en dirección -Y.
+  static constexpr double BELT_SPEED = -0.15;
+
+  // Tiempo que la cinta permanece funcionando desde
+  // que aparece la primera salchicha.
+  static constexpr double STOP_TIME = 10.0;
+
+  // ============================================================
+  // VARIABLES DE ESTADO
+  // ============================================================
+
+  // Indica si ya ha aparecido la primera salchicha.
+  bool started = false;
+
+  // Indica si la cinta ya ha sido detenida.
+  bool stopped = false;
+
+  // Tiempo de simulación en el que apareció la primera salchicha.
+  double startTime = 0.0;
+
+  // Nodo de Gazebo Transport.
+  gz::transport::Node transportNode;
+
+  // Publisher para controlar TrackController.
+  gz::transport::Node::Publisher speedPublisher;
+
+
+  // ============================================================
+  // CONFIGURACIÓN DEL PLUGIN
+  // ============================================================
+
+  void Configure(
+    const gz::sim::Entity &_entity,
+    const std::shared_ptr<const sdf::Element> &_sdf,
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::EventManager &_eventMgr) override
+  {
+    // El TrackController del modelo conveyor_belt/link
+    // recibe comandos en este tópico.
+    speedPublisher =
+      transportNode.Advertise<gz::msgs::Double>(
+        "/model/conveyor_belt/link/link/track_cmd_vel");
+
+    if (!speedPublisher)
+    {
+      std::cerr
+        << "[BoxMoverPlugin] ERROR: no se pudo crear "
+        << "el publisher de velocidad de la cinta."
+        << std::endl;
+    }
+    else
+    {
+      std::cout
+        << "[BoxMoverPlugin] Publisher de TrackController creado."
+        << std::endl;
+    }
+  }
+
+
+  // ============================================================
+  // PREUPDATE
+  // ============================================================
 
   void PreUpdate(
     const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm) override
   {
-    const double STOP_Y = -0.55;
+    // Tiempo actual de simulación.
+    const double simTime = _info.simTime.count();
+
+    // ------------------------------------------------------------
+    // Si la cinta ya está parada, no hacemos nada más.
+    // ------------------------------------------------------------
+
+    if (stopped)
+      return;
+
+
+    // ------------------------------------------------------------
+    // Buscar salchichas
+    // ------------------------------------------------------------
+
+    bool sausageFound = false;
 
     _ecm.Each<
       gz::sim::components::Model,
       gz::sim::components::Name,
       gz::sim::components::Pose>(
-      [&](const gz::sim::Entity &_entity,
+      [&](const gz::sim::Entity &,
           const gz::sim::components::Model *,
           const gz::sim::components::Name *_name,
-          const gz::sim::components::Pose *_pose)->bool
+          const gz::sim::components::Pose *)->bool
       {
-        std::string name = _name->Data();
+        const std::string name = _name->Data();
 
+        // Solamente nos interesan los modelos box_0,
+        // box_1, box_2, box_3, etc.
         if (name.find("box_") == std::string::npos)
           return true;
 
-        auto pos = _pose->Data().Pos();
+        sausageFound = true;
 
-        // Eliminar salchichas que han caído al suelo
-        if (pos.Z() < 0.1)
-        {
-          _ecm.RequestRemoveEntity(_entity);
-          return true;
-        }
-
-        bool inside =
-          pos.X() > -0.25 && pos.X() < 0.25 &&
-          pos.Y() > -0.6  && pos.Y() < 0.6 &&
-          pos.Z() > 0.6 && pos.Z() < 0.90;
-
-        auto links = _ecm.ChildrenByComponents(
-          _entity, gz::sim::components::Link());
-
-        for (auto link : links)
-        {
-          if (!inside)
-            continue;
-
-          if (pos.Y() <= STOP_Y)
-          {
-            stopAll = true;
-          }
-
-          if (stopAll)
-          {
-            StopMotion(_ecm, link);
-          }
-          else
-          {
-            ApplyForce(_ecm, link);
-            StabilizeMotion(_ecm, link);
-          }
-        }
-
-        return true;
+        return false;
       });
+
+
+    // ------------------------------------------------------------
+    // PRIMERA SALCHICHA
+    // ------------------------------------------------------------
+
+    if (sausageFound && !started)
+    {
+      started = true;
+
+      // Guardamos el instante exacto en el que apareció
+      // la primera salchicha.
+      startTime = simTime;
+
+      // Arrancar la cinta.
+      SetBeltSpeed(BELT_SPEED);
+
+      std::cout
+        << "[BoxMoverPlugin] Primera salchicha detectada."
+        << std::endl;
+
+      std::cout
+        << "[BoxMoverPlugin] Cinta arrancada a "
+        << BELT_SPEED
+        << " m/s."
+        << std::endl;
+    }
+
+
+    // ------------------------------------------------------------
+    // PARADA DE LA CINTA
+    // ------------------------------------------------------------
+
+    if (started)
+    {
+      const double elapsedTime = simTime - startTime;
+
+      if (elapsedTime >= STOP_TIME)
+      {
+        stopped = true;
+
+        // Detener TrackController.
+        SetBeltSpeed(0.0);
+
+        std::cout
+          << "[BoxMoverPlugin] Han pasado "
+          << STOP_TIME
+          << " segundos desde la primera salchicha."
+          << std::endl;
+
+        std::cout
+          << "[BoxMoverPlugin] Cinta detenida."
+          << std::endl;
+      }
+    }
   }
 
-  void ApplyForce(
-    gz::sim::EntityComponentManager &_ecm,
-    gz::sim::Entity entity)
+
+  // ============================================================
+  // CAMBIAR VELOCIDAD DE LA CINTA
+  // ============================================================
+
+  void SetBeltSpeed(double speed)
   {
-    gz::math::Vector3d force(0, -0.5, 0);
-
-    gz::msgs::Wrench wrenchMsg;
-
-    wrenchMsg.mutable_force()->set_x(force.X());
-    wrenchMsg.mutable_force()->set_y(force.Y());
-    wrenchMsg.mutable_force()->set_z(0);
-
-    wrenchMsg.mutable_torque()->set_x(0);
-    wrenchMsg.mutable_torque()->set_y(0);
-    wrenchMsg.mutable_torque()->set_z(0);
-
-    auto comp =
-      _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(entity);
-
-    if (!comp)
-    {
-      _ecm.CreateComponent(
-        entity,
-        gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg));
-    }
-    else
-    {
-      comp->Data() = wrenchMsg;
-    }
-  }
-
-  void StabilizeMotion(
-    gz::sim::EntityComponentManager &_ecm,
-    gz::sim::Entity entity)
-  {
-    auto velComp =
-      _ecm.Component<gz::sim::components::LinearVelocity>(entity);
-
-    if (!velComp)
+    if (!speedPublisher)
       return;
 
-    auto vel = velComp->Data();
+    gz::msgs::Double msg;
 
-    vel.X() = 0;
+    msg.set_data(speed);
 
-    auto cmdComp =
-      _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
+    speedPublisher.Publish(msg);
 
-    if (!cmdComp)
-    {
-      _ecm.CreateComponent(
-        entity,
-        gz::sim::components::LinearVelocityCmd(vel));
-    }
-    else
-    {
-      cmdComp->Data() = vel;
-    }
-  }
-
-  void StopMotion(
-    gz::sim::EntityComponentManager &_ecm,
-    gz::sim::Entity entity)
-  {
-      // Eliminar la fuerza
-      gz::msgs::Wrench wrenchMsg;
-
-      wrenchMsg.mutable_force()->set_x(0);
-      wrenchMsg.mutable_force()->set_y(0);
-      wrenchMsg.mutable_force()->set_z(0);
-
-      wrenchMsg.mutable_torque()->set_x(0);
-      wrenchMsg.mutable_torque()->set_y(0);
-      wrenchMsg.mutable_torque()->set_z(0);
-
-      auto wrenchComp =
-          _ecm.Component<gz::sim::components::ExternalWorldWrenchCmd>(entity);
-
-      if (!wrenchComp)
-      {
-          _ecm.CreateComponent(
-              entity,
-              gz::sim::components::ExternalWorldWrenchCmd(wrenchMsg));
-      }
-      else
-      {
-          wrenchComp->Data() = wrenchMsg;
-      }
-
-      // Anular la velocidad residual
-      auto velComp =
-          _ecm.Component<gz::sim::components::LinearVelocity>(entity);
-
-      if (!velComp)
-          return;
-
-      auto vel = velComp->Data();
-
-      // Sólo parar el movimiento horizontal de la cinta
-      vel.X() = 0;
-      vel.Y() = 0;
-
-      // Mantener la velocidad vertical
-
-      auto cmdComp =
-          _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
-
-      if (!cmdComp)
-      {
-          _ecm.CreateComponent(
-              entity,
-              gz::sim::components::LinearVelocityCmd(vel));
-      }
-      else
-      {
-          cmdComp->Data() = vel;
-      }
+    std::cout
+      << "[BoxMoverPlugin] Belt speed -> "
+      << speed
+      << " m/s"
+      << std::endl;
   }
 };
 
-}
+}  // namespace box_mover
+
+
+// ================================================================
+// REGISTRO DEL PLUGIN
+// ================================================================
 
 GZ_ADD_PLUGIN(
   box_mover::BoxMoverPlugin,
   gz::sim::System,
   box_mover::BoxMoverPlugin::ISystemPreUpdate)
 
-GZ_ADD_PLUGIN_ALIAS(box_mover::BoxMoverPlugin, "box_mover::BoxMoverPlugin")
+GZ_ADD_PLUGIN_ALIAS(
+  box_mover::BoxMoverPlugin,
+  "box_mover::BoxMoverPlugin")
