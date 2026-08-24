@@ -20,6 +20,7 @@
 
       <visual name="visual">
         <pose>0 0 0 0 0 0</pose>
+
         <geometry>
           <mesh>
             <uri>meshes/conveyor_belt.dae</uri>
@@ -28,6 +29,7 @@
       </visual>
 
       <collision name="collision">
+
         <pose>0 0 0.71 0 0 0</pose>
 
         <geometry>
@@ -37,6 +39,7 @@
         </geometry>
 
         <surface>
+
           <contact>
             <ode>
               <kp>1000000</kp>
@@ -48,21 +51,32 @@
 
           <friction>
             <ode>
-              <mu>1.0</mu>
-              <mu2>1.0</mu2>
+              <fdir1>0 1 0</fdir1>
+              <mu>2.0</mu>
+              <mu2>0.5</mu2>
             </ode>
           </friction>
+
         </surface>
+
       </collision>
 
     </link>
 
-    <plugin filename="gz-sim-track-controller-system"
-            name="gz::sim::systems::TrackController">
-        <link>link</link>
-        <min_velocity>-1.0</min_velocity>
-        <max_velocity>1.0</max_velocity>
+    <plugin
+      filename="gz-sim-track-controller-system"
+      name="gz::sim::systems::TrackController">
+
+      <link>link</link>
+
+      <min_velocity>-1.0</min_velocity>
+      <max_velocity>1.0</max_velocity>
+
     </plugin>
+
+    <plugin
+      filename="libconveyor_plugin.so"
+      name="box_mover::BoxMoverPlugin"/>
 
   </model>
 
