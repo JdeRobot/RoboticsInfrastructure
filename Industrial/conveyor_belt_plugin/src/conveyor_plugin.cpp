@@ -68,6 +68,7 @@ public:
 
           if (simTime < STOP_TIME)
           {
+            ApplyForce(_ecm, link);
             StabilizeMotion(_ecm, link);
           }
           else
@@ -125,7 +126,8 @@ public:
 
     // Mantener la salchicha a velocidad constante
     vel.X() = 0;
-    vel.Y() = -10.0;
+    vel.Y() = -0.05;
+    vel.Z() = 0;
 
     auto cmdComp =
       _ecm.Component<gz::sim::components::LinearVelocityCmd>(entity);
