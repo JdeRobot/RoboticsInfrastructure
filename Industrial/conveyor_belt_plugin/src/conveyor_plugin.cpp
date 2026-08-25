@@ -26,7 +26,7 @@ public:
   // CONFIGURACIÓN
   // ============================================================
 
-  static constexpr double BELT_SPEED = -0.15;
+  static constexpr double BELT_SPEED = -0.3;
 
   static constexpr double STOP_TIME = 10.0;
 
