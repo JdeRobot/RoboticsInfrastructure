@@ -52,7 +52,7 @@
                 La cinta se mueve en el eje Y local.
               -->
 
-              <fdir1>0 1 0</fdir1>
+              <fdir1>1 0 0</fdir1>
 
               <mu>2.0</mu>
 
