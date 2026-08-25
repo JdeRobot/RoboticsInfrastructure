@@ -78,7 +78,7 @@ public:
     //
     speedPublisher =
       transportNode.Advertise<gz::msgs::Double>(
-        "/model/conveyor_belt/link/link/track_cmd_vel");
+        "/model/conveyor_belt_1/link/link/track_cmd_vel");
 
 
     if (!speedPublisher)
@@ -257,9 +257,8 @@ public:
 GZ_ADD_PLUGIN(
   box_mover::BoxMoverPlugin,
   gz::sim::System,
-  gz::sim::System::ISystemConfigure,
-  gz::sim::System::ISystemPreUpdate)
-
+  gz::sim::ISystemConfigure,
+  gz::sim::ISystemPreUpdate)
 
 GZ_ADD_PLUGIN_ALIAS(
   box_mover::BoxMoverPlugin,
