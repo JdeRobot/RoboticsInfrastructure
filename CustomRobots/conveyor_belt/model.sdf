@@ -7,7 +7,7 @@
 
     <link name="link">
 
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0 0 0 1.57079632679</pose>
 
       <visual name="visual">
 
