@@ -26,14 +26,8 @@ public:
   // CONFIGURACIÓN
   // ============================================================
 
-  // Velocidad de la cinta.
-  //
-  // Negativa porque queremos mover las salchichas
-  // en dirección -Y.
   static constexpr double BELT_SPEED = -0.15;
 
-  // Tiempo que la cinta permanece funcionando
-  // desde que aparece la primera salchicha.
   static constexpr double STOP_TIME = 10.0;
 
 
@@ -67,18 +61,51 @@ public:
     gz::sim::EntityComponentManager &_ecm,
     gz::sim::EventManager &_eventMgr) override
   {
-    (void)_entity;
     (void)_sdf;
-    (void)_ecm;
     (void)_eventMgr;
 
-    // Tópico por defecto del TrackController:
-    //
-    // /model/conveyor_belt/link/link/track_cmd_vel
-    //
+    // ----------------------------------------------------------
+    // Obtener el nombre del modelo donde está cargado el plugin
+    // ----------------------------------------------------------
+
+    std::string modelName = "conveyor_belt";
+
+    auto nameComp =
+      _ecm.Component<gz::sim::components::Name>(_entity);
+
+    if (nameComp)
+    {
+      modelName = nameComp->Data();
+    }
+
+    std::cout
+      << "[BoxMoverPlugin] Modelo detectado: "
+      << modelName
+      << std::endl;
+
+
+    // ----------------------------------------------------------
+    // Construir dinámicamente el tópico del TrackController
+    // ----------------------------------------------------------
+
+    const std::string topic =
+      "/model/" +
+      modelName +
+      "/link/link/track_cmd_vel";
+
+
+    std::cout
+      << "[BoxMoverPlugin] TrackController topic: "
+      << topic
+      << std::endl;
+
+
+    // ----------------------------------------------------------
+    // Crear publisher
+    // ----------------------------------------------------------
+
     speedPublisher =
-      transportNode.Advertise<gz::msgs::Double>(
-        "/model/conveyor_belt_1/link/link/track_cmd_vel");
+      transportNode.Advertise<gz::msgs::Double>(topic);
 
 
     if (!speedPublisher)
@@ -91,7 +118,7 @@ public:
     else
     {
       std::cout
-        << "[BoxMoverPlugin] TrackController publisher creado."
+        << "[BoxMoverPlugin] Publisher creado correctamente."
         << std::endl;
     }
   }
@@ -105,17 +132,16 @@ public:
     const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm) override
   {
-    // Si ya hemos parado la cinta no hacemos nada.
     if (stopped)
       return;
 
 
-    // Tiempo actual de simulación.
-    const double simTime = _info.simTime.count();
+    const double simTime =
+      _info.simTime.count();
 
 
     // ==========================================================
-    // BUSCAR PRIMERA SALCHICHA
+    // BUSCAR SALCHICHAS
     // ==========================================================
 
     bool sausageFound = false;
@@ -128,23 +154,14 @@ public:
           const gz::sim::components::Model *,
           const gz::sim::components::Name *_name) -> bool
       {
-        const std::string name = _name->Data();
+        const std::string name =
+          _name->Data();
 
 
-        // Solo nos interesan:
-        //
-        // box_0
-        // box_1
-        // box_2
-        // box_3
-        //
-
-        if (name.find("box_") != std::string::npos)
+        if (name.rfind("box_", 0) == 0)
         {
           sausageFound = true;
 
-          // Ya hemos encontrado una.
-          // No necesitamos seguir buscando.
           return false;
         }
 
@@ -154,21 +171,16 @@ public:
 
 
     // ==========================================================
-    // APARECE LA PRIMERA SALCHICHA
+    // PRIMERA SALCHICHA
     // ==========================================================
 
     if (sausageFound && !started)
     {
       started = true;
 
-      // Guardamos el instante en el que apareció
-      // la primera salchicha.
       startTime = simTime;
 
-
-      // Arrancamos la cinta.
       SetBeltSpeed(BELT_SPEED);
-
 
       std::cout
         << "[BoxMoverPlugin] Primera salchicha detectada."
@@ -183,11 +195,14 @@ public:
 
 
     // ==========================================================
-    // COMPROBAR TIEMPO
+    // MANTENER VELOCIDAD
     // ==========================================================
 
     if (started && !stopped)
     {
+      SetBeltSpeed(BELT_SPEED);
+
+
       const double elapsedTime =
         simTime - startTime;
 
@@ -196,10 +211,7 @@ public:
       {
         stopped = true;
 
-
-        // Detener la cinta.
         SetBeltSpeed(0.0);
-
 
         std::cout
           << "[BoxMoverPlugin] Han pasado "
@@ -216,34 +228,20 @@ public:
 
 
   // ============================================================
-  // CAMBIAR VELOCIDAD DEL TRACK CONTROLLER
+  // VELOCIDAD DE LA CINTA
   // ============================================================
 
   void SetBeltSpeed(double speed)
   {
     if (!speedPublisher)
-    {
-      std::cerr
-        << "[BoxMoverPlugin] ERROR: publisher no disponible."
-        << std::endl;
-
       return;
-    }
 
 
     gz::msgs::Double msg;
 
     msg.set_data(speed);
 
-
     speedPublisher.Publish(msg);
-
-
-    std::cout
-      << "[BoxMoverPlugin] TrackController speed -> "
-      << speed
-      << " m/s"
-      << std::endl;
   }
 };
 
@@ -251,7 +249,7 @@ public:
 
 
 // ================================================================
-// REGISTRO DEL PLUGIN
+// REGISTRO
 // ================================================================
 
 GZ_ADD_PLUGIN(

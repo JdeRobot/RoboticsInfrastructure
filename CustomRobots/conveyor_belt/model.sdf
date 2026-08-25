@@ -9,16 +9,8 @@
 
       <pose>0 0 0 0 0 0</pose>
 
-      <inertial>
-        <mass>1000.0</mass>
-        <inertia>
-          <ixx>1.0</ixx>
-          <iyy>1.0</iyy>
-          <izz>1.0</izz>
-        </inertia>
-      </inertial>
-
       <visual name="visual">
+
         <pose>0 0 0 0 0 0</pose>
 
         <geometry>
@@ -26,7 +18,9 @@
             <uri>meshes/conveyor_belt.dae</uri>
           </mesh>
         </geometry>
+
       </visual>
+
 
       <collision name="collision">
 
@@ -38,22 +32,32 @@
           </box>
         </geometry>
 
+
         <surface>
 
           <contact>
             <ode>
-              <kp>1000000</kp>
-              <kd>1000</kd>
+              <kp>100000</kp>
+              <kd>10</kd>
               <min_depth>0.001</min_depth>
               <max_vel>1.0</max_vel>
             </ode>
           </contact>
 
+
           <friction>
             <ode>
+
+              <!--
+                La cinta se mueve en el eje Y local.
+              -->
+
               <fdir1>0 1 0</fdir1>
+
               <mu>2.0</mu>
+
               <mu2>0.5</mu2>
+
             </ode>
           </friction>
 
@@ -63,6 +67,11 @@
 
     </link>
 
+
+    <!-- ====================================================== -->
+    <!-- TRACK CONTROLLER                                       -->
+    <!-- ====================================================== -->
+
     <plugin
       filename="gz-sim-track-controller-system"
       name="gz::sim::systems::TrackController">
@@ -70,9 +79,15 @@
       <link>link</link>
 
       <min_velocity>-1.0</min_velocity>
+
       <max_velocity>1.0</max_velocity>
 
     </plugin>
+
+
+    <!-- ====================================================== -->
+    <!-- NUESTRO PLUGIN                                         -->
+    <!-- ====================================================== -->
 
     <plugin
       filename="libconveyor_plugin.so"

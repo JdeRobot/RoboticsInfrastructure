@@ -1,0 +1,20 @@
+# ============================================================
+# CONVEYOR 1
+# ============================================================
+
+- ros_topic_name: "/conveyor/speed_1"
+  gz_topic_name: "/model/conveyor_belt_1/link/link/track_cmd_vel"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "gz.msgs.Double"
+  direction: ROS_TO_GZ
+
+
+# ============================================================
+# CONVEYOR 2
+# ============================================================
+
+- ros_topic_name: "/conveyor/speed_2"
+  gz_topic_name: "/model/conveyor_belt_2/link/link/track_cmd_vel"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "gz.msgs.Double"
+  direction: ROS_TO_GZ

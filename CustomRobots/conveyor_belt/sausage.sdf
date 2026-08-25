@@ -9,53 +9,98 @@
 
       <gravity>true</gravity>
 
+
       <inertial>
+
         <mass>0.5</mass>
+
         <inertia>
+
           <ixx>0.0002</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+
           <iyy>0.0002</iyy>
+          <iyz>0</iyz>
+
           <izz>0.0002</izz>
+
         </inertia>
+
       </inertial>
+
 
       <collision name="collision">
 
-        <pose>0 0.0001 -0.01 0 0 -0.73</pose>
+        <pose>
+          0 0.0001 -0.01 0 0 -0.73
+        </pose>
 
         <geometry>
+
           <box>
-            <size>0.02 0.085 0.02</size>
+
+            <size>
+              0.02 0.085 0.02
+            </size>
+
           </box>
+
         </geometry>
 
+
         <surface>
+
           <contact>
+
             <ode>
+
               <kp>100000</kp>
+
               <kd>10</kd>
+
             </ode>
+
           </contact>
 
+
           <friction>
+
             <ode>
-              <fdir1>0 1 0</fdir1>
-              <mu>2.0</mu>
-              <mu2>0.5</mu2>
+
+              <mu>0.8</mu>
+
+              <mu2>0.8</mu2>
+
             </ode>
+
           </friction>
+
         </surface>
+
       </collision>
+
 
       <visual name="visual">
 
-        <pose>0 0 -0.02 1.57 0 0</pose>
+        <pose>
+          0 0 -0.02 1.57 0 0
+        </pose>
 
         <geometry>
-          <mesh>
-            <uri>meshes/sausage.glb</uri>
 
-            <scale>0.01 0.01 0.01</scale>
+          <mesh>
+
+            <uri>
+              meshes/sausage.glb
+            </uri>
+
+            <scale>
+              0.01 0.01 0.01
+            </scale>
+
           </mesh>
+
         </geometry>
 
       </visual>
