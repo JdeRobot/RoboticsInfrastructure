@@ -7,7 +7,7 @@
 
     <link name="link">
 
-      <pose>0 0 0 0 0 1.57079632679</pose>
+      <pose>0 0 0 0 0 0</pose>
 
       <visual name="visual">
 
@@ -77,6 +77,8 @@
       name="gz::sim::systems::TrackController">
 
       <link>link</link>
+
+      <track_orientation>0 0 1.57079632679</track_orientation>
 
       <min_velocity>-1.0</min_velocity>
 
