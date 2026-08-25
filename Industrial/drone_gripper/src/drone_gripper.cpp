@@ -176,12 +176,22 @@ void PreUpdate(
   {
     if (this->activeJoint != kNullEntity)
     {
-      _ecm.RequestRemoveEntity(this->activeJoint);
-      this->activeJoint = kNullEntity;
+      this->Detach(_ecm);
     }
     this->running_ = false;
     this->dead_ = true;
     return;
+  }
+
+  // Keep the old joint out of the attach path until ECM has processed its
+  // removal. Removing the component first gives the physics system an
+  // explicit one-time change to tear down the DART constraint before the
+  // joint entity is deleted.
+  if (this->pendingJoint != kNullEntity)
+  {
+    if (_ecm.HasEntity(this->pendingJoint))
+      return;
+    this->pendingJoint = kNullEntity;
   }
 
   // Drop the joint if the drone is gone OR is being removed this very cycle.
@@ -243,8 +253,7 @@ void Reset(
 {
   if (this->activeJoint != kNullEntity)
   {
-    _ecm.RequestRemoveEntity(this->activeJoint);
-    this->activeJoint = kNullEntity;
+    this->Detach(_ecm);
   }
   this->carriedModel = kNullEntity;
 
@@ -367,6 +376,9 @@ void TryAttach(EntityComponentManager &_ecm)
   if (bestChild == kNullEntity)
     return;
 
+  if (this->pendingJoint != kNullEntity)
+    return;
+
   const Entity jointEntity = _ecm.CreateEntity();
   components::DetachableJoint joint;
   joint.Data().parentLink = gripperLink;
@@ -384,6 +396,8 @@ void Detach(EntityComponentManager &_ecm)
   if (this->activeJoint == kNullEntity)
     return;
 
+  this->pendingJoint = this->activeJoint;
+  _ecm.RemoveComponent<components::DetachableJoint>(this->activeJoint);
   _ecm.RequestRemoveEntity(this->activeJoint);
   this->activeJoint = kNullEntity;
   this->carriedModel = kNullEntity;
@@ -409,6 +423,7 @@ double attachDistance{0.15};
 std::mutex mutex;
 bool magnetEnabled{false};
 Entity activeJoint{kNullEntity};
+Entity pendingJoint{kNullEntity};
 Entity carriedModel{kNullEntity};
 int publishCounter{0};
 
