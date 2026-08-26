@@ -2,7 +2,7 @@
 # CONVEYOR 1
 # ============================================================
 
-- ros_topic_name: "/conveyor/speed_1"
+- ros_topic_name: "/conveyor/speed"
   gz_topic_name: "/model/conveyor_belt_1/link/link/track_cmd_vel"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"

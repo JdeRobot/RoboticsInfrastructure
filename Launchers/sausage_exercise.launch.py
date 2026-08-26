@@ -9,9 +9,15 @@ from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 
 
+
 def generate_launch_description():
 
     world_path = "/opt/jderobot/Scenes/sausage_exercise.world"
+    
+    bridge_config = (
+        "/home/ws/src/CustomRobots/conveyor_belt/"
+        "conveyor_bridge.yaml"
+    )
 
     # ==================================================
     # PLUGIN PATHS
@@ -80,6 +86,17 @@ def generate_launch_description():
         output="screen",
     )
 
+    conveyor_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "--ros-args",
+            "-p",
+            f"config_file:={bridge_config}",
+        ],
+        output="screen",
+    )
+
     # ==================================================
     # SAUSAGE SPAWNER
     # ==================================================
@@ -96,6 +113,7 @@ def generate_launch_description():
             set_resource_path,
             gz,
             gz_ros2_bridge,
+            conveyor_bridge,
             sausage_spawner,
         ]
     )
