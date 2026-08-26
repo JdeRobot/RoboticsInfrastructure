@@ -10,6 +10,7 @@ import math
 import json
 
 from std_msgs.msg import String, Float64
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 
 
 class sausageSpawner(Node):
@@ -54,10 +55,16 @@ class sausageSpawner(Node):
             10
         )
 
+        sausage_info_qos = QoSProfile(
+            depth=10,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL
+        )
+
         self.sausage_info_pub = self.create_publisher(
             String,
             "/sausage_info",
-            10
+            sausage_info_qos
         )
 
         self.speed_pub = self.create_publisher(
@@ -115,7 +122,9 @@ class sausageSpawner(Node):
             "x": sausage["x"],
             "spawn_time": sausage["spawn_time"],
             "spawn_y": self.SPAWN_Y,
-            "belt_speed": self.BELT_SPEED
+            "belt_speed": self.BELT_SPEED,
+            "belt_start_time": self.belt_start_time,
+            "stop_time": self.STOP_TIME
         })
 
         self.sausage_info_pub.publish(msg)
@@ -304,6 +313,22 @@ class sausageSpawner(Node):
                 "spawn_time": time.time(),
             }
 
+            self.counter += 1
+
+            # ----------------------------------------------------------
+            # PRIMERA SALCHICHA
+            # ----------------------------------------------------------
+
+            if self.counter == 1:
+
+                # Primero arrancamos la cinta.
+                self.start_belt()
+
+            # ----------------------------------------------------------
+            # PUBLICAR INFORMACIÓN
+            # ----------------------------------------------------------
+
+            # Ahora belt_start_time ya existe.
             self.publish_sausage_info(name)
 
             self.get_logger().info(
@@ -311,13 +336,6 @@ class sausageSpawner(Node):
                 f"at x={x:.3f} "
                 f"t={spawn_times[i]:.2f}s"
             )
-
-
-            self.counter += 1
-
-            if self.counter == 1:
-
-                self.start_belt()
 
         self.publish_graspable_objects()
 
