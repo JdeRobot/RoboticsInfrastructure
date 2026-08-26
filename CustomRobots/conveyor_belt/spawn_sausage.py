@@ -22,7 +22,7 @@ class sausageSpawner(Node):
 
         self.BELT_SPEED = -0.15
 
-        self.STOP_TIME = 13.0
+        self.STOP_TIME = 14.0
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
@@ -315,20 +315,10 @@ class sausageSpawner(Node):
 
             self.counter += 1
 
-            # ----------------------------------------------------------
-            # PRIMERA SALCHICHA
-            # ----------------------------------------------------------
-
             if self.counter == 1:
 
-                # Primero arrancamos la cinta.
                 self.start_belt()
 
-            # ----------------------------------------------------------
-            # PUBLICAR INFORMACIÓN
-            # ----------------------------------------------------------
-
-            # Ahora belt_start_time ya existe.
             self.publish_sausage_info(name)
 
             self.get_logger().info(
