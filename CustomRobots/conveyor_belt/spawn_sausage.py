@@ -28,7 +28,7 @@ class sausageSpawner(Node):
 
         # Tiempo que permanece funcionando la cinta
         # desde que aparece la primera salchicha.
-        self.STOP_TIME = 12.0
+        self.STOP_TIME = 13.0
 
         # Posiciones de spawn
         self.MIN_X = -0.18
