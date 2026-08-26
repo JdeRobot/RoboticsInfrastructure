@@ -22,7 +22,7 @@ class sausageSpawner(Node):
 
         self.BELT_SPEED = -0.15
 
-        self.STOP_TIME = 15.0
+        self.STOP_TIME = 15.5
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
