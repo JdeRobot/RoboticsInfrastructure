@@ -7,6 +7,7 @@ import subprocess
 import time
 import random
 import math
+import json
 
 from std_msgs.msg import String, Float64
 
@@ -16,59 +17,36 @@ class sausageSpawner(Node):
     def __init__(self):
         super().__init__("sausage_spawner")
 
-        # ==========================================================
-        # CONFIGURACIÓN
-        # ==========================================================
-
         self.NUM_SAUSAGES = 4
 
-        # Velocidad de la cinta.
-        # -0.15 -> dirección -Y
         self.BELT_SPEED = -0.15
 
-        # Tiempo que permanece funcionando la cinta
-        # desde que aparece la primera salchicha.
         self.STOP_TIME = 13.0
 
-        # Posiciones de spawn
         self.MIN_X = -0.18
         self.MAX_X = 0.18
 
-        # Distancia mínima entre salchichas
         self.MIN_DISTANCE = 0.08
 
-        # Posición inicial Y
         self.SPAWN_Y = 0.58
 
-        # Posición inicial Z
         self.SPAWN_Z = 0.76
 
-        # Ruta del modelo
         self.SAUSAGE_SDF = (
             "/home/ws/src/CustomRobots/"
             "conveyor_belt/sausage.sdf"
         )
 
-
-        # ==========================================================
-        # ESTADO
-        # ==========================================================
-
         self.counter = 0
 
-        # Indica si ya ha aparecido la primera salchicha
+        self.sausages = {}
+
         self.belt_started = False
 
-        # Indica si ya hemos detenido la cinta
         self.belt_stopped = False
 
-        # Instante en el que comenzó la cinta
         self.belt_start_time = None
 
-
-        # ==========================================================
-        # PUBLICADOR DE OBJETOS AGARRABLES
-        # ==========================================================
 
         self.graspable_pub = self.create_publisher(
             String,
@@ -76,23 +54,11 @@ class sausageSpawner(Node):
             10
         )
 
-
-        # ==========================================================
-        # PUBLICADOR DE LA CINTA
-        # ==========================================================
-
-        # EXACTAMENTE igual que el ejercicio de paletizado:
-        #
-        # ROS:
-        #   /conveyor/speed
-        #
-        # ros_gz_bridge:
-        #   /conveyor/speed
-        #          ↓
-        #   /model/conveyor_belt_1/link/link/track_cmd_vel
-        #
-        # Gazebo:
-        #   TrackController
+        self.sausage_info_pub = self.create_publisher(
+            String,
+            "/sausage_info",
+            10
+        )
 
         self.speed_pub = self.create_publisher(
             Float64,
@@ -100,26 +66,10 @@ class sausageSpawner(Node):
             10
         )
 
-
-        # ==========================================================
-        # TIMER PARA PARAR LA CINTA
-        # ==========================================================
-
-        # Lo creamos ANTES del spawn.
-        #
-        # Importante: aunque spawn_all_sausages usa esperas,
-        # el inicio de la cinta se hace directamente después
-        # del primer spawn, no depende de este timer.
-
         self.belt_timer = self.create_timer(
             0.05,
             self.update_belt
         )
-
-
-        # ==========================================================
-        # ESPERAR A QUE GAZEBO ESTÉ LISTO
-        # ==========================================================
 
         self.get_logger().info(
             "Waiting 5 seconds for Gazebo..."
@@ -127,17 +77,7 @@ class sausageSpawner(Node):
 
         time.sleep(5)
 
-
-        # ==========================================================
-        # PUBLICAR LISTA INICIAL
-        # ==========================================================
-
         self.publish_graspable_objects()
-
-
-        # ==========================================================
-        # ESPERAR ANTES DE SPAWNEAR
-        # ==========================================================
 
         self.get_logger().info(
             "Waiting 20 seconds before spawning sausages..."
@@ -145,17 +85,7 @@ class sausageSpawner(Node):
 
         time.sleep(20)
 
-
-        # ==========================================================
-        # SPAWN
-        # ==========================================================
-
         self.spawn_all_sausages()
-
-
-    # ==============================================================
-    # PUBLICAR OBJETOS AGARRABLES
-    # ==============================================================
 
     def publish_graspable_objects(self):
 
@@ -171,10 +101,28 @@ class sausageSpawner(Node):
             f"Graspable objects -> {msg.data}"
         )
 
+    def publish_sausage_info(self, name):
 
-    # ==============================================================
-    # CONTROL DE LA CINTA
-    # ==============================================================
+        if name not in self.sausages:
+            return
+
+        sausage = self.sausages[name]
+
+        msg = String()
+
+        msg.data = json.dumps({
+            "name": name,
+            "x": sausage["x"],
+            "spawn_time": sausage["spawn_time"],
+            "spawn_y": self.SPAWN_Y,
+            "belt_speed": self.BELT_SPEED
+        })
+
+        self.sausage_info_pub.publish(msg)
+
+        self.get_logger().info(
+            f"Sausage info -> {msg.data}"
+        )
 
     def set_belt(self, speed):
 
@@ -187,11 +135,6 @@ class sausageSpawner(Node):
         self.get_logger().info(
             f"/conveyor/speed -> {speed:.2f} m/s"
         )
-
-
-    # ==============================================================
-    # ARRANCAR CINTA
-    # ==============================================================
 
     def start_belt(self):
 
@@ -214,27 +157,13 @@ class sausageSpawner(Node):
             f"{self.BELT_SPEED:.2f} m/s"
         )
 
-
-        # EXACTAMENTE el equivalente a:
-        #
-        # self._set_belt(self.belt_speed)
-        #
-        # del ejercicio de paletizado.
-
         self.set_belt(self.BELT_SPEED)
-
-
-    # ==============================================================
-    # COMPROBAR TIEMPO DE FUNCIONAMIENTO
-    # ==============================================================
 
     def update_belt(self):
 
-        # Todavía no ha aparecido ninguna salchicha.
         if not self.belt_started:
             return
 
-        # Ya está parada.
         if self.belt_stopped:
             return
 
@@ -247,15 +176,8 @@ class sausageSpawner(Node):
             self.belt_start_time
         )
 
-
-        # Todavía debe funcionar.
         if elapsed < self.STOP_TIME:
             return
-
-
-        # ==========================================================
-        # PARAR CINTA
-        # ==========================================================
 
         self.belt_stopped = True
 
@@ -266,19 +188,9 @@ class sausageSpawner(Node):
             f"{self.STOP_TIME:.1f} seconds."
         )
 
-
-    # ==============================================================
-    # SPAWN DE SALCHICHAS
-    # ==============================================================
-
     def spawn_all_sausages(self):
 
         NUM_SAUSAGES = self.NUM_SAUSAGES
-
-
-        # ==========================================================
-        # GENERAR POSICIONES X
-        # ==========================================================
 
         positions = []
 
@@ -306,20 +218,10 @@ class sausageSpawner(Node):
 
                 positions.append(x)
 
-
-        # ==========================================================
-        # TIEMPOS DE APARICIÓN
-        # ==========================================================
-
         spawn_times = sorted(
             random.uniform(0.0, 2.0)
             for _ in range(NUM_SAUSAGES)
         )
-
-
-        # ==========================================================
-        # NOMBRES ALEATORIOS
-        # ==========================================================
 
         box_names = [
             f"box_{i}"
@@ -328,24 +230,9 @@ class sausageSpawner(Node):
 
         random.shuffle(box_names)
 
-
-        # ==========================================================
-        # COMENZAR CRONÓMETRO
-        # ==========================================================
-
         start_time = time.time()
 
-
-        # ==========================================================
-        # GENERAR SALCHICHAS
-        # ==========================================================
-
         for i, x in enumerate(positions):
-
-
-            # ------------------------------------------------------
-            # ESPERAR AL INSTANTE DE SPAWN
-            # ------------------------------------------------------
 
             target_time = (
                 start_time +
@@ -357,27 +244,12 @@ class sausageSpawner(Node):
 
                 time.sleep(0.005)
 
-
-            # ------------------------------------------------------
-            # NOMBRE
-            # ------------------------------------------------------
-
             name = box_names[i]
-
-
-            # ------------------------------------------------------
-            # ORIENTACIÓN ALEATORIA
-            # ------------------------------------------------------
 
             yaw = random.uniform(
                 -math.pi,
                 math.pi
             )
-
-
-            # ------------------------------------------------------
-            # COMANDO DE SPAWN
-            # ------------------------------------------------------
 
             cmd = [
 
@@ -411,22 +283,12 @@ class sausageSpawner(Node):
                 self.SAUSAGE_SDF,
             ]
 
-
-            # ------------------------------------------------------
-            # EJECUTAR SPAWN
-            # ------------------------------------------------------
-
             result = subprocess.run(
                 cmd,
                 check=False,
                 capture_output=True,
                 text=True
             )
-
-
-            # ------------------------------------------------------
-            # COMPROBAR ERROR
-            # ------------------------------------------------------
 
             if result.returncode != 0:
 
@@ -437,10 +299,12 @@ class sausageSpawner(Node):
 
                 continue
 
+            self.sausages[name] = {
+                "x": x,
+                "spawn_time": time.time(),
+            }
 
-            # ------------------------------------------------------
-            # SALCHICHA CREADA
-            # ------------------------------------------------------
+            self.publish_sausage_info(name)
 
             self.get_logger().info(
                 f"Spawned {name} "
@@ -451,26 +315,9 @@ class sausageSpawner(Node):
 
             self.counter += 1
 
-
-            # ------------------------------------------------------
-            # PRIMERA SALCHICHA
-            # ------------------------------------------------------
-
-            # IMPORTANTÍSIMO:
-            #
-            # Arrancamos la cinta inmediatamente después
-            # de crear la primera salchicha.
-            #
-            # No esperamos a que aparezcan las otras 3.
-
             if self.counter == 1:
 
                 self.start_belt()
-
-
-        # ==========================================================
-        # PUBLICAR OBJETOS AGARRABLES
-        # ==========================================================
 
         self.publish_graspable_objects()
 
@@ -479,14 +326,7 @@ class sausageSpawner(Node):
             f"Spawned {NUM_SAUSAGES} sausages."
         )
 
-
-    # ==============================================================
-    # DESTRUCCIÓN
-    # ==============================================================
-
     def destroy_node(self):
-
-        # Asegurar que la cinta queda parada.
 
         if hasattr(self, "speed_pub"):
 
@@ -494,11 +334,6 @@ class sausageSpawner(Node):
 
 
         super().destroy_node()
-
-
-# ==================================================================
-# MAIN
-# ==================================================================
 
 def main():
 
