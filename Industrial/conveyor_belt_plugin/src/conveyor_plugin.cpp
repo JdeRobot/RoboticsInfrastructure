@@ -26,8 +26,9 @@ public:
   // CONFIGURACIÓN
   // ============================================================
 
-  // Velocidad de la cinta.
-  // Negativa = dirección -Y.
+  // Velocidad de la superficie de la cinta.
+  //
+  // La cinta se desplaza en dirección -Y.
   static constexpr double BELT_SPEED = -0.15;
 
   // Tiempo que la cinta permanece funcionando
@@ -39,10 +40,18 @@ public:
   // ESTADO
   // ============================================================
 
+  // Se ha detectado al menos una salchicha.
   bool started = false;
 
+  // El TrackController ya está conectado
+  // al publisher.
+  bool beltStarted = false;
+
+  // La cinta ya se ha detenido.
   bool stopped = false;
 
+  // Tiempo de simulación en el que apareció
+  // la primera salchicha.
   double startTime = 0.0;
 
 
@@ -70,9 +79,27 @@ public:
     (void)_ecm;
     (void)_eventMgr;
 
+    // ==========================================================
+    // TÓPICO DEL TRACK CONTROLLER
+    // ==========================================================
+    //
+    // El modelo incluido en el mundo se llama:
+    //
+    // conveyor_belt_1
+    //
+    // y contiene:
+    //
+    // link -> link
+    //
+    // Por tanto:
+    //
+    // /model/conveyor_belt_1/link/link/track_cmd_vel
+    //
+
     speedPublisher =
       transportNode.Advertise<gz::msgs::Double>(
         "/model/conveyor_belt_1/link/link/track_cmd_vel");
+
 
     if (!speedPublisher)
     {
@@ -84,7 +111,12 @@ public:
     else
     {
       std::cout
-        << "[BoxMoverPlugin] Publisher creado correctamente."
+        << "[BoxMoverPlugin] Publisher del TrackController creado."
+        << std::endl;
+
+      std::cout
+        << "[BoxMoverPlugin] Topic: "
+        << "/model/conveyor_belt_1/link/link/track_cmd_vel"
         << std::endl;
     }
   }
@@ -98,11 +130,12 @@ public:
     const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm) override
   {
+    // Tiempo actual de simulación.
     const double simTime = _info.simTime.count();
 
 
     // ==========================================================
-    // SI YA ESTÁ PARADA
+    // SI YA SE HA DETENIDO
     // ==========================================================
 
     if (stopped)
@@ -115,6 +148,7 @@ public:
 
     bool sausageFound = false;
 
+
     _ecm.Each<
       gz::sim::components::Model,
       gz::sim::components::Name>(
@@ -124,70 +158,118 @@ public:
       {
         const std::string name = _name->Data();
 
+
+        // Las salchichas se llaman:
+        //
+        // box_0
+        // box_1
+        // box_2
+        // box_3
+        //
+
         if (name.find("box_") != std::string::npos)
         {
           sausageFound = true;
 
-          // Ya hemos encontrado una salchicha.
+          // Ya hemos encontrado una.
           return false;
         }
+
 
         return true;
       });
 
 
     // ==========================================================
-    // PRIMERA SALCHICHA
+    // PRIMERA SALCHICHA DETECTADA
     // ==========================================================
 
     if (sausageFound && !started)
     {
       started = true;
 
+      // Guardamos el instante exacto en el que
+      // aparece la primera salchicha.
       startTime = simTime;
+
 
       std::cout
         << "[BoxMoverPlugin] Primera salchicha detectada."
         << std::endl;
 
       std::cout
-        << "[BoxMoverPlugin] Iniciando cinta a "
-        << BELT_SPEED
-        << " m/s."
+        << "[BoxMoverPlugin] Tiempo inicial = "
+        << startTime
+        << " s"
+        << std::endl;
+
+      std::cout
+        << "[BoxMoverPlugin] Esperando conexion "
+        << "con TrackController..."
         << std::endl;
     }
 
 
     // ==========================================================
-    // CINTA FUNCIONANDO
+    // ESPERAR A QUE TRACK CONTROLLER ESTÉ CONECTADO
     // ==========================================================
 
-    if (started && !stopped)
+    if (started && !beltStarted)
+    {
+      if (speedPublisher.HasConnections())
+      {
+        beltStarted = true;
+
+
+        std::cout
+          << "[BoxMoverPlugin] TrackController conectado."
+          << std::endl;
+
+
+        std::cout
+          << "[BoxMoverPlugin] Iniciando cinta a "
+          << BELT_SPEED
+          << " m/s."
+          << std::endl;
+
+
+        // Primer comando de velocidad.
+        SetBeltSpeed(BELT_SPEED);
+      }
+    }
+
+
+    // ==========================================================
+    // CINTA EN FUNCIONAMIENTO
+    // ==========================================================
+
+    if (started && beltStarted && !stopped)
     {
       const double elapsedTime =
         simTime - startTime;
 
 
-      // --------------------------------------------------------
-      // TODAVÍA TIENE QUE MOVERSE
-      // --------------------------------------------------------
+      // ========================================================
+      // TODAVÍA NO HA LLEGADO EL MOMENTO DE PARAR
+      // ========================================================
 
       if (elapsedTime < STOP_TIME)
       {
-        // PUBLICAMOS CONTINUAMENTE
-        SetBeltSpeed(BELT_SPEED);
+        // No necesitamos publicar continuamente.
+        //
+        // TrackController mantiene la velocidad que se le
+        // ha enviado.
       }
 
 
-      // --------------------------------------------------------
-      // TIEMPO TERMINADO
-      // --------------------------------------------------------
+      // ========================================================
+      // HA PASADO EL TIEMPO
+      // ========================================================
 
       else
       {
         stopped = true;
 
-        SetBeltSpeed(0.0);
 
         std::cout
           << "[BoxMoverPlugin] Han pasado "
@@ -195,20 +277,43 @@ public:
           << " segundos."
           << std::endl;
 
+
         std::cout
-          << "[BoxMoverPlugin] Cinta detenida."
+          << "[BoxMoverPlugin] Deteniendo cinta."
           << std::endl;
+
+
+        // Detener TrackController.
+        SetBeltSpeed(0.0);
       }
     }
   }
 
 
   // ============================================================
-  // CAMBIAR VELOCIDAD
+  // PUBLICAR VELOCIDAD AL TRACK CONTROLLER
   // ============================================================
 
   void SetBeltSpeed(double speed)
   {
+    std::cout
+      << "[BoxMoverPlugin] SetBeltSpeed("
+      << speed
+      << ")"
+      << std::endl;
+
+
+    // Comprobar si el publisher está conectado.
+    const bool connected =
+      speedPublisher.HasConnections();
+
+
+    std::cout
+      << "[BoxMoverPlugin] HasConnections = "
+      << connected
+      << std::endl;
+
+
     if (!speedPublisher)
     {
       std::cerr
@@ -219,10 +324,13 @@ public:
     }
 
 
+    // Crear mensaje.
     gz::msgs::Double msg;
 
     msg.set_data(speed);
 
+
+    // Publicar.
     speedPublisher.Publish(msg);
 
 
@@ -246,6 +354,7 @@ GZ_ADD_PLUGIN(
   gz::sim::System,
   gz::sim::ISystemConfigure,
   gz::sim::ISystemPreUpdate)
+
 
 GZ_ADD_PLUGIN_ALIAS(
   box_mover::BoxMoverPlugin,
