@@ -20,7 +20,7 @@ class sausageSpawner(Node):
 
         self.NUM_SAUSAGES = 4
 
-        self.BELT_SPEED = -0.1
+        self.BELT_SPEED = -0.15
 
         self.STOP_TIME = 15.5
 
