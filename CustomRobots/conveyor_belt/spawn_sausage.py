@@ -119,12 +119,7 @@ class sausageSpawner(Node):
 
         msg.data = json.dumps({
             "name": name,
-            "x": sausage["x"],
-            "spawn_time": sausage["spawn_time"],
-            "spawn_y": self.SPAWN_Y,
-            "belt_speed": self.BELT_SPEED,
-            "belt_start_time": self.belt_start_time,
-            "stop_time": self.STOP_TIME
+            "x": sausage["x"]
         })
 
         self.sausage_info_pub.publish(msg)
@@ -309,8 +304,7 @@ class sausageSpawner(Node):
                 continue
 
             self.sausages[name] = {
-                "x": x,
-                "spawn_time": time.time(),
+                "x": x
             }
 
             self.counter += 1
@@ -370,5 +364,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
