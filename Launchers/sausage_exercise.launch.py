@@ -114,6 +114,6 @@ def generate_launch_description():
             gz,
             gz_ros2_bridge,
             conveyor_bridge,
-            sausage_spawner,
+            #sausage_spawner,
         ]
     )
