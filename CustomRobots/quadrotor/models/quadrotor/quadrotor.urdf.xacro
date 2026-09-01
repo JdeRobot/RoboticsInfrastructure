@@ -3,13 +3,18 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:arg name="camera" default="true"/>
+  <xacro:arg name="gripper" default="false"/>
   <xacro:arg name="namespace" default="drone"/>
+  <xacro:arg name="gripper" default="false"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
+  <xacro:property name="gripper" value="$(arg gripper)"/>
+  <xacro:arg name="color" default=""/>
+  <xacro:property name="color" value="$(arg color)"/>
 
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/quadrotor/quadrotor_common.urdf.xacro"/>
 
-  <xacro:quadrotor namespace="${namespace}"/>
+  <xacro:quadrotor namespace="${namespace}" gripper="${gripper}" color="${color}"/>
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0 0 0" rpy="0 0 0" mass="0.035" name="frontal_cam" parent="base_link" namespace="${namespace}"/>

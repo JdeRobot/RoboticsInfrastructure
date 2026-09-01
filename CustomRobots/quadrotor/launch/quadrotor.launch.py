@@ -25,6 +25,8 @@ def launch_setup(context):
     gz_sensor = LaunchConfiguration("sensor")
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
+    gz_gripper = LaunchConfiguration("gripper")
+    gz_color = LaunchConfiguration("color")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -33,6 +35,8 @@ def launch_setup(context):
     sensor = gz_sensor.perform(context)
     namespace = gz_namespace.perform(context)
     entity = gz_entity.perform(context)
+    gripper = gz_gripper.perform(context)
+    color = gz_color.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -48,7 +52,9 @@ def launch_setup(context):
         xacro_file,
         mappings={
             "camera": "true" if sensor == "camera" else "false",
+            "gripper": gripper,
             "namespace": namespace,
+            "color": color,
         },
     ).toxml()
 
@@ -169,8 +175,10 @@ def generate_launch_description():
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("sensor", default_value="camera"),
+        DeclareLaunchArgument("gripper", default_value="false"),
         DeclareLaunchArgument("namespace", default_value="drone"),
         DeclareLaunchArgument("entity", default_value="drone"),
+        DeclareLaunchArgument("color", default_value=""),
     ]
 
     return LaunchDescription(

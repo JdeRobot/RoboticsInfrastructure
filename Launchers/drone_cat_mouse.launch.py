@@ -3,13 +3,16 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
+
+    # Which lap the pre programmed mouse flies. One launcher per world, so the
+    course = "easy"
 
     world_file_name = "drone_cat_mouse_city.world"
     worlds_dir = "/opt/jderobot/Scenes"
@@ -41,9 +44,25 @@ def generate_launch_description():
         output="screen",
     )
 
+    # Latched, because the mouse is started well after the world is.
+    course_cmd = ExecuteProcess(
+        cmd=[
+            "ros2",
+            "topic",
+            "pub",
+            "--qos-durability",
+            "transient_local",
+            "/drone_cat_mouse/course",
+            "std_msgs/msg/String",
+            f"data: {course}",
+        ],
+        output="screen",
+    )
+
     ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(course_cmd)
 
     return ld
