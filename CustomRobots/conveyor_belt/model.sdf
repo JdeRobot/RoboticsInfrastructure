@@ -86,15 +86,4 @@
 
     </plugin>
 
-
-    <!-- ====================================================== -->
-    <!-- NUESTRO PLUGIN                                         -->
-    <!-- ====================================================== -->
-
-    <plugin
-      filename="libconveyor_plugin.so"
-      name="box_mover::BoxMoverPlugin"/>
-
-  </model>
-
 </sdf>
