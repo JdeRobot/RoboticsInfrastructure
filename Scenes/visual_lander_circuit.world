@@ -47,72 +47,98 @@
 		</include>
 
 		<!-- ================= ROAD LOOP =================
-		     Rectangular circuit, x∈[-15,15] y∈[-10,10], built from road_plane
-		     tiles only (no road_curve): each tile is 2m wide x 10m long along
-		     its LOCAL Y AXIS (confirmed on the actual texture, not just the
-		     SDF plane <size>), so a straight run along world X needs the
-		     tiles yawed 90°, while a run along world Y keeps yaw 0. Square
-		     corners, not rounded - the north/south tiles are nudged 4mm up
-		     in Z so their small corner overlap with the east/west tiles
-		     doesn't z-fight. Simple and short on purpose (per user request),
-		     not a hand-placed circuit like follow_road's. -->
+		     Rectangular circuit built from road_plane tiles only (no
+		     road_curve - see the note in the exercise's memory/history for
+		     why: its pieces are hand-snapped in follow_road.world with no
+		     documented pivot, too easy to get a broken-looking seam without
+		     a GUI to check it against). Square corners, on purpose - simple
+		     and short.
 
-		<!-- South straight (y=-10) -->
+		     road_plane's texture runs along its LOCAL Y axis (confirmed on
+		     the texture itself), so the north/south straights (running
+		     along world X) are yawed 90°, the east/west straights (running
+		     along world Y) stay at yaw 0. Scaled 2x in local X (the width
+		     axis, untouched by the yaw) so the lane is 4m wide instead of
+		     2m - the stock width looked too narrow for the car.
+
+		     Every corner is a 90° meeting of a width-W north/south tile and
+		     a width-W east/west tile. The previous pass centered both on
+		     the same X0/Y0 centerline, which makes their footprints overlap
+		     in a W×W square at each corner - same z, so it z-fights (the
+		     "parts above, parts below" look). Fix: the east/west tiles are
+		     pushed outward by exactly half their own width (their pose x =
+		     ±(X0+HALF_W)) so their inner edge lands exactly on the
+		     north/south tiles' end (x=±X0) - touching, zero overlap, zero
+		     gap, no z-nudge needed anywhere. X0=15, Y0=8, HALF_W=2 here,
+		     chosen so 2*(Y0+HALF_W)=20 divides evenly into two 10m tiles
+		     for the east/west run. -->
+
+		<!-- South straight (y=-8) -->
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_s1</name>
-			<pose>-10 -10 0.004 0 0 1.5708</pose>
+			<pose>-10 -8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_s2</name>
-			<pose>0 -10 0.004 0 0 1.5708</pose>
+			<pose>0 -8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_s3</name>
-			<pose>10 -10 0.004 0 0 1.5708</pose>
+			<pose>10 -8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 
-		<!-- North straight (y=10) -->
+		<!-- North straight (y=8) -->
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_n1</name>
-			<pose>-10 10 0.004 0 0 1.5708</pose>
+			<pose>-10 8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_n2</name>
-			<pose>0 10 0.004 0 0 1.5708</pose>
+			<pose>0 8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_n3</name>
-			<pose>10 10 0.004 0 0 1.5708</pose>
+			<pose>10 8 0 0 0 1.5708</pose>
+			<scale>2 1 1</scale>
 		</include>
 
-		<!-- West straight (x=-15) -->
+		<!-- West straight (x=-17, pushed out from X0=15 by HALF_W=2) -->
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_w1</name>
-			<pose>-15 -5 0 0 0 0</pose>
+			<pose>-17 -5 0 0 0 0</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_w2</name>
-			<pose>-15 5 0 0 0 0</pose>
+			<pose>-17 5 0 0 0 0</pose>
+			<scale>2 1 1</scale>
 		</include>
 
-		<!-- East straight (x=15) -->
+		<!-- East straight (x=17) -->
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_e1</name>
-			<pose>15 -5 0 0 0 0</pose>
+			<pose>17 -5 0 0 0 0</pose>
+			<scale>2 1 1</scale>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_e2</name>
-			<pose>15 5 0 0 0 0</pose>
+			<pose>17 5 0 0 0 0</pose>
+			<scale>2 1 1</scale>
 		</include>
 
 		<!-- Landing target: same car as visual_lander.world, driving the
@@ -122,93 +148,79 @@
 		<include>
 			<uri>model://car_color_beacon</uri>
 			<name>car</name>
-			<pose>-13 -10 0.02 0 0 0</pose>
+			<pose>-13 -8 0.02 0 0 0</pose>
 		</include>
 
-		<!-- Trees/rocks ringing the outside of the loop, plus a few inside
-		     the open field, all clear of the road and the flight corridor
-		     above it. Same vendored, shadow-free assets as position_control. -->
+		<!-- Trees/rocks ringing the OUTSIDE of the loop only - the previous
+		     pass put a couple in the open interior "for interest" and they
+		     ended up right next to the road (pine/oak canopies reach ~4.3m
+		     radius at the scales used here, see position_control), a real
+		     collision risk for both the car and a landing drone. The whole
+		     interior is left clear now. Same vendored, shadow-free assets
+		     as position_control. -->
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_1</name>
-			<pose>-19 -12 0 0 0 0</pose>
+			<pose>-25 -14 0 0 0 0</pose>
 			<scale>1.1 1.1 1.1</scale>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_2</name>
-			<pose>-19 0 0 0 0 0</pose>
+			<pose>-25 0 0 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_3</name>
-			<pose>-19 12 0 0 0 0</pose>
+			<pose>-25 14 0 0 0 0</pose>
 			<scale>1.15 1.15 1.15</scale>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_4</name>
-			<pose>19 -12 0 0 0 0</pose>
+			<pose>25 -14 0 0 0 0</pose>
 			<scale>0.95 0.95 0.95</scale>
 		</include>
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_5</name>
-			<pose>19 0 0 0 0 0</pose>
+			<pose>25 0 0 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_6</name>
-			<pose>19 12 0 0 0 0</pose>
+			<pose>25 14 0 0 0 0</pose>
 			<scale>1.1 1.1 1.1</scale>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_7</name>
-			<pose>-8 15 0 0 0 0</pose>
+			<pose>-9 17 0 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_8</name>
-			<pose>8 15 0 0 0 0</pose>
+			<pose>9 17 0 0 0 0</pose>
 			<scale>1.2 1.2 1.2</scale>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_9</name>
-			<pose>0 15 0 0 0 0</pose>
+			<pose>0 17 0 0 0 0</pose>
 			<scale>0.9 0.9 0.9</scale>
-		</include>
-		<include>
-			<uri>model://pine_tree</uri>
-			<name>tree_10</name>
-			<pose>-5 5.5 0 0 0 0</pose>
-		</include>
-		<include>
-			<uri>model://oak_tree</uri>
-			<name>tree_11</name>
-			<pose>5 -6.5 0 0 0 0</pose>
-			<scale>1.05 1.05 1.05</scale>
 		</include>
 		<include>
 			<uri>model://falling_rock</uri>
 			<name>rock_1</name>
-			<pose>-19 -6 0 0 0 0.3</pose>
+			<pose>-25 -6 0 0 0 0.3</pose>
 			<static>true</static>
 		</include>
 		<include>
 			<uri>model://falling_rock</uri>
 			<name>rock_2</name>
-			<pose>19 6 0 0 0 1.4</pose>
+			<pose>25 6 0 0 0 1.4</pose>
 			<static>true</static>
 			<scale>0.9 0.9 0.9</scale>
-		</include>
-		<include>
-			<uri>model://falling_rock</uri>
-			<name>rock_3</name>
-			<pose>4 4.5 0 0 0 2.1</pose>
-			<static>true</static>
-			<scale>1.1 1.1 1.1</scale>
 		</include>
 
 		<!-- Decorative corner logo, homage to the original visual_lander
@@ -216,7 +228,7 @@
 		<include>
 			<uri>model://logoJdeRobot</uri>
 			<name>corner_logo</name>
-			<pose>-19 -19 0.01 0 0 0.78</pose>
+			<pose>-25 -20 0.01 0 0 0.78</pose>
 		</include>
 
 	</world>
