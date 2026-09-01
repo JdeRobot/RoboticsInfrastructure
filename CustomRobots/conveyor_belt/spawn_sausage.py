@@ -10,6 +10,7 @@ import math
 import json
 
 from std_msgs.msg import String, Float64
+from feeder.gazebo_pose_tracker import GazeboPoseTracker
 from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 
 
@@ -21,8 +22,6 @@ class sausageSpawner(Node):
         self.NUM_SAUSAGES = 4
 
         self.BELT_SPEED = -0.15
-
-        self.STOP_TIME = 12
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
@@ -36,6 +35,8 @@ class sausageSpawner(Node):
         # Siempre será hacia Y = 0.
         self.MAX_Y_OFFSET = 0.15
 
+        self.STOP_Y = -0.5
+
         self.SPAWN_Z = 0.76
 
         self.SAUSAGE_SDF = (
@@ -47,11 +48,12 @@ class sausageSpawner(Node):
 
         self.sausages = {}
 
+        self.pose_tracker = GazeboPoseTracker()
+        self.tracked_sausage = None
+
         self.belt_started = False
 
         self.belt_stopped = False
-
-        self.belt_start_time = None
 
         self.graspable_pub = self.create_publisher(
             String,
@@ -154,8 +156,6 @@ class sausageSpawner(Node):
 
         self.belt_stopped = False
 
-        self.belt_start_time = time.time()
-
         self.get_logger().info(
             "All sausages spawned."
         )
@@ -175,25 +175,32 @@ class sausageSpawner(Node):
         if self.belt_stopped:
             return
 
-        if self.belt_start_time is None:
+        if self.tracked_sausage is None:
             return
 
-        elapsed = (
-            time.time() -
-            self.belt_start_time
+        position = self.pose_tracker.position(
+            self.tracked_sausage
         )
 
-        if elapsed < self.STOP_TIME:
+        if position is None:
             return
 
-        self.belt_stopped = True
+        current_y = position["y"]
 
-        self.set_belt(0.0)
+        if current_y <= self.STOP_Y:
 
-        self.get_logger().info(
-            f"Conveyor stopped after "
-            f"{self.STOP_TIME:.1f} seconds."
-        )
+            self.belt_stopped = True
+
+            self.set_belt(0.0)
+
+            self.get_logger().info(
+                f"{self.tracked_sausage} reached STOP_Y: "
+                f"{current_y:.3f}"
+            )
+
+            self.get_logger().info(
+                "Conveyor stopped."
+            )
 
     def spawn_all_sausages(self):
 
@@ -363,6 +370,21 @@ class sausageSpawner(Node):
         # --------------------------------------------------
 
         if self.counter > 0:
+
+            self.tracked_sausage = min(
+                self.sausages,
+                key=lambda name: self.sausages[name]["y"]
+            )
+
+            self.pose_tracker.track(
+                self.tracked_sausage
+            )
+
+            self.get_logger().info(
+                f"Tracking {self.tracked_sausage} "
+                f"with initial Y={self.sausages[self.tracked_sausage]['y']:.3f}"
+            )
+
             self.start_belt()
 
         self.get_logger().info(
