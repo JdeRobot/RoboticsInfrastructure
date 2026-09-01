@@ -23,7 +23,7 @@ class sausageSpawner(Node):
 
         self.NUM_SAUSAGES = 4
 
-        self.BELT_SPEED = -0.15
+        self.BELT_SPEED = -0.1
 
         # Y a la que se detendrá la cinta
         self.STOP_Y = -0.50
