@@ -15,27 +15,21 @@ TRACK_TOPIC = "/visual_lander/track"
 DEFAULT_TRACK = "shuttle"
 TRACK_TIMEOUT = 10.0
 
-# Each track is a loop of (x, y, speed) waypoints: drive straight toward
-# the next one, advance once close enough, wrap back to the start. Same
-# pattern as follow_turtlebot's patrol driver, just body-frame steered
-# (heading P-controller) instead of a fixed diff-drive namespace.
+# Each track is a loop of (x, y, speed) waypoints, driven with a heading P-controller.
 TRACKS = {
-    # Back-and-forth line, the car U-turns at each end.
     "shuttle": [
         (-12.0, 0.0, 1.5),
         (12.0, 0.0, 1.5),
     ],
-    # Rectangular road loop, centerlines at x=+-17/y=+-8, see
-    # Scenes/visual_lander_circuit.world.
     "circuit": [
-        (-13.0, -8.0, 1.5),
-        (13.0, -8.0, 1.5),
-        (17.0, -6.0, 0.8),
-        (17.0, 6.0, 1.5),
-        (13.0, 8.0, 0.8),
-        (-13.0, 8.0, 1.5),
-        (-17.0, 6.0, 0.8),
-        (-17.0, -6.0, 1.5),
+        (-6.0, -15.0, 1.5),
+        (6.0, -15.0, 1.5),
+        (15.0, -6.0, 1.0),
+        (15.0, 6.0, 1.5),
+        (6.0, 15.0, 1.0),
+        (-6.0, 15.0, 1.5),
+        (-15.0, 6.0, 1.0),
+        (-15.0, -6.0, 1.0),
     ],
 }
 
@@ -43,10 +37,7 @@ WAYPOINT_RADIUS = 1.0
 KP_YAW = 2.0
 MAX_YAW_RATE = 1.5
 
-# A jump this big in one 0.05s tick is physically impossible at these
-# speeds, so it means RAM just reset the world (it teleports the pose,
-# odometry doesn't ramp) - restart from the closest waypoint instead of
-# stubbornly aiming for wherever the loop was up to before the reset.
+# A jump this big in one tick means RAM just reset the world, not real motion.
 RESET_JUMP_DISTANCE = 3.0
 
 if not rclpy.ok():

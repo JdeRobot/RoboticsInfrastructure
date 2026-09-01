@@ -38,67 +38,56 @@
 			<uri>model://grass_plane</uri>
 		</include>
 
-		<!-- Start pad: marks the drone's spawn point (0,-8, see database/worlds.sql) -->
 		<include>
 			<uri>model://logoPadGreen</uri>
 			<name>start_pad</name>
 			<pose>0 -8 0.05 0 0 0</pose>
 		</include>
 
-		<!-- Decorative corner logo, homage to the original visual_lander teaser. -->
 		<include>
 			<uri>model://logoJdeRobot</uri>
 			<name>corner_logo</name>
 			<pose>-14 -14 0.01 0 0 0.78</pose>
 		</include>
 
-		<!-- ================= SHUTTLE ROAD =================
-		     A single straight road along the shuttle line (y=0), so the
-		     student can see the car's full range at a glance. road_plane's
-		     texture runs along its LOCAL Y axis (confirmed on the actual
-		     texture, not just the SDF plane <size>), so a run along world X
-		     needs the tiles yawed 90°. Scaled 2x in local X (the width axis,
-		     untouched by the yaw) to widen it from 2m to 4m - the car looked
-		     too wide for the stock tile. A single straight line has no
-		     perpendicular crossing, so it can just sit flush at z=0 with the
-		     grass, no z-nudging needed (that trick is only for the circuit's
-		     corners, see visual_lander_circuit.world). -->
+		<!-- road_plane runs along local Y, yawed 90 degrees here to run along world X -->
 		<include>
 			<uri>model://road_plane</uri>
-			<name>road_1</name>
-			<pose>-10 0 0 0 0 1.5708</pose>
-			<scale>2 1 1</scale>
+			<name>road_1a</name>
+			<pose>-10 -1 0 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
-			<name>road_2</name>
-			<pose>0 0 0 0 0 1.5708</pose>
-			<scale>2 1 1</scale>
+			<name>road_1b</name>
+			<pose>-10 1 0 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
-			<name>road_3</name>
-			<pose>10 0 0 0 0 1.5708</pose>
-			<scale>2 1 1</scale>
+			<name>road_2a</name>
+			<pose>0 -1 0 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_2b</name>
+			<pose>0 1 0 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_3a</name>
+			<pose>10 -1 0 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_3b</name>
+			<pose>10 1 0 0 0 1.5708</pose>
 		</include>
 
-		<!-- Landing target: a car with a color beacon on its roof, shuttling back and
-		     forth along the road above (see resources/exercises/visual_lander/car.py,
-		     which drives it once the student's code starts running, same as the
-		     drone_cat_mouse mouse). Starts at the centre of its X∈[-12,12] shuttle line. -->
 		<include>
 			<uri>model://car_color_beacon</uri>
 			<name>car</name>
 			<pose>0 0 0 0 0 0</pose>
 		</include>
 
-		<!-- Trees/rocks flanking the shuttle avenue. Kept at least 5m clear
-		     of the road band (|y|<2 once widened) and of the start pad -
-		     pine/oak canopies measured up to ~4.3m radius at the scales
-		     used here (see position_control), the previous pass put a few
-		     close enough to visually clip the takeoff pad. Same vendored,
-		     shadow-free assets as position_control, no fresh decoration
-		     assets needed here. -->
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_1</name>

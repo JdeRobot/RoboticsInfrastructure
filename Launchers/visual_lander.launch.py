@@ -44,9 +44,7 @@ def generate_launch_description():
         output="screen",
     )
 
-    # The car is plain geometry included straight in the world (it is not a
-    # robot with its own launch.py, see database/worlds.sql), so its
-    # cmd_vel/odom topics need their own bridge here.
+    # The car is plain geometry in the world, not a robot with its own launch.py.
     car_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
