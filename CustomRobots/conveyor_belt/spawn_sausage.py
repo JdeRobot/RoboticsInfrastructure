@@ -12,6 +12,8 @@ import json
 from std_msgs.msg import String, Float64
 from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 
+from feeder.gazebo_pose_tracker import GazeboPoseTracker
+
 
 class sausageSpawner(Node):
 
@@ -20,23 +22,33 @@ class sausageSpawner(Node):
 
         self.NUM_SAUSAGES = 4
 
+        # Velocidad de la cinta
         self.BELT_SPEED = -0.15
 
-        self.STOP_TIME = 12
+        # --------------------------------------------------
+        # POSICIONES
+        # --------------------------------------------------
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
 
         self.MIN_DISTANCE = 0.08
 
-        # Y inicial
         self.SPAWN_Y = 0.58
 
-        # Diferencia máxima respecto a SPAWN_Y.
-        # Siempre será hacia Y = 0.
-        self.MAX_Y_OFFSET = 0.06
+        # Diferencia máxima en Y.
+        # Siempre hacia Y = 0.
+        self.MAX_Y_OFFSET = 0.15
 
         self.SPAWN_Z = 0.76
+
+        # --------------------------------------------------
+        # POSICIÓN DONDE SE PARA LA CINTA
+        # --------------------------------------------------
+
+        self.STOP_Y = -0.5
+
+        # --------------------------------------------------
 
         self.SAUSAGE_SDF = (
             "/home/ws/src/CustomRobots/"
@@ -48,11 +60,12 @@ class sausageSpawner(Node):
         self.sausages = {}
 
         self.belt_started = False
-
         self.belt_stopped = False
 
-        self.belt_start_time = None
+        # Tracker de posiciones reales de Gazebo
+        self.pose_tracker = GazeboPoseTracker()
 
+        # Publicadores
         self.graspable_pub = self.create_publisher(
             String,
             "/graspable_objects",
@@ -77,9 +90,10 @@ class sausageSpawner(Node):
             10
         )
 
-        self.belt_timer = self.create_timer(
+        # Comprobar posición cada 50 ms
+        self.position_timer = self.create_timer(
             0.05,
-            self.update_belt
+            self.check_sausages_position
         )
 
         self.get_logger().info(
@@ -98,6 +112,10 @@ class sausageSpawner(Node):
 
         self.spawn_all_sausages()
 
+    # ======================================================
+    # GRASPABLE
+    # ======================================================
+
     def publish_graspable_objects(self):
 
         msg = String()
@@ -111,6 +129,10 @@ class sausageSpawner(Node):
         self.get_logger().info(
             f"Graspable objects -> {msg.data}"
         )
+
+    # ======================================================
+    # SAUSAGE INFO
+    # ======================================================
 
     def publish_sausage_info(self, name):
 
@@ -133,6 +155,10 @@ class sausageSpawner(Node):
             f"Sausage info -> {msg.data}"
         )
 
+    # ======================================================
+    # CINTA
+    # ======================================================
+
     def set_belt(self, speed):
 
         msg = Float64()
@@ -151,10 +177,7 @@ class sausageSpawner(Node):
             return
 
         self.belt_started = True
-
         self.belt_stopped = False
-
-        self.belt_start_time = time.time()
 
         self.get_logger().info(
             "All sausages spawned."
@@ -167,7 +190,11 @@ class sausageSpawner(Node):
 
         self.set_belt(self.BELT_SPEED)
 
-    def update_belt(self):
+    # ======================================================
+    # COMPROBAR POSICIÓN
+    # ======================================================
+
+    def check_sausages_position(self):
 
         if not self.belt_started:
             return
@@ -175,32 +202,48 @@ class sausageSpawner(Node):
         if self.belt_stopped:
             return
 
-        if self.belt_start_time is None:
-            return
+        # Comprobar todas las salchichas
+        for name in self.sausages:
 
-        elapsed = (
-            time.time() -
-            self.belt_start_time
-        )
+            position = self.pose_tracker.position(name)
 
-        if elapsed < self.STOP_TIME:
-            return
+            if position is None:
+                continue
 
-        self.belt_stopped = True
+            y = position["y"]
 
-        self.set_belt(0.0)
+            # Las salchichas van desde Y=0.58 hacia Y=0
+            #
+            # Cuando una llega a STOP_Y:
+            #
+            #     Y <= STOP_Y
+            #
+            # paramos la cinta.
 
-        self.get_logger().info(
-            f"Conveyor stopped after "
-            f"{self.STOP_TIME:.1f} seconds."
-        )
+            if y <= self.STOP_Y:
+
+                self.belt_stopped = True
+
+                self.set_belt(0.0)
+
+                self.get_logger().info(
+                    f"Conveyor stopped because {name} "
+                    f"reached Y={y:.3f} "
+                    f"(target={self.STOP_Y:.3f})"
+                )
+
+                break
+
+    # ======================================================
+    # SPAWN
+    # ======================================================
 
     def spawn_all_sausages(self):
 
         NUM_SAUSAGES = self.NUM_SAUSAGES
 
         # --------------------------------------------------
-        # GENERAR X DIFERENTES
+        # X DIFERENTES
         # --------------------------------------------------
 
         x_positions = []
@@ -219,31 +262,13 @@ class sausageSpawner(Node):
                 if abs(x - p) < self.MIN_DISTANCE:
 
                     valid = False
-
                     break
 
             if valid:
-
                 x_positions.append(x)
 
         # --------------------------------------------------
-        # GENERAR Y DIFERENTES
-        # --------------------------------------------------
-        #
-        # Todas parten desde SPAWN_Y = 0.58.
-        #
-        # Solo permitimos desplazamiento hacia Y = 0:
-        #
-        # 0.58
-        # 0.56
-        # 0.54
-        # 0.52
-        #
-        # Nunca:
-        #
-        # 0.60
-        # 0.62
-        #
+        # Y DIFERENTES
         # --------------------------------------------------
 
         y_positions = [
@@ -254,8 +279,8 @@ class sausageSpawner(Node):
             for _ in range(NUM_SAUSAGES)
         ]
 
-        # Intentamos que las Y sean diferentes.
-        y_positions = sorted(y_positions, reverse=True)
+        # Ordenar de mayor a menor
+        y_positions.sort(reverse=True)
 
         # --------------------------------------------------
         # NOMBRES
@@ -269,12 +294,7 @@ class sausageSpawner(Node):
         random.shuffle(box_names)
 
         # --------------------------------------------------
-        # SPAWN DE LAS 4 SALCHICHAS
-        # --------------------------------------------------
-        #
-        # NO HAY NINGÚN DELAY ENTRE ELLAS.
-        # Se ejecutan una detrás de otra inmediatamente.
-        #
+        # SPAWN INMEDIATO DE LAS 4
         # --------------------------------------------------
 
         for i in range(NUM_SAUSAGES):
@@ -337,10 +357,14 @@ class sausageSpawner(Node):
 
                 continue
 
+            # Guardar posición inicial
             self.sausages[name] = {
                 "x": x,
                 "y": y
             }
+
+            # Empezar a seguir esta salchicha
+            self.pose_tracker.track(name)
 
             self.counter += 1
 
@@ -353,13 +377,13 @@ class sausageSpawner(Node):
             )
 
         # --------------------------------------------------
-        # PUBLICAR OBJETOS
+        # PUBLICAR
         # --------------------------------------------------
 
         self.publish_graspable_objects()
 
         # --------------------------------------------------
-        # ARRANCAR CINTA DESPUÉS DE SPAWNEAR TODAS
+        # ARRANCAR CINTA
         # --------------------------------------------------
 
         if self.counter > 0:
@@ -369,11 +393,16 @@ class sausageSpawner(Node):
             f"Spawned {self.counter} sausages."
         )
 
+    # ======================================================
+    # DESTROY
+    # ======================================================
+
     def destroy_node(self):
 
         if hasattr(self, "speed_pub"):
-
             self.set_belt(0.0)
+
+        self.pose_tracker.clear()
 
         super().destroy_node()
 
@@ -397,7 +426,6 @@ def main():
         node.destroy_node()
 
         if rclpy.ok():
-
             rclpy.shutdown()
 
 
