@@ -4,25 +4,44 @@ import rclpy
 from rclpy.node import Node
 
 import subprocess
-import time
 import random
 import math
 import json
 
 from std_msgs.msg import String, Float64
-from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
+from rclpy.qos import (
+    QoSProfile,
+    ReliabilityPolicy,
+    DurabilityPolicy
+)
 
 
 class sausageSpawner(Node):
 
     def __init__(self):
+
         super().__init__("sausage_spawner")
+
+        ############################################################
+        # USAR TIEMPO DE SIMULACIÓN
+        ############################################################
+
+        self.declare_parameter(
+            "use_sim_time",
+            True
+        )
+
+        ############################################################
+        # CONFIGURACIÓN
+        ############################################################
 
         self.NUM_SAUSAGES = 4
 
         self.BELT_SPEED = -0.15
 
-        self.STOP_TIME = 12
+        # Tiempo SIMULADO desde que aparece la primera salchicha
+        # hasta que se detiene la cinta.
+        self.STOP_TIME = 12.0
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
@@ -38,6 +57,10 @@ class sausageSpawner(Node):
             "conveyor_belt/sausage.sdf"
         )
 
+        ############################################################
+        # ESTADO
+        ############################################################
+
         self.counter = 0
 
         self.sausages = {}
@@ -48,6 +71,34 @@ class sausageSpawner(Node):
 
         self.belt_start_time = None
 
+        ############################################################
+        # ESTADO DEL SPAWNER
+        ############################################################
+
+        # Esperamos inicialmente 5 segundos SIMULADOS
+        self.startup_wait = 5.0
+
+        # Después esperamos 20 segundos SIMULADOS
+        # antes de generar las salchichas.
+        self.spawn_wait = 20.0
+
+        self.initial_time = None
+
+        self.spawn_start_time = None
+
+        self.spawning = False
+
+        self.spawn_times = []
+
+        self.spawn_positions = []
+
+        self.spawn_index = 0
+
+        self.box_names = []
+
+        ############################################################
+        # PUBLICADORES
+        ############################################################
 
         self.graspable_pub = self.create_publisher(
             String,
@@ -73,40 +124,349 @@ class sausageSpawner(Node):
             10
         )
 
-        self.belt_timer = self.create_timer(
+        ############################################################
+        # TIMER
+        ############################################################
+
+        self.timer = self.create_timer(
             0.05,
-            self.update_belt
+            self.update
+        )
+
+        ############################################################
+        # TIEMPO SIMULADO INICIAL
+        ############################################################
+
+        self.initial_time = self.sim_time()
+
+        self.get_logger().info(
+            "Sausage spawner iniciado."
         )
 
         self.get_logger().info(
-            "Waiting 5 seconds for Gazebo..."
+            "Esperando 5 segundos de TIEMPO SIMULADO..."
         )
 
-        time.sleep(5)
+    ############################################################
+    # TIEMPO DE SIMULACIÓN
+    ############################################################
 
-        self.publish_graspable_objects()
+    def sim_time(self):
+
+        return (
+            self.get_clock().now().nanoseconds
+            / 1e9
+        )
+
+    ############################################################
+    # ACTUALIZACIÓN PRINCIPAL
+    ############################################################
+
+    def update(self):
+
+        current_time = self.sim_time()
+
+        ########################################################
+        # 1. ESPERA INICIAL
+        ########################################################
+
+        if self.counter == 0 and not self.spawning:
+
+            elapsed = (
+                current_time -
+                self.initial_time
+            )
+
+            if elapsed < self.startup_wait:
+                return
+
+            self.get_logger().info(
+                "Han pasado 5 segundos SIMULADOS."
+            )
+
+            self.publish_graspable_objects()
+
+            self.spawn_start_time = current_time
+
+            self.get_logger().info(
+                "Esperando 20 segundos de TIEMPO SIMULADO "
+                "antes de generar las salchichas..."
+            )
+
+            # Marcamos que estamos en la fase de espera
+            self.spawning = True
+
+            # Usamos un índice especial para distinguir
+            # espera inicial de generación.
+            self.spawn_index = -1
+
+            return
+
+        ########################################################
+        # 2. ESPERA DE 20 SEGUNDOS SIMULADOS
+        ########################################################
+
+        if self.spawning and self.spawn_index == -1:
+
+            elapsed = (
+                current_time -
+                self.spawn_start_time
+            )
+
+            if elapsed < self.spawn_wait:
+                return
+
+            self.get_logger().info(
+                "Han pasado 20 segundos SIMULADOS."
+            )
+
+            self.prepare_spawning()
+
+            return
+
+        ########################################################
+        # 3. GENERAR SALCHICHAS
+        ########################################################
+
+        if self.spawning:
+
+            self.update_spawning(
+                current_time
+            )
+
+        ########################################################
+        # 4. CONTROL DE LA CINTA
+        ########################################################
+
+        self.update_belt()
+
+    ############################################################
+    # PREPARAR GENERACIÓN
+    ############################################################
+
+    def prepare_spawning(self):
+
+        NUM_SAUSAGES = self.NUM_SAUSAGES
+
+        ########################################################
+        # POSICIONES X
+        ########################################################
+
+        positions = []
+
+        while len(positions) < NUM_SAUSAGES:
+
+            x = random.uniform(
+                self.MIN_X,
+                self.MAX_X
+            )
+
+            valid = True
+
+            for p in positions:
+
+                if abs(x - p) < self.MIN_DISTANCE:
+
+                    valid = False
+                    break
+
+            if valid:
+                positions.append(x)
+
+        ########################################################
+        # TIEMPOS DE APARICIÓN
+        #
+        # También son TIEMPO SIMULADO
+        ########################################################
+
+        self.spawn_times = sorted(
+            random.uniform(0.0, 2.0)
+            for _ in range(NUM_SAUSAGES)
+        )
+
+        ########################################################
+        # NOMBRES
+        ########################################################
+
+        self.box_names = [
+            f"box_{i}"
+            for i in range(NUM_SAUSAGES)
+        ]
+
+        random.shuffle(
+            self.box_names
+        )
+
+        ########################################################
+        # GUARDAR POSICIONES
+        ########################################################
+
+        self.spawn_positions = positions
+
+        self.spawn_start_time = self.sim_time()
+
+        self.spawn_index = 0
 
         self.get_logger().info(
-            "Waiting 20 seconds before spawning sausages..."
+            "Comenzando generación de salchichas."
         )
 
-        time.sleep(20)
+    ############################################################
+    # GENERAR SALCHICHAS SEGÚN TIEMPO SIMULADO
+    ############################################################
 
-        self.spawn_all_sausages()
+    def update_spawning(self, current_time):
+
+        if self.spawn_index >= self.NUM_SAUSAGES:
+
+            self.spawning = False
+
+            self.publish_graspable_objects()
+
+            self.get_logger().info(
+                f"Spawn completado: "
+                f"{self.NUM_SAUSAGES} salchichas."
+            )
+
+            return
+
+        elapsed = (
+            current_time -
+            self.spawn_start_time
+        )
+
+        target_time = self.spawn_times[
+            self.spawn_index
+        ]
+
+        ########################################################
+        # TODAVÍA NO TOCA GENERAR
+        ########################################################
+
+        if elapsed < target_time:
+            return
+
+        ########################################################
+        # GENERAR
+        ########################################################
+
+        x = self.spawn_positions[
+            self.spawn_index
+        ]
+
+        name = self.box_names[
+            self.spawn_index
+        ]
+
+        yaw = random.uniform(
+            -math.pi,
+            math.pi
+        )
+
+        cmd = [
+
+            "ros2",
+            "run",
+            "ros_gz_sim",
+            "create",
+
+            "-name",
+            name,
+
+            "-x",
+            str(x),
+
+            "-y",
+            str(self.SPAWN_Y),
+
+            "-z",
+            str(self.SPAWN_Z),
+
+            "-R",
+            "0",
+
+            "-P",
+            "0",
+
+            "-Y",
+            str(yaw),
+
+            "-file",
+            self.SAUSAGE_SDF,
+        ]
+
+        result = subprocess.run(
+            cmd,
+            check=False,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+
+            self.get_logger().error(
+                f"Failed to spawn {name}: "
+                f"{result.stderr.strip()}"
+            )
+
+        else:
+
+            self.sausages[name] = {
+                "x": x
+            }
+
+            self.counter += 1
+
+            ####################################################
+            # LA CINTA COMIENZA CON LA PRIMERA SALCHICHA
+            ####################################################
+
+            if self.counter == 1:
+
+                self.start_belt()
+
+            self.publish_sausage_info(
+                name
+            )
+
+            self.get_logger().info(
+                f"Spawned {name} "
+                f"at x={x:.3f} "
+                f"t={target_time:.2f}s SIM"
+            )
+
+        ########################################################
+        # SIGUIENTE
+        ########################################################
+
+        self.spawn_index += 1
+
+    ############################################################
+    # PUBLICAR OBJETOS
+    ############################################################
 
     def publish_graspable_objects(self):
 
         msg = String()
 
         msg.data = ",".join(
-            [f"box_{i}" for i in range(self.counter)]
+            [
+                f"box_{i}"
+                for i in range(self.counter)
+            ]
         )
 
-        self.graspable_pub.publish(msg)
+        self.graspable_pub.publish(
+            msg
+        )
 
         self.get_logger().info(
             f"Graspable objects -> {msg.data}"
         )
+
+    ############################################################
+    # INFORMACIÓN DE SALCHICHA
+    ############################################################
 
     def publish_sausage_info(self, name):
 
@@ -122,11 +482,17 @@ class sausageSpawner(Node):
             "x": sausage["x"]
         })
 
-        self.sausage_info_pub.publish(msg)
+        self.sausage_info_pub.publish(
+            msg
+        )
 
         self.get_logger().info(
             f"Sausage info -> {msg.data}"
         )
+
+    ############################################################
+    # CONTROL VELOCIDAD CINTA
+    ############################################################
 
     def set_belt(self, speed):
 
@@ -134,11 +500,18 @@ class sausageSpawner(Node):
 
         msg.data = float(speed)
 
-        self.speed_pub.publish(msg)
+        self.speed_pub.publish(
+            msg
+        )
 
         self.get_logger().info(
-            f"/conveyor/speed -> {speed:.2f} m/s"
+            f"/conveyor/speed -> "
+            f"{speed:.2f} m/s"
         )
+
+    ############################################################
+    # ARRANCAR CINTA
+    ############################################################
 
     def start_belt(self):
 
@@ -149,19 +522,33 @@ class sausageSpawner(Node):
 
         self.belt_stopped = False
 
-        self.belt_start_time = time.time()
+        ########################################################
+        # TIEMPO DE SIMULACIÓN
+        ########################################################
 
+        self.belt_start_time = self.sim_time()
 
         self.get_logger().info(
-            "First sausage spawned."
+            "Primera salchicha spawned."
         )
 
         self.get_logger().info(
-            f"Starting conveyor at "
+            f"Iniciando conveyor a "
             f"{self.BELT_SPEED:.2f} m/s"
         )
 
-        self.set_belt(self.BELT_SPEED)
+        self.get_logger().info(
+            f"Tiempo simulado inicial: "
+            f"{self.belt_start_time:.3f} s"
+        )
+
+        self.set_belt(
+            self.BELT_SPEED
+        )
+
+    ############################################################
+    # ACTUALIZAR CINTA
+    ############################################################
 
     def update_belt(self):
 
@@ -174,168 +561,56 @@ class sausageSpawner(Node):
         if self.belt_start_time is None:
             return
 
+        ########################################################
+        # TIEMPO SIMULADO
+        ########################################################
+
+        current_time = self.sim_time()
 
         elapsed = (
-            time.time() -
+            current_time -
             self.belt_start_time
         )
 
+        ########################################################
+        # TODAVÍA NO PARAR
+        ########################################################
+
         if elapsed < self.STOP_TIME:
             return
+
+        ########################################################
+        # PARAR
+        ########################################################
 
         self.belt_stopped = True
 
         self.set_belt(0.0)
 
         self.get_logger().info(
-            f"Conveyor stopped after "
-            f"{self.STOP_TIME:.1f} seconds."
+            f"Conveyor detenido después de "
+            f"{elapsed:.3f} s de SIM TIME."
         )
 
-    def spawn_all_sausages(self):
-
-        NUM_SAUSAGES = self.NUM_SAUSAGES
-
-        positions = []
-
-
-        while len(positions) < NUM_SAUSAGES:
-
-            x = random.uniform(
-                self.MIN_X,
-                self.MAX_X
-            )
-
-            valid = True
-
-
-            for p in positions:
-
-                if abs(x - p) < self.MIN_DISTANCE:
-
-                    valid = False
-
-                    break
-
-
-            if valid:
-
-                positions.append(x)
-
-        spawn_times = sorted(
-            random.uniform(0.0, 2.0)
-            for _ in range(NUM_SAUSAGES)
-        )
-
-        box_names = [
-            f"box_{i}"
-            for i in range(NUM_SAUSAGES)
-        ]
-
-        random.shuffle(box_names)
-
-        start_time = time.time()
-
-        for i, x in enumerate(positions):
-
-            target_time = (
-                start_time +
-                spawn_times[i]
-            )
-
-
-            while time.time() < target_time:
-
-                time.sleep(0.005)
-
-            name = box_names[i]
-
-            yaw = random.uniform(
-                -math.pi,
-                math.pi
-            )
-
-            cmd = [
-
-                "ros2",
-                "run",
-                "ros_gz_sim",
-                "create",
-
-                "-name",
-                name,
-
-                "-x",
-                str(x),
-
-                "-y",
-                str(self.SPAWN_Y),
-
-                "-z",
-                str(self.SPAWN_Z),
-
-                "-R",
-                "0",
-
-                "-P",
-                "0",
-
-                "-Y",
-                str(yaw),
-
-                "-file",
-                self.SAUSAGE_SDF,
-            ]
-
-            result = subprocess.run(
-                cmd,
-                check=False,
-                capture_output=True,
-                text=True
-            )
-
-            if result.returncode != 0:
-
-                self.get_logger().error(
-                    f"Failed to spawn {name}: "
-                    f"{result.stderr.strip()}"
-                )
-
-                continue
-
-            self.sausages[name] = {
-                "x": x
-            }
-
-            self.counter += 1
-
-            if self.counter == 1:
-
-                self.start_belt()
-
-            self.publish_sausage_info(name)
-
-            self.get_logger().info(
-                f"Spawned {name} "
-                f"at x={x:.3f} "
-                f"t={spawn_times[i]:.2f}s"
-            )
-
-        self.publish_graspable_objects()
-
-
-        self.get_logger().info(
-            f"Spawned {NUM_SAUSAGES} sausages."
-        )
+    ############################################################
+    # DESTRUCCIÓN
+    ############################################################
 
     def destroy_node(self):
 
-        if hasattr(self, "speed_pub"):
+        if hasattr(
+            self,
+            "speed_pub"
+        ):
 
             self.set_belt(0.0)
 
-
         super().destroy_node()
+
+
+############################################################
+# MAIN
+############################################################
 
 def main():
 
@@ -343,16 +618,13 @@ def main():
 
     node = sausageSpawner()
 
-
     try:
 
         rclpy.spin(node)
 
-
     except KeyboardInterrupt:
 
         pass
-
 
     finally:
 
@@ -364,4 +636,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
