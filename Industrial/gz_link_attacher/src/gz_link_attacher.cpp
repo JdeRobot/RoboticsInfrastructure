@@ -71,25 +71,6 @@ void Configure(
 
   worldEntity = _entity;
 
-  if (_sdf && _sdf->HasElement("robot_model"))
-  {
-      robotModelName = _sdf->Get<std::string>("robot_model");
-  }
-
-  if (robotModelName.empty())
-  {
-      std::cerr
-          << "[LinkAttacher] ERROR: robot_model parameter not provided"
-          << std::endl;
-
-      return;
-  }
-
-  std::cout
-      << "[LinkAttacher] Robot model: "
-      << robotModelName
-      << std::endl;
-
   std::cout << "[LinkAttacher] World entity: " << worldEntity << std::endl;
 
   if (!rclcpp::ok())
@@ -132,15 +113,9 @@ void Configure(
       {
         contactLatched = false;
 
-        leftFingerContact = false;
-        rightFingerContact = false;
-
-        leftObjectModel.clear();
-        rightObjectModel.clear();
-
         if (activeJoint != kNullEntity)
         {
-            removeJointRequested = true;
+          removeJointRequested = true;
         }
       }
     });
@@ -168,6 +143,15 @@ void Configure(
 
           graspableObjects.push_back(item);
         }
+
+        std::cout
+          << "[LinkAttacher] Updated graspable objects:"
+          << std::endl;
+
+        for (const auto &obj : graspableObjects)
+        {
+          std::cout << "  - " << obj << std::endl;
+        }
       });
 
   // Optional SDF params — defaults preserve pick_place (Robotiq) behaviour
@@ -191,22 +175,15 @@ void Configure(
   else
   {
     // Robotiq finger-tip mode (pick_place default)
-    std::string leftTopic =
-        "/world/default/model/" + robotModelName +
-        "/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact";
-
-    std::string rightTopic =
-        "/world/default/model/" + robotModelName +
-        "/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact";
-
-    gzNode.Subscribe(leftTopic,
-                    &LinkAttacher::OnContact,
-                    this);
-
-    gzNode.Subscribe(rightTopic,
-                    &LinkAttacher::OnContact,
-                    this);
-  } 
+    gzNode.Subscribe(
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
+      &LinkAttacher::OnContact, this);
+    gzNode.Subscribe(
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
+      &LinkAttacher::OnContact, this);
+  }
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -433,26 +410,12 @@ void OnContact(const gz::msgs::Contacts &_msg)
     else if (collision1.find("left_finger") != std::string::npos ||
              collision2.find("left_finger") != std::string::npos)
     {
-      leftFingerContact = true;
-        leftObjectModel = objectModel;
-
-        std::cout << "[LinkAttacher] LEFT finger touched "
-                  << objectModel << std::endl;
+      link1 = "robotiq_85_left_finger_tip_link";
     }
     else
     {
-      rightFingerContact = true;
-        rightObjectModel = objectModel;
-
-        std::cout << "[LinkAttacher] RIGHT finger touched "
-                  << objectModel << std::endl;
+      link1 = "robotiq_85_right_finger_tip_link";
     }
-    if (leftFingerContact &&
-        rightFingerContact &&
-        leftObjectModel != rightObjectModel)
-    {
-        leftFingerContact = false;
-        rightFingerContact = false;
 
     // Extract actual model name from collision string (e.g. "box_89_0::link::collision")
     size_t pos = hitCollision.find("::");
@@ -461,36 +424,17 @@ void OnContact(const gz::msgs::Contacts &_msg)
     } else {
         model2 = objectModel;
     }
->>>>>>> origin/humble-devel
 
-        continue;
-    }
-    if (leftFingerContact &&
-        rightFingerContact &&
-        leftObjectModel == rightObjectModel)
-    {
-        model1 = robotModelName;
+    link2 = "link";
 
-        link1 = "robotiq_85_left_finger_tip_link";
+    createJointRequested = true;
+    contactLatched = true;
 
-        model2 = leftObjectModel;
-        link2 = "link";
+    std::cout
+      << "[LinkAttacher] Joint requested"
+      << std::endl;
 
-        createJointRequested = true;
-        contactLatched = true;
-
-        leftFingerContact = false;
-        rightFingerContact = false;
-
-        leftObjectModel.clear();
-        rightObjectModel.clear();
-
-        std::cout
-            << "[LinkAttacher] BOTH fingers touching -> creating joint"
-            << std::endl; 
-
-        break;
-    }
+    break;
   }
 }
 
@@ -622,13 +566,6 @@ void RemoveJoint(EntityComponentManager &_ecm)
   activeJoint = kNullEntity;
 
   contactLatched = false;
-
-
-  leftFingerContact = false;
-  rightFingerContact = false;
-
-  leftObjectModel.clear();
-  rightObjectModel.clear();
 }
 
 
@@ -650,21 +587,10 @@ bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
 
-bool leftFingerContact = false;
-bool rightFingerContact = false;
-
-std::string leftObjectModel;
-std::string rightObjectModel;
-
 gz::transport::Node gzNode;
 
-<<<<<<< HEAD
-std::string robotModelName;
-
-=======
 std::string robotModelName{"ur5_robotiq"};
 std::string gripperLinkName{""};
->>>>>>> origin/humble-devel
 
 std::string model1;
 std::string link1;
