@@ -9,56 +9,91 @@
 
       <pose>0 0 0 0 0 0</pose>
 
-      <inertial>
-        <mass>1000.0</mass>
-        <inertia>
-          <ixx>1.0</ixx>
-          <iyy>1.0</iyy>
-          <izz>1.0</izz>
-        </inertia>
-      </inertial>
-
       <visual name="visual">
+
         <pose>0 0 0 0 0 0</pose>
+
         <geometry>
           <mesh>
             <uri>meshes/conveyor_belt.dae</uri>
           </mesh>
         </geometry>
+
       </visual>
 
+
       <collision name="collision">
+
         <pose>0 0 0.71 0 0 0</pose>
 
         <geometry>
           <box>
-            <size>0.50 1.20 0.05</size>
+            <size>0.50 1.20 0.055</size>
           </box>
         </geometry>
 
+
         <surface>
+
           <contact>
             <ode>
-              <kp>1000000</kp>
-              <kd>1000</kd>
+              <kp>100000</kp>
+              <kd>10</kd>
               <min_depth>0.001</min_depth>
               <max_vel>1.0</max_vel>
             </ode>
           </contact>
 
+
           <friction>
             <ode>
-              <mu>1.0</mu>
-              <mu2>1.0</mu2>
+
+              <!--
+                La cinta se mueve en el eje Y local.
+              -->
+
+              <fdir1>1 0 0</fdir1>
+
+              <mu>2.0</mu>
+
+              <mu2>0.5</mu2>
+
             </ode>
           </friction>
+
         </surface>
+
       </collision>
 
     </link>
 
-    <plugin filename="libconveyor_plugin.so"
-            name="box_mover::BoxMoverPlugin"/>
+
+    <!-- ====================================================== -->
+    <!-- TRACK CONTROLLER                                       -->
+    <!-- ====================================================== -->
+
+    <plugin
+      filename="gz-sim-track-controller-system"
+      name="gz::sim::systems::TrackController">
+
+      <link>link</link>
+
+      <track_orientation>0 0 1.57079632679</track_orientation>
+
+      <min_velocity>-1.0</min_velocity>
+
+      <max_velocity>1.0</max_velocity>
+
+    </plugin>
+
+
+    <!-- ====================================================== -->
+    <!-- NUESTRO PLUGIN                                         -->
+    <!-- ====================================================== -->
+
+    <plugin
+      filename="libconveyor_plugin.so"
+      name="box_mover::BoxMoverPlugin"/>
 
   </model>
 
