@@ -29,7 +29,12 @@ class sausageSpawner(Node):
 
         self.MIN_DISTANCE = 0.08
 
+        # Y inicial
         self.SPAWN_Y = 0.58
+
+        # Diferencia máxima respecto a SPAWN_Y.
+        # Siempre será hacia Y = 0.
+        self.MAX_Y_OFFSET = 0.06
 
         self.SPAWN_Z = 0.76
 
@@ -47,7 +52,6 @@ class sausageSpawner(Node):
         self.belt_stopped = False
 
         self.belt_start_time = None
-
 
         self.graspable_pub = self.create_publisher(
             String,
@@ -119,7 +123,8 @@ class sausageSpawner(Node):
 
         msg.data = json.dumps({
             "name": name,
-            "x": sausage["x"]
+            "x": sausage["x"],
+            "y": sausage["y"]
         })
 
         self.sausage_info_pub.publish(msg)
@@ -151,9 +156,8 @@ class sausageSpawner(Node):
 
         self.belt_start_time = time.time()
 
-
         self.get_logger().info(
-            "First sausage spawned."
+            "All sausages spawned."
         )
 
         self.get_logger().info(
@@ -173,7 +177,6 @@ class sausageSpawner(Node):
 
         if self.belt_start_time is None:
             return
-
 
         elapsed = (
             time.time() -
@@ -196,13 +199,13 @@ class sausageSpawner(Node):
 
         NUM_SAUSAGES = self.NUM_SAUSAGES
 
-        ########################################################
-        # GENERAR POSICIONES X
-        ########################################################
+        # --------------------------------------------------
+        # GENERAR X DIFERENTES
+        # --------------------------------------------------
 
-        positions_x = []
+        x_positions = []
 
-        while len(positions_x) < NUM_SAUSAGES:
+        while len(x_positions) < NUM_SAUSAGES:
 
             x = random.uniform(
                 self.MIN_X,
@@ -211,33 +214,52 @@ class sausageSpawner(Node):
 
             valid = True
 
-            for p in positions_x:
+            for p in x_positions:
 
                 if abs(x - p) < self.MIN_DISTANCE:
+
                     valid = False
+
                     break
 
             if valid:
-                positions_x.append(x)
 
-        ########################################################
-        # GENERAR POSICIONES Y
-        ########################################################
+                x_positions.append(x)
 
-        positions_y = []
+        # --------------------------------------------------
+        # GENERAR Y DIFERENTES
+        # --------------------------------------------------
+        #
+        # Todas parten desde SPAWN_Y = 0.58.
+        #
+        # Solo permitimos desplazamiento hacia Y = 0:
+        #
+        # 0.58
+        # 0.56
+        # 0.54
+        # 0.52
+        #
+        # Nunca:
+        #
+        # 0.60
+        # 0.62
+        #
+        # --------------------------------------------------
 
-        for _ in range(NUM_SAUSAGES):
-
-            y = random.uniform(
-                self.MIN_Y,
-                self.MAX_Y
+        y_positions = [
+            self.SPAWN_Y - random.uniform(
+                0.0,
+                self.MAX_Y_OFFSET
             )
+            for _ in range(NUM_SAUSAGES)
+        ]
 
-            positions_y.append(y)
+        # Intentamos que las Y sean diferentes.
+        y_positions = sorted(y_positions, reverse=True)
 
-        ########################################################
+        # --------------------------------------------------
         # NOMBRES
-        ########################################################
+        # --------------------------------------------------
 
         box_names = [
             f"box_{i}"
@@ -246,30 +268,26 @@ class sausageSpawner(Node):
 
         random.shuffle(box_names)
 
-        ########################################################
+        # --------------------------------------------------
         # SPAWN DE LAS 4 SALCHICHAS
-        ########################################################
+        # --------------------------------------------------
+        #
+        # NO HAY NINGÚN DELAY ENTRE ELLAS.
+        # Se ejecutan una detrás de otra inmediatamente.
+        #
+        # --------------------------------------------------
 
         for i in range(NUM_SAUSAGES):
 
-            x = positions_x[i]
-
-            y = positions_y[i]
+            x = x_positions[i]
+            y = y_positions[i]
 
             name = box_names[i]
-
-            ####################################################
-            # ORIENTACIÓN ALEATORIA
-            ####################################################
 
             yaw = random.uniform(
                 -math.pi,
                 math.pi
             )
-
-            ####################################################
-            # COMANDO SPAWN
-            ####################################################
 
             cmd = [
 
@@ -303,20 +321,12 @@ class sausageSpawner(Node):
                 self.SAUSAGE_SDF,
             ]
 
-            ####################################################
-            # EJECUTAR SPAWN
-            ####################################################
-
             result = subprocess.run(
                 cmd,
                 check=False,
                 capture_output=True,
                 text=True
             )
-
-            ####################################################
-            # COMPROBAR ERROR
-            ####################################################
 
             if result.returncode != 0:
 
@@ -327,57 +337,36 @@ class sausageSpawner(Node):
 
                 continue
 
-            ####################################################
-            # GUARDAR INFORMACIÓN
-            ####################################################
-
             self.sausages[name] = {
-
                 "x": x,
-
-                "y": y,
-
-                "yaw": yaw
+                "y": y
             }
 
             self.counter += 1
 
-            ####################################################
-            # PUBLICAR INFORMACIÓN
-            ####################################################
-
-            self.publish_sausage_info(
-                name
-            )
-
-            ####################################################
-            # LOG
-            ####################################################
+            self.publish_sausage_info(name)
 
             self.get_logger().info(
-                f"Spawned {name}: "
-                f"x={x:.3f}, "
-                f"y={y:.3f}, "
-                f"yaw={math.degrees(yaw):.1f}°"
+                f"Spawned {name} "
+                f"at x={x:.3f}, "
+                f"y={y:.3f}"
             )
 
-        ########################################################
+        # --------------------------------------------------
         # PUBLICAR OBJETOS
-        ########################################################
+        # --------------------------------------------------
 
         self.publish_graspable_objects()
 
-        ########################################################
-        # ARRANCAR CONVEYOR
-        ########################################################
+        # --------------------------------------------------
+        # ARRANCAR CINTA DESPUÉS DE SPAWNEAR TODAS
+        # --------------------------------------------------
 
         if self.counter > 0:
-
             self.start_belt()
 
         self.get_logger().info(
-            f"Spawn completed: "
-            f"{self.counter} sausages."
+            f"Spawned {self.counter} sausages."
         )
 
     def destroy_node(self):
@@ -386,8 +375,8 @@ class sausageSpawner(Node):
 
             self.set_belt(0.0)
 
-
         super().destroy_node()
+
 
 def main():
 
@@ -395,16 +384,13 @@ def main():
 
     node = sausageSpawner()
 
-
     try:
 
         rclpy.spin(node)
 
-
     except KeyboardInterrupt:
 
         pass
-
 
     finally:
 
