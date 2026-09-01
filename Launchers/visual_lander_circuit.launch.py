@@ -12,9 +12,9 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     # Which track resources/exercises/visual_lander/car.py drives.
-    track = "shuttle"
+    track = "circuit"
 
-    world_file_name = "visual_lander.world"
+    world_file_name = "visual_lander_circuit.world"
     worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 

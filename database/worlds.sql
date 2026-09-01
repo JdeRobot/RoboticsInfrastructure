@@ -208,6 +208,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 79	Drone Cat Mouse Medium	75
 80	Drone Cat Mouse Hard	76
 81	Visual Lander	77
+82	Visual Lander Circuit	78
 \.
 
 --
@@ -275,6 +276,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 56	80	11	{{0,5,0,0.0,0.0,0.0}}
 57	80	32	{{8,5,0,0.0,0.0,0.0}}
 58	81	11	{{0,-8,0.3,0.0,0.0,0.0}}
+59	82	11	{{0,-13,0.3,0.0,0.0,0.0}}
 \.
 
 --
@@ -321,6 +323,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 75	Drone Cat Mouse Medium	/opt/jderobot/Launchers/drone_cat_mouse_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 76	Drone Cat Mouse Hard	/opt/jderobot/Launchers/drone_cat_mouse_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 77	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
+78	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander_circuit.urdf
 \.
 
 --

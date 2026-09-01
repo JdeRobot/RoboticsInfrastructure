@@ -62,5 +62,109 @@
 			<pose>0 0 0 0 0 0</pose>
 		</include>
 
+		<!-- Trees/rocks flanking the shuttle avenue, kept out of the flight
+		     corridor above it and away from the start pad. Same vendored,
+		     shadow-free assets as position_control (no fresh decoration
+		     assets needed here). -->
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_1</name>
+			<pose>-11 6.5 0 0 0 0</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_2</name>
+			<pose>-6 7.2 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_3</name>
+			<pose>-1 6.4 0 0 0 0</pose>
+			<scale>1.15 1.15 1.15</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_4</name>
+			<pose>4 7.5 0 0 0 0</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_5</name>
+			<pose>9 6.8 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_6</name>
+			<pose>13 7.8 0 0 0 0</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_7</name>
+			<pose>-12 -6.5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_8</name>
+			<pose>-7 -7.3 0 0 0 0</pose>
+			<scale>1.2 1.2 1.2</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_9</name>
+			<pose>6 -7.0 0 0 0 0</pose>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_10</name>
+			<pose>10 -6.6 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_11</name>
+			<pose>13 -7.5 0 0 0 0</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_12</name>
+			<pose>14 14 0 0 0 0</pose>
+			<scale>1.2 1.2 1.2</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_13</name>
+			<pose>17 12 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_1</name>
+			<pose>-16 3 0 0 0 0.3</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_2</name>
+			<pose>16 -3 0 0 0 1.4</pose>
+			<static>true</static>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_3</name>
+			<pose>-8 12 0 0 0 2.1</pose>
+			<static>true</static>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_4</name>
+			<pose>7 -12 0 0 0 0.7</pose>
+			<static>true</static>
+		</include>
+
 	</world>
 </sdf>

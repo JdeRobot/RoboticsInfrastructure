@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="default">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<scene>
+			<grid>false</grid>
+		</scene>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- Start pad: marks the drone's spawn point, just south of the road
+		     loop (see database/worlds.sql). -->
+		<include>
+			<uri>model://logoPadGreen</uri>
+			<name>start_pad</name>
+			<pose>0 -13 0.05 0 0 0</pose>
+		</include>
+
+		<!-- ================= ROAD LOOP =================
+		     Rectangular circuit, x∈[-15,15] y∈[-10,10], built from road_plane
+		     tiles only (no road_curve): each tile is 2m wide x 10m long along
+		     its LOCAL Y AXIS (confirmed on the actual texture, not just the
+		     SDF plane <size>), so a straight run along world X needs the
+		     tiles yawed 90°, while a run along world Y keeps yaw 0. Square
+		     corners, not rounded - the north/south tiles are nudged 4mm up
+		     in Z so their small corner overlap with the east/west tiles
+		     doesn't z-fight. Simple and short on purpose (per user request),
+		     not a hand-placed circuit like follow_road's. -->
+
+		<!-- South straight (y=-10) -->
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s1</name>
+			<pose>-10 -10 0.004 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s2</name>
+			<pose>0 -10 0.004 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s3</name>
+			<pose>10 -10 0.004 0 0 1.5708</pose>
+		</include>
+
+		<!-- North straight (y=10) -->
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n1</name>
+			<pose>-10 10 0.004 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n2</name>
+			<pose>0 10 0.004 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n3</name>
+			<pose>10 10 0.004 0 0 1.5708</pose>
+		</include>
+
+		<!-- West straight (x=-15) -->
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w1</name>
+			<pose>-15 -5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w2</name>
+			<pose>-15 5 0 0 0 0</pose>
+		</include>
+
+		<!-- East straight (x=15) -->
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e1</name>
+			<pose>15 -5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e2</name>
+			<pose>15 5 0 0 0 0</pose>
+		</include>
+
+		<!-- Landing target: same car as visual_lander.world, driving the
+		     rectangular loop this time (see
+		     resources/exercises/visual_lander/car.py, "circuit" track).
+		     Starts on the south straight. -->
+		<include>
+			<uri>model://car_color_beacon</uri>
+			<name>car</name>
+			<pose>-13 -10 0.02 0 0 0</pose>
+		</include>
+
+		<!-- Trees/rocks ringing the outside of the loop, plus a few inside
+		     the open field, all clear of the road and the flight corridor
+		     above it. Same vendored, shadow-free assets as position_control. -->
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_1</name>
+			<pose>-19 -12 0 0 0 0</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_2</name>
+			<pose>-19 0 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_3</name>
+			<pose>-19 12 0 0 0 0</pose>
+			<scale>1.15 1.15 1.15</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_4</name>
+			<pose>19 -12 0 0 0 0</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_5</name>
+			<pose>19 0 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_6</name>
+			<pose>19 12 0 0 0 0</pose>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_7</name>
+			<pose>-8 15 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_8</name>
+			<pose>8 15 0 0 0 0</pose>
+			<scale>1.2 1.2 1.2</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_9</name>
+			<pose>0 15 0 0 0 0</pose>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_10</name>
+			<pose>-5 5.5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_11</name>
+			<pose>5 -6.5 0 0 0 0</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_1</name>
+			<pose>-19 -6 0 0 0 0.3</pose>
+			<static>true</static>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_2</name>
+			<pose>19 6 0 0 0 1.4</pose>
+			<static>true</static>
+			<scale>0.9 0.9 0.9</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_3</name>
+			<pose>4 4.5 0 0 0 2.1</pose>
+			<static>true</static>
+			<scale>1.1 1.1 1.1</scale>
+		</include>
+
+		<!-- Decorative corner logo, homage to the original visual_lander
+		     teaser (same as visual_lander.world). -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<name>corner_logo</name>
+			<pose>-19 -19 0.01 0 0 0.78</pose>
+		</include>
+
+	</world>
+</sdf>
