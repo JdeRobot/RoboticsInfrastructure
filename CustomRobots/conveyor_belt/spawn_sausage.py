@@ -25,7 +25,8 @@ class sausageSpawner(Node):
 
         self.BELT_SPEED = -0.15
 
-        self.STOP_TIME = 12
+        # Y a la que se detendrá la cinta
+        self.STOP_Y = -0.50
 
         self.MIN_X = -0.18
         self.MAX_X = 0.18
@@ -78,8 +79,6 @@ class sausageSpawner(Node):
         self.belt_started = False
 
         self.belt_stopped = False
-
-        self.belt_start_time = None
 
         self.graspable_pub = self.create_publisher(
             String,
@@ -225,10 +224,7 @@ class sausageSpawner(Node):
             return
 
         self.belt_started = True
-
         self.belt_stopped = False
-
-        self.belt_start_time = time.time()
 
         self.get_logger().info(
             "All sausages spawned."
@@ -237,6 +233,12 @@ class sausageSpawner(Node):
         self.get_logger().info(
             f"Starting conveyor at "
             f"{self.BELT_SPEED:.2f} m/s"
+        )
+
+        self.get_logger().info(
+            f"Conveyor will stop when "
+            f"{self.active_sausage} reaches "
+            f"Y <= {self.STOP_Y:.3f}"
         )
 
         self.set_belt(self.BELT_SPEED)
@@ -249,25 +251,30 @@ class sausageSpawner(Node):
         if self.belt_stopped:
             return
 
-        if self.belt_start_time is None:
+        # Todavía no tenemos una salchicha trackeada
+        if self.active_sausage is None:
             return
 
-        elapsed = (
-            time.time() -
-            self.belt_start_time
-        )
-
-        if elapsed < self.STOP_TIME:
+        # Todavía no tenemos su posición
+        if self.sausage_position is None:
             return
 
-        self.belt_stopped = True
+        current_y = self.sausage_position["y"]
 
-        self.set_belt(0.0)
+        # Comprobar si la salchicha trackeada
+        # ha llegado a la posición objetivo
+        if current_y <= self.STOP_Y:
 
-        self.get_logger().info(
-            f"Conveyor stopped after "
-            f"{self.STOP_TIME:.1f} seconds."
-        )
+            self.belt_stopped = True
+
+            self.set_belt(0.0)
+
+            self.get_logger().info(
+                f"Conveyor stopped. "
+                f"{self.active_sausage} reached "
+                f"Y={current_y:.3f} "
+                f"(target Y={self.STOP_Y:.3f})"
+            )
 
     def spawn_all_sausages(self):
 
