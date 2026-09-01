@@ -206,7 +206,7 @@ void Configure(
     gzNode.Subscribe(rightTopic,
                     &LinkAttacher::OnContact,
                     this);
-  }
+  } 
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -424,13 +424,6 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << objectModel
       << std::endl;
 
-<<<<<<< HEAD
-    bool leftFinger =
-        collision1.find("left_finger") != std::string::npos ||
-        collision2.find("left_finger") != std::string::npos;
-
-    if (leftFinger)
-=======
     model1 = robotModelName;
     if (!gripperLinkName.empty())
     {
@@ -439,7 +432,6 @@ void OnContact(const gz::msgs::Contacts &_msg)
     }
     else if (collision1.find("left_finger") != std::string::npos ||
              collision2.find("left_finger") != std::string::npos)
->>>>>>> origin/humble-devel
     {
       leftFingerContact = true;
         leftObjectModel = objectModel;
@@ -462,10 +454,6 @@ void OnContact(const gz::msgs::Contacts &_msg)
         leftFingerContact = false;
         rightFingerContact = false;
 
-<<<<<<< HEAD
-        leftObjectModel.clear();
-        rightObjectModel.clear();
-=======
     // Extract actual model name from collision string (e.g. "box_89_0::link::collision")
     size_t pos = hitCollision.find("::");
     if (pos != std::string::npos) {
