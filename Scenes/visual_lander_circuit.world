@@ -41,31 +41,35 @@
 		<include>
 			<uri>model://logoPadGreen</uri>
 			<name>start_pad</name>
-			<pose>0 -20 0.05 0 0 0</pose>
+			<pose>0 -13 0.05 0 0 0</pose>
 		</include>
 
-		<!-- Octagon road loop, 4 cardinal edges plus 4 diagonal corners. road_plane runs along local Y, so each tile is yawed to match its edge direction. -->
-		<include><uri>model://road_plane</uri><name>road_s_a</name><pose>0 -16 0 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s_b</name><pose>0 -14 0 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n_a</name><pose>0 14 0 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n_b</name><pose>0 16 0 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e_a</name><pose>14 0 0 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e_b</name><pose>16 0 0 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w_a</name><pose>-16 0 0 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w_b</name><pose>-14 0 0 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_se_a</name><pose>9.79 -9.79 0 0 0 -0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_se_b</name><pose>11.21 -11.21 0 0 0 -0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_ne_a</name><pose>9.79 9.79 0 0 0 0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_ne_b</name><pose>11.21 11.21 0 0 0 0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_nw_a</name><pose>-9.79 9.79 0 0 0 -0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_nw_b</name><pose>-11.21 11.21 0 0 0 -0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_sw_a</name><pose>-9.79 -9.79 0 0 0 0.7854</pose></include>
-		<include><uri>model://road_plane</uri><name>road_sw_b</name><pose>-11.21 -11.21 0 0 0 0.7854</pose></include>
+		<!-- Rectangular road loop, square corners. road_plane runs along local Y, yawed to match each side's direction. Raised to z=0.01 so it doesn't z-fight with the grass plane. -->
+		<include><uri>model://road_plane</uri><name>road_s1_a</name><pose>-10 -9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_s1_b</name><pose>-10 -7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_s2_a</name><pose>0 -9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_s2_b</name><pose>0 -7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_s3_a</name><pose>10 -9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_s3_b</name><pose>10 -7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n1_a</name><pose>-10 7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n1_b</name><pose>-10 9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n2_a</name><pose>0 7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n2_b</name><pose>0 9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n3_a</name><pose>10 7 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_n3_b</name><pose>10 9 0.01 0 0 1.5708</pose></include>
+		<include><uri>model://road_plane</uri><name>road_w1_a</name><pose>-18 -5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_w1_b</name><pose>-16 -5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_w2_a</name><pose>-18 5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_w2_b</name><pose>-16 5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_e1_a</name><pose>16 -5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_e1_b</name><pose>18 -5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_e2_a</name><pose>16 5 0.01 0 0 0</pose></include>
+		<include><uri>model://road_plane</uri><name>road_e2_b</name><pose>18 5 0.01 0 0 0</pose></include>
 
 		<include>
 			<uri>model://car_color_beacon</uri>
 			<name>car</name>
-			<pose>-6 -15 0.02 0 0 0</pose>
+			<pose>-13 -8 0.05 0 0 0</pose>
 		</include>
 
 		<include>
@@ -105,18 +109,18 @@
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_7</name>
-			<pose>-9 20 0 0 0 0</pose>
+			<pose>-9 17 0 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://pine_tree</uri>
 			<name>tree_8</name>
-			<pose>9 20 0 0 0 0</pose>
+			<pose>9 17 0 0 0 0</pose>
 			<scale>1.2 1.2 1.2</scale>
 		</include>
 		<include>
 			<uri>model://oak_tree</uri>
 			<name>tree_9</name>
-			<pose>0 20 0 0 0 0</pose>
+			<pose>0 17 0 0 0 0</pose>
 			<scale>0.9 0.9 0.9</scale>
 		</include>
 		<include>
@@ -136,7 +140,7 @@
 		<include>
 			<uri>model://logoJdeRobot</uri>
 			<name>corner_logo</name>
-			<pose>-25 -22 0.01 0 0 0.78</pose>
+			<pose>-25 -20 0.01 0 0 0.78</pose>
 		</include>
 
 	</world>

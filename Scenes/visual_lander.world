@@ -54,32 +54,32 @@
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_1a</name>
-			<pose>-10 -1 0 0 0 1.5708</pose>
+			<pose>-10 -1 0.01 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_1b</name>
-			<pose>-10 1 0 0 0 1.5708</pose>
+			<pose>-10 1 0.01 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_2a</name>
-			<pose>0 -1 0 0 0 1.5708</pose>
+			<pose>0 -1 0.01 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_2b</name>
-			<pose>0 1 0 0 0 1.5708</pose>
+			<pose>0 1 0.01 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_3a</name>
-			<pose>10 -1 0 0 0 1.5708</pose>
+			<pose>10 -1 0.01 0 0 1.5708</pose>
 		</include>
 		<include>
 			<uri>model://road_plane</uri>
 			<name>road_3b</name>
-			<pose>10 1 0 0 0 1.5708</pose>
+			<pose>10 1 0.01 0 0 1.5708</pose>
 		</include>
 
 		<include>
