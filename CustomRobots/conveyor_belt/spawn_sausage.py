@@ -351,6 +351,12 @@ class sausageSpawner(Node):
         #
         # --------------------------------------------------
 
+        # Índice de la salchicha cuya Y está más cerca de 0
+        closest_y_index = min(
+            range(NUM_SAUSAGES),
+            key=lambda i: abs(y_positions[i])
+        )
+
         for i in range(NUM_SAUSAGES):
 
             x = x_positions[i]
@@ -416,7 +422,8 @@ class sausageSpawner(Node):
                 "y": y
             }
 
-            self.track_sausage(name)
+            if i == closest_y_index:
+                self.track_sausage(name)
 
             self.counter += 1
 
