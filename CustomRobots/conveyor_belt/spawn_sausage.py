@@ -51,6 +51,8 @@ class sausageSpawner(Node):
 
         self.sausages = {}
 
+        self.reference_y = None
+
         # --------------------------------------------------
         # SEGUIMIENTO DE POSICIÓN DE LAS SALCHICHAS
         # --------------------------------------------------
@@ -59,7 +61,7 @@ class sausageSpawner(Node):
 
         self.sausage_position = None
 
-        self.position_sample_period = 0.05
+        self.position_sample_period = 0.01
 
         self.last_position_sample_time = 0.0
 
@@ -67,7 +69,7 @@ class sausageSpawner(Node):
 
         options = SubscribeOptions()
 
-        options.msgs_per_sec = 20
+        options.msgs_per_sec = 100
 
         self.gazebo_node.subscribe(
             Pose_V,
@@ -105,7 +107,7 @@ class sausageSpawner(Node):
         )
 
         self.belt_timer = self.create_timer(
-            0.05,
+            0.01,
             self.update_belt
         )
 
@@ -192,12 +194,17 @@ class sausageSpawner(Node):
 
         sausage = self.sausages[name]
 
+        y_difference = abs(
+            sausage["y"] - self.reference_y
+        )
+
         msg = String()
 
         msg.data = json.dumps({
             "name": name,
             "x": sausage["x"],
-            "y": sausage["y"]
+            "y": sausage["y"],
+            "y_difference": y_difference
         })
 
         self.sausage_info_pub.publish(msg)
@@ -362,6 +369,12 @@ class sausageSpawner(Node):
         closest_y_index = min(
             range(NUM_SAUSAGES),
             key=lambda i: abs(y_positions[i])
+        )
+
+        self.reference_y = y_positions[closest_y_index]
+
+        self.get_logger().info(
+            f"Reference sausage Y = {self.reference_y:.3f}"
         )
 
         for i in range(NUM_SAUSAGES):
