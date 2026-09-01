@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<robot name="marker_visual_loc">
+
+  <link name="grass_link">
+    <visual>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+      <geometry>
+        <box size="15 15 0.01"/>
+      </geometry>
+      <material>
+        <texture filename="package://marker_visual_loc/models/grasspatch/materials/textures/grass_dry.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="marker_visual_loc_link">
+    <visual>
+      <origin xyz="0 0 -0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://marker_visual_loc/models/Lake House/meshes/house.dae" scale="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

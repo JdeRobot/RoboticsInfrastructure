@@ -111,7 +111,7 @@ install(
     # drone_assets/bridges above
     drone_cat_mouse/models
 
-    taxi_navigator/models
+    city_assets/models
     
     3d_reconstruction/models
     
@@ -125,7 +125,29 @@ install(
     
     pick_place/models
 
+    palletizing/models
+    palletizing/launch
+    palletizing/params
+    palletizing/config
+
   DESTINATION share/${PROJECT_NAME})
+
+# Palletizing box feeder node (ament_cmake package: install python node explicitly)
+install(PROGRAMS
+    palletizing/scripts/box_spawner.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME box_spawner)
+
+install(
+  DIRECTORY palletizing/scripts/feeder
+  DESTINATION lib/${PROJECT_NAME})
+
+# Palletizing planning-scene publisher (injects conveyor + pallet as MoveIt
+# collision objects so the planner routes around them; not student-facing).
+install(PROGRAMS
+    palletizing/scripts/palletizing_scene.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME palletizing_scene)
 
 # install(
 #   FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py

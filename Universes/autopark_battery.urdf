@@ -11,56 +11,6 @@
     </visual>
   </link>
 
-  <joint name="base_joint" type="fixed">
-    <parent link="autopark"/>
-    <child link="prius_autoparking" />
-    <origin rpy="0 0 1.54" xyz="-7 2.5 0"/>
-  </joint>
-
-  <link name="prius_autoparking">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-
-    <visual>
-      <origin xyz="0.793 1.45 0.3" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-
-    <visual>
-      <origin xyz="-0.793 1.45 0.3" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-
-    <visual>
-      <origin xyz="0.767 -1.41 0.3" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-
-    <visual>
-      <origin xyz="-0.767 -1.41 0.3" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-
-    <visual>
-      <origin xyz="0.357734 -0.627868 0.988243" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://autonomous_car/models/autonomous_car/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
-  </link>
-
   <link name="opel_1">
     <visual>
       <origin rpy="0 0 0" xyz="-20 -4 0"/>

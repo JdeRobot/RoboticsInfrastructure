@@ -1,0 +1,66 @@
+# Units: meters and kilograms.
+
+robot:
+  # Used to convert world z values to base_link.
+  base_mount_world_z: 0.90
+
+pallet:
+  # Gazebo world geometry.
+  physical_size: [1.60, 1.30, 0.10]
+  world_center: [0.0, -0.88, 0.0]
+  deck_top_world_z: 0.30
+
+  # Three-row placement area, offset away from the robot.
+  usable_center: [0.0, -0.85, 0.0]
+  usable_size: [1.20, 0.65]
+  max_layers: 2
+
+conveyor:
+  belt_speed: -0.25
+  spawn_x: 2.20
+  spawn_y: 0.0
+  belt_surface_world_z: 1.00
+  spawn_clearance: 0.03
+  pickup_x: 1.00
+  pickup_timeout: 20.0
+  start_delay: 5.0
+  settle_delay: 0.3
+
+boxes:
+  # SKUs share width and height but vary in length.
+  skus:
+    SMALL:
+      size: [0.25, 0.18, 0.20]
+      mass: 1.2
+      color: [0.68, 0.52, 0.32, 1.0]
+
+    MEDIUM:
+      size: [0.35, 0.18, 0.20]
+      mass: 1.7
+      color: [0.76, 0.58, 0.36, 1.0]
+
+    LONG:
+      size: [0.50, 0.18, 0.20]
+      mass: 2.2
+      color: [0.84, 0.64, 0.40, 1.0]
+
+  # Online order for the three-row, two-layer task.
+  sequence:
+    - LONG
+    - SMALL
+    - MEDIUM
+    - MEDIUM
+    - LONG
+    - SMALL
+    - SMALL
+    - MEDIUM
+    - LONG
+    - LONG
+    - MEDIUM
+    - SMALL
+    - SMALL
+    - LONG
+    - MEDIUM
+    - MEDIUM
+    - SMALL
+    - LONG

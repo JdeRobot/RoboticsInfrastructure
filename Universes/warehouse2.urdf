@@ -46,233 +46,7 @@
   <material name="color_suelo">
     <color rgba="1 0.35 0 1"/>
   </material>
-  <link name="base_footprint"/>
-  <joint name="base_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0.1"/>
-  </joint>
-  <link name="base_link">
-    <visual>
-      <origin rpy="0 0 0" xyz="-0.064 0 0.0"/>
-      <geometry>
-        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/waffle_pi_base.stl" scale="0.002 0.002 0.002"/>
-      </geometry>
-      <material name="orange"/>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="-0.064 0 0.047"/>
-      <geometry>
-        <box size="0.532 0.532 0.188"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="1.3729096e+00"/>
-      <inertia ixx="8.7002718e-03" ixy="-4.7576583e-05" ixz="1.1160499e-04" iyy="8.6195418e-03" iyz="-3.5422299e-06" izz="1.4612727e-02"/>
-    </inertial>
-  </link>
-  <joint name="wheel_left_joint" type="continuous">
-    <parent link="base_link"/>
-    <child link="wheel_left_link"/>
-    <origin rpy="-1.57 0 0" xyz="0.0 0.288 0.023"/>
-    <axis xyz="0 0 1"/>
-  </joint>
-  <link name="wheel_left_link">
-    <visual>
-      <origin rpy="1.57 0 0" xyz="0 0 0"/>
-      <geometry>
-        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/left_tire.stl" scale="0.002 0.002 0.002"/>
-      </geometry>
-      <material name="dark"/>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.020" radius="0.072"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 0"/>
-      <mass value="2.8498940e-02"/>
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05"/>
-    </inertial>
-  </link>
-  <joint name="wheel_right_joint" type="continuous">
-    <parent link="base_link"/>
-    <child link="wheel_right_link"/>
-    <origin rpy="-1.57 0 0" xyz="0.0 -0.288 0.023"/>
-    <axis xyz="0 0 1"/>
-  </joint>
-  <link name="wheel_right_link">
-    <visual>
-      <origin rpy="1.57 0 0" xyz="0 0 0"/>
-      <geometry>
-        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/right_tire.stl" scale="0.002 0.002 0.002"/>
-      </geometry>
-      <material name="dark"/>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.020" radius="0.072"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 0"/>
-      <mass value="2.8498940e-02"/>
-      <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05"/>
-    </inertial>
-  </link>
-  <joint name="caster_back_right_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="caster_back_right_link"/>
-    <origin rpy="-1.57 0 0" xyz="-0.268 -0.064 -0.016"/>
-  </joint>
-  <link name="caster_back_right_link">
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0.001 0"/>
-      <geometry>
-        <box size="0.060 0.018 0.040"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 0"/>
-      <mass value="0.005"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-    </inertial>
-  </link>
-  <joint name="caster_back_left_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="caster_back_left_link"/>
-    <origin rpy="-1.57 0 0" xyz="-0.268 0.064 -0.016"/>
-  </joint>
-  <link name="caster_back_left_link">
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0.001 0"/>
-      <geometry>
-        <box size="0.060 0.018 0.040"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 0"/>
-      <mass value="0.005"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-    </inertial>
-  </link>
-  <joint name="imu_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="imu_link"/>
-    <origin rpy="0 0 0" xyz="0.0 0 0.136"/>
-  </joint>
-  <link name="imu_link"/>
-  <joint name="scan_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="base_scan"/>
-    <origin rpy="0 0 0" xyz="-0.064 0 0.244"/>
-  </joint>
-  <link name="base_scan">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0.0"/>
-      <geometry>
-        <mesh filename="package://logistic_holonomic_robot/models/logistic_holonomic_robot/meshes/lds.stl" scale="0.002 0.002 0.002"/>
-      </geometry>
-      <material name="dark"/>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0.015 0 -0.0065"/>
-      <geometry>
-        <cylinder length="0.0315" radius="0.055"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.114"/>
-      <origin xyz="0 0 0"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-    </inertial>
-  </link>
-  <joint name="camera_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.064 -0.065 0.094"/>
-    <parent link="base_link"/>
-    <child link="camera_link"/>
-  </joint>
-  <link name="link_platform_mid">
-    <origin rpy="0 0 0" xyz="0 0 0.0"/>
-    <visual>
-      <geometry>
-        <box size="0.02 0.02 0.10"/>
-      </geometry>
-      <material name="blue"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.02 0.02 0.10"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-    </inertial>
-  </link>
-  <joint name="platform_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="link_platform_mid"/>
-    <origin rpy="0. 0. 0." xyz="0.0 0 0.20"/>
-  </joint>
-  <joint name="lift_joint" type="prismatic">
-    <origin rpy="0. 0. 0." xyz="0 0 0.16"/>
-    <child link="lift_link"/>
-    <parent link="link_platform_mid"/>
-    <axis rpy="0 0 0" xyz="0 0 1"/>
-    <limit effort="10000.0" lower="-0.05" upper="0.24" velocity="0.5"/>
-    <!--    <inertia ixx="0" ixy="0.0" ixz="1" iyy="0" iyz="0" izz="0"/>-->
-  </joint>
-  <link name="camera_link">
-    <visual>
-      <origin rpy="1.57 0 1.57" xyz="0 0 0"/>
-      <geometry>
-        <box size="0.01 0.03 0.01"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0.003 0.065 0.007"/>
-      <geometry>
-        <box size="0.012 0.132 0.020"/>
-      </geometry>
-    </collision>
-    <!-- This inertial field needs doesn't contain reliable data!! -->
-    <!--   <inertial>
-      <mass value="0.564" />
-      <origin xyz="0 0 0" />
-      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
-    </inertial>-->
-  </link>
-  <joint name="camera_rgb_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.005 0.018 0.013"/>
-    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
-    <parent link="camera_link"/>
-    <child link="camera_rgb_frame"/>
-  </joint>
-  <link name="camera_rgb_frame"/>
-  <joint name="camera_rgb_optical_joint" type="fixed">
-    <origin rpy="-1.57 0 -1.57" xyz="0 0 0"/>
-    <parent link="camera_rgb_frame"/>
-    <child link="camera_rgb_optical_frame"/>
-  </joint>
-  <link name="camera_rgb_optical_frame"/>
-  <joint name="camera_depth_joint" type="fixed">
-    <origin rpy="-1.57 0 -1.57" xyz="0.005 0.028 0.013"/>
-    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py + r200_cam_depth_offset} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
-    <parent link="camera_link"/>
-    <child link="camera_depth_frame"/>
-  </joint>
-  <link name="camera_depth_frame"/>
-  <joint name="camera_depth_optical_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="camera_depth_frame"/>
-    <child link="camera_depth_optical_frame"/>
-  </joint>
-  <link name="camera_depth_optical_frame"/>
+
   <link name="warehouse_walls">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -285,7 +59,7 @@
 
   <link name="wall0_link0">
     <visual>
-      <origin xyz="-10 2 0" rpy="0 0 1.57"/>
+      <origin xyz="-10 2 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="24 0.2 2.8"/>
       </geometry>
@@ -295,7 +69,7 @@
 
   <link name="wall1_link0">
     <visual>
-      <origin xyz="8 -10 0" rpy="0 0 0"/>
+      <origin xyz="8 -10 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="8 0.2 2.8"/>
       </geometry>
@@ -305,7 +79,7 @@
 
   <link name="wall1_link1">
     <visual>
-      <origin xyz="4 -13.5 0" rpy="0 0 1.57"/>
+      <origin xyz="4 -13.5 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="7 0.2 2.8"/>
       </geometry>
@@ -315,7 +89,7 @@
 
   <link name="wall1_link2">
     <visual>
-      <origin xyz="0 -17 0" rpy="0 0 0"/>
+      <origin xyz="0 -17 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="8 0.2 2.8"/>
       </geometry>
@@ -325,7 +99,7 @@
 
   <link name="wall1_link3">
     <visual>
-      <origin xyz="-4 -13.5 0" rpy="0 0 1.57"/>
+      <origin xyz="-4 -13.5 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="7 0.2 2.8"/>
       </geometry>
@@ -335,7 +109,7 @@
 
   <link name="wall1_link4">
     <visual>
-      <origin xyz="-7 -10 0" rpy="0 0 0"/>
+      <origin xyz="-7 -10 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="6 0.2 2.8"/>
       </geometry>
@@ -345,7 +119,7 @@
 
   <link name="wall2_link0">
     <visual>
-      <origin xyz="8 14 0" rpy="0 0 0"/>
+      <origin xyz="8 14 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="8 0.2 2.8"/>
       </geometry>
@@ -355,7 +129,7 @@
 
   <link name="wall2_link1">
     <visual>
-      <origin xyz="4 17.5 0" rpy="0 0 1.57"/>
+      <origin xyz="4 17.5 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="7 0.2 2.8"/>
       </geometry>
@@ -365,7 +139,7 @@
 
   <link name="wall2_link2">
     <visual>
-      <origin xyz="0 21 0" rpy="0 0 0"/>
+      <origin xyz="0 21 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="8 0.2 2.8"/>
       </geometry>
@@ -375,7 +149,7 @@
 
   <link name="wall2_link3">
     <visual>
-      <origin xyz="-4 17.5 0" rpy="0 0 1.57"/>
+      <origin xyz="-4 17.5 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="7 0.2 2.8"/>
       </geometry>
@@ -385,7 +159,7 @@
 
   <link name="wall2_link4">
     <visual>
-      <origin xyz="-7 14 0" rpy="0 0 0"/>
+      <origin xyz="-7 14 1.4" rpy="0 0 0"/>
       <geometry>
         <box size="6 0.2 2.8"/>
       </geometry>
@@ -395,7 +169,7 @@
 
   <link name="wall3_link0">
     <visual>
-      <origin xyz="12 2 0" rpy="0 0 1.57"/>
+      <origin xyz="12 2 1.4" rpy="0 0 1.57"/>
       <geometry>
         <box size="24 0.2 2.8"/>
       </geometry>
