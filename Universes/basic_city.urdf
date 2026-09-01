@@ -1,11 +1,12 @@
 <?xml version="1.0" ?>
-<robot name="cityLarge_harmonic">
+<robot name="global_nav">
+
   <link name="city">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <visual>
       <origin rpy="1.5708 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://taxi_navigator/models/cityLarge_harmonic/meshes/city.obj" scale="1 1 1"/>
+        <mesh filename="package://city_assets/models/large_basic_city/meshes/city.obj" scale="1 1 1"/>
       </geometry>
       <material>
         <ambient>0.8 0.8 0.8 1.0</ambient>
@@ -18,4 +19,5 @@
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
   </link>
+
 </robot>

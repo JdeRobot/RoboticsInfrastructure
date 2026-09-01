@@ -111,7 +111,7 @@ install(
     # drone_assets/bridges above
     drone_cat_mouse/models
 
-    taxi_navigator/models
+    city_assets/models
     
     3d_reconstruction/models
     
