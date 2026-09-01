@@ -4,13 +4,14 @@ import rclpy
 
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy
 
 CAR_NAMESPACE = "car"
 CMD_VEL_TOPIC = "/" + CAR_NAMESPACE + "/cmd_vel"
 ODOM_TOPIC = "/" + CAR_NAMESPACE + "/odom"
 TRACK_TOPIC = "/visual_lander/track"
+ENABLE_TOPIC = "/visual_lander/car_enable"
 
 DEFAULT_TRACK = "shuttle"
 TRACK_TIMEOUT = 10.0
@@ -49,6 +50,12 @@ cmd_pub = node.create_publisher(Twist, CMD_VEL_TOPIC, 10)
 car_pose = [0.0, 0.0, 0.0]  # x, y, yaw
 last_pose = None
 track_name = None
+enabled = False
+
+
+def enable_callback(msg):
+    global enabled
+    enabled = msg.data
 
 
 def odom_callback(msg):
@@ -66,6 +73,7 @@ def track_callback(msg):
 
 
 node.create_subscription(Odometry, ODOM_TOPIC, odom_callback, 10)
+node.create_subscription(Bool, ENABLE_TOPIC, enable_callback, 10)
 # Latched by the world launcher, so it arrives however late this starts
 node.create_subscription(
     String,
@@ -103,6 +111,11 @@ while rclpy.ok():
             target_index = 0
     last_pose = (car_pose[0], car_pose[1])
 
+    if not enabled:
+        cmd_pub.publish(Twist())
+        time.sleep(0.05)
+        continue
+
     target_x, target_y, speed = waypoints[target_index]
     dx = target_x - car_pose[0]
     dy = target_y - car_pose[1]
@@ -114,7 +127,7 @@ while rclpy.ok():
     heading_error = wrap(math.atan2(dy, dx) - car_pose[2])
 
     twist = Twist()
-    twist.linear.x = speed
+    twist.linear.x = speed * max(0.0, math.cos(heading_error))
     twist.angular.z = clamp(KP_YAW * heading_error, MAX_YAW_RATE)
     cmd_pub.publish(twist)
 
