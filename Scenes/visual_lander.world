@@ -95,6 +95,7 @@
 				<trajectory id="0" type="back_and_forth">
 					<waypoint><time>0.0</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
 					<waypoint><time>34.3</time><pose>12 0 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>68.6</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
 				</trajectory>
 			</script>
 		</actor>
