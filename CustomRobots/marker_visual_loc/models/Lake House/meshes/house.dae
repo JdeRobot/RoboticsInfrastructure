@@ -16,9 +16,6 @@
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_images>
-    <image id="MapFBXASC032FBXASC03511-image" name="MapFBXASC032FBXASC03511">
-      <init_from>../materials/textures/ConcreteTiles_Albedo.png</init_from>
-    </image>
     <image id="MapFBXASC032FBXASC03591-image" name="MapFBXASC032FBXASC03591">
       <init_from>../materials/textures/Siding_Albedo.png</init_from>
     </image>
@@ -37,14 +34,8 @@
     <image id="MapFBXASC032FBXASC03549-image" name="MapFBXASC032FBXASC03549">
       <init_from>../materials/textures/Brick_Albedo.png</init_from>
     </image>
-    <image id="MapFBXASC032FBXASC03544-image" name="MapFBXASC032FBXASC03544">
-      <init_from>../materials/textures/Asphalt_Albedo.png</init_from>
-    </image>
     <image id="MapFBXASC032FBXASC03544_ncl1_1-image" name="MapFBXASC032FBXASC03544_ncl1_1">
       <init_from>../materials/textures/Baseboard_Albedo.png</init_from>
-    </image>
-    <image id="MapFBXASC032FBXASC03552-image" name="MapFBXASC032FBXASC03552">
-      <init_from>../materials/textures/Cobblestone_Albedo.png</init_from>
     </image>
     <image id="MapFBXASC032FBXASC03576-image" name="MapFBXASC032FBXASC03576">
       <init_from>../materials/textures/Cabinets_Albedo.jpeg</init_from>
@@ -144,17 +135,6 @@
             <ambient>
               <color sid="ambient">0.800000  0.800000 0.800000 1.000000</color>
             </ambient>
-            <diffuse>
-              <texture texture="MapFBXASC032FBXASC03511-image" texcoord="CHANNEL0">
-                <extra>
-                  <technique profile="MAYA">
-                    <wrapU sid="wrapU0">TRUE</wrapU>
-                    <wrapV sid="wrapV0">TRUE</wrapV>
-                    <blend_mode>ADD</blend_mode>
-                  </technique>
-                </extra>
-              </texture>
-            </diffuse>
             <specular>
               <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
             </specular>
@@ -382,17 +362,6 @@
             <ambient>
               <color sid="ambient">0.800000  0.800000 0.800000 1.000000</color>
             </ambient>
-            <diffuse>
-              <texture texture="MapFBXASC032FBXASC03544-image" texcoord="CHANNEL0">
-                <extra>
-                  <technique profile="MAYA">
-                    <wrapU sid="wrapU0">TRUE</wrapU>
-                    <wrapV sid="wrapV0">TRUE</wrapV>
-                    <blend_mode>ADD</blend_mode>
-                  </technique>
-                </extra>
-              </texture>
-            </diffuse>
             <specular>
               <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
             </specular>
@@ -450,17 +419,6 @@
             <ambient>
               <color sid="ambient">0.800000  0.800000 0.800000 1.000000</color>
             </ambient>
-            <diffuse>
-              <texture texture="MapFBXASC032FBXASC03552-image" texcoord="CHANNEL0">
-                <extra>
-                  <technique profile="MAYA">
-                    <wrapU sid="wrapU0">TRUE</wrapU>
-                    <wrapV sid="wrapV0">TRUE</wrapV>
-                    <blend_mode>ADD</blend_mode>
-                  </technique>
-                </extra>
-              </texture>
-            </diffuse>
             <specular>
               <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
             </specular>

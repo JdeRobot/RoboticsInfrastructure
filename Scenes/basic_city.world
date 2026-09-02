@@ -56,7 +56,7 @@
         <!-- My city -->
         <include>
             <pose>0 0 -0.5 0 0 0</pose>
-            <uri>model://cityLarge_harmonic</uri>
+            <uri>model://large_basic_city</uri>
         </include>
 
     </world>

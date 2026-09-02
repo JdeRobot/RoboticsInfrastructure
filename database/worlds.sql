@@ -207,7 +207,8 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 78	Position Control	74
 79	Drone Cat Mouse Medium	75
 80	Drone Cat Mouse Hard	76
-81	Visual Lander	77
+81	Palletizing Harmonic World	77
+82	Visual Lander	78
 \.
 
 --
@@ -215,7 +216,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 --
 
 
-COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin; 
+COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 0	1	9	{{-1,1.5,0,0.0,0.0,0.0}}
 1	5	2	{{53.462,-10.734,0.004,0,0,-1.57}}
 2	6	2	{{-200.88, -90.72, 0.0, 0.0, 0.0, -2.83}}
@@ -274,7 +275,8 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 55	79	32	{{8,5,0,0.0,0.0,0.0}}
 56	80	11	{{0,5,0,0.0,0.0,0.0}}
 57	80	32	{{8,5,0,0.0,0.0,0.0}}
-58	81	11	{{0,-8,0.3,0.0,0.0,0.0}}
+58	81	34	{{0.0,0.0,0.9,0.0,0.0,0.0}}
+59	82	11	{{0,-8,0.3,0.0,0.0,0.0}}
 \.
 
 --
@@ -320,7 +322,8 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 74	Position Control	/opt/jderobot/Launchers/position_control.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/position_control.config"}	ROS2	gz	position_control.urdf
 75	Drone Cat Mouse Medium	/opt/jderobot/Launchers/drone_cat_mouse_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
 76	Drone Cat Mouse Hard	/opt/jderobot/Launchers/drone_cat_mouse_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/drone_cat_mouse.config"}	ROS2	gz	drone_cat_mouse.urdf
-77	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
+77	Palletizing Harmonic	/opt/jderobot/Launchers/palletizing.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/palletizing_harmonic.launch.py"}	ROS2	gz	palletizing.urdf
+78	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 \.
 
 --
@@ -361,6 +364,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 30	Dingo High Noise	/home/ws/src/CustomRobots/dingo/launch/dingo.launch.py	do150	noise:=high namespace:=do150	dingo/model/dingo/dingo.urdf.xacro
 32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
+34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
 \.
 
 --
