@@ -44,27 +44,108 @@
 			<pose>0 -13 0.05 0 0 0</pose>
 		</include>
 
-		<!-- Rectangular road loop, square corners. road_plane runs along local Y, yawed to match each side's direction. Raised to z=0.01 so it doesn't z-fight with the grass plane. -->
-		<include><uri>model://road_plane</uri><name>road_s1_a</name><pose>-10 -9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s1_b</name><pose>-10 -7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s2_a</name><pose>0 -9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s2_b</name><pose>0 -7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s3_a</name><pose>10 -9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_s3_b</name><pose>10 -7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n1_a</name><pose>-10 7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n1_b</name><pose>-10 9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n2_a</name><pose>0 7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n2_b</name><pose>0 9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n3_a</name><pose>10 7 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_n3_b</name><pose>10 9 0.01 0 0 1.5708</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w1_a</name><pose>-18 -5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w1_b</name><pose>-16 -5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w2_a</name><pose>-18 5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_w2_b</name><pose>-16 5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e1_a</name><pose>16 -5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e1_b</name><pose>18 -5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e2_a</name><pose>16 5 0.01 0 0 0</pose></include>
-		<include><uri>model://road_plane</uri><name>road_e2_b</name><pose>18 5 0.01 0 0 0</pose></include>
+		<!-- Rectangular road loop, square corners. road_plane runs along local Y, yawed to match
+		each side's direction. Raised to z=0.01 so it doesn't z-fight with the grass plane. -->
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s1_a</name>
+			<pose>-10 -9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s1_b</name>
+			<pose>-10 -7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s2_a</name>
+			<pose>0 -9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s2_b</name>
+			<pose>0 -7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s3_a</name>
+			<pose>10 -9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_s3_b</name>
+			<pose>10 -7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n1_a</name>
+			<pose>-10 7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n1_b</name>
+			<pose>-10 9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n2_a</name>
+			<pose>0 7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n2_b</name>
+			<pose>0 9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n3_a</name>
+			<pose>10 7 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_n3_b</name>
+			<pose>10 9 0.01 0 0 1.5708</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w1_a</name>
+			<pose>-18 -5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w1_b</name>
+			<pose>-16 -5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w2_a</name>
+			<pose>-18 5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_w2_b</name>
+			<pose>-16 5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e1_a</name>
+			<pose>16 -5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e1_b</name>
+			<pose>18 -5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e2_a</name>
+			<pose>16 5 0.01 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://road_plane</uri>
+			<name>road_e2_b</name>
+			<pose>18 5 0.01 0 0 0</pose>
+		</include>
 
 		<actor name="car">
 			<pose>0 0 0.75 0 0 0</pose>
@@ -78,14 +159,23 @@
 				<auto_start>true</auto_start>
 				<trajectory id="0" type="circuit">
 					<waypoint><time>0.0</time><pose>-13 -8 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>37.14</time><pose>13 -8 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>48.32</time><pose>17 -6 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>65.46</time><pose>17 6 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>76.64</time><pose>13 8 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>113.78</time><pose>-13 8 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>124.96</time><pose>-17 6 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>142.10</time><pose>-17 -6 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>148.49</time><pose>-13 -8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>10</time><pose>-4 -8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>20</time><pose>4 -8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>30</time><pose>13 -8 0 0 0 1.5707</pose></waypoint>
+					<!-- Right side -->
+					<waypoint><time>40</time><pose>17 -6 0 0 0 3.14</pose></waypoint>
+					<waypoint><time>50</time><pose>17 0 0 0 0 3.14</pose></waypoint>
+					<waypoint><time>60</time><pose>17 6 0 0 0 3.14</pose></waypoint>
+					<!-- Top side -->
+					<waypoint><time>70</time><pose>13 8 0 0 0 4.71</pose></waypoint>
+					<waypoint><time>80</time><pose>4 8 0 0 0 4.71</pose></waypoint>
+					<waypoint><time>90</time><pose>-4 8 0 0 0 4.71</pose></waypoint>
+					<waypoint><time>100</time><pose>-13 8 0 0 0 4.71</pose></waypoint>
+					<!-- Left side -->
+					<waypoint><time>110</time><pose>-17 6 0 0 0 6.28</pose></waypoint>
+					<waypoint><time>120</time><pose>-17 0 0 0 0 6.28</pose></waypoint>
+					<waypoint><time>130</time><pose>-17 -6 0 0 0 6.28</pose></waypoint>
+					<waypoint><time>140</time><pose>-13 -8 0 0 0 7.85</pose></waypoint>
 				</trajectory>
 			</script>
 		</actor>
