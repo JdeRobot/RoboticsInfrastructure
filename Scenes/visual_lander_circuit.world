@@ -66,11 +66,29 @@
 		<include><uri>model://road_plane</uri><name>road_e2_a</name><pose>16 5 0.01 0 0 0</pose></include>
 		<include><uri>model://road_plane</uri><name>road_e2_b</name><pose>18 5 0.01 0 0 0</pose></include>
 
-		<include>
-			<uri>model://car_color_beacon</uri>
-			<name>car</name>
-			<pose>-13 -8 0.05 0 0 0</pose>
-		</include>
+		<actor name="car">
+			<pose>0 0 0.75 0 0 0</pose>
+			<skin>
+				<filename>model://car_color_beacon/meshes/model.dae</filename>
+				<scale>1</scale>
+			</skin>
+			<script>
+				<loop>true</loop>
+				<delay_start>0.0</delay_start>
+				<auto_start>true</auto_start>
+				<trajectory id="0" type="circuit">
+					<waypoint><time>0.0</time><pose>-13 -8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>37.14</time><pose>13 -8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>48.32</time><pose>17 -6 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>65.46</time><pose>17 6 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>76.64</time><pose>13 8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>113.78</time><pose>-13 8 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>124.96</time><pose>-17 6 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>142.10</time><pose>-17 -6 0 0 0 1.5707</pose></waypoint>
+					<waypoint><time>148.49</time><pose>-13 -8 0 0 0 1.5707</pose></waypoint>
+				</trajectory>
+			</script>
+		</actor>
 
 		<include>
 			<uri>model://pine_tree</uri>
