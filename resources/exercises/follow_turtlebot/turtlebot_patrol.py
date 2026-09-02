@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# Additional agent for follow_turtlebot: drives the turtlebot around the
+# patrol track. Registered as an entrypoint in exercises.db.sql, RAM runs it
+# as its own process alongside the user's drone code and kills/restarts it
+# together with the user's process on every run/stop, same as
+# resources/exercises/drone_cat_mouse/mouse.py.
+
 import math
 import time
 
@@ -10,10 +16,10 @@ from nav_msgs.msg import Odometry
 
 NAMESPACE = "turtlebot3"
 
-# Loop track from follow_turtlebot.world, clockwise starting at waypoint_1.
-# Each entry is (x, y, speed), speed is the linear speed used while heading
-# toward that point, slow through the cone slalom and the bridge, fast on
-# the two open straights.
+# Loop track from Scenes/follow_turtlebot.world, clockwise starting at
+# waypoint_1. Each entry is (x, y, speed), speed is the linear speed used
+# while heading toward that point, slow through the cone slalom and the
+# bridge, fast on the two open straights.
 SPEED_FAST = 0.35
 SPEED_SLALOM = 0.15
 SPEED_BRIDGE = 0.2
@@ -36,10 +42,6 @@ DISTANCE_TOLERANCE = 0.25
 ANGLE_TOLERANCE = 0.15
 KP_ANGULAR = 1.5
 
-# A jump this big between two odom readings 0.1s apart is not physically
-# possible at these speeds, so it means the sim got reset under us
-RESET_JUMP_DISTANCE = 1.5
-
 
 def yaw_from_quaternion(q):
     siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
@@ -55,37 +57,21 @@ class TurtlebotPatrol(Node):
     def __init__(self):
         super().__init__("turtlebot_patrol")
 
-        # Give the turtlebot3 bridge time to come up so odom is not stale from the start
-        time.sleep(5)
-
         self.x = 0.0
         self.y = 0.0
         self.yaw = 0.0
         self.have_odom = False
         self.target_index = 0
 
-        self.cmd_pub = self.create_publisher(
-            Twist, f"/{NAMESPACE}/cmd_vel", 10
-        )
+        self.cmd_pub = self.create_publisher(Twist, f"/{NAMESPACE}/cmd_vel", 10)
         self.create_subscription(
             Odometry, f"/{NAMESPACE}/odom", self.odom_callback, 10
         )
         self.create_timer(0.1, self.control_loop)
 
     def odom_callback(self, msg):
-        new_x = msg.pose.pose.position.x
-        new_y = msg.pose.pose.position.y
-
-        if self.have_odom:
-            jump = math.hypot(new_x - self.x, new_y - self.y)
-            if jump > RESET_JUMP_DISTANCE:
-                self.get_logger().info(
-                    f"Odom jumped {jump:.2f}m, sim was reset, restarting the lap"
-                )
-                self.target_index = 0
-
-        self.x = new_x
-        self.y = new_y
+        self.x = msg.pose.pose.position.x
+        self.y = msg.pose.pose.position.y
         self.yaw = yaw_from_quaternion(msg.pose.pose.orientation)
         self.have_odom = True
 

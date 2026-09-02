@@ -47,7 +47,8 @@
 		<!-- Loop track, clockwise from waypoint_1: south edge is a cone slalom,
 		     west/east edges are fast transit straights, north edge crosses the
 		     bridge. Coordinates here must match the WAYPOINTS list in
-		     patrol_turtlebot.py and the spawn pose in follow_turtlebot.launch.py. -->
+		     resources/exercises/follow_turtlebot/turtlebot_patrol.py and the
+		     spawn pose in database/worlds.sql (worlds_robots, world 84). -->
 		<include>
 			<uri>model://numbered_pad_1</uri>
 			<name>waypoint_1</name>
