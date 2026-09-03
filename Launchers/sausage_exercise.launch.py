@@ -102,7 +102,7 @@ def generate_launch_description():
     # ==================================================
 
     sausage_spawner = ExecuteProcess(
-        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_sausage.py"],
+        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_one_sausage.py"],
         output="screen",
     )
 
