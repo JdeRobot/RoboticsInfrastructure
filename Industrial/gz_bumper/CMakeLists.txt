@@ -24,9 +24,9 @@ find_package(nav_msgs REQUIRED)
 
 find_package(gz-plugin2 REQUIRED COMPONENTS register)
 find_package(gz-sim8 REQUIRED)
-find_package(gz-common REQUIRED)
-find_package(gz-transport REQUIRED)
-find_package(gz-msgs REQUIRED)
+find_package(gz-common5 REQUIRED)
+find_package(gz-transport13 REQUIRED)
+find_package(gz-msgs10 REQUIRED)
 find_package(gz-math7 REQUIRED)
 
 # ============================================================================
@@ -51,10 +51,10 @@ target_link_libraries(BumperPlugin
   gz-plugin2::register
   gz-sim8::gz-sim8
   gz-math7::gz-math7
-  gz-transport::gz-transport
-  gz-common::gz-common
-  gz-common::profiler
-  gz-msgs::gz-msgs
+  gz-transport13::gz-transport13
+  gz-common5::gz-common5
+  gz-common5::profiler
+  gz-msgs10::gz-msgs10
 )
 
 install(
