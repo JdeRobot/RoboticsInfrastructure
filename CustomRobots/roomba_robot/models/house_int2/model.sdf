@@ -22,15 +22,6 @@
             </submesh>
           </mesh>
         </geometry>
-        <material>
-          <diffuse>1.0 1.0 1.0 1.0</diffuse>
-          <specular>0.0 0.0 0.0 1.0</specular>
-          <pbr>
-            <metal>
-              <albedo_map>model://house_int2/materials/tiles.png</albedo_map>
-            </metal>
-          </pbr>
-        </material>
       </visual>
       <visual name="encimera_visual">
         <geometry>
