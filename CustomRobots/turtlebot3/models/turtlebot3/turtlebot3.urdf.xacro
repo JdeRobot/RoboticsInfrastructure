@@ -5,6 +5,7 @@
   <xacro:arg name="camera" default="true"/>
   <xacro:arg name="noise_level" default="none"/>
   <xacro:arg name="namespace" default="vacuum_cleaner"/>
+  <xacro:arg name="marker" default="false"/>
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
 
@@ -37,6 +38,11 @@
 
   <xacro:if value="$(arg camera)">
     <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera" parent="camera_base_link" namespace="${namespace}"/>
+  </xacro:if>
+
+  <!-- Beacon on top so a drone above can pick it out by color, only for follow_turtlebot -->
+  <xacro:if value="$(arg marker)">
+    <xacro:beacon_marker parent="base_link"/>
   </xacro:if>
 
   <xacro:unless value="${noise_level == 'none'}">

@@ -21,6 +21,7 @@ def launch_setup(context):
     gz_noise = LaunchConfiguration("noise")
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
+    gz_marker = LaunchConfiguration("marker")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -46,6 +47,7 @@ def launch_setup(context):
             "camera": "true" if sensor == "camera" else "false",
             "noise_level": gz_noise.perform(context),
             "namespace": namespace,
+            "marker": gz_marker.perform(context),
         },
     ).toxml()
 
@@ -139,6 +141,7 @@ def generate_launch_description():
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("sensor", default_value="camera"),
         DeclareLaunchArgument("noise", default_value="none"),
+        DeclareLaunchArgument("marker", default_value="false"),
         DeclareLaunchArgument("namespace", default_value="turtlebot3"),
         DeclareLaunchArgument("entity", default_value="turtlebot3"),
     ]
