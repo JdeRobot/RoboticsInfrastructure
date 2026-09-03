@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 
-# Additional agent for follow_turtlebot: drives the turtlebot around the
-# patrol track. Registered as an entrypoint in exercises.db.sql, RAM runs it
-# as its own process alongside the user's drone code and kills/restarts it
-# together with the user's process on every run/stop, same as
-# resources/exercises/drone_cat_mouse/mouse.py.
-
 import math
-import time
 
 import rclpy
 from rclpy.node import Node
@@ -20,9 +13,9 @@ NAMESPACE = "turtlebot3"
 # waypoint_1. Each entry is (x, y, speed), speed is the linear speed used
 # while heading toward that point, slow through the cone slalom and the
 # bridge, fast on the two open straights.
-SPEED_FAST = 0.35
-SPEED_SLALOM = 0.15
-SPEED_BRIDGE = 0.2
+SPEED_FAST = 0.7
+SPEED_SLALOM = 0.3
+SPEED_BRIDGE = 0.4
 
 WAYPOINTS = [
     (7.0, -4.0, SPEED_FAST),     # waypoint_1, slalom entry
@@ -37,10 +30,11 @@ WAYPOINTS = [
     (7.0, 4.0, SPEED_FAST),      # waypoint_4, east straight back to start
 ]
 
-ANGULAR_SPEED = 0.6
+ANGULAR_SPEED = 1.2
 DISTANCE_TOLERANCE = 0.25
-ANGLE_TOLERANCE = 0.15
 KP_ANGULAR = 1.5
+KD_ANGULAR = 0.3
+CONTROL_PERIOD = 0.1
 
 
 def yaw_from_quaternion(q):
@@ -62,6 +56,7 @@ class TurtlebotPatrol(Node):
         self.yaw = 0.0
         self.have_odom = False
         self.target_index = 0
+        self.prev_angle_error = 0.0
 
         self.cmd_pub = self.create_publisher(Twist, f"/{NAMESPACE}/cmd_vel", 10)
         self.create_subscription(
@@ -86,17 +81,18 @@ class TurtlebotPatrol(Node):
 
         if distance < DISTANCE_TOLERANCE:
             self.target_index = (self.target_index + 1) % len(WAYPOINTS)
+            self.prev_angle_error = 0.0
             return
 
         angle_error = wrap_angle(math.atan2(dy, dx) - self.yaw)
+        angle_error_rate = wrap_angle(angle_error - self.prev_angle_error) / CONTROL_PERIOD
+        self.prev_angle_error = angle_error
 
         cmd = Twist()
-        if abs(angle_error) > ANGLE_TOLERANCE:
-            cmd.linear.x = 0.0
-        else:
-            cmd.linear.x = speed
+        cmd.linear.x = speed * max(0.0, math.cos(angle_error))
         cmd.angular.z = max(
-            -ANGULAR_SPEED, min(ANGULAR_SPEED, KP_ANGULAR * angle_error)
+            -ANGULAR_SPEED,
+            min(ANGULAR_SPEED, KP_ANGULAR * angle_error + KD_ANGULAR * angle_error_rate),
         )
         self.cmd_pub.publish(cmd)
 
