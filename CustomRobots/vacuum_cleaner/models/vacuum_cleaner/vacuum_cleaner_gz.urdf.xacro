@@ -98,7 +98,6 @@
       <maxContacts>10</maxContacts>
       <material>Gazebo/DarkGrey</material>
       <sensor name='${name}_contact_sensor' type='contact'>
-        <gz:system_priority>100</gz:system_priority>
         <always_on>true</always_on>
         <update_rate>100</update_rate>
         <visualize>true</visualize>
