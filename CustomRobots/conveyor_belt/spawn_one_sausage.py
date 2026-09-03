@@ -42,7 +42,7 @@ class sausageSpawner(Node):
 
         # Tiempo entre salchichas
         # 2.0 -> una salchicha cada 2 segundos
-        self.SPAWN_INTERVAL = 2.0
+        self.SPAWN_INTERVAL = 50.0
 
         # Archivo SDF
         self.SAUSAGE_SDF = (
