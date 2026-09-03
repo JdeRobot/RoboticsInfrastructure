@@ -18,16 +18,16 @@ SPEED_SLALOM = 0.3
 SPEED_BRIDGE = 0.4
 
 WAYPOINTS = [
-    (7.0, -4.0, SPEED_FAST),     # waypoint_1, slalom entry
-    (4.0, -2.8, SPEED_SLALOM),   # past cone_1, north side
-    (1.0, -5.2, SPEED_SLALOM),   # past cone_2, south side
+    (7.0, -4.0, SPEED_FAST),  # waypoint_1, slalom entry
+    (4.0, -2.8, SPEED_SLALOM),  # past cone_1, north side
+    (1.0, -5.2, SPEED_SLALOM),  # past cone_2, south side
     (-2.0, -2.8, SPEED_SLALOM),  # past cone_3, north side
     (-5.0, -5.2, SPEED_SLALOM),  # past cone_4, south side
-    (-7.0, -4.0, SPEED_FAST),    # waypoint_2, slalom exit
-    (-7.0, 4.0, SPEED_FAST),     # waypoint_3, west straight
-    (-2.0, 4.0, SPEED_BRIDGE),   # bridge approach
-    (2.0, 4.0, SPEED_BRIDGE),    # bridge exit
-    (7.0, 4.0, SPEED_FAST),      # waypoint_4, east straight back to start
+    (-7.0, -4.0, SPEED_FAST),  # waypoint_2, slalom exit
+    (-7.0, 4.0, SPEED_FAST),  # waypoint_3, west straight
+    (-2.0, 4.0, SPEED_BRIDGE),  # bridge approach
+    (2.0, 4.0, SPEED_BRIDGE),  # bridge exit
+    (7.0, 4.0, SPEED_FAST),  # waypoint_4, east straight back to start
 ]
 
 ANGULAR_SPEED = 1.2
@@ -59,9 +59,7 @@ class TurtlebotPatrol(Node):
         self.prev_angle_error = 0.0
 
         self.cmd_pub = self.create_publisher(Twist, f"/{NAMESPACE}/cmd_vel", 10)
-        self.create_subscription(
-            Odometry, f"/{NAMESPACE}/odom", self.odom_callback, 10
-        )
+        self.create_subscription(Odometry, f"/{NAMESPACE}/odom", self.odom_callback, 10)
         self.create_timer(0.1, self.control_loop)
 
     def odom_callback(self, msg):
@@ -85,14 +83,18 @@ class TurtlebotPatrol(Node):
             return
 
         angle_error = wrap_angle(math.atan2(dy, dx) - self.yaw)
-        angle_error_rate = wrap_angle(angle_error - self.prev_angle_error) / CONTROL_PERIOD
+        angle_error_rate = (
+            wrap_angle(angle_error - self.prev_angle_error) / CONTROL_PERIOD
+        )
         self.prev_angle_error = angle_error
 
         cmd = Twist()
         cmd.linear.x = speed * max(0.0, math.cos(angle_error))
         cmd.angular.z = max(
             -ANGULAR_SPEED,
-            min(ANGULAR_SPEED, KP_ANGULAR * angle_error + KD_ANGULAR * angle_error_rate),
+            min(
+                ANGULAR_SPEED, KP_ANGULAR * angle_error + KD_ANGULAR * angle_error_rate
+            ),
         )
         self.cmd_pub.publish(cmd)
 
