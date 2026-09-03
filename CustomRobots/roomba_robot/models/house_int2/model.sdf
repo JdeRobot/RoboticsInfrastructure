@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.8">
   <model name="house_int2_harmonic">
     <static>true</static>
@@ -22,6 +22,15 @@
             </submesh>
           </mesh>
         </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://house_int2/materials/tiles.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
       </visual>
       <visual name="encimera_visual">
         <geometry>
@@ -67,87 +76,87 @@
       </collision>
     </link>
     <include>
-        <uri>model://mesa_comedor</uri>
-        <pose>-2.4 0.3 0 0 0 1.57</pose>
-        <static>true</static>
+      <uri>model://mesa_comedor</uri>
+      <pose>-2.4 0.3 0 0 0 1.57</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Silla 1</name>
-        <uri>model://silla</uri>
-        <pose>-2.1 -0.1 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Silla 1</name>
+      <uri>model://silla</uri>
+      <pose>-2.1 -0.1 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Silla 2</name>
-        <uri>model://silla</uri>
-        <pose>-2.1 0.7 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Silla 2</name>
+      <uri>model://silla</uri>
+      <pose>-2.1 0.7 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Silla 3</name>
-        <uri>model://silla</uri>
-        <pose>-2.7 -0.1 0 0 -0 3.14</pose>
-        <static>true</static>
+      <name>Silla 3</name>
+      <uri>model://silla</uri>
+      <pose>-2.7 -0.1 0 0 -0 3.14</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Silla 4</name>
-        <uri>model://silla</uri>
-        <pose>-2.7 0.7 0 0 -0 3.14</pose>
-        <static>true</static>
+      <name>Silla 4</name>
+      <uri>model://silla</uri>
+      <pose>-2.7 0.7 0 0 -0 3.14</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Mesa salon</name>
-        <uri>model://mesa_salon</uri>
-        <pose>-0.8 4.4 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Mesa salon</name>
+      <uri>model://mesa_salon</uri>
+      <pose>-0.8 4.4 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Sofa 1</name>
-        <uri>model://sofa_largo</uri>
-        <pose>-0.8 3.4 0 0 -0 3.14</pose>
-        <static>true</static>
+      <name>Sofa 1</name>
+      <uri>model://sofa_largo</uri>
+      <pose>-0.8 3.4 0 0 -0 3.14</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Sofa 2</name>
-        <uri>model://sofa</uri>
-        <pose>0.5 4.4 0 0 0 -1.57</pose>
-        <static>true</static>
+      <name>Sofa 2</name>
+      <uri>model://sofa</uri>
+      <pose>0.5 4.4 0 0 0 -1.57</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Sofa 3</name>
-        <uri>model://sofa</uri>
-        <pose>-2.1 4.4 0 0 -0 1.57</pose>
-        <static>true</static>
+      <name>Sofa 3</name>
+      <uri>model://sofa</uri>
+      <pose>-2.1 4.4 0 0 -0 1.57</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Estanteria 1</name>
-        <uri>model://estanteria</uri>
-        <pose>4.7 4.48 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Estanteria 1</name>
+      <uri>model://estanteria</uri>
+      <pose>4.7 4.48 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Estanteria 2</name>
-        <uri>model://estanteria</uri>
-        <pose>4.7 0.5 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Estanteria 2</name>
+      <uri>model://estanteria</uri>
+      <pose>4.7 0.5 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Mesita 1</name>
-        <uri>model://mesita</uri>
-        <pose>2.4 -3.28 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Mesita 1</name>
+      <uri>model://mesita</uri>
+      <pose>2.4 -3.28 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Mesita 2</name>
-        <uri>model://mesita</uri>
-        <pose>4.4 -3.28 0 0 -0 0</pose>
-        <static>true</static>
+      <name>Mesita 2</name>
+      <uri>model://mesita</uri>
+      <pose>4.4 -3.28 0 0 -0 0</pose>
+      <static>true</static>
     </include>
     <include>
-        <name>Cama</name>
-        <uri>model://cama</uri>
-        <pose>3.4 -2.41 0 0 0 -1.57</pose>
-        <static>true</static>
+      <name>Cama</name>
+      <uri>model://cama</uri>
+      <pose>3.4 -2.41 0 0 0 -1.57</pose>
+      <static>true</static>
     </include>
   </model>
 </sdf>
