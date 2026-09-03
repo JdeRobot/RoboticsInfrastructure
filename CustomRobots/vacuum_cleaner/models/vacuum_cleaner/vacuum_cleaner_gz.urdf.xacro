@@ -97,18 +97,16 @@
       <minDepth>0.001</minDepth>
       <maxContacts>10</maxContacts>
       <material>Gazebo/DarkGrey</material>
-      <plugin filename="libBumperPlugin.so" name="custom_plugins::BumperPlugin">
+      <sensor name='${name}_contact_sensor' type='contact'>
+        <gz:system_priority>100</gz:system_priority>
         <always_on>true</always_on>
         <update_rate>100</update_rate>
         <visualize>true</visualize>
-
         <contact>
           <collision>${name}_collision</collision>
           <topic>/${namespace}/${topic}</topic>
         </contact>
-      </plugin>
-      <!-- <sensor name='${name}_contact_sensor' type='contact'>
-      </sensor> -->
+      </sensor>
 
     </gazebo>
 
