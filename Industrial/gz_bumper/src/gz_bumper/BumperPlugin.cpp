@@ -301,4 +301,4 @@ void Contact::PostUpdate(const UpdateInfo &_info,
 GZ_ADD_PLUGIN(Contact, System, Contact::ISystemPreUpdate,
               Contact::ISystemPostUpdate)
 
-GZ_ADD_PLUGIN_ALIAS(Contact, "gz::sim::systems::Contact")
+GZ_ADD_PLUGIN_ALIAS(Contact, "custom_plugins::BumperPlugin")

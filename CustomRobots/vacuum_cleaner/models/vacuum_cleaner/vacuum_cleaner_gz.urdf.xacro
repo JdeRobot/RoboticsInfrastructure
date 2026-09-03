@@ -6,9 +6,9 @@
     <link name="${name}_link"></link>
 
     <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <parent link="${parent}" />
+      <child link="${name}_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
     <gazebo reference="${name}_link">
@@ -51,15 +51,16 @@
     <link name="${name}_link">
       <visual>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae" scale="0.1 0.1 0.1"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"
+            scale="0.1 0.1 0.1" />
         </geometry>
       </visual>
     </link>
 
     <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <parent link="${parent}" />
+      <child link="${name}_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
     <gazebo reference="${name}_link">
@@ -96,15 +97,18 @@
       <minDepth>0.001</minDepth>
       <maxContacts>10</maxContacts>
       <material>Gazebo/DarkGrey</material>
-      <sensor name='${name}_contact_sensor' type='contact'>
+      <plugin filename="libBumperPlugin.so" name="custom_plugins::BumperPlugin">
         <always_on>true</always_on>
         <update_rate>100</update_rate>
         <visualize>true</visualize>
+
         <contact>
           <collision>${name}_collision</collision>
           <topic>/${namespace}/${topic}</topic>
         </contact>
-      </sensor>
+      </plugin>
+      <!-- <sensor name='${name}_contact_sensor' type='contact'>
+      </sensor> -->
 
     </gazebo>
 
