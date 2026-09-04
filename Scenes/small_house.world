@@ -3,6 +3,10 @@
 <sdf version="1.8">
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+      <engine>
+        <filename>gz-physics-bullet-plugin</filename>
+
+      </engine>
     </plugin>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
       <gz:system_priority>100</gz:system_priority>
@@ -13,15 +17,6 @@
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
-    </plugin>
-
-    <plugin filename="PriorityPrinter" name="priority_printer::PriorityPrinter">
-      <gz:system_priority>10</gz:system_priority>
-      <label>second</label>
-    </plugin>
-    <plugin filename="PriorityPrinter" name="priority_printer::PriorityPrinter">
-      <gz:system_priority>100</gz:system_priority>
-      <label>first</label>
     </plugin>
 
     <scene>
