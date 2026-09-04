@@ -6,9 +6,9 @@
     <link name="${name}_link"></link>
 
     <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <parent link="${parent}" />
+      <child link="${name}_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
     <gazebo reference="${name}_link">
@@ -51,15 +51,16 @@
     <link name="${name}_link">
       <visual>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae" scale="0.1 0.1 0.1"/>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"
+            scale="0.1 0.1 0.1" />
         </geometry>
       </visual>
     </link>
 
     <joint name="${name}_to_${parent}" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <parent link="${parent}" />
+      <child link="${name}_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
     <gazebo reference="${name}_link">
