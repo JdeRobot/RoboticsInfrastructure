@@ -18,6 +18,8 @@ def launch_setup(context):
     gz_noise = LaunchConfiguration("noise")
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
+    gz_basket = LaunchConfiguration("basket")
+    gz_basket_color = LaunchConfiguration("basket_color")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -41,6 +43,8 @@ def launch_setup(context):
         mappings={
             "noise_level": gz_noise.perform(context),
             "namespace": namespace,
+            "basket": gz_basket.perform(context),
+            "basket_color": gz_basket_color.perform(context),
         },
     ).toxml()
 
@@ -115,6 +119,8 @@ def generate_launch_description():
         DeclareLaunchArgument("noise", default_value="none"),
         DeclareLaunchArgument("namespace", default_value="mir100"),
         DeclareLaunchArgument("entity", default_value="mir100"),
+        DeclareLaunchArgument("basket", default_value="false"),
+        DeclareLaunchArgument("basket_color", default_value="Red"),
     ]
 
     return LaunchDescription(

@@ -279,7 +279,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 60	83	11	{{0,-8,0.3,0.0,0.0,0.0}}
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
-63	85	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+63	85	40	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
@@ -376,6 +376,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 37	Mir100 Low Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 38	Mir100 Medium Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=med namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+40	Mir100 Red Basket	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	namespace:=mir100 basket:=true basket_color:=Red	mir100/models/mir100/mir100.urdf.xacro
+41	Mir100 Blue Basket	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	namespace:=mir100 basket:=true basket_color:=Blue	mir100/models/mir100/mir100.urdf.xacro
 \.
 
 --

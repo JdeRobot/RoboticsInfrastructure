@@ -3,6 +3,8 @@
 
   <xacro:arg name="noise_level" default="none"/>
   <xacro:arg name="namespace" default="mir100"/>
+  <xacro:arg name="basket" default="false"/>
+  <xacro:arg name="basket_color" default="Red"/>
   <xacro:property name="noise_level" value="$(arg noise_level)"/>
   <xacro:property name="namespace" value="$(arg namespace)"/>
 
@@ -30,8 +32,13 @@
 
   <xacro:include filename="$(find custom_robots)/models/mir100/mir100_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/mir100/mir100_common.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/mir100/mir100_basket.urdf.xacro"/>
 
   <xacro:mir100 namespace="${namespace}"/>
+
+  <xacro:if value="$(arg basket)">
+    <xacro:mir100_basket parent="base_link" color="$(arg basket_color)"/>
+  </xacro:if>
 
   <xacro:unless value="${noise_level == 'none'}">
     <xacro:noise_odom namespace="${namespace}" wheel_separation="${wheel_separation}"
