@@ -29,8 +29,8 @@
     <xacro:property name="parent_base" value="base_link"/>
     <!-- Posición -->
     <xacro:property name="cam_base_px" value="-0.4"/>
-    <xacro:property name="cam_base_py" value="1.2"/>
-    <xacro:property name="cam_base_pz" value="0.1"/>
+    <xacro:property name="cam_base_py" value="0.95"/>
+    <xacro:property name="cam_base_pz" value="0.0"/>
     <!-- Orientación -->
     <xacro:property name="cam_base_or" value="0.0"/>
     <xacro:property name="cam_base_op" value="1.57"/>
