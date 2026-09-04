@@ -207,6 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
+85	Mir100 Warehouse	81
 \.
 
 --
@@ -278,6 +279,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 60	83	11	{{0,-8,0.3,0.0,0.0,0.0}}
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
+63	85	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
@@ -327,6 +329,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 78	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
+81	Mir100 Warehouse	/opt/jderobot/Launchers/mir100_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	mir100_warehouse.urdf
 \.
 
 --
