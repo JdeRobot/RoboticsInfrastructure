@@ -15,6 +15,15 @@
     <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
     </plugin>
 
+    <plugin filename="PriorityPrinter" name="priority_printer::PriorityPrinter">
+      <gz:system_priority>10</gz:system_priority>
+      <label>second</label>
+    </plugin>
+    <plugin filename="PriorityPrinter" name="priority_printer::PriorityPrinter">
+      <gz:system_priority>100</gz:system_priority>
+      <label>first</label>
+    </plugin>
+
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
