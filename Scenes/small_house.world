@@ -3,10 +3,6 @@
 <sdf version="1.8">
   <world name="default">
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
-      <engine>
-        <filename>gz-physics-bullet-plugin</filename>
-
-      </engine>
     </plugin>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
       <gz:system_priority>100</gz:system_priority>
