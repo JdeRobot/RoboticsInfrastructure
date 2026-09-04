@@ -1,0 +1,10 @@
+The mesh files under models/mir100/meshes/ (mir_100_base, wheel,
+caster_wheel_base, sick_lms-100) come from mir_description in
+https://github.com/mukmalone/mir_robot, Copyright (c) 2018 DFKI GmbH,
+BSD 3-Clause license, see LICENSE in this directory.
+
+The real MiR100 dimensions used in mir100_common.urdf.xacro (wheel
+radius, wheel separation, laser mount poses) were taken from the same
+source for accuracy.
+
+Everything else in this directory is original work for RoboticsAcademy.

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot name="mir100" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="noise_level" default="none"/>
+  <xacro:arg name="namespace" default="mir100"/>
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)). -->
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="a1" value="0.01"/>
+    <xacro:property name="a2" value="0.01"/>
+    <xacro:property name="a3" value="0.01"/>
+    <xacro:property name="a4" value="0.01"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:property name="a1" value="0.05"/>
+    <xacro:property name="a2" value="0.05"/>
+    <xacro:property name="a3" value="0.05"/>
+    <xacro:property name="a4" value="0.05"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="a1" value="0.25"/>
+    <xacro:property name="a2" value="0.25"/>
+    <xacro:property name="a3" value="0.25"/>
+    <xacro:property name="a4" value="0.25"/>
+  </xacro:if>
+
+  <xacro:include filename="$(find custom_robots)/models/mir100/mir100_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/mir100/mir100_common.urdf.xacro"/>
+
+  <xacro:mir100 namespace="${namespace}"/>
+
+  <xacro:unless value="${noise_level == 'none'}">
+    <xacro:noise_odom namespace="${namespace}" wheel_separation="${wheel_separation}"
+                       wheel_radius="${wheel_radius}" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+  </xacro:unless>
+</robot>

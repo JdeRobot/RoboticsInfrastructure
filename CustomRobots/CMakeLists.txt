@@ -71,6 +71,9 @@ install(
     dingo/model
     dingo/launch
 
+    mir100/models
+    mir100/launch
+
     rover_4wd/model
     rover_4wd/launch
 
