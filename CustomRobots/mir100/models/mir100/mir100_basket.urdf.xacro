@@ -21,14 +21,10 @@
     <color rgba="0.35 0.35 0.35 1.0"/>
   </material>
 
-  <!-- Optional cargo basket, off by default (see xacro:arg "basket" in mir100.urdf.xacro).
-       Simple open-top box crate (floor + 4 walls, no lid): plain primitives, so it renders
-       correctly from every angle (no mesh backface-culling issues). Footprint 0.584 x 0.330 m,
-       walls 0.24 m tall, mounted flush on the chassis top, biased toward the back (the -x
-       side, where the back_laser sits) so it fills most of the rear without overhanging it.
-       Floor stays industrial grey; walls take "color" so two MiR100 units can carry
-       differently colored bins (e.g. one per pipe/ball color). Placeholder look, swap for a
-       nicer mesh later. -->
+  <!-- Optional cargo basket, off by default. Open-top box crate built from plain
+       primitives, always renders fine from any angle. Floor stays grey, walls take
+       the "color" arg so two robots can carry different colored bins.
+       Placeholder look, swap for a nicer mesh later. -->
   <xacro:macro name="mir100_basket" params="parent color:=Red">
     <xacro:property name="floor_size_x" value="0.584"/>
     <xacro:property name="floor_size_y" value="0.330"/>

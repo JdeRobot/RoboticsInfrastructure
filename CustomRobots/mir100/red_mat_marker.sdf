@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="red_mat_marker">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <box><size>1.0 1.0 0.01</size></box>
+        </geometry>
+        <material>
+          <ambient>0.8 0 0 1</ambient>
+          <diffuse>0.8 0 0 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -3,6 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
+    ExecuteProcess,
     IncludeLaunchDescription,
     SetEnvironmentVariable,
     AppendEnvironmentVariable,
@@ -44,9 +45,16 @@ def generate_launch_description():
         output="screen",
     )
 
+    # Publish Empty to /mir100_warehouse/spawn_{red,blue}_ball to drop a ball.
+    ball_spawner = ExecuteProcess(
+        cmd=["python3", "/home/ws/src/CustomRobots/mir100/ball_spawner.py"],
+        output="screen",
+    )
+
     ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(ball_spawner)
 
     return ld

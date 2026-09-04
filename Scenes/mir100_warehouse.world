@@ -169,10 +169,8 @@
             <pose>-0.276098 -9.481944 0.023266 0 0 0</pose>
         </include>
 
-        <!-- Red ball-drop pipe: floats above its mat, collar facing DOWN (opening at the
-             bottom) so a ball can fall out of it onto the mat below. Collar bottom sits at
-             z=0.85, well above the tallest robot+basket (~0.59m), so a MiR100 can drive
-             underneath. Sits in the aisle the transporting racks used to occupy. -->
+        <!-- Red pipe floats above its mat with the opening facing down, so a ball
+             can fall through it. High enough for a robot to drive underneath. -->
         <model name="red_pipe">
             <static>true</static>
             <pose>3.84 -2.5 0.85 0 0 0</pose>
@@ -206,7 +204,7 @@
             </link>
         </model>
 
-        <!-- Red mat, directly under the pipe: park here to catch the ball. -->
+        <!-- Mat under the pipe, park here to catch the ball. -->
         <model name="red_mat">
             <static>true</static>
             <pose>3.84 -2.5 0.001 0 0 0</pose>
@@ -223,7 +221,7 @@
             </link>
         </model>
 
-        <!-- Blue ball-drop pipe + its mat, same shapes/height as the red one. -->
+        <!-- Blue pipe and mat, same shape as the red ones. -->
         <model name="blue_pipe">
             <static>true</static>
             <pose>3.84 -6.0 0.85 0 0 0</pose>
@@ -273,9 +271,8 @@
             </link>
         </model>
 
-        <!-- Delivery mats: start grey/neutral, scattered around the map. One will be
-             switched to the ball's color at runtime (not modeled yet) to mark where a
-             robot should drop off the ball it picked up from a pipe. -->
+        <!-- Delivery mats, start grey. ball_spawner lights one up per ball to mark
+             where it should be dropped off. -->
         <model name="delivery_mat_1">
             <static>true</static>
             <pose>1.2 -2.5 0.001 0 0 0</pose>

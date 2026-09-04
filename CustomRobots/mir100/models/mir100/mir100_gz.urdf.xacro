@@ -25,7 +25,7 @@
       <origin xyz="${xyz}" rpy="${rpy}"/>
     </joint>
 
-    <!-- SICK S300, real MiR100 laser: 270 deg FOV, 0.05-29m range. -->
+    <!-- Real MiR100 laser, SICK S300, 270 degree FOV. -->
     <gazebo reference="${name}_link">
       <sensor name="${name}" type="gpu_lidar">
         <always_on>1</always_on>
