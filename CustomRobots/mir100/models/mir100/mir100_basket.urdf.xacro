@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <material name="IndustrialGrey">
-    <color rgba="0.35 0.35 0.35 1.0"/>
-  </material>
-
   <material name="Red">
     <color rgba="1 0 0 1.0"/>
   </material>
@@ -21,111 +17,71 @@
     <color rgba="1 0.9 0 1.0"/>
   </material>
 
-  <!-- Optional cargo basket, off by default (see xacro:arg "basket" in mir100.urdf.xacro).
-       Frame/plate are always industrial grey; only the bin is colored per-robot so two
-       MiR100 units can carry differently colored bins (e.g. one per pipe/ball color). -->
-  <xacro:macro name="mir100_basket" params="parent color:=Red">
-    <xacro:property name="mount_x" value="0.037646"/>
-    <xacro:property name="post_height" value="0.12"/>
-    <xacro:property name="post_radius" value="0.012"/>
-    <xacro:property name="post_offset" value="0.13"/>
-    <xacro:property name="plate_size" value="0.32"/>
-    <xacro:property name="plate_thickness" value="0.01"/>
-    <xacro:property name="bin_size" value="0.28"/>
-    <xacro:property name="bin_base_thickness" value="0.01"/>
-    <xacro:property name="bin_wall_height" value="0.09"/>
-    <xacro:property name="bin_wall_thickness" value="0.012"/>
+  <material name="Grey">
+    <color rgba="0.35 0.35 0.35 1.0"/>
+  </material>
 
+  <!-- Optional cargo basket, off by default (see xacro:arg "basket" in mir100.urdf.xacro).
+       Mesh derived from OpenRobotics' "Grey tote" (CC0, fuel.gazebosim.org): the original
+       has an attached flip-lid (closed by default), so the lid geometry was cut off and an
+       interior floor patch added (the source mesh is single-sided/exterior-only, so a floor
+       had to be authored separately, see the "grey_tote_open.glb" derivation), real crate
+       footprint 0.678 x 0.413 m, walls 0.24 m tall, genuinely open at the top for a ball to
+       drop/rest in later. Mounted flush on the chassis top, biased toward the back (the -x
+       side, where the back_laser sits) so it fills most of the rear of the robot without
+       overhanging it. The mesh's own material is overridden by "color" so two MiR100 units
+       can carry differently colored bins (e.g. one per pipe/ball color). -->
+  <xacro:macro name="mir100_basket" params="parent color:=Red">
     <joint name="basket_joint" type="fixed">
       <parent link="${parent}"/>
       <child link="basket_link"/>
-      <origin xyz="${mount_x} 0 0.352" rpy="0 0 0"/>
+      <origin xyz="-0.05 0 0.352" rpy="0 0 0"/>
     </joint>
 
     <link name="basket_link">
       <inertial>
-        <mass value="1.0"/>
-        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        <mass value="3.5"/>
+        <inertia ixx="0.07" ixy="0" ixz="0" iyy="0.14" iyz="0" izz="0.15"/>
       </inertial>
 
-      <!-- Support posts (industrial grey, fixed frame) -->
-      <xacro:macro name="basket_post" params="x y">
-        <visual>
-          <origin xyz="${x} ${y} ${post_height/2}" rpy="0 0 0"/>
-          <geometry>
-            <cylinder radius="${post_radius}" length="${post_height}"/>
-          </geometry>
-          <material name="IndustrialGrey"/>
-        </visual>
-        <collision>
-          <origin xyz="${x} ${y} ${post_height/2}" rpy="0 0 0"/>
-          <geometry>
-            <cylinder radius="${post_radius}" length="${post_height}"/>
-          </geometry>
-        </collision>
-      </xacro:macro>
-
-      <xacro:basket_post x="${post_offset}" y="${post_offset}"/>
-      <xacro:basket_post x="${post_offset}" y="${-post_offset}"/>
-      <xacro:basket_post x="${-post_offset}" y="${post_offset}"/>
-      <xacro:basket_post x="${-post_offset}" y="${-post_offset}"/>
-
-      <!-- Mounting plate on top of the posts (industrial grey) -->
       <visual>
-        <origin xyz="0 0 ${post_height + plate_thickness/2}" rpy="0 0 0"/>
         <geometry>
-          <box size="${plate_size} ${plate_size} ${plate_thickness}"/>
-        </geometry>
-        <material name="IndustrialGrey"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 ${post_height + plate_thickness/2}" rpy="0 0 0"/>
-        <geometry>
-          <box size="${plate_size} ${plate_size} ${plate_thickness}"/>
-        </geometry>
-      </collision>
-
-      <!-- Open-top cargo bin (team color), sits on the plate -->
-      <xacro:property name="bin_z" value="${post_height + plate_thickness + bin_base_thickness/2}"/>
-      <visual>
-        <origin xyz="0 0 ${bin_z}" rpy="0 0 0"/>
-        <geometry>
-          <box size="${bin_size} ${bin_size} ${bin_base_thickness}"/>
+          <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/grey_tote_open.glb"/>
         </geometry>
         <material name="${color}"/>
       </visual>
+
+      <!-- Floor + 4 walls, open at the top, matching the visual mesh's real interior. -->
       <collision>
-        <origin xyz="0 0 ${bin_z}" rpy="0 0 0"/>
+        <origin xyz="0 0 0.01" rpy="0 0 0"/>
         <geometry>
-          <box size="${bin_size} ${bin_size} ${bin_base_thickness}"/>
+          <box size="0.584 0.330 0.02"/>
         </geometry>
       </collision>
-
-      <xacro:property name="wall_z" value="${post_height + plate_thickness + bin_wall_height/2}"/>
-      <xacro:macro name="basket_wall" params="x y len_x len_y">
-        <visual>
-          <origin xyz="${x} ${y} ${wall_z}" rpy="0 0 0"/>
-          <geometry>
-            <box size="${len_x} ${len_y} ${bin_wall_height}"/>
-          </geometry>
-          <material name="${color}"/>
-        </visual>
-        <collision>
-          <origin xyz="${x} ${y} ${wall_z}" rpy="0 0 0"/>
-          <geometry>
-            <box size="${len_x} ${len_y} ${bin_wall_height}"/>
-          </geometry>
-        </collision>
-      </xacro:macro>
-
-      <xacro:basket_wall x="${bin_size/2 - bin_wall_thickness/2}" y="0"
-                          len_x="${bin_wall_thickness}" len_y="${bin_size}"/>
-      <xacro:basket_wall x="${-bin_size/2 + bin_wall_thickness/2}" y="0"
-                          len_x="${bin_wall_thickness}" len_y="${bin_size}"/>
-      <xacro:basket_wall x="0" y="${bin_size/2 - bin_wall_thickness/2}"
-                          len_x="${bin_size}" len_y="${bin_wall_thickness}"/>
-      <xacro:basket_wall x="0" y="${-bin_size/2 + bin_wall_thickness/2}"
-                          len_x="${bin_size}" len_y="${bin_wall_thickness}"/>
+      <collision>
+        <origin xyz="0.29 0 0.13" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.026 0.330 0.24"/>
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="-0.29 0 0.13" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.026 0.330 0.24"/>
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0.165 0.13" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.584 0.026 0.24"/>
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 -0.165 0.13" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.584 0.026 0.24"/>
+        </geometry>
+      </collision>
     </link>
   </xacro:macro>
 </robot>
