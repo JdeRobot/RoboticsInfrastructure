@@ -37,17 +37,6 @@
                         <scale>1 1 1</scale>
                     </mesh>
                 </geometry>
-                <material>
-                    <ambient>0.8 0.8 0.8 1.0</ambient>
-                    <diffuse>0.8 0.8 0.8 1.0</diffuse>
-                    <specular>0.1 0.1 0.1 1.0</specular>
-                    <!-- <emissive>0.0 0.0 0.0 1.0</emissive>
-                    <pbr>
-                        <metal>
-                        <albedo_map>model://cityLarge_harmonic/Imgs/cityLarge_harmonic.png</albedo_map>
-                        </metal>
-                    </pbr> -->
-                </material>
             </visual>
 
             <inertial>
