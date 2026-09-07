@@ -98,10 +98,12 @@
         <state_interface name="effort"/>
       </joint>
 
-      <joint name="${prefix}joint_prismatic_r">
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-      </joint>
+      <!-- joint_prismatic_r stays out of ros2_control entirely, even a bare
+           state_interface-only declaration crashes gz_ros2_control right on
+           this joint, every single time, regardless of block layout or what
+           else changed around it. It still tracks joint_prismatic_l physically
+           through the URDF-level mimic tag, gz-sim enforces that on its own,
+           ros2_control does not need to know about it for that to work. -->
 
     </ros2_control>
 

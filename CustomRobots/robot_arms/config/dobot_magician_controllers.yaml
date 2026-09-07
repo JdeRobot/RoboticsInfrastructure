@@ -24,7 +24,6 @@ joint_state_broadcaster:
       - joint_mimic_1
       - joint_mimic_2
       - joint_prismatic_l
-      - joint_prismatic_r
 
     interfaces:
       - position
