@@ -1,0 +1,9 @@
+The mesh files under meshes/ (magicianBase, magicianLink1-4, gripper_core,
+jaw_left, jaw_right, plus the matching collision meshes) come from the
+dobot_description package in https://github.com/jkaniuka/magician_ros2,
+Copyright (c) 2023 Jan Kaniuka, MIT license, see LICENSE in this directory.
+
+The joint offsets, link lengths and parallelogram mimic layout in
+dobot_magician_macro.xacro were taken from the same source for accuracy.
+
+Everything else in this directory is original work for RoboticsAcademy.

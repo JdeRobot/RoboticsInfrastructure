@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<robot name="dobot_magician">
+
+  <group name="dobot_magician_arm">
+    <chain base_link="base_link" tip_link="link_gripper_core"/>
+  </group>
+
+  <group name="dobot_gripper">
+    <joint name="joint_prismatic_l"/>
+  </group>
+
+  <group_state group="dobot_magician_arm" name="home">
+    <joint name="joint_1" value="0"/>
+    <joint name="joint_2" value="0.3"/>
+    <joint name="joint_3" value="0.3"/>
+    <joint name="joint_4" value="0"/>
+  </group_state>
+
+  <group_state group="dobot_magician_arm" name="up">
+    <joint name="joint_1" value="0"/>
+    <joint name="joint_2" value="0"/>
+    <joint name="joint_3" value="0"/>
+    <joint name="joint_4" value="0"/>
+  </group_state>
+
+  <group_state group="dobot_gripper" name="open">
+    <joint name="joint_prismatic_l" value="0"/>
+  </group_state>
+
+  <group_state group="dobot_gripper" name="closed">
+    <joint name="joint_prismatic_l" value="0.0135"/>
+  </group_state>
+
+  <end_effector group="dobot_gripper" name="dobot_gripper" parent_group="dobot_magician_arm" parent_link="link_gripper_core"/>
+
+  <!-- Parallelogram and gripper follower joints, MoveIt must not plan these directly -->
+  <passive_joint name="joint_mimic_1"/>
+  <passive_joint name="joint_mimic_2"/>
+  <passive_joint name="joint_prismatic_r"/>
+
+  <disable_collisions link1="base_link" link2="link_1" reason="Adjacent"/>
+  <disable_collisions link1="link_1" link2="link_2" reason="Adjacent"/>
+  <disable_collisions link1="link_2" link2="link_3" reason="Adjacent"/>
+  <disable_collisions link1="link_3" link2="link_virtual" reason="Adjacent"/>
+  <disable_collisions link1="link_virtual" link2="link_4" reason="Adjacent"/>
+  <disable_collisions link1="link_4" link2="link_gripper_core" reason="Adjacent"/>
+  <disable_collisions link1="link_gripper_core" link2="link_gripper_jaw_left" reason="Adjacent"/>
+  <disable_collisions link1="link_gripper_core" link2="link_gripper_jaw_right" reason="Adjacent"/>
+
+  <!-- The parallelogram keeps link_4 and the gripper close to link_2/link_3
+       through most of the working range, this open chain approximation
+       would otherwise trip the default self collision checker. -->
+  <disable_collisions link1="link_2" link2="link_4" reason="Never"/>
+  <disable_collisions link1="link_3" link2="link_4" reason="Never"/>
+  <disable_collisions link1="link_3" link2="link_gripper_core" reason="Never"/>
+  <disable_collisions link1="link_virtual" link2="link_2" reason="Never"/>
+  <disable_collisions link1="link_virtual" link2="link_3" reason="Never"/>
+  <disable_collisions link1="link_gripper_jaw_left" link2="link_gripper_jaw_right" reason="Never"/>
+
+</robot>

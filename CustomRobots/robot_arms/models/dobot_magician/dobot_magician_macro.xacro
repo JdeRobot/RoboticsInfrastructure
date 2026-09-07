@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Real dimensions and joint layout ported from
+       https://github.com/jkaniuka/magician_ros2 (dobot_description), see NOTICE.
+       The arm closes its real parallelogram linkage with two mimic joints
+       (joint_mimic_1 follows joint_2, joint_mimic_2 follows joint_3) instead
+       of a closed kinematic loop, this keeps the end effector level without
+       needing the physical parallel bars in the model. -->
+
+  <xacro:property name="link_base_length" value="0.131305"/>
+  <xacro:property name="link_2_length" value="0.135"/>
+  <xacro:property name="link_3_length" value="0.147"/>
+  <xacro:property name="link_4_length" value="0.06"/>
+
+  <xacro:property name="joint_2_offset" value="${20.0/180.0*pi}"/>
+  <xacro:property name="joint_3_offset" value="${7.0/180.0*pi}"/>
+
+  <!-- The real meshes don't ship inertia data, so every link gets a plain
+       box approximation sized roughly to it. Good enough for stable
+       simulation, not meant to be an accurate mass model. -->
+  <xacro:macro name="box_inertial" params="mass x y z">
+    <inertial>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass/12.0*(y*y+z*z)}" ixy="0.0" ixz="0.0"
+        iyy="${mass/12.0*(x*x+z*z)}" iyz="0.0"
+        izz="${mass/12.0*(x*x+y*y)}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="dobot_armlink" params="link_name visual_mesh collision_mesh base_origin_xyz base_origin_rpy mass box_x box_y box_z">
+    <link name="${link_name}">
+      <visual>
+        <origin xyz="${base_origin_xyz}" rpy="${base_origin_rpy}"/>
+        <geometry>
+          <mesh filename="package://custom_robots/models/dobot_magician/meshes/visual/${visual_mesh}.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${base_origin_xyz}" rpy="${base_origin_rpy}"/>
+        <geometry>
+          <mesh filename="package://custom_robots/models/dobot_magician/meshes/collision/${collision_mesh}.dae"/>
+        </geometry>
+      </collision>
+      <xacro:box_inertial mass="${mass}" x="${box_x}" y="${box_y}" z="${box_z}"/>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="dobot_mimiclink" params="link_name">
+    <link name="${link_name}">
+      <visual>
+        <geometry>
+          <box size="0 0 0"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0 0 0"/>
+        </geometry>
+      </collision>
+      <xacro:box_inertial mass="0.001" x="0.01" y="0.01" z="0.01"/>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="dobot_joint" params="joint_name type parent child axis_xyz origin_xyz origin_rpy lower_limit upper_limit">
+    <joint name="${joint_name}" type="${type}">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <axis xyz="${axis_xyz}"/>
+      <limit effort="2000" velocity="1" lower="${lower_limit}" upper="${upper_limit}"/>
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="dobot_joint_mimic" params="joint_name type parent child axis_xyz origin_xyz origin_rpy lower_limit upper_limit ref_joint">
+    <joint name="${joint_name}" type="${type}">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <axis xyz="${axis_xyz}"/>
+      <limit effort="2000" velocity="1" lower="${lower_limit}" upper="${upper_limit}"/>
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+      <dynamics damping="0.0" friction="0.0"/>
+      <mimic joint="${ref_joint}" multiplier="-1" offset="0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="dobot_magician" params="parent prefix:=''">
+
+    <xacro:dobot_armlink link_name="${prefix}base_link" visual_mesh="magicianBase" collision_mesh="magicianBase"
+      base_origin_xyz="0 0 0" base_origin_rpy="0 0 0" mass="1.5" box_x="0.15" box_y="0.15" box_z="0.13"/>
+    <joint name="${prefix}base_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:dobot_armlink link_name="${prefix}link_1" visual_mesh="magicianLink1" collision_mesh="magicianLink1"
+      base_origin_xyz="0 0 0" base_origin_rpy="0 0 0" mass="0.3" box_x="0.06" box_y="0.06" box_z="0.1"/>
+    <xacro:dobot_joint joint_name="${prefix}joint_1" type="revolute"
+      parent="${prefix}base_link" child="${prefix}link_1"
+      axis_xyz="0 0 1" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="${-125.0/180.0*pi}" upper_limit="${125.0/180.0*pi}"/>
+
+    <xacro:dobot_armlink link_name="${prefix}link_2" visual_mesh="magicianLink2" collision_mesh="magicianLink2"
+      base_origin_xyz="0 0 0" base_origin_rpy="0 ${-joint_2_offset} 0" mass="0.3" box_x="0.03" box_y="0.03" box_z="0.135"/>
+    <xacro:dobot_joint joint_name="${prefix}joint_2" type="revolute"
+      parent="${prefix}link_1" child="${prefix}link_2"
+      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="${-5.0/180.0*pi}" upper_limit="${90.0/180.0*pi}"/>
+
+    <xacro:dobot_armlink link_name="${prefix}link_3" visual_mesh="magicianLink3" collision_mesh="magicianLink3"
+      base_origin_xyz="${link_2_length*sin(joint_3_offset)} 0 ${-link_2_length+(link_2_length-link_2_length*cos(joint_3_offset))}"
+      base_origin_rpy="0 ${-joint_2_offset-joint_3_offset} 0" mass="0.2" box_x="0.03" box_y="0.03" box_z="0.147"/>
+    <xacro:dobot_joint joint_name="${prefix}joint_3" type="revolute"
+      parent="${prefix}link_2" child="${prefix}link_3"
+      axis_xyz="0 1 0" origin_xyz="0 0 ${link_2_length}" origin_rpy="0 0 0"
+      lower_limit="${-15.0/180.0*pi}" upper_limit="${70.0/180.0*pi}"/>
+
+    <!-- Parallelogram closure, no actuator here, follows joint_2/joint_3 -->
+    <xacro:property name="parallelogram_origin_xyz"
+      value="${-1*(link_2_length*sin(joint_2_offset)+link_3_length*cos(joint_2_offset+joint_3_offset))} 0 ${link_2_length-1*(link_2_length*cos(joint_2_offset)+link_3_length*sin(joint_2_offset+joint_3_offset))}"/>
+
+    <xacro:dobot_mimiclink link_name="${prefix}link_virtual"/>
+    <xacro:dobot_joint_mimic joint_name="${prefix}joint_mimic_1" type="revolute"
+      parent="${prefix}link_3" child="${prefix}link_virtual"
+      axis_xyz="0 1 0" origin_xyz="${link_3_length} 0 0" origin_rpy="0 0 0"
+      lower_limit="0" upper_limit="${2*pi}" ref_joint="${prefix}joint_2"/>
+
+    <xacro:dobot_armlink link_name="${prefix}link_4" visual_mesh="magicianLink4" collision_mesh="link4_collision"
+      base_origin_xyz="${parallelogram_origin_xyz}" base_origin_rpy="0 0 0" mass="0.1" box_x="0.03" box_y="0.03" box_z="0.06"/>
+    <xacro:dobot_joint_mimic joint_name="${prefix}joint_mimic_2" type="revolute"
+      parent="${prefix}link_virtual" child="${prefix}link_4"
+      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="0" upper_limit="${2*pi}" ref_joint="${prefix}joint_3"/>
+
+    <!-- Real actuated wrist rotation, last of the 4 DOF -->
+    <xacro:property name="gripper_core_origin_xyz"
+      value="${-1*(link_2_length*sin(joint_2_offset)+link_3_length*cos(joint_2_offset+joint_3_offset)+link_4_length) + 0.23517+0.0019} 0 ${link_2_length-1*(link_2_length*cos(joint_2_offset)+link_3_length*sin(joint_2_offset+joint_3_offset)) + 0.0497517 - 0.003 - 0.016}"/>
+
+    <xacro:dobot_armlink link_name="${prefix}link_gripper_core" visual_mesh="gripper_core" collision_mesh="gripper_core"
+      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.1" box_x="0.05" box_y="0.05" box_z="0.05"/>
+    <xacro:dobot_joint joint_name="${prefix}joint_4" type="revolute"
+      parent="${prefix}link_4" child="${prefix}link_gripper_core"
+      axis_xyz="0 0 1" origin_xyz="0.06 0 0" origin_rpy="0 0 0"
+      lower_limit="${-150.0/180.0*pi}" upper_limit="${150.0/180.0*pi}"/>
+
+    <!-- Gripper jaws, joint_prismatic_l drives, joint_prismatic_r mimics it closed -->
+    <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_left" visual_mesh="jaw_left" collision_mesh="jaw_left"
+      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
+    <xacro:dobot_joint joint_name="${prefix}joint_prismatic_l" type="prismatic"
+      parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_left"
+      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="0" upper_limit="0.0135"/>
+
+    <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_right" visual_mesh="jaw_right" collision_mesh="jaw_right"
+      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
+    <xacro:dobot_joint_mimic joint_name="${prefix}joint_prismatic_r" type="prismatic"
+      parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_right"
+      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="-0.0135" upper_limit="0" ref_joint="${prefix}joint_prismatic_l"/>
+
+  </xacro:macro>
+
+</robot>

@@ -369,6 +369,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
 35	Turtlebot 3 Marker	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	sensor:=laser marker:=true namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+40	Dobot Magician	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_gripper	None	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
 \.
 
 --

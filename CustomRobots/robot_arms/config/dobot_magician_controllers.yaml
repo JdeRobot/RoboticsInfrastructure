@@ -1,0 +1,95 @@
+controller_manager:
+  ros__parameters:
+
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+joint_state_broadcaster:
+  ros__parameters:
+
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_mimic_1
+      - joint_mimic_2
+      - joint_prismatic_l
+      - joint_prismatic_r
+
+    interfaces:
+      - position
+      - velocity
+      - effort
+
+
+joint_trajectory_controller:
+  ros__parameters:
+
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    allow_nonzero_velocity_at_trajectory_end: true
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+
+gripper_controller:
+  ros__parameters:
+
+    joints:
+      - joint_prismatic_l
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+      joint_prismatic_l:
+        trajectory: 0.5
+        goal: 0.5
+
+    gains:
+      joint_prismatic_l:
+        p: 100.0
+        d: 1.0
+        i: 0.01
+        i_clamp: 1.0
