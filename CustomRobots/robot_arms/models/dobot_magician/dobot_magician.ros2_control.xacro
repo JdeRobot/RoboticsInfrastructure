@@ -95,12 +95,13 @@
         <state_interface name="effort"/>
       </joint>
 
-      <joint name="${prefix}joint_prismatic_r">
-        <param name="mimic">${prefix}joint_prismatic_l</param>
-        <param name="multiplier">-1.0</param>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-      </joint>
+      <!-- joint_prismatic_r stays out of ros2_control entirely. Crashed in
+           gz_ros2_control every time regardless of what interfaces it had,
+           the two revolute mimics above never crashed either way, so this
+           looks like a gz_ros2_control bug specific to prismatic mimics.
+           It still tracks joint_prismatic_l physically, gz-sim enforces the
+           URDF-level mimic tag on its own, ros2_control doesn't need to
+           know about it for that to work. -->
 
     </ros2_control>
 
