@@ -67,28 +67,23 @@
         <state_interface name="effort"/>
       </joint>
 
-      <!-- Mimic joints only get a state_interface, gz_ros2_control expects that,
-           a command_interface here crashed it (worse for the prismatic one). -->
+      <!-- Mimic joints only get a state_interface. The mimic relationship
+           itself is declared once, on the joint in the URDF above, gz_ros2_control's
+           own gripper_mimic_joint_example does not repeat "mimic"/"multiplier"
+           params here, only bare state_interfaces. -->
       <joint name="${prefix}joint_mimic_1">
-        <param name="mimic">${prefix}joint_2</param>
-        <param name="multiplier">-1.0</param>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
       <joint name="${prefix}joint_mimic_2">
-        <param name="mimic">${prefix}joint_3</param>
-        <param name="multiplier">-1.0</param>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
     </ros2_control>
 
-    <!-- Gripper in its own hardware component. Mixing joint_prismatic_l with
-         the arm's revolute joints in one component crashed gz_ros2_control
-         right after the last joint every time, splitting it off is the same
-         pattern UR3/Robotiq already use in this repo. -->
+    <!-- Gripper in its own hardware component, same split UR3/UR5+Robotiq use. -->
     <ros2_control name="${name}_gripper" type="system">
       <hardware>
         <xacro:if value="${sim_gz}">
@@ -113,9 +108,10 @@
         <state_interface name="effort"/>
       </joint>
 
-      <!-- joint_prismatic_r stays out of ros2_control entirely, still tracks
-           joint_prismatic_l physically through the URDF-level mimic tag,
-           gz-sim enforces that on its own. -->
+      <joint name="${prefix}joint_prismatic_r">
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
 
     </ros2_control>
 
