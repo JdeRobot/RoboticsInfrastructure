@@ -12,7 +12,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    world_path = "/opt/jderobot/Scenes/sausage_exercise.world"
+    world_path = "/opt/jderobot/Scenes/sausage_exercise_servo.world"
     
     bridge_config = (
         "/home/ws/src/CustomRobots/conveyor_belt/"
@@ -102,7 +102,7 @@ def generate_launch_description():
     # ==================================================
 
     sausage_spawner = ExecuteProcess(
-        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_sausage.py"],
+        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_one_sausage.py"],
         output="screen",
     )
 
