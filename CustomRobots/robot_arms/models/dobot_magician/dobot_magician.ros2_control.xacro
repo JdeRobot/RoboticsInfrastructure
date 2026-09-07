@@ -83,6 +83,24 @@
         <state_interface name="velocity"/>
       </joint>
 
+    </ros2_control>
+
+    <!-- Gripper in its own hardware component. Mixing joint_prismatic_l with
+         the arm's revolute joints in one component crashed gz_ros2_control
+         right after the last joint every time, splitting it off is the same
+         pattern UR3/Robotiq already use in this repo. -->
+    <ros2_control name="${name}_gripper" type="system">
+      <hardware>
+        <xacro:if value="${sim_gz}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+          <param name="fake_sensor_commands">false</param>
+          <param name="state_following_offset">0.0</param>
+        </xacro:if>
+      </hardware>
+
       <joint name="${prefix}joint_prismatic_l">
         <command_interface name="position">
           <param name="min">0.0</param>
@@ -95,13 +113,9 @@
         <state_interface name="effort"/>
       </joint>
 
-      <!-- joint_prismatic_r stays out of ros2_control entirely. Crashed in
-           gz_ros2_control every time regardless of what interfaces it had,
-           the two revolute mimics above never crashed either way, so this
-           looks like a gz_ros2_control bug specific to prismatic mimics.
-           It still tracks joint_prismatic_l physically, gz-sim enforces the
-           URDF-level mimic tag on its own, ros2_control doesn't need to
-           know about it for that to work. -->
+      <!-- joint_prismatic_r stays out of ros2_control entirely, still tracks
+           joint_prismatic_l physically through the URDF-level mimic tag,
+           gz-sim enforces that on its own. -->
 
     </ros2_control>
 
