@@ -81,31 +81,12 @@
         <state_interface name="velocity"/>
       </joint>
 
-      <!-- Gripper, same hardware component as the arm. The official gz_ros2_control
-           gripper_mimic_joint_example keeps its driving + mimic joint in one
-           ros2_control block too, splitting arm/gripper into two separate
-           hardware components crashed transitioning from the first to the
-           second every time, even with the mimic params already fixed. -->
-      <joint name="${prefix}joint_prismatic_l">
-        <command_interface name="position">
-          <param name="min">0.0</param>
-          <param name="max">0.0135</param>
-        </command_interface>
-        <state_interface name="position">
-          <param name="initial_value">0.0</param>
-        </state_interface>
-        <state_interface name="velocity"/>
-        <state_interface name="effort"/>
-      </joint>
-
-      <!-- joint_prismatic_r stays out of ros2_control entirely, even a bare
-           state_interface-only declaration crashes gz_ros2_control right on
-           this joint, every single time, regardless of block layout or what
-           else changed around it. It still tracks joint_prismatic_l physically
-           through the URDF-level mimic tag, gz-sim enforces that on its own,
-           ros2_control does not need to know about it for that to work. -->
-
     </ros2_control>
+
+    <!-- Gripper ros2_control temporarily removed, isolating whether the arm
+         alone loads cleanly in the real RADI before touching the gripper again.
+         The physical gripper links/joints are still in the URDF, just
+         uncontrolled, gripper_controller is not spawned for this test. -->
 
   </xacro:macro>
 
