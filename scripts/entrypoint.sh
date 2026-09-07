@@ -70,7 +70,6 @@ fi
 if [ -d "/RoboticsApplicationManager" ]; then
   runram="python3 RoboticsApplicationManager/robotics_application_manager/manager/manager.py 0.0.0.0 7163"
 else
-  echo "IS freeze: $freeze"
   if [ $freeze == false ]; then
     source check_ram_version.sh
   fi
