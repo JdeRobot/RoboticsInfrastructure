@@ -207,6 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
+85	Pick And Place World Dobot Magician	56
 \.
 
 --
@@ -278,6 +279,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 60	83	11	{{0,-8,0.3,0.0,0.0,0.0}}
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
+63	85	40	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 \.
 
 --
