@@ -1,0 +1,199 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="default">
+    <!-- Plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+      <robot_model_name>dobot_magician_gripper</robot_model_name>
+      <gripper_link_name>link_gripper_core</gripper_link_name>
+    </plugin>
+
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
+    </plugin>
+
+    <!-- Scene -->
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <!-- Light -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 3 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Ground plane, the robot sits directly on this at z=0 -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2 2</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.6 0.6 0.6 1</ambient>
+            <diffuse>0.6 0.6 0.6 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Small pick objects, sized for the Dobot's 320mm reach and its
+         13.5mm gripper travel, placed within reach in front of the base. -->
+    <model name="red_cube">
+      <pose>0.2 -0.08 0.0125 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.0000017</ixx>
+            <iyy>0.0000017</iyy>
+            <izz>0.0000017</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_cube">
+      <pose>0.2 0 0.0125 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.0000017</ixx>
+            <iyy>0.0000017</iyy>
+            <izz>0.0000017</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.7 0.1 1</ambient>
+            <diffuse>0.1 0.7 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_cube">
+      <pose>0.2 0.08 0.0125 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.0000017</ixx>
+            <iyy>0.0000017</iyy>
+            <izz>0.0000017</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.8 1</ambient>
+            <diffuse>0.1 0.1 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Flat tray to drop the cubes on, off to the side -->
+    <model name="drop_tray">
+      <static>true</static>
+      <pose>0.05 -0.2 0.005 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.08 0.08 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.08 0.08 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.2 1</ambient>
+            <diffuse>0.8 0.8 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

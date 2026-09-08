@@ -11,7 +11,7 @@ find_package(custom_robots REQUIRED)
 find_package(urdf REQUIRED)
 find_package(xacro REQUIRED)
 
-install(DIRECTORY config
+install(DIRECTORY config rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
