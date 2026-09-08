@@ -1,8 +1,17 @@
 <?xml version="1.0" ?>
 <robot name="dobot_magician">
 
+  <!-- Joint list instead of a chain, the parallelogram's two mimic joints
+       sit between joint_3 and joint_4 in the tree, a chain group would pull
+       them in as extra planning variables and break the 4 real DOF the
+       rest of the framework expects. This also means the group is no
+       longer a chain, so KDL IK is unavailable for it, MoveAbsJ (joint
+       space) still works fine without it. -->
   <group name="dobot_magician_arm">
-    <chain base_link="base_link" tip_link="link_gripper_core"/>
+    <joint name="joint_1"/>
+    <joint name="joint_2"/>
+    <joint name="joint_3"/>
+    <joint name="joint_4"/>
   </group>
 
   <group name="dobot_gripper">
