@@ -169,27 +169,77 @@
       </link>
     </model>
 
-    <!-- Flat tray to drop the cubes on, off to the side -->
-    <model name="drop_tray">
+    <!-- One flat mat per cube color, each cube goes to its own -->
+    <model name="red_mat">
       <static>true</static>
-      <pose>0.05 -0.2 0.005 0 0 0</pose>
+      <pose>0.1152 -0.1708 0.005 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.08 0.08 0.01</size>
+              <size>0.06 0.06 0.01</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.08 0.08 0.01</size>
+              <size>0.06 0.06 0.01</size>
             </box>
           </geometry>
           <material>
-            <ambient>0.8 0.8 0.2 1</ambient>
-            <diffuse>0.8 0.8 0.2 1</diffuse>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_mat">
+      <static>true</static>
+      <pose>0.0499 -0.1999 0.005 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.7 0.1 1</ambient>
+            <diffuse>0.1 0.7 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_mat">
+      <static>true</static>
+      <pose>-0.0216 -0.2049 0.005 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.8 1</ambient>
+            <diffuse>0.1 0.1 0.8 1</diffuse>
           </material>
         </visual>
       </link>
