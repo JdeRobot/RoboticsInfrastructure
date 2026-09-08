@@ -153,14 +153,26 @@
     <xacro:dobot_joint joint_name="${prefix}joint_prismatic_l" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_left"
       axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="-0.0135" upper_limit="0"/>
+      lower_limit="-0.018" upper_limit="0"/>
 
     <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_right" visual_mesh="jaw_right" collision_mesh="jaw_right"
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_prismatic_r" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_right"
       axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="-0.0135" upper_limit="0" ref_joint="${prefix}joint_prismatic_l"/>
+      lower_limit="-0.018" upper_limit="0" ref_joint="${prefix}joint_prismatic_l"/>
+
+    <!-- Contact sensor for gz_link_attacher, on the jaw itself since
+         that's what actually touches a grasped object, not the core -->
+    <gazebo reference="${prefix}link_gripper_jaw_left">
+      <sensor name="suction_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <contact>
+          <collision>${prefix}link_gripper_jaw_left_collision</collision>
+        </contact>
+      </sensor>
+    </gazebo>
 
     <!-- Actively drives the 3 mimic joints above, dartsim doesn't honor
          their <mimic> tag by itself -->

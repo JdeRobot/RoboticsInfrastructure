@@ -33,7 +33,7 @@
   </group_state>
 
   <group_state group="dobot_gripper" name="open">
-    <joint name="joint_prismatic_l" value="-0.0135"/>
+    <joint name="joint_prismatic_l" value="-0.018"/>
   </group_state>
 
   <group_state group="dobot_gripper" name="closed">

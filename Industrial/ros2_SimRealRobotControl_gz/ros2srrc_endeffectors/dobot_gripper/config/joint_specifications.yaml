@@ -1,5 +1,5 @@
 # Dobot Magician gripper joint specifications
 Limits:
   Max: 0.0
-  Min: -0.0135
+  Min: -0.018
 JointsVector: [1.0]
