@@ -24,7 +24,6 @@ joint_state_broadcaster:
     interfaces:
       - position
       - velocity
-      - effort
 
 
 joint_trajectory_controller:
