@@ -45,6 +45,27 @@
     </link>
   </xacro:macro>
 
+  <!-- Same as dobot_armlink, but a box collision instead of a mesh one.
+       dartsim can't build a contact sensor's shape from a mesh, only the
+       jaws need this since only one of them carries the sensor. -->
+  <xacro:macro name="dobot_armlink_box_collision" params="link_name visual_mesh base_origin_xyz base_origin_rpy mass box_x box_y box_z collision_origin_xyz collision_size">
+    <link name="${link_name}">
+      <visual>
+        <origin xyz="${base_origin_xyz}" rpy="${base_origin_rpy}"/>
+        <geometry>
+          <mesh filename="package://custom_robots/models/dobot_magician/meshes/visual/${visual_mesh}.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${collision_origin_xyz}" rpy="${base_origin_rpy}"/>
+        <geometry>
+          <box size="${collision_size}"/>
+        </geometry>
+      </collision>
+      <xacro:box_inertial mass="${mass}" x="${box_x}" y="${box_y}" z="${box_z}"/>
+    </link>
+  </xacro:macro>
+
   <xacro:macro name="dobot_mimiclink" params="link_name">
     <link name="${link_name}">
       <!-- No collision here on purpose, a zero-size box asserts inside DART
@@ -134,8 +155,12 @@
       lower_limit="${-15.0/180.0*pi}" upper_limit="${70.0/180.0*pi}" ref_joint="${prefix}joint_3"/>
 
     <!-- Real actuated wrist rotation, last of the 4 DOF -->
+    <xacro:property name="gripper_core_origin_x"
+      value="${-1*(link_2_length*sin(joint_2_offset)+link_3_length*cos(joint_2_offset+joint_3_offset)+link_4_length) + 0.23517+0.0019}"/>
+    <xacro:property name="gripper_core_origin_z"
+      value="${link_2_length-1*(link_2_length*cos(joint_2_offset)+link_3_length*sin(joint_2_offset+joint_3_offset)) + 0.0497517 - 0.003 - 0.016}"/>
     <xacro:property name="gripper_core_origin_xyz"
-      value="${-1*(link_2_length*sin(joint_2_offset)+link_3_length*cos(joint_2_offset+joint_3_offset)+link_4_length) + 0.23517+0.0019} 0 ${link_2_length-1*(link_2_length*cos(joint_2_offset)+link_3_length*sin(joint_2_offset+joint_3_offset)) + 0.0497517 - 0.003 - 0.016}"/>
+      value="${gripper_core_origin_x} 0 ${gripper_core_origin_z}"/>
 
     <xacro:dobot_armlink link_name="${prefix}link_gripper_core" visual_mesh="gripper_core" collision_mesh="gripper_core"
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.1" box_x="0.05" box_y="0.05" box_z="0.05"/>
@@ -147,16 +172,20 @@
     <!-- Gripper jaws, joint_prismatic_l drives, joint_prismatic_r mimics it.
          Both meshes sit at the same origin at rest, with zero travel that's
          already fully closed, so the joints run negative (limit 0 at rest,
-         closed) to open, matching HAL's 0 percent is open convention. -->
-    <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_left" visual_mesh="jaw_left" collision_mesh="jaw_left"
-      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
+         closed) to open, matching HAL's 0 percent is open convention.
+         Collision is a plain box instead of the finger mesh, dartsim can't
+         build the contact sensor's shape from a mesh. -->
+    <xacro:dobot_armlink_box_collision link_name="${prefix}link_gripper_jaw_left" visual_mesh="jaw_left"
+      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"
+      collision_origin_xyz="${gripper_core_origin_x - 0.01535} 0 ${gripper_core_origin_z - 0.049}" collision_size="0.045 0.032 0.056"/>
     <xacro:dobot_joint joint_name="${prefix}joint_prismatic_l" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_left"
       axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
       lower_limit="-0.018" upper_limit="0"/>
 
-    <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_right" visual_mesh="jaw_right" collision_mesh="jaw_right"
-      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
+    <xacro:dobot_armlink_box_collision link_name="${prefix}link_gripper_jaw_right" visual_mesh="jaw_right"
+      base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"
+      collision_origin_xyz="${gripper_core_origin_x - 0.01535} 0 ${gripper_core_origin_z - 0.049}" collision_size="0.045 0.032 0.056"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_prismatic_r" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_right"
       axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
