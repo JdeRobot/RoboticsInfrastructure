@@ -144,20 +144,23 @@
       axis_xyz="0 0 1" origin_xyz="0.06 0 0" origin_rpy="0 0 0"
       lower_limit="${-150.0/180.0*pi}" upper_limit="${150.0/180.0*pi}"/>
 
-    <!-- Gripper jaws, joint_prismatic_l drives, joint_prismatic_r mimics it closed -->
+    <!-- Gripper jaws, joint_prismatic_l drives, joint_prismatic_r mimics it.
+         Both meshes sit at the same origin at rest, with zero travel that's
+         already fully closed, so the joints run negative (limit 0 at rest,
+         closed) to open, matching HAL's 0 percent is open convention. -->
     <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_left" visual_mesh="jaw_left" collision_mesh="jaw_left"
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
     <xacro:dobot_joint joint_name="${prefix}joint_prismatic_l" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_left"
-      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="0" upper_limit="0.0135"/>
+      axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="-0.0135" upper_limit="0"/>
 
     <xacro:dobot_armlink link_name="${prefix}link_gripper_jaw_right" visual_mesh="jaw_right" collision_mesh="jaw_right"
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_prismatic_r" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_right"
-      axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="0" upper_limit="0.0135" ref_joint="${prefix}joint_prismatic_l"/>
+      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="-0.0135" upper_limit="0" ref_joint="${prefix}joint_prismatic_l"/>
 
     <!-- Actively drives the 3 mimic joints above, dartsim doesn't honor
          their <mimic> tag by itself -->
