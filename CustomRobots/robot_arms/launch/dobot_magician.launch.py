@@ -264,11 +264,15 @@ def launch_setup(context):
         arguments=["joint_trajectory_controller"],
     )
 
-    # gripper_controller spawner temporarily removed along with the gripper's
-    # ros2_control block, isolating whether the arm alone loads cleanly.
+    gripper_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gripper_controller"],
+    )
 
     nodes.append(joint_state_broadcaster)
     nodes.append(joint_trajectory_controller)
+    nodes.append(gripper_controller)
 
     # =========================
     # MOVEIT

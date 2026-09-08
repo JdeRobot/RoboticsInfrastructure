@@ -81,12 +81,24 @@
         <state_interface name="velocity"/>
       </joint>
 
-    </ros2_control>
+      <joint name="${prefix}joint_prismatic_l">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">0.0135</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
 
-    <!-- Gripper ros2_control temporarily removed, isolating whether the arm
-         alone loads cleanly in the real RADI before touching the gripper again.
-         The physical gripper links/joints are still in the URDF, just
-         uncontrolled, gripper_controller is not spawned for this test. -->
+      <joint name="${prefix}joint_prismatic_r">
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+    </ros2_control>
 
   </xacro:macro>
 

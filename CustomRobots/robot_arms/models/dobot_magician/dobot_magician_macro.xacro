@@ -40,7 +40,7 @@
       <collision>
         <origin xyz="${base_origin_xyz}" rpy="${base_origin_rpy}"/>
         <geometry>
-          <mesh filename="package://custom_robots/models/dobot_magician/meshes/collision/${collision_mesh}.dae"/>
+          <mesh filename="package://custom_robots/models/dobot_magician/meshes/collision/${collision_mesh}.stl"/>
         </geometry>
       </collision>
       <xacro:box_inertial mass="${mass}" x="${box_x}" y="${box_y}" z="${box_z}"/>
@@ -49,16 +49,10 @@
 
   <xacro:macro name="dobot_mimiclink" params="link_name">
     <link name="${link_name}">
-      <visual>
-        <geometry>
-          <box size="0 0 0"/>
-        </geometry>
-      </visual>
-      <collision>
-        <geometry>
-          <box size="0 0 0"/>
-        </geometry>
-      </collision>
+      <!-- No collision here on purpose, a zero-size box asserts inside DART
+           when spawned while physics is already stepping. This link is a
+           bookkeeping placeholder for the parallelogram, it never needs to
+           collide with anything. -->
       <xacro:box_inertial mass="0.001" x="0.01" y="0.01" z="0.01"/>
     </link>
   </xacro:macro>

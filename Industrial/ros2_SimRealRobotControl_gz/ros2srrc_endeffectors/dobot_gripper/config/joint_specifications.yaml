@@ -1,0 +1,5 @@
+# ROS 2 Sim-to-Real Robot Control -> END-EFFECTOR SPECIFICATIONS (Dobot Magician gripper)
+Limits:
+  Max: 0.0135
+  Min: 0.0
+JointsVector: [1.0]
