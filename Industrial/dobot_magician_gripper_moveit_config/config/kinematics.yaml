@@ -1,5 +1,4 @@
+# No IK solver here, dobot_magician_arm isn't a chain group (the
+# parallelogram mimic joints break that), only joint space moves work
 /**:
-  ros__parameters:
-    # No IK solver here, dobot_magician_arm isn't a chain group (the
-    # parallelogram mimic joints break that), only joint space moves work
-
+  ros__parameters: {}
