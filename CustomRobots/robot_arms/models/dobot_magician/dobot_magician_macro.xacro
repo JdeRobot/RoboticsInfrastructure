@@ -65,6 +65,13 @@
     </joint>
   </xacro:macro>
 
+  <!-- dartsim doesn't reliably enforce a plain URDF/SDF <mimic> constraint,
+       the gz_mimic_joint plugin drives these joints for real instead, one
+       plugin instance per pair, added in dobot_magician below. That plugin
+       just copies the parent joint's raw value, so these joints use a
+       flipped axis to get the same physical motion a -1 multiplier would
+       have given on the original axis, and the <mimic> tag below (still
+       needed for MoveIt's own planning-time state) uses +1 to match. -->
   <xacro:macro name="dobot_joint_mimic" params="joint_name type parent child axis_xyz origin_xyz origin_rpy lower_limit upper_limit ref_joint">
     <joint name="${joint_name}" type="${type}">
       <parent link="${parent}"/>
@@ -72,10 +79,8 @@
       <axis xyz="${axis_xyz}"/>
       <limit effort="2000" velocity="1" lower="${lower_limit}" upper="${upper_limit}"/>
       <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
-      <!-- Damping here matters more than on the driven joints, it's what
-           settles the parallelogram constraint instead of oscillating -->
       <dynamics damping="1.0" friction="0"/>
-      <mimic joint="${ref_joint}" multiplier="-1" offset="0"/>
+      <mimic joint="${ref_joint}" multiplier="1" offset="0"/>
     </joint>
   </xacro:macro>
 
@@ -118,15 +123,15 @@
     <xacro:dobot_mimiclink link_name="${prefix}link_virtual"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_mimic_1" type="revolute"
       parent="${prefix}link_3" child="${prefix}link_virtual"
-      axis_xyz="0 1 0" origin_xyz="${link_3_length} 0 0" origin_rpy="0 0 0"
-      lower_limit="0" upper_limit="${2*pi}" ref_joint="${prefix}joint_2"/>
+      axis_xyz="0 -1 0" origin_xyz="${link_3_length} 0 0" origin_rpy="0 0 0"
+      lower_limit="${-5.0/180.0*pi}" upper_limit="${90.0/180.0*pi}" ref_joint="${prefix}joint_2"/>
 
     <xacro:dobot_armlink link_name="${prefix}link_4" visual_mesh="magicianLink4" collision_mesh="link4_collision"
       base_origin_xyz="${parallelogram_origin_xyz}" base_origin_rpy="0 0 0" mass="0.1" box_x="0.03" box_y="0.03" box_z="0.06"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_mimic_2" type="revolute"
       parent="${prefix}link_virtual" child="${prefix}link_4"
-      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="0" upper_limit="${2*pi}" ref_joint="${prefix}joint_3"/>
+      axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="${-15.0/180.0*pi}" upper_limit="${70.0/180.0*pi}" ref_joint="${prefix}joint_3"/>
 
     <!-- Real actuated wrist rotation, last of the 4 DOF -->
     <xacro:property name="gripper_core_origin_xyz"
@@ -151,8 +156,25 @@
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"/>
     <xacro:dobot_joint_mimic joint_name="${prefix}joint_prismatic_r" type="prismatic"
       parent="${prefix}link_gripper_core" child="${prefix}link_gripper_jaw_right"
-      axis_xyz="0 1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
-      lower_limit="-0.0135" upper_limit="0" ref_joint="${prefix}joint_prismatic_l"/>
+      axis_xyz="0 -1 0" origin_xyz="0 0 0" origin_rpy="0 0 0"
+      lower_limit="0" upper_limit="0.0135" ref_joint="${prefix}joint_prismatic_l"/>
+
+    <!-- Actively drives the 3 mimic joints above, dartsim doesn't honor
+         their <mimic> tag by itself -->
+    <gazebo>
+      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint::MimicJoint">
+        <parent_joint>${prefix}joint_2</parent_joint>
+        <mimic_joint>${prefix}joint_mimic_1</mimic_joint>
+      </plugin>
+      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint::MimicJoint">
+        <parent_joint>${prefix}joint_3</parent_joint>
+        <mimic_joint>${prefix}joint_mimic_2</mimic_joint>
+      </plugin>
+      <plugin filename="libgz_mimic_joint.so" name="gz_mimic_joint::MimicJoint">
+        <parent_joint>${prefix}joint_prismatic_l</parent_joint>
+        <mimic_joint>${prefix}joint_prismatic_r</mimic_joint>
+      </plugin>
+    </gazebo>
 
   </xacro:macro>
 

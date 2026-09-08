@@ -17,9 +17,16 @@ def generate_launch_description():
 
     gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
     gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
+    gz_mimic_joint_path = "/home/ws/install/gz_mimic_joint/lib"
 
     gz_plugin_path = (
-        gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/humble/lib"
+        gz_link_attacher_path
+        + ":"
+        + gz_ros2_control_path
+        + ":"
+        + gz_mimic_joint_path
+        + ":"
+        + "/opt/ros/humble/lib"
     )
 
     resource_path = os.path.dirname(package_dir) + ":" + gazebo_models_path
