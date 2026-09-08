@@ -67,10 +67,8 @@
         <state_interface name="effort"/>
       </joint>
 
-      <!-- Mimic joints only get a state_interface. The mimic relationship
-           itself is declared once, on the joint in the URDF above, gz_ros2_control's
-           own gripper_mimic_joint_example does not repeat "mimic"/"multiplier"
-           params here, only bare state_interfaces. -->
+      <!-- Mimic joints only get a state_interface here. That relationship
+           is already declared once on the joint in the URDF above. -->
       <joint name="${prefix}joint_mimic_1">
         <state_interface name="position"/>
         <state_interface name="velocity"/>

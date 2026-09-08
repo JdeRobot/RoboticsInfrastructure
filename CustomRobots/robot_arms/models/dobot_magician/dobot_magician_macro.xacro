@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- Real dimensions and joint layout ported from
-       https://github.com/jkaniuka/magician_ros2 (dobot_description), see NOTICE.
-       The arm closes its real parallelogram linkage with two mimic joints
-       (joint_mimic_1 follows joint_2, joint_mimic_2 follows joint_3) instead
-       of a closed kinematic loop, this keeps the end effector level without
-       needing the physical parallel bars in the model. -->
+  <!-- Dimensions and joint layout ported from
+       https://github.com/jkaniuka/magician_ros2, see NOTICE.
+       joint_mimic_1 and joint_mimic_2 close the real parallelogram
+       linkage without needing a closed kinematic loop. -->
 
   <xacro:property name="link_base_length" value="0.131305"/>
   <xacro:property name="link_2_length" value="0.135"/>
@@ -50,9 +48,8 @@
   <xacro:macro name="dobot_mimiclink" params="link_name">
     <link name="${link_name}">
       <!-- No collision here on purpose, a zero-size box asserts inside DART
-           when spawned while physics is already stepping. This link is a
-           bookkeeping placeholder for the parallelogram, it never needs to
-           collide with anything. -->
+           once physics is stepping. This link just tracks the parallelogram
+           and never needs to collide with anything. -->
       <xacro:box_inertial mass="0.001" x="0.01" y="0.01" z="0.01"/>
     </link>
   </xacro:macro>
@@ -64,7 +61,7 @@
       <axis xyz="${axis_xyz}"/>
       <limit effort="2000" velocity="1" lower="${lower_limit}" upper="${upper_limit}"/>
       <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
-      <dynamics damping="0.0" friction="0.0"/>
+      <dynamics damping="1.0" friction="0"/>
     </joint>
   </xacro:macro>
 
@@ -75,7 +72,9 @@
       <axis xyz="${axis_xyz}"/>
       <limit effort="2000" velocity="1" lower="${lower_limit}" upper="${upper_limit}"/>
       <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
-      <dynamics damping="0.0" friction="0.0"/>
+      <!-- Damping here matters more than on the driven joints, it's what
+           settles the parallelogram constraint instead of oscillating -->
+      <dynamics damping="1.0" friction="0"/>
       <mimic joint="${ref_joint}" multiplier="-1" offset="0"/>
     </joint>
   </xacro:macro>
