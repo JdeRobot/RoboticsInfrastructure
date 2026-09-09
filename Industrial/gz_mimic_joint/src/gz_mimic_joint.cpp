@@ -2,6 +2,7 @@
 #include <gz/sim/EntityComponentManager.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/JointPosition.hh>
+#include <gz/sim/components/JointPositionReset.hh>
 
 #include <gz/plugin/Register.hh>
 
@@ -47,7 +48,7 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
-  // Buscar joints solo una vez
+  // Look up both joints only once
   if (parentJoint == kNullEntity)
   {
     parentJoint = FindJoint(_ecm, parent_joint_name);
@@ -70,7 +71,10 @@ void PreUpdate(
 
     if (parentPos && !parentPos->Data().empty())
     {
-      _ecm.SetComponentData<components::JointPosition>(
+      // JointPosition is Physics' own output, writing it here just gets
+      // overwritten again once Physics steps. JointPositionReset is the
+      // component Physics actually reads to force a joint to a value.
+      _ecm.SetComponentData<components::JointPositionReset>(
         mimicJoint,
         {parentPos->Data()[0]}
       );

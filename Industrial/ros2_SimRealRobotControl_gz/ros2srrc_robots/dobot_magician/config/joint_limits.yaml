@@ -1,0 +1,25 @@
+joint_limits:
+  joint_1:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  joint_2:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  joint_3:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  joint_4:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+
+# This velocity matches the source URDF joint limit (jkaniuka/magician_ros2).
+# Dobot doesn't publish an acceleration figure. 3.0 is a conservative guess
+# for MoveIt time parametrization only.
