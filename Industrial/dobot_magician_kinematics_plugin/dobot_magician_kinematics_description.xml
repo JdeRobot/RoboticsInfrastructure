@@ -1,0 +1,10 @@
+<library path="dobot_magician_kinematics_plugin">
+  <class name="dobot_magician_kinematics_plugin/DobotMagicianKinematicsPlugin"
+         type="dobot_magician_kinematics_plugin::DobotMagicianKinematicsPlugin"
+         base_class_type="kinematics::KinematicsBase">
+    <description>
+      Closed-form IK for the Dobot Magician's 4-DOF arm, used instead of
+      KDL because dobot_magician_arm isn't a real kinematic chain.
+    </description>
+  </class>
+</library>
