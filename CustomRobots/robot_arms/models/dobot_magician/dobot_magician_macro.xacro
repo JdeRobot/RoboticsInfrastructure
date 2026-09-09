@@ -86,13 +86,11 @@
     </joint>
   </xacro:macro>
 
-  <!-- dartsim doesn't reliably enforce a plain URDF/SDF <mimic> constraint,
-       the gz_mimic_joint plugin drives these joints for real instead, one
-       plugin instance per pair, added in dobot_magician below. That plugin
-       just copies the parent joint's raw value, so these joints use a
-       flipped axis to get the same physical motion a -1 multiplier would
-       have given on the original axis, and the <mimic> tag below (still
-       needed for MoveIt's own planning-time state) uses +1 to match. -->
+  <!-- dartsim doesn't apply a plain mimic constraint reliably, the
+       gz_mimic_joint plugin below drives these joints for real. It only
+       copies the parent's raw value, so the axis here is flipped to
+       match what a negative multiplier would have done, and the mimic
+       tag stays just for MoveIt's own state tracking. -->
   <xacro:macro name="dobot_joint_mimic" params="joint_name type parent child axis_xyz origin_xyz origin_rpy lower_limit upper_limit ref_joint">
     <joint name="${joint_name}" type="${type}">
       <parent link="${parent}"/>
@@ -170,11 +168,9 @@
       lower_limit="${-150.0/180.0*pi}" upper_limit="${150.0/180.0*pi}"/>
 
     <!-- Gripper jaws, joint_prismatic_l drives, joint_prismatic_r mimics it.
-         Both meshes sit at the same origin at rest, with zero travel that's
-         already fully closed, so the joints run negative (limit 0 at rest,
-         closed) to open, matching HAL's 0 percent is open convention.
-         Collision is a plain box instead of the finger mesh, dartsim can't
-         build the contact sensor's shape from a mesh. -->
+         Both start at rest already closed, so the range runs negative to
+         open, matching HAL's 0 percent is open convention. Collision is a
+         box instead of the mesh, needed for the contact sensor below. -->
     <xacro:dobot_armlink_box_collision link_name="${prefix}link_gripper_jaw_left" visual_mesh="jaw_left"
       base_origin_xyz="${gripper_core_origin_xyz}" base_origin_rpy="0 0 0" mass="0.02" box_x="0.02" box_y="0.01" box_z="0.05"
       collision_origin_xyz="${gripper_core_origin_x - 0.01535} 0 ${gripper_core_origin_z - 0.049}" collision_size="0.045 0.032 0.056"/>

@@ -2,11 +2,10 @@
 <robot name="dobot_magician">
 
   <!-- Joint list instead of a chain, the parallelogram's two mimic joints
-       sit between joint_3 and joint_4 in the tree, a chain group would pull
-       them in as extra planning variables and break the 4 real DOF the
-       rest of the framework expects. This also means the group is no
-       longer a chain, so KDL IK is unavailable for it, MoveAbsJ (joint
-       space) still works fine without it. -->
+       sit between joint_3 and joint_4, a chain group would count them as
+       extra planning variables and break the framework's 4 DOF
+       assumption. No KDL IK for this group either way, MoveAbsJ doesn't
+       need it. -->
   <group name="dobot_magician_arm">
     <joint name="joint_1"/>
     <joint name="joint_2"/>

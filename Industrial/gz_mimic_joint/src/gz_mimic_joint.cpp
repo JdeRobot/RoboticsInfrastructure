@@ -48,7 +48,7 @@ void PreUpdate(
   const UpdateInfo &,
   EntityComponentManager &_ecm) override
 {
-  // Buscar joints solo una vez
+  // Look up both joints only once
   if (parentJoint == kNullEntity)
   {
     parentJoint = FindJoint(_ecm, parent_joint_name);
