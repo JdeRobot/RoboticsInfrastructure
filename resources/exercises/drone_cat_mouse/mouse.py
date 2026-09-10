@@ -11,11 +11,8 @@ from geometry_msgs.msg import PoseStamped
 from std_msgs.msg import String
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, qos_profile_sensor_data
 
-from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
 
-IMG_WIDTH = 320
-IMG_HEIGHT = 240
 freq = 30.0
 
 DRONE_NAMESPACE = "drone_mouse"
@@ -31,19 +28,13 @@ if not rclpy.ok():
     rclpy.init()
 
 
-CAM_FRONTAL_TOPIC = "/" + DRONE_NAMESPACE + "/frontal_cam/image_raw"
-CAM_VENTRAL_TOPIC = "/" + DRONE_NAMESPACE + "/ventral_cam/image_raw"
 CAT_POSE_TOPIC = "/" + CAT_NAMESPACE + "/self_localization/pose"
 COURSE_TOPIC = "/drone_cat_mouse/course"
 
 drone = DroneWrapper(DRONE_NAMESPACE)
-frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
-ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(frontal_camera_node)
-executor.add_node(ventral_camera_node)
 
 cat_position = [0.0, 0.0, 0.0]
 course = None
@@ -87,20 +78,6 @@ executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
 ### GETTERS ###
-
-
-def get_frontal_image():
-    image = frontal_camera_node.getImage()
-    while image is None:
-        image = frontal_camera_node.getImage()
-    return image.data
-
-
-def get_ventral_image():
-    image = ventral_camera_node.getImage()
-    while image is None:
-        image = ventral_camera_node.getImage()
-    return image.data
 
 
 def get_position():
