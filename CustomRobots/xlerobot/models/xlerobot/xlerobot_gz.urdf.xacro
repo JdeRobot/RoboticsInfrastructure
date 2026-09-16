@@ -113,7 +113,7 @@
        Splitting this into several separate ros2_control tags made gz_ros2_control crash
        while loading the second one when the same thing was tried on the Dobot arm, so
        every actuated joint that is not a wheel lives in this one block -->
-  <xacro:macro name="arm_ros2_control" params="simulation_controllers">
+  <xacro:macro name="arm_ros2_control" params="simulation_controllers namespace">
     <ros2_control name="xlerobot_arms" type="system">
       <hardware>
         <plugin>gz_ros2_control/GazeboSimSystem</plugin>
@@ -136,6 +136,12 @@
 
     <gazebo>
       <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <!-- robot_state_publisher runs under this same namespace, without this the
+             plugin looks for a bare, unnamespaced robot_state_publisher node and just
+             hangs forever waiting for a service that is never going to answer -->
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
         <parameters>${simulation_controllers}</parameters>
       </plugin>
     </gazebo>

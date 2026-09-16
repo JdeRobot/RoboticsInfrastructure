@@ -1388,7 +1388,7 @@
     <axis xyz="-0.5000 -0.8660 0" />
   </joint>
 
-    <xacro:arm_ros2_control simulation_controllers="${simulation_controllers}"/>
+    <xacro:arm_ros2_control simulation_controllers="${simulation_controllers}" namespace="${namespace}"/>
 
     <xacro:wheel_slip wheel_link="wheel_1_link" fdir1="1 0 0"/>
     <xacro:wheel_slip wheel_link="wheel_2_link" fdir1="-0.5 0.866 0"/>
