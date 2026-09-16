@@ -1,4 +1,4 @@
-controller_manager:
+/**/controller_manager:
   ros__parameters:
     update_rate: 100 # Hz
 
@@ -20,7 +20,7 @@ controller_manager:
     head_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-joint_state_broadcaster:
+/**/joint_state_broadcaster:
   ros__parameters:
     joints:
       - Rotation_L
@@ -42,7 +42,7 @@ joint_state_broadcaster:
       - position
       - velocity
 
-left_arm_controller:
+/**/left_arm_controller:
   ros__parameters:
     joints:
       - Rotation_L
@@ -68,7 +68,7 @@ left_arm_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
-right_arm_controller:
+/**/right_arm_controller:
   ros__parameters:
     joints:
       - Rotation_R
@@ -94,7 +94,7 @@ right_arm_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
-left_gripper_controller:
+/**/left_gripper_controller:
   ros__parameters:
     joints:
       - Jaw_L
@@ -115,7 +115,7 @@ left_gripper_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
-right_gripper_controller:
+/**/right_gripper_controller:
   ros__parameters:
     joints:
       - Jaw_R
@@ -136,7 +136,7 @@ right_gripper_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
-head_controller:
+/**/head_controller:
   ros__parameters:
     joints:
       - head_pan_joint

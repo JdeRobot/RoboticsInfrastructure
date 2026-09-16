@@ -194,45 +194,14 @@ def launch_setup(context):
         ],
     )
 
-    left_move = Node(
-        package="ros2srrc_execution",
-        executable="move",
-        name="left_move_action_server",
-        namespace=gz_namespace,
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            kinematics_yaml,
-            moveit_controllers,
-            ompl_planning,
-            moveit_controller_manager_param,
-            {"use_sim_time": True},
-            {"ROB_PARAM": "xlerobot"},
-            {"EE_PARAM": "left_gripper"},
-            {"ROB_GROUP": "xlerobot_left_arm"},
-        ],
-    )
-
-    right_move = Node(
-        package="ros2srrc_execution",
-        executable="move",
-        name="right_move_action_server",
-        namespace=gz_namespace,
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            kinematics_yaml,
-            moveit_controllers,
-            ompl_planning,
-            moveit_controller_manager_param,
-            {"use_sim_time": True},
-            {"ROB_PARAM": "xlerobot"},
-            {"EE_PARAM": "right_gripper"},
-            {"ROB_GROUP": "xlerobot_right_arm"},
-        ],
-    )
+    # The "move" executable (MoveJ/MoveL/MoveG action API) additionally loads
+    # ros2srrc_robots/<ROB_PARAM>/config/joint_specifications.yaml and
+    # ros2srrc_endeffectors/<EE_PARAM>/config/joint_specifications.yaml at
+    # startup, and crashes immediately (uncaught YAML::BadFile) if those do
+    # not exist. There is no "xlerobot"/"left_gripper"/"right_gripper" entry
+    # in either package yet, and adding one means a new install(DIRECTORY ...)
+    # line plus a rebuild of ros2srrc_robots/ros2srrc_endeffectors, so it is
+    # left out for now, robmove/robpose/move_group below do not need it.
 
     left_robmove = Node(
         package="ros2srrc_execution",
@@ -308,8 +277,6 @@ def launch_setup(context):
 
     moveit_nodes = [
         move_group,
-        left_move,
-        right_move,
         left_robmove,
         right_robmove,
         left_robpose,
