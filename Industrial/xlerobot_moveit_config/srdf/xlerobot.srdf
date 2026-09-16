@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="xlerobot">
+
+  <group name="xlerobot_left_arm">
+    <chain base_link="Base" tip_link="Fixed_Jaw"/>
+  </group>
+
+  <group name="xlerobot_right_arm">
+    <chain base_link="Base_2" tip_link="Fixed_Jaw_2"/>
+  </group>
+
+  <group name="left_gripper">
+    <joint name="Jaw_L"/>
+  </group>
+
+  <group name="right_gripper">
+    <joint name="Jaw_R"/>
+  </group>
+
+  <group_state group="xlerobot_left_arm" name="home">
+    <joint name="Rotation_L" value="0" />
+    <joint name="Pitch_L" value="0" />
+    <joint name="Elbow_L" value="0" />
+    <joint name="Wrist_Pitch_L" value="0" />
+    <joint name="Wrist_Roll_L" value="0" />
+  </group_state>
+
+  <group_state group="xlerobot_right_arm" name="home">
+    <joint name="Rotation_R" value="0" />
+    <joint name="Pitch_R" value="0" />
+    <joint name="Elbow_R" value="0" />
+    <joint name="Wrist_Pitch_R" value="0" />
+    <joint name="Wrist_Roll_R" value="0" />
+  </group_state>
+
+  <group_state group="left_gripper" name="open">
+    <joint name="Jaw_L" value="0" />
+  </group_state>
+  <group_state group="left_gripper" name="closed">
+    <joint name="Jaw_L" value="1.5" />
+  </group_state>
+
+  <group_state group="right_gripper" name="open">
+    <joint name="Jaw_R" value="0" />
+  </group_state>
+  <group_state group="right_gripper" name="closed">
+    <joint name="Jaw_R" value="1.5" />
+  </group_state>
+
+  <end_effector name="left_gripper" parent_link="Fixed_Jaw" group="left_gripper"/>
+  <end_effector name="right_gripper" parent_link="Fixed_Jaw_2" group="right_gripper"/>
+
+  <!-- No virtual joint to world on purpose, base_footprint moves with the chassis
+       via VelocityControl and is not tracked by any static transform, planning stays
+       relative to the robot itself -->
+
+  <disable_collisions link1="Base" link2="Base_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="Rotation_Pitch" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="Upper_Arm" reason="Adjacent" />
+  <disable_collisions link1="Upper_Arm" link2="Upper_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Upper_Arm" link2="Lower_Arm" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Lower_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Wrist_Pitch_Roll" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Wrist_Pitch_Roll" link2="Fixed_Jaw" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Fixed_Jaw_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Moving_Jaw" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Right_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Right_Arm_Camera" link2="Right_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Base_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="Upper_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Upper_Arm_2" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Upper_Arm_2" link2="Lower_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Lower_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Wrist_Pitch_Roll_2" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Wrist_Pitch_Roll_2" link2="Fixed_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Fixed_Jaw_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Moving_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Left_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera" link2="Left_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_tilt_link" link2="head_tilt_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_tilt_link" link2="head_camera_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_camera_rgb_frame" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_camera_depth_frame" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="chassis" reason="Adjacent" />
+
+</robot>

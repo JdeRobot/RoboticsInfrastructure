@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/xlerobot/xlerobot_gz.urdf.xacro"/>
 
-  <xacro:macro name="xlerobot" params="namespace">
+  <xacro:macro name="xlerobot" params="namespace simulation_controllers">
 
     <!-- base_footprint sits on the ground, chassis is the real link the source model was
          built around, offset up so the wheels below it touch the floor -->
@@ -1067,10 +1067,13 @@
     </joint>
 
   
-<joint name="Rotation_L" type="fixed">
+<joint name="Rotation_L" type="revolute">
       <parent link="Base" />
       <child link="Rotation_Pitch" />
       <origin xyz="0 -0.0452 0.0165" rpy="1.5708 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.16" upper="2.16" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1081,10 +1084,13 @@
     </joint>
 
   
-<joint name="Pitch_L" type="fixed">
+<joint name="Pitch_L" type="revolute">
       <parent link="Rotation_Pitch" />
       <child link="Upper_Arm" />
       <origin xyz="0 0.1025 0.0306" rpy="1.5708 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.22" upper="3.37" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1095,10 +1101,13 @@
     </joint>
 
   
-<joint name="Elbow_L" type="fixed">
+<joint name="Elbow_L" type="revolute">
       <parent link="Upper_Arm" />
       <child link="Lower_Arm" />
       <origin xyz="0 0.11257 0.028" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.22" upper="3.14" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1109,10 +1118,13 @@
     </joint>
 
   
-<joint name="Wrist_Pitch_L" type="fixed">
+<joint name="Wrist_Pitch_L" type="revolute">
       <parent link="Lower_Arm" />
       <child link="Wrist_Pitch_Roll" />
       <origin xyz="0 0.0052 0.1349" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-1.6580628" upper="1.6580627" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1123,10 +1135,13 @@
     </joint>
 
   
-<joint name="Wrist_Roll_L" type="fixed">
+<joint name="Wrist_Roll_L" type="revolute">
       <parent link="Wrist_Pitch_Roll" />
       <child link="Fixed_Jaw" />
       <origin xyz="0 -0.0601 0" rpy="0 1.5707927 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.7438473" upper="2.8412063" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1137,10 +1152,13 @@
     </joint>
 
   
-<joint name="Jaw_L" type="fixed">
+<joint name="Jaw_L" type="revolute">
       <parent link="Fixed_Jaw" />
       <child link="Moving_Jaw" />
       <origin xyz="-0.0202 -0.0244 0" rpy="3.1415854 -0.0000014 2.9531853" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.374533" upper="1.7453292" effort="10" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1172,10 +1190,13 @@
     </joint>
 
   
-<joint name="Rotation_R" type="fixed">
+<joint name="Rotation_R" type="revolute">
       <parent link="Base_2" />
       <child link="Rotation_Pitch_2" />
       <origin xyz="0 -0.0452 0.0165" rpy="1.5708 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.16" upper="2.16" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1186,10 +1207,13 @@
     </joint>
 
   
-<joint name="Pitch_R" type="fixed">
+<joint name="Pitch_R" type="revolute">
       <parent link="Rotation_Pitch_2" />
       <child link="Upper_Arm_2" />
       <origin xyz="0 0.1025 0.0306" rpy="1.5708 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.22" upper="3.37" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1200,10 +1224,13 @@
     </joint>
 
   
-<joint name="Elbow_R" type="fixed">
+<joint name="Elbow_R" type="revolute">
       <parent link="Upper_Arm_2" />
       <child link="Lower_Arm_2" />
       <origin xyz="0 0.11257 0.028" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.22" upper="3.14" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1214,10 +1241,13 @@
     </joint>
 
   
-<joint name="Wrist_Pitch_R" type="fixed">
+<joint name="Wrist_Pitch_R" type="revolute">
       <parent link="Lower_Arm_2" />
       <child link="Wrist_Pitch_Roll_2" />
       <origin xyz="0 0.0052 0.1349" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-1.6580628" upper="1.6580627" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1228,10 +1258,13 @@
     </joint>
 
   
-<joint name="Wrist_Roll_R" type="fixed">
+<joint name="Wrist_Roll_R" type="revolute">
       <parent link="Wrist_Pitch_Roll_2" />
       <child link="Fixed_Jaw_2" />
       <origin xyz="0 -0.0601 0" rpy="0 1.5707927 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.7438473" upper="2.8412063" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1242,10 +1275,13 @@
     </joint>
 
   
-<joint name="Jaw_R" type="fixed">
+<joint name="Jaw_R" type="revolute">
       <parent link="Fixed_Jaw_2" />
       <child link="Moving_Jaw_2" />
       <origin xyz="-0.0202 -0.0244 0" rpy="3.1415854 -0.0000014 2.9531853" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.374533" upper="1.7453292" effort="10" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
     </joint>
 
   
@@ -1277,10 +1313,13 @@
     </joint>
 
   
-<joint name="head_pan_joint" type="fixed">
+<joint name="head_pan_joint" type="revolute">
       <parent link="top_base_link" />
       <child link="head_pan_link" />
       <origin xyz="-0.103 0 0.323" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.2" upper="3.2" effort="1.0" velocity="1.5" />
+      <dynamics damping="0.1" friction="0.02" />
     </joint>
 
   
@@ -1291,10 +1330,13 @@
     </joint>
 
   
-<joint name="head_tilt_joint" type="fixed">
+<joint name="head_tilt_joint" type="revolute">
       <parent link="head_pan_link" />
       <child link="head_tilt_link" />
       <origin xyz="0.001 0.002 0.09815" rpy="0 0 3.1415927" />
+      <axis xyz="0 1 0" />
+      <limit lower="-0.76" upper="1.45" effort="1.0" velocity="1.5" />
+      <dynamics damping="0.1" friction="0.02" />
     </joint>
 
   
@@ -1346,6 +1388,8 @@
     <axis xyz="-0.5000 -0.8660 0" />
   </joint>
 
+    <xacro:arm_ros2_control simulation_controllers="${simulation_controllers}"/>
+
     <xacro:wheel_slip wheel_link="wheel_1_link" fdir1="1 0 0"/>
     <xacro:wheel_slip wheel_link="wheel_2_link" fdir1="-0.5 0.866 0"/>
     <xacro:wheel_slip wheel_link="wheel_3_link" fdir1="-0.5 -0.866 0"/>
@@ -1353,6 +1397,10 @@
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}"/>
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
+
+    <xacro:rgbd_camera link="head_camera_link" name="head_camera" namespace="${namespace}"/>
+    <xacro:wrist_camera link="Right_Arm_Camera" name="right_arm_camera" namespace="${namespace}"/>
+    <xacro:wrist_camera link="Left_Arm_Camera" name="left_arm_camera" namespace="${namespace}"/>
 
   </xacro:macro>
 </robot>

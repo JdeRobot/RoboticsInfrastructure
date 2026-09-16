@@ -50,4 +50,120 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- head RGBD camera, one sensor gives color image, depth image and a point cloud together -->
+  <xacro:macro name="rgbd_camera" params="link name namespace">
+    <gazebo reference="${link}">
+      <sensor name="${name}" type="rgbd_camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>15</update_rate>
+        <topic>/${namespace}/${name}</topic>
+        <camera name="${name}">
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>8.0</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- One arm side worth of ros2_control joint interfaces, called once per suffix (L/R) -->
+  <xacro:macro name="arm_joint_interfaces" params="suffix">
+    <joint name="Rotation_${suffix}">
+      <command_interface name="position"><param name="min">-2.16</param><param name="max">2.16</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="Pitch_${suffix}">
+      <command_interface name="position"><param name="min">-0.22</param><param name="max">3.37</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="Elbow_${suffix}">
+      <command_interface name="position"><param name="min">-0.22</param><param name="max">3.14</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="Wrist_Pitch_${suffix}">
+      <command_interface name="position"><param name="min">-1.6580628</param><param name="max">1.6580627</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="Wrist_Roll_${suffix}">
+      <command_interface name="position"><param name="min">-2.7438473</param><param name="max">2.8412063</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="Jaw_${suffix}">
+      <command_interface name="position"><param name="min">-0.374533</param><param name="max">1.7453292</param></command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Single ros2_control block for both arms, both grippers and the head, on purpose.
+       Splitting this into several separate ros2_control tags made gz_ros2_control crash
+       while loading the second one when the same thing was tried on the Dobot arm, so
+       every actuated joint that is not a wheel lives in this one block -->
+  <xacro:macro name="arm_ros2_control" params="simulation_controllers">
+    <ros2_control name="xlerobot_arms" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+
+      <xacro:arm_joint_interfaces suffix="L"/>
+      <xacro:arm_joint_interfaces suffix="R"/>
+
+      <joint name="head_pan_joint">
+        <command_interface name="position"><param name="min">-3.2</param><param name="max">3.2</param></command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="head_tilt_joint">
+        <command_interface name="position"><param name="min">-0.76</param><param name="max">1.45</param></command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+    <gazebo>
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>${simulation_controllers}</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- plain RGB wrist camera -->
+  <xacro:macro name="wrist_camera" params="link name namespace">
+    <gazebo reference="${link}">
+      <sensor name="${name}" type="camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>15</update_rate>
+        <topic>/${namespace}/${name}/image_raw</topic>
+        <camera name="${name}">
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>1.5</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>5.0</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
 </robot>
