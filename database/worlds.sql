@@ -207,6 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
+85	XLeRobot Warehouse	58
 \.
 
 --
@@ -278,6 +279,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 60	83	11	{{0,-8,0.3,0.0,0.0,0.0}}
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
+63	85	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
@@ -369,6 +371,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
 35	Turtlebot 3 Marker	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	sensor:=laser marker:=true namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+36	XLeRobot	/home/ws/src/CustomRobots/xlerobot/launch/xlerobot.launch.py	xlerobot	namespace:=logistic_robot	xlerobot/models/xlerobot/xlerobot.urdf.xacro
 \.
 
 --

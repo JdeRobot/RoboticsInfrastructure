@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="xlerobot">
+
+  <xacro:arg name="namespace" default=""/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <xacro:include filename="$(find custom_robots)/models/xlerobot/xlerobot_common.urdf.xacro"/>
+
+  <xacro:xlerobot namespace="${namespace}"/>
+
+</robot>
