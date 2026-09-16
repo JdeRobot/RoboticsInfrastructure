@@ -147,6 +147,25 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Contact sensor on a gripper jaw, feeds gz_link_attacher's "suction mode"
+       code path. gz_link_attacher only knows Robotiq's 2-finger link names by
+       default, this repurposes its generic gripper_link_name option (it was
+       already there for real suction grippers) so a plain parallel jaw like
+       ours gets the same auto-attach behaviour without touching that C++ -->
+  <xacro:macro name="suction_contact" params="link">
+    <gazebo reference="${link}">
+      <sensor name="suction_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>${link}_collision</collision>
+          <collision>${link}_collision_1</collision>
+          <collision>${link}_collision_2</collision>
+        </contact>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
   <!-- plain RGB wrist camera -->
   <xacro:macro name="wrist_camera" params="link name namespace">
     <gazebo reference="${link}">

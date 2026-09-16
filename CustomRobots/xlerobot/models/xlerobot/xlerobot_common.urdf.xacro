@@ -1409,5 +1409,8 @@
     <xacro:wrist_camera link="Right_Arm_Camera" name="right_arm_camera" namespace="${namespace}"/>
     <xacro:wrist_camera link="Left_Arm_Camera" name="left_arm_camera" namespace="${namespace}"/>
 
+    <xacro:suction_contact link="Moving_Jaw"/>
+    <xacro:suction_contact link="Moving_Jaw_2"/>
+
   </xacro:macro>
 </robot>

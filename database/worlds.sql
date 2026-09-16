@@ -208,6 +208,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
 85	XLeRobot Warehouse	58
+86	XLeRobot Home	81
 \.
 
 --
@@ -280,6 +281,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
 63	85	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+64	86	36	{{-1.6,0.3,0.1,0.0,0.0,3.14}}
 \.
 
 --
@@ -329,6 +331,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 78	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
+81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 \.
 
 --

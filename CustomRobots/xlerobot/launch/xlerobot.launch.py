@@ -151,6 +151,24 @@ def launch_setup(context):
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/head_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            f"/{namespace}/left_arm_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            f"/{namespace}/right_arm_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+        ],
+        output="screen",
+    )
+
+    # the camera sensors were wired in the xacro but never actually reached
+    # ROS before, sensor_msgs/Image needs ros_gz_image specifically, a plain
+    # parameter_bridge line does not work for it
+    gz_ros2_image_bridge = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        namespace=gz_namespace,
+        arguments=[
+            f"/{namespace}/head_camera/image",
+            f"/{namespace}/left_arm_camera/image_raw",
+            f"/{namespace}/right_arm_camera/image_raw",
         ],
         output="screen",
     )
@@ -346,6 +364,7 @@ def launch_setup(context):
         robot_state_publisher_node,
         gz_spawn_entity,
         gz_ros2_bridge,
+        gz_ros2_image_bridge,
         after_spawn,
         after_joint_state_broadcaster,
         after_left_arm,
