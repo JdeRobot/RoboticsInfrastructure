@@ -206,7 +206,15 @@ def launch_setup(context):
             # later did not hit it. --switch-timeout is spawner's own flag
             # for exactly this, "useful when switching cannot be performed
             # immediately, e.g. paused simulations at startup"
-            arguments=[controller_name, "--switch-timeout", "30"],
+            arguments=[
+                controller_name,
+                "--switch-timeout",
+                "30",
+                "--controller-manager-timeout",
+                "30",
+                "--service-call-timeout",
+                "30",
+            ],
             output="screen",
         )
 

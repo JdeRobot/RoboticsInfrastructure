@@ -2,6 +2,20 @@
 
 <sdf version="1.8">
   <world name="default">
+    <!-- Copied from small_house.world, which never declared this either, so
+         gz-sim fell back to some internal default gz_ros2_control could not
+         read properly ("Desired controller update period is slower than the
+         gazebo simulation period (0 s)"), and controller_manager's own
+         update loop ran badly enough that basic services like
+         list_controllers/switch_controller started timing out for minutes
+         on startup with this heavier scene+robot. Same max_step_size as
+         machine_vision.world, the other gz_ros2_control-driven arm exercise -->
+    <physics name="1ms" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
     </plugin>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
