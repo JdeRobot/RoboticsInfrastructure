@@ -58,19 +58,24 @@ RES["ExecTime"] = -1.0
 
 class RobMoveCLIENT(Node):
 
-    def __init__(self):
+    # node_name/action_name default to the original hardcoded values so any
+    # existing caller doing RobMoveCLIENT() keeps working unchanged, a robot
+    # with more than one arm passes a distinct node_name/action_name per arm
+    # instead (see RBT below)
+    def __init__(self, node_name="ros2srrc_RobMove_Client", action_name="/Robmove"):
 
-        super().__init__("ros2srrc_RobMove_Client")
-        self._action_client = ActionClient(self, Robmove, "/Robmove")
+        super().__init__(node_name)
+        self._action_client = ActionClient(self, Robmove, action_name)
+        self.action_name = action_name
 
-        print("[CLIENT - robot.py]: Initialising ROS2 /RobMove Action Client!")
+        print(f"[CLIENT - robot.py]: Initialising ROS2 {action_name} Action Client!")
         print(
-            "[CLIENT - robot.py]: Waiting for /Robmove ROS2 ActionServer to be available..."
+            f"[CLIENT - robot.py]: Waiting for {action_name} ROS2 ActionServer to be available..."
         )
 
         self._action_client.wait_for_server()
 
-        print("[CLIENT - robot.py]: /Robmove ACTION SERVER detected, ready!")
+        print(f"[CLIENT - robot.py]: {action_name} ACTION SERVER detected, ready!")
         print("")
         print("")
 
@@ -118,19 +123,20 @@ class RobMoveCLIENT(Node):
 
 class MoveCLIENT(Node):
 
-    def __init__(self):
+    def __init__(self, node_name="ros2srrc_Move_Client", action_name="/Move"):
 
-        super().__init__("ros2srrc_Move_Client")
-        self._action_client = ActionClient(self, Move, "/Move")
+        super().__init__(node_name)
+        self._action_client = ActionClient(self, Move, action_name)
+        self.action_name = action_name
 
-        print("[CLIENT - robot.py]: Initialising ROS2 /Move Action Client!")
+        print(f"[CLIENT - robot.py]: Initialising ROS2 {action_name} Action Client!")
         print(
-            "[CLIENT - robot.py]: Waiting for /Move ROS2 ActionServer to be available..."
+            f"[CLIENT - robot.py]: Waiting for {action_name} ROS2 ActionServer to be available..."
         )
 
         self._action_client.wait_for_server()
 
-        print("[CLIENT - robot.py]: /Move ACTION SERVER detected, ready!")
+        print(f"[CLIENT - robot.py]: {action_name} ACTION SERVER detected, ready!")
         print("")
 
     def send_goal(self, ACTION):
@@ -180,15 +186,39 @@ class MoveCLIENT(Node):
 
 class RBT:
 
-    def __init__(self):
+    # suffix, move_action and robmove_action let a robot with more than one
+    # arm create one RBT per arm, each pointed at that arm's own action
+    # servers (see xlerobot_home's HAL.py), left at their defaults this is
+    # the exact same single-robot behaviour every other exercise already
+    # relies on. use_move=False skips connecting to /Move entirely, useful
+    # when that action server was never brought up for this robot, otherwise
+    # this call blocks forever in MoveCLIENT's wait_for_server()
+    def __init__(
+        self,
+        suffix="",
+        move_action="/Move",
+        robmove_action="/Robmove",
+        use_move=True,
+    ):
 
         # Initialise /Move and /RobMove Action Clients:
-        self.MoveClient = MoveCLIENT()
-        self.RobMoveClient = RobMoveCLIENT()
+        self.MoveClient = (
+            MoveCLIENT(f"ros2srrc_Move_Client{suffix}", move_action)
+            if use_move
+            else None
+        )
+        self.RobMoveClient = RobMoveCLIENT(
+            f"ros2srrc_RobMove_Client{suffix}", robmove_action
+        )
 
         self.EXECUTING = ""
 
     def Move_EXECUTE(self, ACTION):
+
+        if self.MoveClient is None:
+            raise RuntimeError(
+                "This RBT was created with use_move=False, /Move is not available"
+            )
 
         global RES
         self.EXECUTING = "Move"

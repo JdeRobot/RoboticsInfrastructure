@@ -1,0 +1,8 @@
+cartesian_limits:
+  max_trans_vel: 0.15
+  max_trans_acc: 0.15
+  max_trans_dec: 0.15
+  max_rot_vel: 1.0
+
+# XLeRobot's arm is a small ST3215 servo arm, not an industrial UR, values
+# kept well under UR3's own (already conservative) 0.25 m/s defaults

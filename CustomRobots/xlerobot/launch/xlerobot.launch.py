@@ -85,16 +85,31 @@ def launch_setup(context):
     ompl_planning = load_yaml("xlerobot_moveit_config", "config/ompl_planning.yaml")
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
+    # Pilz gives Robmove real "LIN"/"PTP" planner IDs to call, that field on
+    # the Robmove action is not a free label, robmove.cpp passes it straight
+    # into MoveGroupInterface::setPlannerId(), so it has to name a planner
+    # move_group actually knows about, OMPL alone does not define those IDs
     planning_pipelines_config = {
-        "planning_pipelines": ["ompl"],
-        "default_planning_pipeline": "ompl",
+        "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
+        "default_planning_pipeline": "pilz_industrial_motion_planner",
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
+        },
+        "pilz_industrial_motion_planner": {
+            "planning_plugin": "pilz_industrial_motion_planner/CommandPlanner",
+            "request_adapters": "",
+            "start_state_max_bounds_error": 0.1,
+            "default_planner_config": "PTP",
         },
     }
 
     joint_limits_yaml = load_yaml("xlerobot_moveit_config", "config/joint_limits.yaml")
-    combined_planning = {"robot_description_planning": joint_limits_yaml}
+    pilz_cartesian_limits = load_yaml(
+        "xlerobot_moveit_config", "config/pilz_cartesian_limits.yaml"
+    )
+    combined_planning = {
+        "robot_description_planning": {**joint_limits_yaml, **pilz_cartesian_limits}
+    }
 
     moveit_controller_manager_param = {
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
@@ -220,6 +235,13 @@ def launch_setup(context):
     # in either package yet, and adding one means a new install(DIRECTORY ...)
     # line plus a rebuild of ros2srrc_robots/ros2srrc_endeffectors, so it is
     # left out for now, robmove/robpose/move_group below do not need it.
+    #
+    # robmove.cpp hardcodes its action server as the absolute name "/Robmove"
+    # (robpose.cpp similarly publishes on the plain relative topic "Robpose"),
+    # so spawning it twice under the same node namespace, once per arm, would
+    # collide on that same name, both instances answering on "/Robmove" with
+    # no way to tell which is which. Remapping gives each side a distinct,
+    # real name without touching that C++ at all.
 
     left_robmove = Node(
         package="ros2srrc_execution",
@@ -227,6 +249,7 @@ def launch_setup(context):
         name="left_robmove",
         namespace=gz_namespace,
         output="screen",
+        remappings=[("/Robmove", f"/{namespace}/left_robmove/Robmove")],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -246,6 +269,7 @@ def launch_setup(context):
         name="right_robmove",
         namespace=gz_namespace,
         output="screen",
+        remappings=[("/Robmove", f"/{namespace}/right_robmove/Robmove")],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -265,6 +289,7 @@ def launch_setup(context):
         name="left_robpose",
         namespace=gz_namespace,
         output="screen",
+        remappings=[("Robpose", "left_robpose/Robpose")],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -282,6 +307,7 @@ def launch_setup(context):
         name="right_robpose",
         namespace=gz_namespace,
         output="screen",
+        remappings=[("Robpose", "right_robpose/Robpose")],
         parameters=[
             robot_description,
             robot_description_semantic,
