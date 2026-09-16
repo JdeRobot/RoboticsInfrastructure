@@ -196,7 +196,17 @@ def launch_setup(context):
             package="controller_manager",
             executable="spawner",
             namespace=gz_namespace,
-            arguments=[controller_name],
+            # the default 5s switch-controller timeout is not enough right
+            # after spawn, the sim is still busy loading the house scene and
+            # the robot at that point and does not get to a controller
+            # activation request in time, seen for real as "Switch controller
+            # timed out after 5.000000 seconds!" on joint_state_broadcaster
+            # and both arm controllers specifically (spawned first, while the
+            # scene is still settling), gripper/head controllers spawned
+            # later did not hit it. --switch-timeout is spawner's own flag
+            # for exactly this, "useful when switching cannot be performed
+            # immediately, e.g. paused simulations at startup"
+            arguments=[controller_name, "--switch-timeout", "30"],
             output="screen",
         )
 
