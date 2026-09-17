@@ -37,6 +37,9 @@
       - Jaw_R
       - head_pan_joint
       - head_tilt_joint
+      - wheel_1_joint
+      - wheel_2_joint
+      - wheel_3_joint
 
     interfaces:
       - position

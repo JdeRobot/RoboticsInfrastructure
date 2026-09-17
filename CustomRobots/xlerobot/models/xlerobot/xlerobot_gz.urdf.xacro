@@ -132,6 +132,29 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
+
+      <!-- state only, on purpose, the wheels stay driven kinematically by
+           VelocityControl not by ros2_control, but MoveGroupInterface (used
+           by robmove/robpose/move_group) waits for a JointState covering
+           every joint in the URDF before it considers the robot state
+           "complete", wheels included, even though no SRDF group ever plans
+           for them. Without this it hangs forever repeating "The complete
+           state of the robot is not yet known, missing wheel_1_joint...".
+           Folding them into the same joint_state_broadcaster that already
+           covers the arms is what actually gets them onto
+           /<namespace>/joint_states, the one topic MoveIt listens to -->
+      <joint name="wheel_1_joint">
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="wheel_2_joint">
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="wheel_3_joint">
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
     </ros2_control>
 
     <gazebo>

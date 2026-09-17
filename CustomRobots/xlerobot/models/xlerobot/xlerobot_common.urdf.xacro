@@ -1396,14 +1396,12 @@
 
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}"/>
-    <!-- wheels only, the arm/head joints already get their joint_states from
-         ros2_control's own joint_state_broadcaster, publishing both would
-         mean two sources fighting over the same topic -->
-    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
-      <joint_name>wheel_1_joint</joint_name>
-      <joint_name>wheel_2_joint</joint_name>
-      <joint_name>wheel_3_joint</joint_name>
-    </plugin>
+    <!-- no separate gz-sim-joint-state-publisher-system for the wheels here
+         on purpose, they are folded into the same ros2_control
+         joint_state_broadcaster as the arms instead (see arm_ros2_control in
+         xlerobot_gz.urdf.xacro), a second publisher on a different topic is
+         exactly what left MoveGroupInterface waiting forever for a "complete"
+         robot state that never included the wheels -->
 
     <xacro:rgbd_camera link="head_camera_link" name="head_camera" namespace="${namespace}"/>
     <xacro:wrist_camera link="Right_Arm_Camera" name="right_arm_camera" namespace="${namespace}"/>
