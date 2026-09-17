@@ -205,15 +205,22 @@ def launch_setup(context):
             # scene is still settling), gripper/head controllers spawned
             # later did not hit it. --switch-timeout is spawner's own flag
             # for exactly this, "useful when switching cannot be performed
-            # immediately, e.g. paused simulations at startup"
+            # immediately, e.g. paused simulations at startup". Even 30s was
+            # not always enough for joint_state_broadcaster specifically
+            # (first in the chain, hits the worst of the cold start, seen for
+            # real as three consecutive "Switch controller timed out after
+            # 30.000000 seconds!" and the controller stuck inactive forever
+            # afterward, nothing retries a spawner that already gave up), so
+            # this is generous on purpose rather than tuned to a measured
+            # minimum, the cost only applies once at cold start
             arguments=[
                 controller_name,
                 "--switch-timeout",
-                "30",
+                "90",
                 "--controller-manager-timeout",
-                "30",
+                "90",
                 "--service-call-timeout",
-                "30",
+                "90",
             ],
             output="screen",
         )
