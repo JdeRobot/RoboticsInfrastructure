@@ -127,7 +127,14 @@ int main(int argc, char **argv)
 
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
-  move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
+  // The plain (node, group) constructor builds its internal action/service
+  // clients against the bare, unnamespaced names ("/move_action" etc), not
+  // relative to this node's own namespace, so on a namespaced robot it waits
+  // forever for a server that is never going to answer at that name. Passing
+  // the namespace through Options is what actually gets it talking to the
+  // real, namespaced move_group.
+  MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, node->get_namespace());
+  move_group_interface_ROB = MoveGroupInterface(node, options);
 
   RCLCPP_INFO(
       node->get_logger(),

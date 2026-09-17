@@ -283,6 +283,10 @@ def launch_setup(context):
         executable="robmove",
         namespace=gz_namespace,
         output="screen",
+        # temporary, MoveGroupInterface's own construction is the thing
+        # hanging (confirmed in robpose too, a completely separate binary),
+        # plain INFO has nothing left to say about where inside it
+        arguments=["--ros-args", "--log-level", "debug"],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -322,6 +326,7 @@ def launch_setup(context):
         name="left_robpose",
         namespace=gz_namespace,
         output="screen",
+        arguments=["--ros-args", "--log-level", "debug"],
         remappings=[("Robpose", "left_robpose/Robpose")],
         parameters=[
             robot_description,

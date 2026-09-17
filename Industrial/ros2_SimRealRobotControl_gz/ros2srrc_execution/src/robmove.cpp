@@ -294,7 +294,16 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    move_group_interface_ROB = MoveGroupInterface(moveit_node, param_ROB_GROUP);
+    // The plain (node, group) constructor builds its internal action/service
+    // clients against the bare, unnamespaced names ("/move_action" etc), not
+    // relative to moveit_node's own namespace, so on a namespaced robot it
+    // waits forever for a server that is never going to answer at that name
+    // (confirmed with debug logging, the internal client sits waiting on
+    // literal "/move_action" while the real server is "/<namespace>/move_action").
+    // Passing the namespace through Options is what actually gets it talking
+    // to the real, namespaced move_group.
+    MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
+    move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);

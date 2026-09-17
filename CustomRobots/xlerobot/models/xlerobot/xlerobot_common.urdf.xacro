@@ -1333,7 +1333,11 @@
 <joint name="head_tilt_joint" type="revolute">
       <parent link="head_pan_link" />
       <child link="head_tilt_link" />
-      <origin xyz="0.001 0.002 0.09815" rpy="0 0 3.1415927" />
+      <!-- the 180 degree yaw this used to carry made the head camera face
+           straight backward at pan 0, chassis and head_pan_link share the
+           same forward direction all the way up (every joint above this one
+           is rpy 0 0 0), nothing upstream compensates for that flip -->
+      <origin xyz="0.001 0.002 0.09815" rpy="0 0 0" />
       <axis xyz="0 1 0" />
       <limit lower="-0.76" upper="1.45" effort="1.0" velocity="1.5" />
       <dynamics damping="0.1" friction="0.02" />
