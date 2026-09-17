@@ -54,44 +54,241 @@
        via VelocityControl and is not tracked by any static transform, planning stays
        relative to the robot itself -->
 
+  <!-- Programmatically generated from the URDF's actual joint tree (fixed
+       joints group links into a single rigid body, movable joints connect
+       two rigid bodies), covering every link pair that will always be
+       touching. This replaces a hand-picked list that only covered direct
+       parent/child pairs and missed the cross pairs (a link and its
+       parent's own "_geom_1" sibling, e.g. Rotation_Pitch vs Base_geom_1),
+       which made every single pose, including the plain home pose, read
+       as self-colliding to check_state_validity/avoid_collisions, in turn
+       making pilz_industrial_motion_planner (which checks self collision
+       on every IK call by default) fail to find a plan for reachable,
+       non-colliding poses. Confirmed against a live check_state_validity
+       call before and after this fix. -->
+  <disable_collisions link1="Base" link2="Base_2" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="Base_2_geom_1" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Base_geom_1" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Rotation_Pitch" reason="Adjacent" />
-  <disable_collisions link1="Rotation_Pitch" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Rotation_Pitch" link2="Upper_Arm" reason="Adjacent" />
-  <disable_collisions link1="Upper_Arm" link2="Upper_Arm_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Upper_Arm" link2="Lower_Arm" reason="Adjacent" />
-  <disable_collisions link1="Lower_Arm" link2="Lower_Arm_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Lower_Arm" link2="Wrist_Pitch_Roll" reason="Adjacent" />
-  <disable_collisions link1="Wrist_Pitch_Roll" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Wrist_Pitch_Roll" link2="Fixed_Jaw" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="Base" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Base_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Base_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Rotation_Pitch" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="Base_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="Rotation_Pitch" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="Base_2_geom_1" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="Rotation_Pitch" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="Base_geom_1" link2="wheel_3_link" reason="Adjacent" />
   <disable_collisions link1="Fixed_Jaw" link2="Fixed_Jaw_geom_1" reason="Adjacent" />
   <disable_collisions link1="Fixed_Jaw" link2="Moving_Jaw" reason="Adjacent" />
   <disable_collisions link1="Fixed_Jaw" link2="Right_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Right_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Fixed_Jaw_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Left_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Left_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Moving_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2_geom_1" link2="Left_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2_geom_1" link2="Left_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2_geom_1" link2="Moving_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2_geom_1" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_2_geom_1" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_geom_1" link2="Moving_Jaw" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_geom_1" link2="Right_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_geom_1" link2="Right_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_geom_1" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Fixed_Jaw_geom_1" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera" link2="Left_Arm_Camera_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera" link2="Moving_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera_geom_1" link2="Moving_Jaw_2" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera_geom_1" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Left_Arm_Camera_geom_1" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Lower_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Upper_Arm" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Upper_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Lower_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Upper_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2_geom_1" link2="Upper_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2_geom_1" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2_geom_1" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_2_geom_1" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_geom_1" link2="Upper_Arm" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_geom_1" link2="Upper_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_geom_1" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Lower_Arm_geom_1" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Moving_Jaw" link2="Right_Arm_Camera" reason="Adjacent" />
+  <disable_collisions link1="Moving_Jaw" link2="Right_Arm_Camera_geom_1" reason="Adjacent" />
   <disable_collisions link1="Right_Arm_Camera" link2="Right_Arm_Camera_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Base_2" link2="Base_2_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Base_2" link2="Rotation_Pitch_2" reason="Adjacent" />
+  <disable_collisions link1="Right_Arm_Camera" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Right_Arm_Camera" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Right_Arm_Camera_geom_1" link2="Wrist_Pitch_Roll" reason="Adjacent" />
+  <disable_collisions link1="Right_Arm_Camera_geom_1" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="Rotation_Pitch_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="Upper_Arm" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="Upper_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch" link2="top_base_link_geom_1" reason="Adjacent" />
   <disable_collisions link1="Rotation_Pitch_2" link2="Rotation_Pitch_2_geom_1" reason="Adjacent" />
   <disable_collisions link1="Rotation_Pitch_2" link2="Upper_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="Upper_Arm_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_2_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="Upper_Arm" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="Upper_Arm_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="base_footprint" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="Rotation_Pitch_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="Upper_Arm" link2="Upper_Arm_geom_1" reason="Adjacent" />
   <disable_collisions link1="Upper_Arm_2" link2="Upper_Arm_2_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Upper_Arm_2" link2="Lower_Arm_2" reason="Adjacent" />
-  <disable_collisions link1="Lower_Arm_2" link2="Lower_Arm_2_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Lower_Arm_2" link2="Wrist_Pitch_Roll_2" reason="Adjacent" />
+  <disable_collisions link1="Wrist_Pitch_Roll" link2="Wrist_Pitch_Roll_geom_1" reason="Adjacent" />
   <disable_collisions link1="Wrist_Pitch_Roll_2" link2="Wrist_Pitch_Roll_2_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Wrist_Pitch_Roll_2" link2="Fixed_Jaw_2" reason="Adjacent" />
-  <disable_collisions link1="Fixed_Jaw_2" link2="Fixed_Jaw_2_geom_1" reason="Adjacent" />
-  <disable_collisions link1="Fixed_Jaw_2" link2="Moving_Jaw_2" reason="Adjacent" />
-  <disable_collisions link1="Fixed_Jaw_2" link2="Left_Arm_Camera" reason="Adjacent" />
-  <disable_collisions link1="Left_Arm_Camera" link2="Left_Arm_Camera_geom_1" reason="Adjacent" />
-  <disable_collisions link1="top_base_link" link2="top_base_link_geom_1" reason="Adjacent" />
-  <disable_collisions link1="top_base_link" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="base_footprint" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="chassis_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="chassis" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="chassis_geom_2" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_1" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="chassis_geom_2" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_camera_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_camera_rgb_frame" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_depth_frame" link2="head_tilt_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_camera_rgb_frame" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_link" link2="head_tilt_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_camera_rgb_frame" link2="head_pan_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_rgb_frame" link2="head_pan_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_camera_rgb_frame" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_camera_rgb_frame" link2="head_tilt_link_geom_1" reason="Adjacent" />
   <disable_collisions link1="head_pan_link" link2="head_pan_link_geom_1" reason="Adjacent" />
   <disable_collisions link1="head_pan_link" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link" link2="head_tilt_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link_geom_1" link2="head_tilt_link" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link_geom_1" link2="head_tilt_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link_geom_1" link2="top_base_link" reason="Adjacent" />
+  <disable_collisions link1="head_pan_link_geom_1" link2="top_base_link_geom_1" reason="Adjacent" />
   <disable_collisions link1="head_tilt_link" link2="head_tilt_link_geom_1" reason="Adjacent" />
-  <disable_collisions link1="head_tilt_link" link2="head_camera_link" reason="Adjacent" />
-  <disable_collisions link1="head_camera_link" link2="head_camera_rgb_frame" reason="Adjacent" />
-  <disable_collisions link1="head_camera_link" link2="head_camera_depth_frame" reason="Adjacent" />
-  <disable_collisions link1="Base" link2="chassis" reason="Adjacent" />
-  <disable_collisions link1="Base_2" link2="chassis" reason="Adjacent" />
-  <disable_collisions link1="top_base_link" link2="chassis" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="top_base_link_geom_1" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="top_base_link" link2="wheel_3_link" reason="Adjacent" />
+  <disable_collisions link1="top_base_link_geom_1" link2="wheel_1_link" reason="Adjacent" />
+  <disable_collisions link1="top_base_link_geom_1" link2="wheel_2_link" reason="Adjacent" />
+  <disable_collisions link1="top_base_link_geom_1" link2="wheel_3_link" reason="Adjacent" />
 
 </robot>

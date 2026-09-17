@@ -70,7 +70,10 @@
          nudged up a hair more to 0.77 to avoid starting embedded -->
 
     <model name="red_box">
-      <pose>-2.3 0.25 0.77 0 0 0</pose>
+      <!-- nudged 0.15m toward the near edge (the side the robot approaches
+           from, larger x) so the robot does not need to get the chassis
+           right up against the table to reach it -->
+      <pose>-2.15 0.25 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
@@ -106,7 +109,7 @@
     </model>
 
     <model name="yellow_box">
-      <pose>-2.4 0.35 0.77 0 0 0</pose>
+      <pose>-2.25 0.35 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
@@ -142,7 +145,7 @@
     </model>
 
     <model name="blue_box">
-      <pose>-2.5 0.2 0.77 0 0 0</pose>
+      <pose>-2.35 0.2 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>

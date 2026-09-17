@@ -38,6 +38,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <thread>
 using namespace std::chrono_literals;
 
 // Include MoveIt!2:
@@ -125,6 +126,30 @@ int main(int argc, char **argv)
       param_ROB_GROUP.c_str()
   );
 
+  // MoveGroupInterface gets its own separate node and dedicated background
+  // executor, same split as robmove.cpp's node/moveit_node, on purpose. An
+  // earlier attempt just spun `node` itself before construction, but `node`
+  // already carries its own 50ms timer (timer_callback below, which calls
+  // the blocking getCurrentPose()), so that timer and the joint_states
+  // subscription MoveGroupInterface's own current-state tracking needs both
+  // ended up on the same SingleThreadedExecutor, fighting over the same one
+  // thread: the timer callback blocks waiting on a state update, but that
+  // very executor cannot also run the subscription callback that would
+  // satisfy it while the timer callback itself has not returned yet. Seen
+  // for real as the exact same "moveit_ros.current_state_monitor: Failed to
+  // fetch current robot state" loop move_group logs when it is starved of
+  // joint_states, dozens of times a minute, never actually recovering. A
+  // separate node with nothing else on its executor does not have this
+  // problem, node's own timer stays on node's own later rclcpp::spin(node).
+  auto moveit_node = std::make_shared<rclcpp::Node>(
+      "moveit_helper_node_robpose",
+      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
+  );
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(moveit_node);
+  std::thread([&executor]() { executor.spin(); }).detach();
+
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
   // The plain (node, group) constructor builds its internal action/service
@@ -133,8 +158,8 @@ int main(int argc, char **argv)
   // forever for a server that is never going to answer at that name. Passing
   // the namespace through Options is what actually gets it talking to the
   // real, namespaced move_group.
-  MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, node->get_namespace());
-  move_group_interface_ROB = MoveGroupInterface(node, options);
+  MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
+  move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 
   RCLCPP_INFO(
       node->get_logger(),
