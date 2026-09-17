@@ -254,20 +254,35 @@ def launch_setup(context):
     # line plus a rebuild of ros2srrc_robots/ros2srrc_endeffectors, so it is
     # left out for now, robmove/robpose/move_group below do not need it.
     #
-    # robmove.cpp hardcodes its action server as the absolute name "/Robmove"
-    # (robpose.cpp similarly publishes on the plain relative topic "Robpose"),
-    # so spawning it twice under the same node namespace, once per arm, would
-    # collide on that same name, both instances answering on "/Robmove" with
-    # no way to tell which is which. Remapping gives each side a distinct,
-    # real name without touching that C++ at all.
+    # robmove.cpp used to hardcode its action server as the absolute name
+    # "/Robmove" (robpose.cpp similarly publishes on the plain relative topic
+    # "Robpose"), so spawning it twice under the same node namespace, once
+    # per arm, collided on that same name, both instances answering on
+    # "/Robmove" with no way to tell which is which. A launch remapping on
+    # that name is silently ignored by rclcpp_action::create_server for a
+    # fully qualified action name, confirmed live, the action always came up
+    # as "/Robmove" regardless of the remap, unlike robpose's plain topic
+    # remap which does work. robmove.cpp now reads the action name from an
+    # ACTION_NAME parameter instead, same as ROB_PARAM/ROB_GROUP below.
+    #
+    # No name= here on purpose. robmove.cpp's main() creates TWO nodes (the
+    # ActionServer itself, plus a second "moveit_helper_node_robmove" used
+    # only for MoveGroupInterface), and name= becomes a process-wide
+    # "-r __node:=X" remap that silently renames BOTH of them to the same
+    # thing, not just the one node you meant to rename. That made the two
+    # nodes in one robmove process collide with each other (the exact
+    # "Publisher already registered for provided node name" warning seen in
+    # the logs), which left the actual /Robmove action server never
+    # reachable even though the process was alive and the two robmove
+    # processes never collided with each other. Left/right are already two
+    # separate OS processes, they do not need distinct node names to avoid
+    # colliding with one another, only the action name remap above matters.
 
     left_robmove = Node(
         package="ros2srrc_execution",
         executable="robmove",
-        name="left_robmove",
         namespace=gz_namespace,
         output="screen",
-        remappings=[("/Robmove", f"/{namespace}/left_robmove/Robmove")],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -278,16 +293,15 @@ def launch_setup(context):
             {"use_sim_time": True},
             {"ROB_PARAM": "xlerobot"},
             {"ROB_GROUP": "xlerobot_left_arm"},
+            {"ACTION_NAME": f"/{namespace}/left_robmove/Robmove"},
         ],
     )
 
     right_robmove = Node(
         package="ros2srrc_execution",
         executable="robmove",
-        name="right_robmove",
         namespace=gz_namespace,
         output="screen",
-        remappings=[("/Robmove", f"/{namespace}/right_robmove/Robmove")],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -298,6 +312,7 @@ def launch_setup(context):
             {"use_sim_time": True},
             {"ROB_PARAM": "xlerobot"},
             {"ROB_GROUP": "xlerobot_right_arm"},
+            {"ACTION_NAME": f"/{namespace}/right_robmove/Robmove"},
         ],
     )
 

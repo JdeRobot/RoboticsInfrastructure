@@ -106,9 +106,20 @@ public:
             param_ROB_GROUP.c_str()
         );
 
+        // "/Robmove" used to be a literal string here. A launch remapping on
+        // this exact fully qualified name is silently ignored by
+        // rclcpp_action::create_server, so two instances (one per arm) both
+        // ended up serving the same "/Robmove" name no matter what
+        // remappings the launch file gave them. A parameter is a mechanism
+        // that is already known to work for ROB_PARAM/ROB_GROUP above, so
+        // the action name goes through it too instead of a remap.
+        this->declare_parameter("ACTION_NAME", "/Robmove");
+        std::string action_name = this->get_parameter("ACTION_NAME").as_string();
+        RCLCPP_INFO(this->get_logger(), "ACTION_NAME received -> %s", action_name.c_str());
+
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
-            "/Robmove",
+            action_name,
             std::bind(&ActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&ActionServer::handle_cancel, this, std::placeholders::_1),
             std::bind(&ActionServer::handle_accepted, this, std::placeholders::_1)
