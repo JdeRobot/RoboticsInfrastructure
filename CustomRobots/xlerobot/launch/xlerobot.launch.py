@@ -182,6 +182,7 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             f"/{namespace}/head_camera/image",
+            f"/{namespace}/head_camera/depth_image",
             f"/{namespace}/left_arm_camera/image_raw",
             f"/{namespace}/right_arm_camera/image_raw",
         ],

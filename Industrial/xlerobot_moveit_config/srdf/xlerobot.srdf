@@ -2,11 +2,11 @@
 <robot name="xlerobot">
 
   <group name="xlerobot_left_arm">
-    <chain base_link="Base" tip_link="Fixed_Jaw"/>
+    <chain base_link="Base" tip_link="TCP_L"/>
   </group>
 
   <group name="xlerobot_right_arm">
-    <chain base_link="Base_2" tip_link="Fixed_Jaw_2"/>
+    <chain base_link="Base_2" tip_link="TCP_R"/>
   </group>
 
   <group name="left_gripper">
@@ -34,21 +34,21 @@
   </group_state>
 
   <group_state group="left_gripper" name="open">
-    <joint name="Jaw_L" value="0" />
+    <joint name="Jaw_L" value="1.7453292" />
   </group_state>
   <group_state group="left_gripper" name="closed">
-    <joint name="Jaw_L" value="1.5" />
+    <joint name="Jaw_L" value="-0.374533" />
   </group_state>
 
   <group_state group="right_gripper" name="open">
-    <joint name="Jaw_R" value="0" />
+    <joint name="Jaw_R" value="1.7453292" />
   </group_state>
   <group_state group="right_gripper" name="closed">
-    <joint name="Jaw_R" value="1.5" />
+    <joint name="Jaw_R" value="-0.374533" />
   </group_state>
 
-  <end_effector name="left_gripper" parent_link="Fixed_Jaw" group="left_gripper"/>
-  <end_effector name="right_gripper" parent_link="Fixed_Jaw_2" group="right_gripper"/>
+  <end_effector name="left_gripper" parent_link="TCP_L" group="left_gripper"/>
+  <end_effector name="right_gripper" parent_link="TCP_R" group="right_gripper"/>
 
   <!-- No virtual joint to world on purpose, base_footprint moves with the chassis
        via VelocityControl and is not tracked by any static transform, planning stays

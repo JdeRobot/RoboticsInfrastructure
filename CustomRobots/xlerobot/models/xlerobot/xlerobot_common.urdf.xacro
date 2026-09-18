@@ -1161,7 +1161,19 @@
       <dynamics damping="0.3" friction="0.1" />
     </joint>
 
-  
+
+<!-- TCP: fingertip contact point with the gripper mechanically closed
+     (Jaw_L at its lower limit), measured as the midpoint of the closest
+     Fixed_Jaw/Moving_Jaw mesh vertices at that configuration -->
+<link name="TCP_L" />
+
+<joint name="TCP_L_joint" type="fixed">
+      <parent link="Fixed_Jaw" />
+      <child link="TCP_L" />
+      <origin xyz="0.00713 -0.10003 -0.00360" rpy="0 0 0" />
+    </joint>
+
+
 <joint name="fixed_Right_Arm_Camera" type="fixed">
       <parent link="Fixed_Jaw" />
       <child link="Right_Arm_Camera" />
@@ -1284,7 +1296,18 @@
       <dynamics damping="0.3" friction="0.1" />
     </joint>
 
-  
+
+<!-- TCP: same measured fingertip contact point as TCP_L, Fixed_Jaw_2 uses
+     the identical Fixed_Jaw/Moving_Jaw mesh pair mounted symmetrically -->
+<link name="TCP_R" />
+
+<joint name="TCP_R_joint" type="fixed">
+      <parent link="Fixed_Jaw_2" />
+      <child link="TCP_R" />
+      <origin xyz="0.00713 -0.10003 -0.00360" rpy="0 0 0" />
+    </joint>
+
+
 <joint name="fixed_Left_Arm_Camera" type="fixed">
       <parent link="Fixed_Jaw_2" />
       <child link="Left_Arm_Camera" />
@@ -1312,7 +1335,30 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-  
+
+<!-- Tray drop/pick anchor points, one per arm, positioned by hand in RViz
+     against the real basket mesh (see /tmp calibration session). This is the
+     floor contact point of each arm's slot, not the object's rest center:
+     whoever teleports an object here on drop must add half that object's
+     height in z so it does not clip through the floor -->
+<link name="tray_anchor_L" />
+
+<joint name="tray_anchor_L_joint" type="fixed">
+      <parent link="top_base_link" />
+      <child link="tray_anchor_L" />
+      <origin xyz="0.061 0.085 0.002" rpy="0 0 0" />
+    </joint>
+
+
+<link name="tray_anchor_R" />
+
+<joint name="tray_anchor_R_joint" type="fixed">
+      <parent link="top_base_link" />
+      <child link="tray_anchor_R" />
+      <origin xyz="0.061 -0.085 0.002" rpy="0 0 0" />
+    </joint>
+
+
 <joint name="head_pan_joint" type="revolute">
       <parent link="top_base_link" />
       <child link="head_pan_link" />
