@@ -331,7 +331,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 78	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
-81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/xlerobot_home_harmonic.launch.py"}	ROS2	gz	xlerobot_home.urdf
+81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 \.
 
 --

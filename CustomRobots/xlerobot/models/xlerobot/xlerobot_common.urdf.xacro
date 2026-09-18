@@ -1407,14 +1407,19 @@
 <joint name="fixed_head_camera_rgb_frame" type="fixed">
       <parent link="head_camera_link" />
       <child link="head_camera_rgb_frame" />
-      <origin xyz="0 0 0" rpy="0 -1.5707911 -1.5707963" />
+      <!-- roll/pitch were swapped: this used to point optical +Z (forward)
+           along the robot's own +Y (left) instead of +X (ahead), confirmed
+           by computing the actual forward axis from the live TF transform.
+           Correct optical-frame convention is roll=-90, pitch=0, yaw=-90 -->
+      <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
     </joint>
 
   
 <joint name="fixed_head_camera_depth_frame" type="fixed">
       <parent link="head_camera_link" />
       <child link="head_camera_depth_frame" />
-      <origin xyz="0 0 0" rpy="0 -1.5707911 -1.5707963" />
+      <!-- same roll/pitch fix as fixed_head_camera_rgb_frame above -->
+      <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
     </joint>
 
 

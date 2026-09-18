@@ -30,6 +30,27 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Safety net, not a substitute for not colliding: caps how hard ODE is
+       allowed to shove interpenetrating bodies apart in a single step. A
+       real bump against the table (chassis is the only link here with
+       collision geometry near the tray, top_base_link/the basket mesh has
+       none) otherwise resolves as a single large correction impulse that
+       shows up as the whole kinematic chain (arms included) jumping/
+       jittering, since they all ride on the chassis. max_vel/min_depth are
+       the standard ODE knobs for this, does not change normal driving. -->
+  <gazebo reference="chassis">
+    <collision>
+      <surface>
+        <contact>
+          <ode>
+            <max_vel>0.2</max_vel>
+            <min_depth>0.001</min_depth>
+          </ode>
+        </contact>
+      </surface>
+    </collision>
+  </gazebo>
+
   <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">

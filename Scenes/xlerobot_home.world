@@ -109,7 +109,7 @@
     </model>
 
     <model name="yellow_box">
-      <pose>-2.25 0.35 0.77 0 0 0</pose>
+      <pose>-2.15 0.35 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
@@ -145,7 +145,7 @@
     </model>
 
     <model name="blue_box">
-      <pose>-2.35 0.2 0.77 0 0 0</pose>
+      <pose>-2.15 0.2 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
