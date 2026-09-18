@@ -12,11 +12,15 @@
             </submesh>
           </mesh>
         </geometry>
+        <!-- was a flat blue placeholder (never got the wood texture the
+             legs already use below), now matches them -->
         <material>
-          <diffuse>0.0 0.0 1.0 1.0</diffuse>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
           <specular>0.0 0.0 0.0 1.0</specular>
           <pbr>
-            <metal/>
+            <metal>
+              <albedo_map>meshes/wood.jpg</albedo_map>
+            </metal>
           </pbr>
         </material>
       </visual>
