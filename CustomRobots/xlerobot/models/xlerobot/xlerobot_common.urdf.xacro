@@ -846,6 +846,21 @@
           <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
         </material>
       </visual>
+      <!-- Had no collision geometry at all before, so arms could pass
+           straight through the tray/mast both in Gazebo and in MoveIt's
+           planning (nothing to check against). Box approximation, not the
+           real mesh (a cheaper primitive is the norm for collision, and
+           the real mesh's own footprint here still is not fully pinned
+           down), sized generously from the measured basket cavity (tray
+           anchors sit at x~0.06, y~+-0.085) up to just below the head
+           mount (head_pan_joint origin z=0.323) so the whole body is
+           covered, not just the basket -->
+      <collision>
+        <origin xyz="0 0 0.135" rpy="0 0 0" />
+        <geometry>
+          <box size="0.40 0.40 0.37" />
+        </geometry>
+      </collision>
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="0.2542" />
