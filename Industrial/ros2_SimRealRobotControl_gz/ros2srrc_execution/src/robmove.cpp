@@ -106,13 +106,7 @@ public:
             param_ROB_GROUP.c_str()
         );
 
-        // "/Robmove" used to be a literal string here. A launch remapping on
-        // this exact fully qualified name is silently ignored by
-        // rclcpp_action::create_server, so two instances (one per arm) both
-        // ended up serving the same "/Robmove" name no matter what
-        // remappings the launch file gave them. A parameter is a mechanism
-        // that is already known to work for ROB_PARAM/ROB_GROUP above, so
-        // the action name goes through it too instead of a remap.
+        // The action name is a parameter because a launch remap of a fully qualified action name is ignored
         this->declare_parameter("ACTION_NAME", "/Robmove");
         std::string action_name = this->get_parameter("ACTION_NAME").as_string();
         RCLCPP_INFO(this->get_logger(), "ACTION_NAME received -> %s", action_name.c_str());
@@ -294,14 +288,7 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    // The plain (node, group) constructor builds its internal action/service
-    // clients against the bare, unnamespaced names ("/move_action" etc), not
-    // relative to moveit_node's own namespace, so on a namespaced robot it
-    // waits forever for a server that is never going to answer at that name
-    // (confirmed with debug logging, the internal client sits waiting on
-    // literal "/move_action" while the real server is "/<namespace>/move_action").
-    // Passing the namespace through Options is what actually gets it talking
-    // to the real, namespaced move_group.
+    // The namespace has to go through the options or the client waits on the unnamespaced move_action
     MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
     move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 

@@ -2,20 +2,7 @@
 
 <sdf version="1.8">
   <world name="default">
-    <!-- Copied from small_house.world, which never declared this either, so
-         gz-sim fell back to some internal default gz_ros2_control could not
-         read properly ("Desired controller update period is slower than the
-         gazebo simulation period (0 s)"), and controller_manager's own
-         update loop ran badly enough that basic services like
-         list_controllers/switch_controller started timing out for minutes
-         on startup with this heavier scene+robot. Same max_step_size as
-         machine_vision.world, the other gz_ros2_control-driven arm exercise.
-         Stepped at 2ms rather than 1ms: measured live, the gz server thread
-         is pinned at 100% by the physics step (dropping every camera to 1Hz
-         changed nothing) and RTF went ~0.28 -> ~0.45 at 2ms and ~0.89 at
-         4ms. 2ms keeps the 10ms controller_manager period an exact multiple
-         of the step (4ms would not be), which is what that startup problem
-         was about -->
+    <!-- 2 ms step keeps the 10 ms controller period an exact multiple of the step -->
     <physics name="2ms" type="ode">
       <max_step_size>0.002</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -34,9 +21,7 @@
     <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
     </plugin>
 
-    <!-- one instance per gripper, both listen to the same /gripper_auto_attach
-         and /graspable_objects topics, whichever jaw actually touches an
-         object first is the one that grabs it -->
+    <!-- One attacher per gripper -->
     <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
       <robot_model_name>xlerobot</robot_model_name>
       <gripper_link_name>Moving_Jaw</gripper_link_name>
@@ -68,31 +53,12 @@
       <visualize>false</visualize>
     </light>
 
-    <!-- Graspable objects on the dining table (mesa_comedor, at -2.4 0.3 0,
-         yaw 1.57). Table top is at z=0.74, read straight out of the "Mesa"
-         node's transform in mesa_comedor/meshes/model.dae (scale
-         0.8 0.4 0.015, translate z=0.725, on a -1..1 unit cube -> surface
-         at 0.725 + 0.015 = 0.74), boxes are 0.05 tall so their center goes
-         at 0.74 + 0.025 = 0.765, nudged up a hair more to 0.77 to avoid
-         starting embedded. The 90 degree yaw swaps the table's local X/Y
-         half-extents (0.8/0.4) onto world Y/X, so the near edge (largest
-         world x, the side the robot approaches from) is at
-         -2.4 + 0.4 = -2.0. Boxes sit at x=-2.05, ~2.5cm in from that
-         edge (they were at -2.15, 15cm inside the table, before this was
-         actually measured instead of guessed, and the robot had to drive
-         into the table itself to reach them) -->
+    <!-- Graspable cubes on the dining table -->
 
     <model name="red_box">
-      <!-- nudged 0.15m toward the near edge (the side the robot approaches
-           from, larger x) so the robot does not need to get the chassis
-           right up against the table to reach it -->
+      
       <pose>-2.05 0.455 0.77 0 0 0</pose>
-      <!-- Box y positions line up with the two arm shoulders. The robot
-           spawns at y=0.3 facing -x (yaw pi), so its left shoulder axis
-           (base_footprint y=-0.155) is at world y=0.455 and the right one
-           (y=+0.155) at 0.145: red goes to the left arm, blue to the right
-           arm, yellow sits between them. An arm only reaches ~0.30m ahead,
-           and only when the target roughly lines up with its own shoulder. -->
+      <!-- Red goes to the left arm, blue to the right arm and yellow sits between them -->
       <link name="link">
         <inertial>
           <mass>0.05</mass>

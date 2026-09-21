@@ -4,8 +4,7 @@
 
   <xacro:macro name="xlerobot" params="namespace simulation_controllers">
 
-    <!-- base_footprint sits on the ground, chassis is the real link the source model was
-         built around, offset up so the wheels below it touch the floor -->
+    <!-- base_footprint sits on the ground and the chassis is offset up so the wheels touch the floor -->
     <link name="base_footprint" />
 
     <joint name="base_footprint_to_chassis" type="fixed">
@@ -846,20 +845,7 @@
           <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
         </material>
       </visual>
-      <!-- The basket itself is the chassis link (raskogbody.stl) and its
-           collision boxes already model the tray floor (top at z=0.68 in
-           base_footprint) and rim walls, tray_anchor_L/R sit inside that
-           cavity. top_base_link only carries the thin mast, which had no
-           collision at all so arms could pass through it. -->
-      <!-- Was centered at x=0.06 (that is the basket cavity's x, not the
-           mast's), 0.16m wide, which caused the left arm's own ready pose
-           to self-collide with it (checked against the actual joint
-           chain, the forearm passes right through z=0.16-0.28 there), so
-           every single planning request failed regardless of target.
-           Recentered on the real mast footprint from the topbase1.stl
-           cross-section (x=-0.131..-0.079, y=-0.022..0.022) and narrowed
-           to match, the arm's ready-pose links sit at y~-0.15, comfortably
-           clear of this now -->
+      <!-- The tray collision lives in the chassis link, this link only adds the thin mast -->
       <collision name="mast">
         <origin xyz="-0.105 0 0.22" rpy="0 0 0" />
         <geometry>
@@ -1182,15 +1168,7 @@
     </joint>
 
 
-<!-- TCP: centre of the pocket a 50mm cube sits in between the two jaws,
-     in the Fixed_Jaw frame. The gripper is asymmetric, a fixed finger and a
-     moving one, so the point that matters is not where the pads touch when
-     fully closed (that put the TCP on the fixed finger's face, which then
-     shoved the cube out of the way). Measured from the meshes: the fixed
-     pad's most protruding point over the last 5cm of the fingers is at
-     x=0.0079, the cube's face rests there so its centre is 25mm further
-     towards the moving jaw (x=-0.0171), and y=-0.080 centres it on the 5cm
-     of pad, 2cm back from the fingertips -->
+<!-- TCP at the centre of the pocket where a 50 mm cube sits between the jaws -->
 <link name="TCP_L" />
 
 <joint name="TCP_L_joint" type="fixed">
@@ -1323,8 +1301,7 @@
     </joint>
 
 
-<!-- TCP: same pocket centre as TCP_L, Fixed_Jaw_2 uses the identical
-     Fixed_Jaw/Moving_Jaw mesh pair -->
+<!-- Same pocket centre as TCP_L -->
 <link name="TCP_R" />
 
 <joint name="TCP_R_joint" type="fixed">
@@ -1362,11 +1339,7 @@
     </joint>
 
 
-<!-- Tray drop/pick anchor points, one per arm, positioned by hand in RViz
-     against the real basket mesh (see /tmp calibration session). This is the
-     floor contact point of each arm's slot, not the object's rest center:
-     whoever teleports an object here on drop must add half that object's
-     height in z so it does not clip through the floor -->
+<!-- Tray anchor points, one per arm, on the tray floor -->
 <link name="tray_anchor_L" />
 
 <joint name="tray_anchor_L_joint" type="fixed">
@@ -1405,10 +1378,6 @@
 <joint name="head_tilt_joint" type="revolute">
       <parent link="head_pan_link" />
       <child link="head_tilt_link" />
-      <!-- the 180 degree yaw this used to carry made the head camera face
-           straight backward at pan 0, chassis and head_pan_link share the
-           same forward direction all the way up (every joint above this one
-           is rpy 0 0 0), nothing upstream compensates for that flip -->
       <origin xyz="0.001 0.002 0.09815" rpy="0 0 0" />
       <axis xyz="0 1 0" />
       <limit lower="-0.76" upper="1.45" effort="1.0" velocity="1.5" />
@@ -1433,10 +1402,7 @@
 <joint name="fixed_head_camera_rgb_frame" type="fixed">
       <parent link="head_camera_link" />
       <child link="head_camera_rgb_frame" />
-      <!-- roll/pitch were swapped: this used to point optical +Z (forward)
-           along the robot's own +Y (left) instead of +X (ahead), confirmed
-           by computing the actual forward axis from the live TF transform.
-           Correct optical-frame convention is roll=-90, pitch=0, yaw=-90 -->
+      <!-- Optical frame convention, +Z forward -->
       <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
     </joint>
 
@@ -1444,7 +1410,6 @@
 <joint name="fixed_head_camera_depth_frame" type="fixed">
       <parent link="head_camera_link" />
       <child link="head_camera_depth_frame" />
-      <!-- same roll/pitch fix as fixed_head_camera_rgb_frame above -->
       <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
     </joint>
 
@@ -1477,12 +1442,6 @@
 
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}"/>
-    <!-- no separate gz-sim-joint-state-publisher-system for the wheels here
-         on purpose, they are folded into the same ros2_control
-         joint_state_broadcaster as the arms instead (see arm_ros2_control in
-         xlerobot_gz.urdf.xacro), a second publisher on a different topic is
-         exactly what left MoveGroupInterface waiting forever for a "complete"
-         robot state that never included the wheels -->
 
     <xacro:rgbd_camera link="head_camera_link" name="head_camera" namespace="${namespace}"/>
     <xacro:wrist_camera link="Right_Arm_Camera" name="right_arm_camera" namespace="${namespace}"/>

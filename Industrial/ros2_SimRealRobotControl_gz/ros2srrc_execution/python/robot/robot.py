@@ -58,10 +58,7 @@ RES["ExecTime"] = -1.0
 
 class RobMoveCLIENT(Node):
 
-    # node_name/action_name default to the original hardcoded values so any
-    # existing caller doing RobMoveCLIENT() keeps working unchanged, a robot
-    # with more than one arm passes a distinct node_name/action_name per arm
-    # instead (see RBT below)
+    # Defaults keep the single robot behaviour, a second arm passes its own names
     def __init__(self, node_name="ros2srrc_RobMove_Client", action_name="/Robmove"):
 
         super().__init__(node_name)
@@ -186,13 +183,8 @@ class MoveCLIENT(Node):
 
 class RBT:
 
-    # suffix, move_action and robmove_action let a robot with more than one
-    # arm create one RBT per arm, each pointed at that arm's own action
-    # servers (see xlerobot_home's HAL.py), left at their defaults this is
-    # the exact same single-robot behaviour every other exercise already
-    # relies on. use_move=False skips connecting to /Move entirely, useful
-    # when that action server was never brought up for this robot, otherwise
-    # this call blocks forever in MoveCLIENT's wait_for_server()
+    # One RBT per arm, each with its own action servers. use_move=False skips
+    # the /Move client for robots that do not run that action server.
     def __init__(
         self,
         suffix="",

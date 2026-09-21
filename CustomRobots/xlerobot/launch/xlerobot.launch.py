@@ -37,9 +37,7 @@ def launch_setup(context):
     namespace = gz_namespace.perform(context)
     entity = gz_entity.perform(context)
 
-    # =========================
-    # ROBOT DESCRIPTION (URDF)
-    # =========================
+    # Robot description
     xacro_file = os.path.join(
         package_dir,
         "models",
@@ -63,9 +61,7 @@ def launch_setup(context):
 
     robot_description = {"robot_description": robot_description_content}
 
-    # =========================
-    # MOVEIT CONFIG
-    # =========================
+    # MoveIt configuration
     robot_description_semantic = {
         "robot_description_semantic": load_file(
             "xlerobot_moveit_config", "srdf/xlerobot.srdf"
@@ -85,10 +81,7 @@ def launch_setup(context):
     ompl_planning = load_yaml("xlerobot_moveit_config", "config/ompl_planning.yaml")
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
-    # Pilz gives Robmove real "LIN"/"PTP" planner IDs to call, that field on
-    # the Robmove action is not a free label, robmove.cpp passes it straight
-    # into MoveGroupInterface::setPlannerId(), so it has to name a planner
-    # move_group actually knows about, OMPL alone does not define those IDs
+    # Pilz provides the LIN and PTP planners used by Robmove
     planning_pipelines_config = {
         "planning_pipelines": ["ompl", "pilz_industrial_motion_planner"],
         "default_planning_pipeline": "pilz_industrial_motion_planner",
@@ -115,9 +108,7 @@ def launch_setup(context):
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"
     }
 
-    # =========================
-    # CORE NODES
-    # =========================
+    # Core nodes
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -127,10 +118,7 @@ def launch_setup(context):
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    # No static transform from world to base_footprint here on purpose, the
-    # base moves through VelocityControl so nailing it to a fixed world pose
-    # would be wrong the moment it drives away, arm planning stays relative
-    # to the robot itself instead
+    # No world transform because planning stays relative to base_footprint
 
     gz_spawn_entity = Node(
         package="ros_gz_sim",
@@ -173,9 +161,7 @@ def launch_setup(context):
         output="screen",
     )
 
-    # the camera sensors were wired in the xacro but never actually reached
-    # ROS before, sensor_msgs/Image needs ros_gz_image specifically, a plain
-    # parameter_bridge line does not work for it
+    # Images use ros_gz_image because the parameter bridge does not support them
     gz_ros2_image_bridge = Node(
         package="ros_gz_image",
         executable="image_bridge",
@@ -189,31 +175,13 @@ def launch_setup(context):
         output="screen",
     )
 
-    # =========================
-    # CONTROLLER SPAWNERS
-    # =========================
+    # Controller spawners
     def controller_spawner(controller_name):
         return Node(
             package="controller_manager",
             executable="spawner",
             namespace=gz_namespace,
-            # the default 5s switch-controller timeout is not enough right
-            # after spawn, the sim is still busy loading the house scene and
-            # the robot at that point and does not get to a controller
-            # activation request in time, seen for real as "Switch controller
-            # timed out after 5.000000 seconds!" on joint_state_broadcaster
-            # and both arm controllers specifically (spawned first, while the
-            # scene is still settling), gripper/head controllers spawned
-            # later did not hit it. --switch-timeout is spawner's own flag
-            # for exactly this, "useful when switching cannot be performed
-            # immediately, e.g. paused simulations at startup". Even 30s was
-            # not always enough for joint_state_broadcaster specifically
-            # (first in the chain, hits the worst of the cold start, seen for
-            # real as three consecutive "Switch controller timed out after
-            # 30.000000 seconds!" and the controller stuck inactive forever
-            # afterward, nothing retries a spawner that already gave up), so
-            # this is generous on purpose rather than tuned to a measured
-            # minimum, the cost only applies once at cold start
+            # Long timeouts because the scene is still loading
             arguments=[
                 controller_name,
                 "--switch-timeout",
@@ -233,9 +201,7 @@ def launch_setup(context):
     right_gripper_controller_spawner = controller_spawner("right_gripper_controller")
     head_controller_spawner = controller_spawner("head_controller")
 
-    # =========================
-    # MOVEIT NODES
-    # =========================
+    # MoveIt nodes
     move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
@@ -253,48 +219,14 @@ def launch_setup(context):
         ],
     )
 
-    # The "move" executable (MoveJ/MoveL/MoveG action API) additionally loads
-    # ros2srrc_robots/<ROB_PARAM>/config/joint_specifications.yaml and
-    # ros2srrc_endeffectors/<EE_PARAM>/config/joint_specifications.yaml at
-    # startup, and crashes immediately (uncaught YAML::BadFile) if those do
-    # not exist. There is no "xlerobot"/"left_gripper"/"right_gripper" entry
-    # in either package yet, and adding one means a new install(DIRECTORY ...)
-    # line plus a rebuild of ros2srrc_robots/ros2srrc_endeffectors, so it is
-    # left out for now, robmove/robpose/move_group below do not need it.
-    #
-    # robmove.cpp used to hardcode its action server as the absolute name
-    # "/Robmove" (robpose.cpp similarly publishes on the plain relative topic
-    # "Robpose"), so spawning it twice under the same node namespace, once
-    # per arm, collided on that same name, both instances answering on
-    # "/Robmove" with no way to tell which is which. A launch remapping on
-    # that name is silently ignored by rclcpp_action::create_server for a
-    # fully qualified action name, confirmed live, the action always came up
-    # as "/Robmove" regardless of the remap, unlike robpose's plain topic
-    # remap which does work. robmove.cpp now reads the action name from an
-    # ACTION_NAME parameter instead, same as ROB_PARAM/ROB_GROUP below.
-    #
-    # No name= here on purpose. robmove.cpp's main() creates TWO nodes (the
-    # ActionServer itself, plus a second "moveit_helper_node_robmove" used
-    # only for MoveGroupInterface), and name= becomes a process-wide
-    # "-r __node:=X" remap that silently renames BOTH of them to the same
-    # thing, not just the one node you meant to rename. That made the two
-    # nodes in one robmove process collide with each other (the exact
-    # "Publisher already registered for provided node name" warning seen in
-    # the logs), which left the actual /Robmove action server never
-    # reachable even though the process was alive and the two robmove
-    # processes never collided with each other. Left/right are already two
-    # separate OS processes, they do not need distinct node names to avoid
-    # colliding with one another, only the action name remap above matters.
+    # No move executable because xlerobot has no joint_specifications.yaml
+    # robmove has no name because it creates two nodes
 
     left_robmove = Node(
         package="ros2srrc_execution",
         executable="robmove",
         namespace=gz_namespace,
         output="screen",
-        # temporary, MoveGroupInterface's own construction is the thing
-        # hanging (confirmed in robpose too, a completely separate binary),
-        # plain INFO has nothing left to say about where inside it
-        arguments=["--ros-args", "--log-level", "debug"],
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -334,7 +266,6 @@ def launch_setup(context):
         name="left_robpose",
         namespace=gz_namespace,
         output="screen",
-        arguments=["--ros-args", "--log-level", "debug"],
         remappings=[("Robpose", "left_robpose/Robpose")],
         parameters=[
             robot_description,
@@ -373,16 +304,8 @@ def launch_setup(context):
         right_robpose,
     ]
 
-    # =========================
-    # STARTUP ORDER
-    # =========================
-    # gz_ros2_control (and its controller_manager) only exists once the entity
-    # is actually spawned in Gazebo, and move_group only makes sense once the
-    # controllers it talks to are active, chaining on process exit (every one
-    # of these is a one shot call that exits once it is done, not a persistent
-    # node) keeps that order instead of firing everything at once and hoping
-    # the timing works out, which is what makes the existing UR arm launch
-    # files fragile on a RAM reset
+    # Startup order
+    # Each step starts when the previous one exits
     after_spawn = RegisterEventHandler(
         OnProcessExit(
             target_action=gz_spawn_entity,

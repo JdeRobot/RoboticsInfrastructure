@@ -50,22 +50,9 @@
   <end_effector name="left_gripper" parent_link="TCP_L" group="left_gripper"/>
   <end_effector name="right_gripper" parent_link="TCP_R" group="right_gripper"/>
 
-  <!-- No virtual joint to world on purpose, base_footprint moves with the chassis
-       via VelocityControl and is not tracked by any static transform, planning stays
-       relative to the robot itself -->
+  <!-- No virtual joint to world because the base moves and planning stays relative to base_footprint -->
 
-  <!-- Programmatically generated from the URDF's actual joint tree (fixed
-       joints group links into a single rigid body, movable joints connect
-       two rigid bodies), covering every link pair that will always be
-       touching. This replaces a hand-picked list that only covered direct
-       parent/child pairs and missed the cross pairs (a link and its
-       parent's own "_geom_1" sibling, e.g. Rotation_Pitch vs Base_geom_1),
-       which made every single pose, including the plain home pose, read
-       as self-colliding to check_state_validity/avoid_collisions, in turn
-       making pilz_industrial_motion_planner (which checks self collision
-       on every IK call by default) fail to find a plan for reachable,
-       non-colliding poses. Confirmed against a live check_state_validity
-       call before and after this fix. -->
+  <!-- Links that are always in contact, generated from the URDF joint tree -->
   <disable_collisions link1="Base" link2="Base_2" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Base_2_geom_1" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Base_geom_1" reason="Adjacent" />
