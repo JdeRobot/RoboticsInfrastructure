@@ -51,6 +51,21 @@
     </collision>
   </gazebo>
 
+  <!-- Gazebo does not collide the links of one model with each other unless
+       asked, so the arms passed straight through the tray, the mast and each
+       other wherever MoveIt was not planning the move (readyPose, the tray
+       poses). With this on, non adjacent links collide, the same pairs MoveIt
+       already checks. Fixed joints get lumped into their parent when the
+       URDF is converted, so the chassis, tray, mast and both arm mounts are
+       one body and never collide among themselves, and jointed neighbours
+       (shoulder/chassis, upper arm/forearm, ...) are skipped by the engine.
+       Checked offline against the collision geometry in the zero, ready,
+       grasp, pre-approach and tray poses: no non adjacent pair overlaps.
+       To turn it off again, remove this block. -->
+  <gazebo>
+    <self_collide>true</self_collide>
+  </gazebo>
+
   <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
