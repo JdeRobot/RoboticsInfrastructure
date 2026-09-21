@@ -48,7 +48,7 @@
                     </geometry>
                     <material>
                         <ambient>0 0 0 1</ambient>
-                        <diffuse>0 0 0 1</diffuse>
+                        <diffuse>0.01 0.01 0.01 1</diffuse>
                     </material>
                 </visual>
             </link>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage="$(basename "$0") [-h] [--debug] [--logs] [--no-server] [--server] [--bt-studio] \n\n
+usage="$(basename "$0") [-h] [--debug] [--logs] [--no-server] [--server] [--bt-studio] [-f/--freeze] \n\n
 
 optional arguments:\n
 \t  -h  show this help message and exit\n
@@ -8,12 +8,14 @@ optional arguments:\n
 \t  --logs record logs and run RADI\n
 \t  --no-server run RADI without webserver
 \t  --server run RADI with webserver
-\t  --bt-studio run BT Studio"
+\t  --bt-studio run BT Studio
+\t  --freeze freeze Robotics Application Manager version"
 
 debug=false
 log=false
 webserver=true
 btstudio=false
+freeze=false
 
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
   -h | --help )
@@ -29,6 +31,9 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
   -ns | --no-server )
     webserver=false
     btstudio=false
+    ;;
+  -f | --freeze )
+    freeze=true
     ;;
   -s | --server )
     webserver=true
@@ -65,8 +70,9 @@ fi
 if [ -d "/RoboticsApplicationManager" ]; then
   runram="python3 RoboticsApplicationManager/robotics_application_manager/manager/manager.py 0.0.0.0 7163"
 else
-  # TODO: check for updates
-  source check_ram_version.sh
+  if [ $freeze == false ]; then
+    source check_ram_version.sh
+  fi
   runram="python3 /ram_entrypoint.py 0.0.0.0 7163"
 fi
 
