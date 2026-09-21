@@ -1182,15 +1182,21 @@
     </joint>
 
 
-<!-- TCP: fingertip contact point with the gripper mechanically closed
-     (Jaw_L at its lower limit), measured as the midpoint of the closest
-     Fixed_Jaw/Moving_Jaw mesh vertices at that configuration -->
+<!-- TCP: centre of the pocket a 50mm cube sits in between the two jaws,
+     in the Fixed_Jaw frame. The gripper is asymmetric, a fixed finger and a
+     moving one, so the point that matters is not where the pads touch when
+     fully closed (that put the TCP on the fixed finger's face, which then
+     shoved the cube out of the way). Measured from the meshes: the fixed
+     pad's most protruding point over the last 5cm of the fingers is at
+     x=0.0079, the cube's face rests there so its centre is 25mm further
+     towards the moving jaw (x=-0.0171), and y=-0.080 centres it on the 5cm
+     of pad, 2cm back from the fingertips -->
 <link name="TCP_L" />
 
 <joint name="TCP_L_joint" type="fixed">
       <parent link="Fixed_Jaw" />
       <child link="TCP_L" />
-      <origin xyz="0.00713 -0.10003 -0.00360" rpy="0 0 0" />
+      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
     </joint>
 
 
@@ -1317,14 +1323,14 @@
     </joint>
 
 
-<!-- TCP: same measured fingertip contact point as TCP_L, Fixed_Jaw_2 uses
-     the identical Fixed_Jaw/Moving_Jaw mesh pair mounted symmetrically -->
+<!-- TCP: same pocket centre as TCP_L, Fixed_Jaw_2 uses the identical
+     Fixed_Jaw/Moving_Jaw mesh pair -->
 <link name="TCP_R" />
 
 <joint name="TCP_R_joint" type="fixed">
       <parent link="Fixed_Jaw_2" />
       <child link="TCP_R" />
-      <origin xyz="0.00713 -0.10003 -0.00360" rpy="0 0 0" />
+      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
     </joint>
 
 
