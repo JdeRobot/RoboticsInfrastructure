@@ -369,6 +369,10 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
 35	Turtlebot 3 Marker	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	sensor:=laser marker:=true namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
+36	Mir100	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+37	Mir100 Low Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+38	Mir100 Medium Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=med namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 \.
 
 --
