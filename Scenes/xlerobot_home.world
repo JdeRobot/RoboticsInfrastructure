@@ -9,11 +9,17 @@
          update loop ran badly enough that basic services like
          list_controllers/switch_controller started timing out for minutes
          on startup with this heavier scene+robot. Same max_step_size as
-         machine_vision.world, the other gz_ros2_control-driven arm exercise -->
-    <physics name="1ms" type="ode">
-      <max_step_size>0.001</max_step_size>
+         machine_vision.world, the other gz_ros2_control-driven arm exercise.
+         Stepped at 2ms rather than 1ms: measured live, the gz server thread
+         is pinned at 100% by the physics step (dropping every camera to 1Hz
+         changed nothing) and RTF went ~0.28 -> ~0.45 at 2ms and ~0.89 at
+         4ms. 2ms keeps the 10ms controller_manager period an exact multiple
+         of the step (4ms would not be), which is what that startup problem
+         was about -->
+    <physics name="2ms" type="ode">
+      <max_step_size>0.002</max_step_size>
       <real_time_factor>1.0</real_time_factor>
-      <real_time_update_rate>1000</real_time_update_rate>
+      <real_time_update_rate>500</real_time_update_rate>
     </physics>
 
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
