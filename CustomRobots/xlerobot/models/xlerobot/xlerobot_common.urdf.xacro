@@ -846,53 +846,24 @@
           <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
         </material>
       </visual>
-      <!-- Had no collision geometry at all before, so arms could pass
-           straight through the tray/mast both in Gazebo and in MoveIt's
-           planning (nothing to check against). Modeled hollow on purpose:
-           floor + 4 thin walls around the basket cavity (tray_anchor_L/R
-           sit at x~0.06, y~+-0.085, z~0, comfortably inside), open top so
-           dropInLeftTray/RightTray and pickFromLeftTray/RightTray can
-           still lower an object in from above, a single solid box here
-           would physically block the tray from ever being used. Solid
-           mast above the rim, up to just below the head mount
-           (head_pan_joint origin z=0.323), narrower to roughly match the
-           pole. All dimensions are a reasoned approximation around the
-           measured anchor points, not the real mesh, worth a visual
-           check once this is live. -->
-      <collision name="tray_floor">
-        <origin xyz="0.06 0 -0.045" rpy="0 0 0" />
-        <geometry>
-          <box size="0.28 0.36 0.03" />
-        </geometry>
-      </collision>
-      <collision name="tray_wall_back">
-        <origin xyz="-0.065 0 0.045" rpy="0 0 0" />
-        <geometry>
-          <box size="0.03 0.36 0.15" />
-        </geometry>
-      </collision>
-      <collision name="tray_wall_front">
-        <origin xyz="0.185 0 0.045" rpy="0 0 0" />
-        <geometry>
-          <box size="0.03 0.36 0.15" />
-        </geometry>
-      </collision>
-      <collision name="tray_wall_left">
-        <origin xyz="0.06 -0.165 0.045" rpy="0 0 0" />
-        <geometry>
-          <box size="0.22 0.03 0.15" />
-        </geometry>
-      </collision>
-      <collision name="tray_wall_right">
-        <origin xyz="0.06 0.165 0.045" rpy="0 0 0" />
-        <geometry>
-          <box size="0.22 0.03 0.15" />
-        </geometry>
-      </collision>
+      <!-- The basket itself is the chassis link (raskogbody.stl) and its
+           collision boxes already model the tray floor (top at z=0.68 in
+           base_footprint) and rim walls, tray_anchor_L/R sit inside that
+           cavity. top_base_link only carries the thin mast, which had no
+           collision at all so arms could pass through it. -->
+      <!-- Was centered at x=0.06 (that is the basket cavity's x, not the
+           mast's), 0.16m wide, which caused the left arm's own ready pose
+           to self-collide with it (checked against the actual joint
+           chain, the forearm passes right through z=0.16-0.28 there), so
+           every single planning request failed regardless of target.
+           Recentered on the real mast footprint from the topbase1.stl
+           cross-section (x=-0.131..-0.079, y=-0.022..0.022) and narrowed
+           to match, the arm's ready-pose links sit at y~-0.15, comfortably
+           clear of this now -->
       <collision name="mast">
-        <origin xyz="0.06 0 0.22" rpy="0 0 0" />
+        <origin xyz="-0.105 0 0.22" rpy="0 0 0" />
         <geometry>
-          <box size="0.16 0.16 0.20" />
+          <box size="0.06 0.05 0.20" />
         </geometry>
       </collision>
       <inertial>

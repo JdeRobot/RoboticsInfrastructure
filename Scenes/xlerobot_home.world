@@ -80,10 +80,13 @@
       <!-- nudged 0.15m toward the near edge (the side the robot approaches
            from, larger x) so the robot does not need to get the chassis
            right up against the table to reach it -->
-      <pose>-2.05 0.25 0.77 0 0 0</pose>
-      <!-- boxes spaced 0.15m apart in y (was 0.05-0.1m, edge to edge for
-           red/blue, looked "stuck together" and made them harder to tell
-           apart visually) -->
+      <pose>-2.05 0.455 0.77 0 0 0</pose>
+      <!-- Box y positions line up with the two arm shoulders. The robot
+           spawns at y=0.3 facing -x (yaw pi), so its left shoulder axis
+           (base_footprint y=-0.155) is at world y=0.455 and the right one
+           (y=+0.155) at 0.145: red goes to the left arm, blue to the right
+           arm, yellow sits between them. An arm only reaches ~0.30m ahead,
+           and only when the target roughly lines up with its own shoulder. -->
       <link name="link">
         <inertial>
           <mass>0.05</mass>
@@ -119,7 +122,7 @@
     </model>
 
     <model name="yellow_box">
-      <pose>-2.05 0.40 0.77 0 0 0</pose>
+      <pose>-2.05 0.30 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
@@ -155,7 +158,7 @@
     </model>
 
     <model name="blue_box">
-      <pose>-2.05 0.10 0.77 0 0 0</pose>
+      <pose>-2.05 0.145 0.77 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.05</mass>
