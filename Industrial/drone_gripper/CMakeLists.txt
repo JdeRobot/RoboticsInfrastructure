@@ -27,7 +27,7 @@ add_library(drone_gripper SHARED
   src/drone_gripper.cpp
 )
 
-target_link_libraries(gz_link_attacher
+target_link_libraries(drone_gripper
   rclcpp::rclcpp
   gz-sim::gz-sim
   gz-plugin::gz-plugin
