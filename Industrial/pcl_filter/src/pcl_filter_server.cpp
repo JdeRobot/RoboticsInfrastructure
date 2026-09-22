@@ -10,13 +10,13 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/filters/conditional_removal.h>
 #include <tf2_ros/transform_broadcaster.h>
-#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <pcl/filters/voxel_grid.h>
 
 #include <opencv2/opencv.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <sensor_msgs/msg/image.hpp>
 
 #include <pcl_filter_msgs/msg/color_filter.hpp>
