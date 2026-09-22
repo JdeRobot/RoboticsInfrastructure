@@ -67,6 +67,8 @@ if [ $webserver == true ]; then
     runserver="python3 /RoboticsAcademy/manage.py runserver 0.0.0.0:7164"
 fi
 
+source /.venv/bin/activate
+
 if [ -d "/RoboticsApplicationManager" ]; then
   runram="python3 RoboticsApplicationManager/robotics_application_manager/manager/manager.py 0.0.0.0 7163"
 else
