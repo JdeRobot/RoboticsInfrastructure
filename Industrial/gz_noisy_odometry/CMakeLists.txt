@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(gz_noisy_odometry)
 
 # Default to C99
@@ -22,10 +22,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
 
-find_package(gz-plugin2 REQUIRED COMPONENTS register)
-find_package(gz-sim8 REQUIRED)
-find_package(gz-math7 REQUIRED)
-find_package(gz-common5 REQUIRED)
+find_package(gz-plugin REQUIRED COMPONENTS register)
+find_package(gz-sim REQUIRED)
+find_package(gz-math REQUIRED)
+find_package(gz-common REQUIRED)
 
 # ============================================================================
 # Noisy Odometry plugin
@@ -39,17 +39,14 @@ target_include_directories(NoisyOdometryPlugin PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(NoisyOdometryPlugin
-  rclcpp
-  nav_msgs
-)
-
 target_link_libraries(NoisyOdometryPlugin
-  gz-plugin2::gz-plugin2
-  gz-plugin2::register
-  gz-sim8::gz-sim8
-  gz-math7::gz-math7
-  gz-common5::gz-common5
+  gz-plugin::gz-plugin
+  gz-plugin::register
+  gz-sim::gz-sim
+  gz-math::gz-math
+  gz-common::gz-common
+  rclcpp::rclcpp
+  nav_msgs::nav_msgs
 )
 
 install(

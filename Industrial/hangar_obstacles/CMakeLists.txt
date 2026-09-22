@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(hangar_obstacles)
 
 # ============================
@@ -19,8 +19,8 @@ endif()
 # ============================
 find_package(ament_cmake REQUIRED)
 
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz-plugin REQUIRED)
 
 # ============================
 # Plugin
@@ -30,8 +30,8 @@ add_library(hangar_obstacle_mover SHARED
 )
 
 target_link_libraries(hangar_obstacle_mover
-  gz-sim8::gz-sim8
-  gz-plugin2::gz-plugin2
+  gz-sim::gz-sim
+  gz-plugin::gz-plugin
 )
 
 # ============================
@@ -50,6 +50,9 @@ install(
 # Export
 # ============================
 ament_export_libraries(hangar_obstacle_mover)
-ament_export_dependencies(gz-sim8 gz-plugin2)
+ament_export_dependencies(
+  gz-sim
+  gz-plugin
+)
 
 ament_package()

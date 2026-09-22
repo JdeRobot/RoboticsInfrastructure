@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(gz_mimic_joint)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -16,8 +16,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz-plugin REQUIRED)
 
 
 ############################
@@ -29,12 +29,9 @@ add_library(gz_mimic_joint SHARED
 )
 
 target_link_libraries(gz_mimic_joint
-  gz-sim8::gz-sim8
-  gz-plugin2::gz-plugin2
-)
-
-ament_target_dependencies(gz_mimic_joint
-  rclcpp
+  rclcpp::rclcpp
+  gz-sim::gz-sim
+  gz-plugin::gz-plugin
 )
 
 ############################
@@ -62,8 +59,8 @@ install(
 ament_export_libraries(gz_mimic_joint)
 
 ament_export_dependencies(
-  gz-sim8
-  gz-plugin2
+  gz-sim
+  gz-plugin
 )
 
 ament_package()

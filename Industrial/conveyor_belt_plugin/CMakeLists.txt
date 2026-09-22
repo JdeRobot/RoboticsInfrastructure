@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(conveyor_belt_plugin)
 
 # ============================
@@ -20,8 +20,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz-plugin REQUIRED)
 
 # ============================
 # Plugin
@@ -33,12 +33,9 @@ add_library(conveyor_plugin SHARED
 target_include_directories(conveyor_plugin PUBLIC include)
 
 target_link_libraries(conveyor_plugin
-  gz-sim8::gz-sim8
-  gz-plugin2::gz-plugin2
-)
-
-ament_target_dependencies(conveyor_plugin
-  rclcpp
+  rclcpp::rclcpp
+  gz-sim::gz-sim
+  gz-plugin::gz-plugin
 )
 
 # ============================
@@ -57,6 +54,6 @@ install(
 # Export
 # ============================
 ament_export_libraries(conveyor_plugin)
-ament_export_dependencies(gz-sim8 gz-plugin2 rclcpp)
+ament_export_dependencies(gz-sim gz-plugin rclcpp)
 
 ament_package()
