@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(common_interfaces_cpp)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -22,7 +22,7 @@ foreach(dependency IN LISTS ros2_dependencies)
 endforeach()
 
 find_package(OpenCV REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(Boost REQUIRED COMPONENTS thread)
 find_package(nlohmann_json REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
@@ -45,13 +45,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   ${Boost_INCLUDE_DIRS}
 )
 
-ament_target_dependencies(${PROJECT_NAME} ${ros2_dependencies})
-
 target_link_libraries(${PROJECT_NAME} 
   ${OpenCV_LIBRARIES}
-  Boost::system
   Boost::thread
   nlohmann_json::nlohmann_json
+  rclcpp::rclcpp
+  nav_msgs::nav_msgs
+  sensor_msgs::sensor_msgs
+  geometry_msgs::geometry_msgs
+  rosgraph_msgs::rosgraph_msgs
+  cv_bridge::cv_bridge
+  ros_gz_interfaces::ros_gz_interfaces
 )
 
 install(DIRECTORY include/ DESTINATION include)
