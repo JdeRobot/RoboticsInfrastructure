@@ -35,7 +35,7 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
   find_package(${dependency} REQUIRED)
 endforeach()
 
-add_subdirectory(follow_person_harmonic)
+# add_subdirectory(follow_person_harmonic)
 
 # ============================================================================
 # Person plugin
@@ -54,7 +54,7 @@ ament_environment_hooks("hooks/resource_paths.sh")
 # Resources
 install(
   DIRECTORY
-    follow_person_harmonic/models
+    # follow_person_harmonic/models
     
     f1/models
     f1/launch
