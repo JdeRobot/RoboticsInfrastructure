@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(pcl_filter)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -30,22 +30,21 @@ add_definitions(${PCL_DEFINITIONS})
 # Create executables
 add_executable(pcl_filter_server src/pcl_filter_server.cpp)
 
-ament_target_dependencies(pcl_filter_server
-  rclcpp
-  std_msgs
-  std_srvs
-  geometry_msgs
-  sensor_msgs
-  tf2
-  tf2_ros
-  tf2_geometry_msgs
-  pcl_conversions
-  cv_bridge
-  pcl_filter_msgs
-  moveit_msgs
+target_link_libraries(pcl_filter_server
+  rclcpp::rclcpp
+  std_srvs::std_srvs
+  std_msgs::std_msgs
+  geometry_msgs::geometry_msgs
+  sensor_msgs::sensor_msgs
+  tf2::tf2
+  tf2_ros::tf2_ros
+  tf2_geometry_msgs::tf2_geometry_msgs
+  pcl_conversions::pcl_conversions
+  cv_bridge::cv_bridge
+  pcl_filter_msgs::pcl_filter_msgs
+  moveit_msgs::moveit_msgs
+  ${PCL_LIBRARIES} ${OpenCV_LIBS}
 )
-
-target_link_libraries(pcl_filter_server ${PCL_LIBRARIES} ${OpenCV_LIBS})
 
 # Install executables
 install(TARGETS
