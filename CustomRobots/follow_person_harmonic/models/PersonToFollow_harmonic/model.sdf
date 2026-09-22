@@ -28,7 +28,7 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToFollow_harmonic/meshes/standing.dae</uri>
+            <uri>model://PersonToControl_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -37,18 +37,18 @@
         <pose>0 0 0.02 0.04 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://PersonToFollow_harmonic/meshes/standing.dae</uri>
+            <uri>model://PersonToControl_harmonic/meshes/standing.dae</uri>
           </mesh>
         </geometry>
       </visual>
     </link>
 
-  <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so">
-    <auto_movement>true</auto_movement>
-  </plugin>
+    <plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so">
+      <auto_movement>true</auto_movement>
+    </plugin>
 
     <static>false</static>
-      
+
   </model>
 </sdf>
 

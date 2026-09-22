@@ -1,0 +1,66 @@
+# Palletizing-specific UR10 joint limits (ur10_suction arm).
+# Loaded ONLY by the palletizing exercise (ur10_suction.launch.py); the shared
+# stock UR10 limits are left untouched. OMPL samples these bounds, so they shape
+# the arm's posture. Deviations from stock, all to make the motion tidy:
+#   shoulder_pan  [-150, +30]  asymmetric -> forces a clockwise pick->place swing
+#                              (the +30 cap forbids the counter-clockwise mirror)
+#   elbow         [0, +180]    elbow-UP only -> no drooping forearm at the cells
+#   wrist_3       +-120        limits the box-spin ("swirl") about the cup axis
+#   wrist_1/2     +-180        left wide: reach joints needed for the far-row descent
+# Tuning knobs if a far cell reports infeasible: widen shoulder_pan min toward -180,
+# or wrist_3 toward +-180. If the elbow droops the wrong way, flip to [-180, 0].
+joint_limits:
+  shoulder_pan_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 330.0
+    max_position: !degrees   30.0
+    max_velocity: !degrees  120.0
+    min_position: !degrees -150.0
+  shoulder_lift_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 330.0
+    max_position: !degrees  180.0
+    max_velocity: !degrees  120.0
+    min_position: !degrees -180.0
+  elbow_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 150.0
+    max_position: !degrees  180.0
+    max_velocity: !degrees  180.0
+    min_position: !degrees    0.0
+  wrist_1_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 56.0
+    max_position: !degrees  180.0
+    max_velocity: !degrees  180.0
+    min_position: !degrees -180.0
+  wrist_2_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 56.0
+    max_position: !degrees  180.0
+    max_velocity: !degrees  180.0
+    min_position: !degrees -180.0
+  wrist_3_joint:
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 56.0
+    max_position: !degrees  120.0
+    max_velocity: !degrees  180.0
+    min_position: !degrees -120.0

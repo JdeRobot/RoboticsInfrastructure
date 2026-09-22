@@ -154,6 +154,7 @@ def launch_setup(context):
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
             {"EE_PARAM": "robotiq_2f85"},
+            {"ROB_GROUP": "ur5_manipulator"},
         ],
     )
 
@@ -173,6 +174,7 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
+            {"ROB_GROUP": "ur5_manipulator"},
         ],
     )
 
@@ -188,6 +190,7 @@ def launch_setup(context):
             ompl_planning,
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
+            {"ROB_GROUP": "ur5_manipulator"},
         ],
     )
 

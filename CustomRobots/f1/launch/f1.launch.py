@@ -17,33 +17,27 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
-    sensor = LaunchConfiguration("sensor")
-    mode = LaunchConfiguration("mode")
+    gz_sensor = LaunchConfiguration("sensor")
+    gz_mode = LaunchConfiguration("mode")
+    gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
-    f1_sensor = "camera"
-    f1_model = "holonomic"
+    sensor = gz_sensor.perform(context)
+    mode = gz_mode.perform(context)
+    namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
-    if sensor.perform(context) == "laser":
-        f1_sensor = "laser"
-
-    if mode.perform(context) == "ackermann":
-        f1_model = "ackermann"
-
-    bridge_yaml = os.path.join(package_dir, "params", "f1_renault.yaml")
+    f1_sensor = "laser" if sensor == "laser" else "camera"
+    f1_model = "ackermann" if mode == "ackermann" else "holonomic"
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    xacro_file = os.path.join(
-        package_dir,
-        "models",
-        "f1",
-        "f1.urdf.xacro",
-    )
+    xacro_file = os.path.join(package_dir, "models", "f1", "f1.urdf.xacro")
 
     robot_description_content = xacro.process_file(
         xacro_file,
@@ -52,6 +46,7 @@ def launch_setup(context):
             "ackermann": "true" if f1_model == "ackermann" else "false",
             "camera": "true" if f1_sensor == "camera" else "false",
             "laser": "true" if f1_sensor == "laser" else "false",
+            "namespace": namespace,
         },
     ).toxml()
 
@@ -61,6 +56,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -68,11 +64,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
-            "f1",
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -94,7 +91,11 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        namespace=gz_namespace,
+        arguments=[
+            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+        ],
         output="screen",
     )
 
@@ -107,29 +108,40 @@ def launch_setup(context):
         gz_ros2_image_bridge = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            arguments=["/cam_f1_left/image_raw"],
+            arguments=[f"/{namespace}/camera/image_raw"],
             output="screen",
         )
         nodes_to_start.append(gz_ros2_image_bridge)
+    else:
+        gz_ros2_laser_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            namespace=gz_namespace,
+            arguments=[
+                f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            ],
+            output="screen",
+        )
+        nodes_to_start.append(gz_ros2_laser_bridge)
 
     return nodes_to_start
 
 
 def generate_launch_description():
-    declared_arguments = []
-
     # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("sensor", default_value="camera"))
-    declared_arguments.append(DeclareLaunchArgument("mode", default_value="holo"))
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("sensor", default_value="camera"),
+        DeclareLaunchArgument("mode", default_value="holo"),
+        DeclareLaunchArgument("namespace", default_value="f1"),
+        DeclareLaunchArgument("entity", default_value="f1"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

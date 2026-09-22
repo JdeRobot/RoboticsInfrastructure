@@ -12,13 +12,10 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
-    gazebo_models_path = os.path.join(package_dir, "models")
-
     world_file_name = "obstacle_avoidance_h.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     gazebo_server = IncludeLaunchDescription(
@@ -38,15 +35,18 @@ def generate_launch_description():
         output="screen",
     )
 
-    ld = LaunchDescription()
-
-    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
     )
-    ld.add_action(set_env_vars_resources)
 
+    ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
+    ld.add_action(gz_ros2_bridge)
 
     return ld

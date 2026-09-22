@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="clearpath_dark_grey">
+    <color rgba="0.2 0.2 0.2 1.0" />
+  </material>
+  <material name="clearpath_medium_grey">
+    <color rgba="0.6 0.6 0.6 1.0" />
+  </material>
+  <material name="clearpath_light_grey">
+    <color rgba="0.8 0.8 0.8 1.0" />
+  </material>
+  <material name="clearpath_yellow">
+    <color rgba="0.8 0.8 0.0 1.0" />
+  </material>
+  <material name="clearpath_black">
+    <color rgba="0.15 0.15 0.15 1.0" />
+  </material>
+  <material name="clearpath_white">
+    <color rgba="1.0 1.0 1.0 1.0" />
+  </material>
+  <material name="clearpath_red">
+    <color rgba="1.0 0.0 0.0 1.0" />
+  </material>
+
+  <material name="clearpath_aluminum">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+  <material name="clearpath_plastic">
+    <color rgba="0.1 0.1 0.1   1"/>
+  </material>
+
+  <xacro:property name="guard_include_zed" value="true" lazy_eval="true"/>
+
+
+  <!--
+        Standard Mount: adds link (w/o geometry) at given position
+        - assumes orientation of parent
+    -->
+  <xacro:macro name="mount" params="name parent_link coordinate:=None *origin">
+    <!-- Add Empty Mount -->
+    <xacro:if value="${coordinate != None}">
+      <link name="${name}_mount_${coordinate}"/>
+      <joint name="${name}_mount_${coordinate}_joint" type="fixed">
+        <child link="${name}_mount_${coordinate}"/>
+        <parent link="${parent_link}"/>
+        <xacro:insert_block name="origin"/>
+      </joint>
+    </xacro:if>
+    <xacro:if value="${coordinate == None}">
+      <link name="${name}_mount"/>
+      <joint name="${name}_mount_joint" type="fixed">
+        <child link="${name}_mount"/>
+        <parent link="${parent_link}"/>
+        <xacro:insert_block name="origin"/>
+      </joint>
+    </xacro:if>
+  </xacro:macro>
+
+  <!--
+    Partial Riser Mounts: adds standard mounts for the specified row at the specified level
+    - requires that base_mounts have been added
+    - level (i.e. height) is w.r.t. the base level
+    -->
+  <xacro:macro name="row_mounts" params="name parent_link row column columns x:=0 y:=0 z:=0 spacing:=0.08 iteration:=0">
+    <xacro:property name="chr" value="${dict(d97='a', d98='b', d99='c', d100='d', d101='e', d102='f', d103='g', d104='h', d105='i', d106='j', d107='k', d108='l', d109='m', d110='n', d111='o', d112='p', d113='q', d114='r', d115='s', d116='t', d117='u', d118='v', d119='w', d120='x', d121='y', d122='z')}" />
+    <xacro:if value="${columns > iteration}">
+      <xacro:property name="coordinate" value="${chr['d' + str(python.ord(column))] + python.str(row)}" />
+      <xacro:mount name="${name}" parent_link="${parent_link}" coordinate="${coordinate}">
+        <origin xyz="${x} ${y - spacing * iteration} ${z}"/>
+      </xacro:mount>
+      <xacro:row_mounts name="${name}" parent_link="${parent_link}" row="${row}" column="${chr['d' + str(python.ord(column) + 1)]}" columns="${columns}" spacing="${spacing}" x="${x}" y="${y}" z="${z}" iteration="${iteration + 1}" />
+    </xacro:if>
+  </xacro:macro>
+
+  <xacro:macro name="full_mounts" params="name parent_link row column rows columns x:=0 y:=0 z spacing:=0.08 iteration:=0">
+    <xacro:if value="${rows > iteration}">
+      <xacro:row_mounts name="${name}" parent_link="${parent_link}" row="${row}" column="${column}" columns="${columns}" spacing="${spacing}" x="${x - spacing * iteration}" y="${y}" z="${z}" />
+      <xacro:full_mounts name="${name}" parent_link="${parent_link}" row="${python.str(python.int(row) + 1)}" column="${column}" rows="${rows}" columns="${columns}" spacing="${spacing}" x="${x}" y="${y}" z="${z}" iteration="${iteration + 1}"/>
+    </xacro:if>
+  </xacro:macro>
+  <xacro:macro name="top_plate" params="name model:=pacs parent_link:=default_mount height:=0.2 *origin">
+    <!-- PACS Model -->
+    <!-- Variables -->
+    <xacro:property name="plate_x_size" value="0.510"/>
+    <xacro:property name="plate_y_size" value="0.430"/>
+    <xacro:property name="plate_z_size" value="0.00635"/>
+
+    <xacro:property name="post_radius" value="0.006"/>
+    <xacro:property name="post_x_offset" value="0.040"/>
+    <xacro:property name="post_y_offset" value="0.040"/>
+
+    <!-- Spawn Top Plate -->
+    <link name="${name}_link">
+      <!-- Top Plate Mesh Visual -->
+      <visual>
+        <origin xyz="0 0 ${height}"/>
+        <material name="clearpath_dark_grey" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/model/dingo/meshes/pacs_top_plate.stl" />
+        </geometry>
+      </visual>
+      <!-- Top Plate Box Collision -->
+      <collision>
+        <origin xyz="0 0 ${height + plate_z_size/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <box size="${plate_x_size} ${plate_y_size} ${plate_z_size}"/>
+        </geometry>
+      </collision>
+      <!-- Quad Post Visual -->
+      <visual>
+        <origin xyz="${post_x_offset} ${post_y_offset} ${height/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <cylinder radius="${post_radius}" length="${height}"/>
+        </geometry>
+      </visual>
+      <visual>
+        <origin xyz="${post_x_offset} ${-post_y_offset} ${height/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <cylinder radius="${post_radius}" length="${height}"/>
+        </geometry>
+      </visual>
+      <visual>
+        <origin xyz="${-post_x_offset} ${post_y_offset} ${height/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <cylinder radius="${post_radius}" length="${height}"/>
+        </geometry>
+      </visual>
+      <visual>
+        <origin xyz="${-post_x_offset} ${-post_y_offset} ${height/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <cylinder radius="${post_radius}" length="${height}"/>
+        </geometry>
+      </visual>
+      <!-- Quad Post Collision -->
+      <collision>
+        <origin xyz="0 0 ${height/2}"/>
+        <material name="clearpath_dark_grey"/>
+        <geometry>
+          <box size="${2*post_x_offset + post_radius} ${2*post_y_offset} ${height}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Attach PACS Top Plate -->
+    <joint name="${name}_joint" type="fixed">
+      <child link="${name}_link"/>
+      <parent link="${parent_link}"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+
+    <!-- Generate PACS mounts -->
+    <xacro:full_mounts name="${name}" parent_link="${name}_link" column="a" row="1" columns="5" rows="6" x="0.20" y="0.16" z="${height + plate_z_size}" />
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<robot name="3d_reconstruction">
+
+  <link name="duck">
+    <visual>
+      <origin xyz="4.7 3 0" rpy="1.57 0 1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/duck/meshes/duck.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="cereales">
+    <visual>
+      <origin xyz="5.3 2.3 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/cereales/meshes/cereales.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="charactersMario">
+    <visual>
+      <origin xyz="4.1 0.5 0" rpy="0 0 -1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/charactersMario/models/characters.dae" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="blocks">
+    <visual>
+      <origin xyz="4.66 -4 0" rpy="0 0 1.57"/>
+      <geometry>
+        <mesh filename="package://3d_reconstruction/models/blocks/models/blocks.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

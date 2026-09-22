@@ -6,11 +6,12 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, SetEnvironmentVariable
 
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
 
-    world_path = "/opt/jderobot/Worlds/sausage_exercise.world"
+    world_path = "/opt/jderobot/Scenes/sausage_exercise.world"
 
     # ==================================================
     # PLUGIN PATHS
@@ -70,11 +71,31 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
+    # ==================================================
+    # SAUSAGE SPAWNER
+    # ==================================================
+
+    sausage_spawner = ExecuteProcess(
+        cmd=["python3", "home/ws/src/CustomRobots/conveyor_belt/spawn_sausage.py"],
+        output="screen",
+    )
+
     return LaunchDescription(
         [
             set_gz_plugin_path,
             set_ld_library_path,
             set_resource_path,
             gz,
+            gz_ros2_bridge,
+            sausage_spawner,
         ]
     )

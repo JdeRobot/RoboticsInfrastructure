@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <!--
+    Dynamic palletizing box — a 0.40 x 0.30 x 0.20 m carton (X x Y x Z).
+
+    A cuboid : a distinct footprint and a clear long axis are what make
+    palletizing a real problem — orientation now matters, so layers
+    can interlock / brick-bond instead of stacking as identical columns.
+
+    Anisotropic inertia for a solid cuboid (a=0.40, b=0.30, c=0.20), mass 2.0 kg,
+    I = (1/12) * m * (dim_i^2 + dim_j^2):
+        Ixx = (1/12)*2.0*(0.30^2 + 0.20^2) = 0.0217   (about X)
+        Iyy = (1/12)*2.0*(0.40^2 + 0.20^2) = 0.0333   (about Y)
+        Izz = (1/12)*2.0*(0.40^2 + 0.30^2) = 0.0417   (about Z)
+  -->
+  <model name="palletizing_box">
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>true</gravity>
+
+      <inertial>
+        <mass>2.0</mass>
+        <inertia>
+          <ixx>0.0217</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0333</iyy>
+          <iyz>0</iyz>
+          <izz>0.0417</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.40 0.30 0.20</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>10</kd>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <!-- mu=0.8 lets the belt grip and drag the box cleanly. -->
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.40 0.30 0.20</size>
+          </box>
+        </geometry>
+        <!-- Kraft-cardboard carton: a realistic shipping-box brown. Deliberately
+             LIGHTER/warmer than the darker wood-tone pallet below it, so the box
+             stack reads clearly apart from the platform (they no longer blend). -->
+        <material>
+          <ambient>0.52 0.40 0.24 1</ambient>
+          <diffuse>0.76 0.58 0.36 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

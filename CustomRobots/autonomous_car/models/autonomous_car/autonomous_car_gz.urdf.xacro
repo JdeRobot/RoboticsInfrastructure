@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="autonomous_car_gz"
   xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="camera" params="xyz rpy name parent">
+  <xacro:macro name="camera" params="xyz rpy parent name namespace">
 
     <link name="${name}_link"></link>
 
@@ -16,9 +16,9 @@
         <always_on>true</always_on>
         <visualize>false</visualize>
         <update_rate>20</update_rate>
-        <topic>/${name}/image_raw</topic>
+        <topic>/${namespace}/${name}/image_raw</topic>
         <camera name="camera">
-          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
           <horizontal_fov>2.094</horizontal_fov>
           <lens>
             <type>gnomonical</type>
@@ -52,7 +52,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="laser" params="xyz rpy name parent topic">
+  <xacro:macro name="laser" params="xyz rpy name parent namespace">
     <link name="${name}_link"></link>
 
     <joint name="${name}_to_${parent}" type="fixed">
@@ -66,7 +66,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>20</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/${name}/scan</topic>
         <gz_frame_id>base_scan</gz_frame_id>
         <lidar>
           <scan>
@@ -87,7 +87,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="lidar" params="xyz rpy name parent topic">
+  <xacro:macro name="lidar" params="xyz rpy name parent namespace">
     <material name="white">
       <color rgba="1.0 1.0 1.0 1.0"/>
     </material>
@@ -141,7 +141,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>20</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/${name}/pc2</topic>
         <gz_frame_id>base_scan</gz_frame_id>
         <lidar>
           <scan>
@@ -173,7 +173,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="ackermann_steering" params="topic">
+  <xacro:macro name="ackermann_steering" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
         <left_joint>fl_axle</left_joint>
@@ -191,27 +191,27 @@
         <max_velocity>50</max_velocity>
         <min_acceleration>-50</min_acceleration>
         <max_acceleration>50</max_acceleration>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/cmd_vel</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic freq">
+  <xacro:macro name="odom" params="namespace freq">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
         <robot_base_frame>chassis_link</robot_base_frame>
         <odom_publish_frequency>${freq}</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
+        <odom_topic>/${namespace}/odom</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-        <topic>${topic}</topic>
+        <topic>/${namespace}/cmd_vel</topic>
       </plugin>
     </gazebo>
   </xacro:macro>

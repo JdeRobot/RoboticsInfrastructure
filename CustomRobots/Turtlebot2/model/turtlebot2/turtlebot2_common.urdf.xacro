@@ -60,7 +60,7 @@
   </xacro:macro>
 
   <!-- Kobuki -->
-  <xacro:macro name="turtlebot2">
+  <xacro:macro name="turtlebot2" params="namespace">
     <link name="base_footprint"/>
     <!--
        Base link is set at the bottom of the base mould.
@@ -275,9 +275,9 @@
     </link>
 
     <!-- Kobuki Gazebo simulation details -->
-    <xacro:odom topic="odom" freq="20"/>
-    <xacro:velocity topic="cmd_vel"/>
-    <xacro:imu topic="imu"/>
+    <xacro:odom namespace="${namespace}" freq="20"/>
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:imu namespace="${namespace}"/>
     <xacro:extra/>
 
   </xacro:macro>

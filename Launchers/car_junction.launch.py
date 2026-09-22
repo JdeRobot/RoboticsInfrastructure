@@ -1,25 +1,18 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
-from launch.actions import (
-    IncludeLaunchDescription,
-    SetEnvironmentVariable,
-    AppendEnvironmentVariable,
-)
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    package_dir = get_package_share_directory("custom_robots")
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
-    gazebo_models_path = os.path.join(package_dir, "models")
-    gazebo_scripts_path = os.path.join(package_dir, "scripts")
-
     world_file_name = "road_junction.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     gazebo_server = IncludeLaunchDescription(
@@ -39,24 +32,18 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
     ld = LaunchDescription()
-
-    ld.add_action(SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", gazebo_models_path))
-    ld.add_action(
-        SetEnvironmentVariable("GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path)
-    )
-
-    set_env_vars_resources = AppendEnvironmentVariable(
-        "GZ_SIM_RESOURCE_PATH", os.path.join(package_dir, "models")
-    )
-    set_env_vars_plugin = AppendEnvironmentVariable(
-        "GZ_SIM_SYSTEM_PLUGIN_PATH", gazebo_scripts_path
-    )
-
-    ld.add_action(set_env_vars_resources)
-    ld.add_action(set_env_vars_plugin)
-
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
+    ld.add_action(gz_ros2_bridge)
 
     return ld

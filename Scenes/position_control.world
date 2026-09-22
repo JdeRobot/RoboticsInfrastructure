@@ -1,0 +1,1752 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="default">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<scene>
+			<grid>false</grid>
+		</scene>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- ================= BEACON TRAIL =================
+		     5 beacons, ground truth poses hardcoded in HAL.py (init_beacons),
+		     must match the visual markers below exactly. Flat->vertical
+		     progression: beacon1 sits on the shortest post (introductory,
+		     barely off the ground), each following beacon sits on a taller
+		     one, ending in a tall lookout post off the cardinal axis
+		     (beacon5). All 5 use the same numbered-cube marker family
+		     (number1..number5, one per beacon, in order) instead of mixing
+		     in the unrelated green/red logoBeacon flag texture. -->
+
+		<include>
+			<uri>model://logoPadGreen</uri>
+			<name>takeoff_pad</name>
+			<pose>0 0 0.05 0 0 0</pose>
+		</include>
+
+		<model name="beacon1_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.12</radius>
+							<length>0.5</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<cylinder>
+							<radius>0.12</radius>
+							<length>0.5</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0.0 18.0 0.25 0 0 0</pose>
+		</model>
+		<!-- Marker is visual-only (model://numberN has no <collision>),
+		     placed exactly at its final world height: an <include>'s <pose>
+		     is the absolute world pose, it does NOT add to the pose baked
+		     into the model's own model.sdf. An ELEVATED plane-collision
+		     marker would behave as an infinite floor at that height across
+		     the whole world, confirmed experimentally, hence numberN and
+		     not logoBeacon for anything off the ground. -->
+		<include>
+			<uri>model://number1</uri>
+			<name>beacon1_marker</name>
+			<pose>0.0 18.0 0.5 0 0 0</pose>
+		</include>
+
+		<model name="beacon2_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.15</radius>
+							<length>2.0</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<cylinder>
+							<radius>0.15</radius>
+							<length>2.0</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>18.0 0.0 1.0 0 0 0</pose>
+		</model>
+		<!-- Marker is visual-only (model://numberN has no <collision>),
+		     placed exactly at its final world height: an <include>'s <pose>
+		     is the absolute world pose, it does NOT add to the pose baked
+		     into the model's own model.sdf. An ELEVATED plane-collision
+		     marker would behave as an infinite floor at that height across
+		     the whole world, confirmed experimentally, hence numberN and
+		     not logoBeacon for anything off the ground. -->
+		<include>
+			<uri>model://number2</uri>
+			<name>beacon2_marker</name>
+			<pose>18.0 0.0 2.0 0 0 0</pose>
+		</include>
+
+		<model name="beacon3_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.18</radius>
+							<length>3.5</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<cylinder>
+							<radius>0.18</radius>
+							<length>3.5</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>0.0 -18.0 1.75 0 0 0</pose>
+		</model>
+		<!-- Marker is visual-only (model://numberN has no <collision>),
+		     placed exactly at its final world height: an <include>'s <pose>
+		     is the absolute world pose, it does NOT add to the pose baked
+		     into the model's own model.sdf. An ELEVATED plane-collision
+		     marker would behave as an infinite floor at that height across
+		     the whole world, confirmed experimentally, hence numberN and
+		     not logoBeacon for anything off the ground. -->
+		<include>
+			<uri>model://number3</uri>
+			<name>beacon3_marker</name>
+			<pose>0.0 -18.0 3.5 0 0 0</pose>
+		</include>
+
+		<model name="beacon4_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.2</radius>
+							<length>5.0</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<cylinder>
+							<radius>0.2</radius>
+							<length>5.0</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>-18.0 0.0 2.5 0 0 0</pose>
+		</model>
+		<!-- Marker is visual-only (model://numberN has no <collision>),
+		     placed exactly at its final world height: an <include>'s <pose>
+		     is the absolute world pose, it does NOT add to the pose baked
+		     into the model's own model.sdf. An ELEVATED plane-collision
+		     marker would behave as an infinite floor at that height across
+		     the whole world, confirmed experimentally, hence numberN and
+		     not logoBeacon for anything off the ground. -->
+		<include>
+			<uri>model://number4</uri>
+			<name>beacon4_marker</name>
+			<pose>-18.0 0.0 5.0 0 0 0</pose>
+		</include>
+
+		<model name="beacon5_post">
+			<static>true</static>
+			<link name="link">
+				<collision name="collision">
+					<geometry>
+						<cylinder>
+							<radius>0.25</radius>
+							<length>6.5</length>
+						</cylinder>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<cylinder>
+							<radius>0.25</radius>
+							<length>6.5</length>
+						</cylinder>
+					</geometry>
+					<material>
+						<ambient>0.35 0.22 0.1 1</ambient>
+						<diffuse>0.35 0.22 0.1 1</diffuse>
+					</material>
+				</visual>
+			</link>
+			<pose>23.0 23.0 3.25 0 0 0</pose>
+		</model>
+		<!-- Marker is visual-only (model://numberN has no <collision>),
+		     placed exactly at its final world height: an <include>'s <pose>
+		     is the absolute world pose, it does NOT add to the pose baked
+		     into the model's own model.sdf. An ELEVATED plane-collision
+		     marker would behave as an infinite floor at that height across
+		     the whole world, confirmed experimentally, hence numberN and
+		     not logoBeacon for anything off the ground. -->
+		<include>
+			<uri>model://number5</uri>
+			<name>beacon5_marker</name>
+			<pose>23.0 23.0 6.5 0 0 0</pose>
+		</include>
+
+		<!-- ================= DIRT TRAILS =================
+		     Hub-and-spoke from the takeoff pad to the base of each post,
+		     each spoke broken into short segments with a gentle lateral
+		     wiggle instead of one straight box, and textured with a
+		     procedurally generated dirt albedo map (materials/textures
+		     /dirt.png in the dirt_path model) instead of a flat color. -->
+
+		<model name="trail_beacon1_0">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.106 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-0.496 1.286 0.001 0 0 1.9389</pose>
+		</model>
+		<model name="trail_beacon1_1">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.006 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.323 3.857 0.001 0 0 1.8233</pose>
+		</model>
+		<model name="trail_beacon1_2">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.924 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.713 6.429 0.001 0 0 1.6158</pose>
+		</model>
+		<model name="trail_beacon1_3">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.964 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.536 9.000 0.001 0 0 1.3900</pose>
+		</model>
+		<model name="trail_beacon1_4">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.075 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-0.851 11.571 0.001 0 0 1.2340</pose>
+		</model>
+		<model name="trail_beacon1_5">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.121 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>0.116 14.143 0.001 0 0 1.1888</pose>
+		</model>
+		<model name="trail_beacon1_6">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.998 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>0.316 16.714 0.001 0 0 1.8120</pose>
+		</model>
+		<model name="trail_beacon2_0">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.106 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>1.286 0.496 0.001 0 0 0.3681</pose>
+		</model>
+		<model name="trail_beacon2_1">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.006 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>3.857 1.323 0.001 0 0 0.2525</pose>
+		</model>
+		<model name="trail_beacon2_2">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.924 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>6.429 1.713 0.001 0 0 0.0451</pose>
+		</model>
+		<model name="trail_beacon2_3">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.964 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>9.000 1.536 0.001 0 0 -0.1808</pose>
+		</model>
+		<model name="trail_beacon2_4">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.075 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>11.571 0.851 0.001 0 0 -0.3368</pose>
+		</model>
+		<model name="trail_beacon2_5">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.121 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>14.143 -0.116 0.001 0 0 -0.3820</pose>
+		</model>
+		<model name="trail_beacon2_6">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.998 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>16.714 -0.316 0.001 0 0 0.2412</pose>
+		</model>
+		<model name="trail_beacon3_0">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.106 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>0.496 -1.286 0.001 0 0 -1.2027</pose>
+		</model>
+		<model name="trail_beacon3_1">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.006 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>1.323 -3.857 0.001 0 0 -1.3183</pose>
+		</model>
+		<model name="trail_beacon3_2">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.924 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>1.713 -6.429 0.001 0 0 -1.5257</pose>
+		</model>
+		<model name="trail_beacon3_3">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.964 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>1.536 -9.000 0.001 0 0 -1.7516</pose>
+		</model>
+		<model name="trail_beacon3_4">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.075 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>0.851 -11.571 0.001 0 0 -1.9076</pose>
+		</model>
+		<model name="trail_beacon3_5">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.121 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-0.116 -14.143 0.001 0 0 -1.9528</pose>
+		</model>
+		<model name="trail_beacon3_6">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.998 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-0.316 -16.714 0.001 0 0 -1.3296</pose>
+		</model>
+		<model name="trail_beacon4_0">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.106 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-1.286 -0.496 0.001 0 0 -2.7735</pose>
+		</model>
+		<model name="trail_beacon4_1">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.006 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-3.857 -1.323 0.001 0 0 -2.8891</pose>
+		</model>
+		<model name="trail_beacon4_2">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.924 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-6.429 -1.713 0.001 0 0 -3.0965</pose>
+		</model>
+		<model name="trail_beacon4_3">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.964 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-9.000 -1.536 0.001 0 0 2.9608</pose>
+		</model>
+		<model name="trail_beacon4_4">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.075 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-11.571 -0.851 0.001 0 0 2.8047</pose>
+		</model>
+		<model name="trail_beacon4_5">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>3.121 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-14.143 0.116 0.001 0 0 2.7596</pose>
+		</model>
+		<model name="trail_beacon4_6">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>2.998 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>-16.714 0.316 0.001 0 0 -2.9004</pose>
+		</model>
+		<model name="trail_beacon5_0">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.101 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>1.292 1.993 0.001 0 0 0.9956</pose>
+		</model>
+		<model name="trail_beacon5_1">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.044 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>3.993 5.864 0.001 0 0 0.9272</pose>
+		</model>
+		<model name="trail_beacon5_2">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>4.998 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>7.003 9.426 0.001 0 0 0.8103</pose>
+		</model>
+		<model name="trail_beacon5_3">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.020 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>10.414 12.586 0.001 0 0 0.6846</pose>
+		</model>
+		<model name="trail_beacon5_4">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.083 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>14.184 15.387 0.001 0 0 0.5940</pose>
+		</model>
+		<model name="trail_beacon5_5">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.110 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>18.153 17.989 0.001 0 0 0.5666</pose>
+		</model>
+		<model name="trail_beacon5_6">
+			<static>true</static>
+			<link name="link">
+				<visual name="visual">
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<box>
+							<size>5.040 1.3 0.01</size>
+						</box>
+					</geometry>
+					<material>
+						<ambient>1.0 1.0 1.0 1.0</ambient>
+						<diffuse>1.0 1.0 1.0 1.0</diffuse>
+						<pbr>
+							<metal>
+								<albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+							</metal>
+						</pbr>
+					</material>
+				</visual>
+			</link>
+			<pose>21.581 21.134 0.001 0 0 0.9207</pose>
+		</model>
+
+		<!-- ================= FOREST =================
+		     Perimeter ring at a much larger radius than the beacon trail
+		     itself so the whole layout reads as a small clearing IN a big
+		     forest, not a tiny cluster floating in an empty field. Radius
+		     and angle are jittered per tree (not a perfect circle), and any
+		     tree that would land inside one of the 5 flight corridors is
+		     skipped. Vendored locally (CustomRobots/drone_assets/models/
+		     pine_tree, oak_tree), cast_shadows disabled on every submesh to
+		     keep RTF cheap with this many of them. -->
+
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_0</name>
+			<pose>32.13 7.90 0 0 0 3.191</pose>
+			<scale>1.06 1.06 1.06</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_1</name>
+			<pose>22.65 8.55 0 0 0 3.958</pose>
+			<scale>1.08 1.08 1.08</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_2</name>
+			<pose>20.09 11.46 0 0 0 0.570</pose>
+			<scale>0.99 0.99 0.99</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_3</name>
+			<pose>28.08 18.78 0 0 0 4.109</pose>
+			<scale>1.28 1.28 1.28</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_4</name>
+			<pose>12.08 21.07 0 0 0 0.189</pose>
+			<scale>0.96 0.96 0.96</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_5</name>
+			<pose>8.63 25.89 0 0 0 3.262</pose>
+			<scale>1.23 1.23 1.23</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_6</name>
+			<pose>4.75 27.59 0 0 0 2.873</pose>
+			<scale>1.15 1.15 1.15</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_7</name>
+			<pose>4.48 33.68 0 0 0 5.279</pose>
+			<scale>1.30 1.30 1.30</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_8</name>
+			<pose>-5.07 24.96 0 0 0 4.815</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_9</name>
+			<pose>-11.04 30.20 0 0 0 6.020</pose>
+			<scale>1.02 1.02 1.02</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_10</name>
+			<pose>-11.66 18.67 0 0 0 5.719</pose>
+			<scale>0.94 0.94 0.94</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_11</name>
+			<pose>-18.88 27.99 0 0 0 0.459</pose>
+			<scale>1.03 1.03 1.03</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_12</name>
+			<pose>-21.16 23.12 0 0 0 0.548</pose>
+			<scale>0.97 0.97 0.97</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_13</name>
+			<pose>-23.92 23.55 0 0 0 0.741</pose>
+			<scale>1.19 1.19 1.19</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_14</name>
+			<pose>-18.03 14.62 0 0 0 5.008</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_15</name>
+			<pose>-23.99 15.77 0 0 0 1.198</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_16</name>
+			<pose>-22.13 8.11 0 0 0 0.732</pose>
+			<scale>1.14 1.14 1.14</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_17</name>
+			<pose>-23.44 7.31 0 0 0 6.101</pose>
+			<scale>0.97 0.97 0.97</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_18</name>
+			<pose>-24.30 -3.37 0 0 0 5.368</pose>
+			<scale>1.03 1.03 1.03</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_19</name>
+			<pose>-22.74 -4.63 0 0 0 1.340</pose>
+			<scale>1.30 1.30 1.30</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_20</name>
+			<pose>-30.41 -7.28 0 0 0 1.862</pose>
+			<scale>1.00 1.00 1.00</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_21</name>
+			<pose>-21.98 -7.05 0 0 0 1.527</pose>
+			<scale>1.11 1.11 1.11</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_22</name>
+			<pose>-22.76 -13.50 0 0 0 6.026</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_23</name>
+			<pose>-23.43 -16.90 0 0 0 1.149</pose>
+			<scale>1.24 1.24 1.24</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_24</name>
+			<pose>-25.79 -20.43 0 0 0 1.568</pose>
+			<scale>1.22 1.22 1.22</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_25</name>
+			<pose>-21.69 -21.97 0 0 0 1.235</pose>
+			<scale>1.27 1.27 1.27</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_26</name>
+			<pose>-15.78 -28.51 0 0 0 2.648</pose>
+			<scale>1.12 1.12 1.12</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_27</name>
+			<pose>-12.09 -18.93 0 0 0 1.498</pose>
+			<scale>1.28 1.28 1.28</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_28</name>
+			<pose>-8.09 -23.74 0 0 0 3.748</pose>
+			<scale>1.22 1.22 1.22</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_29</name>
+			<pose>-7.13 -23.03 0 0 0 0.432</pose>
+			<scale>1.17 1.17 1.17</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_30</name>
+			<pose>-5.70 -28.14 0 0 0 3.860</pose>
+			<scale>1.23 1.23 1.23</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_31</name>
+			<pose>4.21 -24.08 0 0 0 1.691</pose>
+			<scale>0.86 0.86 0.86</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_32</name>
+			<pose>6.44 -25.63 0 0 0 0.827</pose>
+			<scale>1.11 1.11 1.11</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_33</name>
+			<pose>12.72 -30.12 0 0 0 4.128</pose>
+			<scale>1.29 1.29 1.29</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_34</name>
+			<pose>15.97 -24.23 0 0 0 0.220</pose>
+			<scale>0.91 0.91 0.91</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_35</name>
+			<pose>17.37 -27.97 0 0 0 6.049</pose>
+			<scale>1.17 1.17 1.17</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_36</name>
+			<pose>18.42 -23.21 0 0 0 4.590</pose>
+			<scale>1.07 1.07 1.07</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_37</name>
+			<pose>25.48 -22.50 0 0 0 3.431</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_38</name>
+			<pose>28.44 -16.34 0 0 0 4.421</pose>
+			<scale>1.18 1.18 1.18</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_39</name>
+			<pose>30.43 -12.71 0 0 0 4.305</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_40</name>
+			<pose>31.37 -8.30 0 0 0 4.967</pose>
+			<scale>1.04 1.04 1.04</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_41</name>
+			<pose>28.54 -4.38 0 0 0 2.402</pose>
+			<scale>1.13 1.13 1.13</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_42</name>
+			<pose>32.80 8.64 0 0 0 4.575</pose>
+			<scale>1.25 1.25 1.25</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_43</name>
+			<pose>29.26 9.68 0 0 0 2.768</pose>
+			<scale>1.11 1.11 1.11</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_44</name>
+			<pose>19.87 11.59 0 0 0 0.187</pose>
+			<scale>1.19 1.19 1.19</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_45</name>
+			<pose>23.04 15.51 0 0 0 4.388</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_46</name>
+			<pose>13.50 21.12 0 0 0 1.891</pose>
+			<scale>0.86 0.86 0.86</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_47</name>
+			<pose>11.83 21.38 0 0 0 5.691</pose>
+			<scale>0.93 0.93 0.93</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_48</name>
+			<pose>10.50 25.20 0 0 0 2.054</pose>
+			<scale>1.25 1.25 1.25</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_49</name>
+			<pose>6.72 23.44 0 0 0 5.064</pose>
+			<scale>1.04 1.04 1.04</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_50</name>
+			<pose>-4.12 25.47 0 0 0 3.119</pose>
+			<scale>0.91 0.91 0.91</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_51</name>
+			<pose>-10.36 30.47 0 0 0 5.969</pose>
+			<scale>1.17 1.17 1.17</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_52</name>
+			<pose>-7.66 22.78 0 0 0 1.729</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_ring_53</name>
+			<pose>-11.14 24.56 0 0 0 3.103</pose>
+			<scale>1.13 1.13 1.13</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_ring_54</name>
+			<pose>-17.06 27.15 0 0 0 2.843</pose>
+			<scale>1.29 1.29 1.29</scale>
+		</include>
+
+		<!-- Closer clusters, still clear of every corridor -->
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_cluster_0</name>
+			<pose>24.2 14.3 0 0 0 0.198</pose>
+			<scale>0.92 0.92 0.92</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_cluster_1</name>
+			<pose>14.3 24.2 0 0 0 0.261</pose>
+			<scale>1.12 1.12 1.12</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_cluster_2</name>
+			<pose>-17.6 -11.0 0 0 0 3.585</pose>
+			<scale>1.08 1.08 1.08</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_cluster_3</name>
+			<pose>-11.0 -17.6 0 0 0 4.973</pose>
+			<scale>0.98 0.98 0.98</scale>
+		</include>
+
+		<!-- Mid-density band between the trail and the perimeter ring -->
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_0</name>
+			<pose>10.40 -19.00 0 0 0 0.295</pose>
+			<scale>0.86 0.86 0.86</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_1</name>
+			<pose>-15.92 -16.78 0 0 0 4.116</pose>
+			<scale>1.05 1.05 1.05</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_2</name>
+			<pose>9.42 -24.99 0 0 0 1.252</pose>
+			<scale>1.07 1.07 1.07</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_3</name>
+			<pose>-24.62 4.34 0 0 0 1.711</pose>
+			<scale>0.87 0.87 0.87</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_4</name>
+			<pose>-14.08 20.51 0 0 0 3.861</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_5</name>
+			<pose>-20.04 15.84 0 0 0 0.548</pose>
+			<scale>1.16 1.16 1.16</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_6</name>
+			<pose>22.84 -10.30 0 0 0 2.850</pose>
+			<scale>0.85 0.85 0.85</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_7</name>
+			<pose>-18.58 -18.71 0 0 0 3.574</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_8</name>
+			<pose>18.57 -17.59 0 0 0 2.914</pose>
+			<scale>1.18 1.18 1.18</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_9</name>
+			<pose>-12.45 -17.44 0 0 0 5.142</pose>
+			<scale>1.09 1.09 1.09</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_10</name>
+			<pose>-15.75 -19.44 0 0 0 5.655</pose>
+			<scale>0.89 0.89 0.89</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_11</name>
+			<pose>26.64 -3.28 0 0 0 4.969</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_12</name>
+			<pose>-11.29 23.83 0 0 0 2.190</pose>
+			<scale>1.14 1.14 1.14</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_13</name>
+			<pose>20.03 11.47 0 0 0 4.827</pose>
+			<scale>1.02 1.02 1.02</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_14</name>
+			<pose>25.26 4.56 0 0 0 5.026</pose>
+			<scale>0.83 0.83 0.83</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_15</name>
+			<pose>10.41 19.77 0 0 0 0.883</pose>
+			<scale>1.12 1.12 1.12</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_16</name>
+			<pose>14.04 18.99 0 0 0 5.278</pose>
+			<scale>1.09 1.09 1.09</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_17</name>
+			<pose>-9.90 -24.71 0 0 0 5.964</pose>
+			<scale>1.00 1.00 1.00</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_18</name>
+			<pose>18.48 11.09 0 0 0 1.823</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_19</name>
+			<pose>-3.24 -24.26 0 0 0 5.301</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_20</name>
+			<pose>-20.63 -8.16 0 0 0 5.311</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_21</name>
+			<pose>17.40 -12.56 0 0 0 6.085</pose>
+			<scale>1.14 1.14 1.14</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_mid_22</name>
+			<pose>-23.73 -3.64 0 0 0 3.367</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_mid_23</name>
+			<pose>-15.94 -12.40 0 0 0 3.242</pose>
+			<scale>1.19 1.19 1.19</scale>
+		</include>
+
+		<!-- Groves flanking each beacon, clear of the post itself -->
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_0</name>
+			<pose>8.60 19.81 0 0 0 3.085</pose>
+			<scale>0.97 0.97 0.97</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_1</name>
+			<pose>9.76 15.40 0 0 0 2.600</pose>
+			<scale>0.96 0.96 0.96</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_2</name>
+			<pose>-10.83 20.54 0 0 0 2.973</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_3</name>
+			<pose>-7.51 17.60 0 0 0 5.658</pose>
+			<scale>1.04 1.04 1.04</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_4</name>
+			<pose>16.90 -8.91 0 0 0 3.882</pose>
+			<scale>0.86 0.86 0.86</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_5</name>
+			<pose>15.78 -10.70 0 0 0 0.143</pose>
+			<scale>1.03 1.03 1.03</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_6</name>
+			<pose>16.36 7.78 0 0 0 2.024</pose>
+			<scale>1.01 1.01 1.01</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_7</name>
+			<pose>18.72 8.42 0 0 0 4.592</pose>
+			<scale>0.83 0.83 0.83</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_8</name>
+			<pose>-7.49 -18.06 0 0 0 1.242</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_9</name>
+			<pose>-9.12 -17.62 0 0 0 2.597</pose>
+			<scale>0.91 0.91 0.91</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_10</name>
+			<pose>9.12 -15.96 0 0 0 3.967</pose>
+			<scale>0.86 0.86 0.86</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_11</name>
+			<pose>9.55 -18.18 0 0 0 3.843</pose>
+			<scale>1.06 1.06 1.06</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_12</name>
+			<pose>-16.40 10.43 0 0 0 5.093</pose>
+			<scale>1.02 1.02 1.02</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_13</name>
+			<pose>-16.90 10.61 0 0 0 5.798</pose>
+			<scale>0.89 0.89 0.89</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_14</name>
+			<pose>-20.99 -7.87 0 0 0 0.842</pose>
+			<scale>1.07 1.07 1.07</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_15</name>
+			<pose>-19.36 -7.96 0 0 0 0.610</pose>
+			<scale>0.88 0.88 0.88</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_16</name>
+			<pose>29.97 15.36 0 0 0 0.792</pose>
+			<scale>1.04 1.04 1.04</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_17</name>
+			<pose>29.87 17.70 0 0 0 1.263</pose>
+			<scale>0.81 0.81 0.81</scale>
+		</include>
+		<include>
+			<uri>model://pine_tree</uri>
+			<name>tree_grove_18</name>
+			<pose>17.87 31.63 0 0 0 0.725</pose>
+			<scale>1.09 1.09 1.09</scale>
+		</include>
+		<include>
+			<uri>model://oak_tree</uri>
+			<name>tree_grove_19</name>
+			<pose>17.72 30.48 0 0 0 4.308</pose>
+			<scale>0.95 0.95 0.95</scale>
+		</include>
+
+		<!-- Scattered rocks. "falling_rock" ships with real mass/inertia
+		     (meant to actually fall in demos), forced static here the same
+		     way construction_cone is in follow_turtlebot.world. -->
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_0</name>
+			<pose>5.0 9.0 0 0 0 0.4</pose>
+			<static>true</static>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_1</name>
+			<pose>10.0 -4.0 0 0 0 1.8</pose>
+			<static>true</static>
+			<scale>1.3 1.3 1.3</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_2</name>
+			<pose>-4.6 -10.4 0 0 0 2.5</pose>
+			<static>true</static>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_3</name>
+			<pose>-11.0 4.4 0 0 0 0.9</pose>
+			<static>true</static>
+			<scale>0.8 0.8 0.8</scale>
+		</include>
+		<include>
+			<uri>model://falling_rock</uri>
+			<name>rock_5</name>
+			<pose>-18.0 -12.0 0 0 0 1.1</pose>
+			<static>true</static>
+			<scale>1.0 1.0 1.0</scale>
+		</include>
+
+		<!-- Branding -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<name>jderobot_logo</name>
+			<pose>-26 -21 0 0 0 0.8</pose>
+		</include>
+
+	</world>
+</sdf>

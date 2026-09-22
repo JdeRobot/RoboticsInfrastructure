@@ -28,7 +28,6 @@ set(PROJECT_DEPENDENCIES
     urdf
     xacro
     ament_cmake_ros
-    #gazebo
     pluginlib
     Threads)
 
@@ -38,8 +37,6 @@ endforeach()
 
 add_subdirectory(follow_person_harmonic)
 
-find_package(gazebo)
-
 # ============================================================================
 # Person plugin
 if(CMAKE_USE_PTHREADS_INIT)
@@ -47,25 +44,6 @@ if(CMAKE_USE_PTHREADS_INIT)
 endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
-
-add_library(personplugin amazon_hospital/src/person.cpp)
-target_include_directories(
-  personplugin
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
-
-ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")
-
-# Causes the visibility macros to use dllexport rather than dllimport, which is
-# appropriate when building the dll but not consuming it.
-target_compile_definitions(personplugin PRIVATE "PERSONPLUGIN_BUILDING_LIBRARY")
-
-install(
-  TARGETS personplugin
-  EXPORT export_${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
 
 # ============================================================================
 # Hooks
@@ -77,42 +55,38 @@ ament_environment_hooks("hooks/resource_paths.sh")
 install(
   DIRECTORY
     follow_person_harmonic/models
-    follow_person_harmonic/params
     
     f1/models
-    f1/params
     f1/launch
 
     autonomous_car/models
-    autonomous_car/params
     autonomous_car/launch
 
     vacuum_cleaner/models
-    vacuum_cleaner/params
     vacuum_cleaner/launch
 
     quadrotor/models
-    quadrotor/params
     quadrotor/launch
 
+    dingo/model
+    dingo/launch
+
+    mir100/models
+    mir100/launch
+
     rover_4wd/model
-    rover_4wd/params
     rover_4wd/launch
 
     Turtlebot2/model
-    Turtlebot2/params
     Turtlebot2/launch
 
     turtlebot3/models
-    turtlebot3/params
     turtlebot3/launch
 
     logistic_holonomic_robot/models
-    logistic_holonomic_robot/params
     logistic_holonomic_robot/launch
 
     logistic_ackermann_robot/models
-    logistic_ackermann_robot/params
     logistic_ackermann_robot/launch
 
     robot_arms/launch
@@ -121,15 +95,8 @@ install(
 
     roomba_robot/models
 
-    ackermann_cars/models
-
     car_junction/models
     car_junction/scripts
-
-    # AMAZON WAREHOUSE ROBOT
-    amazon_robot_classic/models
-    amazon_robot_classic/urdf
-    amazon_robot_classic/meshes
 
     amazon_warehouse_harmonic/models
 
@@ -137,18 +104,17 @@ install(
 
     # AMAZON HOSPITAL
     amazon_hospital/models
-    amazon_hospital/worlds
-
-    ackermann_logistic_robot/models
-
-    autoparking/models
 
     autopark_harmonic/models
 
     drone_assets/models
     drone_assets/bridges
 
-    taxi_navigator/models
+    # drone cat-mouse city model (my_city_v3); its bridge yaml lives in
+    # drone_assets/bridges above
+    drone_cat_mouse/models
+
+    city_assets/models
     
     3d_reconstruction/models
     
@@ -161,9 +127,30 @@ install(
     restaurant/models
     
     pick_place/models
-    pick_place/urdf
+
+    palletizing/models
+    palletizing/launch
+    palletizing/params
+    palletizing/config
 
   DESTINATION share/${PROJECT_NAME})
+
+# Palletizing box feeder node (ament_cmake package: install python node explicitly)
+install(PROGRAMS
+    palletizing/scripts/box_spawner.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME box_spawner)
+
+install(
+  DIRECTORY palletizing/scripts/feeder
+  DESTINATION lib/${PROJECT_NAME})
+
+# Palletizing planning-scene publisher (injects conveyor + pallet as MoveIt
+# collision objects so the planner routes around them; not student-facing).
+install(PROGRAMS
+    palletizing/scripts/palletizing_scene.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME palletizing_scene)
 
 # install(
 #   FILES ${RI_ROOT_DIR}/Launchers/follow_road.launch.py
@@ -182,9 +169,5 @@ if(BUILD_TESTING)
   #   add_launch_test(${test_file} TIMEOUT 90)
   # endforeach()
 endif()
-
-ament_export_libraries(personplugin)
-
-ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()

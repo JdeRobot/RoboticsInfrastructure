@@ -71,7 +71,7 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/MovAi/models/pallet/tip/files/meshes/pallet.dae</uri>
+                        <uri>model://pallet_box_mobile/meshes/pallet.dae</uri>
                     </mesh>
                 </geometry>
             </visual>
@@ -80,12 +80,12 @@
                 <geometry>
                     <mesh>
                         <scale>1 1 1</scale>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/movai/models/pallet_box_mobile/3/files/meshes/boxes.dae</uri>
+                        <uri>model://pallet_box_mobile/meshes/boxes.dae</uri>
                     </mesh>
                 </geometry>
             </visual>
         </link>
-        <plugin filename="ignition-gazebo-pose-publisher-system" name="ignition::gazebo::systems::PosePublisher">
+        <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
             <publish_link_pose>true</publish_link_pose>
             <publish_collision_pose>false</publish_collision_pose>
             <publish_visual_pose>false</publish_visual_pose>

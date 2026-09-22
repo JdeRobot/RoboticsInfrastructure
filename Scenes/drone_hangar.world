@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+	<world name="default">
+		<physics name="4ms" type="ignored">
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+		</plugin>
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+		</plugin>
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+		</plugin>
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<scene>
+			<grid>false</grid>
+		</scene>
+
+		<!--light-->
+		<light type="directional" name="sun">
+			<cast_shadows>true</cast_shadows>
+			<pose>0 0 10 0 0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<!-- Hangar building (mesh, scaled x1.3 wide / x3 long / x1.8 tall) + concrete floor + funnel entrance.
+		     Pose shifted to Y=12 vs. the original (-2) to compensate for the Y-stretch,
+		     so the entrance funnel stays aligned with the obstacle course below. -->
+		<include>
+			<uri>model://hangar</uri>
+			<pose>0 12 0 0 0 0</pose>
+		</include>
+
+		<!-- Start pad: marks the drone's spawn point (y=44, see database/worlds.sql) -->
+		<include>
+			<uri>model://logoPadGreen</uri>
+			<name>start_pad</name>
+			<pose>0 44 0.05 0 0 0</pose>
+		</include>
+
+		<!-- Progressive obstacle course, drone spawns at y=44 flying toward the exit at y~-9.
+		     Difficulty ramps up as y decreases: same spacing (10m) between every gate, speed
+		     and amplitude increase gate to gate. All speeds are deliberately gentle - this is
+		     a programming challenge (vision + timing from code), not RC piloting.
+		     Each gate is the same reusable geometry (moving_panel=red/horizontal,
+		     moving_shutter=blue/vertical, rotating_blades=yellow, cheese_wall=green/static)
+		     with its own hangar_obstacles::ObstacleMover plugin params
+		     (mode/axis/amplitude/period) - adding more gates is just copy-pasting one of
+		     these blocks with new numbers/position. -->
+
+		<!-- Warm-up (y=36): static wall with 3 staggered holes, no timing needed.
+		     8x4 grid now spans 16m wide x 9m tall - most of the corridor cross
+		     section, so there's no easy bypass around the sides or over the top. -->
+		<include>
+			<uri>model://cheese_wall</uri>
+			<name>cheese_1</name>
+			<pose>0 36 0 0 0 0</pose>
+		</include>
+
+		<!-- Numbered spawn pads: roughly midway between each obstacle and the previous one
+		     (cheese=36, door=26, blades=16, shutter=6, panel=-4 - all 10m apart, so true
+		     midpoints are 31/21/11/1), nudged 1m further from the NEXT obstacle rather
+		     than closer to it, so the drone can be spawned to test one obstacle at a time
+		     without appearing right on top of it (see database/worlds.sql - each pad has
+		     its own world/robot-pose entry, reusing this same scene, picked from the
+		     exercise's world selector). -->
+		<include>
+			<uri>model://numbered_pad_1</uri>
+			<name>pad_1</name>
+			<pose>0 32 0.05 0 0 3.14159</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_2</uri>
+			<name>pad_2</name>
+			<pose>0 22 0.05 0 0 3.14159</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_3</uri>
+			<name>pad_3</name>
+			<pose>0 12 0.05 0 0 3.14159</pose>
+		</include>
+		<include>
+			<uri>model://numbered_pad_4</uri>
+			<name>pad_4</name>
+			<pose>0 2 0.05 0 0 3.14159</pose>
+		</include>
+
+		<!-- Gate 1 (y=26, easy): sliding double door - two red leaves that meet at the
+		     center when closed and slide apart (mirrored motion) to open a gap in the
+		     middle. Slow and modest swing.
+		     IMPORTANT: "oscillate" swings *both* ways around <pose> (a full sine cycle
+		     goes positive then negative), so <pose> must be the MIDPOINT of the leaf's
+		     travel (closed..open), not the closed position itself - otherwise the second
+		     half of the cycle drives the leaf straight through where the closed position
+		     was and into the other leaf. Closed=-+3 (touching at x=0), open=-+5.2
+		     (previous single-body amplitude of 2.2) => midpoint=-+4.1, amplitude=1.1
+		     (half of the closed..open travel). -->
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>door_1_left</name>
+			<pose>-4.1 26 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>-1 0 0</axis>
+				<amplitude>1.1</amplitude>
+				<period>9.0</period>
+			</plugin>
+		</include>
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>door_1_right</name>
+			<pose>4.1 26 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>1 0 0</axis>
+				<amplitude>1.1</amplitude>
+				<period>9.0</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 2 (y=16, easy-medium): two counter-rotating blade sets, side by side and
+		     close together - only ~0.3m of permanently-clear gap between their swept
+		     circles (too narrow for the drone), so there's no way through the middle
+		     without ever entering one of the two spinning discs. They still stop short
+		     of the walls (0.7m margin) and, more importantly, never touch each other
+		     (0.3m clearance between the circles at all times). Very slow (10s/turn),
+		     plenty of reaction time. -->
+		<include>
+			<uri>model://rotating_blades</uri>
+			<name>blades_2_left</name>
+			<pose>-3.65 16 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>rotate</mode>
+				<axis>0 1 0</axis>
+				<period>10.0</period>
+			</plugin>
+		</include>
+		<include>
+			<uri>model://rotating_blades</uri>
+			<name>blades_2_right</name>
+			<pose>3.65 16 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>rotate</mode>
+				<axis>0 -1 0</axis>
+				<period>10.0</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 3 (y=6, medium): shutter sweeps floor-to-ceiling, alternating which side is
+		     open. Its highest point (z~9.4) stays a clear 1.4m below the roof's invisible
+		     collision slab (z~10.8) - the visual closeness to the mesh's decorative trusses
+		     up there is cosmetic only, not a physics overlap. -->
+		<include>
+			<uri>model://moving_shutter</uri>
+			<name>shutter_1</name>
+			<pose>0 6 5.4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>0 0 1</axis>
+				<amplitude>2.0</amplitude>
+				<period>6.5</period>
+			</plugin>
+		</include>
+
+		<!-- Gate 4 (y=-4, hardest/final): single door, wide swing that closes almost
+		     edge-to-edge, but still the slowest-moving of the two red doors. -->
+		<include>
+			<uri>model://moving_panel</uri>
+			<name>panel_lr_2</name>
+			<pose>0 -4 4 0 0 0</pose>
+			<plugin filename="libhangar_obstacle_mover.so" name="hangar_obstacles::ObstacleMover">
+				<mode>oscillate</mode>
+				<axis>1 0 0</axis>
+				<amplitude>5.5</amplitude>
+				<period>6.0</period>
+			</plugin>
+		</include>
+
+		<!-- Finish pad: black/white checkerboard, just past the hangar exit funnel (~y=-9) -->
+		<include>
+			<uri>model://checkered_pad</uri>
+			<name>finish_pad</name>
+			<pose>0 -11 0.05 0 0 0</pose>
+		</include>
+
+	</world>
+</sdf>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+<model name="moving_shutter">
+  <!-- Wide across X (spans most of the corridor width, so there's no easy
+       "fly around the side" shortcut) and thin along Y (the flight
+       direction), short along Z (the axis it slides on). Place instances
+       with pose z at the middle of its intended vertical travel; a large
+       <amplitude> in the ObstacleMover plugin sweeps it from near-floor to
+       near-ceiling, alternating which side is open. Must stay dynamic (not
+       static) with gravity off: only dynamic links get their collisions
+       re-checked every physics step when moved via the plugin.
+       Color: blue, so vertical-sliding obstacles read as one family. -->
+  <static>false</static>
+  <link name="link">
+    <gravity>false</gravity>
+    <inertial>
+      <mass>10</mass>
+      <inertia>
+        <ixx>5</ixx><iyy>5</iyy><izz>5</izz>
+        <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+      </inertia>
+    </inertial>
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>16 0.3 4</size>
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <cast_shadows>false</cast_shadows>
+      <geometry>
+        <box>
+          <size>16 0.3 4</size>
+        </box>
+      </geometry>
+      <material>
+        <ambient>0.08 0.25 0.75 1</ambient>
+        <diffuse>0.12 0.3 0.8 1</diffuse>
+        <specular>0.2 0.2 0.2 1</specular>
+      </material>
+    </visual>
+  </link>
+</model>
+</sdf>

@@ -62,7 +62,7 @@ LinkAttacher()
 
 void Configure(
   const Entity &_entity,
-  const std::shared_ptr<const sdf::Element> &,
+  const std::shared_ptr<const sdf::Element> &_sdf,
   EntityComponentManager &,
   EventManager &) override
 {
@@ -154,17 +154,36 @@ void Configure(
         }
       });
 
+  // Optional SDF params — defaults preserve pick_place (Robotiq) behaviour
+  if (_sdf->HasElement("robot_model_name"))
+    robotModelName = _sdf->Get<std::string>("robot_model_name");
+  if (_sdf->HasElement("gripper_link_name"))
+    gripperLinkName = _sdf->Get<std::string>("gripper_link_name");
+
+  std::cout << "[LinkAttacher] robot_model_name=" << robotModelName << std::endl;
+  std::cout << "[LinkAttacher] gripper_link_name=" << gripperLinkName << std::endl;
+
   std::cout << "[LinkAttacher] Subscribing to contact topics" << std::endl;
 
-  gzNode.Subscribe(
-    "/world/default/model/ur5_robotiq/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
-    &LinkAttacher::OnContact,
-    this);
-
-  gzNode.Subscribe(
-    "/world/default/model/ur5_robotiq/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
-    &LinkAttacher::OnContact,
-    this);
+  if (!gripperLinkName.empty())
+  {
+    // Suction mode: single contact sensor on the configured gripper link
+    std::string topic = "/world/default/model/" + robotModelName +
+      "/link/" + gripperLinkName + "/sensor/suction_contact/contact";
+    gzNode.Subscribe(topic, &LinkAttacher::OnContact, this);
+  }
+  else
+  {
+    // Robotiq finger-tip mode (pick_place default)
+    gzNode.Subscribe(
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_left_finger_tip_link/sensor/left_finger_contact/contact",
+      &LinkAttacher::OnContact, this);
+    gzNode.Subscribe(
+      "/world/default/model/" + robotModelName +
+      "/link/robotiq_85_right_finger_tip_link/sensor/right_finger_contact/contact",
+      &LinkAttacher::OnContact, this);
+  }
 
   std::cout << "[LinkAttacher] Starting ROS thread" << std::endl;
 
@@ -354,13 +373,20 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << std::endl;
 
     std::string objectModel;
+    std::string hitCollision;
 
     for (const auto &obj : graspableObjects)
     {
-      if (collision1.find(obj) != std::string::npos ||
-          collision2.find(obj) != std::string::npos)
+      if (collision1.find(obj) != std::string::npos)
       {
         objectModel = obj;
+        hitCollision = collision1;
+        break;
+      }
+      else if (collision2.find(obj) != std::string::npos)
+      {
+        objectModel = obj;
+        hitCollision = collision2;
         break;
       }
     }
@@ -375,9 +401,14 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << objectModel
       << std::endl;
 
-    model1 = "ur5_robotiq";
-    if (collision1.find("left_finger") != std::string::npos ||
-        collision2.find("left_finger") != std::string::npos)
+    model1 = robotModelName;
+    if (!gripperLinkName.empty())
+    {
+      // Suction mode: attach at the configured gripper link
+      link1 = gripperLinkName;
+    }
+    else if (collision1.find("left_finger") != std::string::npos ||
+             collision2.find("left_finger") != std::string::npos)
     {
       link1 = "robotiq_85_left_finger_tip_link";
     }
@@ -386,7 +417,13 @@ void OnContact(const gz::msgs::Contacts &_msg)
       link1 = "robotiq_85_right_finger_tip_link";
     }
 
-    model2 = objectModel;
+    // Extract actual model name from collision string (e.g. "box_89_0::link::collision")
+    size_t pos = hitCollision.find("::");
+    if (pos != std::string::npos) {
+        model2 = hitCollision.substr(0, pos);
+    } else {
+        model2 = objectModel;
+    }
 
     link2 = "link";
 
@@ -551,6 +588,9 @@ bool contactLatched = false;
 bool createJointRequested = false;
 
 gz::transport::Node gzNode;
+
+std::string robotModelName{"ur5_robotiq"};
+std::string gripperLinkName{""};
 
 std::string model1;
 std::string link1;

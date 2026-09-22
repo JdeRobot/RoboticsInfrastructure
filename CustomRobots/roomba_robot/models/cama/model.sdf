@@ -13,10 +13,8 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/White</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
         </material>
       </visual>
       <collision name="cama_collision">

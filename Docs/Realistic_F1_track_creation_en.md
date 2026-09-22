@@ -1,4 +1,4 @@
-# Creating Custom Worlds and Circuits in Blender
+# Creating Custom Scenes and Circuits in Blender
 
 ## Download and Install the GIS Addon
 
@@ -20,7 +20,7 @@ In Blender:
 1. Open the **GIS** menu (toolbar in the viewport).
 2. Go to: `GIS -> Web Geodata -> Basemap`.
 3. Choose `Google`, then `Satellite`, and click **OK**.
-4. A world map will appear, where you can select the desired area.  
+4. A world map will appear, where you can select the desired area.
    > It's recommended to keep the terrain under **5 km** in both width and height.
 5. Press **B** to make a precise selection of the area.
 6. Press **E** to delete the rest of the terrain.
@@ -55,9 +55,9 @@ To increase mesh resolution:
 
 ## Option 1: Road on Top of Terrain
 
-1. Create a **generic block** to represent the asphalt.  
-   > If you want guardrails along the track, include them in this block.
+1. Create a **generic block** to represent the asphalt.
 
+   > If you want guardrails along the track, include them in this block.
    - The block width should match the road width.
    - The length can be roughly half the width.
 

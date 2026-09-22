@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <asset>
     <contributor>
       <author>Blender User</author>
@@ -85,7 +86,7 @@
   </library_effects>
   <library_images>
     <image id="asfalto_jpg" name="asfalto_jpg">
-      <init_from>asfalto.jpg</init_from>
+      <init_from>asfalto.png</init_from>
     </image>
     <image id="barrera_jpg" name="barrera_jpg">
       <init_from>barrera.jpg</init_from>

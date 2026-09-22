@@ -18,7 +18,6 @@
   <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
-  <depend>gazebo_msgs</depend>
   <depend>rosgraph_msgs</depend>
   <depend>ros_gz_interfaces</depend>
 

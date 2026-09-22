@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <!--
+    Moving conveyor belt for the Palletizing exercise.
+
+    Geometry is identical to the static conveyor previously inlined in
+    palletizing_arm_harmonic.world (mesh scale, collision box, local poses), so
+    swapping the world over to this model is visually seamless.
+
+    Motion is provided by Gazebo Harmonic's native TrackController system. The
+    belt link stays fixed; TrackController drives the *contact-surface velocity*
+    of the collision, and the anisotropic friction below drags whatever rests on
+    the belt. Commanded by publishing gz.msgs.Double on:
+        /model/<name>/link/<link>/track_cmd_vel
+    (bridged from ROS topic /conveyor/speed in palletizing.launch.py).
+
+    TUNABLES (confirm against the stock demo at
+    /usr/share/gz/gz-sim8/worlds/conveyor.sdf in the Humble distrobox):
+      - <fdir1> : first friction direction == belt travel axis (model-local).
+      - <mu>/<mu2> : along/across the belt. Stock demo uses a high cross-axis
+        value so boxes don't drift sideways.
+      - sign of the commanded speed sets travel toward (+) or away (-) the arm.
+  -->
+  <model name="conveyor_belt">
+    <static>true</static>
+
+    <link name="link">
+      <visual name="visual">
+        <pose>0 0 0.95 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.45 0.35 0.5</scale>
+            <uri>model://conveyor_belt/meshes/conveyor.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="collision">
+        <pose>0 0 0.95 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2.4 0.8 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <!-- fdir1 = belt travel (model-local X, the 2.4 m long side).
+                   mu (along fdir1) drives boxes forward; mu2 (perpendicular)
+                   stays at 1.0 so boxes don't get launched sideways. -->
+              <mu>2.0</mu>
+              <mu2>0.5</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+
+    <plugin filename="gz-sim-track-controller-system"
+            name="gz::sim::systems::TrackController">
+      <link>link</link>
+      <min_velocity>-1.0</min_velocity>
+      <max_velocity>1.0</max_velocity>
+    </plugin>
+  </model>
+</sdf>

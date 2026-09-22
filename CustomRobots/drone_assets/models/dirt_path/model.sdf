@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+    <model name="dirt_path">
+        <static>true</static>
+        <link name="link">
+            <visual name="visual">
+                <cast_shadows>false</cast_shadows>
+                <geometry>
+                    <box>
+                        <size>1 1 0.01</size>
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>1.0 1.0 1.0 1.0</ambient>
+                    <diffuse>1.0 1.0 1.0 1.0</diffuse>
+                    <pbr>
+                        <metal>
+                            <albedo_map>model://dirt_path/materials/textures/dirt.png</albedo_map>
+                        </metal>
+                    </pbr>
+                </material>
+            </visual>
+        </link>
+    </model>
+</sdf>

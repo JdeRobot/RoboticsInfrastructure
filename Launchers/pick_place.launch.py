@@ -4,11 +4,12 @@ import os
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, SetEnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
     world_file_name = "warehouse_arm_harmonic.world"
-    worlds_dir = "/opt/jderobot/Worlds"
+    worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
     package_dir = get_package_share_directory("custom_robots")
@@ -50,6 +51,15 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz]
+        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, gz_ros2_bridge]
     )

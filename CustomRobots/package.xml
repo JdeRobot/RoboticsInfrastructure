@@ -17,16 +17,18 @@
 
   <exec_depend>ament_index_python</exec_depend>
   <exec_depend>control_msgs</exec_depend>
-  <exec_depend>gazebo_ros2_control</exec_depend>
-  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
   <exec_depend>hardware_interface</exec_depend>
   <exec_depend>joint_trajectory_controller</exec_depend>
   <exec_depend>joint_state_controller</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <exec_depend>moveit_msgs</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros2_controllers</exec_depend>
   <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>shape_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
@@ -34,6 +36,7 @@
   <exec_depend>xacro</exec_depend>
   <exec_depend>urdf</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
 
   <!-- launch testing -->
   <test_depend>ament_cmake_ros</test_depend>
@@ -45,7 +48,7 @@
   <exec_depend>ros-humble-ros-gzharmonic-bridge</exec_depend>
   <exec_depend>ros-humble-ros-gzharmonic-sim</exec_depend>
   <exec_depend>ros-humble-ros-gzharmonic-image</exec_depend>
-  
+
   <export>
     <build_type>ament_cmake</build_type>
     <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />

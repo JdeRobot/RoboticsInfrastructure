@@ -18,12 +18,16 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_noise = LaunchConfiguration("noise")
+    gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
 
     nodes_to_start = []
 
-    bridge_yaml = os.path.join(package_dir, "params", f"rover_4wd.yaml")
+    noise = gz_noise.perform(context)
+    namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
@@ -38,7 +42,8 @@ def launch_setup(context):
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
-            "noise_level": gz_noise.perform(context),
+            "noise_level": noise,
+            "namespace": namespace,
         },
     ).toxml()
 
@@ -48,6 +53,7 @@ def launch_setup(context):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
+        namespace=gz_namespace,
         output="screen",
         parameters=[robot_description, {"use_sim_time": True}],
     )
@@ -55,11 +61,12 @@ def launch_setup(context):
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
+        namespace=gz_namespace,
         arguments=[
             "-topic",
-            "/robot_description",
+            f"/{namespace}/robot_description",
             "-name",
-            "rover_4wd",
+            entity,
             "-allow_renaming",
             "true",
             "-x",
@@ -81,7 +88,18 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=["--ros-args", "-p", f"config_file:={bridge_yaml}"],
+        namespace=gz_namespace,
+        arguments=[
+            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            f"/{namespace}/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+            f"/{namespace}/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            f"/{namespace}/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
+        ],
+        remappings=[
+            (f"/{namespace}/pose", "/tf"),
+        ],
         output="screen",
     )
 
@@ -93,19 +111,18 @@ def launch_setup(context):
 
 
 def generate_launch_description():
-    declared_arguments = []
-
-    # Add any entry parameter
-    declared_arguments.append(
-        DeclareLaunchArgument("use_sim_time", default_value="true")
-    )
-    declared_arguments.append(DeclareLaunchArgument("x", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("z", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("R", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("P", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("Y", default_value="0"))
-    declared_arguments.append(DeclareLaunchArgument("noise", default_value="none"))
+    declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("x", default_value="0"),
+        DeclareLaunchArgument("y", default_value="0"),
+        DeclareLaunchArgument("z", default_value="0"),
+        DeclareLaunchArgument("R", default_value="0"),
+        DeclareLaunchArgument("P", default_value="0"),
+        DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("noise", default_value="none"),
+        DeclareLaunchArgument("namespace", default_value="rover_4wd"),
+        DeclareLaunchArgument("entity", default_value="rover_4wd"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

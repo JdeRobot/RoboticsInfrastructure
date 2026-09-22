@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="dingo">
+
+  <xacro:arg name="namespace" default="" />
+  <xacro:arg name="gazebo_controllers" default="$(find custom_robots)/model/dingo/omni_4wd.yaml"/>
+  <xacro:arg name="noise_level" default="none"/>
+  <xacro:property name="PI" value="${math.pi}" />
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)).
+       Tuned lower than the turtlebot3 levels: the dingo estimate drifts faster,
+       so the whole scale is shifted down one notch (0.005 / 0.01 / 0.05). -->
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="a1" value="0.005" />
+    <xacro:property name="a2" value="0.005" />
+    <xacro:property name="a3" value="0.005" />
+    <xacro:property name="a4" value="0.005" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:property name="a1" value="0.01" />
+    <xacro:property name="a2" value="0.01" />
+    <xacro:property name="a3" value="0.01" />
+    <xacro:property name="a4" value="0.01" />
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="a1" value="0.05" />
+    <xacro:property name="a2" value="0.05" />
+    <xacro:property name="a3" value="0.05" />
+    <xacro:property name="a4" value="0.05" />
+  </xacro:if>
+
+
+  <xacro:include filename="$(find custom_robots)/model/dingo/attachments/top_plate.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/model/dingo/dingo_gz.urdf.xacro"/>
+
+  <!-- D0150 Platform Macro -->
+  <xacro:macro name="do150" params="control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
+    <!-- Variables -->
+    <xacro:property name="wheelbase" value="0.570" />
+    <xacro:property name="track" value="0.3708" />
+    <xacro:property name="wheel_vertical_offset" value="0.035145" />
+
+    <xacro:property name="dummy_inertia" value="1e-09"/>
+
+    <!-- Chassis -->
+    <link name="base_link"></link>
+
+    <joint name="base_link_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="chassis_link" />
+    </joint>
+
+    <link name="chassis_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/model/dingo/meshes/omni_chassis.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/model/dingo/meshes/omni_chassis_collision.stl"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <!-- Center of mass -->
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="14"/>
+        <!-- Moments of inertia: ( chassis without wheels ) -->
+        <inertia ixx="0.35498" ixy="0" ixz="0" iyy="0.7266" iyz="0" izz="1.0553"/>
+      </inertial>
+    </link>
+
+    <!-- Add wheels (Same as DO100) -->
+    <xacro:include filename="$(find custom_robots)/model/dingo/wheels.urdf.xacro"/>
+    <xacro:do100_drivetrain_wheels front_wheels="${front_wheels}" rear_wheels="${rear_wheels}"/>
+
+    <!-- Mounting Hard Points -->
+    <link name="default_mount"/>
+    <link name="front_2_mount"/>
+    <link name="front_1_mount"/>
+    <link name="front_0_mount"/>
+    <link name="rear_2_mount"/>
+    <link name="rear_1_mount"/>
+    <link name="rear_0_mount"/>
+
+    <joint name="default_mount_joint" type="fixed">
+      <origin xyz="0 0 0.069023" rpy="0 0 0" />
+      <parent link="chassis_link"/>
+      <child link="default_mount" />
+    </joint>
+    <joint name="front_0_mount_joint" type="fixed">
+      <origin xyz="0.080 0 0" rpy="0 0 0" />
+      <parent link="default_mount"/>
+      <child link="front_0_mount" />
+    </joint>
+    <joint name="front_1_mount_joint" type="fixed">
+      <origin xyz="0.080 0 0" rpy="0 0 0" />
+      <parent link="front_0_mount"/>
+      <child link="front_1_mount" />
+    </joint>
+    <joint name="front_2_mount_joint" type="fixed">
+      <origin xyz="0.080 0 0" rpy="0 0 0" />
+      <parent link="front_1_mount"/>
+      <child link="front_2_mount" />
+    </joint>
+    <joint name="rear_0_mount_joint" type="fixed">
+      <origin xyz="-0.080 0 0" rpy="0 0 0" />
+      <parent link="default_mount"/>
+      <child link="rear_0_mount" />
+    </joint>
+    <joint name="rear_1_mount_joint" type="fixed">
+      <origin xyz="-0.080 0 0" rpy="0 0 0" />
+      <parent link="rear_0_mount"/>
+      <child link="rear_1_mount" />
+    </joint>
+    <joint name="rear_2_mount_joint" type="fixed">
+      <origin xyz="-0.080 0 0" rpy="0 0 0" />
+      <parent link="rear_1_mount"/>
+      <child link="rear_2_mount" />
+    </joint>
+
+    <!-- Bumper Mounts -->
+    <link name="front_bumper_mount"/>
+    <link name="rear_bumper_mount"/>
+    <joint name="front_bumper_mount_joint" type="fixed">
+      <origin xyz="0.34159 0 0.0345115" rpy="0 0 0" />
+      <parent link="chassis_link"/>
+      <child link="front_bumper_mount" />
+    </joint>
+    <joint name="rear_bumper_mount_joint" type="fixed">
+      <origin xyz="-0.34159 0 0.0345115" rpy="0 0 0" />
+      <parent link="chassis_link"/>
+      <child link="rear_bumper_mount" />
+    </joint>
+  </xacro:macro>
+
+  <!-- Joint State Publisher -->
+  <xacro:do150/>
+  <xacro:top_plate name="top_plate" parent_link="default_mount" height="0.1">
+    <origin xyz="0 0 0"/>
+  </xacro:top_plate>
+  <xacro:laser xyz="0 0 0.1" rpy="0 0 0" name="lidar" parent="chassis_link" topic="/${namespace}/laser/scan"/>
+  <xacro:imu parent="chassis_link" topic="/imu" xyz="0 0 0" rpy="0 0 0"/>
+  <xacro:odom topic="/${namespace}/odom" freq="50"/>
+  <xacro:velocity topic="/${namespace}/cmd_vel"/>
+  <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher" />
+
+  <xacro:unless value="${noise_level == 'none'}">
+    <!-- ROS topic name matches the laser_mapping exercise interface. The plugin
+         publishes to ROS directly (not through the gz bridge). -->
+    <xacro:noise_odom topic="/${namespace}/odom_noisy" a1="${a1}" a2="${a2}" a3="${a3}" a4="${a4}"/>
+  </xacro:unless>
+</robot>

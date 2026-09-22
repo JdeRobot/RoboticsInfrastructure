@@ -2,90 +2,117 @@
 <sdf version="1.4">
 <model name="hangar">
   <static>true</static>
-    <link name="hangar">
-    	<pose>0 0 0 0 0 0</pose>
-        <collision name="collision">
-            <geometry>
-	       <plane>
-		   <size>100 100</size>
-    	       </plane>
-            </geometry>
-        </collision>
-        <visual name="visual">
-            <geometry>
-               <mesh>
-                  <uri>model://hangar/meshes/hangar.dae</uri>
-               </mesh>
-            </geometry>
-        </visual>
-     </link>
 
-     <link name="roof">
-	<collision name="collision2">
-            <pose>0 2 6 0 1.57 0</pose>
-            <geometry>
-	       <box>
-		   <size>0.1 20 14</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
+  <!-- Ground (industrial concrete floor) + original hangar mesh, scaled anisotropically:
+       x1.3 width, x3.0 length (Y), x1.8 height, from the original dimensions -->
+  <link name="hangar">
+    <pose>0 0 0 0 0 0</pose>
+    <collision name="collision">
+      <geometry>
+        <plane>
+          <size>100 100</size>
+        </plane>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <cast_shadows>false</cast_shadows>
+      <geometry>
+        <plane>
+          <size>100 100</size>
+        </plane>
+      </geometry>
+      <material>
+        <ambient>0.6 0.6 0.6 1</ambient>
+        <diffuse>0.6 0.6 0.6 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+        <pbr>
+          <metal>
+            <albedo_map>model://hangar/materials/textures/concrete_floor.jpg</albedo_map>
+          </metal>
+        </pbr>
+      </material>
+    </visual>
+    <visual name="visual_mesh">
+      <!-- Shadows off: this mesh is dozens of overlapping thin planes now
+           stretched over a much bigger area - shadow-mapping it is one of
+           the biggest render-cost knobs we control (physics itself is not
+           the bottleneck, confirmed at RTF~1.0 server-side). -->
+      <cast_shadows>false</cast_shadows>
+      <geometry>
+        <mesh>
+          <uri>model://hangar/meshes/hangar.dae</uri>
+          <scale>1.3 3 1.8</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
 
+  <!-- Invisible collision, recomputed for the (1.3, 3, 1.8) scale of the mesh above:
+       position = original_position * (sx, sy, sz); axis-aligned sizes scaled the same way -->
+  <link name="roof">
+    <collision name="collision2">
+      <pose>0 6 10.8 0 1.57 0</pose>
+      <geometry>
+        <box>
+          <size>0.1 60 18.2</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 
-     <link name="hangar_wall5">
-	<collision name="collision2">
-            <pose>-4.9 -7.0 3 0 0 1.85</pose>
-            <geometry>
-	       <box>
-		   <size>0.1 4 6</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
+  <link name="hangar_wall5">
+    <collision name="collision2">
+      <pose>-6.37 -21.0 5.4 0 0 1.85</pose>
+      <geometry>
+        <box>
+          <size>0.1 5.2 10.8</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 
-     <link name="hangar_wall4">
-	<collision name="collision2">
-            <pose>4.9 -7.0 3 0 0 1.35</pose>
-            <geometry>
-	       <box>
-		   <size>0.1 4 6</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
+  <link name="hangar_wall4">
+    <collision name="collision2">
+      <pose>6.37 -21.0 5.4 0 0 1.35</pose>
+      <geometry>
+        <box>
+          <size>0.1 5.2 10.8</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 
-     <link name="hangar_wall3">
-	<collision name="collision2">
-            <pose>0 12.3 3 0 0 1.57</pose>
-            <geometry>
-	       <box>
-		   <size>0.1 13.5 6</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
+  <link name="hangar_wall3">
+    <collision name="collision2">
+      <pose>0 36.9 5.4 0 0 1.57</pose>
+      <geometry>
+        <box>
+          <size>0.1 17.55 10.8</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 
+  <link name="hangar_wall2">
+    <collision name="collision2">
+      <pose>-8.84 7.5 5.4 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>0.1 60 10.8</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 
-     <link name="hangar_wall2">
-	<collision name="collision2">
-            <pose>-6.8 2.5 3 0 0 0 </pose>
-            <geometry>
-	       <box>
-		   <size>0.1 20 6</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
-
-     <link name="hangar_wall1">
-	<collision name="collision2">
-            <pose>6.8 2.5 3 0 0 0 </pose>
-            <geometry>
-	       <box>
-		   <size>0.1 20 6</size>
-    	       </box>
-            </geometry>
-        </collision>
-     </link>
+  <link name="hangar_wall1">
+    <collision name="collision2">
+      <pose>8.84 7.5 5.4 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>0.1 60 10.8</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
 </model>
 </sdf>

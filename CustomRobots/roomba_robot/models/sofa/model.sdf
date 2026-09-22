@@ -12,11 +12,9 @@
             </submesh>
           </mesh>
         </geometry>
-         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+        <material>
+          <diffuse>0.6 0.6 0.6 1</diffuse>
+          <specular>0 0 0 1</specular>
         </material>
       </visual>
       <visual name="brazo1_visual">
@@ -28,11 +26,9 @@
             </submesh>
           </mesh>
         </geometry>
-         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+        <material>
+          <diffuse>0.6 0.6 0.6 1</diffuse>
+          <specular>0 0 0 1</specular>
         </material>
       </visual>
       <visual name="brazo2_visual">
@@ -45,10 +41,8 @@
           </mesh>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+          <diffuse>0.6 0.6 0.6 1</diffuse>
+          <specular>0 0 0 1</specular>
         </material>
       </visual>
       <visual name="respaldo_visual">
@@ -60,11 +54,9 @@
             </submesh>
           </mesh>
         </geometry>
-         <material>
-          <script>
-            <name>Gazebo/Grey</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+        <material>
+          <diffuse>0.6 0.6 0.6 1</diffuse>
+          <specular>0 0 0 1</specular>
         </material>
       </visual>
       <collision name="sofa_collision">

@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="Forest Pine">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0 1.57 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://Pine/meshes/Pine.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://Pine/meshes/Pine.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

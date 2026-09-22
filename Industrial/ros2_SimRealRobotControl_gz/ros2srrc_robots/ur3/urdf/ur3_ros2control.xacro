@@ -144,7 +144,7 @@
       <!-- A. GAZEBO SIMULATION: -->
       <xacro:unless value="${bringup}">
         <hardware>
-          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
       </xacro:unless>
 

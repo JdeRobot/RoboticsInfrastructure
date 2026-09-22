@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
 
-  <xacro:macro name="turtlebot3">
+  <xacro:macro name="turtlebot3" params="namespace">
     <!-- Init colour -->
     <material name="black">
       <color rgba="0.0 0.0 0.0 1.0"/>
@@ -52,35 +52,10 @@
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
-        <gazebo>
-          <surface>
-            <!-- This friction pamareter don't contain reliable data!! -->
-            <friction>
-              <ode>
-                <mu>100000.0</mu>
-                <mu2>100000.0</mu2>
-                <fdir1>0 0 0</fdir1>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-              </ode>
-            </friction>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
       </collision>
       <visual >
-        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <cylinder radius="0.033" length="0.018"/>
         </geometry>
         <material name="black"/>
       </visual>
@@ -95,41 +70,16 @@
         <geometry>
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
-        <gazebo>
-          <surface>
-            <!-- This friction pamareter don't contain reliable data!! -->
-            <friction>
-              <ode>
-                <mu>100000.0</mu>
-                <mu2>100000.0</mu2>
-                <fdir1>0 0 0</fdir1>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-              </ode>
-            </friction>
-            <contact>
-              <ode>
-                <soft_cfm>0</soft_cfm>
-                <soft_erp>0.2</soft_erp>
-                <kp>1e+5</kp>
-                <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-          </surface>
-        </gazebo>
       </collision>
       <visual >
-        <origin rpy="1.57 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/tire.dae" scale="0.001 0.001 0.001"/>
+          <cylinder radius="0.033" length="0.018"/>
         </geometry>
         <material name="black"/>
       </visual>
     </link>
 
-    <link name="camera_link"/>
+    <link name="camera_base_link"/>
 
     <joint name="base_to_base_link" type="fixed">
       <parent link="base_footprint"/>
@@ -140,7 +90,7 @@
 
     <joint name="camera_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="camera_link"/>
+      <child link="camera_base_link"/>
       <origin xyz="0.064 -0.065 0.094" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
@@ -204,9 +154,31 @@
       </inertial>
     </link>
 
-    <xacro:imu parent="imu_link" topic="turtlebot3/imu" xyz="-0.032 0 0.068" rpy="0 0 0"/>
-    <xacro:laser xyz="-0.064 0 0.121" rpy="0 0 0" name="lidar" parent="base_link" topic="turtlebot3/laser/scan"/>
-    <xacro:velocity topic="turtlebot3/cmd_vel"/>
-    <xacro:odom topic="/turtlebot3/odom" freq="50"/>
+    <xacro:imu parent="imu_link" xyz="-0.032 0 0.068" rpy="0 0 0" namespace="${namespace}"/>
+    <xacro:laser xyz="-0.064 0 0.121" rpy="0 0 0" name="laser" parent="base_link" namespace="${namespace}"/>
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom namespace="${namespace}" freq="50"/>
+  </xacro:macro>
+
+  <!-- Flat orange disc, visual only, clear of the laser so it stays visible from above -->
+  <xacro:macro name="beacon_marker" params="parent">
+    <material name="beacon_orange">
+      <color rgba="1.0 0.35 0.0 1.0"/>
+    </material>
+
+    <link name="beacon_link">
+      <visual>
+        <geometry>
+          <cylinder radius="0.05" length="0.02"/>
+        </geometry>
+        <material name="beacon_orange"/>
+      </visual>
+    </link>
+
+    <joint name="beacon_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="beacon_link"/>
+      <origin xyz="-0.064 0 0.16" rpy="0 0 0"/>
+    </joint>
   </xacro:macro>
 </robot>

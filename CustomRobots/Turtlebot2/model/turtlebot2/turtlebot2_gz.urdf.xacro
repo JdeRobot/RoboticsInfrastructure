@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="vacuum_cleaner_gz"
   xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="camera" params="xyz rpy name parent">
+  <xacro:macro name="camera" params="xyz rpy name parent namespace">
 
     <link name="${name}_link">
       <visual>
@@ -24,9 +24,9 @@
         <always_on>true</always_on>
         <visualize>false</visualize>
         <update_rate>5</update_rate>
-        <topic>/${name}/image_raw</topic>
+        <topic>/${namespace}/${name}/image_raw</topic>
         <camera name="camera">
-          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
           <horizontal_fov>1.0472</horizontal_fov>
           <image>
             <width>640</width>
@@ -61,7 +61,7 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="stereo_camera" params="xyz rpy name parent">
+  <xacro:macro name="stereo_camera" params="xyz rpy name parent namespace">
 
     <link name="${name}_link">
     </link>
@@ -78,9 +78,9 @@
         <always_on>true</always_on>
         <visualize>false</visualize>
         <update_rate>5</update_rate>
-        <topic>/${name}/image_raw</topic>
+        <topic>/${namespace}/${name}/image_raw</topic>
         <camera name="camera">
-          <camera_info_topic>/${name}/camera_info</camera_info_topic>
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
           <horizontal_fov>1.570000</horizontal_fov>
           <image>
             <width>640</width>
@@ -101,7 +101,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="laser" params="xyz rpy name parent topic">
+  <xacro:macro name="laser" params="xyz rpy name parent namespace">
     <link name="${name}_link">
       <visual>
         <geometry>
@@ -121,7 +121,7 @@
         <always_on>1</always_on>
         <visualize>1</visualize>
         <update_rate>5</update_rate>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/${name}/scan</topic>
         <gz_frame_id>laser</gz_frame_id>
         <lidar>
           <scan>
@@ -142,20 +142,20 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="bumper" params="topic name">
+  <xacro:macro name="bumper" params="topic name namespace">
     <gz>
       <sensor name='${name}' type='contact'>
         <always_on>true</always_on>
         <update_rate>20</update_rate>
         <contact>
           <collision>${name}_collision</collision>
-          <topic>${topic}</topic>
+          <topic>/${namespace}/${topic}</topic>
         </contact>
       </sensor>
     </gz>
   </xacro:macro>
 
-  <xacro:macro name="imu" params="topic">
+  <xacro:macro name="imu" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
       </plugin>
@@ -164,7 +164,7 @@
         <sensor name='imu' type='imu'>
           <always_on>1</always_on>
           <update_rate>50</update_rate>
-          <topic>${topic}</topic>
+          <topic>/${namespace}/imu</topic>
           <imu>
             <noise>
               <type>gaussian</type>
@@ -225,7 +225,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="velocity" params="topic">
+  <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
         <publish_tf>1</publish_tf>
@@ -233,18 +233,18 @@
         <right_joint>wheel_right_joint</right_joint>
         <wheel_separation>.230</wheel_separation>
         <wheel_diameter>0.070</wheel_diameter>
-        <topic>${topic}</topic>
+        <topic>/${namespace}/cmd_vel</topic>
       </plugin>
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="odom" params="topic freq">
+  <xacro:macro name="odom" params="namespace freq">
     <gazebo>
       <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
         <odom_frame>odom</odom_frame>
         <robot_base_frame>base_footprint</robot_base_frame>
         <odom_publish_frequency>${freq}</odom_publish_frequency>
-        <odom_topic>${topic}</odom_topic>
+        <odom_topic>/${namespace}/odom</odom_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
