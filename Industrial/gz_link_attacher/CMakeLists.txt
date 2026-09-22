@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.2.3)
 project(gz_link_attacher)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -17,8 +17,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz-plugin REQUIRED)
 
 find_package(linkattacher_msgs REQUIRED)
 
@@ -31,14 +31,10 @@ add_library(gz_link_attacher SHARED
 )
 
 target_link_libraries(gz_link_attacher
-  gz-sim8::gz-sim8
-  gz-plugin2::gz-plugin2
-)
-
-ament_target_dependencies(gz_link_attacher
-  rclcpp
-  std_msgs
-  linkattacher_msgs
+  rclcpp::rclcpp
+  gz-sim::gz-sim
+  gz-plugin::gz-plugin
+  std_msgs::std_msgs
 )
 
 ############################
@@ -66,8 +62,8 @@ install(
 ament_export_libraries(gz_link_attacher)
 
 ament_export_dependencies(
-  gz-sim8
-  gz-plugin2
+  gz-sim
+  gz-plugin
 )
 
 ament_package()
