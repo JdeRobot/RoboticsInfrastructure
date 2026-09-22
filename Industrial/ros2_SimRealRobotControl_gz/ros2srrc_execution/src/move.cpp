@@ -51,8 +51,8 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 
 // Include MoveIt!2:
-#include <moveit/move_group_interface/move_group_interface_improved.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include "moveit/move_group_interface/move_group_interface_improved.hpp"
+#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
 
 // Include the move ROS2 ACTION:
 #include "ros2srrc_data/action/move.hpp"
@@ -68,8 +68,8 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <moveit_msgs/action/move_group.hpp>
 
-#include <moveit/trajectory_processing/iterative_time_parameterization.h>
-#include <moveit/robot_trajectory/robot_trajectory.h>
+#include <moveit/trajectory_processing/time_optimal_trajectory_generation.hpp>
+#include <moveit/robot_trajectory/robot_trajectory.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 // Declaration of GLOBAL VARIABLES --> ROBOT / END-EFFECTOR / ENVIRONMENT PARAMETERS:
@@ -79,8 +79,8 @@ std::string param_ENV = "none";
 std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLES --> MoveIt!2 Interface:
-moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
-moveit::planning_interface::MoveGroupInterface move_group_interface_EE;
+moveit::planning_interface::MoveGroupInterface move_group_interface_ROB = moveit::planning_interface::MoveGroupInterface(nullptr,nullptr);
+moveit::planning_interface::MoveGroupInterface move_group_interface_EE = moveit::planning_interface::MoveGroupInterface(nullptr,nullptr);;
 
 // Declaration of GLOBAL VARIABLES --> JointModelGroup:
 const moveit::core::JointModelGroup* joint_model_group_ROB;
@@ -139,7 +139,7 @@ private:
 moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    bool success = (move_group_interface_ROB.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
 
     // Execute the plan
     if (success)
@@ -158,7 +158,7 @@ moveit::planning_interface::MoveGroupInterface::Plan plan_ROB() {
 moveit::planning_interface::MoveGroupInterface::Plan plan_EE() {
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group_interface_EE.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    bool success = (move_group_interface_EE.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
 
     // Execute the plan
     if (success)
@@ -304,12 +304,10 @@ private:
             moveit_msgs::msg::RobotTrajectory trajectory;
 
             const double eef_step = 0.005;
-            const double jump_threshold = 0.0;
 
             double fraction = move_group_interface_ROB.computeCartesianPath(
                 waypoints,
                 eef_step,
-                jump_threshold,
                 trajectory
             );
 
@@ -319,7 +317,7 @@ private:
                 return;
             }
 
-            MyPlan.trajectory_ = trajectory;
+            MyPlan.trajectory = trajectory;
             RES = "PLANNING: OK";
         } else if (action == "MoveR" && param_ROB != "none"){
 
@@ -420,19 +418,19 @@ private:
 
             rt.setRobotTrajectoryMsg(
                 *current_state,
-                MyPlan.trajectory_
+                MyPlan.trajectory
             );
 
-            trajectory_processing::IterativeParabolicTimeParameterization iptp;
+            trajectory_processing::TimeOptimalTrajectoryGeneration iptp;
             bool success = iptp.computeTimeStamps(rt, 1.0);
 
             if (!success) {
                 RCLCPP_ERROR(this->get_logger(), "Time parameterization failed!");
             }
 
-            rt.getRobotTrajectoryMsg(MyPlan.trajectory_);
+            rt.getRobotTrajectoryMsg(MyPlan.trajectory);
 
-            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+            bool ExecSUCCESS = (move_group_interface_ROB.execute(MyPlan) == moveit::core::MoveItErrorCode::SUCCESS);
 
             if (goal_handle->is_canceling()) {
                 RCLCPP_INFO(this->get_logger(), "Goal canceled.");

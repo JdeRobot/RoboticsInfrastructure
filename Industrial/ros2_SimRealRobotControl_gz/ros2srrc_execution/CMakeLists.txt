@@ -28,6 +28,7 @@ endif()
 
 # REQUIRED to -> Launch move_group interface:
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_core REQUIRED)  
 find_package(rclcpp REQUIRED)
 
 # REQUIRED to -> Include ros2srrc_data package:
@@ -70,7 +71,6 @@ add_executable(
 
 # Link directories:
 include_directories(${YAML_CPP_INCLUDE_DIR})
-target_link_libraries(move ${YAML_CPP_LIBRARIES})
 
 # Install executable:
 install(TARGETS
@@ -93,30 +93,28 @@ install(
 )
 
 # Add ament dependencies:
-ament_target_dependencies(
-  move
-  rclcpp
-  moveit_ros_planning_interface
-  std_msgs
-  rclcpp_action
-  ros2srrc_data
-  yaml-cpp
-  ament_index_cpp
+target_link_libraries(move
+  ${YAML_CPP_LIBRARIES}
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  rclcpp_action::rclcpp_action
+  ros2srrc_data::ros2srrc_data
 )
-ament_target_dependencies(
-  robmove
-  rclcpp
-  moveit_ros_planning_interface
-  std_msgs
-  rclcpp_action
-  ros2srrc_data
+
+target_link_libraries(robmove
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  rclcpp_action::rclcpp_action
+  ros2srrc_data::ros2srrc_data
 )
-ament_target_dependencies(
-  robpose
-  rclcpp
-  moveit_ros_planning_interface
-  std_msgs
-  ros2srrc_data
+
+target_link_libraries(robpose
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  ros2srrc_data::ros2srrc_data
 )
 
 # =========================================================== #

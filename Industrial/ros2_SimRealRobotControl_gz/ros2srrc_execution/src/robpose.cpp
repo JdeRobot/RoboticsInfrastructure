@@ -41,14 +41,14 @@
 using namespace std::chrono_literals;
 
 // Include MoveIt!2:
-#include <moveit/move_group_interface/move_group_interface_improved.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include "moveit/move_group_interface/move_group_interface_improved.hpp"
+#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
 
 // Include the Robpose ROS2 Message:
 #include "ros2srrc_data/msg/robpose.hpp"
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
-moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
+moveit::planning_interface::MoveGroupInterface move_group_interface_ROB = moveit::planning_interface::MoveGroupInterface(nullptr,nullptr);
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";
