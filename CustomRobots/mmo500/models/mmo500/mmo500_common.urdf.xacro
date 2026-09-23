@@ -9,7 +9,7 @@
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
 
-  <!-- Wheels are fixed because the base is moved by VelocityControl -->
+  <!-- Passive wheels that roll on the floor while VelocityControl drives the base -->
   <xacro:macro name="omni_wheel" params="name xyz yaw">
     <link name="${name}_link">
       <inertial>
@@ -27,10 +27,20 @@
         </geometry>
       </collision>
     </link>
-    <joint name="${name}_joint" type="fixed">
+    <joint name="${name}_joint" type="continuous">
       <parent link="base_link"/>
       <child link="${name}_link"/>
       <origin xyz="${xyz}" rpy="0 0 ${yaw}"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.01" friction="0.0"/>
+    </joint>
+    <xacro:rolling_wheel link="${name}_link"/>
+  </xacro:macro>
+
+  <xacro:macro name="wheel_state" params="name">
+    <joint name="${name}">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
   </xacro:macro>
 
@@ -170,6 +180,17 @@
     <xacro:odom namespace="${namespace}"/>
     <xacro:gpu_laser link="front_laser_link" name="front_laser" namespace="${namespace}"/>
     <xacro:gpu_laser link="back_laser_link" name="back_laser" namespace="${namespace}"/>
+    <!-- Wheels are state only because MoveIt waits for every joint of the URDF -->
+    <ros2_control name="mmo500_wheels" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <xacro:wheel_state name="wheel_front_left_joint"/>
+      <xacro:wheel_state name="wheel_front_right_joint"/>
+      <xacro:wheel_state name="wheel_back_left_joint"/>
+      <xacro:wheel_state name="wheel_back_right_joint"/>
+    </ros2_control>
+
     <xacro:ros2_control_plugin namespace="${namespace}" simulation_controllers="${simulation_controllers}"/>
 
   </xacro:macro>
