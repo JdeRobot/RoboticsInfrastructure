@@ -1,0 +1,12 @@
+The mesh files under models/mmo500/meshes/ (MPO-500-BODY, MPO-500-WHEEL,
+cabin, SICK-MICROSCAN3) come from neo_simulation2 in
+https://github.com/neobotix/neo_simulation2, Copyright (c) 2021 neobotix gmbh,
+MIT license, see LICENSE in this directory.
+
+The MPO-500 dimensions used in mmo500_common.urdf.xacro (wheel and laser
+mount poses, cabinet and UR10 mount poses) were taken from the same source.
+
+The UR10 arm and the Robotiq 2F-85 gripper reuse the descriptions already in
+this repository (robot_arms and robotiq_description).
+
+Everything else in this directory is original work for RoboticsAcademy.

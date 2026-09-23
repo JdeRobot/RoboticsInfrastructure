@@ -209,6 +209,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 84	Follow Turtlebot	80
 85	XLeRobot Warehouse	58
 86	XLeRobot Home	81
+87	MMO-500 Warehouse	82
 \.
 
 --
@@ -282,6 +283,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
 63	85	40	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 64	86	40	{{-1.6,0.3,0.1,0.0,0.0,3.14}}
+65	87	41	{{0.0,0.0,0.02,0.0,0.0,0.0}}
 \.
 
 --
@@ -332,6 +334,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
+82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 \.
 
 --
@@ -379,6 +382,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 38	Mir100 Medium Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=med namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 40	XLeRobot	/home/ws/src/CustomRobots/xlerobot/launch/xlerobot.launch.py	xlerobot	namespace:=logistic_robot	xlerobot/models/xlerobot/xlerobot.urdf.xacro
+41	MMO-500	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500	mmo500/models/mmo500/mmo500.urdf.xacro
 \.
 
 --

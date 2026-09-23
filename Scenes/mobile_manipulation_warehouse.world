@@ -1,0 +1,535 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <world name="default">
+    <!-- 2 ms step keeps the 10 ms controller period an exact multiple of the step -->
+    <physics name="2ms" type="ode">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
+    </plugin>
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+      <robot_model_name>mmo500</robot_model_name>
+    </plugin>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>false</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ground_logo">
+      <static>true</static>
+      <pose>0 0 0 0 0 1.57</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.001 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>2 2 2</scale>
+              <uri>model://ground_logo_corner/meshes/ground_logo.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Objects start on conveyor1 and go to the tray of their color -->
+    <model name="conveyor1">
+      <static>true</static>
+      <pose>5 0 0 0 0 1.57</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://conveyor/meshes/conveyor2.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="belt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="conveyor2">
+      <static>true</static>
+      <pose>0 5 0 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://conveyor/meshes/conveyor2.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="belt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="conveyor3">
+      <static>true</static>
+      <pose>-5 0 0 0 0 1.57</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://conveyor/meshes/conveyor2.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="belt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="conveyor4">
+      <static>true</static>
+      <pose>0 -5 0 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.95 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://conveyor/meshes/conveyor2.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="belt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="green_tray">
+      <static>true</static>
+      <pose>0 4.8 1 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.005 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://green_tray/meshes/green_tray.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.25 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="front_wall">
+          <pose>0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="back_wall">
+          <pose>-0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="left_wall">
+          <pose>0 0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="right_wall">
+          <pose>0 -0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="yellow_tray">
+      <static>true</static>
+      <pose>-4.8 0 1 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.005 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://yellow_tray/meshes/yellow_tray.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.25 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="front_wall">
+          <pose>0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="back_wall">
+          <pose>-0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="left_wall">
+          <pose>0 0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="right_wall">
+          <pose>0 -0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="blue_tray">
+      <static>true</static>
+      <pose>0 -4.8 1 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <pose>0 0 0.005 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.5 0.5 0.5</scale>
+              <uri>model://blue_tray/meshes/blue_tray.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.25 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="front_wall">
+          <pose>0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="back_wall">
+          <pose>-0.12 0 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.25 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="left_wall">
+          <pose>0 0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="right_wall">
+          <pose>0 -0.12 0.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.012 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="wall_north">
+      <static>true</static>
+      <pose>0 7.5 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_south">
+      <static>true</static>
+      <pose>0 -7.5 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_east">
+      <static>true</static>
+      <pose>7.5 0 1.25 0 0 1.57</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_west">
+      <static>true</static>
+      <pose>-7.5 0 1.25 0 0 1.57</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_box">
+      <pose>4.8 0 1.035 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>3.08e-05</ixx><ixy>0</ixy><ixz>0</ixz><iyy>8.04e-05</iyy><iyz>0</iyz><izz>7.04e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box><size>0.12 0.05 0.07</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.12 0.05 0.07</size></box>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 1 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="yellow_ball">
+      <pose>4.8 -0.35 1.04 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>3.20e-05</ixx><ixy>0</ixy><ixz>0</ixz><iyy>3.20e-05</iyy><iyz>0</iyz><izz>3.20e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <sphere><radius>0.04</radius></sphere>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <sphere><radius>0.04</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>1 1 0 1</ambient>
+            <diffuse>1 1 0 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_cylinder">
+      <pose>4.8 0.35 1.05 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>6.17e-05</ixx><ixy>0</ixy><ixz>0</ixz><iyy>6.17e-05</iyy><iyz>0</iyz><izz>4.00e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder><radius>0.04</radius><length>0.1</length></cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder><radius>0.04</radius><length>0.1</length></cylinder>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

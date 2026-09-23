@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Frictionless wheels so they only hold the base up while VelocityControl drives it -->
+  <xacro:macro name="frictionless" params="link">
+    <gazebo reference="${link}">
+      <collision>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.0</mu>
+              <mu2>0.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:frictionless link="wheel_front_left_link"/>
+  <xacro:frictionless link="wheel_front_right_link"/>
+  <xacro:frictionless link="wheel_back_left_link"/>
+  <xacro:frictionless link="wheel_back_right_link"/>
+
+  <xacro:macro name="velocity" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>/${namespace}/cmd_vel</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_publish_frequency>50</odom_publish_frequency>
+        <odom_topic>/${namespace}/odom</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- SICK microScan3 with the field of view used by neo_simulation2 -->
+  <xacro:macro name="gpu_laser" params="link name namespace">
+    <gazebo reference="${link}">
+      <sensor name="${name}" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+        <update_rate>10</update_rate>
+        <topic>/${namespace}/${name}/scan</topic>
+        <gz_frame_id>${link}</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.48</min_angle>
+              <max_angle>1.48</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.10</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="ros2_control_plugin" params="namespace simulation_controllers">
+    <gazebo>
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <!-- Same namespace as robot_state_publisher -->
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+        <parameters>${simulation_controllers}</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
