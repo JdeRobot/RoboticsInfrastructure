@@ -52,7 +52,7 @@
 
   <!-- No virtual joint to world because the base moves and planning stays relative to base_footprint -->
 
-  <!-- Links that are always in contact, generated from the URDF joint tree -->
+  <!-- Link pairs that are always in contact generated from the URDF joint tree -->
   <disable_collisions link1="Base" link2="Base_2" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Base_2_geom_1" reason="Adjacent" />
   <disable_collisions link1="Base" link2="Base_geom_1" reason="Adjacent" />

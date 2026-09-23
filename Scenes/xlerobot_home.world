@@ -58,7 +58,7 @@
     <model name="red_box">
       
       <pose>-2.05 0.455 0.77 0 0 0</pose>
-      <!-- Red goes to the left arm, blue to the right arm and yellow sits between them -->
+      <!-- Red goes to the left arm and blue to the right arm with yellow between them -->
       <link name="link">
         <inertial>
           <mass>0.05</mass>

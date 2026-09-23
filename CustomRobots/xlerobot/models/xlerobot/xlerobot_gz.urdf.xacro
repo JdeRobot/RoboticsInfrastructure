@@ -43,7 +43,7 @@
     </collision>
   </gazebo>
 
-  <!-- Collide non adjacent links of the model, so arms cannot cross the tray or each other -->
+  <!-- Collide non adjacent links so the arms cannot cross the tray or each other -->
   <gazebo>
     <self_collide>true</self_collide>
   </gazebo>
@@ -127,7 +127,7 @@
     </joint>
   </xacro:macro>
 
-  <!-- Single ros2_control block for both arms, both grippers and the head -->
+  <!-- Single ros2_control block for both arms and grippers and the head -->
   <xacro:macro name="arm_ros2_control" params="simulation_controllers namespace">
     <ros2_control name="xlerobot_arms" type="system">
       <hardware>

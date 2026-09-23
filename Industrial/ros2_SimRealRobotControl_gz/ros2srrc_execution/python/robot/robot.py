@@ -58,7 +58,7 @@ RES["ExecTime"] = -1.0
 
 class RobMoveCLIENT(Node):
 
-    # Defaults keep the single robot behaviour, a second arm passes its own names
+    # The defaults keep the single arm behaviour and a second arm passes its own names
     def __init__(self, node_name="ros2srrc_RobMove_Client", action_name="/Robmove"):
 
         super().__init__(node_name)
@@ -183,8 +183,8 @@ class MoveCLIENT(Node):
 
 class RBT:
 
-    # One RBT per arm, each with its own action servers. use_move=False skips
-    # the /Move client for robots that do not run that action server.
+    # One RBT per arm with its own action servers
+    # use_move False skips the Move client for robots without that action server
     def __init__(
         self,
         suffix="",

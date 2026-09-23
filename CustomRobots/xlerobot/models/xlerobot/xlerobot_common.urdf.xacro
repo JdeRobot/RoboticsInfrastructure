@@ -845,7 +845,7 @@
           <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
         </material>
       </visual>
-      <!-- The tray collision lives in the chassis link, this link only adds the thin mast -->
+      <!-- The tray collision lives in the chassis link and this link only adds the thin mast -->
       <collision name="mast">
         <origin xyz="-0.105 0 0.22" rpy="0 0 0" />
         <geometry>
@@ -1339,7 +1339,7 @@
     </joint>
 
 
-<!-- Tray anchor points, one per arm, on the tray floor -->
+<!-- One tray anchor per arm on the tray floor -->
 <link name="tray_anchor_L" />
 
 <joint name="tray_anchor_L_joint" type="fixed">
@@ -1402,7 +1402,7 @@
 <joint name="fixed_head_camera_rgb_frame" type="fixed">
       <parent link="head_camera_link" />
       <child link="head_camera_rgb_frame" />
-      <!-- Optical frame convention, +Z forward -->
+      <!-- Optical frame convention with Z pointing forward -->
       <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
     </joint>
 

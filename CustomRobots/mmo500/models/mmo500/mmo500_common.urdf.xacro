@@ -168,7 +168,7 @@
 
     <xacro:robotiq_85_ros2_control name="robotiq" prefix="" sim_gz="true" use_fake_hardware="false"/>
 
-    <!-- Point between the finger pads, used as the arm tip by MoveIt -->
+    <!-- Point between the finger pads that MoveIt uses as the arm tip -->
     <link name="gripper_tcp"/>
     <joint name="gripper_tcp_joint" type="fixed">
       <parent link="ur10_tool0"/>
