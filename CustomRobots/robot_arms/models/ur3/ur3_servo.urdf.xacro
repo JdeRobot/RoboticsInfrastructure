@@ -33,7 +33,7 @@
     <xacro:property name="cam_base_pz" value="0.5"/>
     <!-- Orientación -->
     <xacro:property name="cam_base_or" value="0.0"/>
-    <xacro:property name="cam_base_op" value="1.57"/>
+    <xacro:property name="cam_base_op" value="0.0"/>
     <xacro:property name="cam_base_oy" value="0.0"/>
     <xacro:include filename="$(find ros2srrc_ur5_gazebo)/urdf/cam_on_base_gz.xacro"/>
 
