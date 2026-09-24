@@ -365,7 +365,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 32	Quadrotor Mouse	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone_mouse	sensor:=camera namespace:=drone_mouse color:=Magenta	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 33	Quadrotor Magnet	/home/ws/src/CustomRobots/quadrotor/launch/quadrotor.launch.py	drone	sensor:=camera namespace:=drone gripper:=true	quadrotor/models/quadrotor/quadrotor.urdf.xacro
 34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
-35	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
+35	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
 \.
 
 --
