@@ -13,10 +13,12 @@
           </mesh>
         </geometry>
         <material>
-          <diffuse>0.0 0.0 1.0 1.0</diffuse>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
           <specular>0.0 0.0 0.0 1.0</specular>
           <pbr>
-            <metal/>
+            <metal>
+              <albedo_map>meshes/wood.jpg</albedo_map>
+            </metal>
           </pbr>
         </material>
       </visual>

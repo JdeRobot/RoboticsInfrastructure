@@ -133,6 +133,12 @@ install(
     palletizing/params
     palletizing/config
 
+    xlerobot/models
+    xlerobot/launch
+
+    mmo500/models
+    mmo500/launch
+
   DESTINATION share/${PROJECT_NAME})
 
 # Palletizing box feeder node (ament_cmake package: install python node explicitly)

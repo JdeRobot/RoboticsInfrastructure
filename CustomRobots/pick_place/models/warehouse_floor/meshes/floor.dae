@@ -5,22 +5,22 @@
       <author>Blender User</author>
       <authoring_tool>Blender 4.5.13 LTS commit date:2026-08-24, commit time:11:28, hash:daeeeca98fb0</authoring_tool>
     </contributor>
-    <created>2026-09-25T11:38:54</created>
-    <modified>2026-09-25T11:38:54</modified>
+    <created>2026-09-25T11:55:12</created>
+    <modified>2026-09-25T11:55:12</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_effects>
-    <effect id="Material_003-effect">
+    <effect id="Material-effect">
       <profile_COMMON>
-        <newparam sid="RubberMat_logo_png-surface">
+        <newparam sid="porcelain_png-surface">
           <surface type="2D">
-            <init_from>RubberMat_logo_png</init_from>
+            <init_from>porcelain_png</init_from>
           </surface>
         </newparam>
-        <newparam sid="RubberMat_logo_png-sampler">
+        <newparam sid="porcelain_png-sampler">
           <sampler2D>
-            <source>RubberMat_logo_png-surface</source>
+            <source>porcelain_png-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -29,7 +29,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="RubberMat_logo_png-sampler" texcoord="Plane-mesh-map-0"/>
+              <texture texture="porcelain_png-sampler" texcoord="Plane-mesh-map-0"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -40,13 +40,13 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="RubberMat_logo_png" name="RubberMat_logo_png">
-      <init_from>RubberMat_logo.png</init_from>
+    <image id="porcelain_png" name="porcelain_png">
+      <init_from>porcelain.png</init_from>
     </image>
   </library_images>
   <library_materials>
-    <material id="Material_003-material" name="Material.003">
-      <instance_effect url="#Material_003-effect"/>
+    <material id="Material-material" name="Material">
+      <instance_effect url="#Material-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -84,7 +84,7 @@
         <vertices id="Plane-mesh-vertices">
           <input semantic="POSITION" source="#Plane-mesh-positions"/>
         </vertices>
-        <triangles material="Material_003-material" count="2">
+        <triangles material="Material-material" count="2">
           <input semantic="VERTEX" source="#Plane-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Plane-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Plane-mesh-map-0" offset="2" set="0"/>
@@ -100,7 +100,7 @@
         <instance_geometry url="#Plane-mesh" name="Plane">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Material_003-material" target="#Material_003-material">
+              <instance_material symbol="Material-material" target="#Material-material">
                 <bind_vertex_input semantic="Plane-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
