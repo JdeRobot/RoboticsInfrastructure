@@ -74,7 +74,7 @@
           <geometry>
             <mesh>
               <scale>1.33 1.33 1</scale>
-              <uri>model://warehouse_floor/meshes/warehouse_floor.dae</uri>
+              <uri>model://warehouse_floor/meshes/floor.dae</uri>
             </mesh>
           </geometry>
         </visual>
