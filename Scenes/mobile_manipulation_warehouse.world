@@ -73,7 +73,7 @@
           <pose>0 0 0.001 0 0 0</pose>
           <geometry>
             <mesh>
-              <scale>2 2 2</scale>
+              <scale>1.25 1.25 1</scale>
               <uri>model://ground_logo_corner/meshes/ground_logo.dae</uri>
             </mesh>
           </geometry>
