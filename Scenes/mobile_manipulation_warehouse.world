@@ -73,8 +73,8 @@
           <pose>0 0 0.001 0 0 0</pose>
           <geometry>
             <mesh>
-              <scale>1.25 1.25 1</scale>
-              <uri>model://ground_logo_corner/meshes/ground_logo.dae</uri>
+              <scale>1.33 1.33 1</scale>
+              <uri>model://warehouse_floor/meshes/warehouse_floor.dae</uri>
             </mesh>
           </geometry>
         </visual>
