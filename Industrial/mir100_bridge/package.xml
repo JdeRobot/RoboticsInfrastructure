@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>mir100_bridge</name>
+  <version>0.0.1</version>
+  <description>
+    ROS2 node that bridges a MiR100 real (or mocked) robot to the topics the
+    MiR100 exercise's HAL expects. It talks to the student's own ROS1 side
+    (mir_driver + rosbridge_server) over the rosbridge websocket protocol, so
+    no ROS1 install is needed inside this container.
+  </description>
+  <maintainer email="aquintana.camacho@gmail.com">aquintan</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <!-- roslibpy is not a ROS package, install with pip (see README.md) -->
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
