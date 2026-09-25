@@ -207,6 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
+85	Mir100 Physical	81
 \.
 
 --
@@ -278,6 +279,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 60	83	11	{{0,-8,0.3,0.0,0.0,0.0}}
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
+63	85	40	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 \.
 
 --
@@ -327,6 +329,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 78	Visual Lander	/opt/jderobot/Launchers/visual_lander.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
+81	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
 \.
 
 --
@@ -373,6 +376,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 37	Mir100 Low Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 38	Mir100 Medium Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=med namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+40	Mir100 Physical	/home/ws/src/CustomRobots/mir100/launch/mir100_physical.launch.py	mir100	namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 \.
 
 --

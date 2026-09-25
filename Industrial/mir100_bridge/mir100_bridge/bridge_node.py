@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
-"""ROS1 to ROS2 bridge node for the MiR100.
+"""ROS2 bridge for the MiR100.
 
-Connects, as a plain rosbridge websocket client, to the ROS1 side the student
-already has running (mir_driver, talking to the real or mocked robot) with
-rosbridge_server on top of it. No ROS1 install is needed here, only the
-websocket protocol, so this node is pure ROS2/rclpy and lives inside the
-RoboticsAcademy docker like any other exercise node.
-
-Topic names on the ROS2 side match the ones the simulated MiR100 already
-publishes (see CustomRobots/mir100/launch/mir100.launch.py), so the HAL sees
-no difference between sim and real robot.
+Connects to the ROS1 drivers running outside the docker through rosbridge and
+republishes them with the same ROS2 topics as the simulated robot.
 """
 
 import math
@@ -20,6 +13,8 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, LaserScan
+
+from mir100_bridge.host import resolve_ros1_host
 
 # Maps each ROS1 laser topic to its ROS2 topic and TF frame, matching what
 # mir100_common.urdf.xacro gives the simulated robot's lasers
@@ -33,11 +28,11 @@ class Mir100Bridge(Node):
     def __init__(self):
         super().__init__("mir100_bridge")
 
-        self.declare_parameter("ros1_hostname", "localhost")
+        self.declare_parameter("ros1_hostname", "")
         self.declare_parameter("ros1_port", 9091)
         self.declare_parameter("namespace", "mir100")
 
-        hostname = self.get_parameter("ros1_hostname").value
+        hostname = resolve_ros1_host(self.get_parameter("ros1_hostname").value)
         port = self.get_parameter("ros1_port").value
         self.namespace = self.get_parameter("namespace").value.strip("/")
 
@@ -45,7 +40,7 @@ class Mir100Bridge(Node):
         self.ros1 = roslibpy.Ros(host=hostname, port=port)
         self.ros1.on_ready(self.setup_bridge)
         self.ros1.on("error", lambda e: self.get_logger().warn(f"rosbridge error: {e}"))
-        self.ros1.run(timeout=None)  # connects in a background thread, non-blocking
+        self.ros1.run(timeout=None)  # connects in a background thread without blocking
 
     def ns(self, topic):
         return f"/{self.namespace}/{topic}"

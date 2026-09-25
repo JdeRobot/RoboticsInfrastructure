@@ -1,18 +1,3 @@
-"""Launch file for the MiR100 in physical mode, used with a real robot instead of the simulation.
-
-Counterpart of mir100.launch.py for scenes of type physical, so there is no
-Gazebo and nothing gets spawned. The robot's own ROS1 stack (mir_driver and
-rosbridge_server) is expected to already be running outside this docker.
-This file only starts robot_state_publisher and mir100_bridge, which
-republishes those ROS1 topics as ROS2 under the same names mir100.launch.py
-uses.
-
-The pose arguments x, y, z, R, P, Y and entity are accepted for interface
-compatibility with LauncherRobotRos2Api, which passes them to every robot
-launch file, but they are not used here since there is no simulated pose to
-set.
-"""
-
 import os
 import xacro
 
@@ -43,6 +28,7 @@ def launch_setup(context):
         parameters=[{"robot_description": robot_description_content}, {"use_sim_time": False}],
     )
 
+    # Talks to the ROS1 drivers running outside the docker
     bridge_node = Node(
         package="mir100_bridge",
         executable="bridge_node",
@@ -63,6 +49,7 @@ def launch_setup(context):
 def generate_launch_description():
     declared_arguments = [
         DeclareLaunchArgument("use_sim_time", default_value="false"),
+        # Pose arguments are unused, RAM passes them to every robot launch
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0"),
@@ -71,7 +58,7 @@ def generate_launch_description():
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("entity", default_value="mir100"),
         DeclareLaunchArgument("namespace", default_value="mir100"),
-        DeclareLaunchArgument("ros1_hostname", default_value="localhost"),
+        DeclareLaunchArgument("ros1_hostname", default_value=""),
         DeclareLaunchArgument("ros1_port", default_value="9091"),
     ]
 

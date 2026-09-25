@@ -26,7 +26,10 @@ for scenes of type physical.
 ## Parameters
 
 - `ros1_hostname`, the machine running rosbridge_server on top of the
-  student's ROS1 master, defaults to `localhost`.
+  student's ROS1 master. When empty it is resolved from the
+  `MIR100_ROS1_HOST` environment variable, then `host.docker.internal`, then
+  the container's default gateway (the docker host on Linux), and finally
+  `localhost`.
 - `ros1_port`, defaults to `9091`.
 - `namespace`, defaults to `mir100`.
 
