@@ -376,7 +376,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 37	Mir100 Low Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 38	Mir100 Medium Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=med namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
-40	Mir100 Physical	/home/ws/src/CustomRobots/mir100/launch/mir100_physical.launch.py	mir100	namespace:=logistic_robot	mir100/models/mir100/mir100.urdf.xacro
+40	Mir100 Physical	/home/ws/src/CustomRobots/mir100/launch/mir100_physical.launch.py	mir100	namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 \.
 
 --
