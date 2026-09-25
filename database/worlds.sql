@@ -208,6 +208,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
 85	Mir100 Physical	81
+90	Warehouse 1 Mir100	58
 \.
 
 --
@@ -280,6 +281,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 61	84	11	{{0.0,0.0,0.3,0.0,0.0,0.0}}
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
 63	85	40	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+70	90	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
