@@ -4,11 +4,13 @@
 
 First off, thanks for your interest in contributing to RoboticsInfrastructure! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
 
+You are contributing to a project that is used in others such as [RoboticsAcademy](https://github.com/JdeRobot/RoboticsAcademy) or [BT Studio](https://github.com/JdeRobot/bt-studio), because of this you must record the videos of the issues and fixes in one of this projects if possible.
+
 ## How to contribute?
 
 If you are new to GitHub, visit the [first-contributions instructions](https://github.com/firstcontributions/first-contributions/blob/master/README.md) to learn how to contribute on GitHub.
 
-To find issues you can help with, go though the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
+To find issues you can help with, go though the list of [good first issues](https://github.com/JdeRobot/RoboticsInfrastructure/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsInfrastructure/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
@@ -20,7 +22,7 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 
 - Fixes the issue related to the pull request
 - Does not contain any additional code than the one related to the fix
-- Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- Has been tested and compiled with corresponding videos of the before and after. This videos must be recorded in either [RoboticsAcademy](https://github.com/JdeRobot/RoboticsAcademy) or [BT Studio](https://github.com/JdeRobot/bt-studio). **Not a link to another webpage, you must add the video with Github's add file feature.**
 - If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
 - The changes submited must be up to date with the latest version of the branch they are being submitted to
 
