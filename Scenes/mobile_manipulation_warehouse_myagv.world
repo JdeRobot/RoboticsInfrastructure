@@ -83,97 +83,33 @@
       </link>
     </model>
 
-    <!-- Objects start on conveyor1 and go to the tray of their color -->
-    <model name="conveyor1">
+    <!-- Objects start on the wooden rug and go to the tray of their color -->
+    <model name="pick_rug">
       <static>true</static>
-      <pose>5 0 0 0 0 1.57</pose>
+      <pose>4.8 0 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
-          <pose>0 0 0.15 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>0.5 0.5 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor2_low.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name="belt">
-          <pose>0 0 0.1 0 0 0</pose>
+          <pose>0 0 0.0025 0 0 0</pose>
           <geometry>
             <box>
-              <size>2.5 1 0.2</size>
+              <size>0.6 1.2 0.005</size>
             </box>
           </geometry>
-        </collision>
-      </link>
-    </model>
-
-    <model name="conveyor2">
-      <static>true</static>
-      <pose>0 5 0 0 0 0</pose>
-      <link name="link">
-        <visual name="visual">
-          <pose>0 0 0.15 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>0.5 0.5 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor2_low.dae</uri>
-            </mesh>
-          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>model://mesa_comedor/meshes/wood.jpg</albedo_map>
+                <roughness>0.8</roughness>
+              </metal>
+            </pbr>
+          </material>
         </visual>
-        <collision name="belt">
-          <pose>0 0 0.1 0 0 0</pose>
+        <collision name="collision">
+          <pose>0 0 0.0025 0 0 0</pose>
           <geometry>
             <box>
-              <size>2.5 1 0.2</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-    </model>
-
-    <model name="conveyor3">
-      <static>true</static>
-      <pose>-5 0 0 0 0 1.57</pose>
-      <link name="link">
-        <visual name="visual">
-          <pose>0 0 0.15 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>0.5 0.5 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor2_low.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name="belt">
-          <pose>0 0 0.1 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>2.5 1 0.2</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-    </model>
-
-    <model name="conveyor4">
-      <static>true</static>
-      <pose>0 -5 0 0 0 0</pose>
-      <link name="link">
-        <visual name="visual">
-          <pose>0 0 0.15 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>0.5 0.5 0.5</scale>
-              <uri>model://conveyor/meshes/conveyor2_low.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name="belt">
-          <pose>0 0 0.1 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>2.5 1 0.2</size>
+              <size>0.6 1.2 0.005</size>
             </box>
           </geometry>
         </collision>
@@ -182,7 +118,7 @@
 
     <model name="green_tray">
       <static>true</static>
-      <pose>0 4.63 0.2 0 0 0</pose>
+      <pose>0 4.7 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <pose>0 0 0.005 0 0 0</pose>
@@ -238,7 +174,7 @@
 
     <model name="yellow_tray">
       <static>true</static>
-      <pose>-4.63 0 0.2 0 0 0</pose>
+      <pose>-4.7 0 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <pose>0 0 0.005 0 0 0</pose>
@@ -294,7 +230,7 @@
 
     <model name="blue_tray">
       <static>true</static>
-      <pose>0 -4.63 0.2 0 0 0</pose>
+      <pose>0 -4.7 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <pose>0 0 0.005 0 0 0</pose>
@@ -453,7 +389,7 @@
     </model>
 
     <model name="blue_box">
-      <pose>4.6 0 0.215 0 0 0</pose>
+      <pose>4.56 0 0.02 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.02</mass>
@@ -480,7 +416,7 @@
     </model>
 
     <model name="yellow_ball">
-      <pose>4.6 -0.35 0.215 0 0 0</pose>
+      <pose>4.56 -0.35 0.02 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.02</mass>
@@ -507,7 +443,7 @@
     </model>
 
     <model name="green_cylinder">
-      <pose>4.6 0.35 0.22 0 0 0</pose>
+      <pose>4.56 0.35 0.025 0 0 0</pose>
       <link name="link">
         <inertial>
           <mass>0.02</mass>
