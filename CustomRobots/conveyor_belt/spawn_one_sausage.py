@@ -28,7 +28,7 @@ class sausageSpawner(Node):
         ############################################################
 
         # Velocidad del conveyor
-        self.BELT_SPEED = -0.15
+        self.BELT_SPEED = -0.1
 
         # Posición de spawn
         self.MIN_X = -0.1
