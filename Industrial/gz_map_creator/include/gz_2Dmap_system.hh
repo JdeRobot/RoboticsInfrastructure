@@ -27,18 +27,18 @@
 #include <vector>
 
 // Ignition Fortress headers
-#include <ignition/gazebo/System.hh>
-#include <ignition/transport/Node.hh>
-#include <ignition/msgs/occupancy_grid.pb.h>
-#include <ignition/msgs/empty.pb.h>
-#include <ignition/math/AxisAlignedBox.hh>
+#include <gz/sim/System.hh>
+#include <gz/transport/Node.hh>
+#include <gz/msgs/occupancy_grid.pb.h>
+#include <gz/msgs/empty.pb.h>
+#include <gz/math/AxisAlignedBox.hh>
 
 // Compatibility namespace alias for Ignition Fortress
 namespace gz_compat {
-  namespace sim = ignition::gazebo;
-  namespace transport = ignition::transport;
-  namespace msgs = ignition::msgs;
-  namespace math = ignition::math;
+  namespace sim = gz::sim;
+  namespace transport = gz::transport;
+  namespace msgs = gz::msgs;
+  namespace math = gz::math;
 }
 
 namespace gz_2dmap_plugin

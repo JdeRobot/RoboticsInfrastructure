@@ -29,19 +29,19 @@
 #include <queue>
 
 // Use ignition naming for Fortress
-#include <ignition/plugin/Register.hh>
-#include <ignition/gazebo/World.hh>
-#include <ignition/gazebo/Model.hh>
-#include <ignition/gazebo/Link.hh>
-#include <ignition/gazebo/components/Model.hh>
-#include <ignition/gazebo/components/Name.hh>
-#include <ignition/gazebo/components/Pose.hh>
-#include <ignition/gazebo/components/Collision.hh>
-#include <ignition/gazebo/components/Geometry.hh>
-#include <ignition/gazebo/components/World.hh>
-#include <ignition/gazebo/Util.hh>
-#include <ignition/common/Console.hh>
-#include <ignition/math/Vector3.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/sim/World.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/Link.hh>
+#include <gz/sim/components/Model.hh>
+#include <gz/sim/components/Name.hh>
+#include <gz/sim/components/Pose.hh>
+#include <gz/sim/components/Collision.hh>
+#include <gz/sim/components/Geometry.hh>
+#include <gz/sim/components/World.hh>
+#include <gz/sim/Util.hh>
+#include <gz/common/Console.hh>
+#include <gz/math/Vector3.hh>
 
 // SDF headers for geometry shapes
 #include <sdf/Box.hh>
@@ -54,8 +54,8 @@ namespace gz_2dmap_plugin
 {
 
 // Namespace aliases for Ignition Fortress
-namespace sim = ignition::gazebo;
-namespace math = ignition::math;
+namespace sim = gz::sim;
+namespace math = gz::math;
 
 //////////////////////////////////////////////////
 OccupancyMapFromWorld::OccupancyMapFromWorld()
@@ -748,12 +748,19 @@ void OccupancyMapFromWorld::SaveMapToFiles(const std::string &basePath)
 }  // namespace gz_2dmap_plugin
 
 // Register the plugin for Ignition Fortress
-IGNITION_ADD_PLUGIN(
-    gz_2dmap_plugin::OccupancyMapFromWorld,
-    ignition::gazebo::System,
-    gz_2dmap_plugin::OccupancyMapFromWorld::ISystemConfigure,
-    gz_2dmap_plugin::OccupancyMapFromWorld::ISystemPostUpdate)
+// IGNITION_ADD_PLUGIN(
+//     gz_2dmap_plugin::OccupancyMapFromWorld,
+//     ignition::gazebo::System,
+//     gz_2dmap_plugin::OccupancyMapFromWorld::ISystemConfigure,
+//     gz_2dmap_plugin::OccupancyMapFromWorld::ISystemPostUpdate)
 
-IGNITION_ADD_PLUGIN_ALIAS(
-    gz_2dmap_plugin::OccupancyMapFromWorld,
-    "ignition::gazebo::systems::OccupancyMapFromWorld")
+GZ_ADD_PLUGIN(
+  gz_2dmap_plugin::OccupancyMapFromWorld,
+  gz::sim::System,
+  gz::sim::ISystemConfigure,
+  gz::sim::ISystemPostUpdate,
+)
+
+// IGNITION_ADD_PLUGIN_ALIAS(
+//     gz_2dmap_plugin::OccupancyMapFromWorld,
+//     "ignition::gazebo::systems::OccupancyMapFromWorld")
