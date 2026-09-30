@@ -31,8 +31,8 @@ class sausageSpawner(Node):
         self.BELT_SPEED = -0.15
 
         # Posición de spawn
-        self.MIN_X = -0.18
-        self.MAX_X = 0.18
+        self.MIN_X = -0.1
+        self.MAX_X = 0.1
 
         # La Y es SIEMPRE la misma
         self.SPAWN_Y = 0.58
