@@ -754,11 +754,11 @@ void OccupancyMapFromWorld::SaveMapToFiles(const std::string &basePath)
 //     gz_2dmap_plugin::OccupancyMapFromWorld::ISystemConfigure,
 //     gz_2dmap_plugin::OccupancyMapFromWorld::ISystemPostUpdate)
 
-GZ_ADD_PLUGIN(
+gz::sim::GZ_ADD_PLUGIN(
   gz_2dmap_plugin::OccupancyMapFromWorld,
   gz::sim::System,
   gz::sim::ISystemConfigure,
-  gz::sim::ISystemPostUpdate,
+  gz::sim::ISystemPostUpdate
 )
 
 // IGNITION_ADD_PLUGIN_ALIAS(
