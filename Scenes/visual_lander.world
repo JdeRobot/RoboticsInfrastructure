@@ -82,23 +82,54 @@
 			<pose>10 1 0.01 0 0 1.5708</pose>
 		</include>
 
-		<actor name="car">
-			<pose>0 0 0.75 0 0 0</pose>
-			<skin>
-				<filename>model://car_color_beacon/meshes/model.dae</filename>
-				<scale>1</scale>
-			</skin>
-			<script>
+		<model name="car">
+			<pose>-12 0 0 0 0 1.5707</pose>
+			<link name="car_link">
+				<pose>0 0 0.75 0 0 0</pose>
+				<inertial>
+					<mass>1200</mass>
+					<inertia>
+						<ixx>3194.0</ixx>
+						<ixy>0</ixy>
+						<ixz>0</ixz>
+						<iyy>981.0</iyy>
+						<iyz>0</iyz>
+						<izz>3837.0</izz>
+					</inertia>
+				</inertial>
+				<!-- Car body, kept above the ground so it does not drag on it -->
+				<collision name="body_collision">
+					<pose>0 0 0.05 0 0 0</pose>
+					<geometry>
+						<box>
+							<size>2.85 5.5 1.0</size>
+						</box>
+					</geometry>
+				</collision>
+				<!-- Roof with the beacon, where the drone lands -->
+				<collision name="roof_collision">
+					<pose>0 0.45 0.92 0 0 0</pose>
+					<geometry>
+						<box>
+							<size>2.0 2.0 0.74</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<mesh>
+							<uri>model://car_color_beacon/meshes/model.dae</uri>
+						</mesh>
+					</geometry>
+				</visual>
+			</link>
+			<plugin filename="libwaypoint_follower_harmonic.so" name="waypoint_follower::WaypointFollower">
 				<loop>true</loop>
-				<delay_start>0.0</delay_start>
-				<auto_start>true</auto_start>
-				<trajectory id="0" type="back_and_forth">
-					<waypoint><time>0.0</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>34.3</time><pose>12 0 0 0 0 1.5707</pose></waypoint>
-					<waypoint><time>68.6</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
-				</trajectory>
-			</script>
-		</actor>
+				<waypoint><time>0.0</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
+				<waypoint><time>34.3</time><pose>12 0 0 0 0 1.5707</pose></waypoint>
+				<waypoint><time>68.6</time><pose>-12 0 0 0 0 1.5707</pose></waypoint>
+			</plugin>
+		</model>
 
 		<include>
 			<uri>model://pine_tree</uri>
