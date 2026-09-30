@@ -139,6 +139,9 @@ install(
     mmo500/models
     mmo500/launch
 
+    myagv_mycobot/models
+    myagv_mycobot/launch
+
   DESTINATION share/${PROJECT_NAME})
 
 # Palletizing box feeder node (ament_cmake package: install python node explicitly)

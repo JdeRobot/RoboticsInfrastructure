@@ -1,0 +1,22 @@
+The meshes under models/myagv_mycobot/meshes/ come from Elephant Robotics,
+see LICENSE in this directory for both licenses.
+
+myagv_body, myagv_top and myagv_wheel_* were generated from myagv_base.dae
+and myagv_up.dae in https://github.com/elephantrobotics/myagv_ros2
+(myagv_description), Copyright (c) 2024 Elephant Robotics, BSD-3-Clause.
+The four mecanum wheels were split out of the base mesh so they can turn,
+and everything was converted from inches to meters.
+
+joint1_pi, joint2 to joint7 and gripper_* were converted to STL in meters from
+the myCobot 280 Pi and adaptive gripper meshes in
+https://github.com/elephantrobotics/mycobot_ros2 (mycobot_description),
+Copyright (c) 2020 Elephant Robotics, BSD-2-Clause.
+
+The arm and gripper joint origins, axes and limits in
+myagv_mycobot_common.urdf.xacro follow mycobot_280_pi_adaptive_gripper.urdf
+from the same source. The driving gripper joint is renamed from
+gripper_controller to gripper_base_to_gripper_left3 because ros2_control
+cannot activate a controller named like one of its joints. The laser and camera frames follow the myAGV bringup in
+https://github.com/elephantrobotics/myagv_ros (myagv_odometry).
+
+Everything else in this directory is original work for RoboticsAcademy.

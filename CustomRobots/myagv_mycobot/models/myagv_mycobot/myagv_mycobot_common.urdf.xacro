@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="mesh_dir" value="file://$(find custom_robots)/models/myagv_mycobot/meshes"/>
+  <xacro:property name="wheel_radius" value="0.04"/>
+  <xacro:property name="plate_top" value="0.1322"/>
+  <xacro:property name="arm_x" value="0.03"/>
+  <xacro:property name="arm_effort" value="10.0"/>
+  <xacro:property name="arm_velocity" value="2.8"/>
+  <xacro:property name="gripper_effort" value="2.0"/>
+
+  <!-- Driving pose folded above the base, also used as the MoveIt home state -->
+  <xacro:property name="home_j1" value="0.0"/>
+  <xacro:property name="home_j2" value="1.0"/>
+  <xacro:property name="home_j3" value="-2.3"/>
+  <xacro:property name="home_j4" value="-0.2"/>
+  <xacro:property name="home_j5" value="0.0"/>
+  <xacro:property name="home_j6" value="0.0"/>
+
+  <xacro:include filename="$(find custom_robots)/models/myagv_mycobot/myagv_mycobot_gz.urdf.xacro"/>
+
+  <material name="myagv_grey">
+    <color rgba="0.25 0.25 0.27 1"/>
+  </material>
+  <material name="myagv_plate">
+    <color rgba="0.12 0.12 0.13 1"/>
+  </material>
+  <material name="myagv_wheel">
+    <color rgba="0.08 0.08 0.08 1"/>
+  </material>
+  <material name="mycobot_white">
+    <color rgba="0.95 0.95 0.95 1"/>
+  </material>
+  <material name="mycobot_grey">
+    <color rgba="0.6 0.6 0.6 1"/>
+  </material>
+  <material name="gripper_black">
+    <color rgba="0.15 0.15 0.15 1"/>
+  </material>
+
+  <!-- Link with a mesh visual and a box collision fitted to that mesh -->
+  <xacro:macro name="mesh_link" params="name mesh material vxyz vrpy cxyz csize mass ixx iyy izz">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="${cxyz}"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${ixx}" ixy="0" ixz="0" iyy="${iyy}" iyz="0" izz="${izz}"/>
+      </inertial>
+      <visual>
+        <origin xyz="${vxyz}" rpy="${vrpy}"/>
+        <geometry>
+          <mesh filename="${mesh_dir}/${mesh}.stl"/>
+        </geometry>
+        <material name="${material}"/>
+      </visual>
+      <collision>
+        <origin xyz="${cxyz}"/>
+        <geometry>
+          <box size="${csize}"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- Passive mecanum wheels that roll on the floor while VelocityControl drives the base -->
+  <xacro:macro name="mecanum_wheel" params="name xyz">
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="4.8e-05" ixy="0" ixz="0" iyy="8.0e-05" iyz="0" izz="4.8e-05"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="${mesh_dir}/myagv_${name}.stl"/>
+        </geometry>
+        <material name="myagv_wheel"/>
+      </visual>
+      <collision>
+        <geometry>
+          <sphere radius="${wheel_radius}"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.001" friction="0.0"/>
+    </joint>
+    <xacro:rolling_wheel link="${name}_link"/>
+    <xacro:hidden_from_laser link="${name}_link"/>
+  </xacro:macro>
+
+  <xacro:macro name="state_only" params="name">
+    <joint name="${name}">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="arm_joint_control" params="name lower upper initial">
+    <joint name="${name}">
+      <command_interface name="position">
+        <param name="min">${lower}</param>
+        <param name="max">${upper}</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Humble gz_ros2_control only drives a mimic joint through these params -->
+  <xacro:macro name="mimic_joint_control" params="name multiplier">
+    <joint name="${name}">
+      <param name="mimic">gripper_base_to_gripper_left3</param>
+      <param name="multiplier">${multiplier}</param>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="myagv_mycobot" params="namespace simulation_controllers">
+
+    <!-- myAGV 2023 base -->
+    <link name="base_footprint"/>
+
+    <link name="base_link">
+      <inertial>
+        <origin xyz="0.007 -0.004 0.07"/>
+        <mass value="3.2"/>
+        <inertia ixx="0.0143" ixy="0" ixz="0" iyy="0.0296" iyz="0" izz="0.0368"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="${mesh_dir}/myagv_body.stl"/>
+        </geometry>
+        <material name="myagv_grey"/>
+      </visual>
+      <visual>
+        <geometry>
+          <mesh filename="${mesh_dir}/myagv_top.stl"/>
+        </geometry>
+        <material name="myagv_plate"/>
+      </visual>
+      <!-- Box fitted to the body and top plate meshes -->
+      <collision>
+        <origin xyz="0.007 -0.0042 0.0753"/>
+        <geometry>
+          <box size="0.313 0.2 0.1138"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <xacro:hidden_from_laser link="base_link"/>
+
+    <joint name="base_footprint_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0 0 0"/>
+    </joint>
+
+    <xacro:mecanum_wheel name="wheel_front_left" xyz="0.1124 0.0946 ${wheel_radius}"/>
+    <xacro:mecanum_wheel name="wheel_front_right" xyz="0.1124 -0.1029 ${wheel_radius}"/>
+    <xacro:mecanum_wheel name="wheel_back_left" xyz="-0.1014 0.0946 ${wheel_radius}"/>
+    <xacro:mecanum_wheel name="wheel_back_right" xyz="-0.1014 -0.1029 ${wheel_radius}"/>
+
+    <!-- Sensor frames from the myAGV bringup -->
+    <link name="laser_frame"/>
+    <joint name="laser_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="laser_frame"/>
+      <origin xyz="0.065 0 0.08" rpy="0 0 ${pi}"/>
+    </joint>
+
+    <link name="camera_link"/>
+    <joint name="camera_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0.13 0 0.131" rpy="0 0 0"/>
+    </joint>
+
+    <!-- myCobot 280 Pi, link and joint names kept from mycobot_description -->
+    <link name="g_base"/>
+    <joint name="g_base_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="g_base"/>
+      <origin xyz="${arm_x} 0 ${plate_top}"/>
+    </joint>
+
+    <xacro:mesh_link name="joint1" mesh="joint1_pi" material="mycobot_white"
+      vxyz="0 0 0" vrpy="0 0 0"
+      cxyz="-0.0013 0 0.0405" csize="0.0985 0.0926 0.0809"
+      mass="0.33" ixx="4.160e-04" iyy="4.466e-04" izz="5.027e-04"/>
+    <xacro:mesh_link name="joint2" mesh="joint2" material="mycobot_white"
+      vxyz="0 0 -0.06096" vrpy="0 0 -1.5708"
+      cxyz="0 -0.0063 -0.0206" csize="0.0480 0.0605 0.0871"
+      mass="0.12" ixx="1.124e-04" iyy="9.883e-05" izz="5.969e-05"/>
+    <xacro:mesh_link name="joint3" mesh="joint3" material="mycobot_white"
+      vxyz="0 0 0.03256" vrpy="0 -1.5708 0"
+      cxyz="-0.0540 0 0.0576" csize="0.1560 0.0480 0.0554"
+      mass="0.12" ixx="5.378e-05" iyy="2.741e-04" izz="2.664e-04"/>
+    <xacro:mesh_link name="joint4" mesh="joint4" material="mycobot_white"
+      vxyz="0 0 0.03056" vrpy="0 -1.5708 0"
+      cxyz="-0.0468 0 0.0065" csize="0.1368 0.0432 0.0578"
+      mass="0.10" ixx="4.339e-05" iyy="1.838e-04" izz="1.715e-04"/>
+    <xacro:mesh_link name="joint5" mesh="joint5" material="mycobot_white"
+      vxyz="0 -0.001 -0.0345" vrpy="0 -1.5708 1.5708"
+      cxyz="0.0001 -0.0095 -0.0081" csize="0.0386 0.0563 0.0528"
+      mass="0.08" ixx="3.974e-05" iyy="2.850e-05" izz="3.109e-05"/>
+    <xacro:mesh_link name="joint6" mesh="joint6" material="mycobot_white"
+      vxyz="0 0 -0.038" vrpy="0 0 0"
+      cxyz="0 0.0068 -0.0094" csize="0.0384 0.0567 0.0571"
+      mass="0.06" ixx="3.239e-05" iyy="2.369e-05" izz="2.345e-05"/>
+    <xacro:mesh_link name="joint6_flange" mesh="joint7" material="mycobot_grey"
+      vxyz="0 0 -0.012" vrpy="0 0 0"
+      cxyz="0 0 -0.0051" csize="0.0384 0.0384 0.0137"
+      mass="0.02" ixx="2.770e-06" iyy="2.770e-06" izz="4.915e-06"/>
+
+    <joint name="g_base_to_joint1" type="fixed">
+      <parent link="g_base"/>
+      <child link="joint1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint2_to_joint1" type="revolute">
+      <parent link="joint1"/>
+      <child link="joint2"/>
+      <origin xyz="0 0 0.13956" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-2.9321" upper="2.9321" velocity="${arm_velocity}"/>
+    </joint>
+
+    <joint name="joint3_to_joint2" type="revolute">
+      <parent link="joint2"/>
+      <child link="joint3"/>
+      <origin xyz="0 0 -0.001" rpy="0 1.5708 -1.5708"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-2.4434" upper="2.4434" velocity="${arm_velocity}"/>
+    </joint>
+
+    <joint name="joint4_to_joint3" type="revolute">
+      <parent link="joint3"/>
+      <child link="joint4"/>
+      <origin xyz="-0.1104 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-2.6179" upper="2.6179" velocity="${arm_velocity}"/>
+    </joint>
+
+    <joint name="joint5_to_joint4" type="revolute">
+      <parent link="joint4"/>
+      <child link="joint5"/>
+      <origin xyz="-0.096 0 0.06462" rpy="0 0 -1.5708"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-2.6179" upper="2.6179" velocity="${arm_velocity}"/>
+    </joint>
+
+    <joint name="joint6_to_joint5" type="revolute">
+      <parent link="joint5"/>
+      <child link="joint6"/>
+      <origin xyz="0 -0.07318 -0.001" rpy="1.5708 -1.5708 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-2.7052" upper="2.7925" velocity="${arm_velocity}"/>
+    </joint>
+
+    <joint name="joint6output_to_joint6" type="revolute">
+      <parent link="joint6"/>
+      <child link="joint6_flange"/>
+      <origin xyz="0 0.0456 0" rpy="-1.5708 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${arm_effort}" lower="-3.14159" upper="3.14159" velocity="${arm_velocity}"/>
+    </joint>
+
+    <!-- Adaptive gripper, closed at -0.74 and fully open at 0.15 -->
+    <xacro:mesh_link name="gripper_base" mesh="gripper_base" material="gripper_black"
+      vxyz="0 0 -0.012" vrpy="0 0 0"
+      cxyz="0 -0.0012 0.0123" csize="0.0580 0.0622 0.0509"
+      mass="0.06" ixx="3.232e-05" iyy="2.977e-05" izz="3.618e-05"/>
+    <xacro:mesh_link name="gripper_left1" mesh="gripper_left1" material="gripper_black"
+      vxyz="0.039 -0.0133 -0.012" vrpy="0 0 0"
+      cxyz="0.0065 0.0241 -0.0082" csize="0.0244 0.0582 0.0207"
+      mass="0.01" ixx="3.178e-06" iyy="8.535e-07" izz="3.320e-06"/>
+    <xacro:mesh_link name="gripper_left2" mesh="gripper_left2" material="gripper_black"
+      vxyz="0.005 -0.0195 -0.012" vrpy="0 0 0"
+      cxyz="-0.0145 0.0075 -0.0082" csize="0.0359 0.0243 0.0200"
+      mass="0.01" ixx="8.251e-07" iyy="1.409e-06" izz="1.567e-06"/>
+    <xacro:mesh_link name="gripper_left3" mesh="gripper_left3" material="gripper_black"
+      vxyz="0.012 0.0025 -0.012" vrpy="0 0 0"
+      cxyz="-0.0097 0.0025 -0.0007" csize="0.0450 0.0335 0.0050"
+      mass="0.01" ixx="9.578e-07" iyy="1.711e-06" izz="2.627e-06"/>
+    <xacro:mesh_link name="gripper_right1" mesh="gripper_right1" material="gripper_black"
+      vxyz="-0.039 -0.0133 -0.012" vrpy="0 0 0"
+      cxyz="-0.0078 0.0245 -0.0082" csize="0.0244 0.0582 0.0207"
+      mass="0.01" ixx="3.178e-06" iyy="8.535e-07" izz="3.320e-06"/>
+    <xacro:mesh_link name="gripper_right2" mesh="gripper_right2" material="gripper_black"
+      vxyz="-0.005 -0.0195 -0.012" vrpy="0 0 0"
+      cxyz="0.0134 0.0077 -0.0082" csize="0.0357 0.0247 0.0200"
+      mass="0.01" ixx="8.407e-07" iyy="1.397e-06" izz="1.571e-06"/>
+    <xacro:mesh_link name="gripper_right3" mesh="gripper_right3" material="gripper_black"
+      vxyz="-0.012 0.0025 -0.012" vrpy="0 0 0"
+      cxyz="0.0085 0.0027 -0.0007" csize="0.0450 0.0339 0.0050"
+      mass="0.01" ixx="9.801e-07" iyy="1.706e-06" izz="2.645e-06"/>
+
+    <joint name="joint6output_to_gripper_base" type="fixed">
+      <parent link="joint6_flange"/>
+      <child link="gripper_base"/>
+      <origin xyz="0 0 0.034" rpy="1.579 0 0"/>
+    </joint>
+
+    <joint name="gripper_base_to_gripper_left3" type="revolute">
+      <parent link="gripper_base"/>
+      <child link="gripper_left3"/>
+      <origin xyz="-0.012 0.005 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.74" upper="0.15" velocity="1.5"/>
+    </joint>
+
+    <!-- Mimic limits follow the driving joint range times the multiplier -->
+    <joint name="gripper_base_to_gripper_left2" type="revolute">
+      <parent link="gripper_base"/>
+      <child link="gripper_left2"/>
+      <origin xyz="-0.005 0.027 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.79" upper="0.2" velocity="1.5"/>
+      <mimic joint="gripper_base_to_gripper_left3" multiplier="1.0" offset="0"/>
+    </joint>
+
+    <joint name="gripper_left3_to_gripper_left1" type="revolute">
+      <parent link="gripper_left3"/>
+      <child link="gripper_left1"/>
+      <origin xyz="-0.027 0.016 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.2" upper="0.79" velocity="1.5"/>
+      <mimic joint="gripper_base_to_gripper_left3" multiplier="-1.0" offset="0"/>
+    </joint>
+
+    <joint name="gripper_base_to_gripper_right3" type="revolute">
+      <parent link="gripper_base"/>
+      <child link="gripper_right3"/>
+      <origin xyz="0.012 0.005 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.2" upper="0.79" velocity="1.5"/>
+      <mimic joint="gripper_base_to_gripper_left3" multiplier="-1.0" offset="0"/>
+    </joint>
+
+    <joint name="gripper_base_to_gripper_right2" type="revolute">
+      <parent link="gripper_base"/>
+      <child link="gripper_right2"/>
+      <origin xyz="0.005 0.027 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.2" upper="0.79" velocity="1.5"/>
+      <mimic joint="gripper_base_to_gripper_left3" multiplier="-1.0" offset="0"/>
+    </joint>
+
+    <joint name="gripper_right3_to_gripper_right1" type="revolute">
+      <parent link="gripper_right3"/>
+      <child link="gripper_right1"/>
+      <origin xyz="0.027 0.016 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${gripper_effort}" lower="-0.79" upper="0.2" velocity="1.5"/>
+      <mimic joint="gripper_base_to_gripper_left3" multiplier="1.0" offset="0"/>
+    </joint>
+
+    <!-- Point between the finger pads that MoveIt uses as the arm tip, z points out of the gripper -->
+    <link name="gripper_tcp"/>
+    <joint name="gripper_tcp_joint" type="fixed">
+      <parent link="gripper_base"/>
+      <child link="gripper_tcp"/>
+      <origin xyz="0 0.07 -0.0082" rpy="-1.5708 0 0"/>
+    </joint>
+
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom namespace="${namespace}"/>
+    <xacro:gpu_laser link="laser_frame" namespace="${namespace}"/>
+    <xacro:camera link="camera_link" namespace="${namespace}"/>
+    <xacro:suction_contact link="gripper_left1"/>
+
+    <ros2_control name="mycobot" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <xacro:arm_joint_control name="joint2_to_joint1" lower="-2.9321" upper="2.9321" initial="${home_j1}"/>
+      <xacro:arm_joint_control name="joint3_to_joint2" lower="-2.4434" upper="2.4434" initial="${home_j2}"/>
+      <xacro:arm_joint_control name="joint4_to_joint3" lower="-2.6179" upper="2.6179" initial="${home_j3}"/>
+      <xacro:arm_joint_control name="joint5_to_joint4" lower="-2.6179" upper="2.6179" initial="${home_j4}"/>
+      <xacro:arm_joint_control name="joint6_to_joint5" lower="-2.7052" upper="2.7925" initial="${home_j5}"/>
+      <xacro:arm_joint_control name="joint6output_to_joint6" lower="-3.14159" upper="3.14159" initial="${home_j6}"/>
+      <xacro:arm_joint_control name="gripper_base_to_gripper_left3" lower="-0.74" upper="0.15" initial="0.0"/>
+      <xacro:mimic_joint_control name="gripper_base_to_gripper_left2" multiplier="1.0"/>
+      <xacro:mimic_joint_control name="gripper_left3_to_gripper_left1" multiplier="-1.0"/>
+      <xacro:mimic_joint_control name="gripper_base_to_gripper_right3" multiplier="-1.0"/>
+      <xacro:mimic_joint_control name="gripper_base_to_gripper_right2" multiplier="-1.0"/>
+      <xacro:mimic_joint_control name="gripper_right3_to_gripper_right1" multiplier="1.0"/>
+    </ros2_control>
+
+    <!-- Wheels are state only because MoveIt waits for every joint of the URDF -->
+    <ros2_control name="myagv_wheels" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <xacro:state_only name="wheel_front_left_joint"/>
+      <xacro:state_only name="wheel_front_right_joint"/>
+      <xacro:state_only name="wheel_back_left_joint"/>
+      <xacro:state_only name="wheel_back_right_joint"/>
+    </ros2_control>
+
+    <xacro:ros2_control_plugin namespace="${namespace}" simulation_controllers="${simulation_controllers}"/>
+
+  </xacro:macro>
+
+</robot>
