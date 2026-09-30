@@ -14,4 +14,19 @@ docker compose up -d
 docker exec -it mir_driver bash -lc 'source /ros_entrypoint.sh; rostopic list'
 ```
 
-To use the real robot, skip `mir_robot` and set `mir_hostname` to the robot IP.
+## Using it with the bridge
+
+The bridge in `Industrial/mir100_bridge` talks straight to the robot by default,
+so for the physical world only the fake robot is needed:
+
+```
+docker compose up --build mir_robot
+```
+
+The bridge runs inside the RADI container, so tell it where the fake robot is,
+for example with `MIR100_ROBOT_IP` set to the address of your machine.
+
+To try the `driver` mode instead, start both services and launch the physical
+world with `mode:=driver`.
+
+To use the real robot, skip this mock and connect to the robot's network.

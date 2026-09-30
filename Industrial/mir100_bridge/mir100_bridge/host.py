@@ -1,6 +1,14 @@
 import os
 import socket
 
+# Address the MiR100 has on its own wifi
+DEFAULT_ROBOT_IP = "192.168.12.20"
+
+
+def resolve_robot_host(configured=""):
+    """Find the MiR100 itself, it defaults to the address it has on its own wifi."""
+    return configured or os.environ.get("MIR100_ROBOT_IP") or DEFAULT_ROBOT_IP
+
 
 def default_gateway():
     """Return the default gateway of the container, which is the docker host on Linux."""

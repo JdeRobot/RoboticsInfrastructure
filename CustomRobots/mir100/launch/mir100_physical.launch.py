@@ -25,7 +25,10 @@ def launch_setup(context):
         name="robot_state_publisher",
         namespace=gz_namespace,
         output="screen",
-        parameters=[{"robot_description": robot_description_content}, {"use_sim_time": False}],
+        parameters=[
+            {"robot_description": robot_description_content},
+            {"use_sim_time": False},
+        ],
     )
 
     # Talks to the ROS1 drivers running outside the docker
@@ -37,6 +40,7 @@ def launch_setup(context):
         parameters=[
             {
                 "namespace": namespace,
+                "mode": LaunchConfiguration("mode"),
                 "ros1_hostname": LaunchConfiguration("ros1_hostname"),
                 "ros1_port": LaunchConfiguration("ros1_port"),
             }
@@ -58,8 +62,10 @@ def generate_launch_description():
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("entity", default_value="mir100"),
         DeclareLaunchArgument("namespace", default_value="mir100"),
+        # robot talks straight to the MiR100, driver talks to a mir_driver
+        DeclareLaunchArgument("mode", default_value="robot"),
         DeclareLaunchArgument("ros1_hostname", default_value=""),
-        DeclareLaunchArgument("ros1_port", default_value="9091"),
+        DeclareLaunchArgument("ros1_port", default_value="0"),
     ]
 
     return LaunchDescription(

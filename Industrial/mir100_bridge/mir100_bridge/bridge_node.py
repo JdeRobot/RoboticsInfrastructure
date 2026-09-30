@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """ROS2 bridge for the MiR100.
 
-Connects to the ROS1 drivers running outside the docker through rosbridge and
-republishes them with the same ROS2 topics as the simulated robot.
+Connects through rosbridge and republishes the robot with the same ROS2 topics
+as the simulated one. In robot mode it talks straight to the MiR100, which
+already exposes rosbridge. In driver mode it talks to a mir_driver running
+outside the docker, with its own rosbridge_server on top.
 """
 
 import math
@@ -14,7 +16,7 @@ from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, LaserScan
 
-from mir100_bridge.host import resolve_ros1_host
+from mir100_bridge.host import resolve_robot_host, resolve_ros1_host
 
 # Maps each ROS1 laser topic to its ROS2 topic and TF frame, matching what
 # mir100_common.urdf.xacro gives the simulated robot's lasers
@@ -28,15 +30,32 @@ class Mir100Bridge(Node):
     def __init__(self):
         super().__init__("mir100_bridge")
 
+        self.declare_parameter("mode", "robot")
         self.declare_parameter("ros1_hostname", "")
-        self.declare_parameter("ros1_port", 9091)
+        self.declare_parameter("ros1_port", 0)
         self.declare_parameter("namespace", "mir100")
 
-        hostname = resolve_ros1_host(self.get_parameter("ros1_hostname").value)
-        port = self.get_parameter("ros1_port").value
+        mode = self.get_parameter("mode").value
+        configured_host = self.get_parameter("ros1_hostname").value
+        configured_port = self.get_parameter("ros1_port").value
         self.namespace = self.get_parameter("namespace").value.strip("/")
 
-        self.get_logger().info(f"connecting to ROS1 rosbridge at {hostname}:{port}...")
+        if mode == "robot":
+            hostname = resolve_robot_host(configured_host)
+            port = configured_port or 9090
+        elif mode == "driver":
+            hostname = resolve_ros1_host(configured_host)
+            port = configured_port or 9091
+        else:
+            raise ValueError(f"unknown mode {mode}, use robot or driver")
+
+        # The MiR software 2.7 and newer expects a stamped twist, mir_driver adds
+        # the stamp in driver mode but here nobody does it for us
+        self.stamped = mode == "robot"
+
+        self.get_logger().info(
+            f"connecting to the MiR100 in {mode} mode at {hostname}:{port}..."
+        )
         self.ros1 = roslibpy.Ros(host=hostname, port=port)
         self.ros1.on_ready(self.setup_bridge)
         self.ros1.on("error", lambda e: self.get_logger().warn(f"rosbridge error: {e}"))
@@ -49,7 +68,10 @@ class Mir100Bridge(Node):
         self.get_logger().info("connected to ROS1, wiring topics")
 
         # forward student commands from ROS2 to the ROS1 robot
-        self.cmd_vel_ros1 = roslibpy.Topic(self.ros1, "/cmd_vel", "geometry_msgs/Twist")
+        cmd_vel_type = (
+            "geometry_msgs/TwistStamped" if self.stamped else "geometry_msgs/Twist"
+        )
+        self.cmd_vel_ros1 = roslibpy.Topic(self.ros1, "/cmd_vel", cmd_vel_type)
         self.create_subscription(Twist, self.ns("cmd_vel"), self.on_cmd_vel, 10)
 
         # republish the robot's ROS1 sensor data as ROS2
@@ -62,21 +84,29 @@ class Mir100Bridge(Node):
         self.scan_pubs = {}
         self.scan_frames = {}
         for ros1_topic, (ros2_topic, frame) in LASER_TOPICS.items():
-            self.scan_pubs[ros1_topic] = self.create_publisher(LaserScan, self.ns(ros2_topic), 10)
-            self.scan_frames[ros1_topic] = frame
-            roslibpy.Topic(self.ros1, "/" + ros1_topic, "sensor_msgs/LaserScan").subscribe(
-                lambda msg, name=ros1_topic: self.on_scan(name, msg)
+            self.scan_pubs[ros1_topic] = self.create_publisher(
+                LaserScan, self.ns(ros2_topic), 10
             )
+            self.scan_frames[ros1_topic] = frame
+            roslibpy.Topic(
+                self.ros1, "/" + ros1_topic, "sensor_msgs/LaserScan"
+            ).subscribe(lambda msg, name=ros1_topic: self.on_scan(name, msg))
 
     def on_cmd_vel(self, msg: Twist):
-        self.cmd_vel_ros1.publish(
-            roslibpy.Message(
-                {
-                    "linear": {"x": msg.linear.x, "y": msg.linear.y, "z": msg.linear.z},
-                    "angular": {"x": msg.angular.x, "y": msg.angular.y, "z": msg.angular.z},
-                }
-            )
-        )
+        twist = {
+            "linear": {"x": msg.linear.x, "y": msg.linear.y, "z": msg.linear.z},
+            "angular": {"x": msg.angular.x, "y": msg.angular.y, "z": msg.angular.z},
+        }
+        if self.stamped:
+            now = self.get_clock().now().nanoseconds
+            twist = {
+                "header": {
+                    "frame_id": "",
+                    "stamp": {"secs": now // 10**9, "nsecs": now % 10**9},
+                },
+                "twist": twist,
+            }
+        self.cmd_vel_ros1.publish(roslibpy.Message(twist))
 
     def on_odom(self, msg: dict):
         odom = Odometry()
