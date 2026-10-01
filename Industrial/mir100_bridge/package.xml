@@ -5,9 +5,9 @@
   <version>0.0.1</version>
   <description>
     ROS2 node that bridges a MiR100 real (or mocked) robot to the topics the
-    MiR100 exercise's HAL expects. It talks to the student's own ROS1 side
-    (mir_driver + rosbridge_server) over the rosbridge websocket protocol, so
-    no ROS1 install is needed inside this container.
+    MiR100 exercise's HAL expects. It talks straight to the robot over the
+    rosbridge websocket protocol, or to a mir_driver running outside the
+    docker, so no ROS1 install is needed inside this container.
   </description>
   <maintainer email="aquintana.camacho@gmail.com">aquintan</maintainer>
   <license>Apache-2.0</license>

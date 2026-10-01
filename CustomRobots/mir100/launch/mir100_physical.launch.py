@@ -31,7 +31,7 @@ def launch_setup(context):
         ],
     )
 
-    # Talks to the ROS1 drivers running outside the docker
+    # Talks to the robot itself or to its ROS1 drivers running outside the docker, see mode
     bridge_node = Node(
         package="mir100_bridge",
         executable="bridge_node",
