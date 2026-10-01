@@ -19,9 +19,9 @@
     </plugin>
     <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
     </plugin>
-    <!-- Suction mode on one finger of the myCobot adaptive gripper -->
+    <!-- Suction mode on one finger of the adaptive gripper -->
     <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
-      <robot_model_name>myagv_mycobot</robot_model_name>
+      <robot_model_name>myagv_mecharm</robot_model_name>
       <gripper_link_name>gripper_left1</gripper_link_name>
     </plugin>
 

@@ -142,6 +142,9 @@ install(
     myagv_mycobot/models
     myagv_mycobot/launch
 
+    myagv_mecharm/models
+    myagv_mecharm/launch
+
   DESTINATION share/${PROJECT_NAME})
 
 # Palletizing box feeder node (ament_cmake package: install python node explicitly)

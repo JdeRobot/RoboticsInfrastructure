@@ -41,12 +41,12 @@ def launch_setup(context):
     xacro_file = os.path.join(
         package_dir,
         "models",
-        "myagv_mycobot",
-        "myagv_mycobot.urdf.xacro",
+        "myagv_mecharm",
+        "myagv_mecharm.urdf.xacro",
     )
 
     controllers_file = os.path.join(
-        get_package_share_directory("myagv_mycobot_moveit_config"),
+        get_package_share_directory("myagv_mecharm_moveit_config"),
         "config",
         "controller_manager.yaml",
     )
@@ -64,22 +64,22 @@ def launch_setup(context):
     # MoveIt configuration
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "myagv_mycobot_moveit_config", "srdf/myagv_mycobot.srdf"
+            "myagv_mecharm_moveit_config", "srdf/myagv_mecharm.srdf"
         )
     }
 
-    kinematics_yaml = load_yaml("myagv_mycobot_moveit_config", "config/kinematics.yaml")
+    kinematics_yaml = load_yaml("myagv_mecharm_moveit_config", "config/kinematics.yaml")
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
 
     moveit_controllers = load_yaml(
-        "myagv_mycobot_moveit_config", "config/moveit_controllers.yaml"
+        "myagv_mecharm_moveit_config", "config/moveit_controllers.yaml"
     )
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
     ompl_planning = load_yaml(
-        "myagv_mycobot_moveit_config", "config/ompl_planning.yaml"
+        "myagv_mecharm_moveit_config", "config/ompl_planning.yaml"
     )
     ompl_planning = ompl_planning["/**"]["ros__parameters"]
 
@@ -99,10 +99,10 @@ def launch_setup(context):
     }
 
     joint_limits_yaml = load_yaml(
-        "myagv_mycobot_moveit_config", "config/joint_limits.yaml"
+        "myagv_mecharm_moveit_config", "config/joint_limits.yaml"
     )
     pilz_cartesian_limits = load_yaml(
-        "myagv_mycobot_moveit_config", "config/pilz_cartesian_limits.yaml"
+        "myagv_mecharm_moveit_config", "config/pilz_cartesian_limits.yaml"
     )
     combined_planning = {
         "robot_description_planning": {**joint_limits_yaml, **pilz_cartesian_limits}
@@ -214,7 +214,7 @@ def launch_setup(context):
         ],
     )
 
-    # No move executable because myagv_mycobot has no joint_specifications.yaml
+    # No move executable because myagv_mecharm has no joint_specifications.yaml
     robmove = Node(
         package="ros2srrc_execution",
         executable="robmove",
@@ -228,8 +228,8 @@ def launch_setup(context):
             ompl_planning,
             moveit_controller_manager_param,
             {"use_sim_time": True},
-            {"ROB_PARAM": "myagv_mycobot"},
-            {"ROB_GROUP": "mycobot_arm"},
+            {"ROB_PARAM": "myagv_mecharm"},
+            {"ROB_GROUP": "mecharm_arm"},
             {"ACTION_NAME": f"/{namespace}/Robmove"},
         ],
     )
@@ -246,8 +246,8 @@ def launch_setup(context):
             kinematics_yaml,
             ompl_planning,
             {"use_sim_time": True},
-            {"ROB_PARAM": "myagv_mycobot"},
-            {"ROB_GROUP": "mycobot_arm"},
+            {"ROB_PARAM": "myagv_mecharm"},
+            {"ROB_GROUP": "mecharm_arm"},
         ],
     )
 
@@ -304,8 +304,8 @@ def generate_launch_description():
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
-        DeclareLaunchArgument("namespace", default_value="myagv_mycobot"),
-        DeclareLaunchArgument("entity", default_value="myagv_mycobot"),
+        DeclareLaunchArgument("namespace", default_value="myagv_mecharm"),
+        DeclareLaunchArgument("entity", default_value="myagv_mecharm"),
     ]
 
     return LaunchDescription(
