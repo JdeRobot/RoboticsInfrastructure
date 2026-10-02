@@ -36,6 +36,7 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
 endforeach()
 
 add_subdirectory(follow_person_harmonic)
+add_subdirectory(waypoint_follower_harmonic)
 
 # ============================================================================
 # Person plugin
