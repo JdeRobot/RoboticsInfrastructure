@@ -210,7 +210,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 85	XLeRobot Warehouse	58
 86	XLeRobot Home	81
 87	MMO-500 Warehouse	82
-88	myAGV mechArm Warehouse	83
+88	myAGV mechArm Warehouse Delivery	83
 \.
 
 --
@@ -337,7 +337,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
-83	Mobile Manipulation Warehouse myAGV	/opt/jderobot/Launchers/mobile_manipulation_warehouse_myagv.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse_myagv.config"}	ROS2	gz	mobile_manipulation_warehouse_myagv.urdf
+83	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
 \.
 
 --
