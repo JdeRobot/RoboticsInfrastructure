@@ -25,6 +25,11 @@ LASER_TOPICS = {
     "b_scan": ("back_laser/scan", "back_laser_link"),
 }
 
+# A paused or reset exercise stops sending cmd_vel, but the real robot keeps
+# going at the last speed it got, so once commands go quiet for this long we
+# stop it ourselves instead of waiting on the robot's own firmware watchdog
+COMMAND_TIMEOUT = 0.3
+
 
 class Mir100Bridge(Node):
     def __init__(self):
@@ -56,6 +61,9 @@ class Mir100Bridge(Node):
         self.get_logger().info(
             f"connecting to the MiR100 in {mode} mode at {hostname}:{port}..."
         )
+        self.last_cmd_time = self.get_clock().now()
+        self.stopped = True
+
         self.ros1 = roslibpy.Ros(host=hostname, port=port)
         self.ros1.on_ready(self.setup_bridge)
         self.ros1.on("error", lambda e: self.get_logger().warn(f"rosbridge error: {e}"))
@@ -73,6 +81,7 @@ class Mir100Bridge(Node):
         )
         self.cmd_vel_ros1 = roslibpy.Topic(self.ros1, "/cmd_vel", cmd_vel_type)
         self.create_subscription(Twist, self.ns("cmd_vel"), self.on_cmd_vel, 10)
+        self.create_timer(0.1, self.check_command_timeout)
 
         # republish the robot's ROS1 sensor data as ROS2
         self.odom_pub = self.create_publisher(Odometry, self.ns("odom"), 10)
@@ -93,6 +102,18 @@ class Mir100Bridge(Node):
             ).subscribe(lambda msg, name=ros1_topic: self.on_scan(name, msg))
 
     def on_cmd_vel(self, msg: Twist):
+        self.last_cmd_time = self.get_clock().now()
+        self.stopped = False
+        self.send_cmd_vel(msg)
+
+    def check_command_timeout(self):
+        idle = (self.get_clock().now() - self.last_cmd_time).nanoseconds / 1e9
+        if not self.stopped and idle > COMMAND_TIMEOUT:
+            self.get_logger().warn("No cmd_vel for a while, stopping the robot")
+            self.send_cmd_vel(Twist())
+            self.stopped = True
+
+    def send_cmd_vel(self, msg: Twist):
         twist = {
             "linear": {"x": msg.linear.x, "y": msg.linear.y, "z": msg.linear.z},
             "angular": {"x": msg.angular.x, "y": msg.angular.y, "z": msg.angular.z},
