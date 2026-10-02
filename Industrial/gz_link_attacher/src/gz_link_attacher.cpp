@@ -13,6 +13,7 @@
 #include <std_msgs/msg/string.hpp>
 
 #include <thread>
+#include <atomic>
 #include <mutex>
 #include <chrono>
 #include <iostream>
@@ -46,6 +47,9 @@ LinkAttacher()
 ~LinkAttacher()
 {
   std::cout << "[LinkAttacher] Destructor called" << std::endl;
+
+  // A world reset destroys the plugin, the ROS thread must stop before the join
+  stopRequested = true;
 
   if (executor)
   {
@@ -191,7 +195,7 @@ void Configure(
   {
     std::cout << "[LinkAttacher] ROS thread started" << std::endl;
 
-    while (rclcpp::ok())
+    while (rclcpp::ok() && !stopRequested)
     {
       executor->spin_some();
 
@@ -578,6 +582,7 @@ rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
 rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableObjectsSub;
 
 std::thread rosThread;
+std::atomic<bool> stopRequested{false};
 
 Entity worldEntity{kNullEntity};
 

@@ -179,6 +179,219 @@
             <pose>-0.276098 -9.481944 0.023266 0 0 0</pose>
         </include>
 
+        <!-- Guide tape and its nodes, every node is a stop and every tape a straight drive -->
+        <model name="guide_tape">
+          <static>true</static>
+          <pose>0 0 0 0 0 0</pose>
+          <link name="link">
+          <visual name="tape_0">
+            <pose>5.905 -2.000 0.001 0 0 3.1416</pose>
+            <geometry><box><size>1.011 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_1">
+            <pose>5.400 -3.000 0.001 0 0 -1.5708</pose>
+            <geometry><box><size>2.000 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_2">
+            <pose>5.400 -5.000 0.001 0 0 -1.5708</pose>
+            <geometry><box><size>2.000 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_3">
+            <pose>5.905 -6.000 0.001 0 0 0.0000</pose>
+            <geometry><box><size>1.011 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_4">
+            <pose>4.700 -4.000 0.001 0 0 3.1416</pose>
+            <geometry><box><size>1.400 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_5">
+            <pose>4.000 -1.750 0.001 0 0 1.5708</pose>
+            <geometry><box><size>4.500 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_6">
+            <pose>2.500 -4.000 0.001 0 0 3.1416</pose>
+            <geometry><box><size>3.000 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_7">
+            <pose>1.000 -6.150 0.001 0 0 -1.5708</pose>
+            <geometry><box><size>4.300 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_8">
+            <pose>1.000 -2.000 0.001 0 0 1.5708</pose>
+            <geometry><box><size>4.000 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_9">
+            <pose>1.000 2.600 0.001 0 0 1.5708</pose>
+            <geometry><box><size>5.200 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_10">
+            <pose>-1.300 0.000 0.001 0 0 3.1416</pose>
+            <geometry><box><size>4.600 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_11">
+            <pose>-3.600 2.850 0.001 0 0 1.5708</pose>
+            <geometry><box><size>5.700 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="tape_12">
+            <pose>-3.600 -1.600 0.001 0 0 -1.5708</pose>
+            <geometry><box><size>3.200 0.05 0.002</size></box></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="red_dispenser_ring">
+            <pose>6.411 -2.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="red_dispenser_dot">
+            <pose>6.411 -2.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="blue_dispenser_ring">
+            <pose>6.411 -6.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="blue_dispenser_dot">
+            <pose>6.411 -6.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="red_turn_ring">
+            <pose>5.4 -2.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="red_turn_dot">
+            <pose>5.4 -2.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="dispensers_ring">
+            <pose>5.4 -4.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="dispensers_dot">
+            <pose>5.4 -4.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="blue_turn_ring">
+            <pose>5.4 -6.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="blue_turn_dot">
+            <pose>5.4 -6.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="east_ring">
+            <pose>4.0 -4.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="east_dot">
+            <pose>4.0 -4.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="station_5_ring">
+            <pose>4.0 0.5 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="station_5_dot">
+            <pose>4.0 0.5 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="south_ring">
+            <pose>1.0 -4.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="south_dot">
+            <pose>1.0 -4.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="station_3_ring">
+            <pose>1.0 -8.3 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="station_3_dot">
+            <pose>1.0 -8.3 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="center_ring">
+            <pose>1.0 0.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="center_dot">
+            <pose>1.0 0.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="station_4_ring">
+            <pose>1.0 5.2 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="station_4_dot">
+            <pose>1.0 5.2 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="west_ring">
+            <pose>-3.6 0.0 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="west_dot">
+            <pose>-3.6 0.0 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="station_1_ring">
+            <pose>-3.6 5.7 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="station_1_dot">
+            <pose>-3.6 5.7 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          <visual name="station_2_ring">
+            <pose>-3.6 -3.2 0.0015 0 0 0</pose>
+            <geometry><cylinder><radius>0.11</radius><length>0.003</length></cylinder></geometry>
+            <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.12 0.12 0.13 1</diffuse></material>
+          </visual>
+          <visual name="station_2_dot">
+            <pose>-3.6 -3.2 0.002 0 0 0</pose>
+            <geometry><cylinder><radius>0.075</radius><length>0.004</length></cylinder></geometry>
+            <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+          </visual>
+          </link>
+        </model>
+
         <!-- Red ball dispenser, the ball drops from the spout into the cup -->
         <model name="red_dispenser">
           <static>true</static>
@@ -753,7 +966,7 @@
 
         <model name="delivery_3">
           <static>true</static>
-          <pose>1.5 -8.6 0 0 0 0</pose>
+          <pose>1.0 -8.6 0 0 0 0</pose>
           <link name="link">
           <visual name="mat">
             <pose>0.0000 0.0000 0.0030 0 0 0.0000</pose>

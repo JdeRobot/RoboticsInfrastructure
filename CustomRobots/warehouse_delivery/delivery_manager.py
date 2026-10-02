@@ -25,7 +25,7 @@ SPAWN_Z = 0.26
 STATIONS = {
     1: (-3.6, 6.0),
     2: (-3.6, -3.5),
-    3: (1.5, -8.6),
+    3: (1.0, -8.6),
     4: (1.0, 5.5),
     5: (4.0, 0.8),
 }
@@ -52,7 +52,10 @@ class DeliveryManager(RclpyNode):
         self.all_balls = []
         self.released = True
         self.settle = {}
+        self.last_pose = {}
         self._lock = threading.Lock()
+        # Spawns and resets run one at a time so they never interleave
+        self._ops = threading.Lock()
         self._last_sim_time = 0.0
 
         self.create_subscription(
@@ -85,6 +88,9 @@ class DeliveryManager(RclpyNode):
             Pose_V, f"/world/{WORLD}/dynamic_pose/info", self._on_poses, options
         )
 
+        # Checked on a timer because a still ball may stop getting pose updates
+        self.create_timer(0.2, self._check_deliveries)
+
         self.get_logger().info("delivery_manager ready")
 
     def _spawn_cb(self, color):
@@ -107,6 +113,10 @@ class DeliveryManager(RclpyNode):
         self._last_sim_time = t
 
     def _on_reset(self):
+        with self._ops:
+            self._clear_all()
+
+    def _clear_all(self):
         self.get_logger().info("world reset, clearing balls and scores")
         with self._lock:
             balls = list(self.all_balls)
@@ -115,6 +125,7 @@ class DeliveryManager(RclpyNode):
             self.target = {"red": 0, "blue": 0}
             self.scores = {"red": 0, "blue": 0}
             self.settle = {}
+            self.last_pose = {}
         for ball in balls:
             self._gz_remove(ball)
         for name in ("red_marker", "blue_marker", "green_marker"):
@@ -124,6 +135,10 @@ class DeliveryManager(RclpyNode):
             self.score_pub[c].publish(Int32(data=0))
 
     def _spawn_ball(self, color):
+        with self._ops:
+            self._spawn_ball_locked(color)
+
+    def _spawn_ball_locked(self, color):
         with self._lock:
             old_ball = self.active_ball[color]
             self.active_ball[color] = None
@@ -158,22 +173,23 @@ class DeliveryManager(RclpyNode):
 
     def _on_poses(self, message):
         with self._lock:
-            watched = {
-                self.active_ball[c]: c
-                for c in ("red", "blue")
-                if self.active_ball[c] is not None
-            }
-        if not watched:
-            return
+            watched = {b for b in self.active_ball.values() if b is not None}
+            for pose in message.pose:
+                if pose.name in watched:
+                    p = pose.position
+                    self.last_pose[pose.name] = (p.x, p.y, p.z)
 
+    def _check_deliveries(self):
         now = time.monotonic()
-        for pose in message.pose:
-            color = watched.get(pose.name)
-            if color is None:
-                continue
-            p = (pose.position.x, pose.position.y, pose.position.z)
-            if self._settled_in_box(pose.name, color, p, now):
-                self._deliver(color, pose.name)
+        with self._lock:
+            balls = [
+                (c, b, self.last_pose.get(b))
+                for c, b in self.active_ball.items()
+                if b is not None
+            ]
+        for color, ball, p in balls:
+            if p is not None and self._settled_in_box(ball, color, p, now):
+                self._deliver(color, ball)
 
     def _settled_in_box(self, name, color, p, now):
         station = self.target[color]
@@ -223,44 +239,42 @@ class DeliveryManager(RclpyNode):
         self._gz_remove("green_marker")
 
     def _gz_create(self, sdf_file, name, x, y, z):
-        cmd = [
-            "ros2",
-            "run",
-            "ros_gz_sim",
-            "create",
-            "-name",
-            name,
-            "-x",
-            str(x),
-            "-y",
-            str(y),
-            "-z",
-            str(z),
-            "-file",
-            os.path.join(MODELS_DIR, sdf_file),
-        ]
-        result = subprocess.run(cmd, check=False, capture_output=True, text=True)
-        if result.returncode != 0:
-            self.get_logger().error(f"failed to spawn {name}: {result.stderr.strip()}")
-            return False
-        return True
+        sdf = os.path.join(MODELS_DIR, sdf_file)
+        req = (
+            f"sdf_filename: '{sdf}', name: '{name}', "
+            f"pose: {{position: {{x: {x}, y: {y}, z: {z}}}}}"
+        )
+        ok = self._gz_service("create", "gz.msgs.EntityFactory", req)
+        if not ok:
+            self.get_logger().error(f"failed to spawn {name}")
+        return ok
 
     def _gz_remove(self, name):
+        self._gz_service("remove", "gz.msgs.Entity", f"name: '{name}', type: MODEL")
+
+    def _gz_service(self, service, req_type, req):
+        # Timeouts so a call made during a world reset never blocks the manager
         cmd = [
             "gz",
             "service",
             "-s",
-            f"/world/{WORLD}/remove",
+            f"/world/{WORLD}/{service}",
             "--reqtype",
-            "gz.msgs.Entity",
+            req_type,
             "--reptype",
             "gz.msgs.Boolean",
             "--timeout",
-            "2000",
+            "3000",
             "--req",
-            f"name: '{name}', type: MODEL",
+            req,
         ]
-        subprocess.run(cmd, check=False, capture_output=True, text=True)
+        try:
+            result = subprocess.run(
+                cmd, check=False, capture_output=True, text=True, timeout=6
+            )
+        except subprocess.TimeoutExpired:
+            return False
+        return result.returncode == 0 and "data: true" in result.stdout
 
 
 def main():
