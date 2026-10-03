@@ -82,6 +82,7 @@ install(
 
     turtlebot3/models
     turtlebot3/launch
+    grid_world/models
 
     logistic_holonomic_robot/models
     logistic_holonomic_robot/launch

@@ -213,6 +213,8 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 89	Vacuums House Markers Burger	25
 90	Small Laser Mapping Warehouse Burger	33
 91	Vacuums House Burger	24
+92	UDC Grid World Burger	84
+93	UDC Lab Grid World Burger	85
 \.
 
 --
@@ -290,6 +292,8 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 67	89	49	{{1,-1.5,0.43,0,0,0}}
 68	90	50	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 69	91	51	{{-1,1.5,0,0.0,0.0,0.0}}
+70	92	50	{{-0.2,1.8,0.0,0.0,0.0,-1.5708}}
+71	93	50	{{-0.2,1.8,0.0,0.0,0.0,-1.5708}}
 \.
 
 --
@@ -341,6 +345,8 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
+84	UDC Grid World	/opt/jderobot/Launchers/udc_grid_fig3.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/udc_grid_fig3.config"}	ROS2	gz	udc_grid_fig3.urdf
+85	UDC Lab Grid World	/opt/jderobot/Launchers/udc_grid_fig3_lab.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/udc_grid_fig3_lab.config"}	ROS2	gz	udc_grid_fig3_lab.urdf
 \.
 
 --

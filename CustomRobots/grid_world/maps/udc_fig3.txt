@@ -1,0 +1,12 @@
+# Universidade da Coruna grid world, Fig. 3 of Perez-Moro et al. WAF 2026
+# 0 free, 1 box, 2 block, 3 thin wall, R robot base cell
+0 0 R 0 0 0
+0 1 0 0 1 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 2 3 3 0 0
+0 3 0 3 0 0
+0 3 0 3 0 0
+0 3 3 3 0 0
+0 0 0 0 1 0
+0 0 0 0 0 0
