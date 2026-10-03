@@ -179,7 +179,7 @@
             <pose>-0.276098 -9.481944 0.023266 0 0 0</pose>
         </include>
 
-        <!-- Guide tape and its nodes, every node is a stop and every tape a straight drive -->
+        <!-- Guide tape graph where every node is a stop and every tape a straight drive -->
         <model name="guide_tape">
           <static>true</static>
           <pose>0 0 0 0 0 0</pose>
@@ -392,7 +392,7 @@
           </link>
         </model>
 
-        <!-- Red ball dispenser, the ball drops from the spout into the cup -->
+        <!-- Red ball dispenser where the ball drops from the spout into the cup -->
         <model name="red_dispenser">
           <static>true</static>
           <pose>0 -2.0 0 0 0 0</pose>
@@ -621,7 +621,7 @@
           </link>
         </model>
 
-        <!-- Blue ball dispenser, the ball drops from the spout into the cup -->
+        <!-- Blue ball dispenser where the ball drops from the spout into the cup -->
         <model name="blue_dispenser">
           <static>true</static>
           <pose>0 -6.0 0 0 0 0</pose>

@@ -48,7 +48,7 @@ LinkAttacher()
 {
   std::cout << "[LinkAttacher] Destructor called" << std::endl;
 
-  // A world reset destroys the plugin, the ROS thread must stop before the join
+  // A world reset destroys the plugin so the ROS thread has to stop before the join
   stopRequested = true;
 
   if (executor)
