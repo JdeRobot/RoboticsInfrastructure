@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<robot name="turtlebot3_burger"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="camera" default="false"/>
+  <xacro:arg name="noise_level" default="none"/>
+  <xacro:arg name="namespace" default="turtlebot3"/>
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)). -->
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:property name="alpha" value="0.01"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:property name="alpha" value="0.05"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:property name="alpha" value="0.25"/>
+  </xacro:if>
+
+  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_burger_common.urdf.xacro"/>
+
+  <xacro:turtlebot3_burger namespace="${namespace}"/>
+
+  <!-- Raspberry Pi camera at the turtlebot3_burger_cam mount -->
+  <xacro:if value="$(arg camera)">
+    <xacro:camera xyz="0.043 0 0.119" rpy="0 0 0" name="camera" parent="base_link" namespace="${namespace}"/>
+  </xacro:if>
+
+  <xacro:unless value="${noise_level == 'none'}">
+    <xacro:noise_odom a1="${alpha}" a2="${alpha}" a3="${alpha}" a4="${alpha}" namespace="${namespace}" wheel_separation="0.160"/>
+  </xacro:unless>
+</robot>

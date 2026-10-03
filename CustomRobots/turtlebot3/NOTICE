@@ -1,0 +1,8 @@
+The mesh files under models/turtlebot3/meshes/ and models/turtlebot3_common/meshes/
+come from ROBOTIS turtlebot3 and turtlebot3_simulations
+(https://github.com/ROBOTIS-GIT/turtlebot3,
+https://github.com/ROBOTIS-GIT/turtlebot3_simulations),
+Copyright ROBOTIS CO., LTD., Apache License 2.0, see LICENSE in this directory.
+
+The TurtleBot3 Burger dimensions, inertias and sensor specs used in
+turtlebot3_burger_common.urdf.xacro were taken from the same sources.
