@@ -22,7 +22,6 @@ def launch_setup(context):
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
     gz_marker = LaunchConfiguration("marker")
-    gz_model = LaunchConfiguration("model")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -31,27 +30,25 @@ def launch_setup(context):
     sensor = gz_sensor.perform(context)
     namespace = gz_namespace.perform(context)
     entity = gz_entity.perform(context)
-    model = gz_model.perform(context)
 
     # =========================
     # ROBOT DESCRIPTION (URDF)
     # =========================
-    mappings = {
-        "camera": "true" if sensor == "camera" else "false",
-        "noise_level": gz_noise.perform(context),
-        "namespace": namespace,
-    }
-
-    if model == "burger":
-        xacro_name = "turtlebot3_burger.urdf.xacro"
-    else:
-        xacro_name = "turtlebot3.urdf.xacro"
-        mappings["marker"] = gz_marker.perform(context)
-
-    xacro_file = os.path.join(package_dir, "models", "turtlebot3", xacro_name)
+    xacro_file = os.path.join(
+        package_dir,
+        "models",
+        "turtlebot3",
+        "turtlebot3.urdf.xacro",
+    )
 
     robot_description_content = xacro.process_file(
-        xacro_file, mappings=mappings
+        xacro_file,
+        mappings={
+            "camera": "true" if sensor == "camera" else "false",
+            "noise_level": gz_noise.perform(context),
+            "namespace": namespace,
+            "marker": gz_marker.perform(context),
+        },
     ).toxml()
 
     robot_description = {"robot_description": robot_description_content}
@@ -118,20 +115,6 @@ def launch_setup(context):
         )
 
         nodes_to_start.append(gz_ros2_image_bridge)
-
-    # The Burger always carries its LDS and IMU, like the real robot
-    if model == "burger":
-        gz_ros2_burger_bridge = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            namespace=gz_namespace,
-            arguments=[
-                f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-                f"/{namespace}/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
-            ],
-            output="screen",
-        )
-        nodes_to_start.append(gz_ros2_burger_bridge)
     elif sensor == "laser":
         gz_ros2_laser_bridge = Node(
             package="ros_gz_bridge",
@@ -159,7 +142,6 @@ def generate_launch_description():
         DeclareLaunchArgument("sensor", default_value="camera"),
         DeclareLaunchArgument("noise", default_value="none"),
         DeclareLaunchArgument("marker", default_value="false"),
-        DeclareLaunchArgument("model", default_value="waffle"),
         DeclareLaunchArgument("namespace", default_value="turtlebot3"),
         DeclareLaunchArgument("entity", default_value="turtlebot3"),
     ]

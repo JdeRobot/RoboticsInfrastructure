@@ -1,18 +1,45 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_burger_gz.urdf.xacro"/>
 
-  <xacro:property name="tb3_meshes" value="file://$(find custom_robots)/models/turtlebot3/meshes"/>
+  <xacro:property name="burger_meshes" value="file://$(find custom_robots)/models/turtlebot3/meshes/burger"/>
+
+  <!-- The ROBOTIS meshes are split by material so each part gets the color of the real robot -->
+  <xacro:macro name="burger_part" params="mesh material xyz:='0 0 0' rpy:='0 0 0'">
+    <visual>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <mesh filename="${burger_meshes}/${mesh}.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="${material}"/>
+    </visual>
+  </xacro:macro>
 
   <!-- Geometry and inertia from ROBOTIS turtlebot3_description -->
   <xacro:macro name="turtlebot3_burger" params="namespace">
-    <!-- Greys used by the ROBOTIS Gazebo models -->
-    <material name="body_grey">
-      <color rgba="0.3 0.3 0.3 1.0"/>
+    <material name="burger_plate">
+      <color rgba="0.05 0.05 0.05 1.0"/>
     </material>
-
-    <material name="parts_grey">
-      <color rgba="0.2 0.2 0.2 1.0"/>
+    <material name="burger_plastic">
+      <color rgba="0.12 0.12 0.12 1.0"/>
+    </material>
+    <material name="burger_dynamixel">
+      <color rgba="0.02 0.02 0.02 1.0"/>
+    </material>
+    <material name="burger_metal">
+      <color rgba="0.62 0.62 0.65 1.0"/>
+    </material>
+    <material name="burger_rpi">
+      <color rgba="0.05 0.40 0.15 1.0"/>
+    </material>
+    <material name="burger_opencr">
+      <color rgba="0.08 0.08 0.10 1.0"/>
+    </material>
+    <material name="burger_rubber">
+      <color rgba="0.03 0.03 0.03 1.0"/>
+    </material>
+    <material name="burger_rim">
+      <color rgba="0.20 0.20 0.20 1.0"/>
     </material>
 
     <link name="base_footprint"/>
@@ -24,13 +51,12 @@
     </joint>
 
     <link name="base_link">
-      <visual>
-        <origin xyz="-0.032 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="${tb3_meshes}/bases/burger_base.stl" scale="0.001 0.001 0.001"/>
-        </geometry>
-        <material name="body_grey"/>
-      </visual>
+      <xacro:burger_part mesh="burger_base_plates" material="burger_plate" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_plastic" material="burger_plastic" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_motors" material="burger_dynamixel" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_metal" material="burger_metal" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_rpi" material="burger_rpi" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_opencr" material="burger_opencr" xyz="-0.032 0 0"/>
       <collision>
         <origin xyz="-0.032 0 0.070" rpy="0 0 0"/>
         <geometry>
@@ -71,6 +97,14 @@
       <mu2>0.0</mu2>
     </gazebo>
 
+    <joint name="imu_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="imu_link"/>
+      <origin xyz="-0.032 0 0.068" rpy="0 0 0"/>
+    </joint>
+
+    <link name="imu_link"/>
+
     <joint name="scan_joint" type="fixed">
       <parent link="base_link"/>
       <child link="base_scan"/>
@@ -78,12 +112,8 @@
     </joint>
 
     <link name="base_scan">
-      <visual>
-        <geometry>
-          <mesh filename="${tb3_meshes}/sensors/lds.stl" scale="0.001 0.001 0.001"/>
-        </geometry>
-        <material name="parts_grey"/>
-      </visual>
+      <xacro:burger_part mesh="lds_body" material="burger_plastic"/>
+      <xacro:burger_part mesh="lds_metal" material="burger_metal"/>
       <collision>
         <origin xyz="0.015 0 -0.0065" rpy="0 0 0"/>
         <geometry>
@@ -96,40 +126,9 @@
       </inertial>
     </link>
 
-    <!-- LDS-01 as simulated by ROBOTIS -->
-    <gazebo reference="base_scan">
-      <sensor name="laser" type="gpu_lidar">
-        <always_on>1</always_on>
-        <visualize>1</visualize>
-        <update_rate>5</update_rate>
-        <topic>/${namespace}/laser/scan</topic>
-        <gz_frame_id>base_scan</gz_frame_id>
-        <lidar>
-          <scan>
-            <horizontal>
-              <samples>360</samples>
-              <resolution>1</resolution>
-              <min_angle>0</min_angle>
-              <max_angle>6.28</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.12</min>
-            <max>3.5</max>
-            <resolution>0.015</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </lidar>
-      </sensor>
-    </gazebo>
-
-    <xacro:imu parent="base_link" xyz="-0.032 0 0.068" rpy="0 0 0" namespace="${namespace}"/>
-    <xacro:velocity namespace="${namespace}" wheel_separation="0.160"/>
-    <xacro:odom namespace="${namespace}" freq="50"/>
+    <xacro:burger_lds namespace="${namespace}"/>
+    <xacro:burger_imu namespace="${namespace}"/>
+    <xacro:burger_drive namespace="${namespace}"/>
   </xacro:macro>
 
   <xacro:macro name="burger_wheel" params="side y">
@@ -142,13 +141,8 @@
     </joint>
 
     <link name="wheel_${side}_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="1.57 0 0"/>
-        <geometry>
-          <mesh filename="${tb3_meshes}/wheels/${side}_tire.stl" scale="0.001 0.001 0.001"/>
-        </geometry>
-        <material name="parts_grey"/>
-      </visual>
+      <xacro:burger_part mesh="${side}_tire_rubber" material="burger_rubber" rpy="1.57 0 0"/>
+      <xacro:burger_part mesh="${side}_tire_rim" material="burger_rim" rpy="1.57 0 0"/>
       <collision>
         <geometry>
           <cylinder length="0.018" radius="0.033"/>

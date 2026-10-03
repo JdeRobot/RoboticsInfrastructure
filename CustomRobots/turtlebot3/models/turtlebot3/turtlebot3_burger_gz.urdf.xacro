@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- LDS-01 as simulated by ROBOTIS -->
+  <xacro:macro name="burger_lds" params="namespace">
+    <gazebo reference="base_scan">
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>5</update_rate>
+        <topic>/${namespace}/laser/scan</topic>
+        <gz_frame_id>base_scan</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>6.28</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.12</min>
+            <max>3.5</max>
+            <resolution>0.015</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="burger_imu" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    </gazebo>
+
+    <gazebo reference="imu_link">
+      <sensor name="imu" type="imu">
+        <always_on>1</always_on>
+        <update_rate>200</update_rate>
+        <topic>/${namespace}/imu</topic>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Raspberry Pi camera at the turtlebot3_burger_cam mount -->
+  <xacro:macro name="burger_camera" params="namespace">
+    <link name="camera_link">
+      <inertial>
+        <mass value="0.035"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0.043 0 0.119" rpy="0 0 0"/>
+    </joint>
+
+    <gazebo reference="camera_link">
+      <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>/${namespace}/camera/image_raw</topic>
+        <gz_frame_id>camera_link</gz_frame_id>
+        <camera name="camera">
+          <camera_info_topic>/${namespace}/camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>30</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="burger_drive" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>wheel_left_joint</left_joint>
+        <right_joint>wheel_right_joint</right_joint>
+        <wheel_separation>0.160</wheel_separation>
+        <wheel_radius>0.033</wheel_radius>
+        <max_linear_acceleration>1.0</max_linear_acceleration>
+        <topic>/${namespace}/cmd_vel</topic>
+        <frame_id>odom</frame_id>
+        <odom_publisher_frequency>30</odom_publisher_frequency>
+        <child_frame_id>base_footprint</child_frame_id>
+      </plugin>
+    </gazebo>
+
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_publish_frequency>50</odom_publish_frequency>
+        <odom_topic>/${namespace}/odom</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="burger_noise_odom" params="namespace alpha">
+    <gazebo>
+      <plugin filename="libNoisyOdometryPlugin.so" name="custom_plugins::NoisyOdometryPlugin">
+        <ros_topic>/${namespace}/odom_noisy</ros_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base</child_frame_id>
+        <left_joint>wheel_left_joint</left_joint>
+        <right_joint>wheel_right_joint</right_joint>
+        <wheel_radius>0.033</wheel_radius>
+        <wheel_separation>0.160</wheel_separation>
+        <alpha1>${alpha}</alpha1>
+        <alpha2>${alpha}</alpha2>
+        <alpha3>${alpha}</alpha3>
+        <alpha4>${alpha}</alpha4>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

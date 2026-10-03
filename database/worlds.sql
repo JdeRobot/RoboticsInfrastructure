@@ -385,12 +385,12 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 40	XLeRobot	/home/ws/src/CustomRobots/xlerobot/launch/xlerobot.launch.py	xlerobot	namespace:=logistic_robot	xlerobot/models/xlerobot/xlerobot.urdf.xacro
 41	MMO-500	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500	mmo500/models/mmo500/mmo500.urdf.xacro
-44	Turtlebot 3 Burger	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=laser namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
-45	Turtlebot 3 Burger Camera	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=camera namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
-46	Turtlebot 3 Burger Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=laser noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
-47	Turtlebot 3 Burger Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=laser noise:=med namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
-48	Turtlebot 3 Burger High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=laser noise:=high namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
-49	Turtlebot 3 Burger Camera Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	model:=burger sensor:=camera noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+44	Turtlebot 3 Burger	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+45	Turtlebot 3 Burger Camera	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=camera namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+46	Turtlebot 3 Burger Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+47	Turtlebot 3 Burger Medium Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=med namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+48	Turtlebot 3 Burger High Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=high namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+49	Turtlebot 3 Burger Camera Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=camera noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
 \.
 
 --
