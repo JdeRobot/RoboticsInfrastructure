@@ -37,7 +37,7 @@
   <xacro:turtlebot3 namespace="${namespace}"/>
 
   <xacro:if value="$(arg camera)">
-    <xacro:camera xyz="0.069 -0.047 0.107" rpy="0 0 0" name="camera" parent="camera_base_link" namespace="${namespace}"/>
+    <xacro:camera xyz="0.005 0.018 0.013" rpy="0 0 0" name="camera" parent="camera_base_link" namespace="${namespace}"/>
   </xacro:if>
 
   <!-- Beacon on top so a drone above can pick it out by color, only for follow_turtlebot -->

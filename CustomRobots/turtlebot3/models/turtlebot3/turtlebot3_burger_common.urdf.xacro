@@ -2,16 +2,17 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_gz.urdf.xacro"/>
 
-  <xacro:property name="burger_meshes" value="file://$(find custom_robots)/models/turtlebot3/meshes/burger"/>
+  <xacro:property name="tb3_meshes" value="file://$(find custom_robots)/models/turtlebot3/meshes"/>
 
   <!-- Geometry and inertia from ROBOTIS turtlebot3_description -->
   <xacro:macro name="turtlebot3_burger" params="namespace">
-    <material name="dark">
+    <!-- Greys used by the ROBOTIS Gazebo models -->
+    <material name="body_grey">
       <color rgba="0.3 0.3 0.3 1.0"/>
     </material>
 
-    <material name="light_black">
-      <color rgba="0.4 0.4 0.4 1.0"/>
+    <material name="parts_grey">
+      <color rgba="0.2 0.2 0.2 1.0"/>
     </material>
 
     <link name="base_footprint"/>
@@ -26,9 +27,9 @@
       <visual>
         <origin xyz="-0.032 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="${burger_meshes}/burger_base.stl" scale="0.001 0.001 0.001"/>
+          <mesh filename="${tb3_meshes}/bases/burger_base.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="light_black"/>
+        <material name="body_grey"/>
       </visual>
       <collision>
         <origin xyz="-0.032 0 0.070" rpy="0 0 0"/>
@@ -79,9 +80,9 @@
     <link name="base_scan">
       <visual>
         <geometry>
-          <mesh filename="${burger_meshes}/lds.stl" scale="0.001 0.001 0.001"/>
+          <mesh filename="${tb3_meshes}/sensors/lds.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="dark"/>
+        <material name="parts_grey"/>
       </visual>
       <collision>
         <origin xyz="0.015 0 -0.0065" rpy="0 0 0"/>
@@ -144,9 +145,9 @@
       <visual>
         <origin xyz="0 0 0" rpy="1.57 0 0"/>
         <geometry>
-          <mesh filename="${burger_meshes}/${side}_tire.stl" scale="0.001 0.001 0.001"/>
+          <mesh filename="${tb3_meshes}/wheels/${side}_tire.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="dark"/>
+        <material name="parts_grey"/>
       </visual>
       <collision>
         <geometry>

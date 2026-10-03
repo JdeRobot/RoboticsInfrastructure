@@ -8,12 +8,13 @@
       <color rgba="0.0 0.0 0.0 1.0"/>
     </material>
 
-    <material name="dark">
+    <!-- Greys used by the ROBOTIS Gazebo models -->
+    <material name="body_grey">
       <color rgba="0.3 0.3 0.3 1.0"/>
     </material>
 
-    <material name="light_black">
-      <color rgba="0.4 0.4 0.4 1.0"/>
+    <material name="parts_grey">
+      <color rgba="0.2 0.2 0.2 1.0"/>
     </material>
 
     <material name="white">
@@ -37,9 +38,9 @@
       <visual >
         <origin rpy="0 0 0" xyz="-0.064  0 0"/>
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/bases/waffle_base.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="light_black"/>
+        <material name="body_grey"/>
       </visual>
     </link>
 
@@ -53,11 +54,12 @@
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
       </collision>
-      <visual >
+      <visual>
+        <origin xyz="0 0 0" rpy="1.57 0 0"/>
         <geometry>
-          <cylinder radius="0.033" length="0.018"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/wheels/left_tire.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="black"/>
+        <material name="parts_grey"/>
       </visual>
     </link>
 
@@ -71,15 +73,23 @@
           <cylinder radius="0.033" length="0.018"/>
         </geometry>
       </collision>
-      <visual >
+      <visual>
+        <origin xyz="0 0 0" rpy="1.57 0 0"/>
         <geometry>
-          <cylinder radius="0.033" length="0.018"/>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/wheels/right_tire.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="black"/>
+        <material name="parts_grey"/>
       </visual>
     </link>
 
-    <link name="camera_base_link"/>
+    <link name="camera_base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/turtlebot3/meshes/sensors/r200.dae"/>
+        </geometry>
+      </visual>
+    </link>
 
     <joint name="base_to_base_link" type="fixed">
       <parent link="base_footprint"/>
