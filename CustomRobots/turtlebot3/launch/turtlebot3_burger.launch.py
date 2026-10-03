@@ -15,46 +15,72 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
-    sensor = LaunchConfiguration("sensor").perform(context)
-    noise = LaunchConfiguration("noise").perform(context)
-    namespace = LaunchConfiguration("namespace").perform(context)
-    entity = LaunchConfiguration("entity").perform(context)
+    gz_sensor = LaunchConfiguration("sensor")
+    gz_noise = LaunchConfiguration("noise")
+    gz_namespace = LaunchConfiguration("namespace")
+    gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
+
+    nodes_to_start = []
+
+    sensor = gz_sensor.perform(context)
+    namespace = gz_namespace.perform(context)
+    entity = gz_entity.perform(context)
+
+    # =========================
+    # ROBOT DESCRIPTION (URDF)
+    # =========================
     xacro_file = os.path.join(
-        package_dir, "models", "turtlebot3", "turtlebot3_burger.urdf.xacro"
+        package_dir,
+        "models",
+        "turtlebot3",
+        "turtlebot3_burger.urdf.xacro",
     )
 
     robot_description_content = xacro.process_file(
         xacro_file,
         mappings={
             "camera": "true" if sensor == "camera" else "false",
-            "noise_level": noise,
+            "noise_level": gz_noise.perform(context),
             "namespace": namespace,
         },
     ).toxml()
+
+    robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        namespace=namespace,
+        namespace=gz_namespace,
         output="screen",
-        parameters=[
-            {"robot_description": robot_description_content, "use_sim_time": True}
-        ],
+        parameters=[robot_description, {"use_sim_time": True}],
     )
 
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
-        namespace=namespace,
+        namespace=gz_namespace,
         arguments=[
-            "-topic", f"/{namespace}/robot_description",
-            "-name", entity,
-            "-allow_renaming", "true",
-            "-x", x, "-y", y, "-z", z,
-            "-R", R, "-P", P, "-Y", Y,
+            "-topic",
+            f"/{namespace}/robot_description",
+            "-name",
+            entity,
+            "-allow_renaming",
+            "true",
+            "-x",
+            x,
+            "-y",
+            y,
+            "-z",
+            z,
+            "-R",
+            R,
+            "-P",
+            P,
+            "-Y",
+            Y,
         ],
         output="screen",
     )
@@ -63,7 +89,7 @@ def launch_setup(context):
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        namespace=namespace,
+        namespace=gz_namespace,
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
@@ -73,24 +99,27 @@ def launch_setup(context):
         output="screen",
     )
 
-    nodes_to_start = [robot_state_publisher_node, gz_spawn_entity, gz_ros2_bridge]
+    nodes_to_start.append(robot_state_publisher_node)
+    nodes_to_start.append(gz_spawn_entity)
+    nodes_to_start.append(gz_ros2_bridge)
 
     if sensor == "camera":
-        nodes_to_start.append(
-            Node(
-                package="ros_gz_image",
-                executable="image_bridge",
-                namespace=namespace,
-                arguments=[f"/{namespace}/camera/image_raw"],
-                output="screen",
-            )
+        gz_ros2_image_bridge = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            namespace=gz_namespace,
+            arguments=[f"/{namespace}/camera/image_raw"],
+            output="screen",
         )
+
+        nodes_to_start.append(gz_ros2_image_bridge)
 
     return nodes_to_start
 
 
 def generate_launch_description():
     declared_arguments = [
+        DeclareLaunchArgument("use_sim_time", default_value="true"),
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0"),
