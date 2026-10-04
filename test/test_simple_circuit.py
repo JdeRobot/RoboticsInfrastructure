@@ -14,6 +14,11 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 import rclpy
+from rclpy.qos import (
+    QoSProfile,
+    QoSReliabilityPolicy,
+    QoSHistoryPolicy,
+)
 from sensor_msgs.msg import Image
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
@@ -118,27 +123,29 @@ class TestTopicMsgs(unittest.TestCase):
         self.__class__.node.destroy_subscription(sub)
         self.__class__.node.destroy_publisher(pub)
 
-    @unittest.skipIf(
-        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
-        "Camera tests are unreliable in CI environments",
-    )
     def test_camera_images(self, proc_output):
         """Test that camera images are published."""
 
         # Check actual message receipt
         msgs = []
 
+        sensor_qos = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+        )
+
         # Create subscriptions
         sub_left = self.__class__.node.create_subscription(
             Image,
             "/cam_f1_left/image_raw",
             lambda msg: msgs.append(msg),
-            qos_profile=10,
+            qos_profile=sensor_qos,
         )
 
-        # Wait for messages (up to 5 seconds)
-        for _ in range(50):  # 50 x 0.1 seconds = 5 seconds
-            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+        # Wait for messages (up to 30 seconds for headless software rendering)
+        for _ in range(150):
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.2)
             if msgs:
                 break
 

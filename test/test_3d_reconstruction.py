@@ -14,6 +14,11 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 import rclpy
+from rclpy.qos import (
+    QoSProfile,
+    QoSReliabilityPolicy,
+    QoSHistoryPolicy,
+)
 from sensor_msgs.msg import CameraInfo, Image
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
@@ -65,34 +70,36 @@ class TestTopicMsgs(unittest.TestCase):
         # Stop any running Gazebo processes
         stop_gazebo()
 
-    @unittest.skipIf(
-        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
-        "Camera tests are unreliable in CI environments",
-    )
     def test_camera_topics(self, proc_output):
         """Test that camera topics are publishing msgs."""
 
         msgs_left = []
         msgs_right = []
 
+        sensor_qos = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+        )
+
         # Create subscriptions
         sub_left = self.__class__.node.create_subscription(
             CameraInfo,
             "/cam_turtlebot_left/camera_info",
             lambda msg: msgs_left.append(msg),
-            qos_profile=10,
+            qos_profile=sensor_qos,
         )
 
         sub_right = self.__class__.node.create_subscription(
             CameraInfo,
             "/cam_turtlebot_right/camera_info",
             lambda msg: msgs_right.append(msg),
-            qos_profile=10,
+            qos_profile=sensor_qos,
         )
 
-        # Wait for messages (up to 5 seconds)
-        for _ in range(50):  # 50 x 0.1 seconds = 5 seconds
-            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+        # Wait for messages (up to 30 seconds for headless software rendering)
+        for _ in range(150):
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.2)
             if msgs_left and msgs_right:
                 break
 
@@ -106,10 +113,6 @@ class TestTopicMsgs(unittest.TestCase):
 
         print("\n--- Camera Topics Test Completed Successfully ---")
 
-    @unittest.skipIf(
-        os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true",
-        "Camera tests are unreliable in CI environments",
-    )
     def test_camera_images(self, proc_output):
         """Test that camera images are published."""
 
@@ -117,24 +120,30 @@ class TestTopicMsgs(unittest.TestCase):
         msgs_left = []
         msgs_right = []
 
+        sensor_qos = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+        )
+
         # Create subscriptions
         sub_left = self.__class__.node.create_subscription(
             Image,
             "/cam_turtlebot_left/image_raw",
             lambda msg: msgs_left.append(msg),
-            qos_profile=10,
+            qos_profile=sensor_qos,
         )
 
         sub_right = self.__class__.node.create_subscription(
             Image,
             "/cam_turtlebot_right/image_raw",
             lambda msg: msgs_right.append(msg),
-            qos_profile=10,
+            qos_profile=sensor_qos,
         )
 
-        # Wait for messages (up to 5 seconds)
-        for _ in range(50):  # 50 x 0.1 seconds = 5 seconds
-            rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
+        # Wait for messages (up to 30 seconds for headless software rendering)
+        for _ in range(150):
+            rclpy.spin_once(self.__class__.node, timeout_sec=0.2)
             if msgs_left and msgs_right:
                 break
 
