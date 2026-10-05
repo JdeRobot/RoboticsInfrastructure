@@ -210,6 +210,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 85	XLeRobot Warehouse	58
 86	XLeRobot Home	81
 87	MMO-500 Warehouse	82
+88	F1 Pursuit Simple	83
 \.
 
 --
@@ -284,6 +285,8 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 63	85	40	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 64	86	40	{{-1.6,0.3,0.1,0.0,0.0,3.14}}
 65	87	41	{{0.0,0.0,0.02,0.0,0.0,0.0}}
+66	88	42	{{85.606,-17.414,0.006,0.0,0.0,-1.571}}
+67	88	43	{{86.726,-17.414,0.006,0.0,0.0,-1.571}}
 \.
 
 --
@@ -335,6 +338,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
+83	F1 Pursuit Simple	/opt/jderobot/Launchers/f1_pursuit_simple.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/f1_pursuit.config"}	ROS2	gz	simple_circuit.urdf
 \.
 
 --
@@ -383,6 +387,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 39	Mir100 High Noise	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=high namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
 40	XLeRobot	/home/ws/src/CustomRobots/xlerobot/launch/xlerobot.launch.py	xlerobot	namespace:=logistic_robot	xlerobot/models/xlerobot/xlerobot.urdf.xacro
 41	MMO-500	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500	mmo500/models/mmo500/mmo500.urdf.xacro
+42	F1 Pursuit Chaser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=camera namespace:=f1 color:=F1Blue	f1/models/f1/f1.urdf.xacro
+43	F1 Pursuit Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=camera namespace:=f1_rival color:=F1Magenta	f1/models/f1/f1.urdf.xacro
 \.
 
 --

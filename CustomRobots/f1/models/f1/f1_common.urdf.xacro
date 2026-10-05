@@ -3,7 +3,45 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro" />
 
-  <xacro:macro name="holonomic" params="namespace">
+  <material name="F1Blue">
+    <color rgba="0.1 0.3 0.9 1.0" />
+  </material>
+  <material name="F1Red">
+    <color rgba="0.9 0.1 0.1 1.0" />
+  </material>
+  <material name="F1Magenta">
+    <color rgba="1.0 0.0 1.0 1.0" />
+  </material>
+  <material name="F1Yellow">
+    <color rgba="1.0 0.85 0.0 1.0" />
+  </material>
+  <material name="F1Green">
+    <color rgba="0.0 0.75 0.2 1.0" />
+  </material>
+
+  <!-- Colours the car without replacing the mesh materials -->
+  <xacro:macro name="f1_color_marker" params="parent color box_size origin_xyz">
+    <link name="color_marker">
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+      </inertial>
+      <visual>
+        <geometry>
+          <box size="${box_size}" />
+        </geometry>
+        <material name="${color}" />
+      </visual>
+    </link>
+
+    <joint name="color_marker_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="color_marker" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="holonomic" params="namespace color:=''">
 
     <link name="base">
       <origin rpy="0 0 0" xyz="0 0 0" />
@@ -24,11 +62,16 @@
       </visual>
     </link>
 
+    <xacro:if value="${color != ''}">
+      <xacro:f1_color_marker parent="base" color="${color}"
+        box_size="0.07 0.33 0.025" origin_xyz="-0.44 0 0.228" />
+    </xacro:if>
+
     <xacro:f1_velocity topic="/${namespace}/cmd_vel" />
     <xacro:f1_odom topic="/${namespace}/odom" freq="50" />
   </xacro:macro>
 
-  <xacro:macro name="ackermann" params="namespace">
+  <xacro:macro name="ackermann" params="namespace color:=''">
 
     <link name="base" />
 
@@ -221,6 +264,11 @@
         </geometry>
       </visual>
     </link> -->
+
+    <xacro:if value="${color != ''}">
+      <xacro:f1_color_marker parent="chassis_link" color="${color}"
+        box_size="0.33 0.07 0.025" origin_xyz="0 -0.45 0.232" />
+    </xacro:if>
 
     <xacro:f1_ackermann_steering topic="/${namespace}/cmd_vel" />
     <xacro:f1_joints />
