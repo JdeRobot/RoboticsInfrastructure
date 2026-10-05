@@ -116,6 +116,12 @@ struct Worker
   double animTime{0.0};
   bool moving{false};
   std::string animation;
+  // Last pose sent to the actor so a still worker costs nothing
+  bool shown{false};
+  Vector2d shownPos;
+  double shownYaw{0.0};
+  double shownAnimTime{0.0};
+  double shownSpeed{0.0};
 };
 
 class WarehouseWorkers :
@@ -189,6 +195,8 @@ public:
       w.lastBox = -1;
       w.path.clear();
       w.ignoreOthersUntil = 0.0;
+      w.shown = false;
+      w.animation.clear();
     }
     for (auto &b : this->boxes)
     {
@@ -197,6 +205,7 @@ public:
         this->ReleaseModel(b.entity, _ecm);
     }
     this->lastSimTime = 0.0;
+    this->robotLookupAt = 0.0;
     this->firstUpdate = true;
   }
 
@@ -347,15 +356,22 @@ private:
     return Vector2d(p.Pos().X(), p.Pos().Y());
   }
 
-  bool RobotPos(EntityComponentManager &_ecm, Vector2d &out) const
+  bool RobotPos(EntityComponentManager &_ecm, Vector2d &out)
   {
     if (this->robotName.empty())
       return false;
-    Entity e = _ecm.EntityByComponents(gz::sim::components::Name(this->robotName),
-                                       gz::sim::components::Model());
-    if (e == kNullEntity)
-      return false;
-    auto p = gz::sim::worldPose(e, _ecm);
+    // The robot is spawned after the world so it is looked up until found
+    if (this->robot == kNullEntity || !_ecm.HasEntity(this->robot))
+    {
+      if (this->now < this->robotLookupAt)
+        return false;
+      this->robotLookupAt = this->now + 1.0;
+      this->robot = _ecm.EntityByComponents(gz::sim::components::Name(this->robotName),
+                                            gz::sim::components::Model());
+      if (this->robot == kNullEntity)
+        return false;
+    }
+    auto p = gz::sim::worldPose(this->robot, _ecm);
     out.Set(p.Pos().X(), p.Pos().Y());
     return true;
   }
@@ -384,39 +400,33 @@ private:
     _ecm.RemoveComponent<gz::sim::components::AngularVelocityCmd>(e);
   }
 
-  // Free spot away from walls and keepouts and the robot and the other boxes
-  bool SpotIsFree(const Vector2d &p, int ignoreBox, EntityComponentManager &_ecm,
-                  const std::vector<Vector2d> &taken) const
-  {
-    if (this->WallDistance(p) < this->clearance)
-      return false;
-    for (const auto &k : this->keepouts)
-      if (p.Distance(k.c) < k.r)
-        return false;
-    Vector2d robot;
-    if (this->RobotPos(_ecm, robot) && p.Distance(robot) < 1.2)
-      return false;
-    for (size_t i = 0; i < this->boxes.size(); ++i)
-      if (static_cast<int>(i) != ignoreBox && p.Distance(this->BoxPos(this->boxes[i], _ecm)) < 1.2)
-        return false;
-    for (const auto &t : taken)
-      if (p.Distance(t) < 1.2)
-        return false;
-    for (const auto &w : this->workers)
-      if (p.Distance(w.pos) < 1.0)
-        return false;
-    return true;
-  }
-
+  // Random free spot away from walls and keepouts and the robot and the other boxes
   bool RandomSpot(Vector2d &out, int ignoreBox, EntityComponentManager &_ecm,
                   const std::vector<Vector2d> &taken = {})
   {
+    std::vector<Circle> avoid = this->keepouts;
+    Vector2d robot;
+    if (this->RobotPos(_ecm, robot))
+      avoid.push_back({robot, 1.2});
+    for (size_t i = 0; i < this->boxes.size(); ++i)
+      if (static_cast<int>(i) != ignoreBox)
+        avoid.push_back({this->BoxPos(this->boxes[i], _ecm), 1.2});
+    for (const auto &t : taken)
+      avoid.push_back({t, 1.2});
+    for (const auto &w : this->workers)
+      avoid.push_back({w.pos, 1.0});
+
     std::uniform_real_distribution<double> ux(this->ox, this->ox + this->width * this->res);
     std::uniform_real_distribution<double> uy(this->oy, this->oy + this->height * this->res);
     for (int i = 0; i < 2000; ++i)
     {
       Vector2d p(ux(this->rng), uy(this->rng));
-      if (this->SpotIsFree(p, ignoreBox, _ecm, taken))
+      if (this->WallDistance(p) < this->clearance)
+        continue;
+      bool free = true;
+      for (const auto &a : avoid)
+        free = free && p.Distance(a.c) >= a.r;
+      if (free)
       {
         out = p;
         return true;
@@ -907,19 +917,28 @@ private:
                       gz::sim::ComponentState::OneTimeChange);
       w.animation = animation;
     }
-    // The walk mesh stands upright and faces +x with its hips at actorZ
-    Pose3d pose(w.pos.X(), w.pos.Y(), this->actorZ, 0.0, 0.0, w.yaw);
-    actor.SetTrajectoryPose(_ecm, pose);
-    actor.SetAnimationTime(_ecm, std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-                                     std::chrono::duration<double>(w.animTime)));
-    // The Actor setters do not flag the change so the GUI would never see it
-    _ecm.SetChanged(w.actor, gz::sim::components::TrajectoryPose::typeId,
-                    gz::sim::ComponentState::OneTimeChange);
-    _ecm.SetChanged(w.actor, gz::sim::components::AnimationTime::typeId,
-                    gz::sim::ComponentState::OneTimeChange);
-
+    bool still = w.pos == w.shownPos && w.yaw == w.shownYaw &&
+                 w.animTime == w.shownAnimTime && w.speed == w.shownSpeed;
     Vector3d forward(w.speed, 0, 0);
-    this->SetModelPose(w.body, Pose3d(w.pos.X(), w.pos.Y(), 0.0, 0, 0, w.yaw), forward, _ecm);
+    if (!still || !w.shown)
+    {
+      // The walk mesh stands upright and faces +x with its hips at actorZ
+      Pose3d pose(w.pos.X(), w.pos.Y(), this->actorZ, 0.0, 0.0, w.yaw);
+      actor.SetTrajectoryPose(_ecm, pose);
+      actor.SetAnimationTime(_ecm, std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+                                       std::chrono::duration<double>(w.animTime)));
+      // The Actor setters do not flag the change so the GUI would never see it
+      _ecm.SetChanged(w.actor, gz::sim::components::TrajectoryPose::typeId,
+                      gz::sim::ComponentState::PeriodicChange);
+      _ecm.SetChanged(w.actor, gz::sim::components::AnimationTime::typeId,
+                      gz::sim::ComponentState::PeriodicChange);
+      this->SetModelPose(w.body, Pose3d(w.pos.X(), w.pos.Y(), 0.0, 0, 0, w.yaw), forward, _ecm);
+      w.shownPos = w.pos;
+      w.shownYaw = w.yaw;
+      w.shownAnimTime = w.animTime;
+      w.shownSpeed = w.speed;
+      w.shown = true;
+    }
 
     if (w.box < 0 || this->boxes[w.box].owner != i)
       return;
@@ -960,6 +979,8 @@ private:
   double actorZ{1.0};
   double clearance{0.8};
   std::string robotName;
+  Entity robot{kNullEntity};
+  double robotLookupAt{0.0};
 
   std::vector<Worker> workers;
   std::vector<Box> boxes;
