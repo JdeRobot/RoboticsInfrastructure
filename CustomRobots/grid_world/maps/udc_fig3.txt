@@ -1,5 +1,5 @@
-# Universidade da Coruna grid world, Fig. 3 of Perez-Moro et al. WAF 2026
-# 0 free, 1 box, 2 block, 3 thin wall, R robot base cell
+# Grid world from Fig. 3 of the WAF 2026 paper by Perez-Moro et al
+# Cell codes are listed in generate_grid_world.py
 0 0 R 0 0 0
 0 1 0 0 1 0
 0 0 0 0 0 0

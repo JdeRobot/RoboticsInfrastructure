@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 """Build a Gazebo grid world for the TurtleBot3 Burger from a text matrix.
 
-Each map file holds one row of cells per line, read top to bottom as seen
-from above. Cell codes:
+Each map file holds one row of cells per line as seen from above.
+Lines starting with # are ignored.
 
     0  free cell
     1  box in the middle of the cell
     2  block that fills the whole cell
-    3  thin wall through the cell center, joined to neighbour 2 and 3 cells
-    R  robot base cell, free, the robot faces away from the closest wall
+    3  thin wall through the cell center joined to neighbour 2 and 3 cells
+    R  free base cell where the robot starts facing away from the closest wall
 
-Lines starting with # are ignored.
-
-Usage:
     python3 generate_grid_world.py maps/udc_fig3.txt --name udc_grid_fig3
     python3 generate_grid_world.py maps/udc_fig3.txt --name udc_grid_fig3_lab --style lab
 """
@@ -25,7 +22,7 @@ import sys
 RI_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 TEXTURES = "model://grid_world_assets/materials/textures"
 
-# Sizes in meters, picked so the LDS at 0.18 m sees every obstacle
+# Sizes in meters so the LDS at 0.18 m sees every obstacle
 STYLES = {
     "webots": {
         "floor_tiles": ("wood_dark.png", "wood_light.png"),
@@ -89,7 +86,7 @@ class Grid:
         else:
             r, c = 0, 0
         x, y = self.center(r, c)
-        # Distance to the top, bottom, left and right walls in cells
+        # Distance in cells to each border wall
         gaps = [r, self.n_rows - 1 - r, c, self.n_cols - 1 - c]
         yaw = (-math.pi / 2, math.pi / 2, 0.0, math.pi)[gaps.index(min(gaps))]
         return x, y, yaw
@@ -264,7 +261,7 @@ def thin_walls(grid, style):
                 continue
             x, y = grid.center(r, c)
             joined = False
-            # Each segment goes from this center to the next one, joints overlap
+            # Segments join two cell centers and overlap at the corners
             for dr, dc in ((0, 1), (1, 0), (0, -1), (-1, 0)):
                 other = code(r + dr, c + dc)
                 if other not in ("2", "3"):
@@ -347,7 +344,7 @@ def viz_config(name, grid):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("map", help="text file with the cell matrix")
-    parser.add_argument("--name", required=True, help="world name, used for the .world, launch and config files")
+    parser.add_argument("--name", required=True, help="base name of the generated files")
     parser.add_argument("--style", choices=sorted(STYLES), default="webots")
     parser.add_argument("--cell", type=float, default=0.4, help="cell side in meters")
     parser.add_argument("--root", default=RI_ROOT, help="RoboticsInfrastructure root to write into")
