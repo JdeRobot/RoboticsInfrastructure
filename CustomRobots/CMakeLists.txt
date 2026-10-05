@@ -36,6 +36,7 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
 endforeach()
 
 add_subdirectory(follow_person_harmonic)
+add_subdirectory(warehouse_delivery)
 
 # ============================================================================
 # Person plugin
@@ -144,6 +145,8 @@ install(
 
     myagv_mecharm/models
     myagv_mecharm/launch
+
+    warehouse_delivery/models
 
   DESTINATION share/${PROJECT_NAME})
 
