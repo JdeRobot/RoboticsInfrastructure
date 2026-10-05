@@ -28,6 +28,7 @@
 
     <scene>
       <grid>false</grid>
+      <shadows>false</shadows>
     </scene>
 
     <light type="directional" name="sun">

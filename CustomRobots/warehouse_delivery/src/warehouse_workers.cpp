@@ -2,6 +2,7 @@
 #include <gz/sim/Actor.hh>
 #include <gz/sim/Model.hh>
 #include <gz/sim/Util.hh>
+#include <gz/sim/components/Actor.hh>
 #include <gz/sim/components/AngularVelocityCmd.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/Model.hh>
@@ -902,6 +903,8 @@ private:
     if (animation != w.animation || !actor.AnimationName(_ecm))
     {
       actor.SetAnimationName(_ecm, animation);
+      _ecm.SetChanged(w.actor, gz::sim::components::AnimationName::typeId,
+                      gz::sim::ComponentState::OneTimeChange);
       w.animation = animation;
     }
     // The walk mesh stands upright and faces +x with its hips at actorZ
@@ -909,6 +912,11 @@ private:
     actor.SetTrajectoryPose(_ecm, pose);
     actor.SetAnimationTime(_ecm, std::chrono::duration_cast<std::chrono::steady_clock::duration>(
                                      std::chrono::duration<double>(w.animTime)));
+    // The Actor setters do not flag the change so the GUI would never see it
+    _ecm.SetChanged(w.actor, gz::sim::components::TrajectoryPose::typeId,
+                    gz::sim::ComponentState::OneTimeChange);
+    _ecm.SetChanged(w.actor, gz::sim::components::AnimationTime::typeId,
+                    gz::sim::ComponentState::OneTimeChange);
 
     Vector3d forward(w.speed, 0, 0);
     this->SetModelPose(w.body, Pose3d(w.pos.X(), w.pos.Y(), 0.0, 0, 0, w.yaw), forward, _ecm);
