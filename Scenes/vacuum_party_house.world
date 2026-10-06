@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<sdf version="1.8">
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
+    </plugin>
+
+    <!-- Party leftovers the vacuum sucks up, progress on /vacuum_dirt/score -->
+    <plugin filename="vacuum_dirt" name="vacuum_dirt::VacuumDirt">
+      <robot>vacuum_cleaner</robot>
+      <radius>0.15</radius>
+      <floor_z>-0.003</floor_z>
+      <pieces>model://party_house/pieces.txt</pieces>
+    </plugin>
+
+    <!-- Cat that runs from the vacuum and leaves muddy paw prints -->
+    <plugin filename="cat_walker" name="vacuum_dirt::CatWalker">
+      <actor>cat</actor>
+      <robot>vacuum_cleaner</robot>
+      <map>model://party_house/cat_map.pgm</map>
+      <resolution>0.05</resolution>
+      <origin_x>-4.3</origin_x>
+      <origin_y>-3.85</origin_y>
+      <mud>0.92 5.36</mud>
+    </plugin>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <include>
+      <name>house_int2_harmonic</name>
+      <uri>model://house_int2</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>spilled_plant_pot</name>
+      <uri>model://spilled_plant_pot</uri>
+      <pose>1.27 5.72 0 0 0 -2.342</pose>
+    </include>
+
+    <actor name="cat">
+      <skin>
+        <filename>model://house_cat/meshes/walk.dae</filename>
+      </skin>
+      <animation name="walk">
+        <filename>model://house_cat/meshes/walk.dae</filename>
+      </animation>
+      <animation name="idle">
+        <filename>model://house_cat/meshes/idle.dae</filename>
+      </animation>
+    </actor>
+
+    <light type="directional" name="sun">
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <visualize>false</visualize>
+    </light>
+
+  </world>
+</sdf>
