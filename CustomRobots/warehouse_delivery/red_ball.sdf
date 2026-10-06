@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="red_ball">
+    <link name="link">
+      <inertial>
+        <mass>0.02</mass>
+        <inertia>
+          <ixx>1.8e-06</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.8e-06</iyy><iyz>0</iyz><izz>1.8e-06</izz>
+        </inertia>
+      </inertial>
+      <!-- No bounce so the ball settles in the cup -->
+      <collision name="collision">
+        <geometry>
+          <sphere><radius>0.015</radius></sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.0</restitution_coefficient>
+          </bounce>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <sphere><radius>0.015</radius></sphere>
+        </geometry>
+        <material>
+          <ambient>0.8 0 0 1</ambient>
+          <diffuse>0.8 0 0 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

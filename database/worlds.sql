@@ -212,6 +212,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 87	MMO-500 Warehouse	82
 88	Mir100 Physical	83
 89	Warehouse 1 Mir100	58
+94	myAGV mechArm Warehouse Delivery	86
 \.
 
 --
@@ -288,6 +289,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 65	87	41	{{0.0,0.0,0.02,0.0,0.0,0.0}}
 66	88	42	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 67	89	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+72	94	43	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 \.
 
 --
@@ -340,6 +342,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
+86	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
 \.
 
 --
@@ -389,6 +392,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 40	XLeRobot	/home/ws/src/CustomRobots/xlerobot/launch/xlerobot.launch.py	xlerobot	namespace:=logistic_robot	xlerobot/models/xlerobot/xlerobot.urdf.xacro
 41	MMO-500	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500	mmo500/models/mmo500/mmo500.urdf.xacro
 42	Mir100 Physical	/home/ws/src/CustomRobots/mir100/launch/mir100_physical.launch.py	mir100	namespace:=mir100	mir100/models/mir100/mir100.urdf.xacro
+43	myAGV mechArm	/home/ws/src/CustomRobots/myagv_mecharm/launch/myagv_mecharm.launch.py	myagv_mecharm	namespace:=myagv_mecharm	myagv_mecharm/models/myagv_mecharm/myagv_mecharm.urdf.xacro
+52	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 \.
 
 --
