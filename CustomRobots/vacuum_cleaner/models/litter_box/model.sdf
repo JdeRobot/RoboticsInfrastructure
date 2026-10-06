@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <!-- 0.46 x 0.36 m tray, the cat gets in from the -x side -->
+  <model name="litter_box">
+    <static>true</static>
+    <link name="link">
+      <collision name="tray">
+        <pose>0 0 0.06 0 0 0</pose>
+        <geometry><box><size>0.46 0.36 0.12</size></box></geometry>
+      </collision>
+      <visual name="bottom">
+        <pose>0 0 0.005 0 0 0</pose>
+        <geometry><box><size>0.46 0.36 0.01</size></box></geometry>
+        <material><ambient>0.20 0.45 0.55 1</ambient><diffuse>0.25 0.55 0.65 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="wall_front">
+        <pose>-0.22 0 0.045 0 0 0</pose>
+        <geometry><box><size>0.02 0.36 0.09</size></box></geometry>
+        <material><ambient>0.20 0.45 0.55 1</ambient><diffuse>0.25 0.55 0.65 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="wall_back">
+        <pose>0.22 0 0.06 0 0 0</pose>
+        <geometry><box><size>0.02 0.36 0.12</size></box></geometry>
+        <material><ambient>0.20 0.45 0.55 1</ambient><diffuse>0.25 0.55 0.65 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="wall_left">
+        <pose>0 0.17 0.06 0 0 0</pose>
+        <geometry><box><size>0.46 0.02 0.12</size></box></geometry>
+        <material><ambient>0.20 0.45 0.55 1</ambient><diffuse>0.25 0.55 0.65 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="wall_right">
+        <pose>0 -0.17 0.06 0 0 0</pose>
+        <geometry><box><size>0.46 0.02 0.12</size></box></geometry>
+        <material><ambient>0.20 0.45 0.55 1</ambient><diffuse>0.25 0.55 0.65 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="sand">
+        <pose>0 0 0.035 0 0 0</pose>
+        <geometry><box><size>0.42 0.32 0.05</size></box></geometry>
+        <material><ambient>0.70 0.65 0.55 1</ambient><diffuse>0.81 0.75 0.64 1</diffuse><specular>0 0 0 1</specular></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

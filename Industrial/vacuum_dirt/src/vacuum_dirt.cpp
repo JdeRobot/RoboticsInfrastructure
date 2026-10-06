@@ -46,8 +46,9 @@ namespace vacuum_dirt
 
 namespace fs = std::filesystem;
 
-// Palette of the dirt atlas: 8 confetti colors in 3 shades, then two browns
-// for soil and paw prints. The pieces file refers to colors by index.
+// Palette of the dirt atlas: 8 confetti colors in 3 shades, then two shades
+// each of brown (soil, muddy paws), beige (cat litter) and grey (cat hair).
+// Dirt refers to colors by index.
 const std::vector<std::array<uint8_t, 3>> kPalette = []()
 {
   const std::vector<std::array<double, 3>> base = {
@@ -64,9 +65,12 @@ const std::vector<std::array<uint8_t, 3>> kPalette = []()
                    static_cast<uint8_t>(c[2] * s * 255)});
   p.push_back({74, 52, 36});
   p.push_back({92, 66, 44});
+  p.push_back({206, 192, 162});
+  p.push_back({184, 168, 136});
+  p.push_back({150, 150, 156});
+  p.push_back({186, 186, 192});
   return p;
 }();
-const int kPawColor = 24;
 const int kAtlasCols = 8;
 const int kAtlasRows = 4;
 const int kCellPx = 8;
@@ -83,8 +87,10 @@ const int kCellPx = 8;
 //
 // Initial dirt is read from the <pieces> file, one piece per line:
 //   category shape x y yaw size_x size_y color
-// shape is "rect", "disc" or "paw". More dirt can be added at runtime by
-// publishing a Pose_V on <add_topic>, each pose name being the category.
+// shape is "rect", "disc", "paw" or "fur". More dirt can be added at runtime
+// by publishing a Pose_V on <add_topic>, each pose being one piece and its
+// name "category shape size_x size_y color". At most <max_added> of those
+// can be on the floor at once, the rest is ignored.
 //
 // Progress is published as JSON on <topic>.
 class VacuumDirt:
@@ -121,6 +127,8 @@ public:
       topic = _sdf->Get<std::string>("topic");
     if (_sdf->HasElement("add_topic"))
       addTopic = _sdf->Get<std::string>("add_topic");
+    if (_sdf->HasElement("max_added"))
+      maxAdded = _sdf->Get<int>("max_added");
     if (_sdf->HasElement("pieces"))
     {
       piecesFile = common::findFile(_sdf->Get<std::string>("pieces"));
@@ -183,6 +191,8 @@ private:
     double sx;
     double sy;
     int color;
+    // Added through <add_topic>, counts against <max_added>
+    bool runtime{false};
   };
 
   struct Chunk
@@ -222,6 +232,7 @@ private:
     chunks.clear();
     stats.clear();
     robot = kNullEntity;
+    addedLeft = 0;
     {
       std::lock_guard<std::mutex> lock(pendingMutex);
       pending.clear();
@@ -262,10 +273,18 @@ private:
     std::lock_guard<std::mutex> lock(pendingMutex);
     for (const auto &pose : _msg.pose())
     {
-      double yaw = msgs::Convert(pose.orientation()).Euler().Z();
-      pending.push_back({pose.name(), "paw", pose.position().x(),
-        pose.position().y(), 0.0, yaw, 0.04, 0.04,
-        kPawColor + static_cast<int>(pending.size() % 2)});
+      Piece p;
+      std::istringstream ss(pose.name());
+      ss >> p.category >> p.shape >> p.sx >> p.sy >> p.color;
+      if (ss.fail())
+      {
+        gzwarn << "vacuum_dirt: bad dirt [" << pose.name() << "]\n";
+        continue;
+      }
+      p.x = pose.position().x();
+      p.y = pose.position().y();
+      p.yaw = msgs::Convert(pose.orientation()).Euler().Z();
+      pending.push_back(p);
     }
   }
 
@@ -276,8 +295,14 @@ private:
       std::lock_guard<std::mutex> lock(pendingMutex);
       added.swap(pending);
     }
-    for (const auto &p : added)
+    for (auto &p : added)
+    {
+      if (addedLeft >= maxAdded)
+        break;
+      ++addedLeft;
+      p.runtime = true;
       Add(p);
+    }
   }
 
   void Clean(EntityComponentManager &_ecm)
@@ -316,6 +341,8 @@ private:
           }
 
           stats[pieces[k].category].collected++;
+          if (pieces[k].runtime)
+            --addedLeft;
           scoreChanged = true;
           it->second.dirty = true;
           pieces[k] = pieces.back();
@@ -387,6 +414,20 @@ private:
     if (_p.shape == "disc")
     {
       local.push_back(circle(0, 0, _p.sx / 2, _p.sx / 2, 10));
+    }
+    else if (_p.shape == "fur")
+    {
+      // Tuft of thin hairs fanning out from one end
+      for (int k = 0; k < 6; ++k)
+      {
+        double a = -0.6 + 0.24 * k + 0.15 * std::sin(7.0 * k + _p.yaw * 13);
+        double len = _p.sx * (0.6 + 0.4 * std::abs(std::sin(3.0 * k + _p.yaw)));
+        double w = _p.sy / 2;
+        double c = std::cos(a);
+        double s = std::sin(a);
+        local.push_back({{-s * w, c * w}, {len * c - s * w, len * s + c * w},
+                         {len * c + s * w, len * s - c * w}, {s * w, -c * w}});
+      }
     }
     else if (_p.shape == "paw")
     {
@@ -527,6 +568,8 @@ private:
   std::map<std::string, Stats> stats;
   uint64_t version{0};
   uint64_t added{0};
+  int maxAdded{2000};
+  int addedLeft{0};
   double lastRebuild{0.0};
   bool needsPopulate{false};
   bool forceRebuild{true};

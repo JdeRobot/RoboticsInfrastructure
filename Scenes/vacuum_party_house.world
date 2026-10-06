@@ -22,7 +22,7 @@
       <pieces>model://party_house/pieces.txt</pieces>
     </plugin>
 
-    <!-- Cat that runs from the vacuum and leaves muddy paw prints -->
+    <!-- Cat that runs from the vacuum and keeps making a mess -->
     <plugin filename="cat_walker" name="vacuum_dirt::CatWalker">
       <actor>cat</actor>
       <robot>vacuum_cleaner</robot>
@@ -31,6 +31,8 @@
       <origin_x>-4.3</origin_x>
       <origin_y>-3.85</origin_y>
       <mud>0.92 5.36</mud>
+      <litter>4.55 1.35</litter>
+      <litter_box>5.06 1.11</litter_box>
     </plugin>
 
     <scene>
@@ -50,6 +52,12 @@
       <name>spilled_plant_pot</name>
       <uri>model://spilled_plant_pot</uri>
       <pose>1.27 5.72 0 0 0 -2.342</pose>
+    </include>
+
+    <include>
+      <name>litter_box</name>
+      <uri>model://litter_box</uri>
+      <pose>5.06 1.11 0 0 0 0</pose>
     </include>
 
     <actor name="cat">

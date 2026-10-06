@@ -3,7 +3,7 @@
 
 Slices the collision meshes of house_int2 (walls + furniture) at the robot
 height to find the floor the vacuum can actually clean, then writes:
-  pieces.txt    confetti and spilled soil for the vacuum_dirt system
+  pieces.txt    confetti, spilled soil and litter for the vacuum_dirt system
   cat_map.pgm   area the cat walks on (dark = free) for the cat_walker system
 
 Development tool only, needs trimesh, pycollada, scipy and pillow:
@@ -34,15 +34,23 @@ POT = (1.27, 5.72)
 POT_RADIUS = 0.3
 MUD = (0.92, 5.36)
 
+# Litter box in the corner of the east room and where the cat stands to use it
+LITTER_BOX = (5.06, 1.11)
+LITTER_BOX_SIZE = (0.46, 0.36)
+LITTER = (4.55, 1.35)
+
 # Where the party was (x, y, sigma, weight)
 HOTSPOTS = [(-0.8, 3.9, 1.3, 10.0), (-2.4, 0.3, 1.0, 5.0), (0.8, 2.0, 1.5, 2.0)]
 BASE_DENSITY = 0.6
 CONFETTI = 18000
 SOIL = 420
+LITTER_GRAINS = 120
 
-# Palette indexes of vacuum_dirt.cpp: 8 colors x 3 shades, then two browns
+# Palette indexes of vacuum_dirt.cpp: 8 colors x 3 shades, then browns,
+# beiges and greys
 N_COLORS, N_SHADES = 8, 3
 BROWNS = (24, 25)
+BEIGES = (26, 27)
 
 
 def px(x, y):
@@ -72,6 +80,8 @@ def coverable_floor(models):
     cx, cy = px(*POT)
     r = POT_RADIUS / RES
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
+    (bx, by), (sx, sy) = LITTER_BOX, LITTER_BOX_SIZE
+    draw.rectangle([px(bx - sx / 2, by + sy / 2), px(bx + sx / 2, by - sy / 2)], fill=255)
 
     obstacles = np.array(img) > 0
     k = int(ROBOT_RADIUS / RES)
@@ -155,6 +165,16 @@ def main():
                      f"{d:.4f} {d * rng.uniform(0.6, 1.0):.4f} {BROWNS[int(rng.integers(2))]}")
         soil += 1
 
+    # Litter some earlier visit already kicked out of the box
+    grains = 0
+    while grains < LITTER_GRAINS:
+        x, y = LITTER[0] + rng.normal(0, 0.18), LITTER[1] + rng.normal(0, 0.18)
+        if not free(x, y):
+            continue
+        d = rng.uniform(0.005, 0.009)
+        lines.append(f"litter disc {x:.4f} {y:.4f} 0 {d:.4f} {d:.4f} {BEIGES[int(rng.integers(2))]}")
+        grains += 1
+
     out.mkdir(parents=True, exist_ok=True)
     with open(out / "pieces.txt", "w") as f:
         f.write("# category shape x y yaw size_x size_y color\n")
@@ -172,6 +192,8 @@ def main():
     assert coarse[mud_r, mud_c], "the mud spot must be walkable"
     labels, _ = ndimage.label(coarse)
     coarse = labels == labels[mud_r, mud_c]
+    lit_c, lit_r = int((LITTER[0] - X0) / CAT_MAP_RES), int((Y1 - LITTER[1]) / CAT_MAP_RES)
+    assert coarse[lit_r, lit_c], "the cat must reach the litter box"
     Image.fromarray(np.where(coarse, 0, 255).astype(np.uint8)).save(out / "cat_map.pgm")
     print(f"pieces {len(lines)}  cat map origin_x {X0} origin_y {Y1 - coarse.shape[0] * CAT_MAP_RES:.2f}")
 
