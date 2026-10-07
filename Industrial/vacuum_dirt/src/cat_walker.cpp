@@ -40,22 +40,27 @@ namespace vacuum_dirt
 
 namespace
 {
-constexpr double kWalkSpeed = 0.28;
-constexpr double kFleeSpeed = 0.6;
-constexpr double kTurnRate = 3.0;
+constexpr double kWalkSpeed = 0.5;
+constexpr double kFleeSpeed = 1.0;
+constexpr double kTurnRate = 6.0;
 // Distance covered by one loop of the walk animation
 constexpr double kCycleDistance = 0.32;
-constexpr double kFleeDistance = 0.7;
+constexpr double kFleeDistance = 0.8;
 constexpr double kSafeDistance = 1.6;
 // Robot center this close to a paint can means it bumped into it
 constexpr double kBumpDistance = 0.3;
-constexpr double kPuddleRadius = 0.2;
-constexpr int kDirtyPrints = 40;
-constexpr double kPaintChance = 0.6;
+// Half width of a puddle, which runs from the can to its spot
+constexpr double kPuddleWidth = 0.18;
+constexpr int kDirtyPrints = 60;
+constexpr double kPaintChance = 0.9;
+// With paint on its paws it heads for the cleanest area
+constexpr double kMessyCleanChance = 0.95;
+constexpr double kRestMin = 0.5;
+constexpr double kRestMax = 2.5;
 // Most walks go to the cleanest of a few random spots not too far away
-constexpr int kGoalCandidates = 8;
-constexpr double kStrollMin = 1.0;
-constexpr double kStrollMax = 4.0;
+constexpr int kGoalCandidates = 10;
+constexpr double kStrollMin = 1.5;
+constexpr double kStrollMax = 5.0;
 constexpr double kCleanChance = 0.65;
 // Paw prints the cat leaves alone once this many are still on the floor
 constexpr int kMaxMess = 400;
@@ -79,11 +84,12 @@ int64_t ChunkKey(int _i, int _j)
 // Moves a cat actor around the house and keeps making a mess for the
 // vacuum_dirt system to clean, published on <dirt_topic>.
 //
-// The cat strolls between random spots, preferring clean areas (read from
-// vacuum_dirt on <density_topic>), sits for a while and runs away when the
-// vacuum robot gets close. Every <paint> is a knocked over can with its
-// puddle. Stepping in the puddle leaves paw prints of that color. When the
-// robot bumps into a can, the can is removed and its color is gone.
+// Every <paint> is a knocked over can with its puddle. With clean paws the
+// cat goes for a can, and once its paws are covered in paint it walks to
+// the cleanest area around (read from vacuum_dirt on <density_topic>)
+// leaving paw prints of that color. It runs away when the vacuum robot gets
+// close. When the robot bumps into a can, the can is removed and its color
+// is gone.
 //
 // It reads the progress on <score_topic> and, while <max_mess> or more of
 // its paw prints are left, it just strolls around without making any more,
@@ -187,6 +193,7 @@ private:
     Vector2d spot;
     int color{0};
     Entity can{kNullEntity};
+    Vector2d canPos;
     bool active{true};
   };
 
@@ -440,7 +447,8 @@ private:
   {
     double away = robot != kNullEntity ? kSafeDistance : 0.0;
     std::uniform_real_distribution<double> u(0, 1);
-    if (u(rng) >= kCleanChance)
+    double clean = dirtyPrints > 0 ? kMessyCleanChance : kCleanChance;
+    if (u(rng) >= clean)
       return RandomSpot(kStrollMin, kStrollMax, robotPos, away);
 
     Vector2d best;
@@ -485,11 +493,9 @@ private:
         if (p.can == kNullEntity)
           continue;
       }
-      if (robot == kNullEntity)
-        continue;
-
       auto c = worldPose(p.can, _ecm).Pos();
-      if (robotPos.Distance(Vector2d(c.X(), c.Y())) > kBumpDistance)
+      p.canPos = Vector2d(c.X(), c.Y());
+      if (robot == kNullEntity || robotPos.Distance(p.canPos) > kBumpDistance)
         continue;
 
       _ecm.RequestRemoveEntity(p.can);
@@ -545,7 +551,7 @@ private:
 
     if (state != State::Idle && path.empty())
     {
-      std::uniform_real_distribution<double> rest(3.0, 9.0);
+      std::uniform_real_distribution<double> rest(kRestMin, kRestMax);
       state = State::Idle;
       stateUntil = _now + rest(rng);
     }
@@ -555,7 +561,7 @@ private:
   {
     for (const auto &p : paints)
     {
-      if (p.active && pos.Distance(p.spot) < kPuddleRadius)
+      if (p.active && OnPuddle(p))
       {
         dirtyPrints = kDirtyPrints;
         printColor = p.color;
@@ -606,6 +612,15 @@ private:
         --dirtyPrints;
       }
     }
+  }
+
+  // The puddle runs from the can mouth to a bit past its spot
+  bool OnPuddle(const Paint &_p) const
+  {
+    Vector2d a = _p.canPos;
+    Vector2d ab = _p.spot - a;
+    double t = std::clamp((pos - a).Dot(ab) / ab.SquaredLength(), 0.0, 1.15);
+    return pos.Distance(a + ab * t) < kPuddleWidth;
   }
 
   void Apply(double _dt, EntityComponentManager &_ecm)
