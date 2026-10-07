@@ -14,7 +14,8 @@ class CarSpawner(object):
     def __init__(self):
         self.node = Node()
         self.active_models = {}
-        self.last_spawn = 0
+        self.last_spawn_time = 0.0
+        self.last_iterations = 0
         self.sdf_path = "model://hatchback/model.sdf"
         self.world = "default"
         self.spawn_interval = 15.0
@@ -26,18 +27,48 @@ class CarSpawner(object):
         ]
 
     def update(self, info, _ecm):
-        current_time = time.time()
+        current_iterations = info.iterations
+        
+        # We can approximate sim_time using iterations if we assume a fixed timestep of 0.001 (default)
+        # Alternatively, info.sim_time could be used, but iterations is a very safe fallback.
+                # Safely get current simulation time
+        if hasattr(info, 'sim_time'):
+            if hasattr(info.sim_time, 'total_seconds'):
+                current_sim_time = info.sim_time.total_seconds()
+            else:
+                # In some older bindings it might be a float
+                current_sim_time = float(info.sim_time)
+        else:
+            current_sim_time = current_iterations * 0.001 
 
-        # Spawn new car
-        if current_time - self.last_spawn > self.spawn_interval:
+        if current_iterations < self.last_iterations:
+            # Simulation reset detected!
+            print("Simulation reset detected. Clearing active models to prevent ghost artifacts.")
+            for name in list(self.active_models.keys()):
+                # Remove from Gazebo explicitly
+                self.node.request(
+                    f"/world/{self.world}/remove",
+                    Entity(name=name, type=Entity.MODEL),
+                    Entity,
+                    Boolean,
+                    1000,
+                )
+            self.active_models.clear()
+            self.last_spawn_time = current_sim_time
+            self.last_iterations = current_iterations
+            return
+
+        self.last_iterations = current_iterations
+
+        # Spawn new car based on sim time
+        if current_sim_time - self.last_spawn_time > self.spawn_interval:
             coords = random.choice(self.spawn_positions)
-            model_name = f"car_{random.randint(1000,9999)}"
+            model_name = f"car_{random.randint(1000,99999)}"
 
             yaw = coords[3]
             qx, qy, qz, qw = etoq(yaw, 0, 0)
 
             req = EntityFactory()
-
             req.relative_to = ""
             req.sdf_filename = self.sdf_path
             req.name = model_name
@@ -53,13 +84,13 @@ class CarSpawner(object):
                 f"/world/{self.world}/create", req, EntityFactory, Boolean, 1000
             )
 
-            self.active_models[model_name] = current_time
-            self.last_spawn = current_time
-            print(f"Spawned {model_name}")
+            self.active_models[model_name] = current_sim_time
+            self.last_spawn_time = current_sim_time
+            print(f"Spawned {model_name} at sim time {current_sim_time:.1f}")
 
-        # Remove old cars
+        # Remove old cars based on sim time
         for name, spawn_time in list(self.active_models.items()):
-            if current_time - spawn_time > self.lifetime:
+            if current_sim_time - spawn_time > self.lifetime:
                 self.node.request(
                     f"/world/{self.world}/remove",
                     Entity(name=name, type=Entity.MODEL),
@@ -68,7 +99,7 @@ class CarSpawner(object):
                     1000,
                 )
                 del self.active_models[name]
-                print(f"Removed {name}")
+                print(f"Removed {name} at sim time {current_sim_time:.1f}")
 
 
 def etoq(yaw, pitch, roll):
