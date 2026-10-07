@@ -1,0 +1,7 @@
+entryPoints:
+  http:
+    address: :7163
+
+providers:
+  file:
+    filename: "/etc/traefik/routes.yaml"

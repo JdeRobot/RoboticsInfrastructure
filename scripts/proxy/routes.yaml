@@ -1,0 +1,49 @@
+http:
+  middlewares:
+    api-stripprefix:
+      stripPrefix:
+        prefixes:
+          - "/sim"
+          - "/rviz"
+  routers:
+    app-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/`)"
+      priority: 8
+      service: app
+    rviz-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/rviz`)"
+      priority: 10
+      middlewares:
+        - "api-stripprefix"
+      service: rviz
+    sim-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/sim`)"
+      priority: 10
+      middlewares:
+        - "api-stripprefix"
+      service: sim
+  services:
+    app:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:7163"
+    internal:
+      loadBalancer:
+        strategy: "wrr"
+    sim:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:6080"
+    rviz:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:6081"
