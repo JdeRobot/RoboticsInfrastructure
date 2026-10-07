@@ -12,7 +12,8 @@ import os
 import xacro
 import yaml
 from ament_index_python.packages import get_package_share_directory
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, GroupAction
+from launch_ros.actions import PushRosNamespace
 
 
 def load_file(package_name, file_path):
@@ -222,7 +223,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur5_robotiq",
+            f"{namespace}_ur5_robotiq" if namespace else "ur5_robotiq",
             "-x",
             x,
             "-y",
@@ -337,6 +338,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
+        DeclareLaunchArgument("namespace", default_value="", description="Namespace for the UR robot"),
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0.9"),

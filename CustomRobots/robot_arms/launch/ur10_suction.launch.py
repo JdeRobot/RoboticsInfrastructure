@@ -1,4 +1,5 @@
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, GroupAction
+from launch_ros.actions import PushRosNamespace
 from launch.substitutions import LaunchConfiguration
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -228,7 +229,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur10_suction",
+            f"{namespace}_ur10_suction" if namespace else "ur10_suction",
             "-x",
             x,
             "-y",
@@ -311,6 +312,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
+        DeclareLaunchArgument("namespace", default_value="", description="Namespace for the UR robot"),
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0.9"),
