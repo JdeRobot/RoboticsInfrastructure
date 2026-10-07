@@ -46,9 +46,8 @@ namespace vacuum_dirt
 
 namespace fs = std::filesystem;
 
-// Palette of the dirt atlas: 8 confetti colors in 3 shades, then two shades
-// each of brown (soil, muddy paws), beige (cat litter) and grey (cat hair).
-// Dirt refers to colors by index.
+// Palette of the dirt atlas: 8 confetti colors in 3 shades, then red, blue,
+// green and yellow paint in 2 shades. Dirt refers to colors by index.
 const std::vector<std::array<uint8_t, 3>> kPalette = []()
 {
   const std::vector<std::array<double, 3>> base = {
@@ -63,12 +62,10 @@ const std::vector<std::array<uint8_t, 3>> kPalette = []()
       p.push_back({static_cast<uint8_t>(c[0] * s * 255),
                    static_cast<uint8_t>(c[1] * s * 255),
                    static_cast<uint8_t>(c[2] * s * 255)});
-  p.push_back({74, 52, 36});
-  p.push_back({92, 66, 44});
-  p.push_back({206, 192, 162});
-  p.push_back({184, 168, 136});
-  p.push_back({150, 150, 156});
-  p.push_back({186, 186, 192});
+  const std::vector<std::array<uint8_t, 3>> paints = {
+    {204, 26, 26}, {170, 18, 18}, {26, 72, 210}, {18, 54, 176},
+    {26, 158, 56}, {18, 128, 44}, {245, 204, 20}, {214, 172, 10}};
+  p.insert(p.end(), paints.begin(), paints.end());
   return p;
 }();
 const int kAtlasCols = 8;
@@ -92,7 +89,9 @@ const int kCellPx = 8;
 // name "category shape size_x size_y color". At most <max_added> of those
 // can be on the floor at once, the rest is ignored.
 //
-// Progress is published as JSON on <topic>.
+// Progress is published as JSON on <topic>, and how many pieces are left in
+// every chunk on <density_topic> as "chunk_size;i,j,count;..." so others
+// can tell clean areas from dirty ones.
 class VacuumDirt:
   public System,
   public ISystemConfigure,
@@ -125,6 +124,8 @@ public:
       chunkSize = _sdf->Get<double>("chunk_size");
     if (_sdf->HasElement("topic"))
       topic = _sdf->Get<std::string>("topic");
+    if (_sdf->HasElement("density_topic"))
+      densityTopic = _sdf->Get<std::string>("density_topic");
     if (_sdf->HasElement("add_topic"))
       addTopic = _sdf->Get<std::string>("add_topic");
     if (_sdf->HasElement("max_added"))
@@ -143,6 +144,7 @@ public:
     WriteAtlas();
 
     scorePub = node.Advertise<msgs::StringMsg>(topic);
+    densityPub = node.Advertise<msgs::StringMsg>(densityTopic);
     node.Subscribe(addTopic, &VacuumDirt::OnAdd, this);
 
     Populate(_ecm);
@@ -170,7 +172,9 @@ public:
     }
 
     auto now = std::chrono::steady_clock::now();
-    if (scoreChanged || now - lastPublish > std::chrono::seconds(1))
+    auto since = now - lastPublish;
+    if ((scoreChanged && since > std::chrono::milliseconds(200)) ||
+        since > std::chrono::seconds(1))
       Publish(now);
   }
 
@@ -543,9 +547,22 @@ private:
       ",\"collected\":" + std::to_string(collected) +
       ",\"categories\":{" + categories + "}}");
     scorePub.Publish(msg);
-
     lastPublish = _now;
     scoreChanged = false;
+
+    if (_now - lastDensity < std::chrono::seconds(1))
+      return;
+    lastDensity = _now;
+    std::string density = std::to_string(chunkSize);
+    for (const auto &[key, chunk] : chunks)
+    {
+      density += ";" + std::to_string(static_cast<int32_t>(key >> 32)) + "," +
+        std::to_string(static_cast<int32_t>(key & 0xffffffff)) + "," +
+        std::to_string(chunk.pieces.size());
+    }
+    msgs::StringMsg densityMsg;
+    densityMsg.set_data(density);
+    densityPub.Publish(densityMsg);
   }
 
   static constexpr double kRebuildPeriod{0.2};
@@ -557,6 +574,7 @@ private:
   double chunkSize{1.0};
   std::string topic{"/vacuum_dirt/score"};
   std::string addTopic{"/vacuum_dirt/add"};
+  std::string densityTopic{"/vacuum_dirt/density"};
   std::string piecesFile;
   std::string meshDir;
 
@@ -580,7 +598,9 @@ private:
 
   transport::Node node;
   transport::Node::Publisher scorePub;
+  transport::Node::Publisher densityPub;
   std::chrono::steady_clock::time_point lastPublish;
+  std::chrono::steady_clock::time_point lastDensity;
 };
 
 }  // namespace vacuum_dirt

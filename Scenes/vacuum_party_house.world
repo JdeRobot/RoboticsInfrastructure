@@ -22,7 +22,7 @@
       <pieces>model://party_house/pieces.txt</pieces>
     </plugin>
 
-    <!-- Cat that runs from the vacuum and keeps making a mess -->
+    <!-- Cat that runs from the vacuum and walks paint all over the house -->
     <plugin filename="cat_walker" name="vacuum_dirt::CatWalker">
       <actor>cat</actor>
       <robot>vacuum_cleaner</robot>
@@ -30,9 +30,26 @@
       <resolution>0.05</resolution>
       <origin_x>-4.3</origin_x>
       <origin_y>-3.85</origin_y>
-      <mud>0.92 5.36</mud>
-      <litter>4.55 1.35</litter>
-      <litter_box>5.06 1.11</litter_box>
+      <paint>
+        <model>paint_can_red</model>
+        <spot>0.92 5.38</spot>
+        <color>24</color>
+      </paint>
+      <paint>
+        <model>paint_can_blue</model>
+        <spot>4.62 1.34</spot>
+        <color>26</color>
+      </paint>
+      <paint>
+        <model>paint_can_green</model>
+        <spot>-3.3 -0.55</spot>
+        <color>28</color>
+      </paint>
+      <paint>
+        <model>paint_can_yellow</model>
+        <spot>4.66 -1.42</spot>
+        <color>30</color>
+      </paint>
     </plugin>
 
     <scene>
@@ -49,15 +66,27 @@
     </include>
 
     <include>
-      <name>spilled_plant_pot</name>
-      <uri>model://spilled_plant_pot</uri>
-      <pose>1.27 5.72 0 0 0 -2.342</pose>
+      <name>paint_can_red</name>
+      <uri>model://paint_can_red</uri>
+      <pose>1.27 5.72 0 0 0 -2.371</pose>
     </include>
 
     <include>
-      <name>litter_box</name>
-      <uri>model://litter_box</uri>
-      <pose>5.06 1.11 0 0 0 0</pose>
+      <name>paint_can_blue</name>
+      <uri>model://paint_can_blue</uri>
+      <pose>5.08 1.1 0 0 0 2.661</pose>
+    </include>
+
+    <include>
+      <name>paint_can_green</name>
+      <uri>model://paint_can_green</uri>
+      <pose>-3.72 -0.8 0 0 0 0.537</pose>
+    </include>
+
+    <include>
+      <name>paint_can_yellow</name>
+      <uri>model://paint_can_yellow</uri>
+      <pose>5.05 -1.1 0 0 0 -2.454</pose>
     </include>
 
     <actor name="cat">

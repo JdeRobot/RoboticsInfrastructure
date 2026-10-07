@@ -2,10 +2,14 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
+#include <mutex>
 #include <queue>
 #include <random>
+#include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <gz/common/Console.hh>
@@ -37,54 +41,53 @@ namespace vacuum_dirt
 namespace
 {
 constexpr double kWalkSpeed = 0.28;
-// Mess the cat leaves alone once this much of it is still on the floor
-constexpr int kMaxMess = 400;
-const char *const kCatDirt[] = {"paw", "litter", "fur"};
 constexpr double kFleeSpeed = 0.6;
 constexpr double kTurnRate = 3.0;
 // Distance covered by one loop of the walk animation
 constexpr double kCycleDistance = 0.32;
 constexpr double kFleeDistance = 0.7;
 constexpr double kSafeDistance = 1.6;
-constexpr double kSourceRadius = 0.25;
-constexpr int kDirtyPrints = 36;
-// Chance of heading to the pot or the litter box with clean or dirty paws
-constexpr double kSourceChanceClean = 0.55;
-constexpr double kSourceChanceDirty = 0.15;
-constexpr int kKickedGrains = 30;
-// Hair shed while resting, and now and then while walking
-constexpr double kFurRestMin = 1.5;
-constexpr double kFurRestMax = 3.5;
-constexpr double kFurWalkChance = 0.3;
-constexpr double kFurWalkEvery = 2.5;
-
-// Palette indexes of vacuum_dirt.cpp
-constexpr int kBrown = 24;
-constexpr int kBeige = 26;
-constexpr int kGrey = 28;
+// Robot center this close to a paint can means it bumped into it
+constexpr double kBumpDistance = 0.3;
+constexpr double kPuddleRadius = 0.2;
+constexpr int kDirtyPrints = 40;
+constexpr double kPaintChance = 0.6;
+// Most walks go to the cleanest of a few random spots not too far away
+constexpr int kGoalCandidates = 8;
+constexpr double kStrollMin = 1.0;
+constexpr double kStrollMax = 4.0;
+constexpr double kCleanChance = 0.65;
+// Paw prints the cat leaves alone once this many are still on the floor
+constexpr int kMaxMess = 400;
 // Cats put the hind paw where the front one was, so a walk leaves a single
 // zigzag line of prints
-constexpr double kPrintStep = 0.11;
-constexpr double kPrintSide = 0.035;
+constexpr double kPrintStep = 0.13;
+constexpr double kPrintSide = 0.04;
+constexpr double kPrintSize = 0.065;
 
 double Wrap(double _a)
 {
   return std::atan2(std::sin(_a), std::cos(_a));
 }
+
+int64_t ChunkKey(int _i, int _j)
+{
+  return (static_cast<int64_t>(_i) << 32) ^ static_cast<uint32_t>(_j);
+}
 }  // namespace
 
-// Moves a cat actor around the house. It strolls between random spots,
-// sits for a while and runs away when the vacuum robot gets close. It keeps
-// making a mess for the vacuum_dirt system to clean, published on
-// <dirt_topic>:
-//  - stepping on the soil of the spilled pot (<mud>) leaves muddy paw prints
-//  - using the litter box (<litter>, box center at <litter_box>) kicks litter
-//    out and leaves sandy paw prints
-//  - it sheds hair where it rests and now and then while walking
-// With clean paws it is more likely to head back to the pot or the box.
-// It reads the progress on <score_topic> and, while more than <max_mess>
-// pieces of its own dirt are left, it just strolls around without making
-// any more, so the world never fills up if the robot can't keep up.
+// Moves a cat actor around the house and keeps making a mess for the
+// vacuum_dirt system to clean, published on <dirt_topic>.
+//
+// The cat strolls between random spots, preferring clean areas (read from
+// vacuum_dirt on <density_topic>), sits for a while and runs away when the
+// vacuum robot gets close. Every <paint> is a knocked over can with its
+// puddle. Stepping in the puddle leaves paw prints of that color. When the
+// robot bumps into a can, the can is removed and its color is gone.
+//
+// It reads the progress on <score_topic> and, while <max_mess> or more of
+// its paw prints are left, it just strolls around without making any more,
+// so the world never fills up if the robot can't keep up.
 //
 // The walkable area is a PGM map (dark = free) with its lower left corner at
 // <origin_x>/<origin_y> and <resolution> meters per pixel.
@@ -105,12 +108,23 @@ public:
     robotName = _sdf->Get<std::string>("robot", robotName).first;
     dirtTopic = _sdf->Get<std::string>("dirt_topic", dirtTopic).first;
     scoreTopic = _sdf->Get<std::string>("score_topic", scoreTopic).first;
+    densityTopic =
+      _sdf->Get<std::string>("density_topic", densityTopic).first;
     maxMess = _sdf->Get<int>("max_mess", kMaxMess).first;
-    mudSpot = _sdf->Get<math::Vector2d>("mud", mudSpot).first;
-    litterSpot = _sdf->Get<math::Vector2d>("litter", litterSpot).first;
-    litterBox = _sdf->Get<math::Vector2d>("litter_box", litterBox).first;
-    auto start = _sdf->Get<math::Vector3d>("start",
-      math::Vector3d(mudSpot.X(), mudSpot.Y(), 0)).first;
+
+    auto e = _sdf->FindElement("paint");
+    for (; e; e = e->GetNextElement("paint"))
+    {
+      Paint p;
+      p.model = e->Get<std::string>("model");
+      p.spot = e->Get<math::Vector2d>("spot");
+      p.color = e->Get<int>("color");
+      paints.push_back(p);
+    }
+
+    // Without <start> every run begins at a random spot
+    randomStart = !_sdf->HasElement("start");
+    auto start = _sdf->Get<math::Vector3d>("start");
     startPos = Vector2d(start.X(), start.Y());
     startYaw = start.Z();
 
@@ -125,6 +139,7 @@ public:
 
     dirtPub = node.Advertise<msgs::Pose_V>(dirtTopic);
     node.Subscribe(scoreTopic, &CatWalker::OnScore, this);
+    node.Subscribe(densityTopic, &CatWalker::OnDensity, this);
     ready = true;
     Restart();
   }
@@ -156,8 +171,9 @@ public:
       return;
 
     UpdateRobot(_ecm);
+    CheckBumps(_ecm);
     Think(now);
-    Move(now, dt);
+    Move(dt);
     Apply(dt, _ecm);
     PublishDirt();
   }
@@ -165,25 +181,61 @@ public:
 private:
   enum class State { Idle, Walk, Flee };
 
-  // Pieces of the cat's own dirt still on the floor, from the vacuum_dirt
-  // JSON: "<category>":{"total":N,"collected":M}
+  struct Paint
+  {
+    std::string model;
+    Vector2d spot;
+    int color{0};
+    Entity can{kNullEntity};
+    bool active{true};
+  };
+
+  // Paw prints still on the floor, from the vacuum_dirt JSON
+  // "paw":{"total":N,"collected":M}
   void OnScore(const msgs::StringMsg &_msg)
   {
     const std::string &json = _msg.data();
-    int left = 0;
-    for (const char *name : kCatDirt)
+    auto at = json.find("\"paw\":{");
+    if (at == std::string::npos)
     {
-      auto at = json.find("\"" + std::string(name) + "\":{");
-      if (at == std::string::npos)
-        continue;
-      auto total = json.find("\"total\":", at);
-      auto collected = json.find("\"collected\":", at);
-      if (total == std::string::npos || collected == std::string::npos)
-        continue;
-      left += std::atoi(json.c_str() + total + 8) -
-        std::atoi(json.c_str() + collected + 12);
+      messLeft = 0;
+      return;
     }
-    messLeft = left;
+    auto total = json.find("\"total\":", at);
+    auto collected = json.find("\"collected\":", at);
+    if (total != std::string::npos && collected != std::string::npos)
+      messLeft = std::atoi(json.c_str() + total + 8) -
+        std::atoi(json.c_str() + collected + 12);
+  }
+
+  // Pieces left per chunk, "chunk_size;i,j,count;..."
+  void OnDensity(const msgs::StringMsg &_msg)
+  {
+    std::unordered_map<int64_t, int> counts;
+    std::istringstream ss(_msg.data());
+    std::string item;
+    std::getline(ss, item, ';');
+    double size = std::atof(item.c_str());
+    while (std::getline(ss, item, ';'))
+    {
+      int i, j, n;
+      if (std::sscanf(item.c_str(), "%d,%d,%d", &i, &j, &n) == 3)
+        counts[ChunkKey(i, j)] = n;
+    }
+    std::lock_guard<std::mutex> lock(densityMutex);
+    chunkSize = size;
+    density.swap(counts);
+  }
+
+  int DirtAt(const Vector2d &_p)
+  {
+    std::lock_guard<std::mutex> lock(densityMutex);
+    if (chunkSize <= 0.0)
+      return 0;
+    auto it = density.find(ChunkKey(
+      static_cast<int>(std::floor(_p.X() / chunkSize)),
+      static_cast<int>(std::floor(_p.Y() / chunkSize))));
+    return it == density.end() ? 0 : it->second;
   }
 
   bool Tidy() const
@@ -193,8 +245,16 @@ private:
 
   void Restart()
   {
+    rng.seed(std::random_device{}());
     pos = startPos;
     yaw = startYaw;
+    if (randomStart)
+    {
+      std::uniform_int_distribution<size_t> pick(0, freeCells.size() - 1);
+      std::uniform_real_distribution<double> angle(-M_PI, M_PI);
+      pos = Center(freeCells[pick(rng)]);
+      yaw = angle(rng);
+    }
     path.clear();
     state = State::Idle;
     stateUntil = 0.0;
@@ -202,15 +262,16 @@ private:
     lastTime = 0.0;
     animTime = 0.0;
     dirtyPrints = 0;
-    atSource = false;
-    furAt = 0.0;
-    sinceLastFur = 0.0;
     sinceLastPrint = 0.0;
     leftPaw = false;
     dirt.Clear();
     animation.clear();
     robot = kNullEntity;
-    rng.seed(11);
+    for (auto &p : paints)
+    {
+      p.can = kNullEntity;
+      p.active = true;
+    }
   }
 
   bool LoadMap(const std::string &_file, double _res, double _ox, double _oy)
@@ -325,7 +386,6 @@ private:
           if ((!dx && !dy) || nx < 0 || ny < 0 || nx >= width || ny >= height)
             continue;
           int n = Index(nx, ny);
-          // Starting cell may be blocked if the cat was pushed off the map
           if (!walkable[n] && n != g)
             continue;
           double c = cost[cur] + std::hypot(dx, dy);
@@ -375,6 +435,29 @@ private:
     return Center(freeCells[pick(rng)]);
   }
 
+  // Where to stroll next, usually the cleanest of a few random spots
+  Vector2d StrollGoal()
+  {
+    double away = robot != kNullEntity ? kSafeDistance : 0.0;
+    std::uniform_real_distribution<double> u(0, 1);
+    if (u(rng) >= kCleanChance)
+      return RandomSpot(kStrollMin, kStrollMax, robotPos, away);
+
+    Vector2d best;
+    int bestDirt = -1;
+    for (int k = 0; k < kGoalCandidates; ++k)
+    {
+      Vector2d p = RandomSpot(kStrollMin, kStrollMax, robotPos, away);
+      int dirtHere = DirtAt(p);
+      if (bestDirt < 0 || dirtHere < bestDirt)
+      {
+        best = p;
+        bestDirt = dirtHere;
+      }
+    }
+    return best;
+  }
+
   void UpdateRobot(EntityComponentManager &_ecm)
   {
     if (robot == kNullEntity || !_ecm.HasEntity(robot))
@@ -386,6 +469,35 @@ private:
     }
     auto p = worldPose(robot, _ecm).Pos();
     robotPos = Vector2d(p.X(), p.Y());
+  }
+
+  // A can the robot runs into is gone, and so is its color
+  void CheckBumps(EntityComponentManager &_ecm)
+  {
+    for (auto &p : paints)
+    {
+      if (!p.active)
+        continue;
+      if (p.can == kNullEntity || !_ecm.HasEntity(p.can))
+      {
+        p.can = _ecm.EntityByComponents(components::Model(),
+          components::Name(p.model));
+        if (p.can == kNullEntity)
+          continue;
+      }
+      if (robot == kNullEntity)
+        continue;
+
+      auto c = worldPose(p.can, _ecm).Pos();
+      if (robotPos.Distance(Vector2d(c.X(), c.Y())) > kBumpDistance)
+        continue;
+
+      _ecm.RequestRemoveEntity(p.can);
+      p.can = kNullEntity;
+      p.active = false;
+      if (printColor == p.color)
+        dirtyPrints = 0;
+    }
   }
 
   void Think(double _now)
@@ -407,11 +519,24 @@ private:
 
     if (state == State::Idle && _now >= stateUntil)
     {
+      std::vector<const Paint *> active;
+      for (const auto &p : paints)
+        if (p.active)
+          active.push_back(&p);
+
       std::uniform_real_distribution<double> u(0, 1);
-      double toSource = Tidy() ? 0.0 :
-        dirtyPrints > 0 ? kSourceChanceDirty : kSourceChanceClean;
-      Vector2d goal = u(rng) < toSource ? (u(rng) < 0.5 ? mudSpot : litterSpot) :
-        RandomSpot(1.5, 1e9, robotPos, robot != kNullEntity ? kSafeDistance : 0);
+      Vector2d goal;
+      if (!Tidy() && dirtyPrints == 0 && !active.empty() &&
+          u(rng) < kPaintChance)
+      {
+        std::uniform_int_distribution<size_t> pick(0, active.size() - 1);
+        goal = active[pick(rng)]->spot;
+      }
+      else
+      {
+        goal = StrollGoal();
+      }
+
       if (Plan(goal))
         state = State::Walk;
       else
@@ -426,19 +551,20 @@ private:
     }
   }
 
-  void Move(double _now, double _dt)
+  void Move(double _dt)
   {
-    VisitSources();
+    for (const auto &p : paints)
+    {
+      if (p.active && pos.Distance(p.spot) < kPuddleRadius)
+      {
+        dirtyPrints = kDirtyPrints;
+        printColor = p.color;
+      }
+    }
 
     if (state == State::Idle || path.empty())
     {
       speed = 0.0;
-      if (_now >= furAt && !Tidy())
-      {
-        std::uniform_real_distribution<double> every(kFurRestMin, kFurRestMax);
-        furAt = _now + every(rng);
-        Shed(0.08, 0.25);
-      }
       return;
     }
 
@@ -461,15 +587,6 @@ private:
     pos += Vector2d(std::cos(yaw), std::sin(yaw)) * step;
     animTime += step / kCycleDistance * kCycleLength;
 
-    sinceLastFur += step;
-    if (sinceLastFur >= kFurWalkEvery && !Tidy())
-    {
-      sinceLastFur = 0.0;
-      std::uniform_real_distribution<double> u(0, 1);
-      if (u(rng) < kFurWalkChance)
-        Shed(0.0, 0.05);
-    }
-
     if (dirtyPrints > 0 && !Tidy())
     {
       sinceLastPrint += step;
@@ -479,64 +596,16 @@ private:
         leftPaw = !leftPaw;
         double side = leftPaw ? kPrintSide : -kPrintSide;
         Vector2d at = pos + Vector2d(-std::sin(yaw), std::cos(yaw)) * side;
-        Drop("paw paw 0.04 0.04", printColor + (leftPaw ? 1 : 0), at, yaw);
+        // Dirt name is "category shape size_x size_y color"
+        std::ostringstream name;
+        name << "paw paw " << kPrintSize << " " << kPrintSize << " "
+             << printColor + (leftPaw ? 1 : 0);
+        auto *p = dirt.add_pose();
+        p->set_name(name.str());
+        msgs::Set(p, Pose3d(at.X(), at.Y(), 0, 0, 0, yaw));
         --dirtyPrints;
       }
     }
-  }
-
-  // Dirty paws on the pot soil, litter kicked out of the box
-  void VisitSources()
-  {
-    bool atMud = pos.Distance(mudSpot) < kSourceRadius;
-    bool atLitter = pos.Distance(litterSpot) < kSourceRadius;
-    if (atMud || atLitter)
-    {
-      dirtyPrints = kDirtyPrints;
-      printColor = atMud ? kBrown : kBeige;
-    }
-    if (atLitter && !atSource && !Tidy())
-    {
-      // Thrown out of the box, mostly towards the room
-      Vector2d out = (litterSpot - litterBox).Normalized();
-      double base = std::atan2(out.Y(), out.X());
-      std::normal_distribution<double> spread(0.0, 0.7);
-      std::uniform_real_distribution<double> dist(0.0, 0.45);
-      std::uniform_real_distribution<double> size(0.005, 0.009);
-      for (int k = 0; k < kKickedGrains; ++k)
-      {
-        double a = base + spread(rng);
-        Vector2d at = litterSpot + Vector2d(std::cos(a), std::sin(a)) * dist(rng);
-        if (!Free(at))
-          continue;
-        double d = size(rng);
-        Drop("litter disc " + std::to_string(d) + " " + std::to_string(d),
-          kBeige + k % 2, at, 0.0);
-      }
-    }
-    atSource = atMud || atLitter;
-  }
-
-  void Shed(double _minDist, double _maxDist)
-  {
-    std::uniform_real_distribution<double> dist(_minDist, _maxDist);
-    std::uniform_real_distribution<double> angle(-M_PI, M_PI);
-    for (int k = 0; k < 2; ++k)
-    {
-      double a = angle(rng);
-      Vector2d at = pos + Vector2d(std::cos(a), std::sin(a)) * dist(rng);
-      if (Free(at))
-        Drop("fur fur 0.03 0.0025", kGrey + k, at, angle(rng));
-    }
-  }
-
-  // Dirt name is "category shape size_x size_y" plus the color
-  void Drop(const std::string &_what, int _color, const Vector2d &_at,
-            double _yaw)
-  {
-    auto *p = dirt.add_pose();
-    p->set_name(_what + " " + std::to_string(_color));
-    msgs::Set(p, Pose3d(_at.X(), _at.Y(), 0, 0, 0, _yaw));
   }
 
   void Apply(double _dt, EntityComponentManager &_ecm)
@@ -579,11 +648,11 @@ private:
   std::string robotName{"vacuum_cleaner"};
   std::string dirtTopic{"/vacuum_dirt/add"};
   std::string scoreTopic{"/vacuum_dirt/score"};
+  std::string densityTopic{"/vacuum_dirt/density"};
   int maxMess{kMaxMess};
   std::atomic<int> messLeft{0};
-  Vector2d mudSpot{0, 0};
-  Vector2d litterSpot{0, 0};
-  Vector2d litterBox{0, 0};
+  std::vector<Paint> paints;
+  bool randomStart{true};
   Vector2d startPos;
   double startYaw{0.0};
 
@@ -594,6 +663,10 @@ private:
   double oy{0.0};
   std::vector<bool> walkable;
   std::vector<int> freeCells;
+
+  std::mutex densityMutex;
+  std::unordered_map<int64_t, int> density;
+  double chunkSize{0.0};
 
   Entity actor{kNullEntity};
   Entity robot{kNullEntity};
@@ -612,15 +685,12 @@ private:
   std::vector<Vector2d> path;
 
   int dirtyPrints{0};
-  int printColor{kBrown};
-  bool atSource{false};
+  int printColor{0};
   double sinceLastPrint{0.0};
   bool leftPaw{false};
-  double furAt{0.0};
-  double sinceLastFur{0.0};
   msgs::Pose_V dirt;
 
-  std::mt19937 rng{11};
+  std::mt19937 rng;
   bool ready{false};
 
   transport::Node node;
