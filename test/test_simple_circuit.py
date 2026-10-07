@@ -103,6 +103,11 @@ class TestTopicMsgs(unittest.TestCase):
             rclpy.spin_once(self.__class__.node, timeout_sec=0.1)
 
         # Check that the vehicle moved by comparing the difference in odom msgs
+        self.assertGreater(
+            len(msgs),
+            1,
+            msg="Expected multiple odometry messages after publishing velocity.",
+        )
         self.assertNotAlmostEqual(
             msgs[0].pose.pose.position.x,
             msgs[-1].pose.pose.position.x,
