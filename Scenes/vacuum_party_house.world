@@ -14,7 +14,7 @@
     <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
     </plugin>
 
-    <!-- Party leftovers the vacuum sucks up, progress on /vacuum_dirt/score -->
+    <!-- Party leftovers the vacuum sucks up -->
     <plugin filename="vacuum_dirt" name="vacuum_dirt::VacuumDirt">
       <robot>vacuum_cleaner</robot>
       <radius>0.15</radius>
@@ -49,6 +49,26 @@
         <model>paint_can_yellow</model>
         <spot>4.66 -1.42</spot>
         <color>30</color>
+      </paint>
+      <paint>
+        <model>paint_can_purple</model>
+        <spot>-2.24 5.43</spot>
+        <color>32</color>
+      </paint>
+      <paint>
+        <model>paint_can_orange</model>
+        <spot>4.89 5.25</spot>
+        <color>34</color>
+      </paint>
+      <paint>
+        <model>paint_can_pink</model>
+        <spot>2.13 -2.66</spot>
+        <color>36</color>
+      </paint>
+      <paint>
+        <model>paint_can_cyan</model>
+        <spot>-1.5 -0.58</spot>
+        <color>38</color>
       </paint>
     </plugin>
 
@@ -87,6 +107,30 @@
       <name>paint_can_yellow</name>
       <uri>model://paint_can_yellow</uri>
       <pose>5.05 -1.1 0 0 0 -2.454</pose>
+    </include>
+
+    <include>
+      <name>paint_can_purple</name>
+      <uri>model://paint_can_purple</uri>
+      <pose>-2.67 5.55 0 0 0 -0.272</pose>
+    </include>
+
+    <include>
+      <name>paint_can_orange</name>
+      <uri>model://paint_can_orange</uri>
+      <pose>4.89 5.7 0 0 0 -1.571</pose>
+    </include>
+
+    <include>
+      <name>paint_can_pink</name>
+      <uri>model://paint_can_pink</uri>
+      <pose>2.08 -3.11 0 0 0 1.460</pose>
+    </include>
+
+    <include>
+      <name>paint_can_cyan</name>
+      <uri>model://paint_can_cyan</uri>
+      <pose>-1.5 -1.03 0 0 0 1.571</pose>
     </include>
 
     <actor name="cat">

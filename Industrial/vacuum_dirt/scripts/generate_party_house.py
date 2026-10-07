@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
-"""Generate the dirt and the cat map of the vacuum cleaner party house.
+"""Generate the dirt, the cat map and the paint cans of the party house.
 
-Slices the collision meshes of house_int2 (walls + furniture) at the robot
-height to find the floor the vacuum can actually clean, then writes:
-  pieces.txt        confetti and spilled paint for the vacuum_dirt system
-  cat_map.pgm       area the cat walks on (dark = free) for cat_walker
-  ../paint_can_*/   one knocked over paint can model per color
+Slices the house collision meshes at robot height to find the floor the
+vacuum can clean. Needs trimesh, pycollada, scipy and pillow.
 
-Development tool only, needs trimesh, pycollada, scipy and pillow:
-  python3 generate_party_house.py <custom_robots_dir> <output_dir>
+    python3 generate_party_house.py <custom_robots_dir> <output_dir>
 """
 
 import math
@@ -30,30 +26,33 @@ CAT_CLEARANCE = 0.08
 CAT_MAP_RES = 0.05
 SEED = 7
 
-# Knocked over paint cans spread over the house (name, palette index, can
-# center, puddle center where the cat steps). The can lies with its open end
-# towards the puddle.
+# Paint name, color index, can center and puddle center
 PAINTS = [
     ("red", 24, (1.27, 5.72), (0.92, 5.38)),
     ("blue", 26, (5.08, 1.10), (4.62, 1.34)),
     ("green", 28, (-3.72, -0.80), (-3.30, -0.55)),
     ("yellow", 30, (5.05, -1.10), (4.66, -1.42)),
+    ("purple", 32, (-2.67, 5.55), (-2.24, 5.43)),
+    ("orange", 34, (4.89, 5.70), (4.89, 5.25)),
+    ("pink", 36, (2.08, -3.11), (2.13, -2.66)),
+    ("cyan", 38, (-1.50, -1.03), (-1.50, -0.58)),
 ]
 CAN_RADIUS = 0.085
 CAN_LENGTH = 0.17
 CAN_FOOTPRINT = 0.16
 PUDDLE_DROPS = 70
 
-# Where the party was (x, y, sigma, weight)
+# Where the party was as x, y, sigma and weight
 HOTSPOTS = [(-0.8, 3.9, 1.3, 10.0), (-2.4, 0.3, 1.0, 5.0), (0.8, 2.0, 1.5, 2.0)]
 BASE_DENSITY = 0.6
 CONFETTI = 18000
 
-# Palette indexes of vacuum_dirt.cpp: 8 colors x 3 shades, then the paints
-# in 2 shades each
+# Color indexes match the palette in vacuum_dirt.cpp
 N_COLORS, N_SHADES = 8, 3
 PAINT_RGB = {"red": (0.80, 0.10, 0.10), "blue": (0.10, 0.28, 0.82),
-             "green": (0.10, 0.62, 0.22), "yellow": (0.96, 0.80, 0.08)}
+             "green": (0.10, 0.62, 0.22), "yellow": (0.96, 0.80, 0.08),
+             "purple": (0.55, 0.15, 0.75), "orange": (1.00, 0.50, 0.05),
+             "pink": (0.98, 0.35, 0.65), "cyan": (0.05, 0.75, 0.85)}
 
 
 def px(x, y):
@@ -77,7 +76,7 @@ def coverable_floor(models):
             angles=[roll, pitch, yaw], translate=[x, y, z]))
         tri = mesh.triangles
         zmin, zmax = tri[:, :, 2].min(1), tri[:, :, 2].max(1)
-        # Triangles crossing the robot height band, walls show up as lines
+        # Triangles crossing the robot height band
         for t in tri[(zmax > 0.015) & (zmin < ROBOT_HEIGHT)]:
             draw.polygon([px(*v[:2]) for v in t], fill=255, outline=255)
     for _, _, can, _ in PAINTS:
@@ -96,7 +95,7 @@ def coverable_floor(models):
 
 
 def write_cans(models_dir):
-    """Lying paint can, open end along +x, one model per paint color."""
+    """Write one knocked over paint can model per color."""
     for name, _, _, _ in PAINTS:
         r, g, b = PAINT_RGB[name]
         d = models_dir / f"paint_can_{name}"
@@ -166,7 +165,7 @@ def main():
         x, y = random_point()
         if free(x, y) and rng.uniform() < density(x, y) / dmax:
             points.append((x, y))
-    # Small clumps, the kind that piles up by walls and furniture
+    # Small clumps like the ones that pile up by walls and furniture
     while len(points) < CONFETTI:
         x, y = random_point()
         if not free(x, y) or rng.uniform() > density(x, y) / dmax + 0.15:
@@ -189,7 +188,7 @@ def main():
             d = rng.uniform(0.014, 0.024)
             lines.append(f"confetti disc {x:.4f} {y:.4f} 0 {d:.4f} {d:.4f} {color}")
         else:
-            # Curly streamer as a few bent segments
+            # A curly streamer is a few bent segments
             seg = rng.uniform(0.03, 0.05)
             cx, cy, a = x, y, yaw
             for _ in range(rng.integers(2, 5)):
@@ -199,7 +198,7 @@ def main():
                 cx, cy = cx + math.cos(a) * seg, cy + math.sin(a) * seg
                 a += rng.normal(0, 0.9)
 
-    # Paint puddles, a blob of overlapping drops from the can mouth onwards
+    # Each puddle is a blob of drops running from the can to its spot
     for _, color, can, spot in PAINTS:
         drops = 0
         while drops < PUDDLE_DROPS:
@@ -217,7 +216,7 @@ def main():
         f.write("# category shape x y yaw size_x size_y color\n")
         f.write("\n".join(lines) + "\n")
 
-    # The cat keeps off the walls but always walks where the robot can clean
+    # The cat keeps off the walls and only walks where the robot can clean
     k = int(CAT_CLEARANCE / RES)
     yy, xx = np.mgrid[-k:k + 1, -k:k + 1]
     walk = ndimage.binary_erosion(cover, xx ** 2 + yy ** 2 <= k * k)

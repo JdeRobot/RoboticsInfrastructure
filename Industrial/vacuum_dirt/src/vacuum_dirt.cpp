@@ -32,11 +32,8 @@
 #include <gz/plugin/Register.hh>
 #include <gz/transport/Node.hh>
 
-#include <sdf/Geometry.hh>
-#include <sdf/Link.hh>
-#include <sdf/Mesh.hh>
 #include <sdf/Model.hh>
-#include <sdf/Visual.hh>
+#include <sdf/Root.hh>
 
 using namespace gz;
 using namespace sim;
@@ -46,8 +43,7 @@ namespace vacuum_dirt
 
 namespace fs = std::filesystem;
 
-// Palette of the dirt atlas: 8 confetti colors in 3 shades, then red, blue,
-// green and yellow paint in 2 shades. Dirt refers to colors by index.
+// Dirt colors by index. Confetti uses the first 24 and paints the rest
 const std::vector<std::array<uint8_t, 3>> kPalette = []()
 {
   const std::vector<std::array<double, 3>> base = {
@@ -64,34 +60,23 @@ const std::vector<std::array<uint8_t, 3>> kPalette = []()
                    static_cast<uint8_t>(c[2] * s * 255)});
   const std::vector<std::array<uint8_t, 3>> paints = {
     {204, 26, 26}, {170, 18, 18}, {26, 72, 210}, {18, 54, 176},
-    {26, 158, 56}, {18, 128, 44}, {245, 204, 20}, {214, 172, 10}};
+    {26, 158, 56}, {18, 128, 44}, {245, 204, 20}, {214, 172, 10},
+    {140, 38, 192}, {112, 28, 160}, {255, 128, 12}, {222, 104, 8},
+    {250, 90, 166}, {218, 66, 138}, {12, 190, 216}, {8, 156, 180}};
   p.insert(p.end(), paints.begin(), paints.end());
   return p;
 }();
 const int kAtlasCols = 8;
-const int kAtlasRows = 4;
+const int kAtlasRows = 5;
 const int kCellPx = 8;
 
-// World system that lets a vacuum robot suck up dirt.
-//
-// Dirt is a list of small flat pieces (confetti flakes, streamer bits, paw
-// prints). Drawing each one as its own visual makes the scene render far too
-// slow beyond a few thousand pieces, so the pieces are merged into one mesh
-// per square chunk of the floor (<chunk_size>, 1 m by default), each chunk
-// being its own static model. When the robot center passes within <radius>
-// of a piece, the piece is dropped and its chunk mesh is rewritten with the
-// pieces left, so the cleaned trail follows the robot exactly.
-//
-// Initial dirt is read from the <pieces> file, one piece per line:
-//   category shape x y yaw size_x size_y color
-// shape is "rect", "disc", "paw" or "fur". More dirt can be added at runtime
-// by publishing a Pose_V on <add_topic>, each pose being one piece and its
-// name "category shape size_x size_y color". At most <max_added> of those
-// can be on the floor at once, the rest is ignored.
-//
-// Progress is published as JSON on <topic>, and how many pieces are left in
-// every chunk on <density_topic> as "chunk_size;i,j,count;..." so others
-// can tell clean areas from dirty ones.
+// Dirt on the floor that the vacuum robot sucks up as it drives over it.
+// Pieces are merged into one mesh per floor chunk because thousands of
+// separate visuals render far too slow. A chunk mesh is rewritten whenever
+// the robot picks up one of its pieces.
+// The pieces file has one piece per line as "category shape x y yaw size_x
+// size_y color". Other plugins add dirt by publishing poses on <add_topic>
+// named "category shape size_x size_y color".
 class VacuumDirt:
   public System,
   public ISystemConfigure,
@@ -162,7 +147,7 @@ public:
     if (!_info.paused)
       Clean(_ecm);
 
-    // Rebuild right away after loading too, the world starts paused
+    // The world starts paused so the first meshes can't wait for sim time
     double t = std::chrono::duration<double>(_info.simTime).count();
     if (forceRebuild || t - lastRebuild >= kRebuildPeriod || t < lastRebuild)
     {
@@ -195,7 +180,7 @@ private:
     double sx;
     double sy;
     int color;
-    // Added through <add_topic>, counts against <max_added>
+    // Added at runtime and limited by <max_added>
     bool runtime{false};
   };
 
@@ -224,7 +209,7 @@ private:
 
   void Populate(EntityComponentManager &_ecm)
   {
-    // Start from the pieces file, dropping whatever a reset left behind
+    // Drop whatever a reset left behind and start again from the file
     _ecm.Each<components::Model, components::Name>(
       [&](const Entity &_model, const components::Model *,
           const components::Name *_name) -> bool
@@ -371,35 +356,31 @@ private:
       if (chunk.pieces.empty())
         continue;
 
-      // Mesh files are cached by name, so every version needs a new one
+      // gz caches meshes by file name so every version gets a new file
       std::string name = kChunkPrefix + std::to_string(version++);
       std::string path = meshDir + "/" + name + ".obj";
       WriteMesh(chunk.pieces, path);
 
-      sdf::Mesh mesh;
-      mesh.SetUri("file://" + path);
-      mesh.SetFilePath(path);
-      sdf::Geometry geom;
-      geom.SetType(sdf::GeometryType::MESH);
-      geom.SetMeshShape(mesh);
-      sdf::Visual visual;
-      visual.SetName("visual");
-      visual.SetGeom(geom);
-      visual.SetCastShadows(false);
-      sdf::Link sdfLink;
-      sdfLink.SetName("link");
-      sdfLink.AddVisual(visual);
-      sdf::Model model;
-      model.SetName(name);
-      model.SetStatic(true);
-      model.AddLink(sdfLink);
+      // Built from SDF text so gz can serialize the model state
+      sdf::Root root;
+      auto errors = root.LoadSdfString(
+        "<sdf version='1.8'><model name='" + name + "'><static>true</static>"
+        "<link name='link'><visual name='visual'>"
+        "<cast_shadows>false</cast_shadows><geometry><mesh><uri>file://" +
+        path + "</uri></mesh></geometry></visual></link></model></sdf>");
+      if (!errors.empty() || !root.Model())
+      {
+        gzerr << "vacuum_dirt: could not build chunk " << name << "\n";
+        continue;
+      }
+      const sdf::Model &model = *root.Model();
 
       chunk.model = creator->CreateEntities(&model);
       creator->SetParent(chunk.model, world);
     }
   }
 
-  // Footprint of a piece as polygons in world coordinates
+  // Outline of a piece in world coordinates
   static std::vector<std::vector<std::pair<double, double>>> Shape(
     const Piece &_p)
   {
@@ -419,23 +400,9 @@ private:
     {
       local.push_back(circle(0, 0, _p.sx / 2, _p.sx / 2, 10));
     }
-    else if (_p.shape == "fur")
-    {
-      // Tuft of thin hairs fanning out from one end
-      for (int k = 0; k < 6; ++k)
-      {
-        double a = -0.6 + 0.24 * k + 0.15 * std::sin(7.0 * k + _p.yaw * 13);
-        double len = _p.sx * (0.6 + 0.4 * std::abs(std::sin(3.0 * k + _p.yaw)));
-        double w = _p.sy / 2;
-        double c = std::cos(a);
-        double s = std::sin(a);
-        local.push_back({{-s * w, c * w}, {len * c - s * w, len * s + c * w},
-                         {len * c + s * w, len * s - c * w}, {s * w, -c * w}});
-      }
-    }
     else if (_p.shape == "paw")
     {
-      // Main pad plus four toes, pointing along +x
+      // Main pad and four toes pointing along x
       double s = _p.sx;
       local.push_back(circle(-0.12 * s, 0, 0.26 * s, 0.30 * s, 12));
       local.push_back(circle(0.24 * s, 0.30 * s, 0.10 * s, 0.09 * s, 8));
@@ -468,7 +435,7 @@ private:
     std::ofstream out(_path);
     out << "mtllib atlas.mtl\nusemtl dirt\nvn 0 0 1\n";
 
-    // One texture coordinate per palette cell, at its center
+    // One texture coordinate per color at the center of its atlas cell
     for (size_t c = 0; c < kPalette.size(); ++c)
     {
       double u = (c % kAtlasCols + 0.5) / kAtlasCols;
@@ -510,7 +477,7 @@ private:
     u32(40); u32(w); u32(h); u16(1); u16(24); u32(0); u32(rowBytes * h);
     u32(2835); u32(2835); u32(0); u32(0);
 
-    // BMP rows go bottom-up and pixels are BGR
+    // BMP stores rows bottom up and pixels as BGR
     for (int y = h - 1; y >= 0; --y)
     {
       for (int x = 0; x < w; ++x)

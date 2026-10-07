@@ -40,8 +40,6 @@ def generate_launch_description():
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            # Cleaning progress of the party leftovers, as JSON
-            "/vacuum_dirt/score@std_msgs/msg/String[gz.msgs.StringMsg",
         ],
         output="screen",
     )

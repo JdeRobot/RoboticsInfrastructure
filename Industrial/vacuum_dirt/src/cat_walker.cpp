@@ -43,29 +43,30 @@ namespace
 constexpr double kWalkSpeed = 0.5;
 constexpr double kFleeSpeed = 1.0;
 constexpr double kTurnRate = 6.0;
+constexpr double kRestMin = 0.5;
+constexpr double kRestMax = 2.5;
 // Distance covered by one loop of the walk animation
 constexpr double kCycleDistance = 0.32;
+
 constexpr double kFleeDistance = 0.8;
 constexpr double kSafeDistance = 1.6;
 // Robot center this close to a paint can means it bumped into it
 constexpr double kBumpDistance = 0.3;
-// Half width of a puddle, which runs from the can to its spot
+
 constexpr double kPuddleWidth = 0.18;
 constexpr int kDirtyPrints = 60;
 constexpr double kPaintChance = 0.9;
-// With paint on its paws it heads for the cleanest area
-constexpr double kMessyCleanChance = 0.95;
-constexpr double kRestMin = 0.5;
-constexpr double kRestMax = 2.5;
-// Most walks go to the cleanest of a few random spots not too far away
+// The cat stops making a mess while this many of its prints are left
+constexpr int kMaxMess = 400;
+
+// Strolls go to the cleanest of a few random spots nearby
 constexpr int kGoalCandidates = 10;
 constexpr double kStrollMin = 1.5;
 constexpr double kStrollMax = 5.0;
 constexpr double kCleanChance = 0.65;
-// Paw prints the cat leaves alone once this many are still on the floor
-constexpr int kMaxMess = 400;
-// Cats put the hind paw where the front one was, so a walk leaves a single
-// zigzag line of prints
+constexpr double kMessyCleanChance = 0.95;
+
+// Cats step the hind paw where the front one was so prints form one zigzag
 constexpr double kPrintStep = 0.13;
 constexpr double kPrintSide = 0.04;
 constexpr double kPrintSize = 0.065;
@@ -81,22 +82,11 @@ int64_t ChunkKey(int _i, int _j)
 }
 }  // namespace
 
-// Moves a cat actor around the house and keeps making a mess for the
-// vacuum_dirt system to clean, published on <dirt_topic>.
-//
-// Every <paint> is a knocked over can with its puddle. With clean paws the
-// cat goes for a can, and once its paws are covered in paint it walks to
-// the cleanest area around (read from vacuum_dirt on <density_topic>)
-// leaving paw prints of that color. It runs away when the vacuum robot gets
-// close. When the robot bumps into a can, the can is removed and its color
-// is gone.
-//
-// It reads the progress on <score_topic> and, while <max_mess> or more of
-// its paw prints are left, it just strolls around without making any more,
-// so the world never fills up if the robot can't keep up.
-//
-// The walkable area is a PGM map (dark = free) with its lower left corner at
-// <origin_x>/<origin_y> and <resolution> meters per pixel.
+// Cat actor that walks paint all over the house for vacuum_dirt to clean.
+// It steps in the puddle of a paint can and then heads for the cleanest
+// floor leaving colored paw prints. It runs away from the vacuum robot and
+// a can the robot bumps into disappears with its color.
+// The walkable area comes from a PGM map where dark pixels are free.
 class CatWalker:
   public System,
   public ISystemConfigure,
@@ -128,7 +118,7 @@ public:
       paints.push_back(p);
     }
 
-    // Without <start> every run begins at a random spot
+    // Without a start pose every run begins somewhere else
     randomStart = !_sdf->HasElement("start");
     auto start = _sdf->Get<math::Vector3d>("start");
     startPos = Vector2d(start.X(), start.Y());
@@ -197,8 +187,7 @@ private:
     bool active{true};
   };
 
-  // Paw prints still on the floor, from the vacuum_dirt JSON
-  // "paw":{"total":N,"collected":M}
+  // Paw prints still on the floor according to the vacuum_dirt score
   void OnScore(const msgs::StringMsg &_msg)
   {
     const std::string &json = _msg.data();
@@ -215,7 +204,7 @@ private:
         std::atoi(json.c_str() + collected + 12);
   }
 
-  // Pieces left per chunk, "chunk_size;i,j,count;..."
+  // Pieces left in every floor chunk
   void OnDensity(const msgs::StringMsg &_msg)
   {
     std::unordered_map<int64_t, int> counts;
@@ -442,7 +431,7 @@ private:
     return Center(freeCells[pick(rng)]);
   }
 
-  // Where to stroll next, usually the cleanest of a few random spots
+  // Usually the cleanest of a few random spots nearby
   Vector2d StrollGoal()
   {
     double away = robot != kNullEntity ? kSafeDistance : 0.0;
@@ -479,7 +468,7 @@ private:
     robotPos = Vector2d(p.X(), p.Y());
   }
 
-  // A can the robot runs into is gone, and so is its color
+  // A can the robot runs into is removed and its color is gone
   void CheckBumps(EntityComponentManager &_ecm)
   {
     for (auto &p : paints)
@@ -602,7 +591,6 @@ private:
         leftPaw = !leftPaw;
         double side = leftPaw ? kPrintSide : -kPrintSide;
         Vector2d at = pos + Vector2d(-std::sin(yaw), std::cos(yaw)) * side;
-        // Dirt name is "category shape size_x size_y color"
         std::ostringstream name;
         name << "paw paw " << kPrintSize << " " << kPrintSize << " "
              << printColor + (leftPaw ? 1 : 0);
@@ -614,7 +602,7 @@ private:
     }
   }
 
-  // The puddle runs from the can mouth to a bit past its spot
+  // The puddle runs from the can to a bit past its spot
   bool OnPuddle(const Paint &_p) const
   {
     Vector2d a = _p.canPos;
@@ -656,7 +644,7 @@ private:
     dirt.Clear();
   }
 
-  // Length of the exported animation loops (40 frames at 24 fps)
+  // The exported animations loop over 40 frames at 24 fps
   static constexpr double kCycleLength{40.0 / 24.0};
 
   std::string actorName{"cat"};
@@ -689,7 +677,7 @@ private:
 
   State state{State::Idle};
   double stateUntil{0.0};
-  // A failed plan is not retried right away, A* is too costly every step
+  // A failed plan waits a bit because A* is too costly to retry every step
   double retryAt{0.0};
   double lastTime{0.0};
   Vector2d pos;
