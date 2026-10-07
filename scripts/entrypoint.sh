@@ -79,17 +79,19 @@ else
 fi
 
 root="cd /"
+proxy="traefik"
+py_server="pylsp --ws --port 5000"
 
 # TEST LOGS
 if [ $log == true ]; then
     DATE_TIME=$(date +%F-%H-%M) # FORMAT year-month-date-hours-mins
     mkdir -p /root/.roboticsacademy/log/$DATE_TIME/
-    script -q -c "$root & $runserver & $runram ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
+    script -q -c "$root & $proxy & $py_server & $runserver & $runram ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
     cp -r /root/.ros/log/* /root/.roboticsacademy/log/$DATE_TIME
 else
     if [ $debug == true ]; then
       { bash ; }
     else
-      { $root & $runserver & $runram ; }
+      { $root & $proxy & $py_server & $runserver & $runram ; }
     fi
 fi

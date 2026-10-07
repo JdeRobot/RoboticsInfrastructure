@@ -5,13 +5,18 @@ http:
         prefixes:
           - "/sim"
           - "/rviz"
+          - "/manager"
+          - "/console"
+          - "/py_server"
   routers:
     app-http:
       entryPoints:
         - "http"
-      rule: "PathPrefix(`/`)"
-      priority: 8
+      rule: "PathPrefix(`/manager`)"
+      priority: 11
       service: app
+      middlewares:
+        - "api-stripprefix"
     rviz-http:
       entryPoints:
         - "http"
@@ -28,15 +33,28 @@ http:
       middlewares:
         - "api-stripprefix"
       service: sim
+    console-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/console`)"
+      priority: 10
+      middlewares:
+        - "api-stripprefix"
+      service: console
+    pylsp-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/py_server`)"
+      priority: 9
+      middlewares:
+        - "api-stripprefix"
+      service: py_server
   services:
     app:
       loadBalancer:
         strategy: "wrr"
         servers:
-          - url: "http://127.0.0.1:7163"
-    internal:
-      loadBalancer:
-        strategy: "wrr"
+          - url: "http://127.0.0.1:7165"
     sim:
       loadBalancer:
         strategy: "wrr"
@@ -47,3 +65,13 @@ http:
         strategy: "wrr"
         servers:
           - url: "http://127.0.0.1:6081"
+    console:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:6082"
+    py_server:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:5000"
