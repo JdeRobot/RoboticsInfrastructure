@@ -207,7 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
-85	XLeRobot Warehouse	58
+85	XLeRobot Warehouse	87
 86	XLeRobot Home	81
 87	MMO-500 Warehouse	82
 88	Mir100 Physical	83
@@ -346,6 +346,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
+87	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 \.
 
 --
