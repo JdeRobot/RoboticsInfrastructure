@@ -181,15 +181,15 @@ def launch_setup(context):
             package="controller_manager",
             executable="spawner",
             namespace=gz_namespace,
-            # Long timeouts because the scene is still loading
+            # The simulation starts paused and controllers only switch once it runs
             arguments=[
                 controller_name,
                 "--switch-timeout",
-                "90",
+                "3600",
                 "--controller-manager-timeout",
                 "90",
                 "--service-call-timeout",
-                "90",
+                "3600",
             ],
             output="screen",
         )
