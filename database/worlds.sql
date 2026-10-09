@@ -215,6 +215,8 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 90	Small Laser Mapping Warehouse Burger	33
 91	Vacuums House Burger	24
 92	Warehouse 1 Mir100	58
+93	Vacuums Party House	84
+94	Vacuums Party House with cat	85
 \.
 
 --
@@ -294,6 +296,8 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 68	90	50	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 69	91	51	{{-1,1.5,0,0.0,0.0,0.0}}
 70	92	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+71	93	9	{{-1,1.5,0,0.0,0.0,0.0}}
+72	94	9	{{-1,1.5,0,0.0,0.0,0.0}}
 \.
 
 --
@@ -346,6 +350,8 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
 82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
+84	Vacuums Party House	/opt/jderobot/Launchers/vacuum_party_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
+85	Vacuums Party House with cat	/opt/jderobot/Launchers/vacuum_party_house_cat.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
 \.
 
 --

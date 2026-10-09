@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="paint_can_orange">
+    <static>true</static>
+    <link name="link">
+      <collision name="can">
+        <pose>0 0 0.085 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.085</radius><length>0.17</length></cylinder></geometry>
+      </collision>
+      <visual name="can">
+        <pose>0 0 0.085 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.085</radius><length>0.17</length></cylinder></geometry>
+        <material><ambient>0.55 0.56 0.58 1</ambient><diffuse>0.70 0.71 0.73 1</diffuse><specular>0.6 0.6 0.6 1</specular></material>
+      </visual>
+      <visual name="label">
+        <pose>-0.01 0 0.085 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.08700000000000001</radius><length>0.09350000000000001</length></cylinder></geometry>
+        <material><ambient>0.80 0.40 0.04 1</ambient><diffuse>1.00 0.50 0.05 1</diffuse><specular>0.3 0.3 0.3 1</specular></material>
+      </visual>
+      <visual name="paint">
+        <pose>0.08600000000000001 0 0.085 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.079</radius><length>0.002</length></cylinder></geometry>
+        <material><ambient>0.80 0.40 0.04 1</ambient><diffuse>1.00 0.50 0.05 1</diffuse><specular>0.3 0.3 0.3 1</specular></material>
+      </visual>
+    </link>
+  </model>
+</sdf>
