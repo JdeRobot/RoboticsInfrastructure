@@ -1174,7 +1174,7 @@
 <joint name="TCP_L_joint" type="fixed">
       <parent link="Fixed_Jaw" />
       <child link="TCP_L" />
-      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
+      <origin xyz="-0.0380 -0.0930 0.0" rpy="0 0 0" />
     </joint>
 
 
@@ -1307,7 +1307,7 @@
 <joint name="TCP_R_joint" type="fixed">
       <parent link="Fixed_Jaw_2" />
       <child link="TCP_R" />
-      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
+      <origin xyz="-0.0380 -0.0930 0.0" rpy="0 0 0" />
     </joint>
 
 
