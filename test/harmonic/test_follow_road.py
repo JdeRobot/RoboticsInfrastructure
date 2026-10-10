@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Tests for the Vacuum Cleaner (no localization) ROS launch file."""
+"""Tests for Follow Road ROS launch file."""
 
 import os
 import sys
@@ -34,7 +34,7 @@ from utils import stop_gazebo  # noqa: E402
 
 @pytest.mark.launch_test
 def generate_test_description():
-    """Generate the launch description for simple circuit exercise tests."""
+    """Generate the launch description for follow road exercise tests."""
     # Get absolute path to the launcher
     launcher_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -67,7 +67,7 @@ def generate_test_description():
 
 
 class TestTopicMsgs(unittest.TestCase):
-    """Unit tests for verifying camera topics and images."""
+    """Unit tests for verifying drone IMU and movement topics."""
 
     @classmethod
     def setUpClass(cls):
@@ -157,7 +157,7 @@ class TestTopicMsgs(unittest.TestCase):
         # Publish a high velocity message to move the vehicle
         twist_msg = Twist()
         twist_msg.linear.x = 1.0  # Move forward at 1 m/s
-        twist_msg.angular.z = 0.1  # Turn at 10 rad/s
+        twist_msg.angular.z = 0.1  # Turn at 0.1 rad/s
 
         arm_pub.publish(Bool(data=True))
         rclpy.spin_once(
