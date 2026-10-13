@@ -31,6 +31,8 @@ def launch_setup(context):
     R = LaunchConfiguration("R")
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
+    end_effector = LaunchConfiguration("end_effector").perform(context)
+    has_gripper = end_effector == "gripper"
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -47,7 +49,11 @@ def launch_setup(context):
     )
 
     controllers_file = os.path.join(
-        package_dir, "config", "dobot_magician_controllers.yaml"
+        package_dir,
+        "config",
+        "dobot_magician_controllers.yaml"
+        if has_gripper
+        else f"dobot_magician_{end_effector}_controllers.yaml",
     )
 
     robot_description_content = xacro.process_file(
@@ -59,6 +65,7 @@ def launch_setup(context):
             "sim_gazebo": "false",
             "sim_gz": "true",
             "simulation_controllers": controllers_file,
+            "end_effector": end_effector,
         },
     ).toxml()
 
@@ -69,7 +76,8 @@ def launch_setup(context):
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_dobot_magician_moveit2", "config/dobot_magician_gripper.srdf"
+            "ros2srrc_dobot_magician_moveit2",
+            f"config/dobot_magician_{end_effector}.srdf",
         )
     }
 
@@ -88,7 +96,10 @@ def launch_setup(context):
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "dobot_magician_gripper_moveit_config", "config/moveit_controllers.yaml"
+        "dobot_magician_gripper_moveit_config",
+        "config/moveit_controllers.yaml"
+        if has_gripper
+        else f"config/moveit_controllers_{end_effector}.yaml",
     )
 
     ompl_planning = load_yaml(
@@ -150,7 +161,7 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "dobot_magician"},
-            {"EE_PARAM": "dobot_gripper"},
+            {"EE_PARAM": "dobot_gripper" if has_gripper else "none"},
             {"ROB_GROUP": "dobot_magician_arm"},
         ],
     )
@@ -219,7 +230,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "dobot_magician_gripper",
+            f"dobot_magician_{end_effector}",
             "-x",
             x,
             "-y",
@@ -272,7 +283,8 @@ def launch_setup(context):
 
     nodes.append(joint_state_broadcaster)
     nodes.append(joint_trajectory_controller)
-    nodes.append(gripper_controller)
+    if has_gripper:
+        nodes.append(gripper_controller)
 
     # =========================
     # MOVEIT
@@ -311,6 +323,7 @@ def generate_launch_description():
         DeclareLaunchArgument("R", default_value="0"),
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
+        DeclareLaunchArgument("end_effector", default_value="gripper"),
     ]
 
     return LaunchDescription(

@@ -7,6 +7,7 @@
   <xacro:arg name="sim_gazebo" default="false"/>
   <xacro:arg name="sim_gz" default="true"/>
   <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:arg name="end_effector" default="gripper"/>
 
   <xacro:include filename="$(find custom_robots)/models/dobot_magician/dobot_magician_macro.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/dobot_magician/dobot_magician.ros2_control.xacro"/>
@@ -14,13 +15,14 @@
   <!-- fixed base, anchor it to the world so it doesn't fall under gravity -->
   <link name="world"/>
 
-  <xacro:dobot_magician parent="world" prefix="$(arg prefix)"/>
+  <xacro:dobot_magician parent="world" prefix="$(arg prefix)" end_effector="$(arg end_effector)"/>
 
   <xacro:dobot_magician_ros2_control
     name="$(arg name)"
     prefix="$(arg prefix)"
     sim_gz="$(arg sim_gz)"
-    use_fake_hardware="$(arg use_fake_hardware)"/>
+    use_fake_hardware="$(arg use_fake_hardware)"
+    end_effector="$(arg end_effector)"/>
 
   <xacro:if value="$(arg sim_gz)">
     <gazebo>

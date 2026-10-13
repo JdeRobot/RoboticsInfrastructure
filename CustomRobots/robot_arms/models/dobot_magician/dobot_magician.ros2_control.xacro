@@ -5,7 +5,8 @@
     name
     prefix:=''
     sim_gz:=false
-    use_fake_hardware:=false">
+    use_fake_hardware:=false
+    end_effector:='gripper'">
 
     <ros2_control name="${name}" type="system">
       <hardware>
@@ -79,6 +80,7 @@
         <state_interface name="velocity"/>
       </joint>
 
+      <xacro:if value="${end_effector == 'gripper'}">
       <joint name="${prefix}joint_prismatic_l">
         <command_interface name="position">
           <param name="min">-0.018</param>
@@ -95,6 +97,7 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
+      </xacro:if>
 
     </ros2_control>
 

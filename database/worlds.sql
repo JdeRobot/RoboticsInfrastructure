@@ -209,6 +209,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 84	Follow Turtlebot	80
 85	Pick And Place World Dobot Magician	56
 86	Dobot Pick And Place World	81
+87	Dobot Suction Cup Pick And Place World	82
 \.
 
 --
@@ -282,6 +283,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 62	84	35	{{7.0,-4.0,0.1,0.0,0.0,2.76}}
 63	85	40	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 64	86	40	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
+65	87	41	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
 \.
 
 --
@@ -332,6 +334,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	Dobot Pick And Place	/opt/jderobot/Launchers/dobot_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
+82	Dobot Suction Cup Pick And Place	/opt/jderobot/Launchers/dobot_suction_cup_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_suction_cup_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
 \.
 
 --
@@ -375,6 +378,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 34	Ur10 Suction	/home/ws/src/CustomRobots/robot_arms/launch/ur10_suction.launch.py	ur10_suction	None	robot_arms/models/ur10/ur10_suction.urdf.xacro
 35	Turtlebot 3 Marker	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3.launch.py	turtlebot3	sensor:=laser marker:=true namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3.urdf.xacro
 40	Dobot Magician	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_gripper	None	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
+41	Dobot Magician Suction Cup	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_suction_cup	end_effector:=suction_cup	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
 \.
 
 --
