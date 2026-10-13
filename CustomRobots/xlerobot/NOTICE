@@ -1,0 +1,31 @@
+This directory (CustomRobots/xlerobot) includes files derived from the
+XLeRobot project:
+
+  https://github.com/Vector-Wangel/XLeRobot
+
+Copyright the XLeRobot contributors. Licensed under the Apache License,
+Version 2.0 (see the LICENSE file in this directory).
+
+What was reused:
+  - The mesh files under models/xlerobot/meshes/ (except omni_wheel.stl,
+    see below) come from simulation/mujoco/assets/ and simulation/xlerobot_urdf.zip
+    in the upstream repository, unmodified.
+  - omni_wheel.stl comes from
+    simulation/mujoco/assets/simplify_4-Omni-Directional-Wheel_Single_Body-v1.stl
+    in the upstream repository, unmodified.
+  - The dual arm and head link and joint geometry (origins, joint limits,
+    masses, inertias) in xlerobot_common.urdf.xacro was ported from the URDF
+    shipped at simulation/xlerobot_urdf.zip in the upstream repository. The
+    arm and head joints are currently fixed instead of actuated, this is a
+    simplification made for the RoboticsAcademy integration, not part of the
+    upstream model.
+  - The chassis visual and collision geometry in xlerobot_common.urdf.xacro
+    also comes from that same shipped URDF.
+
+What is original to this integration, not from upstream:
+  - The 3 wheel mount positions and orientations (a holonomic layout matching
+    the mujoco model at simulation/mujoco/xlerobot.xml in the upstream repo,
+    which is a different hardware revision than the shipped URDF above), the
+    wheel collision shapes, the base_footprint frame, the xacro macro
+    structure, and every Gazebo/ROS 2 plugin wiring (xlerobot_gz.urdf.xacro,
+    xlerobot.launch.py).

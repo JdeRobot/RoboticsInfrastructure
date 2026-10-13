@@ -38,6 +38,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <thread>
 using namespace std::chrono_literals;
 
 // Include MoveIt!2:
@@ -125,9 +126,21 @@ int main(int argc, char **argv)
       param_ROB_GROUP.c_str()
   );
 
+  // MoveGroupInterface gets its own node and executor so the blocking timer callback cannot starve it
+  auto moveit_node = std::make_shared<rclcpp::Node>(
+      "moveit_helper_node_robpose",
+      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
+  );
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(moveit_node);
+  std::thread([&executor]() { executor.spin(); }).detach();
+
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
-  move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
+  // The namespace has to go through the options or the client waits on the unnamespaced move_action
+  MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
+  move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 
   RCLCPP_INFO(
       node->get_logger(),

@@ -1,0 +1,25 @@
+/**:
+  ros__parameters:
+    moveit_simple_controller_manager:
+      controller_names:
+        - arm_controller
+        - gripper_controller
+
+      arm_controller:
+        type: FollowJointTrajectory
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+          - ur10_shoulder_pan_joint
+          - ur10_shoulder_lift_joint
+          - ur10_elbow_joint
+          - ur10_wrist_1_joint
+          - ur10_wrist_2_joint
+          - ur10_wrist_3_joint
+
+      gripper_controller:
+        type: FollowJointTrajectory
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+          - robotiq_85_left_knuckle_joint
