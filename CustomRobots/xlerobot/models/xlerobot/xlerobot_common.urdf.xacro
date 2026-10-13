@@ -1,0 +1,1454 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/xlerobot/xlerobot_gz.urdf.xacro"/>
+
+  <xacro:macro name="xlerobot" params="namespace simulation_controllers">
+
+    <!-- base_footprint sits on the ground and the chassis is offset up so the wheels touch the floor -->
+    <link name="base_footprint" />
+
+    <joint name="base_footprint_to_chassis" type="fixed">
+      <parent link="base_footprint" />
+      <child link="chassis" />
+      <origin xyz="0 0 0.37" rpy="0 0 0" />
+    </joint>
+
+<link name="chassis">
+      <visual>
+        <origin xyz="-0.01668 0.502 0.515" rpy="1.5708 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/raskogbody.stl" scale="0.0009 0.001 0.0009" />
+        </geometry>
+        <material name="chassis_mat">
+          <color rgba="0.14902353 0.25098431 0.50196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 -0.3" rpy="0 0 0" />
+        <geometry>
+          <box size="0.3913 0.459 0.1" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0.015" rpy="0 0 0" />
+        <geometry>
+          <box size="0.315 0.405 0.59" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 -0.216 0.06" rpy="0 0 0" />
+        <geometry>
+          <box size="0.09 0.036 0.68" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0.216 0.06" rpy="0 0 0" />
+        <geometry>
+          <box size="0.09 0.036 0.68" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0.04 0.2 0.34" rpy="0 0 0" />
+        <geometry>
+          <box size="0.24 0.016 0.1" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0.04 -0.2 0.34" rpy="0 0 0" />
+        <geometry>
+          <box size="0.24 0.016 0.1" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0.155 0 0.34" rpy="0 0 0" />
+        <geometry>
+          <box size="0.016 0.4 0.1" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="-0.04 0 0.34" rpy="0 0 0" />
+        <geometry>
+          <box size="0.016 0.4 0.1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 -0.38" rpy="0 0 0" />
+        <mass value="10" />
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+      </inertial>
+    </link>
+
+  
+<link name="chassis_geom_1">
+      <visual>
+        <origin xyz="-0.01668 0.502 0.515" rpy="1.5708 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/raskogwheel1.stl" scale="0.0009 0.001 0.0009" />
+        </geometry>
+        <material name="chassis_geom_1_mat">
+          <color rgba="0.50196471 0.50196471 0.50196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="chassis_geom_2">
+      <visual>
+        <origin xyz="-0.01668 0.502 0.515" rpy="1.5708 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/raskogwheel2.stl" scale="0.0009 0.001 0.0009" />
+        </geometry>
+        <material name="chassis_geom_2_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Base">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base.stl" />
+        </geometry>
+        <material name="Base_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0137179 -0.000052 0.0334843" rpy="0 0 0" />
+        <mass value="0.147" />
+        <inertia ixx="0.0001147" ixy="-0.0000005" ixz="0.000005" iyy="0.0001361" iyz="0.0000001" izz="0.0001304" />
+      </inertial>
+    </link>
+
+  
+<link name="Base_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base_Motor.stl" />
+        </geometry>
+        <material name="Base_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Rotation_Pitch">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch.stl" />
+        </geometry>
+        <material name="Rotation_Pitch_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0307604 -0.0000167 -0.0252713" rpy="0 0 0" />
+        <mass value="0.100006" />
+        <inertia ixx="0.0000838" ixy="0.0000001" ixz="-0.0000012" iyy="0.000081" iyz="0.0000002" izz="0.000024" />
+      </inertial>
+    </link>
+
+  
+<link name="Rotation_Pitch_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch_Motor.stl" />
+        </geometry>
+        <material name="Rotation_Pitch_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Upper_Arm">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm.stl" />
+        </geometry>
+        <material name="Upper_Arm_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0898471 -0.0083822 0.0184089" rpy="0 0 0" />
+        <mass value="0.103" />
+        <inertia ixx="0.0000408" ixy="-0.0000198" ixz="0" iyy="0.0001473" iyz="0" izz="0.0001425" />
+      </inertial>
+    </link>
+
+  
+<link name="Upper_Arm_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm_Motor.stl" />
+        </geometry>
+        <material name="Upper_Arm_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Lower_Arm">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm.stl" />
+        </geometry>
+        <material name="Lower_Arm_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0980701 0.0032438 0.0182831" rpy="0 0 0" />
+        <mass value="0.104" />
+        <inertia ixx="0.0000287" ixy="0.0000074" ixz="0.0000013" iyy="0.0001598" iyz="0" izz="0.0001453" />
+      </inertial>
+    </link>
+
+  
+<link name="Lower_Arm_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm_Motor.stl" />
+        </geometry>
+        <material name="Lower_Arm_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Wrist_Pitch_Roll">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll.stl" />
+        </geometry>
+        <material name="Wrist_Pitch_Roll_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0001033 -0.0386143 0.0281156" rpy="0 0 0" />
+        <mass value="0.079" />
+        <inertia ixx="0.0000368" ixy="0" ixz="-0.0000001" iyy="0.0000254" iyz="0.0000036" izz="0.000021" />
+      </inertial>
+    </link>
+
+  
+<link name="Wrist_Pitch_Roll_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll_Motor.stl" />
+        </geometry>
+        <material name="Wrist_Pitch_Roll_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Fixed_Jaw">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw.stl" />
+        </geometry>
+        <material name="Fixed_Jaw_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_part1.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_part2.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0002136 0.0002451 -0.025187" rpy="0 0 0" />
+        <mass value="0.087" />
+        <inertia ixx="0.0000275" ixy="-0.0000003" ixz="-0.0000057" iyy="0.0000434" iyz="-0.0000001" izz="0.0000345" />
+      </inertial>
+    </link>
+
+  
+<link name="Fixed_Jaw_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_Motor.stl" />
+        </geometry>
+        <material name="Fixed_Jaw_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Moving_Jaw">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw.stl" />
+        </geometry>
+        <material name="Moving_Jaw_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part1.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part2.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part3.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.001575 -0.0300244 0.0192755" rpy="0 0 0" />
+        <mass value="0.012" />
+        <inertia ixx="0.0000066" ixy="-0.0000003" ixz="0" iyy="0.0000019" iyz="-0.0000001" izz="0.0000053" />
+      </inertial>
+    </link>
+
+  
+<link name="Right_Arm_Camera">
+      <visual>
+        <origin xyz="-0.015 -0.026 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/XLeRobot_camera1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="Right_Arm_Camera_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+  
+<link name="Right_Arm_Camera_geom_1">
+      <visual>
+        <origin xyz="-0.015 -0.026 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/XLeRobot_camera2.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="Right_Arm_Camera_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Base_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base.stl" />
+        </geometry>
+        <material name="Base_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0137179 -0.000052 0.0334843" rpy="0 0 0" />
+        <mass value="0.147" />
+        <inertia ixx="0.0001147" ixy="-0.0000005" ixz="0.000005" iyy="0.0001361" iyz="0.0000001" izz="0.0001304" />
+      </inertial>
+    </link>
+
+  
+<link name="Base_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base_Motor.stl" />
+        </geometry>
+        <material name="Base_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Base_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Rotation_Pitch_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch.stl" />
+        </geometry>
+        <material name="Rotation_Pitch_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0307604 -0.0000167 -0.0252713" rpy="0 0 0" />
+        <mass value="0.100006" />
+        <inertia ixx="0.0000838" ixy="0.0000001" ixz="-0.0000012" iyy="0.000081" iyz="0.0000002" izz="0.000024" />
+      </inertial>
+    </link>
+
+  
+<link name="Rotation_Pitch_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch_Motor.stl" />
+        </geometry>
+        <material name="Rotation_Pitch_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Rotation_Pitch_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Upper_Arm_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm.stl" />
+        </geometry>
+        <material name="Upper_Arm_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0898471 -0.0083822 0.0184089" rpy="0 0 0" />
+        <mass value="0.103" />
+        <inertia ixx="0.0000408" ixy="-0.0000198" ixz="0" iyy="0.0001473" iyz="0" izz="0.0001425" />
+      </inertial>
+    </link>
+
+  
+<link name="Upper_Arm_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm_Motor.stl" />
+        </geometry>
+        <material name="Upper_Arm_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Upper_Arm_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Lower_Arm_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm.stl" />
+        </geometry>
+        <material name="Lower_Arm_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0980701 0.0032438 0.0182831" rpy="0 0 0" />
+        <mass value="0.104" />
+        <inertia ixx="0.0000287" ixy="0.0000074" ixz="0.0000013" iyy="0.0001598" iyz="0" izz="0.0001453" />
+      </inertial>
+    </link>
+
+  
+<link name="Lower_Arm_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm_Motor.stl" />
+        </geometry>
+        <material name="Lower_Arm_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Lower_Arm_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Wrist_Pitch_Roll_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll.stl" />
+        </geometry>
+        <material name="Wrist_Pitch_Roll_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0001033 -0.0386143 0.0281156" rpy="0 0 0" />
+        <mass value="0.079" />
+        <inertia ixx="0.0000368" ixy="0" ixz="-0.0000001" iyy="0.0000254" iyz="0.0000036" izz="0.000021" />
+      </inertial>
+    </link>
+
+  
+<link name="Wrist_Pitch_Roll_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll_Motor.stl" />
+        </geometry>
+        <material name="Wrist_Pitch_Roll_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Wrist_Pitch_Roll_Motor.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Fixed_Jaw_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw.stl" />
+        </geometry>
+        <material name="Fixed_Jaw_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_part1.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_part2.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0002136 0.0002451 -0.025187" rpy="0 0 0" />
+        <mass value="0.087" />
+        <inertia ixx="0.0000275" ixy="-0.0000003" ixz="-0.0000057" iyy="0.0000434" iyz="-0.0000001" izz="0.0000345" />
+      </inertial>
+    </link>
+
+  
+<link name="Fixed_Jaw_2_geom_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Fixed_Jaw_Motor.stl" />
+        </geometry>
+        <material name="Fixed_Jaw_2_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="Moving_Jaw_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw.stl" />
+        </geometry>
+        <material name="Moving_Jaw_2_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part1.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part2.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/Moving_Jaw_part3.ply.convex.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.001575 -0.0300244 0.0192755" rpy="0 0 0" />
+        <mass value="0.012" />
+        <inertia ixx="0.0000066" ixy="-0.0000003" ixz="0" iyy="0.0000019" iyz="-0.0000001" izz="0.0000053" />
+      </inertial>
+    </link>
+
+  
+<link name="Left_Arm_Camera">
+      <visual>
+        <origin xyz="-0.015 -0.026 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/XLeRobot_camera1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="Left_Arm_Camera_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+  
+<link name="Left_Arm_Camera_geom_1">
+      <visual>
+        <origin xyz="-0.015 -0.026 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/XLeRobot_camera2.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="Left_Arm_Camera_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="top_base_link">
+      <visual>
+        <origin xyz="-0.44 -0.005 -0.6" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/topbase1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="top_base_link_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <!-- The tray collision lives in the chassis link and this link only adds the thin mast -->
+      <collision name="mast">
+        <origin xyz="-0.105 0 0.22" rpy="0 0 0" />
+        <geometry>
+          <box size="0.06 0.05 0.20" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.2542" />
+        <inertia ixx="0.0045" ixy="0" ixz="0" iyy="0.005" iyz="0" izz="0.0045" />
+      </inertial>
+    </link>
+
+  
+<link name="top_base_link_geom_1">
+      <visual>
+        <origin xyz="-0.298 0.006 -0.715" rpy="0 0 3.14" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/topbase2.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="top_base_link_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="head_pan_link">
+      <visual>
+        <origin xyz="-0.335 -0.005 -0.923" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/tophead1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="head_pan_link_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.2556" />
+        <inertia ixx="0.0129" ixy="0" ixz="0" iyy="0.0095" iyz="0" izz="0.0184" />
+      </inertial>
+    </link>
+
+  
+<link name="head_pan_link_geom_1">
+      <visual>
+        <origin xyz="1.17 -0.009 0.262" rpy="-3.141592 -1.57 -3.141592" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/tophead4.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="head_pan_link_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="head_tilt_link">
+      <visual>
+        <origin xyz="0.16265 -0.006 -1.16815" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/tophead5.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="head_tilt_link_mat">
+          <color rgba="0.30196471 0.30196471 0.30196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.02087" />
+        <inertia ixx="0.0061" ixy="0" ixz="0" iyy="0.0014" iyz="0" izz="0.0061" />
+      </inertial>
+    </link>
+
+  
+<link name="head_tilt_link_geom_1">
+      <visual>
+        <origin xyz="0.16265 -0.006 -1.16815" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/tophead6.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="head_tilt_link_geom_1_mat">
+          <color rgba="0.10196471 0.10196471 0.10196471 1.00000000" />
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+      </inertial>
+    </link>
+
+  
+<link name="head_camera_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+  
+<link name="head_camera_rgb_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+  
+<link name="head_camera_depth_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+  
+
+  <link name="wheel_1_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/omni_wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="wheel_1_link_mat">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="0.05" length="0.04" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.3" />
+      <inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0003" />
+    </inertial>
+  </link>
+  <link name="wheel_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/omni_wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="wheel_2_link_mat">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="0.05" length="0.04" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.3" />
+      <inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0003" />
+    </inertial>
+  </link>
+  <link name="wheel_3_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="file://$(find custom_robots)/models/xlerobot/meshes/omni_wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="wheel_3_link_mat">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="0.05" length="0.04" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.3" />
+      <inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0003" />
+    </inertial>
+  </link>
+
+<joint name="fixed_chassis_geom_1" type="fixed">
+      <parent link="chassis" />
+      <child link="chassis_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_chassis_geom_2" type="fixed">
+      <parent link="chassis" />
+      <child link="chassis_geom_2" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_Base" type="fixed">
+      <parent link="chassis" />
+      <child link="Base" />
+      <origin xyz="-0.09 -0.11 0.395" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_Base_geom_1" type="fixed">
+      <parent link="Base" />
+      <child link="Base_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Rotation_L" type="revolute">
+      <parent link="Base" />
+      <child link="Rotation_Pitch" />
+      <origin xyz="0 -0.0452 0.0165" rpy="1.5708 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.16" upper="2.16" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Rotation_Pitch_geom_1" type="fixed">
+      <parent link="Rotation_Pitch" />
+      <child link="Rotation_Pitch_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Pitch_L" type="revolute">
+      <parent link="Rotation_Pitch" />
+      <child link="Upper_Arm" />
+      <origin xyz="0 0.1025 0.0306" rpy="1.5708 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.22" upper="3.37" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Upper_Arm_geom_1" type="fixed">
+      <parent link="Upper_Arm" />
+      <child link="Upper_Arm_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Elbow_L" type="revolute">
+      <parent link="Upper_Arm" />
+      <child link="Lower_Arm" />
+      <origin xyz="0 0.11257 0.028" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.22" upper="3.14" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Lower_Arm_geom_1" type="fixed">
+      <parent link="Lower_Arm" />
+      <child link="Lower_Arm_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Wrist_Pitch_L" type="revolute">
+      <parent link="Lower_Arm" />
+      <child link="Wrist_Pitch_Roll" />
+      <origin xyz="0 0.0052 0.1349" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-1.6580628" upper="1.6580627" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Wrist_Pitch_Roll_geom_1" type="fixed">
+      <parent link="Wrist_Pitch_Roll" />
+      <child link="Wrist_Pitch_Roll_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Wrist_Roll_L" type="revolute">
+      <parent link="Wrist_Pitch_Roll" />
+      <child link="Fixed_Jaw" />
+      <origin xyz="0 -0.0601 0" rpy="0 1.5707927 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.7438473" upper="2.8412063" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Fixed_Jaw_geom_1" type="fixed">
+      <parent link="Fixed_Jaw" />
+      <child link="Fixed_Jaw_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Jaw_L" type="revolute">
+      <parent link="Fixed_Jaw" />
+      <child link="Moving_Jaw" />
+      <origin xyz="-0.0202 -0.0244 0" rpy="3.1415854 -0.0000014 2.9531853" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.374533" upper="1.7453292" effort="10" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+
+<!-- TCP at the centre of the pocket where a 50 mm cube sits between the jaws -->
+<link name="TCP_L" />
+
+<joint name="TCP_L_joint" type="fixed">
+      <parent link="Fixed_Jaw" />
+      <child link="TCP_L" />
+      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
+    </joint>
+
+
+<joint name="fixed_Right_Arm_Camera" type="fixed">
+      <parent link="Fixed_Jaw" />
+      <child link="Right_Arm_Camera" />
+      <origin xyz="0 -0.022 0.05" rpy="1.5707963 0.0000037 -1.5708" />
+    </joint>
+
+  
+<joint name="fixed_Right_Arm_Camera_geom_1" type="fixed">
+      <parent link="Right_Arm_Camera" />
+      <child link="Right_Arm_Camera_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_Base_2" type="fixed">
+      <parent link="chassis" />
+      <child link="Base_2" />
+      <origin xyz="-0.09 0.11 0.395" rpy="0 0 3.1415927" />
+    </joint>
+
+  
+<joint name="fixed_Base_2_geom_1" type="fixed">
+      <parent link="Base_2" />
+      <child link="Base_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Rotation_R" type="revolute">
+      <parent link="Base_2" />
+      <child link="Rotation_Pitch_2" />
+      <origin xyz="0 -0.0452 0.0165" rpy="1.5708 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.16" upper="2.16" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Rotation_Pitch_2_geom_1" type="fixed">
+      <parent link="Rotation_Pitch_2" />
+      <child link="Rotation_Pitch_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Pitch_R" type="revolute">
+      <parent link="Rotation_Pitch_2" />
+      <child link="Upper_Arm_2" />
+      <origin xyz="0 0.1025 0.0306" rpy="1.5708 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.22" upper="3.37" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Upper_Arm_2_geom_1" type="fixed">
+      <parent link="Upper_Arm_2" />
+      <child link="Upper_Arm_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Elbow_R" type="revolute">
+      <parent link="Upper_Arm_2" />
+      <child link="Lower_Arm_2" />
+      <origin xyz="0 0.11257 0.028" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.22" upper="3.14" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Lower_Arm_2_geom_1" type="fixed">
+      <parent link="Lower_Arm_2" />
+      <child link="Lower_Arm_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Wrist_Pitch_R" type="revolute">
+      <parent link="Lower_Arm_2" />
+      <child link="Wrist_Pitch_Roll_2" />
+      <origin xyz="0 0.0052 0.1349" rpy="-1.5708 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-1.6580628" upper="1.6580627" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Wrist_Pitch_Roll_2_geom_1" type="fixed">
+      <parent link="Wrist_Pitch_Roll_2" />
+      <child link="Wrist_Pitch_Roll_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Wrist_Roll_R" type="revolute">
+      <parent link="Wrist_Pitch_Roll_2" />
+      <child link="Fixed_Jaw_2" />
+      <origin xyz="0 -0.0601 0" rpy="0 1.5707927 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-2.7438473" upper="2.8412063" effort="3.35" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+  
+<joint name="fixed_Fixed_Jaw_2_geom_1" type="fixed">
+      <parent link="Fixed_Jaw_2" />
+      <child link="Fixed_Jaw_2_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="Jaw_R" type="revolute">
+      <parent link="Fixed_Jaw_2" />
+      <child link="Moving_Jaw_2" />
+      <origin xyz="-0.0202 -0.0244 0" rpy="3.1415854 -0.0000014 2.9531853" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.374533" upper="1.7453292" effort="10" velocity="2.0" />
+      <dynamics damping="0.3" friction="0.1" />
+    </joint>
+
+
+<!-- Same pocket centre as TCP_L -->
+<link name="TCP_R" />
+
+<joint name="TCP_R_joint" type="fixed">
+      <parent link="Fixed_Jaw_2" />
+      <child link="TCP_R" />
+      <origin xyz="-0.0171 -0.0800 0.0" rpy="0 0 0" />
+    </joint>
+
+
+<joint name="fixed_Left_Arm_Camera" type="fixed">
+      <parent link="Fixed_Jaw_2" />
+      <child link="Left_Arm_Camera" />
+      <origin xyz="0 -0.021 0.05" rpy="1.5707963 0.0000037 -1.5708" />
+    </joint>
+
+  
+<joint name="fixed_Left_Arm_Camera_geom_1" type="fixed">
+      <parent link="Left_Arm_Camera" />
+      <child link="Left_Arm_Camera_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_top_base_link" type="fixed">
+      <parent link="chassis" />
+      <child link="top_base_link" />
+      <origin xyz="0 0 0.35" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_top_base_link_geom_1" type="fixed">
+      <parent link="top_base_link" />
+      <child link="top_base_link_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+
+<!-- One tray anchor per arm on the tray floor -->
+<link name="tray_anchor_L" />
+
+<joint name="tray_anchor_L_joint" type="fixed">
+      <parent link="top_base_link" />
+      <child link="tray_anchor_L" />
+      <origin xyz="0.061 -0.085 0.002" rpy="0 0 0" />
+    </joint>
+
+
+<link name="tray_anchor_R" />
+
+<joint name="tray_anchor_R_joint" type="fixed">
+      <parent link="top_base_link" />
+      <child link="tray_anchor_R" />
+      <origin xyz="0.061 0.085 0.002" rpy="0 0 0" />
+    </joint>
+
+
+<joint name="head_pan_joint" type="revolute">
+      <parent link="top_base_link" />
+      <child link="head_pan_link" />
+      <origin xyz="-0.103 0 0.323" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.2" upper="3.2" effort="1.0" velocity="1.5" />
+      <dynamics damping="0.1" friction="0.02" />
+    </joint>
+
+  
+<joint name="fixed_head_pan_link_geom_1" type="fixed">
+      <parent link="head_pan_link" />
+      <child link="head_pan_link_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="head_tilt_joint" type="revolute">
+      <parent link="head_pan_link" />
+      <child link="head_tilt_link" />
+      <origin xyz="0.001 0.002 0.09815" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="-0.76" upper="1.45" effort="1.0" velocity="1.5" />
+      <dynamics damping="0.1" friction="0.02" />
+    </joint>
+
+  
+<joint name="fixed_head_tilt_link_geom_1" type="fixed">
+      <parent link="head_tilt_link" />
+      <child link="head_tilt_link_geom_1" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_head_camera_link" type="fixed">
+      <parent link="head_tilt_link" />
+      <child link="head_camera_link" />
+      <origin xyz="0.025 0 0.03" rpy="0 0 0" />
+    </joint>
+
+  
+<joint name="fixed_head_camera_rgb_frame" type="fixed">
+      <parent link="head_camera_link" />
+      <child link="head_camera_rgb_frame" />
+      <!-- Optical frame convention with Z pointing forward -->
+      <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
+    </joint>
+
+  
+<joint name="fixed_head_camera_depth_frame" type="fixed">
+      <parent link="head_camera_link" />
+      <child link="head_camera_depth_frame" />
+      <origin xyz="0 0 0" rpy="-1.5707911 0 -1.5707963" />
+    </joint>
+
+
+
+  <joint name="wheel_1_joint" type="continuous">
+    <parent link="chassis" />
+    <child link="wheel_1_link" />
+    <origin xyz="0.0000 -0.0920 -0.32" rpy="0 0 0" />
+    <axis xyz="1.0000 0.0000 0" />
+  </joint>
+  <joint name="wheel_2_joint" type="continuous">
+    <parent link="chassis" />
+    <child link="wheel_2_link" />
+    <origin xyz="0.0797 0.0460 -0.32" rpy="0 0 0" />
+    <axis xyz="-0.5000 0.8660 0" />
+  </joint>
+  <joint name="wheel_3_joint" type="continuous">
+    <parent link="chassis" />
+    <child link="wheel_3_link" />
+    <origin xyz="-0.0797 0.0460 -0.32" rpy="0 0 0" />
+    <axis xyz="-0.5000 -0.8660 0" />
+  </joint>
+
+    <xacro:arm_ros2_control simulation_controllers="${simulation_controllers}" namespace="${namespace}"/>
+
+    <xacro:wheel_slip wheel_link="wheel_1_link" fdir1="1 0 0"/>
+    <xacro:wheel_slip wheel_link="wheel_2_link" fdir1="-0.5 0.866 0"/>
+    <xacro:wheel_slip wheel_link="wheel_3_link" fdir1="-0.5 -0.866 0"/>
+
+    <xacro:velocity namespace="${namespace}"/>
+    <xacro:odom namespace="${namespace}"/>
+
+    <xacro:rgbd_camera link="head_camera_link" name="head_camera" namespace="${namespace}"/>
+    <xacro:wrist_camera link="Right_Arm_Camera" name="right_arm_camera" namespace="${namespace}"/>
+    <xacro:wrist_camera link="Left_Arm_Camera" name="left_arm_camera" namespace="${namespace}"/>
+
+    <xacro:suction_contact link="Moving_Jaw"/>
+    <xacro:suction_contact link="Moving_Jaw_2"/>
+
+  </xacro:macro>
+</robot>

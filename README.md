@@ -4,11 +4,7 @@ Robots and tools useful for us and not included in the official ROS or Gazebo pa
 
 ## How to contribute
 
-**First of all** you have to know the infrastructure where you will develop your code:
-
-- Gazebo version,
-- ROS version
-- Python version (if you develop in Python).
+Take a look at the [contributing](CONTRIBUTING.md) guidelines.
 
 ## How to add new models
 

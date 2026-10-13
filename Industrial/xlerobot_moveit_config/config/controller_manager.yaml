@@ -1,0 +1,162 @@
+/**/controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    left_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    right_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    left_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    right_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    head_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+/**/joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - Rotation_L
+      - Pitch_L
+      - Elbow_L
+      - Wrist_Pitch_L
+      - Wrist_Roll_L
+      - Jaw_L
+      - Rotation_R
+      - Pitch_R
+      - Elbow_R
+      - Wrist_Pitch_R
+      - Wrist_Roll_R
+      - Jaw_R
+      - head_pan_joint
+      - head_tilt_joint
+      - wheel_1_joint
+      - wheel_2_joint
+      - wheel_3_joint
+
+    interfaces:
+      - position
+      - velocity
+
+/**/left_arm_controller:
+  ros__parameters:
+    joints:
+      - Rotation_L
+      - Pitch_L
+      - Elbow_L
+      - Wrist_Pitch_L
+      - Wrist_Roll_L
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    allow_nonzero_velocity_at_trajectory_end: true
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+/**/right_arm_controller:
+  ros__parameters:
+    joints:
+      - Rotation_R
+      - Pitch_R
+      - Elbow_R
+      - Wrist_Pitch_R
+      - Wrist_Roll_R
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    allow_nonzero_velocity_at_trajectory_end: true
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+/**/left_gripper_controller:
+  ros__parameters:
+    joints:
+      - Jaw_L
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+/**/right_gripper_controller:
+  ros__parameters:
+    joints:
+      - Jaw_R
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+/**/head_controller:
+  ros__parameters:
+    joints:
+      - head_pan_joint
+      - head_tilt_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    allow_integration_in_goal_trajectories: true
+
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0

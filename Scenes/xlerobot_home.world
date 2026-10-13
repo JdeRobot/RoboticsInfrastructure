@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+
+<sdf version="1.8">
+  <world name="default">
+    <!-- 2 ms step keeps the 10 ms controller period an exact multiple of the step -->
+    <physics name="2ms" type="ode">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
+    </plugin>
+
+    <!-- One attacher per gripper -->
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+      <robot_model_name>xlerobot</robot_model_name>
+      <gripper_link_name>Moving_Jaw</gripper_link_name>
+    </plugin>
+    <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+      <robot_model_name>xlerobot</robot_model_name>
+      <gripper_link_name>Moving_Jaw_2</gripper_link_name>
+    </plugin>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>false</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <include>
+      <name>house_int2_no_chairs_harmonic</name>
+      <uri>model://house_int2_no_chairs</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <light type="directional" name="sun">
+      <cast_shadows>0</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <visualize>false</visualize>
+    </light>
+
+    <!-- Graspable cubes on the dining table -->
+
+    <model name="red_box">
+      
+      <pose>-2.05 0.455 0.77 0 0 0</pose>
+      <!-- Red goes to the left arm and blue to the right arm with yellow between them -->
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>0.0000104</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0000084</iyy>
+            <iyz>0</iyz>
+            <izz>0.0000041</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="yellow_box">
+      <pose>-2.05 0.30 0.77 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>0.0000096</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0000136</iyy>
+            <iyz>0</iyz>
+            <izz>0.0000066</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 0 1</ambient>
+            <diffuse>1 1 0 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_box">
+      <pose>-2.05 0.145 0.77 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>0.0000104</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0000084</iyy>
+            <iyz>0</iyz>
+            <izz>0.0000041</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 1 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

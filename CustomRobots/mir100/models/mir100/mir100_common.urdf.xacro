@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/mir100/mir100_gz.urdf.xacro"/>
+
+  <!-- Dimensions taken from the real MiR100 (mir_description package). -->
+  <xacro:property name="wheel_radius" value="0.0625"/>
+  <xacro:property name="wheel_width" value="0.032"/>
+  <xacro:property name="wheel_dx" value="0.037646"/>
+  <xacro:property name="wheel_dy" value="0.222604"/>
+  <xacro:property name="wheel_separation" value="${2 * wheel_dy}"/>
+
+  <xacro:property name="caster_wheel_dx" value="-0.0382"/>
+  <xacro:property name="caster_wheel_dy" value="0"/>
+  <xacro:property name="caster_wheel_dz" value="-0.094"/>
+  <xacro:property name="front_caster_base_dx" value="0.341346"/>
+  <xacro:property name="back_caster_base_dx" value="-0.270154"/>
+  <xacro:property name="caster_base_dy" value="0.203"/>
+  <xacro:property name="caster_base_dz" value="${wheel_radius - caster_wheel_dz}"/>
+
+  <xacro:macro name="mir100" params="namespace">
+    <material name="white">
+      <color rgba="0.95 0.95 0.95 1.0"/>
+    </material>
+
+    <material name="dark_grey">
+      <color rgba="0.2 0.2 0.2 1.0"/>
+    </material>
+
+    <material name="grey">
+      <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+
+    <material name="black">
+      <color rgba="0.05 0.05 0.05 1.0"/>
+    </material>
+
+    <link name="base_footprint"></link>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_link">
+      <inertial>
+        <origin xyz="${wheel_dx} 0 0.20" rpy="0 0 0"/>
+        <mass value="58.0"/>
+        <inertia ixx="2.99" ixy="0" ixz="0" iyy="4.71" iyz="0" izz="6.7"/>
+      </inertial>
+      <visual>
+        <origin xyz="${wheel_dx} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/mir_100_base.stl"/>
+        </geometry>
+        <material name="white"/>
+      </visual>
+      <collision>
+        <origin xyz="${wheel_dx} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/mir100/meshes/collision/mir_100_base.stl"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Actuated wheels, driven by the DiffDrive plugin (see mir100_gz.urdf.xacro). -->
+    <xacro:macro name="actuated_wheel" params="side y_sign">
+      <joint name="${side}_wheel_joint" type="continuous">
+        <origin xyz="0.0 ${y_sign * wheel_dy} ${wheel_radius}" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="${side}_wheel_link"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="100" velocity="20.0"/>
+      </joint>
+
+      <link name="${side}_wheel_link">
+        <inertial>
+          <mass value="1.0"/>
+          <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/wheel.stl"/>
+          </geometry>
+          <material name="dark_grey"/>
+        </visual>
+        <collision>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/wheel.stl"/>
+          </geometry>
+        </collision>
+      </link>
+    </xacro:macro>
+
+    <xacro:actuated_wheel side="left" y_sign="1"/>
+    <xacro:actuated_wheel side="right" y_sign="-1"/>
+
+    <!-- Passive caster wheels (visual/collision only, not actuated). -->
+    <xacro:macro name="caster_wheel" params="prefix y_sign wheel_base_dx">
+      <joint name="${prefix}_caster_rotation_joint" type="continuous">
+        <origin xyz="${wheel_base_dx} ${y_sign * caster_base_dy} ${caster_base_dz}" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="${prefix}_caster_rotation_link"/>
+        <axis xyz="0 0 1"/>
+        <dynamics damping="0.01" friction="0.0"/>
+      </joint>
+
+      <link name="${prefix}_caster_rotation_link">
+        <inertial>
+          <mass value="0.31"/>
+          <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/caster_wheel_base.stl"/>
+          </geometry>
+          <material name="grey"/>
+        </visual>
+        <collision>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/collision/caster_wheel_base.stl"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="${prefix}_caster_wheel_joint" type="continuous">
+        <origin xyz="${caster_wheel_dx} ${y_sign * caster_wheel_dy} ${caster_wheel_dz}" rpy="0 0 0"/>
+        <parent link="${prefix}_caster_rotation_link"/>
+        <child link="${prefix}_caster_wheel_link"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="${prefix}_caster_wheel_link">
+        <inertial>
+          <mass value="1.0"/>
+          <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/wheel.stl"/>
+          </geometry>
+          <material name="dark_grey"/>
+        </visual>
+        <collision>
+          <geometry>
+            <mesh filename="file://$(find custom_robots)/models/mir100/meshes/visual/wheel.stl"/>
+          </geometry>
+        </collision>
+      </link>
+    </xacro:macro>
+
+    <xacro:caster_wheel prefix="fl" y_sign="1" wheel_base_dx="${front_caster_base_dx}"/>
+    <xacro:caster_wheel prefix="fr" y_sign="-1" wheel_base_dx="${front_caster_base_dx}"/>
+    <xacro:caster_wheel prefix="bl" y_sign="1" wheel_base_dx="${back_caster_base_dx}"/>
+    <xacro:caster_wheel prefix="br" y_sign="-1" wheel_base_dx="${back_caster_base_dx}"/>
+
+    <xacro:imu parent="base_link" namespace="${namespace}" xyz="0 0 0.25" rpy="0 0 0"/>
+
+    <!-- Front/back SICK S300 laser poses, matched to the real MiR100 mesh. -->
+    <xacro:laser xyz="0.4288 0.2358 0.1914" rpy="0 0 ${0.25 * pi}"
+                 name="front_laser" parent="base_link" namespace="${namespace}"
+                 topic="/${namespace}/front_laser/scan"/>
+    <xacro:laser xyz="-0.3548 -0.2352 0.1914" rpy="0 0 ${-0.75 * pi}"
+                 name="back_laser" parent="base_link" namespace="${namespace}"
+                 topic="/${namespace}/back_laser/scan"/>
+
+    <xacro:velocity namespace="${namespace}" wheel_separation="${wheel_separation}" wheel_radius="${wheel_radius}"/>
+    <xacro:odom namespace="${namespace}" freq="50"/>
+  </xacro:macro>
+</robot>

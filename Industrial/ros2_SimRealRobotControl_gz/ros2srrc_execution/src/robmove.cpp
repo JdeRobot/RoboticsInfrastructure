@@ -106,9 +106,14 @@ public:
             param_ROB_GROUP.c_str()
         );
 
+        // The action name is a parameter because a launch remap of a fully qualified action name is ignored
+        this->declare_parameter("ACTION_NAME", "/Robmove");
+        std::string action_name = this->get_parameter("ACTION_NAME").as_string();
+        RCLCPP_INFO(this->get_logger(), "ACTION_NAME received -> %s", action_name.c_str());
+
         action_server_ = rclcpp_action::create_server<Robmove>(
             this,
-            "/Robmove",
+            action_name,
             std::bind(&ActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&ActionServer::handle_cancel, this, std::placeholders::_1),
             std::bind(&ActionServer::handle_accepted, this, std::placeholders::_1)
@@ -283,7 +288,9 @@ int main(int argc, char **argv)
 
     using moveit::planning_interface::MoveGroupInterface;
 
-    move_group_interface_ROB = MoveGroupInterface(moveit_node, param_ROB_GROUP);
+    // The namespace has to go through the options or the client waits on the unnamespaced move_action
+    MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
+    move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 
     move_group_interface_ROB.setMaxVelocityScalingFactor(1.0);
     move_group_interface_ROB.setMaxAccelerationScalingFactor(1.0);
