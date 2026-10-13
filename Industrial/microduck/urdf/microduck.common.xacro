@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Materials -->
+  <material name="microduck_grey">
+    <color rgba="0.322 0.322 0.337 1.0"/>
+  </material>
+  <material name="microduck_cream">
+    <color rgba="0.969 0.902 0.796 1.0"/>
+  </material>
+  <material name="microduck_orange">
+    <color rgba="0.973 0.306 0.020 1.0"/>
+  </material>
+  <material name="microduck_yellow">
+    <color rgba="0.996 0.580 0.016 1.0"/>
+  </material>
+  <material name="microduck_motor">
+    <color rgba="0.075 0.075 0.075 1.0"/>
+  </material>
+  <material name="microduck_bearing">
+    <color rgba="0.659 0.667 0.675 1.0"/>
+  </material>
+  <material name="microduck_pcb">
+    <color rgba="0.110 0.110 0.118 1.0"/>
+  </material>
+  <material name="microduck_battery">
+    <color rgba="0.075 0.075 0.075 1.0"/>
+  </material>
+  <material name="microduck_lens">
+    <color rgba="0.039 0.047 0.055 1.0"/>
+  </material>
+
+  <!-- Joint Limits from the upstream Microduck MJCF (source of truth) -->
+  <xacro:property name="left_hip_yaw_lower" value="-0.4363323129985824"/>
+  <xacro:property name="left_hip_yaw_upper" value="0.5235987755982988"/>
+  <xacro:property name="left_hip_roll_lower" value="-0.3839724354387525"/>
+  <xacro:property name="left_hip_roll_upper" value="0.3839724354387525"/>
+  <xacro:property name="left_hip_pitch_lower" value="-1.570796326795005"/>
+  <xacro:property name="left_hip_pitch_upper" value="1.5707963267947882"/>
+  <xacro:property name="left_knee_lower" value="-1.5707963267948966"/>
+  <xacro:property name="left_knee_upper" value="1.5707963267948966"/>
+  <xacro:property name="left_ankle_lower" value="-1.5707963267948912"/>
+  <xacro:property name="left_ankle_upper" value="1.5707963267949019"/>
+  <xacro:property name="right_hip_yaw_lower" value="-0.4363323129985824"/>
+  <xacro:property name="right_hip_yaw_upper" value="0.5235987755982988"/>
+  <xacro:property name="right_hip_roll_lower" value="-0.3839724354387525"/>
+  <xacro:property name="right_hip_roll_upper" value="0.3839724354387525"/>
+  <xacro:property name="right_hip_pitch_lower" value="-1.5707963267949268"/>
+  <xacro:property name="right_hip_pitch_upper" value="1.5707963267948664"/>
+  <xacro:property name="right_knee_lower" value="-1.5707963267948966"/>
+  <xacro:property name="right_knee_upper" value="1.5707963267948966"/>
+  <xacro:property name="right_ankle_lower" value="-1.5707963267948903"/>
+  <xacro:property name="right_ankle_upper" value="1.5707963267949028"/>
+  <xacro:property name="neck_pitch_lower" value="-1.5707963267948966"/>
+  <xacro:property name="neck_pitch_upper" value="1.0471975511965976"/>
+  <xacro:property name="head_pitch_lower" value="-1.5707963267948974"/>
+  <xacro:property name="head_pitch_upper" value="1.5707963267948957"/>
+  <xacro:property name="head_yaw_lower" value="-2.967059728390364"/>
+  <xacro:property name="head_yaw_upper" value="2.967059728390357"/>
+  <xacro:property name="head_roll_lower" value="-0.4363323129986037"/>
+  <xacro:property name="head_roll_upper" value="0.43633231299856107"/>
+
+  <!-- Jaw joint limits (15th motor) -->
+  <xacro:property name="jaw_lower" value="0.0"/>
+  <xacro:property name="jaw_upper" value="0.5"/>
+
+</robot>

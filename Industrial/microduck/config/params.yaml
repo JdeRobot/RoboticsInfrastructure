@@ -1,0 +1,4 @@
+microduck:
+  robot_name: "microduck"
+  sim_type: "mujoco"  # mujoco (primary) or gazebo
+  ctrl_freq: 50

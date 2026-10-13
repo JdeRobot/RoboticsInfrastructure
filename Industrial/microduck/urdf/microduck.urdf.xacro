@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="microduck">
+
+  <!-- Include component files -->
+  <xacro:include filename="$(find microduck_description)/urdf/microduck.common.xacro"/>
+  <xacro:include filename="$(find microduck_description)/urdf/microduck.links.xacro"/>
+  <xacro:include filename="$(find microduck_description)/urdf/microduck.joints.xacro"/>
+
+  <!-- Base Link -->
+  <link name="base_link"/>
+
+  <!-- Instantiate macros -->
+  <xacro:microduck_links/>
+  <xacro:microduck_joints/>
+
+</robot>

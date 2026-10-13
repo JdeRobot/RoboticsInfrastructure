@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="microduck_joints">
+
+    <joint name="floating_base" type="fixed">
+      <parent link="base_link"/>
+      <child link="trunk_base"/>
+      <origin xyz="0 0 0.105" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="left_ankle" type="revolute">
+      <parent link="leg_left"/>
+      <child link="ankle_left"/>
+      <origin xyz="0.0 0.042 -0.026" rpy="3.141593 -0.000000 0.000000"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${left_ankle_lower}" upper="${left_ankle_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="left_knee" type="revolute">
+      <parent link="upper_leg_left"/>
+      <child link="leg_left"/>
+      <origin xyz="0.022 0.0357771 -0.004" rpy="3.141593 0.000000 1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${left_knee_lower}" upper="${left_knee_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="left_hip_pitch" type="revolute">
+      <parent link="hip_left"/>
+      <child link="upper_leg_left"/>
+      <origin xyz="0.025 0.0 -0.0185" rpy="-1.570796 0.000000 -1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${left_hip_pitch_lower}" upper="${left_hip_pitch_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="left_hip_roll" type="revolute">
+      <parent link="yaw2roll_left"/>
+      <child link="hip_left"/>
+      <origin xyz="0.0 0.0165 0.0125" rpy="-1.570796 0.000000 0.000000"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${left_hip_roll_lower}" upper="${left_hip_roll_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="head_roll" type="revolute">
+      <parent link="yaw_roll_motion"/>
+      <child link="jaw_soft"/>
+      <origin xyz="-0.0179 0.0 0.0145" rpy="-0.000000 -1.570796 0.000000"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${head_roll_lower}" upper="${head_roll_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="head_yaw" type="revolute">
+      <parent link="neck_pitch"/>
+      <child link="yaw_roll_motion"/>
+      <origin xyz="-0.0 0.0186931 -0.0145" rpy="1.570796 0.000000 -3.141593"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${head_yaw_lower}" upper="${head_yaw_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="head_pitch" type="revolute">
+      <parent link="neck"/>
+      <child link="neck_pitch"/>
+      <origin xyz="0.0 -0.05 -0.0" rpy="3.141593 0.000000 0.000000"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${head_pitch_lower}" upper="${head_pitch_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="right_ankle" type="revolute">
+      <parent link="leg_right"/>
+      <child link="ankle_right"/>
+      <origin xyz="-0.042 0.0 -0.026" rpy="-3.141593 0.000000 1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${right_ankle_lower}" upper="${right_ankle_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="right_knee" type="revolute">
+      <parent link="upper_leg_right"/>
+      <child link="leg_right"/>
+      <origin xyz="-0.022 0.0357771 -0.004" rpy="3.141593 0.000000 0.000000"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${right_knee_lower}" upper="${right_knee_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="right_hip_pitch" type="revolute">
+      <parent link="hip_right"/>
+      <child link="upper_leg_right"/>
+      <origin xyz="0.025 0.0 -0.0185" rpy="-1.570796 0.000000 -1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${right_hip_pitch_lower}" upper="${right_hip_pitch_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="right_hip_roll" type="revolute">
+      <parent link="yaw2roll_right"/>
+      <child link="hip_right"/>
+      <origin xyz="-0.0 0.0165 0.0125" rpy="1.570796 0.000000 3.141593"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${right_hip_roll_lower}" upper="${right_hip_roll_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="left_hip_yaw" type="revolute">
+      <parent link="trunk_base"/>
+      <child link="yaw2roll_left"/>
+      <origin xyz="0.006 0.0175 -0.005" rpy="-3.141593 0.000000 1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${left_hip_yaw_lower}" upper="${left_hip_yaw_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="neck_pitch" type="revolute">
+      <parent link="trunk_base"/>
+      <child link="neck"/>
+      <origin xyz="0.026 0.0145 0.0324215" rpy="-1.570796 0.000000 -3.141593"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${neck_pitch_lower}" upper="${neck_pitch_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="right_hip_yaw" type="revolute">
+      <parent link="trunk_base"/>
+      <child link="yaw2roll_right"/>
+      <origin xyz="0.006 -0.0175 -0.005" rpy="3.141593 0.000000 1.570796"/>
+      <axis xyz="0.0 0.0 1.0"/>
+      <limit lower="${right_hip_yaw_lower}" upper="${right_hip_yaw_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+    <joint name="jaw" type="revolute">
+      <parent link="jaw_soft"/>
+      <child link="jaw"/>
+      <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+      <axis xyz="0.0 1.0 0.0"/>
+      <limit lower="${jaw_lower}" upper="${jaw_upper}" effort="1.0" velocity="10.0"/>
+      <dynamics damping="0.053" friction="0.0048"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

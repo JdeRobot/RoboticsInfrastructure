@@ -409,6 +409,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 49	Turtlebot 3 Burger Camera Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=camera noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
 50	Turtlebot 3 Burger Laser Mapping	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=low namespace:=do150	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
 51	Turtlebot 3 Burger Montecarlo	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=low namespace:=vacuum_cleaner	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+52	Microduck	/home/ws/src/RoboticsInfrastructure/Industrial/microduck/demo/standalone_walk.py	microduck	{"sim":"mujoco"}	microduck/urdf/microduck.urdf
+
 \.
 
 --

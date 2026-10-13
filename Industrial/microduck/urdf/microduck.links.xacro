@@ -1,0 +1,642 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="microduck_links">
+
+    <!-- ankle_left -->
+    <link name="ankle_left">
+      <visual>
+        <origin xyz="-0.022 0.00622291 -0.0647" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/sole_left.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_yellow"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.022 0.00622291 -0.0647" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/foot_left.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 -0.0322" rpy="0.000000 0.000000 3.141593"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration_default.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.022 0.00622291 -0.0647" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/ankle_left.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- leg_left -->
+    <link name="leg_left">
+      <visual>
+        <origin xyz="-0.022 0.0357771 0.0385" rpy="1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/leg.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.042 -0.0115" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- upper_leg_left -->
+    <link name="upper_leg_left">
+      <visual>
+        <origin xyz="-0.0 -0.0 -0.0425" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/upper_leg_left.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.022 0.0357771 0.0125" rpy="-3.141593 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 -0.0 -0.0425" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/upper_leg_rigidity_plate.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.022 0.0357771 -0.004" rpy="0.000000 0.000000 3.141593"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 -0.0 0.0125" rpy="1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- hip_left -->
+    <link name="hip_left">
+      <visual>
+        <origin xyz="0.021 0.0 -0.0185" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0175 0.0 -0.0185" rpy="-1.570796 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/hip_l.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- yaw2roll_left -->
+    <link name="yaw2roll_left">
+      <visual>
+        <origin xyz="-0.0175 -0.002 0.0125" rpy="3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/yaw2roll.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0 0.0125" rpy="-3.141593 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0165 0.0125" rpy="1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0175 -0.002 0.0125" rpy="-3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/bearing_roll.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- jaw_soft -->
+    <link name="jaw_soft">
+      <visual>
+        <origin xyz="0.0155 -9.13778e-05 -0.05548" rpy="-1.570796 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/lens.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_lens"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0045 -9.13778e-05 -0.0178" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/face_part.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.003 0.0255 -0.018" rpy="0.000000 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0045 0.0 -0.018" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/motor_support.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0045 -0.0 -0.018" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/top_head_shell.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 0.0145" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0032 -0.04 -0.018" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration_default.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="0.02694 0.0289936 -0.0519" rpy="0.000000 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/elec_rpi_robot_hat_pcb.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_pcb"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.00420071 1.7776e-08 -0.0180814" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/soft_mouth_top.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_yellow"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0045 -9.13778e-05 -0.0178" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/noenoeil.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_yellow"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0043 -0.0 -0.018" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/bottom_head_shell.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0155 -9.13778e-05 -0.05558" rpy="-1.570796 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/m12_lens_holder.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.015435 -1.13778e-05 -0.06001" rpy="-1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/pcb__raspberry_pi_zero_2_w.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_pcb"/>
+      </visual>
+      <visual>
+        <origin xyz="0.01 -0.016786 0.0260226" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/speaker.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- jaw link (15th actuated joint) -->
+    <link name="jaw">
+      <visual>
+        <origin xyz="-0.0045 0.0 0.002" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/jaw.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0046 0.0 0.002" rpy="1.570796 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/jaw_soft.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_yellow"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- yaw_roll_motion -->
+    <link name="yaw_roll_motion">
+      <visual>
+        <origin xyz="0.0 0.0 0.01" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/yaw_roll_motion.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 0.0145" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.016 0.0 0.0145" rpy="-0.000000 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="0.018 0.0 0.0145" rpy="-0.000000 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- neck_pitch -->
+    <link name="neck_pitch">
+      <visual>
+        <origin xyz="-0.0 0.0287931 -0.0145" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/neck_pitch.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0207931 -0.0145" rpy="1.570796 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- neck -->
+    <link name="neck">
+      <visual>
+        <origin xyz="0.022 0.05 0.028" rpy="1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/neck.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 0.0145" rpy="-1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 -0.05 0.0145" rpy="1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.022 0.05 0.003" rpy="1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/neck.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- ankle_right -->
+    <link name="ankle_right">
+      <visual>
+        <origin xyz="0.022 0.00622291 -0.0647" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/ankle_right.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <visual>
+        <origin xyz="0.022 0.00622291 -0.0647" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/sole_right.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_yellow"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0 -0.0292" rpy="3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration_default.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="0.022 0.00622291 -0.0647" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/foot_right.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_orange"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- leg_right -->
+    <link name="leg_right">
+      <visual>
+        <origin xyz="-0.042 0.0 -0.0115" rpy="-0.000000 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0357771 -0.022 0.0385" rpy="0.000000 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/leg.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- upper_leg_right -->
+    <link name="upper_leg_right">
+      <visual>
+        <origin xyz="-0.022 0.0357771 0.0125" rpy="-0.000000 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.022 0.0357771 0.0" rpy="3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 0.0435" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/upper_leg_rigidity_plate.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0 -0.0425" rpy="-1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/upper_leg_right.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0 0.0 0.0125" rpy="1.570796 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- hip_right -->
+    <link name="hip_right">
+      <visual>
+        <origin xyz="-0.0175 0.0 -0.0185" rpy="-1.570796 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/hip_l.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.025 0.0 -0.0185" rpy="1.570796 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- yaw2roll_right -->
+    <link name="yaw2roll_right">
+      <visual>
+        <origin xyz="-0.0175 -0.002 0.0125" rpy="3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/yaw2roll.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0 0.0125" rpy="-3.141593 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0175 -0.002 0.0125" rpy="-3.141593 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/bearing_roll.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0 0.0165 0.0125" rpy="1.570796 1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- trunk_base -->
+    <link name="trunk_base">
+      <visual>
+        <origin xyz="0.006 0.0175 -0.005" rpy="0.000000 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <visual>
+        <origin xyz="0.004 -0.0005 -0.0175" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/right_shell.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0042 -0.0 -0.0175215" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/banana_pcb_locker.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.004 -0.0 -0.0175" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/trunk_base.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.006 0.0175 0.0115" rpy="3.141593 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.004 -0.0 -0.0175215" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/power_support.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.0359693 0.0 -0.00385049" rpy="3.124139 0.000000 -1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/np_f970.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_battery"/>
+      </visual>
+      <visual>
+        <origin xyz="0.006 -0.0175 0.0115" rpy="3.141593 -1.570796 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/xl330.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_motor"/>
+      </visual>
+      <visual>
+        <origin xyz="0.004 -0.0 -0.0175785" rpy="0.000000 0.000000 1.570796"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/left_shell.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_cream"/>
+      </visual>
+      <visual>
+        <origin xyz="0.006 -0.0175 -0.005" rpy="0.000000 0.000000 0.000000"/>
+        <geometry>
+          <mesh filename="package://microduck_description/meshes/seeed_bearing__configuration__22x16x4.stl" scale="1.0 1.0 1.0"/>
+        </geometry>
+        <material name="microduck_bearing"/>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+  </xacro:macro>
+
+</robot>
