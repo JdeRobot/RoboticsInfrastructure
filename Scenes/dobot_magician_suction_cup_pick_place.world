@@ -54,25 +54,31 @@
               <size>2 2</size>
             </plane>
           </geometry>
+          <!-- Measuring tape and dimensions to copy this layout on a real table -->
           <material>
-            <ambient>0.6 0.6 0.6 1</ambient>
-            <diffuse>0.6 0.6 0.6 1</diffuse>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>model://dobot_pick_place_floor/materials/textures/floor.png</albedo_map>
+                <metalness>0</metalness>
+                <roughness>1</roughness>
+              </metal>
+            </pbr>
           </material>
         </visual>
       </link>
     </model>
 
-    <!-- Small pick objects, sized for the Dobot's 320mm reach and its
-         13.5mm gripper travel, placed within reach in front of the base. -->
+    <!-- 4.5 cm cubes in a T 20 cm in front of the base -->
     <model name="red_cube">
-      <pose>0.2 -0.08 0.0125 0 0 0</pose>
+      <pose>0.2 0.1 0.0225 0 0 0</pose>
       <link name="link">
         <inertial>
-          <mass>0.01</mass>
+          <mass>0.07</mass>
           <inertia>
-            <ixx>0.0000017</ixx>
-            <iyy>0.0000017</iyy>
-            <izz>0.0000017</izz>
+            <ixx>0.0000236</ixx>
+            <iyy>0.0000236</iyy>
+            <izz>0.0000236</izz>
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyz>0</iyz>
@@ -81,14 +87,14 @@
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
           <material>
@@ -100,14 +106,14 @@
     </model>
 
     <model name="green_cube">
-      <pose>0.2 0 0.0125 0 0 0</pose>
+      <pose>0.2 0.0 0.0225 0 0 0</pose>
       <link name="link">
         <inertial>
-          <mass>0.01</mass>
+          <mass>0.07</mass>
           <inertia>
-            <ixx>0.0000017</ixx>
-            <iyy>0.0000017</iyy>
-            <izz>0.0000017</izz>
+            <ixx>0.0000236</ixx>
+            <iyy>0.0000236</iyy>
+            <izz>0.0000236</izz>
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyz>0</iyz>
@@ -116,14 +122,14 @@
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
           <material>
@@ -135,14 +141,14 @@
     </model>
 
     <model name="blue_cube">
-      <pose>0.2 0.08 0.0125 0 0 0</pose>
+      <pose>0.2 -0.1 0.0225 0 0 0</pose>
       <link name="link">
         <inertial>
-          <mass>0.01</mass>
+          <mass>0.07</mass>
           <inertia>
-            <ixx>0.0000017</ixx>
-            <iyy>0.0000017</iyy>
-            <izz>0.0000017</izz>
+            <ixx>0.0000236</ixx>
+            <iyy>0.0000236</iyy>
+            <izz>0.0000236</izz>
             <ixy>0</ixy>
             <ixz>0</ixz>
             <iyz>0</iyz>
@@ -151,14 +157,14 @@
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.025 0.025 0.025</size>
+              <size>0.045 0.045 0.045</size>
             </box>
           </geometry>
           <material>
@@ -172,19 +178,19 @@
     <!-- One flat mat per cube color, each cube goes to its own -->
     <model name="red_mat">
       <static>true</static>
-      <pose>0.1152 -0.1708 0.005 0 0 0</pose>
+      <pose>0.2 -0.18 0.005 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
           <material>
@@ -197,19 +203,19 @@
 
     <model name="green_mat">
       <static>true</static>
-      <pose>0.0499 -0.1999 0.005 0 0 0</pose>
+      <pose>0.12 -0.18 0.005 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
           <material>
@@ -222,19 +228,19 @@
 
     <model name="blue_mat">
       <static>true</static>
-      <pose>-0.0216 -0.2049 0.005 0 0 0</pose>
+      <pose>0.04 -0.18 0.005 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.06 0.06 0.01</size>
+              <size>0.07 0.07 0.01</size>
             </box>
           </geometry>
           <material>
