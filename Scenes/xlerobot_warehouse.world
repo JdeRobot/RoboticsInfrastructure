@@ -19,14 +19,20 @@
     </plugin>
     <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact">
     </plugin>
-    <!-- One attacher per gripper -->
+    <!-- One attacher per gripper that can also fix the held object to the robot tray -->
     <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
       <robot_model_name>xlerobot</robot_model_name>
       <gripper_link_name>Moving_Jaw</gripper_link_name>
+      <attach_topic>/xlerobot/left_gripper_attach</attach_topic>
+      <stow_topic>/xlerobot/left_gripper_stow</stow_topic>
+      <stow_link_name>base_footprint</stow_link_name>
     </plugin>
     <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
       <robot_model_name>xlerobot</robot_model_name>
       <gripper_link_name>Moving_Jaw_2</gripper_link_name>
+      <attach_topic>/xlerobot/right_gripper_attach</attach_topic>
+      <stow_topic>/xlerobot/right_gripper_stow</stow_topic>
+      <stow_link_name>base_footprint</stow_link_name>
     </plugin>
 
     <scene>
