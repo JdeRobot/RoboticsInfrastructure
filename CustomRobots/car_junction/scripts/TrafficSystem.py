@@ -13,7 +13,6 @@ class CarSpawner(object):
     def __init__(self):
         self.node = Node()
         self.active_models = {}
-        self.last_spawn = 0
         self.sdf_path = "model://hatchback/model.sdf"
         self.world = "default"
         self.last_spawn = None
@@ -27,9 +26,9 @@ class CarSpawner(object):
 
     def update(self, info, _ecm):
         if info.paused:
-                return
+            return
 
-            current_time = info.sim_time.total_seconds()
+        current_time = info.sim_time.total_seconds()
 
         # Spawn new car
         if (
