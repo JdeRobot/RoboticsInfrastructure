@@ -1,7 +1,6 @@
-"""Dobot Magician serial protocol.
+"""Dobot Magician serial protocol over plain termios.
 
-Plain termios instead of pyserial, the RADI image ships an unrelated PyPI
-package also called serial that shadows it.
+The RADI image ships an unrelated PyPI package called serial that shadows pyserial.
 """
 
 import glob
@@ -28,10 +27,10 @@ ID_QUEUE_INDEX = 246
 
 PTP_MOVJ_ANGLE = 4
 
-# USB serial chips the Dobot Magician ships with, CP2102 confirmed on a real unit
+# USB serial chips the Dobot Magician ships with
 USB_IDS = {("10c4", "ea60"), ("1a86", "7523")}
 
-# The container sees the host /dev mounted here, see README.md
+# The container mounts the host /dev at /host_dev
 DEVICE_DIRS = ["/dev", "/host_dev"]
 
 
@@ -102,7 +101,7 @@ class SerialPort:
 
 
 class Dobot:
-    """Request and response commands, safe to use from several threads."""
+    """Thread safe request and response commands."""
 
     def __init__(self, path):
         self.port = SerialPort(path)
@@ -155,7 +154,7 @@ class Dobot:
         )
 
     def pose(self):
-        """x, y, z, r in mm and degrees, then J1 to J4 in firmware degrees."""
+        """Cartesian pose followed by the four joints in firmware degrees."""
         data = self.request(ID_POSE)
         if data is None or len(data) < 32:
             return None
@@ -193,13 +192,13 @@ class Dobot:
         )
 
     def set_speed(self, velocity, acceleration):
-        """Joint speed in degrees per second, the same for the 4 joints."""
+        """Same joint speed in degrees per second for the four joints."""
         params = struct.pack("<8f", *([velocity] * 4 + [acceleration] * 4))
         self.request(ID_PTP_JOINT_PARAMS, rw=True, params=params)
         self.request(ID_PTP_COMMON_PARAMS, rw=True, params=struct.pack("<2f", 100, 100))
 
     def move_joints(self, j1, j2, j3, j4):
-        """Queue a joint space move in firmware degrees, returns its queue index."""
+        """Queue a joint space move in firmware degrees and return its queue index."""
         params = struct.pack("<Bffff", PTP_MOVJ_ANGLE, j1, j2, j3, j4)
         return self.queued_index(
             self.request(ID_PTP_CMD, rw=True, queued=True, params=params)
@@ -209,17 +208,14 @@ class Dobot:
         self.request(ID_SUCTION_CUP, rw=True, params=bytes([int(on), int(on)]))
 
     def wait_queue(self, index, timeout, cancelled=lambda: False):
-        """Wait until the queue reaches index and the joints stop.
-
-        The queue index moves on when a command starts, not when it ends,
-        so the pose has to settle too. Returns False on timeout or cancel.
-        """
+        """Wait until the queue reaches index and the joints stop, False on timeout or cancel."""
         start = time.time()
         reached = index is None
         last, still_since = None, None
         while time.time() - start < timeout:
             if cancelled():
                 return False
+            # The index moves on when a command starts so the pose has to settle too
             if not reached:
                 current = self.queue_index()
                 reached = current is not None and current >= index

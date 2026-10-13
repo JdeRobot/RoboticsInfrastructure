@@ -36,8 +36,7 @@ def launch_setup(context):
 
     package_dir = get_package_share_directory("custom_robots")
 
-    # Same description, MoveIt config and ros2srrc nodes as the simulated arm,
-    # only Gazebo and ros2_control are swapped for the bridge to the real one
+    # Same MoveIt stack as the simulated arm with the bridge in place of Gazebo
     robot_description_content = xacro.process_file(
         os.path.join(
             package_dir, "models", "dobot_magician", "dobot_magician.urdf.xacro"
@@ -106,8 +105,7 @@ def launch_setup(context):
         }
     }
 
-    # The real arm can lag behind the planned timing, the bridge reports the
-    # real outcome itself, so MoveIt must not cancel a slow but valid move
+    # The real arm can lag behind the planned timing so MoveIt must not cancel slow moves
     trajectory_execution = {
         "trajectory_execution.execution_duration_monitoring": False,
     }
@@ -209,7 +207,7 @@ def launch_setup(context):
 
 def generate_launch_description():
     declared_arguments = [
-        # Pose arguments only place the robot in RViz, RAM passes them to every robot launch
+        # The pose only places the robot in RViz
         DeclareLaunchArgument("x", default_value="0"),
         DeclareLaunchArgument("y", default_value="0"),
         DeclareLaunchArgument("z", default_value="0.131305"),
@@ -218,7 +216,7 @@ def generate_launch_description():
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("entity", default_value="dobot_magician_suction_cup"),
         DeclareLaunchArgument("end_effector", default_value="suction_cup"),
-        # auto finds the Dobot by its USB ids, or a device path like /dev/ttyUSB0
+        # auto finds the Dobot by its USB ids
         DeclareLaunchArgument("port", default_value="auto"),
     ]
 

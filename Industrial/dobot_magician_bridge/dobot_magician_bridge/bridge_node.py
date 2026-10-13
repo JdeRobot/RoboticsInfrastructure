@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""ROS2 driver for the real Dobot Magician.
-
-Exposes the same interfaces as the simulated arm, so MoveIt and the HAL run
-unchanged. The joint trajectory action replaces gz_ros2_control's controller,
-joint_states comes from the robot's own encoders and /gripper_auto_attach,
-the topic the HAL's SuctionSet publishes, drives the suction cup pump.
-"""
+"""ROS2 driver that makes the real Dobot Magician look like the simulated one."""
 
 import json
 import math
@@ -26,32 +20,29 @@ from dobot_magician_bridge.protocol import Dobot, find_port
 
 ARM_JOINTS = ["joint_1", "joint_2", "joint_3", "joint_4"]
 
-# Parallelogram joints, the URDF mimics them 1:1 from joint_2 and joint_3
+# The URDF parallelogram joints copy joint_2 and joint_3
 MIMIC_JOINTS = {"joint_mimic_1": 1, "joint_mimic_2": 2}
 
-# Straight after power on the arm rests folded low and the firmware homing
-# sweeps the base from there, so J2 and J3 go up first, base untouched
+# J2 and J3 go up before homing so the folded arm does not drag over the table
 LIFT_J2 = 20.0
 LIFT_J3 = 30.0
 
-# Joint speed range the firmware is driven at, degrees per second
+# Firmware joint speed limits in degrees per second
 MIN_SPEED = 10.0
 MAX_SPEED = 200.0
 
 # Long trajectories are sampled down to this many queued points
 MAX_WAYPOINTS = 10
 
-# Published until the robot answers, the simulated arm's initial pose. MoveIt
-# and the ros2srrc nodes crash at start up if joint_states is missing
+# Simulated initial pose sent until the robot answers since MoveIt needs joint_states
 DEFAULT_STATE = [0.0, 0.3, 0.3, 0.0]
 
-# Remembers the homing across relaunches, RAM restarts the robot launch
-# every time the exercise code is stopped
+# Keeps the homing across the relaunches RAM does when the code is stopped
 HOMED_FILE = "/tmp/dobot_magician_homed.json"
 
 
 def to_urdf(firmware):
-    """Firmware degrees to URDF radians, the firmware measures J3 from the table."""
+    """The firmware measures J3 from the table and the URDF from the rear arm."""
     j1, j2, j3, j4 = firmware
     return [math.radians(j1), math.radians(j2), math.radians(j3 - j2), math.radians(j4)]
 
@@ -62,8 +53,7 @@ def to_firmware(urdf):
 
 
 def waypoints(start, points):
-    """Firmware PTP moves already interpolate in joint space, so a straight
-    joint space trajectory becomes a single move, anything else is sampled."""
+    """A straight joint space trajectory is one firmware move and anything else gets sampled."""
     end = points[-1]
     deltas = [b - a for a, b in zip(start, end)]
     lead = max(range(len(deltas)), key=lambda i: abs(deltas[i]))
@@ -92,7 +82,7 @@ class DobotMagicianBridge(Node):
         self.declare_parameter("port", "auto")
         self.declare_parameter("end_effector", "suction_cup")
         self.declare_parameter("rate", 20.0)
-        # auto homes once per robot power on, always and never force it
+        # auto homes once per robot power on
         self.declare_parameter("homing", "auto")
 
         self.port = self.get_parameter("port").value
@@ -131,10 +121,6 @@ class DobotMagicianBridge(Node):
             )
 
         threading.Thread(target=self.connect, daemon=True).start()
-
-    # ==========================================================
-    # CONNECTION AND HOMING
-    # ==========================================================
 
     def connect(self):
         warned = False
@@ -197,10 +183,6 @@ class DobotMagicianBridge(Node):
         with open(HOMED_FILE, "w") as f:
             json.dump({"device_time": dobot.device_time(), "wall_time": time.time()}, f)
 
-    # ==========================================================
-    # STATE
-    # ==========================================================
-
     def publish_joint_states(self):
         dobot = self.dobot
         if dobot is None:
@@ -225,10 +207,6 @@ class DobotMagicianBridge(Node):
         msg.name = ARM_JOINTS + list(MIMIC_JOINTS)
         msg.position = list(state) + [state[i] for i in MIMIC_JOINTS.values()]
         self.joint_pub.publish(msg)
-
-    # ==========================================================
-    # COMMANDS
-    # ==========================================================
 
     def on_suction(self, msg):
         if self.ready.is_set():

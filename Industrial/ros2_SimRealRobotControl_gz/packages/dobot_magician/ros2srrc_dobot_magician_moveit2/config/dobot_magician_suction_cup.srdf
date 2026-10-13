@@ -13,8 +13,7 @@
     <joint name="joint_4"/>
   </group>
 
-  <!-- The cup has no joints, this group only gives the joint list arm an
-       end effector link, robpose needs it to report the tool pose -->
+  <!-- Gives the joint list arm an end effector link for robpose -->
   <group name="dobot_suction_cup">
     <link name="link_suction_cup"/>
   </group>

@@ -208,9 +208,7 @@
     </gazebo>
     </xacro:if>
 
-    <!-- Suction cup, the real one is a pneumatic on/off tool with no
-         actuated joint. Grasping is done by gz_link_attacher in suction
-         mode through the contact sensor at the tip of the cup. -->
+    <!-- The suction cup has no joint and gz_link_attacher grabs through the contact sensor at its tip -->
     <xacro:if value="${end_effector == 'suction_cup'}">
     <xacro:property name="suction_cup_origin_z" value="${gripper_core_origin_z + 0.016}"/>
 
