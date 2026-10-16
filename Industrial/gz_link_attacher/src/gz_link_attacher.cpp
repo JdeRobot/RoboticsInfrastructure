@@ -612,6 +612,9 @@ void StowJoint(EntityComponentManager &_ecm)
   _ecm.RequestRemoveEntity(activeJoint);
   activeJoint = kNullEntity;
   contactLatched = false;
+  // The jaw still touches the object so a new contact would grab it back
+  // and the stow joint would be lost when the gripper opens
+  autoAttachEnabled = false;
 
   std::cout << "[LinkAttacher] Stowed " << model2 << " on "
             << stowLinkName << std::endl;
