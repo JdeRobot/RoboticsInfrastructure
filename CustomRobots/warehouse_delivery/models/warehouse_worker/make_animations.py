@@ -16,8 +16,18 @@ HALF_WIDTH = 0.23
 HAND_Z = 1.0
 # Walk frame that gives the upper body of the still pose
 STAND_FRAME = 35
-LEGS = ["LHipJoint", "LeftUpLeg", "LeftLeg", "LeftFoot", "LeftToeBase",
-        "RHipJoint", "RightUpLeg", "RightLeg", "RightFoot", "RightToeBase"]
+LEGS = [
+    "LHipJoint",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RHipJoint",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+]
 
 
 def load(path):
@@ -28,7 +38,9 @@ def load(path):
         if node.get("type") == "JOINT":
             name = node.get("sid")
             ids[node.get("id")] = name
-            matrix = np.array(node.find(NS + "matrix").text.split(), float).reshape(4, 4)
+            matrix = np.array(node.find(NS + "matrix").text.split(), float).reshape(
+                4, 4
+            )
             joints[name] = {"parent": parent, "bind": matrix}
             order.append(name)
             parent = name
@@ -45,12 +57,16 @@ def load(path):
         if channel is None:
             continue
         sources = {s.get("id"): s for s in anim.findall(NS + "source")}
-        inputs = {i.get("semantic"): i.get("source")[1:]
-                  for i in anim.find(NS + "sampler").findall(NS + "input")}
+        inputs = {
+            i.get("semantic"): i.get("source")[1:]
+            for i in anim.find(NS + "sampler").findall(NS + "input")
+        }
         out = sources[inputs["OUTPUT"]].find(NS + "float_array")
         name = ids[channel.get("target").split("/")[0]]
-        anims[name] = {"id": out.get("id"),
-                       "M": np.array(out.text.split(), float).reshape(-1, 4, 4)}
+        anims[name] = {
+            "id": out.get("id"),
+            "M": np.array(out.text.split(), float).reshape(-1, 4, 4),
+        }
     return joints, order, anims
 
 
@@ -79,7 +95,9 @@ hips_y = np.mean(anims["Hips"]["M"][:, 1, 3])
 
 
 def frame(k):
-    return {j: (anims[j]["M"][k] if j in anims else joints[j]["bind"]).copy() for j in order}
+    return {
+        j: (anims[j]["M"][k] if j in anims else joints[j]["bind"]).copy() for j in order
+    }
 
 
 def hold_box(local):
@@ -97,22 +115,28 @@ def hold_box(local):
         pole = np.array([-0.4, sign * 0.6, -1.0])
         v = pole - np.dot(pole, u) * u
         v /= np.linalg.norm(v)
-        angle = np.arccos(np.clip((upper**2 + d**2 - lower**2) / (2 * upper * d), -1, 1))
+        angle = np.arccos(
+            np.clip((upper**2 + d**2 - lower**2) / (2 * upper * d), -1, 1)
+        )
         elbow = shoulder + upper * (np.cos(angle) * u + np.sin(angle) * v)
         wrist = shoulder + d * u
 
         parent = world[joints[arm]["parent"]]
         arm_world = parent @ local[arm]
-        arm_world[:3, :3] = rotation_between(arm_world[:3, :3] @ local[fore][:3, 3],
-                                             elbow - shoulder) @ arm_world[:3, :3]
+        arm_world[:3, :3] = (
+            rotation_between(arm_world[:3, :3] @ local[fore][:3, 3], elbow - shoulder)
+            @ arm_world[:3, :3]
+        )
         arm_local = np.linalg.inv(parent) @ arm_world
         arm_local[:3, 3] = local[arm][:3, 3]
         local[arm] = arm_local
         arm_world = parent @ arm_local
 
         fore_world = arm_world @ local[fore]
-        fore_world[:3, :3] = rotation_between(fore_world[:3, :3] @ local[hand][:3, 3],
-                                              wrist - elbow) @ fore_world[:3, :3]
+        fore_world[:3, :3] = (
+            rotation_between(fore_world[:3, :3] @ local[hand][:3, 3], wrist - elbow)
+            @ fore_world[:3, :3]
+        )
         fore_local = np.linalg.inv(arm_world) @ fore_world
         fore_local[:3, 3] = local[fore][:3, 3]
         local[fore] = fore_local
@@ -133,7 +157,9 @@ def write(name, poses):
     text = open(os.path.join(MESHES, "walk.dae")).read()
     for j, anim in anims.items():
         values = " ".join("%.7g" % v for pose in poses for v in pose[j].reshape(-1))
-        pattern = r'(<float_array id="%s"[^>]*>)[^<]*(</float_array>)' % re.escape(anim["id"])
+        pattern = r'(<float_array id="%s"[^>]*>)[^<]*(</float_array>)' % re.escape(
+            anim["id"]
+        )
         text, count = re.subn(pattern, lambda m: m.group(1) + values + m.group(2), text)
         assert count == 1, anim["id"]
     open(os.path.join(MESHES, name), "w").write(text)
