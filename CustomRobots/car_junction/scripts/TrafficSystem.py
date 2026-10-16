@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import random
-import time
 import os
 from gz.msgs10.entity_factory_pb2 import EntityFactory
 from ament_index_python.packages import get_package_share_directory
@@ -14,9 +13,9 @@ class CarSpawner(object):
     def __init__(self):
         self.node = Node()
         self.active_models = {}
-        self.last_spawn = 0
         self.sdf_path = "model://hatchback/model.sdf"
         self.world = "default"
+        self.last_spawn = None
         self.spawn_interval = 15.0
         self.lifetime = 35.0
         self.spawn_positions = [
@@ -26,10 +25,16 @@ class CarSpawner(object):
         ]
 
     def update(self, info, _ecm):
-        current_time = time.time()
+        if info.paused:
+            return
+
+        current_time = info.sim_time.total_seconds()
 
         # Spawn new car
-        if current_time - self.last_spawn > self.spawn_interval:
+        if (
+            self.last_spawn is None
+            or current_time - self.last_spawn >= self.spawn_interval
+        ):
             coords = random.choice(self.spawn_positions)
             model_name = f"car_{random.randint(1000,9999)}"
 
@@ -69,6 +74,11 @@ class CarSpawner(object):
                 )
                 del self.active_models[name]
                 print(f"Removed {name}")
+
+    #reset callback function
+    def reset(self, info, _ecm):
+        self.active_models.clear()
+        self.last_spawn = None
 
 
 def etoq(yaw, pitch, roll):
