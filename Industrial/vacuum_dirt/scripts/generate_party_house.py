@@ -49,10 +49,16 @@ CONFETTI = 18000
 
 # Color indexes match the palette in vacuum_dirt.cpp
 N_COLORS, N_SHADES = 8, 3
-PAINT_RGB = {"red": (0.80, 0.10, 0.10), "blue": (0.10, 0.28, 0.82),
-             "green": (0.10, 0.62, 0.22), "yellow": (0.96, 0.80, 0.08),
-             "purple": (0.55, 0.15, 0.75), "orange": (1.00, 0.50, 0.05),
-             "pink": (0.98, 0.35, 0.65), "cyan": (0.05, 0.75, 0.85)}
+PAINT_RGB = {
+    "red": (0.80, 0.10, 0.10),
+    "blue": (0.10, 0.28, 0.82),
+    "green": (0.10, 0.62, 0.22),
+    "yellow": (0.96, 0.80, 0.08),
+    "purple": (0.55, 0.15, 0.75),
+    "orange": (1.00, 0.50, 0.05),
+    "pink": (0.98, 0.35, 0.65),
+    "cyan": (0.05, 0.75, 0.85),
+}
 
 
 def px(x, y):
@@ -65,15 +71,22 @@ def coverable_floor(models):
     sdf = (models / "house_int2" / "model.sdf").read_text()
     items = [("house_int2", [0.0] * 6)] + [
         (uri, [float(v) for v in pose.split()])
-        for uri, pose in re.findall(r"<uri>model://(\w+)</uri>\s*<pose>([^<]+)</pose>", sdf)
+        for uri, pose in re.findall(
+            r"<uri>model://(\w+)</uri>\s*<pose>([^<]+)</pose>", sdf
+        )
     ]
 
     img = Image.new("L", (W, H), 0)
     draw = ImageDraw.Draw(img)
     for name, (x, y, z, roll, pitch, yaw) in items:
-        mesh = trimesh.load(models / name / "meshes" / "model.dae", force="scene").to_geometry()
-        mesh.apply_transform(trimesh.transformations.compose_matrix(
-            angles=[roll, pitch, yaw], translate=[x, y, z]))
+        mesh = trimesh.load(
+            models / name / "meshes" / "model.dae", force="scene"
+        ).to_geometry()
+        mesh.apply_transform(
+            trimesh.transformations.compose_matrix(
+                angles=[roll, pitch, yaw], translate=[x, y, z]
+            )
+        )
         tri = mesh.triangles
         zmin, zmax = tri[:, :, 2].min(1), tri[:, :, 2].max(1)
         # Triangles crossing the robot height band
@@ -86,8 +99,8 @@ def coverable_floor(models):
 
     obstacles = np.array(img) > 0
     k = int(ROBOT_RADIUS / RES)
-    yy, xx = np.mgrid[-k:k + 1, -k:k + 1]
-    disk = xx ** 2 + yy ** 2 <= k * k
+    yy, xx = np.mgrid[-k : k + 1, -k : k + 1]
+    disk = xx**2 + yy**2 <= k * k
     labels, _ = ndimage.label(~ndimage.binary_dilation(obstacles, disk))
     sx, sy = px(*ROBOT_START)
     reachable = labels == labels[int(sy), int(sx)]
@@ -154,7 +167,9 @@ def main():
 
     def density(x, y):
         return BASE_DENSITY + sum(
-            w * math.exp(-((x - hx) ** 2 + (y - hy) ** 2) / (2 * s * s)) for hx, hy, s, w in HOTSPOTS)
+            w * math.exp(-((x - hx) ** 2 + (y - hy) ** 2) / (2 * s * s))
+            for hx, hy, s, w in HOTSPOTS
+        )
 
     def random_point():
         return rng.uniform(X0, X1), rng.uniform(Y0, Y1)
@@ -182,8 +197,10 @@ def main():
         yaw = rng.uniform(0, 2 * math.pi)
         kind = rng.uniform()
         if kind < 0.55:
-            lines.append(f"confetti rect {x:.4f} {y:.4f} {yaw:.3f} "
-                         f"{rng.uniform(0.015, 0.026):.4f} {rng.uniform(0.010, 0.020):.4f} {color}")
+            lines.append(
+                f"confetti rect {x:.4f} {y:.4f} {yaw:.3f} "
+                f"{rng.uniform(0.015, 0.026):.4f} {rng.uniform(0.010, 0.020):.4f} {color}"
+            )
         elif kind < 0.92:
             d = rng.uniform(0.014, 0.024)
             lines.append(f"confetti disc {x:.4f} {y:.4f} 0 {d:.4f} {d:.4f} {color}")
@@ -194,7 +211,9 @@ def main():
             for _ in range(rng.integers(2, 5)):
                 mx, my = cx + math.cos(a) * seg / 2, cy + math.sin(a) * seg / 2
                 if free(mx, my):
-                    lines.append(f"confetti rect {mx:.4f} {my:.4f} {a:.3f} {seg:.4f} 0.0045 {color}")
+                    lines.append(
+                        f"confetti rect {mx:.4f} {my:.4f} {a:.3f} {seg:.4f} 0.0045 {color}"
+                    )
                 cx, cy = cx + math.cos(a) * seg, cy + math.sin(a) * seg
                 a += rng.normal(0, 0.9)
 
@@ -208,7 +227,9 @@ def main():
             if not free(x, y):
                 continue
             d = rng.uniform(0.03, 0.07) * (1.2 - 0.5 * t)
-            lines.append(f"paint disc {x:.4f} {y:.4f} 0 {d:.4f} {d:.4f} {color + int(rng.integers(2))}")
+            lines.append(
+                f"paint disc {x:.4f} {y:.4f} 0 {d:.4f} {d:.4f} {color + int(rng.integers(2))}"
+            )
             drops += 1
 
     out.mkdir(parents=True, exist_ok=True)
@@ -218,22 +239,28 @@ def main():
 
     # The cat keeps off the walls and only walks where the robot can clean
     k = int(CAT_CLEARANCE / RES)
-    yy, xx = np.mgrid[-k:k + 1, -k:k + 1]
-    walk = ndimage.binary_erosion(cover, xx ** 2 + yy ** 2 <= k * k)
+    yy, xx = np.mgrid[-k : k + 1, -k : k + 1]
+    walk = ndimage.binary_erosion(cover, xx**2 + yy**2 <= k * k)
     step = int(round(CAT_MAP_RES / RES))
     hh, ww = (H // step) * step, (W // step) * step
     coarse = walk[:hh, :ww].reshape(hh // step, step, ww // step, step).all(axis=(1, 3))
+
     # Keep only the area connected to the puddles so every goal is reachable
     def cell(p):
         return int((Y1 - p[1]) / CAT_MAP_RES), int((p[0] - X0) / CAT_MAP_RES)
+
     labels, _ = ndimage.label(coarse)
     first = labels[cell(PAINTS[0][3])]
     for name, _, _, spot in PAINTS:
-        assert labels[cell(spot)] == first and first > 0, f"the cat must reach the {name} puddle"
+        assert (
+            labels[cell(spot)] == first and first > 0
+        ), f"the cat must reach the {name} puddle"
     coarse = labels == first
     write_cans(out.parent)
     Image.fromarray(np.where(coarse, 0, 255).astype(np.uint8)).save(out / "cat_map.pgm")
-    print(f"pieces {len(lines)}  cat map origin_x {X0} origin_y {Y1 - coarse.shape[0] * CAT_MAP_RES:.2f}")
+    print(
+        f"pieces {len(lines)}  cat map origin_x {X0} origin_y {Y1 - coarse.shape[0] * CAT_MAP_RES:.2f}"
+    )
 
 
 if __name__ == "__main__":

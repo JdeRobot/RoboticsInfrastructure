@@ -220,6 +220,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 95	Dobot Magician Physical	86
 96	Dobot Pick And Place World	87
 97	Dobot Suction Cup Pick And Place World	88
+98	myAGV mechArm Warehouse Delivery	89
 \.
 
 --
@@ -304,6 +305,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 73	95	52	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
 74	96	53	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
 75	97	54	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
+76	98	55	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 \.
 
 --
@@ -361,6 +363,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 86	Dobot Magician Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_physical_harmonic.launch.py"}	ROS2	physical	dobot_pick_place.urdf
 87	Dobot Pick And Place	/opt/jderobot/Launchers/dobot_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
 88	Dobot Suction Cup Pick And Place	/opt/jderobot/Launchers/dobot_suction_cup_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_suction_cup_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
+89	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
 \.
 
 --
@@ -421,6 +424,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 52	Dobot Magician Physical	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician_physical.launch.py	dobot_magician_suction_cup	end_effector:=suction_cup	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
 53	Dobot Magician	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_gripper	None	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
 54	Dobot Magician Suction Cup	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_suction_cup	end_effector:=suction_cup	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
+55	myAGV mechArm	/home/ws/src/CustomRobots/myagv_mecharm/launch/myagv_mecharm.launch.py	myagv_mecharm	namespace:=myagv_mecharm	myagv_mecharm/models/myagv_mecharm/myagv_mecharm.urdf.xacro
+56	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 \.
 
 --
