@@ -207,7 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
-85	XLeRobot Warehouse	58
+85	XLeRobot Warehouse	90
 86	XLeRobot Home	81
 87	MMO-500 Warehouse	82
 88	Mir100 Physical	83
@@ -364,6 +364,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 87	Dobot Pick And Place	/opt/jderobot/Launchers/dobot_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
 88	Dobot Suction Cup Pick And Place	/opt/jderobot/Launchers/dobot_suction_cup_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_suction_cup_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
 89	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
+90	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 \.
 
 --
