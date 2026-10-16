@@ -50,6 +50,8 @@ install(
 
     iiwa
 
+    dobot_magician
+
   DESTINATION 
     share/${PROJECT_NAME}
 )
