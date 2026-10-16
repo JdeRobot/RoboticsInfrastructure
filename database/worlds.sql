@@ -207,7 +207,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 82	Visual Lander	78
 83	Visual Lander Circuit	79
 84	Follow Turtlebot	80
-85	XLeRobot Warehouse	87
+85	XLeRobot Warehouse	90
 86	XLeRobot Home	81
 87	MMO-500 Warehouse	82
 88	Mir100 Physical	83
@@ -217,6 +217,10 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 92	Warehouse 1 Mir100	58
 93	Vacuums Party House	84
 94	Vacuums Party House with cat	85
+95	Dobot Magician Physical	86
+96	Dobot Pick And Place World	87
+97	Dobot Suction Cup Pick And Place World	88
+98	myAGV mechArm Warehouse Delivery	89
 \.
 
 --
@@ -298,6 +302,10 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 70	92	36	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 71	93	9	{{-1,1.5,0,0.0,0.0,0.0}}
 72	94	9	{{-1,1.5,0,0.0,0.0,0.0}}
+73	95	52	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
+74	96	53	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
+75	97	54	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
+76	98	55	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 \.
 
 --
@@ -352,7 +360,11 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
 84	Vacuums Party House	/opt/jderobot/Launchers/vacuum_party_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
 85	Vacuums Party House with cat	/opt/jderobot/Launchers/vacuum_party_house_cat.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
-87	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
+86	Dobot Magician Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_physical_harmonic.launch.py"}	ROS2	physical	dobot_pick_place.urdf
+87	Dobot Pick And Place	/opt/jderobot/Launchers/dobot_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
+88	Dobot Suction Cup Pick And Place	/opt/jderobot/Launchers/dobot_suction_cup_pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/dobot_suction_cup_pick_place_harmonic.launch.py"}	ROS2	gz	dobot_pick_place.urdf
+89	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
+90	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 \.
 
 --
@@ -410,6 +422,11 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 49	Turtlebot 3 Burger Camera Low Noise	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=camera noise:=low namespace:=turtlebot3	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
 50	Turtlebot 3 Burger Laser Mapping	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=low namespace:=do150	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
 51	Turtlebot 3 Burger Montecarlo	/home/ws/src/CustomRobots/turtlebot3/launch/turtlebot3_burger.launch.py	turtlebot3	sensor:=laser noise:=low namespace:=vacuum_cleaner	turtlebot3/models/turtlebot3/turtlebot3_burger.urdf.xacro
+52	Dobot Magician Physical	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician_physical.launch.py	dobot_magician_suction_cup	end_effector:=suction_cup	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
+53	Dobot Magician	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_gripper	None	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
+54	Dobot Magician Suction Cup	/home/ws/src/CustomRobots/robot_arms/launch/dobot_magician.launch.py	dobot_magician_suction_cup	end_effector:=suction_cup	robot_arms/models/dobot_magician/dobot_magician.urdf.xacro
+55	myAGV mechArm	/home/ws/src/CustomRobots/myagv_mecharm/launch/myagv_mecharm.launch.py	myagv_mecharm	namespace:=myagv_mecharm	myagv_mecharm/models/myagv_mecharm/myagv_mecharm.urdf.xacro
+56	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 \.
 
 --

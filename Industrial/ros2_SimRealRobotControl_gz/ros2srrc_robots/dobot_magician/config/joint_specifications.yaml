@@ -1,0 +1,4 @@
+# Dobot Magician joint specifications
+Limits:
+  Max: [125.0, 90.0, 70.0, 150.0]
+  Min: [-125.0, -5.0, -15.0, -150.0]
