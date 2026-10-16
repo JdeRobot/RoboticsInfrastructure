@@ -1,0 +1,23 @@
+services:
+  # Stands in for the MiR100 itself, a ROS1 master with rosbridge on 9090 like the real robot
+  mir_robot:
+    build: .
+    image: mir100-mock
+    container_name: mir_robot
+    command: /mock/start_fake_mir.sh
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('localhost', 9090), 1)"]
+      interval: 2s
+      retries: 30
+
+  # The unmodified driver the customer runs on their own machine
+  mir_driver:
+    image: mir100-mock
+    container_name: mir_driver
+    network_mode: host
+    depends_on:
+      mir_robot:
+        condition: service_healthy
+    command: /mock/start_mir_driver.sh

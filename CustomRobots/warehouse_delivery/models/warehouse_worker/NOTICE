@@ -1,0 +1,6 @@
+meshes/walk.dae is the "Walking actor" model by chapulina on Gazebo Fuel,
+released under Creative Commons Zero v1.0 Universal
+https://fuel.gazebosim.org/1.0/chapulina/models/Walking%20actor
+
+meshes/carry.dae, meshes/stand.dae and meshes/stand_carry.dae are derived
+from walk.dae by make_animations.py, only the joint animation curves change

@@ -13,6 +13,7 @@
 #include <std_msgs/msg/string.hpp>
 
 #include <thread>
+#include <atomic>
 #include <mutex>
 #include <chrono>
 #include <iostream>
@@ -21,6 +22,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
+#include <map>
 
 using namespace gz;
 using namespace sim;
@@ -46,6 +48,9 @@ LinkAttacher()
 ~LinkAttacher()
 {
   std::cout << "[LinkAttacher] Destructor called" << std::endl;
+
+  // A world reset destroys the plugin so the ROS thread has to stop before the join
+  stopRequested = true;
 
   if (executor)
   {
@@ -94,9 +99,16 @@ void Configure(
 
   executor->add_node(node);
 
+  if (_sdf->HasElement("attach_topic"))
+    attachTopic = _sdf->Get<std::string>("attach_topic");
+  if (_sdf->HasElement("stow_topic"))
+    stowTopic = _sdf->Get<std::string>("stow_topic");
+  if (_sdf->HasElement("stow_link_name"))
+    stowLinkName = _sdf->Get<std::string>("stow_link_name");
+
   gripperStateSub =
   node->create_subscription<std_msgs::msg::Bool>(
-    "/gripper_auto_attach",
+    attachTopic,
     10,
     [this](const std_msgs::msg::Bool::SharedPtr msg)
     {
@@ -154,6 +166,21 @@ void Configure(
         }
       });
 
+  // Stowing moves the held object from the gripper to a fixed robot link
+  if (!stowTopic.empty())
+  {
+    stowSub =
+    node->create_subscription<std_msgs::msg::Bool>(
+      stowTopic,
+      10,
+      [this](const std_msgs::msg::Bool::SharedPtr msg)
+      {
+        std::lock_guard<std::mutex> lock(mutex);
+        if (msg->data)
+          stowRequested = true;
+      });
+  }
+
   // Optional SDF params — defaults preserve pick_place (Robotiq) behaviour
   if (_sdf->HasElement("robot_model_name"))
     robotModelName = _sdf->Get<std::string>("robot_model_name");
@@ -191,7 +218,7 @@ void Configure(
   {
     std::cout << "[LinkAttacher] ROS thread started" << std::endl;
 
-    while (rclcpp::ok())
+    while (rclcpp::ok() && !stopRequested)
     {
       executor->spin_some();
 
@@ -215,6 +242,12 @@ void PreUpdate(
     std::cout << "[LinkAttacher] First PreUpdate() detected" << std::endl;
     initialized = true;
   } 
+
+  if (stowRequested)
+  {
+    StowJoint(_ecm);
+    stowRequested = false;
+  }
 
   if (createJointRequested)
   {
@@ -528,6 +561,15 @@ void CreateJoint(EntityComponentManager &_ecm)
     return;
   }
 
+  // An object taken back from the stow link is released from it first
+  auto stowed = stowedJoints.find(model2);
+  if (stowed != stowedJoints.end())
+  {
+    _ecm.RequestRemoveEntity(stowed->second);
+    stowedJoints.erase(stowed);
+    std::cout << "[LinkAttacher] Released stowed " << model2 << std::endl;
+  }
+
   Entity jointEntity = _ecm.CreateEntity();
   activeJoint = jointEntity;
 
@@ -546,6 +588,40 @@ void CreateJoint(EntityComponentManager &_ecm)
     << std::endl;
 
   std::cout << "[LinkAttacher] DetachableJoint component inserted" << std::endl;
+}
+
+void StowJoint(EntityComponentManager &_ecm)
+{
+  if (activeJoint == kNullEntity)
+  {
+    std::cout << "[LinkAttacher] Nothing held to stow" << std::endl;
+    return;
+  }
+
+  Entity stowLink = FindLink(_ecm, robotModelName, stowLinkName);
+  Entity objectLink = FindLink(_ecm, model2, link2);
+  if (stowLink == kNullEntity || objectLink == kNullEntity)
+  {
+    std::cout << "[LinkAttacher] ERROR: stow link entities invalid" << std::endl;
+    return;
+  }
+
+  Entity jointEntity = _ecm.CreateEntity();
+  components::DetachableJoint joint;
+  joint.Data().parentLink = stowLink;
+  joint.Data().childLink = objectLink;
+  _ecm.CreateComponent(jointEntity, joint);
+  stowedJoints[model2] = jointEntity;
+
+  _ecm.RequestRemoveEntity(activeJoint);
+  activeJoint = kNullEntity;
+  contactLatched = false;
+  // The jaw still touches the object so a new contact would grab it back
+  // and the stow joint would be lost when the gripper opens
+  autoAttachEnabled = false;
+
+  std::cout << "[LinkAttacher] Stowed " << model2 << " on "
+            << stowLinkName << std::endl;
 }
 
 void RemoveJoint(EntityComponentManager &_ecm)
@@ -576,8 +652,10 @@ rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
 rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableObjectsSub;
+rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr stowSub;
 
 std::thread rosThread;
+std::atomic<bool> stopRequested{false};
 
 Entity worldEntity{kNullEntity};
 
@@ -586,11 +664,15 @@ bool autoAttachEnabled = false;
 bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
+bool stowRequested = false;
 
 gz::transport::Node gzNode;
 
 std::string robotModelName{"ur5_robotiq"};
 std::string gripperLinkName{""};
+std::string attachTopic{"/gripper_auto_attach"};
+std::string stowTopic{""};
+std::string stowLinkName{"base_footprint"};
 
 std::string model1;
 std::string link1;
@@ -601,6 +683,7 @@ std::mutex mutex;
 std::vector<std::string> graspableObjects;
 
 Entity activeJoint{kNullEntity};
+std::map<std::string, Entity> stowedJoints;
 
 };
 
