@@ -9,7 +9,7 @@ import random
 import math
 import json
 
-from std_msgs.msg import String, Float64
+from std_msgs.msg import String, Float64, Bool
 
 from rclpy.qos import (
     QoSProfile,
@@ -65,6 +65,9 @@ class sausageSpawner(Node):
         # Control del conveyor
         self.belt_started = False
 
+        # Indica si una pinza ha contactado con una salchicha
+        self.sausage_contact = False
+
         ############################################################
         # PUBLICADORES
         ############################################################
@@ -90,6 +93,17 @@ class sausageSpawner(Node):
         self.speed_pub = self.create_publisher(
             Float64,
             "/conveyor/speed",
+            10
+        )
+
+        ############################################################
+        # SUSCRIPCIÓN AL CONTACTO DE LA PINZA
+        ############################################################
+
+        self.contact_sub = self.create_subscription(
+            Bool,
+            "/sausage_contact",
+            self.contact_callback,
             10
         )
 
@@ -242,11 +256,10 @@ class sausageSpawner(Node):
         if not self.belt_started:
             return
 
-        # IMPORTANTE:
-        # Nunca ponemos la velocidad a cero.
-        #
-        # El conveyor recibe continuamente BELT_SPEED.
-        self.set_belt(self.BELT_SPEED)
+        if self.sausage_contact:
+            self.set_belt(0.0)
+        else:
+            self.set_belt(self.BELT_SPEED)
 
     ############################################################
     # CONTROL DEL SPAWN
@@ -421,6 +434,29 @@ class sausageSpawner(Node):
             self.speed_pub.publish(msg)
 
         super().destroy_node()
+        
+    ############################################################
+    # DETECCIÓN DE CONTACTO CON LA SALCHICHA
+    ############################################################
+
+    def contact_callback(self, msg):
+
+        # Ignorar mensajes repetidos si el estado no ha cambiado
+        if self.sausage_contact == msg.data:
+            return
+
+        self.sausage_contact = msg.data
+
+        if self.sausage_contact:
+            self.get_logger().info(
+                "Contacto con salchicha detectado. "
+                "Deteniendo la cinta."
+            )
+        else:
+            self.get_logger().info(
+                "Contacto desactivado. "
+                "Reanudando la cinta."
+            )
 
 
 ############################################################
