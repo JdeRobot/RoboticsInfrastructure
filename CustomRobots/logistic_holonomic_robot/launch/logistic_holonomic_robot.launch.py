@@ -3,7 +3,7 @@ import xacro
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
+from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution, FindPackageShare
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -21,6 +21,7 @@ def launch_setup(context):
     gz_entity = LaunchConfiguration("entity")
 
     package_dir = get_package_share_directory("custom_robots")
+    pkg_nav2_ros = FindPackageShare(package="nav2_bringup").find("nav2_bringup")
 
     nodes_to_start = []
 
@@ -92,6 +93,36 @@ def launch_setup(context):
             f"/{namespace}/platform/cmd_vel@std_msgs/msg/Float64]gz.msgs.Double",
         ],
         output="screen",
+    )
+
+    params_file = os.path.join(
+        package_dir,
+        "models",
+        "logistic_holonomic_robot",
+        "params",
+        "nav2_config.yaml",
+    )
+
+    localization_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_nav2_ros, "launch", "localization_launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": "True",
+            "map": os.path.join("/resources", "exercises", "amazon_warehouse/images/map.png"),
+            "slam": "True",
+            "params_file": params_file,
+        }.items(),
+    )
+
+    navigation_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_nav2_ros, "launch", "navigation_launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": True,
+            "params_file": params_file,
+        }.items(),
     )
 
     nodes_to_start.append(robot_state_publisher_node)
