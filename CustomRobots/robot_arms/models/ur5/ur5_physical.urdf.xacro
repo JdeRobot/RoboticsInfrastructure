@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot name="ur5"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Real UR5 or UR5e. The official description is used instead of the
+       vendored one in this folder so it always matches the installed
+       ur_robot_driver hardware interface -->
+
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5e"/>
+  <xacro:arg name="robot_ip" default="192.168.56.101"/>
+  <xacro:arg name="reverse_ip" default="0.0.0.0"/>
+  <xacro:arg name="headless_mode" default="true"/>
+  <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
+  <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+  <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+  <xacro:arg name="use_tool_communication" default="false"/>
+  <xacro:arg name="tool_voltage" default="24"/>
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
+
+  <link name="world"/>
+
+  <xacro:ur_robot
+    name="$(arg name)"
+    tf_prefix=""
+    parent="world"
+    joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
+    visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
+    ur_type="$(arg ur_type)"
+    robot_ip="$(arg robot_ip)"
+    reverse_ip="$(arg reverse_ip)"
+    headless_mode="$(arg headless_mode)"
+    script_filename="$(arg script_filename)"
+    input_recipe_filename="$(arg input_recipe_filename)"
+    output_recipe_filename="$(arg output_recipe_filename)"
+    verify_robot_model="true"
+    use_tool_communication="$(arg use_tool_communication)"
+    tool_voltage="$(arg tool_voltage)"
+    tool_baud_rate="115200"
+    tool_parity="0"
+    tool_stop_bits="1"
+    tool_rx_idle_chars="1.5"
+    tool_tx_idle_chars="3.5"
+    tool_device_name="/tmp/ttyUR">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:ur_robot>
+
+  <!-- Same coupler and gripper as the simulated arm -->
+  <link name="robotiq_coupler">
+    <visual>
+      <geometry>
+        <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.04" length="0.015"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_coupler_joint" type="fixed">
+    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
+    <parent link="tool0"/>
+    <child link="robotiq_coupler"/>
+  </joint>
+
+  <!-- The gripper has no ros2_control block, ur5_bridge drives it -->
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
+  </xacro:robotiq_85_gripper>
+
+</robot>
