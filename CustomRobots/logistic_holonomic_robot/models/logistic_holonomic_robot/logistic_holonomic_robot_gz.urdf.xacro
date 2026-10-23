@@ -1,6 +1,47 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+ <xacro:macro name="laser" params="xyz rpy name parent namespace">
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/hokuyo.dae"/>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="${name}_to_${parent}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>20</update_rate>
+        <topic>/${namespace}/laser/scan</topic>
+        <gz_frame_id>laser_link</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>180</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.570000</min_angle>
+              <max_angle>1.570000</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.080000</min>
+            <max>10.000000</max>
+            <resolution>0.010000</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
   <xacro:macro name="velocity" params="namespace">
     <gazebo>
       <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
@@ -20,6 +61,7 @@
         <robot_base_frame>base_footprint</robot_base_frame>
         <odom_publish_frequency>${freq}</odom_publish_frequency>
         <odom_topic>/${namespace}/odom</odom_topic>
+        <tf_topic>/tf</tf_topic>
         <dimensions>3</dimensions>
       </plugin>
     </gazebo>
