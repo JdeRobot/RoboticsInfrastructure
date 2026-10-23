@@ -56,8 +56,9 @@ LaserData laserScan2LaserData(const sensor_msgs::msg::LaserScan& scan) {
 
 LaserNode::LaserNode(const std::string& topic, const std::string& node_name) 
     : Node(node_name) {
+    // Best effort so it also receives from real lidar drivers
     sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-        topic, 10, std::bind(&LaserNode::listener_callback, this, std::placeholders::_1)
+        topic, rclcpp::SensorDataQoS(), std::bind(&LaserNode::listener_callback, this, std::placeholders::_1)
     );
 }
 
