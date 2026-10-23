@@ -340,7 +340,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	rover4wd_warehouse.urdf
 56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	pick_place.urdf
 57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	package_delivery.urdf
-58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse1.urdf
+58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
 59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse2.urdf
 66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
 67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf

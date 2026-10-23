@@ -4,10 +4,11 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, IncludeLaunchDescription
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
-
+from launch_ros.substitutions import FindPackageShare
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def launch_setup(context):
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -55,6 +56,12 @@ def launch_setup(context):
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
+    map_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        arguments=[x, y, z, R, P, Y, "map", "odom"],
+    )
+
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
@@ -88,8 +95,10 @@ def launch_setup(context):
         namespace=gz_namespace,
         arguments=[
             f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            f"/{namespace}/laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
             f"/{namespace}/platform/cmd_vel@std_msgs/msg/Float64]gz.msgs.Double",
+            f"/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
         ],
         output="screen",
     )
@@ -97,6 +106,7 @@ def launch_setup(context):
     nodes_to_start.append(robot_state_publisher_node)
     nodes_to_start.append(gz_spawn_entity)
     nodes_to_start.append(gz_ros2_bridge)
+    nodes_to_start.append(map_tf)
 
     return nodes_to_start
 

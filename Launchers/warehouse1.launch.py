@@ -9,10 +9,12 @@ from launch.actions import (
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
+    package_dir = get_package_share_directory("custom_robots")
 
     world_file_name = "warehouse1.world"
     worlds_dir = "/opt/jderobot/Scenes"
@@ -44,9 +46,43 @@ def generate_launch_description():
         output="screen",
     )
 
+    pkg_nav2_ros = FindPackageShare(package="nav2_bringup").find("nav2_bringup")
+
+    params_file = os.path.join(
+        package_dir,
+        "models",
+        "logistic_holonomic_robot",
+        "params",
+        "nav2_config.yaml",
+    )
+
+    localization_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_nav2_ros, "launch", "localization_launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": "True",
+            "map": os.path.join("/resources", "exercises", "amazon_warehouse/maps/map.yaml"),
+            "slam": "True",
+            "params_file": params_file,
+        }.items(),
+    )
+
+    navigation_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_nav2_ros, "launch", "navigation_launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": "true",
+            "params_file": params_file,
+        }.items(),
+    )
+
     ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(localization_cmd)
+    ld.add_action(navigation_cmd)
 
     return ld
