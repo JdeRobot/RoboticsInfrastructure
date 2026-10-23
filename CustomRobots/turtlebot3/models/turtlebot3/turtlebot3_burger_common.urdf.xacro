@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_burger_gz.urdf.xacro"/>
+
+  <xacro:property name="burger_meshes" value="file://$(find custom_robots)/models/turtlebot3/meshes/burger"/>
+
+  <!-- The ROBOTIS meshes are split by material so each part gets the color of the real robot -->
+  <xacro:macro name="burger_part" params="mesh material xyz:='0 0 0' rpy:='0 0 0'">
+    <visual>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <mesh filename="${burger_meshes}/${mesh}.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="${material}"/>
+    </visual>
+  </xacro:macro>
+
+  <!-- Geometry and inertia from ROBOTIS turtlebot3_description -->
+  <xacro:macro name="turtlebot3_burger" params="namespace">
+    <material name="burger_plate">
+      <color rgba="0.05 0.05 0.05 1.0"/>
+    </material>
+    <material name="burger_plastic">
+      <color rgba="0.12 0.12 0.12 1.0"/>
+    </material>
+    <material name="burger_dynamixel">
+      <color rgba="0.02 0.02 0.02 1.0"/>
+    </material>
+    <material name="burger_metal">
+      <color rgba="0.62 0.62 0.65 1.0"/>
+    </material>
+    <material name="burger_rpi">
+      <color rgba="0.05 0.40 0.15 1.0"/>
+    </material>
+    <material name="burger_opencr">
+      <color rgba="0.08 0.08 0.10 1.0"/>
+    </material>
+    <material name="burger_rubber">
+      <color rgba="0.03 0.03 0.03 1.0"/>
+    </material>
+    <material name="burger_rim">
+      <color rgba="0.20 0.20 0.20 1.0"/>
+    </material>
+
+    <link name="base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0 0 0.010" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_link">
+      <xacro:burger_part mesh="burger_base_plates" material="burger_plate" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_plastic" material="burger_plastic" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_motors" material="burger_dynamixel" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_metal" material="burger_metal" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_rpi" material="burger_rpi" xyz="-0.032 0 0"/>
+      <xacro:burger_part mesh="burger_base_opencr" material="burger_opencr" xyz="-0.032 0 0"/>
+      <collision>
+        <origin xyz="-0.032 0 0.070" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.140 0.140 0.143"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="8.2573504e-01"/>
+        <inertia ixx="2.2124416e-03" ixy="-1.2294101e-05" ixz="3.4938785e-05" iyy="2.1193702e-03" iyz="-5.0120904e-06" izz="2.0064271e-03"/>
+      </inertial>
+    </link>
+
+    <xacro:burger_wheel side="left" y="0.080"/>
+    <xacro:burger_wheel side="right" y="-0.080"/>
+
+    <joint name="caster_back_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_back_link"/>
+      <origin xyz="-0.081 0 -0.004" rpy="0 0 0"/>
+    </joint>
+
+    <link name="caster_back_link">
+      <collision>
+        <geometry>
+          <sphere radius="0.006"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.005"/>
+        <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+      </inertial>
+    </link>
+
+    <!-- The ball caster slides freely so it does not brake the turns -->
+    <gazebo reference="caster_back_link">
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+
+    <joint name="imu_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="imu_link"/>
+      <origin xyz="-0.032 0 0.068" rpy="0 0 0"/>
+    </joint>
+
+    <link name="imu_link"/>
+
+    <joint name="scan_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="base_scan"/>
+      <origin xyz="-0.032 0 0.172" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_scan">
+      <xacro:burger_part mesh="lds_body" material="burger_plastic"/>
+      <xacro:burger_part mesh="lds_metal" material="burger_metal"/>
+      <collision>
+        <origin xyz="0.015 0 -0.0065" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.0315" radius="0.055"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.114"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <xacro:burger_lds namespace="${namespace}"/>
+    <xacro:burger_imu namespace="${namespace}"/>
+    <xacro:burger_drive namespace="${namespace}"/>
+  </xacro:macro>
+
+  <xacro:macro name="burger_wheel" params="side y">
+    <joint name="wheel_${side}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="wheel_${side}_link"/>
+      <origin xyz="0 ${y} 0.023" rpy="-1.57 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="20" velocity="100"/>
+    </joint>
+
+    <link name="wheel_${side}_link">
+      <xacro:burger_part mesh="${side}_tire_rubber" material="burger_rubber" rpy="1.57 0 0"/>
+      <xacro:burger_part mesh="${side}_tire_rim" material="burger_rim" rpy="1.57 0 0"/>
+      <collision>
+        <geometry>
+          <cylinder length="0.018" radius="0.033"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="2.8498940e-02"/>
+        <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09" iyy="1.1192413e-05" iyz="-1.4400107e-11" izz="2.0712558e-05"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+</robot>
