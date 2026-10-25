@@ -311,8 +311,8 @@ class sausageSpawner(Node):
         # ORIENTACIÓN ALEATORIA LIMITADA
         ########################################################
 
-        MIN_YAW = math.radians(140)
-        MAX_YAW = math.radians(210)
+        MIN_YAW = math.radians(150)
+        MAX_YAW = math.radians(200)
 
         yaw = random.uniform(
             MIN_YAW,
