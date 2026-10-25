@@ -311,7 +311,7 @@ class sausageSpawner(Node):
         # ORIENTACIÓN DE LA SALCHICHA
         ########################################################
 
-        yaw_deg = -90.0
+        yaw_deg = -135.0
         yaw = math.radians(yaw_deg)
 
         ########################################################
