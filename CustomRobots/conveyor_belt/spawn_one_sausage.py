@@ -311,7 +311,7 @@ class sausageSpawner(Node):
         # ORIENTACIÓN ALEATORIA: CENTRADA EN -135°
         ########################################################
 
-        yaw_deg = random.uniform(-150.0, -120.0)
+        yaw_deg = random.uniform(-130.0, -100.0)
         yaw = math.radians(yaw_deg)
 
         ########################################################
