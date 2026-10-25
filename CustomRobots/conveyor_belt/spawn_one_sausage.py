@@ -308,11 +308,10 @@ class sausageSpawner(Node):
         y = self.SPAWN_Y
 
         ########################################################
-        # ORIENTACIÓN ALEATORIA: MÁS VERTICAL
+        # ORIENTACIÓN DE LA SALCHICHA
         ########################################################
 
-        yaw_deg = random.uniform(-70.0, -50.0)
-
+        yaw_deg = -90.0
         yaw = math.radians(yaw_deg)
 
         ########################################################
