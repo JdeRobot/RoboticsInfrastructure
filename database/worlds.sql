@@ -356,7 +356,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
-82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
+82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/mobile_manipulation.launch.py","gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
 84	Vacuums Party House	/opt/jderobot/Launchers/vacuum_party_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
 85	Vacuums Party House with cat	/opt/jderobot/Launchers/vacuum_party_house_cat.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
