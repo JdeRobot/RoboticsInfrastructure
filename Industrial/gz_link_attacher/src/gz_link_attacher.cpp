@@ -119,7 +119,6 @@ void Configure(
       {
         contactLatched = false;
 
-        // Avisar al spawner de que puede reanudar el conveyor
         if (conveyorStoppedForContact)
         {
           std_msgs::msg::Bool contactMsg;
@@ -421,7 +420,6 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << objectModel
       << std::endl;
 
-    // Avisar al spawner de que debe detener el conveyor
     if (!conveyorStoppedForContact)
     {
       std_msgs::msg::Bool contactMsg;
