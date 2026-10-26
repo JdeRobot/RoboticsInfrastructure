@@ -11,11 +11,7 @@ import json
 
 from std_msgs.msg import String, Float64, Bool
 
-from rclpy.qos import (
-    QoSProfile,
-    ReliabilityPolicy,
-    DurabilityPolicy
-)
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 
 
 class sausageSpawner(Node):
@@ -30,10 +26,7 @@ class sausageSpawner(Node):
         self.SPAWN_Z = 0.76
         self.SPAWN_INTERVAL = 50.0
 
-        self.SAUSAGE_SDF = (
-            "/home/ws/src/CustomRobots/"
-            "conveyor_belt/sausage.sdf"
-        )
+        self.SAUSAGE_SDF = "/home/ws/src/CustomRobots/" "conveyor_belt/sausage.sdf"
 
         self.counter = 0
         self.sausages = {}
@@ -41,50 +34,29 @@ class sausageSpawner(Node):
         self.belt_started = False
         self.sausage_contact = False
 
-        self.graspable_pub = self.create_publisher(
-            String,
-            "/graspable_objects",
-            10
-        )
+        self.graspable_pub = self.create_publisher(String, "/graspable_objects", 10)
 
         sausage_info_qos = QoSProfile(
             depth=10,
             reliability=ReliabilityPolicy.RELIABLE,
-            durability=DurabilityPolicy.TRANSIENT_LOCAL
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
         )
 
         self.sausage_info_pub = self.create_publisher(
-            String,
-            "/sausage_info",
-            sausage_info_qos
+            String, "/sausage_info", sausage_info_qos
         )
 
-        self.speed_pub = self.create_publisher(
-            Float64,
-            "/conveyor/speed",
-            10
-        )
+        self.speed_pub = self.create_publisher(Float64, "/conveyor/speed", 10)
 
         self.contact_sub = self.create_subscription(
-            Bool,
-            "/sausage_contact",
-            self.contact_callback,
-            10
+            Bool, "/sausage_contact", self.contact_callback, 10
         )
 
-        self.belt_timer = self.create_timer(
-            0.01,
-            self.update_belt
-        )
+        self.belt_timer = self.create_timer(0.01, self.update_belt)
 
-        self.spawn_timer = self.create_timer(
-            0.1,
-            self.update_spawn
-        )
+        self.spawn_timer = self.create_timer(0.1, self.update_spawn)
 
-        self.get_logger().info(
-            "Waiting 5 seconds for Gazebo..."
-        )
+        self.get_logger().info("Waiting 5 seconds for Gazebo...")
 
         time.sleep(5)
 
@@ -104,41 +76,21 @@ class sausageSpawner(Node):
 
         msg = String()
 
-        msg.data = ",".join(
-            [
-                f"box_{i}"
-                for i in range(self.counter)
-            ]
-        )
+        msg.data = ",".join([f"box_{i}" for i in range(self.counter)])
 
         self.graspable_pub.publish(msg)
 
-        self.get_logger().info(
-            f"Graspable objects -> {msg.data}"
-        )
+        self.get_logger().info(f"Graspable objects -> {msg.data}")
 
-    def publish_sausage_info(
-        self,
-        name,
-        x,
-        y,
-        yaw
-    ):
+    def publish_sausage_info(self, name, x, y, yaw):
 
         msg = String()
 
-        msg.data = json.dumps({
-            "name": name,
-            "x": x,
-            "y": y,
-            "yaw": yaw
-        })
+        msg.data = json.dumps({"name": name, "x": x, "y": y, "yaw": yaw})
 
         self.sausage_info_pub.publish(msg)
 
-        self.get_logger().info(
-            f"Sausage info -> {msg.data}"
-        )
+        self.get_logger().info(f"Sausage info -> {msg.data}")
 
     def set_belt(self, speed):
 
@@ -155,10 +107,7 @@ class sausageSpawner(Node):
 
         self.belt_started = True
 
-        self.get_logger().info(
-            f"Starting conveyor at "
-            f"{self.BELT_SPEED:.2f} m/s"
-        )
+        self.get_logger().info(f"Starting conveyor at " f"{self.BELT_SPEED:.2f} m/s")
 
     def update_belt(self):
 
@@ -185,10 +134,7 @@ class sausageSpawner(Node):
     def spawn_sausage(self):
         name = f"box_{self.counter}"
 
-        x = random.uniform(
-            self.MIN_X,
-            self.MAX_X
-        )
+        x = random.uniform(self.MIN_X, self.MAX_X)
 
         y = self.SPAWN_Y
         yaw_deg = random.uniform(-150.0, -120.0)
@@ -225,41 +171,24 @@ class sausageSpawner(Node):
             f"yaw={yaw:.3f}"
         )
 
-        result = subprocess.run(
-            cmd,
-            check=False,
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(cmd, check=False, capture_output=True, text=True)
 
         if result.returncode != 0:
             self.get_logger().error(
-                f"Failed to spawn {name}: "
-                f"{result.stderr.strip()}"
+                f"Failed to spawn {name}: " f"{result.stderr.strip()}"
             )
             return
 
-        self.sausages[name] = {
-            "x": x,
-            "y": y,
-            "z": self.SPAWN_Z,
-            "yaw": yaw
-        }
+        self.sausages[name] = {"x": x, "y": y, "z": self.SPAWN_Z, "yaw": yaw}
 
         self.counter += 1
 
-        self.publish_sausage_info(
-            name,
-            x,
-            y,
-            yaw
-        )
+        self.publish_sausage_info(name, x, y, yaw)
 
         self.publish_graspable_objects()
 
         self.get_logger().info(
-            f"Spawned {name} successfully. "
-            f"Total sausages: {self.counter}"
+            f"Spawned {name} successfully. " f"Total sausages: {self.counter}"
         )
 
     def destroy_node(self):
@@ -278,13 +207,11 @@ class sausageSpawner(Node):
 
         if self.sausage_contact:
             self.get_logger().info(
-                "Sausage contact detected. "
-                "Stopping the conveyor belt."
+                "Sausage contact detected. " "Stopping the conveyor belt."
             )
         else:
             self.get_logger().info(
-                "Contact deactivated. "
-                "Resuming the conveyor belt."
+                "Contact deactivated. " "Resuming the conveyor belt."
             )
 
 

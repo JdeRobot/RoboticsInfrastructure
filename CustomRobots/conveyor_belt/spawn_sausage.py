@@ -30,15 +30,11 @@ class sausageSpawner(Node):
         self.SPAWN_Y = 0.58
         self.MAX_Y_OFFSET = 0.1
         self.SPAWN_Z = 0.76
-        self.SAUSAGE_SDF = (
-            "/home/ws/src/CustomRobots/"
-            "conveyor_belt/sausage.sdf"
-        )
+        self.SAUSAGE_SDF = "/home/ws/src/CustomRobots/" "conveyor_belt/sausage.sdf"
 
         self.counter = 0
         self.sausages = {}
         self.reference_y = None
-
 
         self.active_sausage = None
         self.sausage_position = None
@@ -52,51 +48,34 @@ class sausageSpawner(Node):
             Pose_V,
             "/world/default/dynamic_pose/info",
             self.update_sausage_position,
-            options
+            options,
         )
 
         self.belt_started = False
         self.belt_stopped = False
 
-        self.graspable_pub = self.create_publisher(
-            String,
-            "/graspable_objects",
-            10
-        )
+        self.graspable_pub = self.create_publisher(String, "/graspable_objects", 10)
 
         sausage_info_qos = QoSProfile(
             depth=10,
             reliability=ReliabilityPolicy.RELIABLE,
-            durability=DurabilityPolicy.TRANSIENT_LOCAL
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
         )
 
         self.sausage_info_pub = self.create_publisher(
-            String,
-            "/sausage_info",
-            sausage_info_qos
+            String, "/sausage_info", sausage_info_qos
         )
 
-        self.speed_pub = self.create_publisher(
-            Float64,
-            "/conveyor/speed",
-            10
-        )
+        self.speed_pub = self.create_publisher(Float64, "/conveyor/speed", 10)
 
-        self.belt_timer = self.create_timer(
-            0.01,
-            self.update_belt
-        )
+        self.belt_timer = self.create_timer(0.01, self.update_belt)
 
-        self.get_logger().info(
-            "Waiting 5 seconds for Gazebo..."
-        )
+        self.get_logger().info("Waiting 5 seconds for Gazebo...")
 
         time.sleep(5)
         self.publish_graspable_objects()
 
-        self.get_logger().info(
-            "Waiting 20 seconds before spawning sausages..."
-        )
+        self.get_logger().info("Waiting 20 seconds before spawning sausages...")
 
         time.sleep(20)
         self.spawn_all_sausages()
@@ -107,8 +86,7 @@ class sausageSpawner(Node):
 
         if (
             self.active_sausage is None
-            or now - self.last_position_sample_time
-            < self.position_sample_period
+            or now - self.last_position_sample_time < self.position_sample_period
         ):
             return
 
@@ -118,7 +96,7 @@ class sausageSpawner(Node):
                 self.sausage_position = {
                     "x": float(pose.position.x),
                     "y": float(pose.position.y),
-                    "z": float(pose.position.z)
+                    "z": float(pose.position.z),
                 }
                 self.get_logger().info(
                     f"{self.active_sausage} position -> "
@@ -132,62 +110,47 @@ class sausageSpawner(Node):
         self.active_sausage = name
         self.sausage_position = None
         self.last_position_sample_time = 0.0
-        self.get_logger().info(
-            f"Tracking sausage: {name}"
-        )
+        self.get_logger().info(f"Tracking sausage: {name}")
 
     def publish_graspable_objects(self):
         msg = String()
-        msg.data = ",".join(
-            [f"box_{i}" for i in range(self.counter)]
-        )
+        msg.data = ",".join([f"box_{i}" for i in range(self.counter)])
         self.graspable_pub.publish(msg)
-        self.get_logger().info(
-            f"Graspable objects -> {msg.data}"
-        )
+        self.get_logger().info(f"Graspable objects -> {msg.data}")
 
     def publish_sausage_info(self, name):
         if name not in self.sausages:
             return
-        
+
         sausage = self.sausages[name]
-        y_difference = abs(
-            sausage["y"] - self.reference_y
-        )
+        y_difference = abs(sausage["y"] - self.reference_y)
 
         msg = String()
-        msg.data = json.dumps({
-            "name": name,
-            "x": sausage["x"],
-            "y": sausage["y"],
-            "y_difference": y_difference
-        })
+        msg.data = json.dumps(
+            {
+                "name": name,
+                "x": sausage["x"],
+                "y": sausage["y"],
+                "y_difference": y_difference,
+            }
+        )
 
         self.sausage_info_pub.publish(msg)
-        self.get_logger().info(
-            f"Sausage info -> {msg.data}"
-        )
+        self.get_logger().info(f"Sausage info -> {msg.data}")
 
     def set_belt(self, speed):
         msg = Float64()
         msg.data = float(speed)
         self.speed_pub.publish(msg)
-        self.get_logger().info(
-            f"/conveyor/speed -> {speed:.2f} m/s"
-        )
+        self.get_logger().info(f"/conveyor/speed -> {speed:.2f} m/s")
 
     def start_belt(self):
         if self.belt_started:
             return
         self.belt_started = True
         self.belt_stopped = False
-        self.get_logger().info(
-            "All sausages spawned."
-        )
-        self.get_logger().info(
-            f"Starting conveyor at "
-            f"{self.BELT_SPEED:.2f} m/s"
-        )
+        self.get_logger().info("All sausages spawned.")
+        self.get_logger().info(f"Starting conveyor at " f"{self.BELT_SPEED:.2f} m/s")
         self.get_logger().info(
             f"Conveyor will stop when "
             f"{self.active_sausage} reaches "
@@ -220,10 +183,7 @@ class sausageSpawner(Node):
         NUM_SAUSAGES = self.NUM_SAUSAGES
         x_positions = []
         while len(x_positions) < NUM_SAUSAGES:
-            x = random.uniform(
-                self.MIN_X,
-                self.MAX_X
-            )
+            x = random.uniform(self.MIN_X, self.MAX_X)
             valid = True
             for p in x_positions:
                 if abs(x - p) < self.MIN_DISTANCE:
@@ -233,38 +193,23 @@ class sausageSpawner(Node):
                 x_positions.append(x)
 
         y_positions = [
-            self.SPAWN_Y - random.uniform(
-                0.0,
-                self.MAX_Y_OFFSET
-            )
+            self.SPAWN_Y - random.uniform(0.0, self.MAX_Y_OFFSET)
             for _ in range(NUM_SAUSAGES)
         ]
 
         y_positions = sorted(y_positions, reverse=True)
-        box_names = [
-            f"box_{i}"
-            for i in range(NUM_SAUSAGES)
-        ]
+        box_names = [f"box_{i}" for i in range(NUM_SAUSAGES)]
 
         random.shuffle(box_names)
-        closest_y_index = min(
-            range(NUM_SAUSAGES),
-            key=lambda i: abs(y_positions[i])
-        )
+        closest_y_index = min(range(NUM_SAUSAGES), key=lambda i: abs(y_positions[i]))
         self.reference_y = y_positions[closest_y_index]
-        self.get_logger().info(
-            f"Reference sausage Y = {self.reference_y:.3f}"
-        )
+        self.get_logger().info(f"Reference sausage Y = {self.reference_y:.3f}")
         for i in range(NUM_SAUSAGES):
             x = x_positions[i]
             y = y_positions[i]
             name = box_names[i]
-            yaw = random.uniform(
-                -math.pi,
-                math.pi
-            )
+            yaw = random.uniform(-math.pi, math.pi)
             cmd = [
-
                 "ros2",
                 "run",
                 "ros_gz_sim",
@@ -287,47 +232,33 @@ class sausageSpawner(Node):
                 self.SAUSAGE_SDF,
             ]
 
-            result = subprocess.run(
-                cmd,
-                check=False,
-                capture_output=True,
-                text=True
-            )
+            result = subprocess.run(cmd, check=False, capture_output=True, text=True)
             if result.returncode != 0:
                 self.get_logger().error(
-                    f"Failed to spawn {name}: "
-                    f"{result.stderr.strip()}"
+                    f"Failed to spawn {name}: " f"{result.stderr.strip()}"
                 )
                 continue
 
-            self.sausages[name] = {
-                "x": x,
-                "y": y
-            }
+            self.sausages[name] = {"x": x, "y": y}
             if i == closest_y_index:
                 self.track_sausage(name)
 
             self.counter += 1
             self.publish_sausage_info(name)
-            self.get_logger().info(
-                f"Spawned {name} "
-                f"at x={x:.3f}, "
-                f"y={y:.3f}"
-            )
+            self.get_logger().info(f"Spawned {name} " f"at x={x:.3f}, " f"y={y:.3f}")
 
         self.publish_graspable_objects()
         if self.counter > 0:
             self.start_belt()
 
-        self.get_logger().info(
-            f"Spawned {self.counter} sausages."
-        )
+        self.get_logger().info(f"Spawned {self.counter} sausages.")
 
     def destroy_node(self):
         if hasattr(self, "speed_pub"):
             self.set_belt(0.0)
 
         super().destroy_node()
+
 
 def main():
     rclpy.init()
@@ -341,6 +272,7 @@ def main():
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
+
 
 if __name__ == "__main__":
     main()

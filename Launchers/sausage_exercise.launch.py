@@ -9,15 +9,11 @@ from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 
 
-
 def generate_launch_description():
 
     world_path = "/opt/jderobot/Scenes/sausage_exercise.world"
-    
-    bridge_config = (
-        "/home/ws/src/CustomRobots/conveyor_belt/"
-        "conveyor_bridge.yaml"
-    )
+
+    bridge_config = "/home/ws/src/CustomRobots/conveyor_belt/" "conveyor_bridge.yaml"
 
     # ==================================================
     # PLUGIN PATHS

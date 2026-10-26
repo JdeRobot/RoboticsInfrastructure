@@ -1,4 +1,3 @@
-
 import os
 import yaml
 from launch import LaunchDescription
@@ -7,11 +6,13 @@ from ament_index_python.packages import get_package_share_directory
 import xacro
 from launch.actions import TimerAction, ExecuteProcess
 
+
 def load_file(package_name, file_path):
     package_path = get_package_share_directory(package_name)
 
     with open(os.path.join(package_path, file_path), "r") as f:
         return f.read()
+
 
 def load_yaml(package_name, file_path):
     package_path = get_package_share_directory(package_name)
@@ -57,9 +58,7 @@ def generate_launch_description():
         },
     ).toxml()
 
-    robot_description = {
-        "robot_description": robot_description_content
-    }
+    robot_description = {"robot_description": robot_description_content}
 
     robot_description_semantic = {
         "robot_description_semantic": load_file(
@@ -74,28 +73,18 @@ def generate_launch_description():
     )
 
     kinematics_yaml = {
-        "robot_description_kinematics":
-            kinematics_yaml["/**"]["ros__parameters"]
+        "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
 
     # Get parameters for the Servo node
-    servo_yaml = load_yaml(
-        "ur3_gripper_moveit_config",
-        "config/ur_servo.yaml"
-    )
+    servo_yaml = load_yaml("ur3_gripper_moveit_config", "config/ur_servo.yaml")
 
-    servo_params = {
-        "moveit_servo": servo_yaml
-    }
+    servo_params = {"moveit_servo": servo_yaml}
 
-    joint_limits_yaml = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/joint_limits.yaml"
-    )
+    joint_limits_yaml = load_yaml("ros2srrc_robots", "ur3/config/joint_limits.yaml")
 
     pilz_cartesian_limits = load_yaml(
-        "ros2srrc_robots",
-        "ur3/config/pilz_cartesian_limits.yaml"
+        "ros2srrc_robots", "ur3/config/pilz_cartesian_limits.yaml"
     )
 
     combined_planning = {
@@ -119,22 +108,23 @@ def generate_launch_description():
         output="screen",
     )
 
-    return LaunchDescription([
-        servo_node,
-
-        TimerAction(
-            period=2.0,
-            actions=[
-                ExecuteProcess(
-                    cmd=[
-                        "ros2",
-                        "service",
-                        "call",
-                        "/servo_node/start_servo",
-                        "std_srvs/srv/Trigger",
-                    ],
-                    output="screen",
-                )
-            ],
-        ),
-    ])
+    return LaunchDescription(
+        [
+            servo_node,
+            TimerAction(
+                period=2.0,
+                actions=[
+                    ExecuteProcess(
+                        cmd=[
+                            "ros2",
+                            "service",
+                            "call",
+                            "/servo_node/start_servo",
+                            "std_srvs/srv/Trigger",
+                        ],
+                        output="screen",
+                    )
+                ],
+            ),
+        ]
+    )
