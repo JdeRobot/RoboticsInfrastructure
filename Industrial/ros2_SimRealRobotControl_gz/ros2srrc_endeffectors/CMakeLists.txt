@@ -45,8 +45,10 @@ install(
     
     robotiq_2f85
     robotiq_hande
-    
-  DESTINATION 
+
+    dobot_gripper
+
+  DESTINATION
     share/${PROJECT_NAME}
 )
 

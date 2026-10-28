@@ -38,6 +38,8 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <thread>
+#include <cmath>
 using namespace std::chrono_literals;
 
 // Include MoveIt!2:
@@ -46,6 +48,7 @@ using namespace std::chrono_literals;
 
 // Include the Robpose ROS2 Message:
 #include "ros2srrc_data/msg/robpose.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
 moveit::planning_interface::MoveGroupInterface move_group_interface_ROB;
@@ -56,6 +59,7 @@ std::string param_ROB_GROUP = "none";
 
 // Declaration of GLOBAL VARIABLE --> ROBOT POSE:
 ros2srrc_data::msg::Robpose POSE; 
+std_msgs::msg::Float64MultiArray JOINTS;
 
 // =============================================================================== //
 //  PARAM -> ROBOT:
@@ -67,6 +71,8 @@ public:
   : Node("ros2srrc_RobPosePUB"), count_(0)
   {
     publisher_ = this->create_publisher<ros2srrc_data::msg::Robpose>("Robpose", 10);
+    // Joint angles in degrees in the same order MoveJ takes them
+    joints_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("Robjoints", 10);
     timer_ = this->create_wall_timer(50ms, std::bind(&RobPose_PUB::timer_callback, this));
   }
 
@@ -90,10 +96,17 @@ private:
 
     publisher_->publish(POSE);
 
+    JOINTS.data = move_group_interface_ROB.getCurrentJointValues();
+    for (auto& value : JOINTS.data) {
+      value = value * 180.0 / M_PI;
+    }
+    joints_publisher_->publish(JOINTS);
+
   }
 
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<ros2srrc_data::msg::Robpose>::SharedPtr publisher_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joints_publisher_;
   size_t count_;
 
 };
@@ -125,9 +138,21 @@ int main(int argc, char **argv)
       param_ROB_GROUP.c_str()
   );
 
+  // MoveGroupInterface gets its own node and executor so the blocking timer callback cannot starve it
+  auto moveit_node = std::make_shared<rclcpp::Node>(
+      "moveit_helper_node_robpose",
+      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
+  );
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(moveit_node);
+  std::thread([&executor]() { executor.spin(); }).detach();
+
   // === MOVEIT ===
   using moveit::planning_interface::MoveGroupInterface;
-  move_group_interface_ROB = MoveGroupInterface(node, param_ROB_GROUP);
+  // The namespace has to go through the options or the client waits on the unnamespaced move_action
+  MoveGroupInterface::Options options(param_ROB_GROUP, MoveGroupInterface::ROBOT_DESCRIPTION, moveit_node->get_namespace());
+  move_group_interface_ROB = MoveGroupInterface(moveit_node, options);
 
   RCLCPP_INFO(
       node->get_logger(),

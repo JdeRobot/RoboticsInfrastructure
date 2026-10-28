@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<sdf version="1.8">
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system">
+    </plugin>
+
+    <!-- Party leftovers the vacuum sucks up -->
+    <plugin filename="vacuum_dirt" name="vacuum_dirt::VacuumDirt">
+      <robot>vacuum_cleaner</robot>
+      <radius>0.15</radius>
+      <floor_z>-0.003</floor_z>
+      <pieces>model://party_house/pieces.txt</pieces>
+    </plugin>
+
+    <!-- Cat that runs from the vacuum and walks paint all over the house -->
+    <plugin filename="cat_walker" name="vacuum_dirt::CatWalker">
+      <actor>cat</actor>
+      <robot>vacuum_cleaner</robot>
+      <map>model://party_house/cat_map.pgm</map>
+      <resolution>0.05</resolution>
+      <origin_x>-4.3</origin_x>
+      <origin_y>-3.85</origin_y>
+      <paint>
+        <model>paint_can_red</model>
+        <spot>0.92 5.38</spot>
+        <color>24</color>
+      </paint>
+      <paint>
+        <model>paint_can_blue</model>
+        <spot>4.62 1.34</spot>
+        <color>26</color>
+      </paint>
+      <paint>
+        <model>paint_can_green</model>
+        <spot>-3.3 -0.55</spot>
+        <color>28</color>
+      </paint>
+      <paint>
+        <model>paint_can_yellow</model>
+        <spot>4.66 -1.42</spot>
+        <color>30</color>
+      </paint>
+      <paint>
+        <model>paint_can_purple</model>
+        <spot>-2.24 5.43</spot>
+        <color>32</color>
+      </paint>
+      <paint>
+        <model>paint_can_orange</model>
+        <spot>4.89 5.25</spot>
+        <color>34</color>
+      </paint>
+      <paint>
+        <model>paint_can_pink</model>
+        <spot>2.13 -2.66</spot>
+        <color>36</color>
+      </paint>
+      <paint>
+        <model>paint_can_cyan</model>
+        <spot>-1.5 -0.58</spot>
+        <color>38</color>
+      </paint>
+    </plugin>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <include>
+      <name>house_int2_harmonic</name>
+      <uri>model://house_int2</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>paint_can_red</name>
+      <uri>model://paint_can_red</uri>
+      <pose>1.27 5.72 0 0 0 -2.371</pose>
+    </include>
+
+    <include>
+      <name>paint_can_blue</name>
+      <uri>model://paint_can_blue</uri>
+      <pose>5.08 1.1 0 0 0 2.661</pose>
+    </include>
+
+    <include>
+      <name>paint_can_green</name>
+      <uri>model://paint_can_green</uri>
+      <pose>-3.72 -0.8 0 0 0 0.537</pose>
+    </include>
+
+    <include>
+      <name>paint_can_yellow</name>
+      <uri>model://paint_can_yellow</uri>
+      <pose>5.05 -1.1 0 0 0 -2.454</pose>
+    </include>
+
+    <include>
+      <name>paint_can_purple</name>
+      <uri>model://paint_can_purple</uri>
+      <pose>-2.67 5.55 0 0 0 -0.272</pose>
+    </include>
+
+    <include>
+      <name>paint_can_orange</name>
+      <uri>model://paint_can_orange</uri>
+      <pose>4.89 5.7 0 0 0 -1.571</pose>
+    </include>
+
+    <include>
+      <name>paint_can_pink</name>
+      <uri>model://paint_can_pink</uri>
+      <pose>2.08 -3.11 0 0 0 1.460</pose>
+    </include>
+
+    <include>
+      <name>paint_can_cyan</name>
+      <uri>model://paint_can_cyan</uri>
+      <pose>-1.5 -1.03 0 0 0 1.571</pose>
+    </include>
+
+    <actor name="cat">
+      <skin>
+        <filename>model://house_cat/meshes/walk.dae</filename>
+      </skin>
+      <animation name="walk">
+        <filename>model://house_cat/meshes/walk.dae</filename>
+      </animation>
+      <animation name="idle">
+        <filename>model://house_cat/meshes/idle.dae</filename>
+      </animation>
+    </actor>
+
+    <light type="directional" name="sun">
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <visualize>false</visualize>
+    </light>
+
+  </world>
+</sdf>

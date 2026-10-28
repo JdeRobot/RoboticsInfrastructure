@@ -36,6 +36,7 @@ foreach(dependency ${PROJECT_DEPENDENCIES})
 endforeach()
 
 add_subdirectory(follow_person_harmonic)
+add_subdirectory(warehouse_delivery)
 
 # ============================================================================
 # Person plugin
@@ -70,6 +71,9 @@ install(
 
     dingo/model
     dingo/launch
+
+    mir100/models
+    mir100/launch
 
     rover_4wd/model
     rover_4wd/launch
@@ -130,6 +134,20 @@ install(
     palletizing/params
     palletizing/config
 
+    xlerobot/models
+    xlerobot/launch
+
+    mmo500/models
+    mmo500/launch
+
+    myagv_mycobot/models
+    myagv_mycobot/launch
+
+    myagv_mecharm/models
+    myagv_mecharm/launch
+
+    warehouse_delivery/models
+
   DESTINATION share/${PROJECT_NAME})
 
 # Palletizing box feeder node (ament_cmake package: install python node explicitly)
@@ -155,16 +173,17 @@ install(PROGRAMS
 #   DESTINATION share/${PROJECT_NAME}/launch)
 
 if(BUILD_TESTING)
-  # find_package(ament_lint_auto REQUIRED)
-  # ament_lint_auto_find_test_dependencies()
-
-  # find_package(launch_testing_ament_cmake REQUIRED)
-  # # Use file(GLOB...) to find all test files matching the pattern
-  # file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test*.py")
-  # # Loop through each test file and add it as a launch test
-  # foreach(test_file ${TEST_FILES})
-  #   add_launch_test(${test_file} TIMEOUT 90)
-  # endforeach()
+  find_package(launch_testing_ament_cmake QUIET)
+  if(launch_testing_ament_cmake_FOUND)
+    # Use file(GLOB...) to find all test files matching the pattern
+    file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test*.py")
+    # Loop through each test file and add it as a launch test
+    foreach(test_file ${TEST_FILES})
+      add_launch_test(${test_file} TIMEOUT 90)
+    endforeach()
+  else()
+    message(STATUS "launch_testing_ament_cmake not found, skipping launch tests.")
+  endif()
 endif()
 
 ament_package()

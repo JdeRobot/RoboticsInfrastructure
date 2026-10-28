@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="mmo500">
+
+  <xacro:arg name="namespace" default=""/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:property name="simulation_controllers" value="$(arg simulation_controllers)"/>
+
+  <xacro:include filename="$(find custom_robots)/models/mmo500/mmo500_common.urdf.xacro"/>
+
+  <xacro:mmo500 namespace="${namespace}" simulation_controllers="${simulation_controllers}"/>
+
+</robot>

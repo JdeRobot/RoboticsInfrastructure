@@ -159,4 +159,26 @@
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}" freq="50"/>
   </xacro:macro>
+
+  <!-- Flat orange disc, visual only, clear of the laser so it stays visible from above -->
+  <xacro:macro name="beacon_marker" params="parent">
+    <material name="beacon_orange">
+      <color rgba="1.0 0.35 0.0 1.0"/>
+    </material>
+
+    <link name="beacon_link">
+      <visual>
+        <geometry>
+          <cylinder radius="0.05" length="0.02"/>
+        </geometry>
+        <material name="beacon_orange"/>
+      </visual>
+    </link>
+
+    <joint name="beacon_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="beacon_link"/>
+      <origin xyz="-0.064 0 0.16" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
 </robot>

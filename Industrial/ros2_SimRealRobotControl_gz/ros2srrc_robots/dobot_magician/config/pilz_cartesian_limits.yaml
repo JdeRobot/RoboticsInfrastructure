@@ -1,0 +1,8 @@
+cartesian_limits:
+  max_trans_vel: 0.15
+  max_trans_acc: 0.15
+  max_trans_dec: 0.15
+  max_rot_vel: 1.0
+
+# Lower than UR3's limits since the Dobot Magician only reaches 320mm,
+# a small fraction of a UR3's working radius.

@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.org/schema">
+
+  <!-- Friction only across the wheel axis so the wheels roll and still slide sideways -->
+  <xacro:macro name="rolling_wheel" params="link">
+    <gazebo reference="${link}">
+      <collision>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.0</mu>
+              <mu2>1.0</mu2>
+              <fdir1 gz:expressed_in="${link}">0 1 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Visuals the laser does not see because it sits inside the chassis -->
+  <xacro:macro name="hidden_from_laser" params="link">
+    <gazebo reference="${link}">
+      <visual>
+        <visibility_flags>1</visibility_flags>
+      </visual>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="velocity" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+        <topic>/${namespace}/cmd_vel</topic>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="odom" params="namespace">
+    <gazebo>
+      <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+        <odom_publish_frequency>50</odom_publish_frequency>
+        <odom_topic>/${namespace}/odom</odom_topic>
+        <dimensions>3</dimensions>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- YDLidar X2 with the range used by the myAGV driver -->
+  <xacro:macro name="gpu_laser" params="link namespace">
+    <gazebo reference="${link}">
+      <sensor name="laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+        <update_rate>10</update_rate>
+        <topic>/${namespace}/scan</topic>
+        <gz_frame_id>${link}</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.12</min>
+            <max>8.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+          <!-- Skips the base visuals around the sensor -->
+          <visibility_mask>4294967294</visibility_mask>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="camera" params="link namespace">
+    <gazebo reference="${link}">
+      <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>15</update_rate>
+        <topic>/${namespace}/camera/image_raw</topic>
+        <gz_frame_id>${link}</gz_frame_id>
+        <camera name="camera">
+          <camera_info_topic>/${namespace}/camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>10.0</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Contact sensor on one finger for gz_link_attacher -->
+  <xacro:macro name="suction_contact" params="link">
+    <gazebo reference="${link}">
+      <sensor name="suction_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>${link}_collision</collision>
+        </contact>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="ros2_control_plugin" params="namespace simulation_controllers">
+    <gazebo>
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <!-- Same namespace as robot_state_publisher -->
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+        <parameters>${simulation_controllers}</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
