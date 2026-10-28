@@ -222,6 +222,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 97	Dobot Suction Cup Pick And Place World	88
 98	myAGV mechArm Warehouse Delivery	89
 99	Ur5 Physical	91
+100	Sausage exercise servo	92
 \.
 
 --
@@ -308,6 +309,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 75	97	54	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
 76	98	55	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 \.
 
 --
@@ -368,6 +370,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 89	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
 90	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
+92	Conveyor	/opt/jderobot/Launchers/sausage_exercise_servo.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise_servo.urdf
 \.
 
 --
@@ -431,6 +434,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 55	myAGV mechArm	/home/ws/src/CustomRobots/myagv_mecharm/launch/myagv_mecharm.launch.py	myagv_mecharm	namespace:=myagv_mecharm	myagv_mecharm/models/myagv_mecharm/myagv_mecharm.urdf.xacro
 56	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 57	Ur5 Physical	/home/ws/src/CustomRobots/robot_arms/launch/ur5_physical.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5_physical.urdf.xacro
+58	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
 \.
 
 --
