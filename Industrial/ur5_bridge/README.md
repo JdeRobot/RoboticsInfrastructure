@@ -18,10 +18,15 @@ description for the chosen model, not the vendored one of the simulation.
 
 ## Quick start
 
-1. On the robot, power it on and release the brakes. On a UR5e switch it to
-   Remote Control (pendant, top right corner). Both robots need the Robotiq
+1. Plug this computer into the robot with a cable and give it a fixed
+   address on the robot network, for example `192.168.0.50/24` for a robot
+   at `192.168.0.4`. `ping` the robot to check it.
+2. On the pendant power the robot on and press START to release the brakes.
+   On a UR5e switch it to Remote Control with the icon at the top right
+   corner, outside the Initialize or Settings screens. The first time enable
+   it in Settings > System > Remote Control. Both robots need the Robotiq
    URCap installed for the gripper, as it usually is.
-2. Start the RoboticsAcademy docker with the robot settings and the ports the
+3. Start the RoboticsAcademy docker with the robot settings and the ports the
    robot connects back to:
 
 ```
@@ -31,10 +36,9 @@ docker run ... \
   jderobot/robotics-academy
 ```
 
-`UR_REVERSE_IP` is this computer's address on the robot network. With
-`--network host` neither it nor the ports are needed.
+`UR_REVERSE_IP` is this computer's address on the robot network.
 
-3. Open pick_place and choose the Ur5 Physical world.
+4. Open pick_place and choose the Ur5 Physical world.
 
 ## Environment variables
 
@@ -49,6 +53,23 @@ docker run ... \
 | `UR_KINEMATICS` | empty | Calibration yaml from `ur_calibration`, empty uses the factory kinematics |
 
 The same names in lowercase are launch arguments that override them.
+
+In Remote Control the pendant locks its speed slider, set it from the docker:
+
+```
+ros2 service call /io_and_status_controller/set_speed_slider \
+  ur_msgs/srv/SetSpeedSliderFraction '{speed_slider_fraction: 0.5}'
+```
+
+## Safety
+
+- MoveIt does not know about the table or anything around the robot, there
+  is no collision model.
+- The pick_place coordinates of the simulation belong to another table, do
+  not run a simulation solution on the real robot.
+- Prefer absolute targets above a minimum height over chains of relative
+  moves, a failed step in a chain can end up against the table.
+- Start with the speed slider low and keep a hand near the emergency stop.
 
 ## Interfaces
 
@@ -105,7 +126,10 @@ and set `UR_KINEMATICS` to that file.
 | Log message | Fix |
 | --- | --- |
 | `Failed to connect to robot on IP ...` | Wrong `UR_ROBOT_IP` or robot not reachable, the driver keeps retrying |
+| `robot in Local mode, switch it to Remote Control on the pendant` | Switch it to Remote Control, the program is sent as soon as it is |
 | `the robot did not start the control program sent from here` | UR5e not in Remote Control, or the robot cannot reach this computer, check `UR_REVERSE_IP` and the published ports |
+| Error `C210A0` on the pendant | The robot is in Local mode, switch it to Remote Control |
+| Remote Control icon greyed out | Leave the Initialize or Settings screen first |
 | `robot powered on with the brakes locked` | Release the brakes on the pendant |
 | `robot stopped, protective stop` | Unlock it on the pendant |
 | `Robotiq gripper not found` | Robotiq URCap not installed or gripper not powered, or set `UR_GRIPPER` |
@@ -114,10 +138,14 @@ and set `UR_KINEMATICS` to that file.
 
 ## Tested
 
+On a real UR5e (PolyScope 5.12.6, reduced safety mode, no gripper): pick_place
+HAL joint and Cartesian moves and a repeated pick and place sequence.
+
 Against the official URSim for e-Series (UR5e, PolyScope 5.26) and CB3 (UR5,
 PolyScope 3.15) with a simulated Robotiq: pick_place HAL moves and gripper,
 both gripper connections, docker behind NAT, power loss and network loss in
 the middle of a move, gripper deactivation and launching with the robot
 powered off. URSim cannot press an emergency stop or trigger a protective
-stop, those use the same recovery as the power loss but were not run. The non headless mode with
-the External Control URCap was not tested.
+stop, those use the same recovery as the power loss but were not run. The non
+headless mode with the External Control URCap and the gripper on a real robot
+were not tested.

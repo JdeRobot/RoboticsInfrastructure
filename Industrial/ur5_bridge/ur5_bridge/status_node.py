@@ -18,6 +18,7 @@ from rclpy.qos import QoSDurabilityPolicy, QoSProfile
 from std_msgs.msg import Bool
 from std_srvs.srv import Trigger
 from ur_dashboard_msgs.msg import RobotMode, SafetyMode
+from ur_dashboard_msgs.srv import IsInRemoteControl
 
 ARM_CONTROLLER = "joint_trajectory_controller"
 
@@ -60,6 +61,7 @@ class StatusNode(Node):
         self.waiting_since = time.monotonic()
         self.warned = False
         self.resending = False
+        self.remote = None
 
         self.switch_client = self.create_client(
             SwitchController, "/controller_manager/switch_controller"
@@ -67,13 +69,23 @@ class StatusNode(Node):
         self.resend_client = self.create_client(
             Trigger, "/io_and_status_controller/resend_robot_program"
         )
+        self.remote_client = self.create_client(
+            IsInRemoteControl, "/dashboard_client/is_in_remote_control"
+        )
 
+        # The driver only publishes on change, a late subscriber needs the last value
         latched = QoSProfile(depth=1, durability=QoSDurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(
-            RobotMode, "/io_and_status_controller/robot_mode", self.on_robot_mode, 10
+            RobotMode,
+            "/io_and_status_controller/robot_mode",
+            self.on_robot_mode,
+            latched,
         )
         self.create_subscription(
-            SafetyMode, "/io_and_status_controller/safety_mode", self.on_safety_mode, 10
+            SafetyMode,
+            "/io_and_status_controller/safety_mode",
+            self.on_safety_mode,
+            latched,
         )
         self.create_subscription(
             Bool,
@@ -169,8 +181,31 @@ class StatusNode(Node):
         if self.ready() and not self.stopped and not self.program_running:
             self.recover()
 
+    def on_remote(self, future):
+        result = future.result()
+        if result is None or not result.success:
+            return
+        was_local = self.remote is False
+        self.remote = result.remote_control
+        if not self.remote and not was_local:
+            self.get_logger().warn(
+                "robot in Local mode, switch it to Remote Control on the pendant"
+            )
+        elif self.remote and was_local:
+            # The program never started in Local, nothing else would send it again
+            self.get_logger().info("robot switched to Remote Control")
+            self.recover()
+
     def check(self):
         stuck = self.robot_mode == RobotMode.RUNNING and not self.program_running
+        if (
+            stuck
+            and self.headless
+            and self.remote_client.service_is_ready()
+        ):
+            # Only e-Series robots answer, CB3 has no Local mode
+            future = self.remote_client.call_async(IsInRemoteControl.Request())
+            future.add_done_callback(self.on_remote)
         if not stuck or self.warned:
             return
         if time.monotonic() - self.waiting_since < PROGRAM_TIMEOUT:
