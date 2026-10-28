@@ -134,19 +134,19 @@ public:
     {
       const double elapsedTime =
         simTime - startTime;
-      else
-      {
-        stopped = true;
-        std::cout
-          << "[BoxMoverPlugin] Han pasado "
-          << STOP_TIME
-          << " segundos."
-          << std::endl;
-        std::cout
-          << "[BoxMoverPlugin] Deteniendo cinta."
-          << std::endl;
-        SetBeltSpeed(0.0);
-      }
+    } 
+    else
+    {
+      stopped = true;
+      std::cout
+        << "[BoxMoverPlugin] Han pasado "
+        << STOP_TIME
+        << " segundos."
+        << std::endl;
+      std::cout
+        << "[BoxMoverPlugin] Deteniendo cinta."
+        << std::endl;
+      SetBeltSpeed(0.0);
     }
   }
   void SetBeltSpeed(double speed)
