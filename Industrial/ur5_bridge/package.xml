@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ur5_bridge</name>
+  <version>0.0.1</version>
+  <description>
+    Pieces that make a real UR5 or UR5e look like the simulated one. The arm
+    runs on the official ur_robot_driver, this package drives the Robotiq
+    gripper, exposes it as the simulated gripper_controller, explains in
+    the log why the arm is not ready and recovers it after a stop.
+  </description>
+  <maintainer email="aquintana.camacho@gmail.com">aquintan</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>control_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>controller_manager_msgs</depend>
+  <depend>ur_dashboard_msgs</depend>
+  <exec_depend>ur_robot_driver</exec_depend>
+  <exec_depend>ur_description</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
