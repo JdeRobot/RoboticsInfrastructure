@@ -223,6 +223,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 98	myAGV mechArm Warehouse Delivery	89
 99	Ur5 Physical	91
 100	Sausage exercise servo	92
+101	Warehouse 1 Nav2 Holo	93
 \.
 
 --
@@ -310,6 +311,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 76	98	55	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
+79	101	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
@@ -360,7 +362,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
-82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
+82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/mobile_manipulation.launch.py","gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
 84	Vacuums Party House	/opt/jderobot/Launchers/vacuum_party_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
 85	Vacuums Party House with cat	/opt/jderobot/Launchers/vacuum_party_house_cat.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
@@ -371,6 +373,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 90	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
 92	Conveyor	/opt/jderobot/Launchers/sausage_exercise_servo.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise_servo.urdf
+93	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
 \.
 
 --

@@ -119,6 +119,11 @@ def launch_setup(context):
     )
 
     # No world transform because planning stays relative to base_footprint
+    map_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        arguments=[x, y, z, R, P, Y, "map", "odom"],
+    )
 
     gz_spawn_entity = Node(
         package="ros_gz_sim",
@@ -156,6 +161,7 @@ def launch_setup(context):
             f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
             f"/{namespace}/front_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
             f"/{namespace}/back_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            f"/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
         ],
         output="screen",
     )
@@ -278,6 +284,7 @@ def launch_setup(context):
         after_joint_state_broadcaster,
         after_arm,
         after_gripper,
+        map_tf,
     ]
 
 

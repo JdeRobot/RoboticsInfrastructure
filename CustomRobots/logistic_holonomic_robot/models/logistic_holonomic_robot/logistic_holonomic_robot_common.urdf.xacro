@@ -282,7 +282,8 @@
         </geometry>
       </visual>
     </link>
-
+    
+    <xacro:laser xyz="0.5 0 0" rpy="0 0 0" name="laser" parent="base" namespace="${namespace}"/>
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}" freq="50"/>
     <xacro:joints topic="joint_state" vel_topic="platform/cmd_vel" namespace="${namespace}"/>
