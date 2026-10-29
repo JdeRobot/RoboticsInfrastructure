@@ -222,6 +222,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 97	Dobot Suction Cup Pick And Place World	88
 98	myAGV mechArm Warehouse Delivery	89
 99	Ur5 Physical	91
+100 Warehouse 1 Nav2 Holo 92
 \.
 
 --
@@ -308,6 +309,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 75	97	54	{{0.0,0.0,0.131305,0.0,0.0,0.0}}
 76	98	55	{{1.0,0.0,0.01,0.0,0.0,0.0}}
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+78	100	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
 --
@@ -342,7 +344,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	rover4wd_warehouse.urdf
 56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	pick_place.urdf
 57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	package_delivery.urdf
-58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
+58	Warehouse 1	/opt/jderobot/Launchers/warehouse1.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse1.urdf
 59	Warehouse 2	/opt/jderobot/Launchers/warehouse2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config"}	ROS2	gz	warehouse2.urdf
 66	Follow Person	/opt/jderobot/Launchers/follow_person_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
 67	Follow Person Teleop	/opt/jderobot/Launchers/follow_person_teleop_harmonic.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_person.config"}	ROS2	gz	hospital.urdf
@@ -368,6 +370,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 89	Warehouse Delivery	/opt/jderobot/Launchers/warehouse_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/warehouse_delivery.config"}	ROS2	gz	warehouse_delivery.urdf
 90	XLeRobot Warehouse	/opt/jderobot/Launchers/xlerobot_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_warehouse.config"}	ROS2	gz	xlerobot_warehouse.urdf
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
+92	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
 \.
 
 --
