@@ -222,7 +222,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 97	Dobot Suction Cup Pick And Place World	88
 98	myAGV mechArm Warehouse Delivery	89
 99	Ur5 Physical	91
-100 Warehouse 1 Nav2 Holo 92
+100	Warehouse 1 Nav2 Holo	92
 \.
 
 --
