@@ -91,6 +91,12 @@ void Configure(
 
   node = std::make_shared<rclcpp::Node>("gz_link_attacher");
 
+  sausageContactPub =
+  node->create_publisher<std_msgs::msg::Bool>(
+    "/sausage_contact",
+    10
+  );
+
   std::cout << "[LinkAttacher] Node created: " << node->get_name() << std::endl;
 
   executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
@@ -124,6 +130,19 @@ void Configure(
       if (!autoAttachEnabled)
       {
         contactLatched = false;
+
+        if (conveyorStoppedForContact)
+        {
+          std_msgs::msg::Bool contactMsg;
+          contactMsg.data = false;
+
+          sausageContactPub->publish(contactMsg);
+          conveyorStoppedForContact = false;
+
+          std::cout
+            << "[LinkAttacher] Conveyor restart requested"
+            << std::endl;
+        }
 
         if (activeJoint != kNullEntity)
         {
@@ -434,6 +453,23 @@ void OnContact(const gz::msgs::Contacts &_msg)
       << objectModel
       << std::endl;
 
+    if (!conveyorStoppedForContact)
+    {
+      std_msgs::msg::Bool contactMsg;
+      contactMsg.data = true;
+
+      sausageContactPub->publish(contactMsg);
+      conveyorStoppedForContact = true;
+
+      std::cout
+        << "[LinkAttacher] Conveyor stop requested"
+        << std::endl;
+    }
+
+    std::cout
+      << "[LinkAttacher] Publicado /sausage_contact = true"
+      << std::endl;
+
     model1 = robotModelName;
     if (!gripperLinkName.empty())
     {
@@ -652,6 +688,7 @@ rclcpp::executors::SingleThreadedExecutor::SharedPtr executor;
 
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr gripperStateSub;
 rclcpp::Subscription<std_msgs::msg::String>::SharedPtr graspableObjectsSub;
+rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr sausageContactPub;
 rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr stowSub;
 
 std::thread rosThread;
@@ -664,6 +701,7 @@ bool autoAttachEnabled = false;
 bool removeJointRequested = false;
 bool contactLatched = false;
 bool createJointRequested = false;
+bool conveyorStoppedForContact = false;
 bool stowRequested = false;
 
 gz::transport::Node gzNode;

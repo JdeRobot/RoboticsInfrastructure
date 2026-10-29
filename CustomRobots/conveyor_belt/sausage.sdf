@@ -19,10 +19,10 @@
       </inertial>
 
       <collision name="collision">
-
+        <pose>0 0.0001 -0.01 0 0 -0.73</pose>
         <geometry>
           <box>
-            <size>0.04 0.12 0.04</size>
+            <size>0.02 0.085 0.02</size>
           </box>
         </geometry>
 
@@ -36,29 +36,23 @@
 
           <friction>
             <ode>
-              <mu>0.1</mu>
-              <mu2>0.1</mu2>
+              <fdir1>0 1 0</fdir1>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
             </ode>
           </friction>
         </surface>
       </collision>
 
       <visual name="visual">
-
         <pose>0 0 -0.02 1.57 0 0</pose>
-
         <geometry>
           <mesh>
             <uri>meshes/sausage.glb</uri>
-
             <scale>0.01 0.01 0.01</scale>
           </mesh>
         </geometry>
-
       </visual>
-
     </link>
-
   </model>
-
 </sdf>
