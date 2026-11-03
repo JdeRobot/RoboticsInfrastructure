@@ -105,9 +105,6 @@ jobs:
           # Give Xvfb and audio config time to initialize
           sleep 3
 
-      - name: add only Harmonic tests to ros package
-        run: sed -i 's|file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/test\*\.py")|file(GLOB TEST_FILES "${RI_ROOT_DIR}/test/harmonic/test_*.py")|' CustomRobots/CMakeLists.txt
-
       - name: Build workspace
         run: |
           source /opt/ros/humble/setup.bash
