@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<robot name="turtlebot3_burger"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="camera" default="false"/>
+  <xacro:arg name="noise_level" default="none"/>
+  <xacro:arg name="namespace" default="turtlebot3"/>
+  <xacro:property name="noise_level" value="$(arg noise_level)"/>
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <xacro:include filename="$(find custom_robots)/models/turtlebot3/turtlebot3_burger_common.urdf.xacro"/>
+
+  <xacro:turtlebot3_burger namespace="${namespace}"/>
+
+  <xacro:if value="$(arg camera)">
+    <xacro:burger_camera namespace="${namespace}"/>
+  </xacro:if>
+
+  <!-- Odometry noise per difficulty (drift std ~ alpha*sqrt(distance)). -->
+  <xacro:if value="${noise_level == 'low'}">
+    <xacro:burger_noise_odom namespace="${namespace}" alpha="0.01"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'med'}">
+    <xacro:burger_noise_odom namespace="${namespace}" alpha="0.05"/>
+  </xacro:if>
+
+  <xacro:if value="${noise_level == 'high'}">
+    <xacro:burger_noise_odom namespace="${namespace}" alpha="0.25"/>
+  </xacro:if>
+</robot>

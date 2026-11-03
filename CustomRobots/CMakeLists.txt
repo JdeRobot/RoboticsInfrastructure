@@ -121,6 +121,7 @@ install(
     marker_visual_loc/models
 
     turtlebot3/urdf
+    turtlebot3/config
 
     laser_mapping/models
 
