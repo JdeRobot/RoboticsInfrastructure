@@ -52,7 +52,7 @@ Launch paths are relative to `CustomRobots/`. Every noise/sensor variant is a ro
 
 The scene is of type `physical`, no simulator runs. The robot launch file brings the real robot topics into ROS2 with the same names as its simulated twin, so the same HAL works on both. Every physical scene uses `physical.launch.py`.
 
-| Robot              | Status | Media | Simulated twin     | Launch file                                          | Scene                     | Connection                                             | Notes                                              |
+| Robot              | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Simulated twin     | Launch file                                          | Scene                     | Connection                                             | Notes                                              |
 | ------------------ | :----: | :---: | ------------------ | ---------------------------------------------------- | ------------------------- | ------------------------------------------------------ | -------------------------------------------------- |
 | UR5 / UR5e         |   ok   | <img src="media/robots/ur5e_physical.jpg" width="160"> | UR5 | robot_arms/launch/ur5_physical.launch.py | Ur5 Physical | Ethernet (`ur_robot_driver`), ports 50001-50004 back to the PC | Tested with a UR5e in the lab, `ur5_bridge` drives the gripper |
 | Dobot Magician     |   ok   | <a href="https://www.youtube.com/watch?v=iZGmwDLkJz8"><img src="media/robots/dobot_magician_physical.jpg" width="160"></a> | Dobot Magician | robot_arms/launch/dobot_magician_physical.launch.py | Dobot Magician Physical | USB serial, host `/dev` mapped into the container | Suction cup, `dobot_magician_bridge` talks to the firmware |
@@ -67,7 +67,7 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 ### Circuits and roads
 
-| Scene               | Status | Media | Launch file                   | Robots                    | Notes |
+| Scene               | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                   | Robots                    | Notes |
 | ------------------- | :----: | :---: | ----------------------------- | ------------------------- | ----- |
 | Simple Circuit      |   ok   | <img src="media/scenes/simple_circuit.jpg" width="160"> | simple_circuit.launch.py      | F1                        |       |
 | Montmelo Circuit    |   ok   | <img src="media/scenes/montmelo_circuit.jpg" width="160"> | montmelo_circuit.launch.py    | F1                        |       |
@@ -87,7 +87,7 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 ### Houses and indoor
 
-| Scene                 | Status | Media | Launch file                         | Robots                          | Notes                       |
+| Scene                 | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                         | Robots                          | Notes                       |
 | --------------------- | :----: | :---: | ----------------------------------- | ------------------------------- | --------------------------- |
 | Small House           |   ok   | <img src="media/scenes/small_house.jpg" width="160"> | small_house.launch.py               | Vacuum cleaner, TurtleBot 3 Burger |                          |
 | Small House Roof      |   ok   | <img src="media/scenes/small_house_roof.jpg" width="160"> | small_house_roof.launch.py          | Vacuum cleaner (camera)         |                             |
@@ -104,7 +104,7 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 ### Warehouses and logistics
 
-| Scene                         | Status | Media | Launch file                             | Robots                                              | Notes                                |
+| Scene                         | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                             | Robots                                              | Notes                                |
 | ----------------------------- | :----: | :---: | --------------------------------------- | --------------------------------------------------- | ------------------------------------ |
 | Warehouse 1                   |   ok   | <img src="media/scenes/warehouse1.jpg" width="160"> | warehouse1.launch.py                    | Logistic Holonomic, Logistic Ackermann, MiR100      |                                      |
 | Warehouse 1 Nav2              |   ok   | <img src="media/scenes/warehouse1.jpg" width="160"> | warehouse1_nav2.launch.py               | Logistic Holonomic                                  | Same world as Warehouse 1, with Nav2 |
@@ -118,7 +118,7 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 ### Drones
 
-| Scene                  | Status | Media | Launch file                         | Robots                          | Notes |
+| Scene                  | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                         | Robots                          | Notes |
 | ---------------------- | :----: | :---: | ----------------------------------- | ------------------------------- | ----- |
 | Rescue People          |   ok   | <img src="media/scenes/rescue_people.jpg" width="160"> | rescue_people.launch.py             | Quadrotor                       |       |
 | Follow Road            |   ok   | <img src="media/scenes/follow_road.jpg" width="160"> | follow_road.launch.py               | Quadrotor                       |       |
@@ -137,7 +137,7 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 ### Industrial
 
-| Scene                | Status | Media | Launch file                  | Robots          | Notes                  |
+| Scene                | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                  | Robots          | Notes                  |
 | -------------------- | :----: | :---: | ---------------------------- | --------------- | ---------------------- |
 | Pick And Place       |   ok   | <a href="https://www.youtube.com/watch?v=6AJ77qydej4"><img src="media/scenes/pick_place.jpg" width="160"></a> | pick_place.launch.py         | UR5             | Reset broken           |
 | Machine Vision       |   ok   | <img src="media/scenes/machine_vision.jpg" width="160"> | machine_vision.launch.py     | UR5 (camera)    | Reset broken           |
