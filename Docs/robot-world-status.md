@@ -128,9 +128,9 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 | Package delivery       |   ok   | <img src="media/scenes/package_delivery.jpg" width="160"> | package_delivery.launch.py          | Quadrotor (magnet)              |       |
 | Drone Hangar           |   ok   | <img src="media/scenes/drone_hangar.jpg" width="160"> | drone_hangar.launch.py              | Quadrotor                       |       |
 | Position Control       |   ok   | <img src="media/scenes/position_control.jpg" width="160"> | position_control.launch.py          | Quadrotor                       |       |
-| Drone Cat Mouse Easy   |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse.launch.py           | 2x Quadrotor                    |       |
-| Drone Cat Mouse Medium |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse_medium.launch.py    | 2x Quadrotor                    |       |
-| Drone Cat Mouse Hard   |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse_hard.launch.py      | 2x Quadrotor                    |       |
+| Drone Cat Mouse Easy   |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse.launch.py           | 2x Quadrotor                    |       |
+| Drone Cat Mouse Medium |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse_medium.launch.py    | 2x Quadrotor                    |       |
+| Drone Cat Mouse Hard   |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse_hard.launch.py      | 2x Quadrotor                    |       |
 | Visual Lander          |   ok   | <img src="media/scenes/visual_lander.jpg" width="160"> | visual_lander.launch.py             | Quadrotor                       |       |
 | Visual Lander Circuit  |   ok   | <img src="media/scenes/visual_lander_circuit.jpg" width="160"> | visual_lander_circuit.launch.py     | Quadrotor                       |       |
 | Follow Turtlebot       |   ok   | <img src="media/scenes/follow_turtlebot.jpg" width="160"> | follow_turtlebot.launch.py          | Quadrotor, TurtleBot 3 Waffle   |       |
@@ -139,28 +139,26 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 | Scene                | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                  | Robots          | Notes                  |
 | -------------------- | :----: | :---: | ---------------------------- | --------------- | ---------------------- |
-| Pick And Place       |   ok   | <a href="https://www.youtube.com/watch?v=6AJ77qydej4"><img src="media/scenes/pick_place.jpg" width="160"></a> | pick_place.launch.py         | UR5             | Reset broken           |
+| Pick And Place       |   ok   | <img src="media/scenes/pick_place.jpg" width="160"> | pick_place.launch.py         | UR5             | Reset broken           |
 | Machine Vision       |   ok   | <img src="media/scenes/machine_vision.jpg" width="160"> | machine_vision.launch.py     | UR5 (camera)    | Reset broken           |
-| Conveyor             |   ok   | <a href="https://www.youtube.com/watch?v=582AF_l46-A"><img src="media/scenes/conveyor.jpg" width="160"></a> | sausage_exercise.launch.py   | UR3 (camera)    |                        |
+| Conveyor             |   ok   | <img src="media/scenes/conveyor.jpg" width="160"> | sausage_exercise.launch.py   | UR3 (camera)    |                        |
 | Conveyor Servo       |   ok   | <img src="media/scenes/conveyor.jpg" width="160"> | sausage_exercise_servo.launch.py | UR3 (camera, servo) | Named `Conveyor` in the database |
-| Palletizing Harmonic |   ok   | <a href="https://www.youtube.com/watch?v=R9nKdS6MKUo"><img src="media/scenes/palletizing.jpg" width="160"></a> | palletizing.launch.py        | UR10 Suction    |                        |
+| Palletizing Harmonic |   ok   | <img src="media/scenes/palletizing.jpg" width="160"> | palletizing.launch.py        | UR10 Suction    |                        |
 | Dobot Pick And Place |   ok   | <img src="media/scenes/dobot_pick_place.jpg" width="160"> | dobot_pick_place.launch.py   | Dobot Magician  |                        |
 | Dobot Suction Cup Pick And Place | ok | <img src="media/scenes/dobot_suction_cup_pick_place.jpg" width="160"> | dobot_suction_cup_pick_place.launch.py | Dobot Magician (suction cup) |  |
 
 ## Showcase videos
 
-Short commercial-style videos of the strongest robot and scene combinations.
+Short videos presenting one robot, or a set of robots, available in RI: the simulated model and the real robot when there is one. Exercise videos go in the RoboticsAcademy exercise status table.
 
-| Video                          | Robots                       | Scene                         | Status | Link |
-| ------------------------------ | ---------------------------- | ----------------------------- | :----: | ---- |
-| Dual-arm warehouse pick and place | XLeRobot                  | XLeRobot Warehouse            |   ok   | [YouTube](https://www.youtube.com/watch?v=1XDqUomPsKM) |
-| Mobile manipulation with workers | myAGV mechArm              | Warehouse Delivery            |  todo  |      |
-| Industrial mobile manipulator  | MMO-500                      | Mobile Manipulation Warehouse |   ok   | [YouTube](https://www.youtube.com/watch?v=bsVp3GUh2f8) |
-| Sim to real logistics          | MiR100 + MiR100 (physical)   | Warehouse 1 + Mir100 Physical |  todo  |      |
-| Drone chases ground robot      | Quadrotor + TurtleBot 3 Waffle | Follow Turtlebot            |  todo  |      |
-| Drone cat and mouse            | 2x Quadrotor                 | Drone Cat Mouse Hard          |   ok   | [YouTube](https://www.youtube.com/watch?v=Jj9ORzrbMdQ) |
-| Drone package delivery         | Quadrotor (magnet)           | Package delivery              |  todo  |      |
-| F1 racing                      | F1                           | Monaco Circuit                |  todo  |      |
-| Autonomous driving in the city | Autonomous car               | City Large                    |  todo  |      |
-| Vacuum party                   | Vacuum cleaner               | Vacuums Party House           |  todo  |      |
-| Industrial palletizing         | UR10 Suction                 | Palletizing                   |   ok   | [YouTube](https://www.youtube.com/watch?v=R9nKdS6MKUo) |
+| Video                                         | Robots                              | Status | Link |
+| --------------------------------------------- | ----------------------------------- | :----: | ---- |
+| Unibotics now supports XLeRobot!              | XLeRobot                            |   ok   | [YouTube](https://www.youtube.com/watch?v=1XDqUomPsKM) |
+| Unibotics now supports MMO500!                | MMO-500                             |   ok   | [YouTube](https://www.youtube.com/watch?v=bsVp3GUh2f8) |
+| Unibotics now supports Dobot Magician!        | Dobot Magician, simulated and physical |  ok  | [YouTube](https://www.youtube.com/watch?v=iZGmwDLkJz8) |
+| Control a Real Industrial Robot (UR3e)        | UR3e (physical)                     |   ok   | [YouTube](https://www.youtube.com/watch?v=PT6SJcvSPZk) |
+| Unibotics with real robots: TurtleBot2        | TurtleBot 2 (physical)              |   ok   | [YouTube](https://www.youtube.com/watch?v=-Fg9ScpHTZw) |
+| myAGV mechArm                                 | myAGV mechArm                       |  todo  |      |
+| MiR100                                        | MiR100, simulated and physical      |  todo  |      |
+| TurtleBot 3 Burger                            | TurtleBot 3 Burger, simulated and physical | todo |   |
+| UR5e                                          | UR5e (physical)                     |  todo  |      |
