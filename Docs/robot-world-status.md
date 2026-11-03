@@ -1,6 +1,6 @@
 # Robots, scenes and worlds in RI
 
-Status: `ok` merged and working, `wip` in an open branch, `todo` pending.
+Status: `ok` merged and working, `wip` in an open branch or not tested yet, `todo` pending.
 
 Previews live in `Docs/media/robots/` and `Docs/media/scenes/` (960x540 JPG). Longer videos go on YouTube and the cell links to them with a GIF as thumbnail.
 
@@ -35,28 +35,31 @@ Launch paths are relative to `CustomRobots/`. Every noise/sensor variant is a ro
 | Robot          | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                                   | Entity                 | Configs         | Sensors                | Actuators                          | Notes                    |
 | -------------- | :----: | :---: | --------------------------------------------- | ---------------------- | --------------- | ---------------------- | ---------------------------------- | ------------------------ |
 | UR5            |   ok   | <img src="media/robots/ur5.jpg" width="160"> | robot_arms/launch/ur5.launch.py               | ur5_robotiq            | sensor=(camera) | camera (optional)      | 6-DOF arm + Robotiq 2F-85 gripper  | Broken Reset             |
-| UR3            |   ok   | <img src="media/robots/ur3.jpg" width="160"> | robot_arms/launch/ur3.launch.py               | ur3_robotiq            | sensor=(camera) | camera (optional)      | 6-DOF arm + Robotiq 2F-85 gripper  |                          |
+| UR3            |   ok   | <img src="media/robots/ur3.jpg" width="160"> | robot_arms/launch/ur3.launch.py               | ur3_robotiq            | sensor=(camera) | camera (optional)      | 6-DOF arm + Robotiq 2F-85 gripper  | MoveIt Servo variant in `ur3_servo.launch.py` |
 | UR10 Suction   |   ok   | <img src="media/robots/ur10_suction.jpg" width="160"> | robot_arms/launch/ur10_suction.launch.py      | ur10_suction           |                 | suction contact sensor | 6-DOF arm + suction gripper        |                          |
-| Dobot Magician |  wip   | <img src="media/robots/dobot_magician.jpg" width="160"> | robot_arms/launch/dobot_magician.launch.py    | dobot_magician_gripper |                 | none                   | 4-DOF arm + parallel gripper       | Branch `dobot-magician`  |
+| Dobot Magician |   ok   | <a href="https://www.youtube.com/watch?v=iZGmwDLkJz8"><img src="media/robots/dobot_magician.jpg" width="160"></a> | robot_arms/launch/dobot_magician.launch.py    | dobot_magician_gripper | end_effector=(gripper/suction_cup) | none   | 4-DOF arm + parallel gripper or suction cup |                |
 
 ### Mobile manipulators
 
 | Robot         | Status | Media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Launch file                                  | Entity        | Configs | Sensors                         | Actuators                                        | Notes                            |
 | ------------- | :----: | :---: | -------------------------------------------- | ------------- | ------- | ------------------------------- | ------------------------------------------------ | -------------------------------- |
-| XLeRobot      |   ok   | <img src="media/robots/xlerobot.jpg" width="160"> | xlerobot/launch/xlerobot.launch.py           | xlerobot      |         | RGB-D head camera, 2x wrist camera | 3-wheel omni base + 2x 5-DOF arm with gripper | MoveIt2                          |
-| MMO-500       |   ok   | <img src="media/robots/mmo500.jpg" width="160"> | mmo500/launch/mmo500.launch.py               | mmo500        |         | 2x laser                        | mecanum base + UR10 + Robotiq 2F-85              | MoveIt2                          |
-| myAGV mechArm |  wip   | <img src="media/robots/myagv_mecharm.jpg" width="160"> | myagv_mecharm/launch/myagv_mecharm.launch.py | myagv_mecharm |         | laser, camera                   | mecanum base + 6-DOF mechArm 270 + adaptive gripper | Branch `mobile-manipulation-agv` |
+| XLeRobot      |   ok   | <a href="https://www.youtube.com/watch?v=1XDqUomPsKM"><img src="media/robots/xlerobot.jpg" width="160"></a> | xlerobot/launch/xlerobot.launch.py           | xlerobot      |         | RGB-D head camera, 2x wrist camera | 3-wheel omni base + 2x 5-DOF arm with gripper | MoveIt2                          |
+| MMO-500       |   ok   | <a href="https://www.youtube.com/watch?v=bsVp3GUh2f8"><img src="media/robots/mmo500.jpg" width="160"></a> | mmo500/launch/mmo500.launch.py               | mmo500        |         | 2x laser                        | mecanum base + UR10 + Robotiq 2F-85              | MoveIt2                          |
+| myAGV mechArm |   ok   | <img src="media/robots/myagv_mecharm.jpg" width="160"> | myagv_mecharm/launch/myagv_mecharm.launch.py | myagv_mecharm |         | laser, camera                   | mecanum base + 6-DOF mechArm 270 + adaptive gripper | MoveIt2                          |
+| myAGV myCobot |   ok   | <img src="media/robots/myagv_mycobot.jpg" width="160"> | myagv_mycobot/launch/myagv_mycobot.launch.py | myagv_mycobot |         | laser, camera                   | mecanum base + 6-DOF myCobot 280 + adaptive gripper | MoveIt2, not used in any scene   |
 
 ## Physical robots
 
-The scene is of type `physical`, no simulator runs. The robot launch file brings the real robot topics into ROS2 with the same names as its simulated twin, so the same HAL works on both.
+The scene is of type `physical`, no simulator runs. The robot launch file brings the real robot topics into ROS2 with the same names as its simulated twin, so the same HAL works on both. Every physical scene uses `physical.launch.py`.
 
-| Robot       | Status | Media | Simulated twin | Launch file                              | Connection                               | Notes                                                    |
-| ----------- | :----: | :---: | -------------- | ---------------------------------------- | ---------------------------------------- | -------------------------------------------------------- |
-| MiR100      |  wip   |       | MiR100         | mir100/launch/mir100_physical.launch.py  | rosbridge websocket to the MiR (ROS1)    | Bridge merged (#810), first real robot test with partner |
-| TurtleBot 2 |  todo  |       | TurtleBot 2    |                                          | USB (Kobuki base + RPLidar)              | `Turtlebot2/Turtlebot2_physical` not wired to RAM        |
-| Tello       |  todo  |       | Quadrotor      |                                          | WiFi                                     | `tello_phy` driver not wired to RAM                      |
-| UR arms     |  todo  |       | UR3 / UR5      |                                          | Ethernet (`ur_robot_driver`)             | Launchers hardcode simulation                            |
+| Robot              | Status | Media | Simulated twin     | Launch file                                          | Scene                     | Connection                                             | Notes                                              |
+| ------------------ | :----: | :---: | ------------------ | ---------------------------------------------------- | ------------------------- | ------------------------------------------------------ | -------------------------------------------------- |
+| UR5 / UR5e         |   ok   | <img src="media/robots/ur5e_physical.jpg" width="160"> | UR5 | robot_arms/launch/ur5_physical.launch.py | Ur5 Physical | Ethernet (`ur_robot_driver`), ports 50001-50004 back to the PC | Tested with a UR5e in the lab, `ur5_bridge` drives the gripper |
+| Dobot Magician     |  wip   |       | Dobot Magician     | robot_arms/launch/dobot_magician_physical.launch.py  | Dobot Magician Physical   | USB serial, host `/dev` mapped into the container      | Bridge tested against a simulated firmware only    |
+| MiR100             |   ok   |       | MiR100             | mir100/launch/mir100_physical.launch.py              | Mir100 Physical           | rosbridge websocket to the MiR (ROS1)                  | First real test OK with image `robotics-academy:mir-beta` |
+| TurtleBot 3 Burger |  wip   | <img src="media/robots/turtlebot3_burger_physical.jpg" width="160"> | TurtleBot 3 Burger | turtlebot3/launch/turtlebot3_burger_physical.launch.py | TurtleBot3 Burger Physical | Robotics Backend on the robot Raspberry Pi, WiFi      | Branch `lyrical-migration`, laser mapping tested   |
+| TurtleBot 2        |  todo  |       | TurtleBot 2        |                                                      |                           | USB (Kobuki base + RPLidar)                            | `Turtlebot2/Turtlebot2_physical` not wired to RAM  |
+| Tello              |  todo  |       | Quadrotor          |                                                      |                           | WiFi                                                   | `tello_phy` driver not wired to RAM                |
 
 ## Scenes
 
@@ -89,7 +92,8 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 | Small House           |   ok   | <img src="media/scenes/small_house.jpg" width="160"> | small_house.launch.py               | Vacuum cleaner, TurtleBot 3 Burger |                          |
 | Small House Roof      |   ok   | <img src="media/scenes/small_house_roof.jpg" width="160"> | small_house_roof.launch.py          | Vacuum cleaner (camera)         |                             |
 | Vacuums House Markers |   ok   | <img src="media/scenes/vacuums_house_markers.jpg" width="160"> | detailed_house.launch.py            | TurtleBot 3 Waffle, TurtleBot 3 Burger |                      |
-| Vacuums Party House   |  wip   | <img src="media/scenes/vacuums_party_house.jpg" width="160"> | vacuum_party_house.launch.py        | Vacuum cleaner                  | Branch `vacuum-gamification` |
+| Vacuums Party House   |   ok   | <img src="media/scenes/vacuums_party_house.jpg" width="160"> | vacuum_party_house.launch.py        | Vacuum cleaner                  |                             |
+| Vacuums Party House with cat | ok | <img src="media/scenes/vacuums_party_house_cat.jpg" width="160"> | vacuum_party_house_cat.launch.py | Vacuum cleaner           |                             |
 | XLeRobot Home         |   ok   | <img src="media/scenes/xlerobot_home.jpg" width="160"> | xlerobot_home.launch.py             | XLeRobot                        |                             |
 | Follow Person         |   ok   | <img src="media/scenes/follow_person.jpg" width="160"> | follow_person_harmonic.launch.py    | TurtleBot 2                     |                             |
 | Follow Person Teleop  |   ok   | <img src="media/scenes/follow_person_teleop.jpg" width="160"> | follow_person_teleop_harmonic.launch.py | TurtleBot 2                 |                             |
@@ -102,14 +106,15 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 | Scene                         | Status | Media | Launch file                             | Robots                                              | Notes                                |
 | ----------------------------- | :----: | :---: | --------------------------------------- | --------------------------------------------------- | ------------------------------------ |
-| Warehouse 1                   |   ok   | <img src="media/scenes/warehouse1.jpg" width="160"> | warehouse1.launch.py                    | Logistic Holonomic, Logistic Ackermann, MiR100, XLeRobot |                                 |
+| Warehouse 1                   |   ok   | <img src="media/scenes/warehouse1.jpg" width="160"> | warehouse1.launch.py                    | Logistic Holonomic, Logistic Ackermann, MiR100      |                                      |
+| Warehouse 1 Nav2              |   ok   | <img src="media/scenes/warehouse1.jpg" width="160"> | warehouse1_nav2.launch.py               | Logistic Holonomic                                  | Same world as Warehouse 1, with Nav2 |
 | Warehouse 2                   |   ok   | <img src="media/scenes/warehouse2.jpg" width="160"> | warehouse2.launch.py                    | Logistic Holonomic, Logistic Ackermann              |                                      |
 | Laser Mapping Warehouse       |   ok   | <img src="media/scenes/laser_mapping_warehouse.jpg" width="160"> | laser_mapping.launch.py                 | Dingo                                               |                                      |
 | Small Laser Mapping Warehouse |   ok   | <img src="media/scenes/small_laser_mapping_warehouse.jpg" width="160"> | small_laser_mapping.launch.py           | Dingo, TurtleBot 3 Burger                           |                                      |
 | Rover 4wd Warehouse           |   ok   | <img src="media/scenes/rover_4wd_warehouse.jpg" width="160"> | rover_4wd_warehouse.launch.py           | Rover 4wd                                           |                                      |
 | Mobile Manipulation Warehouse |   ok   | <img src="media/scenes/mobile_manipulation_warehouse.jpg" width="160"> | mobile_manipulation_warehouse.launch.py | MMO-500                                             |                                      |
-| Warehouse Delivery            |  wip   | <img src="media/scenes/warehouse_delivery.jpg" width="160"> | warehouse_delivery.launch.py            | myAGV mechArm                                       | Branch `mobile-manipulation-agv`     |
-| Mir100 Warehouse              |  todo  |       | mir100_warehouse.launch.py              | MiR100                                              | Branch `mir100-exercise`, on hold    |
+| Warehouse Delivery            |   ok   | <img src="media/scenes/warehouse_delivery.jpg" width="160"> | warehouse_delivery.launch.py            | myAGV mechArm                                       |                                      |
+| XLeRobot Warehouse            |   ok   | <img src="media/scenes/xlerobot_warehouse.jpg" width="160"> | xlerobot_warehouse.launch.py            | XLeRobot                                            |                                      |
 
 ### Drones
 
@@ -123,9 +128,9 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 | Package delivery       |   ok   | <img src="media/scenes/package_delivery.jpg" width="160"> | package_delivery.launch.py          | Quadrotor (magnet)              |       |
 | Drone Hangar           |   ok   | <img src="media/scenes/drone_hangar.jpg" width="160"> | drone_hangar.launch.py              | Quadrotor                       |       |
 | Position Control       |   ok   | <img src="media/scenes/position_control.jpg" width="160"> | position_control.launch.py          | Quadrotor                       |       |
-| Drone Cat Mouse Easy   |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse.launch.py           | 2x Quadrotor                    |       |
-| Drone Cat Mouse Medium |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse_medium.launch.py    | 2x Quadrotor                    |       |
-| Drone Cat Mouse Hard   |   ok   | <img src="media/scenes/drone_cat_mouse.jpg" width="160"> | drone_cat_mouse_hard.launch.py      | 2x Quadrotor                    |       |
+| Drone Cat Mouse Easy   |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse.launch.py           | 2x Quadrotor                    |       |
+| Drone Cat Mouse Medium |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse_medium.launch.py    | 2x Quadrotor                    |       |
+| Drone Cat Mouse Hard   |   ok   | <a href="https://www.youtube.com/watch?v=Jj9ORzrbMdQ"><img src="media/scenes/drone_cat_mouse.jpg" width="160"></a> | drone_cat_mouse_hard.launch.py      | 2x Quadrotor                    |       |
 | Visual Lander          |   ok   | <img src="media/scenes/visual_lander.jpg" width="160"> | visual_lander.launch.py             | Quadrotor                       |       |
 | Visual Lander Circuit  |   ok   | <img src="media/scenes/visual_lander_circuit.jpg" width="160"> | visual_lander_circuit.launch.py     | Quadrotor                       |       |
 | Follow Turtlebot       |   ok   | <img src="media/scenes/follow_turtlebot.jpg" width="160"> | follow_turtlebot.launch.py          | Quadrotor, TurtleBot 3 Waffle   |       |
@@ -134,17 +139,13 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 
 | Scene                | Status | Media | Launch file                  | Robots          | Notes                  |
 | -------------------- | :----: | :---: | ---------------------------- | --------------- | ---------------------- |
-| Pick And Place       |   ok   | <img src="media/scenes/pick_place.jpg" width="160"> | pick_place.launch.py         | UR5             | Reset broken           |
+| Pick And Place       |   ok   | <a href="https://www.youtube.com/watch?v=6AJ77qydej4"><img src="media/scenes/pick_place.jpg" width="160"></a> | pick_place.launch.py         | UR5             | Reset broken           |
 | Machine Vision       |   ok   | <img src="media/scenes/machine_vision.jpg" width="160"> | machine_vision.launch.py     | UR5 (camera)    | Reset broken           |
-| Conveyor             |   ok   | <img src="media/scenes/conveyor.jpg" width="160"> | sausage_exercise.launch.py   | UR3 (camera)    |                        |
-| Palletizing          |   ok   | <img src="media/scenes/palletizing.jpg" width="160"> | palletizing.launch.py        | UR10 Suction    |                        |
-| Dobot Pick And Place |  wip   | <img src="media/scenes/dobot_pick_place.jpg" width="160"> | dobot_pick_place.launch.py   | Dobot Magician  | Branch `dobot-exercise` |
-
-### Physical
-
-| Scene           | Status | Media | Launch file          | Robots           | Notes                    |
-| --------------- | :----: | :---: | -------------------- | ---------------- | ------------------------ |
-| Mir100 Physical |  wip   |       | physical.launch.py   | MiR100 (physical) | Empty scene, real robot |
+| Conveyor             |   ok   | <a href="https://www.youtube.com/watch?v=582AF_l46-A"><img src="media/scenes/conveyor.jpg" width="160"></a> | sausage_exercise.launch.py   | UR3 (camera)    |                        |
+| Conveyor Servo       |   ok   | <img src="media/scenes/conveyor.jpg" width="160"> | sausage_exercise_servo.launch.py | UR3 (camera, servo) | Named `Conveyor` in the database |
+| Palletizing Harmonic |   ok   | <a href="https://www.youtube.com/watch?v=R9nKdS6MKUo"><img src="media/scenes/palletizing.jpg" width="160"></a> | palletizing.launch.py        | UR10 Suction    |                        |
+| Dobot Pick And Place |   ok   | <img src="media/scenes/dobot_pick_place.jpg" width="160"> | dobot_pick_place.launch.py   | Dobot Magician  |                        |
+| Dobot Suction Cup Pick And Place | ok | <img src="media/scenes/dobot_suction_cup_pick_place.jpg" width="160"> | dobot_suction_cup_pick_place.launch.py | Dobot Magician (suction cup) |  |
 
 ## Showcase videos
 
@@ -152,14 +153,14 @@ Short commercial-style videos of the strongest robot and scene combinations.
 
 | Video                          | Robots                       | Scene                         | Status | Link |
 | ------------------------------ | ---------------------------- | ----------------------------- | :----: | ---- |
-| Dual-arm home pick and place   | XLeRobot                     | XLeRobot Home                 |  todo  |      |
+| Dual-arm warehouse pick and place | XLeRobot                  | XLeRobot Warehouse            |   ok   | [YouTube](https://www.youtube.com/watch?v=1XDqUomPsKM) |
 | Mobile manipulation with workers | myAGV mechArm              | Warehouse Delivery            |  todo  |      |
-| Industrial mobile manipulator  | MMO-500                      | Mobile Manipulation Warehouse |  todo  |      |
+| Industrial mobile manipulator  | MMO-500                      | Mobile Manipulation Warehouse |   ok   | [YouTube](https://www.youtube.com/watch?v=bsVp3GUh2f8) |
 | Sim to real logistics          | MiR100 + MiR100 (physical)   | Warehouse 1 + Mir100 Physical |  todo  |      |
 | Drone chases ground robot      | Quadrotor + TurtleBot 3 Waffle | Follow Turtlebot            |  todo  |      |
-| Drone cat and mouse            | 2x Quadrotor                 | Drone Cat Mouse Hard          |  todo  |      |
+| Drone cat and mouse            | 2x Quadrotor                 | Drone Cat Mouse Hard          |   ok   | [YouTube](https://www.youtube.com/watch?v=Jj9ORzrbMdQ) |
 | Drone package delivery         | Quadrotor (magnet)           | Package delivery              |  todo  |      |
 | F1 racing                      | F1                           | Monaco Circuit                |  todo  |      |
 | Autonomous driving in the city | Autonomous car               | City Large                    |  todo  |      |
 | Vacuum party                   | Vacuum cleaner               | Vacuums Party House           |  todo  |      |
-| Industrial palletizing         | UR10 Suction                 | Palletizing                   |  todo  |      |
+| Industrial palletizing         | UR10 Suction                 | Palletizing                   |   ok   | [YouTube](https://www.youtube.com/watch?v=R9nKdS6MKUo) |
