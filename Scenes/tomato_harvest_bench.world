@@ -101,11 +101,5 @@
       </link>
     </model>
 
-    <!-- Crate for the harvested fruit, on the other side of the robot -->
-    <include>
-      <name>harvest_crate_1</name>
-      <uri>model://harvest_crate</uri>
-      <pose>0.7 0.75 0 0 0 0</pose>
-    </include>
   </world>
 </sdf>

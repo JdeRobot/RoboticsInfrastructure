@@ -57,8 +57,6 @@ SECTION_LENGTH = 2.0
 SECTIONS_PER_LINE = 5
 MIN_FRUITS = 3
 RIPE_TRUSSES_PER_LINE = 2
-# Must match the crates in tomato_greenhouse.world
-CRATES = [(5.75, -3.6), (5.75, -1.2), (5.75, 1.2), (5.75, 3.6), (-5.75, -1.2), (-5.75, 3.6)]
 
 # Must match the harvest head of the MMO-500
 ROBOT = "mmo500"
@@ -90,8 +88,11 @@ FINGER_MASK = "0x01"
 LOOSE_MASK = "0x02"
 ALL_MASK = "0xffff"
 
-CRATE_HALF = (0.285, 0.185)
-CRATE_TOP = 0.28
+# Crate carried by the robot, must match mmo500_harvest_gripper.urdf.xacro
+CRATE_CENTER = (0.56, 0.0)
+CRATE_HALF = (0.185, 0.285)
+CRATE_FLOOR = 0.40
+CRATE_HEIGHT = 0.14
 # A falling tomato counts once it has been still for this long
 SETTLE_TIME = 1.0
 SETTLE_MOTION = 0.003
@@ -538,11 +539,9 @@ class HarvestManager(Node):
 
         if layout == "bench":
             bench = read_data("bench_layout.json")
-            self._crates = [tuple(c) for c in bench["crates"]]
             self._make_fruit = lambda: bench_fruit(bench)
         else:
             sections = greenhouse_sections(read_data("tomato_anchors.json")["trusses"])
-            self._crates = CRATES
             self._make_fruit = lambda: greenhouse_fruit(sections)
 
         self._gz = GzWorld(self.get_logger())
@@ -748,7 +747,10 @@ class HarvestManager(Node):
                 self._tear_truss(t)
                 self._grip = None
         elif t.state is State.IN_HAND and not touching:
-            self.get_logger().info(f"{t.name} released")
+            known = self._pose_of(t.entity)
+            where = self._robot_frame(known[0]) if known else None
+            at = f" at ({where[0]:.2f}, {where[1]:.2f}, {where[2]:.2f}) in the robot frame" if where else ""
+            self.get_logger().info(f"{t.name} released{at}")
             self._drop(t, lost=False)
             self._grip = None
         return force
@@ -852,6 +854,9 @@ class HarvestManager(Node):
             if known is None:
                 continue
             pos, quat = known
+            if self._in_crate(pos):
+                self._collect(t)
+                continue
             start = self._settling.get(t.name)
             if start is None or math.dist(pos, start[1]) > SETTLE_MOTION:
                 self._settling[t.name] = (now, pos)
@@ -868,20 +873,40 @@ class HarvestManager(Node):
             t.state = State.SQUASHED
         else:
             self._gz.create(rest, t.rest_sdf(rest, pose))
-            if self._in_crate(pose[:3]) and not t.lost:
-                t.state = State.HARVESTED
-                self._count("harvested")
-                if t.is_green:
-                    self._count("green_in_crate")
-            else:
-                t.state = State.LOST
-                self._count("dropped")
+            t.state = State.LOST
+            self._count("dropped")
         t.entity = rest
 
+    def _collect(self, t: Tomato):
+        # Fruit inside the crate is counted and removed so it costs nothing while the robot drives on
+        self._settling.pop(t.name, None)
+        self._gz.remove(t.entity)
+        if t.state is State.CRUSHED:
+            t.state = State.SQUASHED
+        elif t.lost:
+            t.state = State.LOST
+            self._count("dropped")
+        else:
+            self.get_logger().info(f"{t.name} harvested")
+            t.state = State.HARVESTED
+            self._count("harvested")
+            if t.is_green:
+                self._count("green_in_crate")
+
+    def _robot_frame(self, pos: Vec3) -> Vec3 | None:
+        robot = self._pose_of(ROBOT)
+        if robot is None:
+            return None
+        (rx, ry, rz), (qx, qy, qz, qw) = robot
+        return rotate((-qx, -qy, -qz, qw), (pos[0] - rx, pos[1] - ry, pos[2] - rz))
+
     def _in_crate(self, pos: Vec3) -> bool:
-        x, y, z = pos
-        return z < CRATE_TOP and any(
-            abs(x - cx) < CRATE_HALF[0] and abs(y - cy) < CRATE_HALF[1] for cx, cy in self._crates)
+        local = self._robot_frame(pos)
+        if local is None:
+            return False
+        x, y, z = local
+        return (abs(x - CRATE_CENTER[0]) < CRATE_HALF[0] and abs(y - CRATE_CENTER[1]) < CRATE_HALF[1]
+                and CRATE_FLOOR - 0.02 < z < CRATE_FLOOR + CRATE_HEIGHT)
 
     # Effects and score
 

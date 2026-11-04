@@ -19,6 +19,11 @@
   <!-- Wrist camera above the shaft, rolled half a turn so the image is upright with the tool pointing down -->
   <xacro:property name="harvest_camera_xyz" value="${harvest_shaft_x + 0.02} 0 ${harvest_shaft_z - 0.045}"/>
   <xacro:property name="harvest_camera_tilt" value="-0.1"/>
+  <!-- Harvest crate carried over the front of the base, the harvest manager reads these numbers too -->
+  <xacro:property name="crate_xyz" value="0.56 0 0.40"/>
+  <xacro:property name="crate_inner_x" value="0.37"/>
+  <xacro:property name="crate_inner_y" value="0.57"/>
+  <xacro:property name="crate_height" value="0.14"/>
 
   <xacro:macro name="harvest_box_inertia" params="m x y z">
     <inertial>
@@ -303,6 +308,48 @@
       </joint>
     </ros2_control>
 
+  </xacro:macro>
+
+  <!-- Wooden crate of the greenhouse turned crosswise and half as tall -->
+  <xacro:macro name="harvest_crate" params="parent">
+    <xacro:property name="wall" value="0.015"/>
+    <link name="harvest_crate">
+      <xacro:harvest_box_inertia m="1.5" x="${crate_inner_x}" y="${crate_inner_y}" z="${crate_height}"/>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 ${pi / 2}"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/harvest_crate/meshes/crate.obj" scale="1 1 0.5"/>
+        </geometry>
+        <material name="crate_wood">
+          <color rgba="0.72 0.55 0.36 1"/>
+        </material>
+      </visual>
+      <collision name="crate_bottom">
+        <origin xyz="0 0 ${wall / 2}"/>
+        <geometry><box size="${crate_inner_x + 2 * wall} ${crate_inner_y + 2 * wall} ${wall}"/></geometry>
+      </collision>
+      <collision name="crate_front">
+        <origin xyz="${(crate_inner_x + wall) / 2} 0 ${crate_height / 2}"/>
+        <geometry><box size="${wall} ${crate_inner_y + 2 * wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_back">
+        <origin xyz="${-(crate_inner_x + wall) / 2} 0 ${crate_height / 2}"/>
+        <geometry><box size="${wall} ${crate_inner_y + 2 * wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_left">
+        <origin xyz="0 ${(crate_inner_y + wall) / 2} ${crate_height / 2}"/>
+        <geometry><box size="${crate_inner_x} ${wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_right">
+        <origin xyz="0 ${-(crate_inner_y + wall) / 2} ${crate_height / 2}"/>
+        <geometry><box size="${crate_inner_x} ${wall} ${crate_height}"/></geometry>
+      </collision>
+    </link>
+    <joint name="harvest_crate_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="harvest_crate"/>
+      <origin xyz="${crate_xyz}" rpy="0 0 0"/>
+    </joint>
   </xacro:macro>
 
 </robot>
