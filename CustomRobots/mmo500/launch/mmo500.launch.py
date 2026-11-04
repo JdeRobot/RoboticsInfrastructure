@@ -1,4 +1,5 @@
 import os
+import tempfile
 import xacro
 import yaml
 
@@ -164,10 +165,6 @@ def launch_setup(context):
         f"/{namespace}/back_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
         f"/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
     ]
-    if harvest:
-        bridge_arguments.append(
-            f"/{namespace}/harvest_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
-        )
 
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
@@ -177,15 +174,31 @@ def launch_setup(context):
         output="screen",
     )
 
-    # Images use ros_gz_image because the parameter bridge does not support them
-    camera_image_bridge = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
+    # Lazy bridge so gz only renders a wrist camera image while someone subscribes to it
+    camera_topics = [
+        ("harvest_camera/image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
+        ("harvest_camera/depth_image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
+        ("harvest_camera/camera_info", "sensor_msgs/msg/CameraInfo", "gz.msgs.CameraInfo"),
+    ]
+    camera_config = os.path.join(tempfile.mkdtemp(prefix="mmo500_"), "harvest_camera_bridge.yaml")
+    with open(camera_config, "w") as fh:
+        yaml.safe_dump([
+            {
+                "ros_topic_name": f"/{namespace}/{topic}",
+                "gz_topic_name": f"/{namespace}/{topic}",
+                "ros_type_name": ros_type,
+                "gz_type_name": gz_type,
+                "direction": "GZ_TO_ROS",
+                "lazy": True,
+            }
+            for topic, ros_type, gz_type in camera_topics
+        ], fh)
+    camera_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        name="harvest_camera_bridge",
         namespace=gz_namespace,
-        arguments=[
-            f"/{namespace}/harvest_camera/image",
-            f"/{namespace}/harvest_camera/depth_image",
-        ],
+        parameters=[{"config_file": camera_config}],
         output="screen",
     )
 
@@ -314,7 +327,7 @@ def launch_setup(context):
         )
     )
 
-    bridges = [gz_ros2_bridge, camera_image_bridge] if harvest else [gz_ros2_bridge]
+    bridges = [gz_ros2_bridge, camera_bridge] if harvest else [gz_ros2_bridge]
 
     return [
         robot_state_publisher_node,

@@ -518,6 +518,8 @@ class HarvestManager(Node):
         self._tomatoes: dict[str, Tomato] = {}
         self._trusses: dict[int, list[Tomato]] = {}
         self._grip: Grip | None = None
+        # Tomato inside the cage while the fingers were still open, only it can be gripped
+        self._open_around: Tomato | None = None
         self._settling: dict[str, tuple[float, Vec3]] = {}
         self._splashes: list[tuple[float, str]] = []
         self._detach_pubs = {}
@@ -611,13 +613,15 @@ class HarvestManager(Node):
             self._gz.create_many([(t.name, t.hanging_sdf(t.name)) for t in tomatoes.values()], SPAWN_TIMEOUT)
             self._tomatoes, self._trusses = tomatoes, trusses
             self._grip = None
+            self._open_around = None
             self._settling, self._splashes, self._detach_pubs = {}, [], {}
             self._score = new_score()
             self._publish_score()
             self.get_logger().info(f"{len(tomatoes)} tomatoes hanging")
 
     def _rules_loop(self):
-        while not self._stop.wait(STEP_PERIOD):
+        # Stops as soon as ROS shuts down so nothing is published on a dead context
+        while not self._stop.wait(STEP_PERIOD) and rclpy.ok():
             # A restart in progress owns the world so this step is skipped
             if not self._ops.acquire(blocking=False):
                 continue
@@ -668,6 +672,13 @@ class HarvestManager(Node):
         if self._grip is None:
             t = self._tomato_in_cage(tcp, axis)
             if t is None:
+                self._open_around = None
+                return 0.0
+            if self._finger_ref < t.contact_angle:
+                self._open_around = t
+                return 0.0
+            if self._open_around is not t:
+                # Fingers that closed somewhere else only bump into the fruit
                 return 0.0
             self._grip = Grip(t, tcp, self._twist)
 
@@ -712,7 +723,7 @@ class HarvestManager(Node):
 
     def _tomato_in_cage(self, tcp: Vec3, axis: Vec3) -> Tomato | None:
         for t in self._tomatoes.values():
-            if t.state is not State.HANGING or self._finger_ref < t.contact_angle:
+            if t.state is not State.HANGING:
                 continue
             d = [t.center[i] - tcp[i] for i in range(3)]
             along = sum(d[i] * axis[i] for i in range(3))
