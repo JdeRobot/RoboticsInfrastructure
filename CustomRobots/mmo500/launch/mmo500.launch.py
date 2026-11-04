@@ -102,6 +102,22 @@ def launch_setup(context):
         },
     }
 
+    # The harvest head sticks out sideways and straight PTP moves keep hitting the arm, OMPL plans around it
+    if harvest:
+        planning_pipelines_config["default_planning_pipeline"] = "ompl"
+        planning_pipelines_config["ompl"] = {
+            "planning_plugin": "ompl_interface/OMPLPlanner",
+            "request_adapters": " ".join([
+                "default_planner_request_adapters/AddTimeOptimalParameterization",
+                "default_planner_request_adapters/FixWorkspaceBounds",
+                "default_planner_request_adapters/FixStartStateBounds",
+                "default_planner_request_adapters/FixStartStateCollision",
+                "default_planner_request_adapters/FixStartStatePathConstraints",
+            ]),
+            "start_state_max_bounds_error": 0.1,
+            **ompl_planning,
+        }
+
     joint_limits_yaml = load_yaml("mmo500_moveit_config", "config/joint_limits.yaml")
     pilz_cartesian_limits = load_yaml(
         "mmo500_moveit_config", "config/pilz_cartesian_limits.yaml"
