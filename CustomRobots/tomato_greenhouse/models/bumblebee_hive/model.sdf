@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Bumblebee pollination hive on a stand -->
+<sdf version="1.9">
+  <model name="bumblebee_hive">
+    <static>true</static>
+    <link name="link">
+      <collision name="stand">
+        <pose>0 0 0.72 0 0 0</pose>
+        <geometry><box><size>0.34 0.28 1.44</size></box></geometry>
+      </collision>
+      <visual name="visual">
+        <geometry><mesh><uri>model://bumblebee_hive/meshes/hive.obj</uri></mesh></geometry>
+        <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+            <pbr><metal><albedo_map>model://bumblebee_hive/materials/textures/palette.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

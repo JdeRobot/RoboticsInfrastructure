@@ -224,6 +224,8 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 99	Ur5 Physical	91
 100	Sausage exercise servo	92
 101	Warehouse 1 Nav2 Holo	93
+102	MMO-500 Tomato Greenhouse	94
+103	MMO-500 Tomato Harvest Bench	95
 \.
 
 --
@@ -312,6 +314,8 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 79	101	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+80	102	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
+81	103	59	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 \.
 
 --
@@ -374,6 +378,8 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
 92	Conveyor	/opt/jderobot/Launchers/sausage_exercise_servo.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise_servo.urdf
 93	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
+94	Tomato Greenhouse	/opt/jderobot/Launchers/tomato_greenhouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse.config"}	ROS2	gz	tomato_greenhouse.urdf
+95	Tomato Harvest Bench	/opt/jderobot/Launchers/tomato_harvest_bench.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_harvest_bench.config"}	ROS2	gz	tomato_harvest_bench.urdf
 \.
 
 --
@@ -438,6 +444,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 56	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 57	Ur5 Physical	/home/ws/src/CustomRobots/robot_arms/launch/ur5_physical.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5_physical.urdf.xacro
 58	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
+59	MMO-500 Harvester	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500 end_effector:=harvest	mmo500/models/mmo500/mmo500.urdf.xacro
 \.
 
 --

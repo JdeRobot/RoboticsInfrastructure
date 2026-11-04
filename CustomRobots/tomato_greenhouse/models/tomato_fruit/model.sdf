@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- Reference tomato, the harvest manager builds each one with its own size and color -->
+<sdf version="1.9">
+  <model name="tomato_fruit">
+    <link name="fruit">
+      <inertial><mass>0.12</mass><inertia><ixx>4e-5</ixx><iyy>4e-5</iyy><izz>4e-5</izz></inertia></inertial>
+      <collision name="collision">
+        <geometry><ellipsoid><radii>0.032 0.032 0.027</radii></ellipsoid></geometry>
+      </collision>
+      <visual name="visual">
+        <geometry><ellipsoid><radii>0.032 0.032 0.027</radii></ellipsoid></geometry>
+        <material><ambient>0.8 0.08 0.05 1</ambient><diffuse>0.8 0.08 0.05 1</diffuse><specular>0.6 0.6 0.6 1</specular></material>
+      </visual>
+      <visual name="calyx">
+        <pose>0 0 0.026 0 0 0</pose>
+        <geometry><mesh><uri>model://tomato_fruit/meshes/calyx.obj</uri><scale>0.018 0.018 0.018</scale></mesh></geometry>
+        <material><ambient>0.2 0.4 0.1 1</ambient><diffuse>0.2 0.4 0.1 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

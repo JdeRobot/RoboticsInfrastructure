@@ -148,6 +148,8 @@ install(
 
     warehouse_delivery/models
 
+    tomato_greenhouse/models
+
   DESTINATION share/${PROJECT_NAME})
 
 # Palletizing box feeder node (ament_cmake package: install python node explicitly)

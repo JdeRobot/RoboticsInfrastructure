@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="greenhouse_floor">
+    <static>true</static>
+    <link name="link">
+      <collision name="ground">
+        <geometry><plane><normal>0 0 1</normal><size>120 120</size></plane></geometry>
+        <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+      </collision>
+      <visual name="peat">
+        <geometry><mesh><uri>model://greenhouse_floor/meshes/peat.obj</uri></mesh></geometry>
+        <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+            <pbr><metal><albedo_map>model://greenhouse_floor/materials/textures/peat.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+      </visual>
+      <visual name="grass">
+        <geometry><mesh><uri>model://greenhouse_floor/meshes/grass.obj</uri></mesh></geometry>
+        <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+            <pbr><metal><albedo_map>model://greenhouse_floor/materials/textures/grass.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

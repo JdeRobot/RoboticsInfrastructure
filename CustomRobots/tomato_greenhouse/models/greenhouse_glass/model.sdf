@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- Roofless glass greenhouse that encloses the whole world -->
+<sdf version="1.9">
+  <model name="greenhouse_glass">
+    <static>true</static>
+    <link name="link">
+      <collision name="east_wall">
+        <pose>8.5 0 2.0 0 0 1.5708</pose>
+        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
+      </collision>
+      <collision name="west_wall">
+        <pose>-8.5 0 2.0 0 0 1.5708</pose>
+        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
+      </collision>
+      <collision name="north_wall">
+        <pose>0 6.0 2.0 0 0 0.0000</pose>
+        <geometry><box><size>17.24 0.12 4.0</size></box></geometry>
+      </collision>
+      <collision name="south_wall">
+        <pose>0 -6.0 2.0 0 0 0.0000</pose>
+        <geometry><box><size>17.24 0.12 4.0</size></box></geometry>
+      </collision>
+      <visual name="frame">
+        <geometry><mesh><uri>model://greenhouse_glass/meshes/frame.obj</uri></mesh></geometry>
+        <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+            <pbr><metal><albedo_map>model://greenhouse_glass/materials/textures/palette.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+      </visual>
+      <visual name="east_glass">
+        <pose>8.5 0 2.25 0 0 1.5708</pose>
+        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
+        <transparency>0.82</transparency>
+        <cast_shadows>false</cast_shadows>
+        <material>
+          <ambient>0.75 0.88 0.92 1</ambient>
+          <diffuse>0.75 0.88 0.92 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+        </material>
+      </visual>
+      <visual name="west_glass">
+        <pose>-8.5 0 2.25 0 0 1.5708</pose>
+        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
+        <transparency>0.82</transparency>
+        <cast_shadows>false</cast_shadows>
+        <material>
+          <ambient>0.75 0.88 0.92 1</ambient>
+          <diffuse>0.75 0.88 0.92 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+        </material>
+      </visual>
+      <visual name="north_glass">
+        <pose>0 6.0 2.25 0 0 0.0000</pose>
+        <geometry><box><size>17.00 0.012 3.50</size></box></geometry>
+        <transparency>0.82</transparency>
+        <cast_shadows>false</cast_shadows>
+        <material>
+          <ambient>0.75 0.88 0.92 1</ambient>
+          <diffuse>0.75 0.88 0.92 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+        </material>
+      </visual>
+      <visual name="south_glass">
+        <pose>0 -6.0 2.25 0 0 0.0000</pose>
+        <geometry><box><size>17.00 0.012 3.50</size></box></geometry>
+        <transparency>0.82</transparency>
+        <cast_shadows>false</cast_shadows>
+        <material>
+          <ambient>0.75 0.88 0.92 1</ambient>
+          <diffuse>0.75 0.88 0.92 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

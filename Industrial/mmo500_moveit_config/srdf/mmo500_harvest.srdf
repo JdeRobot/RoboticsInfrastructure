@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="mmo500">
+
+  <!-- No virtual joint so planning stays relative to base_footprint while the base drives -->
+
+  <group name="ur10_manipulator">
+    <chain base_link="ur10_base_link" tip_link="gripper_tcp"/>
+  </group>
+
+  <group name="harvest_gripper">
+    <joint name="harvest_finger_1_joint"/>
+    <joint name="harvest_finger_2_joint"/>
+    <joint name="harvest_finger_3_joint"/>
+  </group>
+
+  <end_effector name="gripper" parent_link="gripper_tcp" group="harvest_gripper" parent_group="ur10_manipulator"/>
+
+  <group_state name="home" group="ur10_manipulator">
+    <joint name="ur10_shoulder_pan_joint" value="1.5708"/>
+    <joint name="ur10_shoulder_lift_joint" value="-2.75"/>
+    <joint name="ur10_elbow_joint" value="2.67"/>
+    <joint name="ur10_wrist_1_joint" value="-1.5708"/>
+    <joint name="ur10_wrist_2_joint" value="-1.5708"/>
+    <joint name="ur10_wrist_3_joint" value="0"/>
+  </group_state>
+
+  <group_state name="GripperOpen" group="harvest_gripper">
+    <joint name="harvest_finger_1_joint" value="0.0"/>
+  </group_state>
+
+  <group_state name="GripperClose" group="harvest_gripper">
+    <joint name="harvest_finger_1_joint" value="0.20"/>
+  </group_state>
+
+  <disable_collisions link1="base_link" link2="cabinet_link" reason="Rigid"/>
+  <disable_collisions link1="base_link" link2="ur10_base_link_inertia" reason="Rigid"/>
+  <disable_collisions link1="base_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="base_link" link2="wheel_back_left_link" reason="Never"/>
+  <disable_collisions link1="base_link" link2="wheel_back_right_link" reason="Never"/>
+  <disable_collisions link1="base_link" link2="wheel_front_left_link" reason="Never"/>
+  <disable_collisions link1="base_link" link2="wheel_front_right_link" reason="Never"/>
+  <disable_collisions link1="cabinet_link" link2="ur10_base_link_inertia" reason="Rigid"/>
+  <disable_collisions link1="cabinet_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_base_link_inertia" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_forearm_link" link2="ur10_wrist_1_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_shoulder_link" link2="ur10_upper_arm_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_upper_arm_link" link2="ur10_forearm_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_wrist_1_link" link2="ur10_wrist_2_link" reason="Adjacent"/>
+  <disable_collisions link1="ur10_wrist_1_link" link2="ur10_wrist_3_link" reason="Never"/>
+  <disable_collisions link1="ur10_wrist_2_link" link2="ur10_wrist_3_link" reason="Adjacent"/>
+  <disable_collisions link1="wheel_back_left_link" link2="cabinet_link" reason="Never"/>
+  <disable_collisions link1="wheel_back_left_link" link2="ur10_base_link_inertia" reason="Never"/>
+  <disable_collisions link1="wheel_back_left_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="wheel_back_left_link" link2="wheel_back_right_link" reason="Never"/>
+  <disable_collisions link1="wheel_back_right_link" link2="cabinet_link" reason="Never"/>
+  <disable_collisions link1="wheel_back_right_link" link2="ur10_base_link_inertia" reason="Never"/>
+  <disable_collisions link1="wheel_back_right_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="wheel_front_left_link" link2="cabinet_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_left_link" link2="ur10_base_link_inertia" reason="Never"/>
+  <disable_collisions link1="wheel_front_left_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="wheel_front_left_link" link2="wheel_back_left_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_left_link" link2="wheel_back_right_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_left_link" link2="wheel_front_right_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_right_link" link2="cabinet_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_right_link" link2="ur10_base_link_inertia" reason="Never"/>
+  <disable_collisions link1="wheel_front_right_link" link2="ur10_shoulder_link" reason="Adjacent"/>
+  <disable_collisions link1="wheel_front_right_link" link2="wheel_back_left_link" reason="Never"/>
+  <disable_collisions link1="wheel_front_right_link" link2="wheel_back_right_link" reason="Never"/>
+
+  <!-- Harvest head -->
+  <disable_collisions link1="harvest_mount" link2="harvest_spindle" reason="Adjacent"/>
+  <disable_collisions link1="harvest_mount" link2="harvest_finger_1" reason="Never"/>
+  <disable_collisions link1="harvest_mount" link2="harvest_finger_2" reason="Never"/>
+  <disable_collisions link1="harvest_mount" link2="harvest_finger_3" reason="Never"/>
+  <disable_collisions link1="harvest_spindle" link2="harvest_finger_1" reason="Adjacent"/>
+  <disable_collisions link1="harvest_spindle" link2="harvest_finger_2" reason="Adjacent"/>
+  <disable_collisions link1="harvest_spindle" link2="harvest_finger_3" reason="Adjacent"/>
+  <disable_collisions link1="harvest_finger_1" link2="harvest_finger_2" reason="Never"/>
+  <disable_collisions link1="harvest_finger_1" link2="harvest_finger_3" reason="Never"/>
+  <disable_collisions link1="harvest_finger_2" link2="harvest_finger_3" reason="Never"/>
+  <disable_collisions link1="harvest_mount" link2="ur10_wrist_1_link" reason="Never"/>
+  <disable_collisions link1="harvest_mount" link2="ur10_wrist_2_link" reason="Never"/>
+  <disable_collisions link1="harvest_mount" link2="ur10_wrist_3_link" reason="Adjacent"/>
+  <disable_collisions link1="harvest_spindle" link2="ur10_wrist_1_link" reason="Never"/>
+  <disable_collisions link1="harvest_spindle" link2="ur10_wrist_2_link" reason="Never"/>
+  <disable_collisions link1="harvest_spindle" link2="ur10_wrist_3_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_1" link2="ur10_wrist_1_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_1" link2="ur10_wrist_2_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_1" link2="ur10_wrist_3_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_2" link2="ur10_wrist_1_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_2" link2="ur10_wrist_2_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_2" link2="ur10_wrist_3_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_3" link2="ur10_wrist_1_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_3" link2="ur10_wrist_2_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_3" link2="ur10_wrist_3_link" reason="Never"/>
+
+  <!-- Wrist camera -->
+  <disable_collisions link1="harvest_mount" link2="harvest_camera_link" reason="Adjacent"/>
+  <disable_collisions link1="harvest_spindle" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_1" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_2" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="harvest_finger_3" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="ur10_wrist_3_link" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="ur10_wrist_2_link" link2="harvest_camera_link" reason="Never"/>
+  <disable_collisions link1="ur10_wrist_1_link" link2="harvest_camera_link" reason="Never"/>
+
+</robot>

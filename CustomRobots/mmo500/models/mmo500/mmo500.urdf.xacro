@@ -7,8 +7,11 @@
   <xacro:arg name="simulation_controllers" default=""/>
   <xacro:property name="simulation_controllers" value="$(arg simulation_controllers)"/>
 
+  <!-- robotiq is the 2F-85 gripper, harvest the three finger fruit picking head -->
+  <xacro:arg name="end_effector" default="robotiq"/>
+
   <xacro:include filename="$(find custom_robots)/models/mmo500/mmo500_common.urdf.xacro"/>
 
-  <xacro:mmo500 namespace="${namespace}" simulation_controllers="${simulation_controllers}"/>
+  <xacro:mmo500 namespace="${namespace}" simulation_controllers="${simulation_controllers}" end_effector="$(arg end_effector)"/>
 
 </robot>

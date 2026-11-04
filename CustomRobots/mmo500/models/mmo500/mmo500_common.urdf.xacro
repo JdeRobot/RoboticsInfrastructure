@@ -8,6 +8,7 @@
   <xacro:include filename="$(find custom_robots)/models/ur5/ur_macro.xacro"/>
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro"/>
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.ros2_control.xacro"/>
+  <xacro:include filename="$(find custom_robots)/models/mmo500/mmo500_harvest_gripper.urdf.xacro"/>
 
   <!-- Passive wheels that roll on the floor while VelocityControl drives the base -->
   <xacro:macro name="omni_wheel" params="name xyz yaw">
@@ -64,7 +65,7 @@
     </joint>
   </xacro:macro>
 
-  <xacro:macro name="mmo500" params="namespace simulation_controllers">
+  <xacro:macro name="mmo500" params="namespace simulation_controllers end_effector:=robotiq">
 
     <link name="base_footprint"/>
 
@@ -143,38 +144,44 @@
       <origin xyz="0.133 0 0.416" rpy="0 0 -1.5708"/>
     </xacro:ur_robot>
 
-    <link name="robotiq_coupler">
-      <visual>
-        <geometry>
-          <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
-        </geometry>
-      </visual>
-      <collision>
-        <geometry>
-          <cylinder radius="0.04" length="0.015"/>
-        </geometry>
-      </collision>
-    </link>
+    <xacro:if value="${end_effector == 'harvest'}">
+      <xacro:harvest_gripper parent="ur10_tool0" namespace="${namespace}"/>
+    </xacro:if>
 
-    <joint name="robotiq_coupler_joint" type="fixed">
-      <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}"/>
-      <parent link="ur10_tool0"/>
-      <child link="robotiq_coupler"/>
-    </joint>
+    <xacro:if value="${end_effector == 'robotiq'}">
+      <link name="robotiq_coupler">
+        <visual>
+          <geometry>
+            <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl"/>
+          </geometry>
+        </visual>
+        <collision>
+          <geometry>
+            <cylinder radius="0.04" length="0.015"/>
+          </geometry>
+        </collision>
+      </link>
 
-    <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
-      <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
-    </xacro:robotiq_85_gripper>
+      <joint name="robotiq_coupler_joint" type="fixed">
+        <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}"/>
+        <parent link="ur10_tool0"/>
+        <child link="robotiq_coupler"/>
+      </joint>
 
-    <xacro:robotiq_85_ros2_control name="robotiq" prefix="" sim_gz="true" use_fake_hardware="false"/>
+      <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler">
+        <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
+      </xacro:robotiq_85_gripper>
 
-    <!-- Point between the finger pads that MoveIt uses as the arm tip -->
-    <link name="gripper_tcp"/>
-    <joint name="gripper_tcp_joint" type="fixed">
-      <parent link="ur10_tool0"/>
-      <child link="gripper_tcp"/>
-      <origin xyz="0 0 0.15" rpy="0 0 0"/>
-    </joint>
+      <xacro:robotiq_85_ros2_control name="robotiq" prefix="" sim_gz="true" use_fake_hardware="false"/>
+
+      <!-- Point between the finger pads that MoveIt uses as the arm tip -->
+      <link name="gripper_tcp"/>
+      <joint name="gripper_tcp_joint" type="fixed">
+        <parent link="ur10_tool0"/>
+        <child link="gripper_tcp"/>
+        <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      </joint>
+    </xacro:if>
 
     <xacro:velocity namespace="${namespace}"/>
     <xacro:odom namespace="${namespace}"/>
