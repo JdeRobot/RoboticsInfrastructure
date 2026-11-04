@@ -13,9 +13,8 @@ import json
 import math
 import os
 import random
-import subprocess
+import multiprocessing
 import sys
-import tempfile
 import threading
 import time
 from dataclasses import dataclass, field
@@ -30,8 +29,12 @@ from control_msgs.msg import JointTrajectoryControllerState
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32, String
 
+from gz.msgs10.boolean_pb2 import Boolean
 from gz.msgs10.clock_pb2 import Clock as GzClock
 from gz.msgs10.empty_pb2 import Empty
+from gz.msgs10.entity_factory_pb2 import EntityFactory
+from gz.msgs10.entity_factory_v_pb2 import EntityFactory_V
+from gz.msgs10.entity_pb2 import Entity
 from gz.msgs10.pose_v_pb2 import Pose_V
 from gz.transport13 import Node as GzNode, SubscribeOptions
 
@@ -432,17 +435,45 @@ def read_data(name: str) -> dict:
 
 # gz
 
+def gz_service_worker(conn):
+    """Serves the gz requests of the manager from a process without gz subscriptions."""
+    node = GzNode()
+    while True:
+        job = conn.recv()
+        if job is None:
+            return
+        job_id, service, data, timeout = job
+        if service == "remove":
+            request, req_type = Entity(name=data, type=Entity.MODEL), Entity
+        else:
+            factories = [EntityFactory(sdf=sdf, name=name, allow_renaming=False) for name, sdf in data]
+            if service == "create":
+                request, req_type = factories[0], EntityFactory
+            else:
+                request, req_type = EntityFactory_V(data=factories), EntityFactory_V
+        try:
+            ok, reply = node.request(f"/world/{WORLD}/{service}", request, req_type, Boolean, int(timeout * 1000))
+            conn.send((job_id, bool(ok and reply.data)))
+        except Exception:
+            conn.send((job_id, False))
+
+
 class GzWorld:
     """Spawns and removes models of the running world.
 
-    Calls go through the gz CLI because blocking requests from Python deadlock
-    with the gz subscriptions of the same process.
+    Blocking gz requests deadlock with the gz subscriptions of the same Python
+    process, so they are served by a helper process that has none.
     """
 
     def __init__(self, logger):
         self._logger = logger
-        self._sdf_dir = tempfile.mkdtemp(prefix="tomato_greenhouse_")
         self._counter = 0
+        self._job = 0
+        self._lock = threading.Lock()
+        context = multiprocessing.get_context("spawn")
+        self._conn, child = context.Pipe()
+        self._worker = context.Process(target=gz_service_worker, args=(child,), daemon=True)
+        self._worker.start()
 
     def unique(self, base: str) -> str:
         self._counter += 1
@@ -452,38 +483,38 @@ class GzWorld:
         return self.create_many([(name, sdf)])
 
     def create_many(self, models: list[tuple[str, str]], timeout: float = GZ_TIMEOUT) -> bool:
-        entries = [f"sdf_filename: '{self._write(name, sdf)}', name: '{name}', allow_renaming: false"
-                   for name, sdf in models]
-        if len(entries) == 1:
-            ok = self._call("create", "gz.msgs.EntityFactory", entries[0], timeout)
-        else:
-            request = " ".join(f"data: {{{entry}}}" for entry in entries)
-            ok = self._call("create_multiple", "gz.msgs.EntityFactory_V", request, timeout)
+        service = "create" if len(models) == 1 else "create_multiple"
+        ok = self._call(service, models, timeout)
         if not ok:
             self._logger.error(f"failed to spawn {', '.join(name for name, _ in models)}")
         return ok
 
     def remove(self, name: str) -> bool:
-        return self._call("remove", "gz.msgs.Entity", f"name: '{name}', type: MODEL", GZ_TIMEOUT)
+        return self._call("remove", name, GZ_TIMEOUT)
 
-    def _write(self, name: str, sdf: str) -> str:
-        path = os.path.join(self._sdf_dir, f"{name}.sdf")
-        with open(path, "w") as fh:
-            fh.write(sdf)
-        return path
+    def close(self):
+        with self._lock:
+            try:
+                self._conn.send(None)
+            except (EOFError, OSError):
+                pass
+        self._worker.join(timeout=2.0)
 
-    def _call(self, service: str, req_type: str, request: str, timeout: float) -> bool:
-        # Timeouts so a call made during a world reset never blocks the manager
-        cmd = [
-            "gz", "service", "-s", f"/world/{WORLD}/{service}",
-            "--reqtype", req_type, "--reptype", "gz.msgs.Boolean",
-            "--timeout", str(int(timeout * 500)), "--req", request,
-        ]
-        try:
-            result = subprocess.run(cmd, check=False, capture_output=True, text=True, timeout=timeout)
-        except subprocess.TimeoutExpired:
+    def _call(self, service: str, data, timeout: float) -> bool:
+        with self._lock:
+            self._job += 1
+            job = self._job
+            try:
+                self._conn.send((job, service, data, timeout))
+                # A reply that arrives after its timeout belongs to an older job and is skipped
+                deadline = time.monotonic() + timeout + 1.0
+                while self._conn.poll(max(0.0, deadline - time.monotonic())):
+                    reply_job, ok = self._conn.recv()
+                    if reply_job == job:
+                        return ok
+            except (EOFError, OSError):
+                self._logger.error("the gz helper process is gone")
             return False
-        return result.returncode == 0 and "data: true" in result.stdout
 
 
 # Manager
@@ -562,6 +593,7 @@ class HarvestManager(Node):
         self._rules_thread.join(timeout=2 * GZ_TIMEOUT)
         for topic in self._gz_topics:
             self._gz_node.unsubscribe(topic)
+        self._gz.close()
         super().destroy_node()
 
     # Inputs
