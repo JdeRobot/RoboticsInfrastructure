@@ -64,9 +64,9 @@ SPINDLE_LINK = "harvest_spindle"
 TWIST_JOINT = "harvest_twist_joint"
 GRIPPER_STATE_TOPIC = f"/{ROBOT}/gripper_controller/controller_state"
 HOLD_OFFSET = 0.205
-# A tomato is inside the finger cage when its center is this close to the grasp point
-CAGE_RADIAL = 0.015
-CAGE_AXIAL = 0.02
+# A tomato is inside the finger cage when its center is this close to the grasp point, the splayed fingers center it
+CAGE_RADIAL = 0.025
+CAGE_AXIAL = 0.03
 # Finger angle where the pads touch a centered tomato, smaller for a bigger one
 CONTACT_AT_ZERO = 0.35
 CONTACT_SLOPE = 8.33
