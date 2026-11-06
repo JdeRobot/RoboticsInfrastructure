@@ -88,5 +88,5 @@
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
       harvest_twist_joint:
-        trajectory: 0.2
+        trajectory: 0.5
         goal: 0.05

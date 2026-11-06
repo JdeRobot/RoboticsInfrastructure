@@ -712,6 +712,8 @@ class HarvestManager(Node):
                 # Fingers that closed somewhere else only bump into the fruit
                 return 0.0
             self._grip = Grip(t, tcp, self._twist)
+            # A static collider would hold the fingers like a post and drag the robot when it pulls or twists
+            self._remove_collider(t)
 
         grip = self._grip
         t = grip.tomato
