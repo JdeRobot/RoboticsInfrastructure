@@ -57,6 +57,8 @@
     action_monitor_rate: 20.0
     allow_partial_joints_goal: false
     allow_integration_in_goal_trajectories: true
+    # Fingers blocked by a tomato lag behind their reference, which sets the grip force, so new commands go on from the reference
+    open_loop_control: true
 
     constraints:
       stopped_velocity_tolerance: 0.01

@@ -78,6 +78,9 @@ def launch_setup(context):
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
+    # KDL restarts from random seeds and the narrowed harvest joint limits need more of them
+    if harvest:
+        kinematics_yaml["robot_description_kinematics"]["ur10_manipulator"]["kinematics_solver_timeout"] = 1.0
 
     moveit_controllers = load_yaml(
         "mmo500_moveit_config", f"config/moveit_controllers{suffix}.yaml"
