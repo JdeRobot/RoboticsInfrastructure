@@ -8,6 +8,7 @@ http:
           - "/manager"
           - "/console"
           - "/py_server"
+          - "/ras"
   routers:
     app-http:
       entryPoints:
@@ -15,6 +16,14 @@ http:
       rule: "PathPrefix(`/manager`)"
       priority: 11
       service: app
+      middlewares:
+        - "api-stripprefix"
+    ras-http:
+      entryPoints:
+        - "http"
+      rule: "PathPrefix(`/ras`)"
+      priority: 10
+      service: ras
       middlewares:
         - "api-stripprefix"
     rviz-http:
@@ -55,6 +64,11 @@ http:
         strategy: "wrr"
         servers:
           - url: "http://127.0.0.1:7165"
+    ras:
+      loadBalancer:
+        strategy: "wrr"
+        servers:
+          - url: "http://127.0.0.1:8000"
     sim:
       loadBalancer:
         strategy: "wrr"

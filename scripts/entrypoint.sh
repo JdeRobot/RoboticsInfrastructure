@@ -67,6 +67,7 @@ if [ $webserver == true ]; then
     runserver="python3 /RoboticsAcademy/manage.py runserver 0.0.0.0:7164"
 fi
 
+source /opt/ros/lyrical/setup.bash
 source /.venv/bin/activate
 
 if [ -d "/RoboticsApplicationManager" ]; then
@@ -78,6 +79,8 @@ else
   runram="python3 /ram_entrypoint.py 0.0.0.0 7163"
 fi
 
+runras="python3 RoboticsApplicationManager/robotics_application_services/main.py"
+
 root="cd /"
 proxy="traefik"
 py_server="pylsp --ws --port 5000"
@@ -86,12 +89,12 @@ py_server="pylsp --ws --port 5000"
 if [ $log == true ]; then
     DATE_TIME=$(date +%F-%H-%M) # FORMAT year-month-date-hours-mins
     mkdir -p /root/.roboticsacademy/log/$DATE_TIME/
-    script -q -c "$root & $proxy & $py_server & $runserver & $runram ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
+    script -q -c "$root & $proxy & $py_server & $runserver & $runram & $runras ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
     cp -r /root/.ros/log/* /root/.roboticsacademy/log/$DATE_TIME
 else
     if [ $debug == true ]; then
       { bash ; }
     else
-      { $root & $proxy & $py_server & $runserver & $runram ; }
+      { $root & $proxy & $py_server & $runserver & $runram & $runras; }
     fi
 fi
