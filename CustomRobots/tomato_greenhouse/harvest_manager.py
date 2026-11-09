@@ -77,7 +77,8 @@ GRIP_MIN = 1.0
 CRUSH_RIPE = 2.5
 CRUSH_GREEN = 5.0
 TWIST_START = math.radians(10)
-TWIST_SNAP = math.radians(80)
+# Each stem snaps after its own number of turns somewhere in this range
+SNAP_TURNS = (1.0, 2.0)
 PULL_DISTANCE = 0.04
 
 # Hanging tomatoes only collide near the head since hundreds of them slow the physics down
@@ -285,6 +286,7 @@ class Tomato:
     r: float
     rz: float
     ripe: float
+    snap_turns: float = sum(SNAP_TURNS) / 2
     state: State = State.HANGING
     lost: bool = False
     # The tomato is respawned as it changes state so its gz entity name changes too
@@ -380,8 +382,8 @@ def bench_fruit(bench: dict) -> Fruit:
     tomatoes, trusses = {}, {}
     for truss_id, truss in enumerate(bench["trusses"]):
         trusses[truss_id] = []
-        for j, (r, ripe) in enumerate(truss["fruit"]):
-            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * 0.85, ripe)
+        for j, (r, ripe, turns) in enumerate(truss["fruit"]):
+            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * 0.85, ripe, turns)
             tomatoes[t.name] = t
             trusses[truss_id].append(t)
     return tomatoes, trusses
@@ -423,7 +425,8 @@ def greenhouse_fruit(sections: dict[tuple[int, int], list[dict]]) -> Fruit:
         for j in range(count):
             ripe = min(1.0, max(0.0, base - 0.03 * j + random.gauss(0.0, 0.05)))
             r = radius * (1.0 - 0.04 * j) * random.uniform(0.92, 1.05)
-            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * random.uniform(0.80, 0.90), ripe)
+            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * random.uniform(0.80, 0.90), ripe,
+                       random.uniform(*SNAP_TURNS))
             tomatoes[t.name] = t
             trusses[truss_id].append(t)
     return tomatoes, trusses
@@ -743,7 +746,7 @@ class HarvestManager(Node):
             if not firm:
                 self._put_back(t)
                 self._grip = None
-            elif twisted >= TWIST_SNAP:
+            elif twisted >= t.snap_turns * 2 * math.pi:
                 self._snap(t)
             elif moved:
                 self._tear_truss(t)
