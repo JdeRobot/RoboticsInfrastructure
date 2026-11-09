@@ -1,0 +1,233 @@
+<?xml version="1.0" ?>
+<robot name="pick_place_sorting">
+
+  <material name="gray">
+    <color rgba="0.7 0.7 0.7 1"/>
+  </material>
+
+  <material name="dark">
+    <color rgba="0.1 0.1 0.1 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <link name="world"/>
+
+  <link name="ground_logo_big">
+    <visual>
+      <origin xyz="-0.5 0 -0.05" rpy="0 -0 1.57"/>
+      <geometry>
+        <box size="10 10 0.1"/>
+      </geometry>
+      <material name="textured">
+        <texture filename="package://pick_place/models/ground_logo_big/materials/textures/RubberMat_logo.png"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="ground_logo_big_joint" type="fixed">
+    <parent link="world"/>
+    <child link="ground_logo_big"/>
+  </joint>
+
+  <link name="pick_table">
+    <visual>
+      <origin xyz="0.6 0 0.73" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/target_table/meshes/target_table.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="pick_table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="pick_table"/>
+  </joint>
+
+  <link name="place_table">
+    <visual>
+      <origin xyz="-0.6 0 0.73" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/target_table/meshes/target_table.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="place_table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="place_table"/>
+  </joint>
+
+  <link name="base_robot">
+    <visual>
+      <origin xyz="0 0 0.45" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.09" length="0.9"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="base_robot_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_robot"/>
+  </joint>
+
+  <link name="red_target">
+    <visual>
+      <origin xyz="-0.4 0.15 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/red_target/meshes/red_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="red_target_joint" type="fixed">
+    <parent link="world"/>
+    <child link="red_target"/>
+  </joint>
+
+  <link name="green_target">
+    <visual>
+      <origin xyz="-0.4 -0.15 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/green_target/meshes/green_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="green_target_joint" type="fixed">
+    <parent link="world"/>
+    <child link="green_target"/>
+  </joint>
+
+  <link name="yellow_target">
+    <visual>
+      <origin xyz="-0.4 -0.45 0.765" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pick_place/models/yellow_target/meshes/yellow_target.dae" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="yellow_target_joint" type="fixed">
+    <parent link="world"/>
+    <child link="yellow_target"/>
+  </joint>
+
+  <link name="overhead_camera">
+    <visual>
+      <origin xyz="0.5 0 1.9" rpy="0 1.5708 0"/>
+      <geometry>
+        <box size="0.06 0.12 0.06"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+  </link>
+
+  <joint name="overhead_camera_joint" type="fixed">
+    <parent link="world"/>
+    <child link="overhead_camera"/>
+  </joint>
+
+  <link name="red_box_1">
+    <visual>
+      <origin xyz="0.45 -0.2 0.786" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <joint name="red_box_1_joint" type="fixed">
+    <parent link="world"/>
+    <child link="red_box_1"/>
+  </joint>
+
+  <link name="red_box_2">
+    <visual>
+      <origin xyz="0.6 0.1 0.786" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <joint name="red_box_2_joint" type="fixed">
+    <parent link="world"/>
+    <child link="red_box_2"/>
+  </joint>
+
+  <link name="yellow_box_1">
+    <visual>
+      <origin xyz="0.55 -0.05 0.786" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link>
+
+  <joint name="yellow_box_1_joint" type="fixed">
+    <parent link="world"/>
+    <child link="yellow_box_1"/>
+  </joint>
+
+  <link name="yellow_box_2">
+    <visual>
+      <origin xyz="0.42 0.22 0.786" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link>
+
+  <joint name="yellow_box_2_joint" type="fixed">
+    <parent link="world"/>
+    <child link="yellow_box_2"/>
+  </joint>
+
+  <link name="green_cylinder_1">
+    <visual>
+      <origin xyz="0.62 -0.22 0.801" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.025" length="0.08"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="green_cylinder_1_joint" type="fixed">
+    <parent link="world"/>
+    <child link="green_cylinder_1"/>
+  </joint>
+
+  <link name="green_cylinder_2">
+    <visual>
+      <origin xyz="0.42 0.02 0.801" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.025" length="0.08"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="green_cylinder_2_joint" type="fixed">
+    <parent link="world"/>
+    <child link="green_cylinder_2"/>
+  </joint>
+
+</robot>

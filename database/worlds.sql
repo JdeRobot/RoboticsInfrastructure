@@ -224,6 +224,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 99	Ur5 Physical	91
 100	Sausage exercise servo	92
 101	Warehouse 1 Nav2 Holo	93
+102	Pick And Place Sorting World	94
 \.
 
 --
@@ -312,6 +313,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 79	101	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+80	102	1	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 \.
 
 --
@@ -374,6 +376,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
 92	Conveyor	/opt/jderobot/Launchers/sausage_exercise_servo.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise_servo.urdf
 93	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
+94	Pick And Place Sorting	/opt/jderobot/Launchers/pick_place_sorting.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_sorting_harmonic.launch.py"}	ROS2	gz	pick_place_sorting.urdf
 \.
 
 --
