@@ -87,6 +87,7 @@
     constraints:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
+      # The shaft lags behind a fast spin so only the final position is checked
       harvest_twist_joint:
-        trajectory: 0.5
+        trajectory: 0.0
         goal: 0.05
