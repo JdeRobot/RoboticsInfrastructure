@@ -76,6 +76,7 @@ joint_limits:
     has_position_limits: true
     has_velocity_limits: true
     max_effort: 56.0
-    max_position: !degrees  180.0
+    # Shifted so the head roll used to look at the plants and to grip stays away from the limits, otherwise the wrist spins a whole turn between them
+    max_position: !degrees  90.0
     max_velocity: !degrees  180.0
-    min_position: !degrees -180.0
+    min_position: !degrees -270.0
