@@ -543,7 +543,7 @@ def tex_material(uri, diffuse="1 1 1 1"):
 def build_rows():
     name = f"greenhouse_tomato_rows{SUFFIX}"
     d = mkmodel(name, textures=not SHARED)
-    # Plants, palette and signs always come from the normal model, the lines depend on the row length
+    # Plants and signs always come from the normal model while the lines depend on the row length
     pal = "model://greenhouse_tomato_rows/materials/textures/palette.png"
     own = f"model://{name}/meshes"
     if not SHARED:

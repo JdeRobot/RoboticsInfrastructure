@@ -589,7 +589,7 @@ class HarvestManager(Node):
         # Tomato inside the cage while the fingers were still open, only it can be gripped
         self._open_around: Tomato | None = None
         self._settling: dict[str, tuple[float, Vec3]] = {}
-        # Crate grid cells already taken, as column, row and layer
+        # Crate grid cells already taken
         self._crate_slots: set[tuple[int, int, int]] = set()
         self._splashes: list[tuple[float, str]] = []
         self._detach_pubs = {}
@@ -666,7 +666,8 @@ class HarvestManager(Node):
             p, q = pose.position, pose.orientation
             poses[pose.name] = ((p.x, p.y, p.z), (q.x, q.y, q.z, q.w))
         with self._lock:
-            self._poses.update(poses)
+            # Every message holds all the dynamic entities, so removed ones drop out here
+            self._poses = poses
             # Links come relative to their model so the spindle is composed with the robot pose
             if ROBOT in poses and SPINDLE_LINK in poses:
                 (mp, mq), (lp, lq) = poses[ROBOT], poses[SPINDLE_LINK]
