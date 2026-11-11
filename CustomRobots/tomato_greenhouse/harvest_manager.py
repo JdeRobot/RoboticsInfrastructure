@@ -53,13 +53,27 @@ STEP_PERIOD = 0.05
 GZ_TIMEOUT = 6.0
 SPAWN_TIMEOUT = 20.0
 
-# Greenhouse trusses that get fruit, one per 2 m section of every plant line and the rest at random
-TRUSS_COUNT = 60
-ROW_START_X = -5.0
+# Trusses that get fruit, spread over the 2 m sections of every plant line and the rest at random
 SECTION_LENGTH = 2.0
-SECTIONS_PER_LINE = 5
 MIN_FRUITS = 3
-RIPE_TRUSSES_PER_LINE = 2
+
+
+@dataclass(frozen=True)
+class Greenhouse:
+    anchors: str
+    truss_count: int
+    row_start_x: float
+    sections_per_line: int
+    # Trusses per line forced ripe and a shift of the ripeness of all the others
+    ripe_per_line: int
+    ripe_bias: float
+
+
+GREENHOUSES = {
+    # Few plants but mostly ripe fruit so there is plenty to harvest
+    "greenhouse": Greenhouse("tomato_anchors.json", 24, -3.0, 3, 3, 0.1),
+    "greenhouse_big": Greenhouse("tomato_anchors_big.json", 60, -5.0, 5, 2, 0.0),
+}
 
 # Must match the harvest head of the MMO-500
 ROBOT = "mmo500"
@@ -97,6 +111,10 @@ CRATE_CENTER = (0.56, 0.0)
 CRATE_HALF = (0.185, 0.285)
 CRATE_FLOOR = 0.40
 CRATE_HEIGHT = 0.14
+CRATE_BOTTOM = 0.015
+# Fruit in the crate is laid out on a grid so it never piles up inside itself, two layers of 4 x 7
+CRATE_SLOT = 0.075
+CRATE_LAYERS = 2
 # A fallen tomato counts and is removed once it has lain still for this long
 SETTLE_TIME = 3.0
 SETTLE_MOTION = 0.003
@@ -132,6 +150,15 @@ class State(Enum):
 FRUIT_COLLISION = """
       <collision name="collision">
         <geometry><ellipsoid><radii>{r:.4f} {r:.4f} {rz:.4f}</radii></ellipsoid></geometry>
+        <surface>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction>
+          <contact><collide_bitmask>{bitmask}</collide_bitmask></contact>
+        </surface>
+      </collision>"""
+
+SPHERE_COLLISION = """
+      <collision name="collision">
+        <geometry><sphere><radius>{r:.4f}</radius></sphere></geometry>
         <surface>
           <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction>
           <contact><collide_bitmask>{bitmask}</collide_bitmask></contact>
@@ -353,15 +380,21 @@ class Tomato:
             bx=r * 0.3, by=-r * 0.25, bz=r * 0.3, br=r * 0.4)
         return sdf_model(name, pose, body, False)
 
-    def _collision(self, bitmask: str) -> str:
+    def crate_sdf(self, name: str, pose: Pose6) -> str:
+        # A sphere is far cheaper to collide than the ellipsoid and the crate may hold dozens
+        return sdf_model(name, pose, self._fruit_link(collision=LOOSE_MASK, sphere=True), False)
+
+    def _collision(self, bitmask: str, sphere: bool = False) -> str:
+        if sphere:
+            return SPHERE_COLLISION.format(r=self.rz, bitmask=bitmask)
         return FRUIT_COLLISION.format(r=self.r, rz=self.rz, bitmask=bitmask)
 
-    def _fruit_link(self, visuals: str = "", collision: str | None = ALL_MASK) -> str:
+    def _fruit_link(self, visuals: str = "", collision: str | None = ALL_MASK, sphere: bool = False) -> str:
         cr, cg, cb = self.color
         return FRUIT_LINK.format(
             mass=self.mass, inertia=0.4 * self.mass * self.r * self.r, r=self.r, rz=self.rz,
             cr=cr, cg=cg, cb=cb, calyx_z=self.rz * 0.97, cs=self.r * 0.55, calyx_yaw=self.calyx_yaw,
-            collision=self._collision(collision) if collision else "", visuals=visuals)
+            collision=self._collision(collision, sphere) if collision else "", visuals=visuals)
 
     def _stalk_visuals(self, pedicel: bool) -> str:
         # Piece of truss this tomato hangs from, the first one also carries the peduncle
@@ -389,31 +422,31 @@ def bench_fruit(bench: dict) -> Fruit:
     return tomatoes, trusses
 
 
-def greenhouse_sections(trusses: list[dict]) -> dict[tuple[int, int], list[dict]]:
+def greenhouse_sections(gh: Greenhouse, trusses: list[dict]) -> dict[tuple[int, int], list[dict]]:
     sections = {}
     for truss in trusses:
         x = truss["anchors"][0][0]
-        section = min(SECTIONS_PER_LINE - 1, max(0, int((x - ROW_START_X) / SECTION_LENGTH)))
+        section = min(gh.sections_per_line - 1, max(0, int((x - gh.row_start_x) / SECTION_LENGTH)))
         sections.setdefault((truss["line"], section), []).append(truss)
     return sections
 
 
-def greenhouse_fruit(sections: dict[tuple[int, int], list[dict]]) -> Fruit:
+def greenhouse_fruit(gh: Greenhouse, sections: dict[tuple[int, int], list[dict]]) -> Fruit:
     keys = list(sections)
-    per_section = {k: TRUSS_COUNT // len(keys) for k in keys}
-    for k in random.sample(keys, TRUSS_COUNT % len(keys)):
+    per_section = {k: gh.truss_count // len(keys) for k in keys}
+    for k in random.sample(keys, gh.truss_count % len(keys)):
         per_section[k] += 1
     picked = []
     for k, n in per_section.items():
         picked += random.sample(sections[k], min(n, len(sections[k])))
 
     # Lower trusses are older and riper and every line gets some ripe ones
-    bases = [1.0 - 0.12 * t["level"] + random.gauss(0.0, 0.25) for t in picked]
+    bases = [1.0 + gh.ripe_bias - 0.12 * t["level"] + random.gauss(0.0, 0.25) for t in picked]
     by_line = {}
     for i, truss in enumerate(picked):
         by_line.setdefault(truss["line"], []).append(i)
     for indices in by_line.values():
-        for i in random.sample(indices, min(RIPE_TRUSSES_PER_LINE, len(indices))):
+        for i in random.sample(indices, min(gh.ripe_per_line, len(indices))):
             bases[i] = max(bases[i], random.uniform(0.95, 1.1))
 
     tomatoes, trusses = {}, {}
@@ -545,8 +578,9 @@ class HarvestManager(Node):
             bench = read_data("bench_layout.json")
             self._make_fruit = lambda: bench_fruit(bench)
         else:
-            sections = greenhouse_sections(read_data("tomato_anchors.json")["trusses"])
-            self._make_fruit = lambda: greenhouse_fruit(sections)
+            gh = GREENHOUSES[layout]
+            sections = greenhouse_sections(gh, read_data(gh.anchors)["trusses"])
+            self._make_fruit = lambda: greenhouse_fruit(gh, sections)
 
         self._gz = GzWorld(self.get_logger())
         self._tomatoes: dict[str, Tomato] = {}
@@ -555,6 +589,8 @@ class HarvestManager(Node):
         # Tomato inside the cage while the fingers were still open, only it can be gripped
         self._open_around: Tomato | None = None
         self._settling: dict[str, tuple[float, Vec3]] = {}
+        # Crate grid cells already taken, as column, row and layer
+        self._crate_slots: set[tuple[int, int, int]] = set()
         self._splashes: list[tuple[float, str]] = []
         self._detach_pubs = {}
         self._score = new_score()
@@ -652,6 +688,7 @@ class HarvestManager(Node):
             self._grip = None
             self._open_around = None
             self._settling, self._splashes, self._detach_pubs = {}, [], {}
+            self._crate_slots = set()
             self._score = new_score(sum(1 for t in tomatoes.values() if not t.is_green))
             self._publish_score()
             self.get_logger().info(f"{len(tomatoes)} tomatoes hanging")
@@ -865,7 +902,7 @@ class HarvestManager(Node):
                 continue
             pos, quat = known
             if self._in_crate(pos):
-                self._collect(t)
+                self._collect(t, pos)
                 continue
             start = self._settling.get(t.name)
             if start is None or math.dist(pos, start[1]) > SETTLE_MOTION:
@@ -883,13 +920,15 @@ class HarvestManager(Node):
             t.state = State.LOST
             self._count("dropped")
 
-    def _collect(self, t: Tomato):
+    def _collect(self, t: Tomato, pos: Vec3):
         # Whole fruit stays loose in the crate and rides along with the robot
         self._settling.pop(t.name, None)
         if t.state is State.CRUSHED:
             self._gz.remove(t.entity)
             t.state = State.SQUASHED
-        elif t.lost:
+            return
+        self._lay_in_crate(t, pos)
+        if t.lost:
             t.state = State.LOST
             self._count("dropped")
         else:
@@ -898,6 +937,37 @@ class HarvestManager(Node):
             self._count("harvested")
             if t.is_green:
                 self._count("green_in_crate")
+
+    def _lay_in_crate(self, t: Tomato, pos: Vec3):
+        """Move the fruit to the free crate cell nearest to where it fell, lowest layer first."""
+        local, robot = self._robot_frame(pos), self._pose_of(ROBOT)
+        if local is None or robot is None:
+            return
+        nx, ny = int(2 * CRATE_HALF[0] / CRATE_SLOT), int(2 * CRATE_HALF[1] / CRATE_SLOT)
+
+        def cell_center(ix: int, iy: int, layer: int) -> Vec3:
+            # The upper layer sits in the hollows of the lower one
+            shift = CRATE_SLOT / 2 if layer else 0.0
+            x = CRATE_CENTER[0] + (ix - (nx - 1) / 2) * CRATE_SLOT + shift
+            y = CRATE_CENTER[1] + (iy - (ny - 1) / 2) * CRATE_SLOT + shift
+            return x, y, CRATE_FLOOR + CRATE_BOTTOM + t.rz + 0.005 + layer * 0.8 * CRATE_SLOT
+
+        for layer in range(CRATE_LAYERS):
+            free = [(ix, iy, layer) for ix in range(nx - layer) for iy in range(ny - layer)
+                    if (ix, iy, layer) not in self._crate_slots]
+            if free:
+                break
+        else:
+            # Crate full, the fruit just lies where it fell
+            return
+        slot = min(free, key=lambda c: math.dist(cell_center(*c)[:2], local[:2]))
+        self._crate_slots.add(slot)
+        (rx, ry, rz), q = robot
+        offset = rotate(q, cell_center(*slot))
+        yaw = quat_to_rpy(*q)[2] + random.uniform(-math.pi, math.pi)
+        self._gz.remove(t.entity)
+        t.entity = self._gz.unique(f"{t.name}_crate")
+        self._gz.create(t.entity, t.crate_sdf(t.entity, (rx + offset[0], ry + offset[1], rz + offset[2], 0.0, 0.0, yaw)))
 
     def _robot_frame(self, pos: Vec3) -> Vec3 | None:
         robot = self._pose_of(ROBOT)
@@ -938,7 +1008,7 @@ class HarvestManager(Node):
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Tomato harvest rules for the MMO-500")
-    parser.add_argument("layout", nargs="?", default="greenhouse", choices=["greenhouse", "bench"])
+    parser.add_argument("layout", nargs="?", default="greenhouse", choices=[*GREENHOUSES, "bench"])
     parser.add_argument("seed", nargs="?", type=int, help="fixes the random fruit of the greenhouse")
     return parser.parse_args(remove_ros_args(argv)[1:])
 

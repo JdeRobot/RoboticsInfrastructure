@@ -4,32 +4,53 @@
 Writes the OBJ meshes, textures and model.sdf files in models/ and the fruit
 anchor table read by harvest_manager.py. Needs numpy and pillow.
 
-    python3 generate_greenhouse.py [models_dir] [anchors_json]
+    python3 generate_greenhouse.py [--layout normal|big] [models_dir] [anchors_json]
+
+The big layout reuses the plants, textures and props of the normal one, so the
+normal one has to be generated first.
 """
 
+import argparse
 import json
 import math
 import os
-import sys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 PACKAGE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(PACKAGE_DIR, "models")
-ANCHORS = sys.argv[2] if len(sys.argv) > 2 else os.path.join(PACKAGE_DIR, "tomato_anchors.json")
 SEED = 20261103
 rng = np.random.default_rng(SEED)
 
-# Layout shared with the world file and the harvest manager
-ROW_CENTERS = [-3.6, -1.2, 1.2, 3.6]
+# Layouts shared with the world files and the harvest manager
+LAYOUTS = {
+    # Two double rows of 6 m, aisles at y 0 and +-2.4
+    "normal": dict(rows=[-1.2, 1.2], half_len=3.0, gh_x=6.0, gh_y=3.6, suffix="",
+                   anchors="tomato_anchors.json"),
+    # Four double rows of 10 m with the same aisles plus two more at y +-4.8
+    "big": dict(rows=[-3.6, -1.2, 1.2, 3.6], half_len=5.0, gh_x=8.5, gh_y=6.0, suffix="_big",
+                anchors="tomato_anchors_big.json"),
+}
+parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+parser.add_argument("--layout", choices=list(LAYOUTS), default="normal")
+parser.add_argument("models_dir", nargs="?", default=os.path.join(PACKAGE_DIR, "models"))
+parser.add_argument("anchors_json", nargs="?")
+ARGS = parser.parse_args()
+LAYOUT = LAYOUTS[ARGS.layout]
+OUT = ARGS.models_dir
+ANCHORS = ARGS.anchors_json or os.path.join(PACKAGE_DIR, LAYOUT["anchors"])
+# Models of the big layout are named after the normal ones and borrow their assets
+SUFFIX = LAYOUT["suffix"]
+SHARED = bool(SUFFIX)
+
+ROW_CENTERS = LAYOUT["rows"]
 LINE_OFFSET = 0.3
-ROW_HALF_LEN = 5.0
+ROW_HALF_LEN = LAYOUT["half_len"]
 PLANT_STEP = 0.5
 SLAB_TOP = 0.44
 WIRE_Z = 2.4
-GH_X = 8.5
-GH_Y = 6.0
+GH_X = LAYOUT["gh_x"]
+GH_Y = LAYOUT["gh_y"]
 KNEE_H = 0.5
 GLASS_TOP = 4.0
 N_VARIANTS = 8
@@ -360,7 +381,7 @@ def line_mesh():
         box(m, (x, 0, 0.29), (0.04, 0.30, 0.02), 18)
         box(m, (x, 0, 0.005), (0.14, 0.14, 0.01), 18)
     # Substrate slabs with small gaps
-    for i in range(10):
+    for i in range(int(2 * ROW_HALF_LEN)):
         x0 = -ROW_HALF_LEN + i * 1.0 + 0.5
         box(m, (x0, 0, 0.40), (0.96, 0.18, 0.08), 8)
     # Drip line on the slabs
@@ -383,7 +404,7 @@ def row_extras_mesh():
     for x in (-ROW_HALF_LEN - 0.12, ROW_HALF_LEN + 0.12):
         box(m, (x, 0, WIRE_Z + 0.06), (0.05, 2 * LINE_OFFSET + 0.05, 0.04), 18)
         box(m, (x, 0, 0.75), (0.04, 0.04, 1.5), 18)
-    for x in (-3.3, 0.0, 3.3):
+    for x in (-0.66 * ROW_HALF_LEN, 0.0, 0.66 * ROW_HALF_LEN):
         for y in (-LINE_OFFSET, LINE_OFFSET):
             yy = y + (0.05 if y > 0 else -0.05)
             quad_ds(m, (x - 0.12, yy, 1.95), (x + 0.12, yy, 1.95), (x + 0.12, yy, 2.10), (x - 0.12, yy, 2.10), 12)
@@ -520,20 +541,27 @@ def tex_material(uri, diffuse="1 1 1 1"):
 
 
 def build_rows():
-    d = mkmodel("greenhouse_tomato_rows")
-    write_palette(os.path.join(d, "materials", "textures", "palette.png"))
+    name = f"greenhouse_tomato_rows{SUFFIX}"
+    d = mkmodel(name, textures=not SHARED)
+    # Plants, palette and signs always come from the normal model, the lines depend on the row length
     pal = "model://greenhouse_tomato_rows/materials/textures/palette.png"
+    own = f"model://{name}/meshes"
+    if not SHARED:
+        write_palette(os.path.join(d, "materials", "textures", "palette.png"))
     variants = []
     for i in range(N_VARIANTS):
         mesh, trusses = plant_variant(SEED + 17 * i)
-        mesh.write(os.path.join(d, "meshes", f"tomato_plant_{i}.obj"))
+        if not SHARED:
+            mesh.write(os.path.join(d, "meshes", f"tomato_plant_{i}.obj"))
+            print(f"plant {i}: {len(mesh.v)} verts {len(mesh.f)} tris")
         variants.append(trusses)
-        print(f"plant {i}: {len(mesh.v)} verts {len(mesh.f)} tris")
     line_mesh().write(os.path.join(d, "meshes", "plant_line.obj"))
     row_extras_mesh().write(os.path.join(d, "meshes", "row_extras.obj"))
-    sign_mesh(os.path.join(d, "meshes", "sign.obj"))
-    for k in range(len(ROW_CENTERS)):
-        sign_texture(os.path.join(d, "materials", "textures", f"row_{k + 1}.png"), k + 1)
+    if not SHARED:
+        sign_mesh(os.path.join(d, "meshes", "sign.obj"))
+        # Enough numbered signs for the big layout too
+        for k in range(len(LAYOUTS["big"]["rows"])):
+            sign_texture(os.path.join(d, "materials", "textures", f"row_{k + 1}.png"), k + 1)
 
     r = np.random.default_rng(SEED + 1)
     links = []
@@ -548,7 +576,7 @@ def build_rows():
             xs = np.arange(-ROW_HALF_LEN + 0.25 + stagger, ROW_HALF_LEN - 0.2, PLANT_STEP)
             visuals = [f"""
         <visual name="line">
-          <geometry><mesh><uri>model://greenhouse_tomato_rows/meshes/plant_line.obj</uri></mesh></geometry>
+          <geometry><mesh><uri>{own}/plant_line.obj</uri></mesh></geometry>
           {tex_material(pal)}
         </visual>"""]
             for j, x in enumerate(xs):
@@ -608,7 +636,7 @@ def build_rows():
           <geometry><box><size>0.04 0.04 1.5</size></box></geometry>
         </collision>
         <visual name="frame">
-          <geometry><mesh><uri>model://greenhouse_tomato_rows/meshes/row_extras.obj</uri></mesh></geometry>
+          <geometry><mesh><uri>{own}/row_extras.obj</uri></mesh></geometry>
           {tex_material(pal)}
         </visual>{sign_vis}
       </link>""")
@@ -617,26 +645,28 @@ def build_rows():
         fh.write(f"""<?xml version="1.0"?>
 <!-- Generated by generate_greenhouse.py -->
 <sdf version="1.9">
-  <model name="greenhouse_tomato_rows">
+  <model name="{name}">
     <static>true</static>{''.join(links)}
   </model>
 </sdf>
 """)
-    model_config(d, "greenhouse_tomato_rows", "Double rows of high wire tomato plants on hanging gutters")
+    model_config(d, name, "Double rows of high wire tomato plants on hanging gutters")
     return anchors_out
 
 
 def build_floor():
-    d = mkmodel("greenhouse_floor")
-    peat_texture(os.path.join(d, "materials", "textures", "peat.png"))
-    grass_texture(os.path.join(d, "materials", "textures", "grass.png"))
+    name = f"greenhouse_floor{SUFFIX}"
+    d = mkmodel(name, textures=not SHARED)
+    if not SHARED:
+        peat_texture(os.path.join(d, "materials", "textures", "peat.png"))
+        grass_texture(os.path.join(d, "materials", "textures", "grass.png"))
+        flat_quad_mesh(os.path.join(d, "meshes", "grass.obj"), -60, 60, -60, 60, -0.01, 4.0)
     flat_quad_mesh(os.path.join(d, "meshes", "peat.obj"), -GH_X, GH_X, -GH_Y, GH_Y, 0.0, 1.6)
-    flat_quad_mesh(os.path.join(d, "meshes", "grass.obj"), -60, 60, -60, 60, -0.01, 4.0)
     peat = "model://greenhouse_floor/materials/textures/peat.png"
     with open(os.path.join(d, "model.sdf"), "w") as fh:
         fh.write(f"""<?xml version="1.0"?>
 <sdf version="1.9">
-  <model name="greenhouse_floor">
+  <model name="{name}">
     <static>true</static>
     <link name="link">
       <collision name="ground">
@@ -644,7 +674,7 @@ def build_floor():
         <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
       </collision>
       <visual name="peat">
-        <geometry><mesh><uri>model://greenhouse_floor/meshes/peat.obj</uri></mesh></geometry>
+        <geometry><mesh><uri>model://{name}/meshes/peat.obj</uri></mesh></geometry>
         {tex_material(peat)}
       </visual>
       <visual name="grass">
@@ -655,12 +685,14 @@ def build_floor():
   </model>
 </sdf>
 """)
-    model_config(d, "greenhouse_floor", "Peat greenhouse floor surrounded by grass")
+    model_config(d, name, "Peat greenhouse floor surrounded by grass")
 
 
 def build_glass():
-    d = mkmodel("greenhouse_glass")
-    write_palette(os.path.join(d, "materials", "textures", "palette.png"))
+    model_name = f"greenhouse_glass{SUFFIX}"
+    d = mkmodel(model_name, textures=not SHARED)
+    if not SHARED:
+        write_palette(os.path.join(d, "materials", "textures", "palette.png"))
     pal = "model://greenhouse_glass/materials/textures/palette.png"
     m = Mesh()
     walls = [
@@ -717,18 +749,18 @@ def build_glass():
         fh.write(f"""<?xml version="1.0"?>
 <!-- Roofless glass greenhouse that encloses the whole world -->
 <sdf version="1.9">
-  <model name="greenhouse_glass">
+  <model name="{model_name}">
     <static>true</static>
     <link name="link">{''.join(coll)}
       <visual name="frame">
-        <geometry><mesh><uri>model://greenhouse_glass/meshes/frame.obj</uri></mesh></geometry>
+        <geometry><mesh><uri>model://{model_name}/meshes/frame.obj</uri></mesh></geometry>
         {tex_material(pal)}
       </visual>{''.join(glass)}
     </link>
   </model>
 </sdf>
 """)
-    model_config(d, "greenhouse_glass", "Roofless glass greenhouse walls")
+    model_config(d, model_name, "Roofless glass greenhouse walls")
 
 
 def build_crate():
@@ -861,9 +893,10 @@ if __name__ == "__main__":
     anchors = build_rows()
     build_floor()
     build_glass()
-    build_crate()
-    build_hive()
-    build_fruit()
+    if not SHARED:
+        build_crate()
+        build_hive()
+        build_fruit()
     with open(ANCHORS, "w") as fh:
         json.dump({"slab_top": SLAB_TOP, "trusses": anchors}, fh, separators=(",", ":"))
     print("trusses", len(anchors))

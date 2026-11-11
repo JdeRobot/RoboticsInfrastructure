@@ -52,7 +52,7 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <!-- Four numbered double rows of tomato plants along x, aisles at y 0, +-2.4 and +-4.8 -->
+    <!-- Two numbered double rows of tomato plants along x, aisles at y 0 and +-2.4 -->
     <include>
       <name>greenhouse_tomato_rows</name>
       <uri>model://greenhouse_tomato_rows</uri>
@@ -62,57 +62,42 @@
     <include>
       <name>crate_stack_a_0</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.9 -5.45 0.00 0 0 1.5708</pose>
+      <pose>-5.45 -3.05 0.00 0 0 1.5708</pose>
     </include>
     <include>
       <name>crate_stack_a_1</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.9 -5.45 0.28 0 0 1.6108</pose>
+      <pose>-5.45 -3.05 0.28 0 0 1.6108</pose>
     </include>
     <include>
       <name>crate_stack_a_2</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.9 -5.45 0.56 0 0 1.5708</pose>
-    </include>
-    <include>
-      <name>crate_stack_b_0</name>
-      <uri>model://harvest_crate</uri>
-      <pose>-7.9 -4.8 0.00 0 0 1.5708</pose>
-    </include>
-    <include>
-      <name>crate_stack_b_1</name>
-      <uri>model://harvest_crate</uri>
-      <pose>-7.9 -4.8 0.28 0 0 1.6108</pose>
+      <pose>-5.45 -3.05 0.56 0 0 1.5708</pose>
     </include>
     <include>
       <name>crate_stack_c_0</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.9 5.45 0.00 0 0 1.5708</pose>
+      <pose>-5.45 3.05 0.00 0 0 1.5708</pose>
     </include>
     <include>
       <name>crate_stack_c_1</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.9 5.45 0.28 0 0 1.6108</pose>
-    </include>
-    <include>
-      <name>crate_stack_c_2</name>
-      <uri>model://harvest_crate</uri>
-      <pose>-7.9 5.45 0.56 0 0 1.5708</pose>
+      <pose>-5.45 3.05 0.28 0 0 1.6108</pose>
     </include>
     <include>
       <name>crate_stack_d_0</name>
       <uri>model://harvest_crate</uri>
-      <pose>-7.25 5.45 0.00 0 0 1.5708</pose>
+      <pose>-4.8 3.05 0.00 0 0 1.5708</pose>
     </include>
     <include>
       <name>bumblebee_hive_1</name>
       <uri>model://bumblebee_hive</uri>
-      <pose>-8.1 -2.4 0 0 0 0.0</pose>
+      <pose>-5.65 -2.4 0 0 0 0.0</pose>
     </include>
     <include>
       <name>bumblebee_hive_2</name>
       <uri>model://bumblebee_hive</uri>
-      <pose>8.1 4.4 0 0 0 3.1416</pose>
+      <pose>5.65 2.95 0 0 0 3.1416</pose>
     </include>
   </world>
 </sdf>

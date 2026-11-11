@@ -226,6 +226,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 101	Warehouse 1 Nav2 Holo	93
 102	MMO-500 Tomato Greenhouse	94
 103	MMO-500 Tomato Harvest Bench	95
+104	MMO-500 Tomato Greenhouse Big	96
 \.
 
 --
@@ -314,8 +315,9 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 79	101	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
-80	102	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
+80	102	59	{{4.6,0.0,0.0,0.0,0.0,3.1416}}
 81	103	59	{{0.0,0.0,0.0,0.0,0.0,0.0}}
+82	104	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
 \.
 
 --
@@ -380,6 +382,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 93	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
 94	Tomato Greenhouse	/opt/jderobot/Launchers/tomato_greenhouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse.config"}	ROS2	gz	tomato_greenhouse.urdf
 95	Tomato Harvest Bench	/opt/jderobot/Launchers/tomato_harvest_bench.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_harvest_bench.config"}	ROS2	gz	tomato_harvest_bench.urdf
+96	Tomato Greenhouse Big	/opt/jderobot/Launchers/tomato_greenhouse_big.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse_big.config"}	ROS2	gz	tomato_greenhouse_big.urdf
 \.
 
 --

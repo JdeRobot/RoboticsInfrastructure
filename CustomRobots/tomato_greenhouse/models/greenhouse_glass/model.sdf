@@ -5,20 +5,20 @@
     <static>true</static>
     <link name="link">
       <collision name="east_wall">
-        <pose>8.5 0 2.0 0 0 1.5708</pose>
-        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
+        <pose>6.0 0 2.0 0 0 1.5708</pose>
+        <geometry><box><size>7.44 0.12 4.0</size></box></geometry>
       </collision>
       <collision name="west_wall">
-        <pose>-8.5 0 2.0 0 0 1.5708</pose>
-        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
+        <pose>-6.0 0 2.0 0 0 1.5708</pose>
+        <geometry><box><size>7.44 0.12 4.0</size></box></geometry>
       </collision>
       <collision name="north_wall">
-        <pose>0 6.0 2.0 0 0 0.0000</pose>
-        <geometry><box><size>17.24 0.12 4.0</size></box></geometry>
+        <pose>0 3.6 2.0 0 0 0.0000</pose>
+        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
       </collision>
       <collision name="south_wall">
-        <pose>0 -6.0 2.0 0 0 0.0000</pose>
-        <geometry><box><size>17.24 0.12 4.0</size></box></geometry>
+        <pose>0 -3.6 2.0 0 0 0.0000</pose>
+        <geometry><box><size>12.24 0.12 4.0</size></box></geometry>
       </collision>
       <visual name="frame">
         <geometry><mesh><uri>model://greenhouse_glass/meshes/frame.obj</uri></mesh></geometry>
@@ -30,8 +30,8 @@
           </material>
       </visual>
       <visual name="east_glass">
-        <pose>8.5 0 2.25 0 0 1.5708</pose>
-        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
+        <pose>6.0 0 2.25 0 0 1.5708</pose>
+        <geometry><box><size>7.20 0.012 3.50</size></box></geometry>
         <transparency>0.82</transparency>
         <cast_shadows>false</cast_shadows>
         <material>
@@ -41,8 +41,8 @@
         </material>
       </visual>
       <visual name="west_glass">
-        <pose>-8.5 0 2.25 0 0 1.5708</pose>
-        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
+        <pose>-6.0 0 2.25 0 0 1.5708</pose>
+        <geometry><box><size>7.20 0.012 3.50</size></box></geometry>
         <transparency>0.82</transparency>
         <cast_shadows>false</cast_shadows>
         <material>
@@ -52,8 +52,8 @@
         </material>
       </visual>
       <visual name="north_glass">
-        <pose>0 6.0 2.25 0 0 0.0000</pose>
-        <geometry><box><size>17.00 0.012 3.50</size></box></geometry>
+        <pose>0 3.6 2.25 0 0 0.0000</pose>
+        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
         <transparency>0.82</transparency>
         <cast_shadows>false</cast_shadows>
         <material>
@@ -63,8 +63,8 @@
         </material>
       </visual>
       <visual name="south_glass">
-        <pose>0 -6.0 2.25 0 0 0.0000</pose>
-        <geometry><box><size>17.00 0.012 3.50</size></box></geometry>
+        <pose>0 -3.6 2.25 0 0 0.0000</pose>
+        <geometry><box><size>12.00 0.012 3.50</size></box></geometry>
         <transparency>0.82</transparency>
         <cast_shadows>false</cast_shadows>
         <material>
