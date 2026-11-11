@@ -36,6 +36,7 @@ from gz.msgs10.entity_factory_pb2 import EntityFactory
 from gz.msgs10.entity_factory_v_pb2 import EntityFactory_V
 from gz.msgs10.entity_pb2 import Entity
 from gz.msgs10.pose_v_pb2 import Pose_V
+from gz.msgs10.stringmsg_pb2 import StringMsg
 from gz.transport13 import Node as GzNode, SubscribeOptions
 
 Vec3 = tuple[float, float, float]
@@ -46,6 +47,8 @@ WORLD = "default"
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 SCORE_TOPIC = "/tomato_greenhouse/score"
 FORCE_TOPIC = "/tomato_greenhouse/grip_force"
+# The WebGUI reads the score from gz and may start late, so it is repeated this often
+SCORE_PERIOD = 1.0
 STEP_PERIOD = 0.05
 GZ_TIMEOUT = 6.0
 SPAWN_TIMEOUT = 20.0
@@ -577,8 +580,9 @@ class Grip:
     twist: float
 
 
-def new_score() -> dict[str, int]:
-    return {"harvested": 0, "green_in_crate": 0, "crushed": 0, "dropped": 0, "broken_trusses": 0}
+def new_score(ripe_total: int = 0) -> dict[str, int]:
+    return {"harvested": 0, "green_in_crate": 0, "crushed": 0, "dropped": 0, "broken_trusses": 0,
+            "ripe_total": ripe_total}
 
 
 class HarvestManager(Node):
@@ -627,6 +631,8 @@ class HarvestManager(Node):
         self._force_pub = self.create_publisher(Float32, FORCE_TOPIC, 10)
 
         self._gz_node = GzNode()
+        self._gz_score_pub = self._gz_node.advertise(SCORE_TOPIC, StringMsg)
+        self._score_sent = 0.0
         self._gz_topics: list[str] = []
         self._gz_subscribe(Pose_V, f"/world/{WORLD}/dynamic_pose/info", self._on_poses, 20)
         # The ROS clock arrives every physics step and only resets matter here
@@ -699,7 +705,7 @@ class HarvestManager(Node):
             self._open_around = None
             self._settling, self._splashes, self._detach_pubs = {}, [], {}
             self._load, self._load_entity = [], None
-            self._score = new_score()
+            self._score = new_score(sum(1 for t in tomatoes.values() if not t.is_green))
             self._publish_score()
             self.get_logger().info(f"{len(tomatoes)} tomatoes hanging")
 
@@ -728,6 +734,8 @@ class HarvestManager(Node):
         self._force_pub.publish(Float32(data=float(force)))
         self._update_falling()
         self._clear_splashes()
+        if time.monotonic() - self._score_sent >= SCORE_PERIOD:
+            self._publish_score()
 
     # Colliders
 
@@ -1014,7 +1022,10 @@ class HarvestManager(Node):
         self._publish_score()
 
     def _publish_score(self):
-        self._score_pub.publish(String(data=json.dumps(self._score)))
+        data = json.dumps(self._score)
+        self._score_pub.publish(String(data=data))
+        self._gz_score_pub.publish(StringMsg(data=data))
+        self._score_sent = time.monotonic()
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
