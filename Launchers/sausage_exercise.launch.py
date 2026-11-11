@@ -28,7 +28,7 @@ def generate_launch_description():
         + ":"
         + gz_ros2_control_path
         + ":"
-        + "/opt/ros/humble/lib"
+        + "/opt/ros/lyrical/lib"
     )
 
     # ==================================================

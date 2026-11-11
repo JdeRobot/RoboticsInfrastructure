@@ -4,10 +4,10 @@ controller_manager:
     update_rate: 250 #Hz
 
     egp64_finger_left_controller:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
 
     egp64_finger_right_controller:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
 
 egp64_finger_left_controller:
   ros__parameters:

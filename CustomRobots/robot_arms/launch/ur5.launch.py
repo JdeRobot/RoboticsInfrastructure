@@ -212,7 +212,24 @@ def launch_setup(context):
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        arguments=[x, y, z, R, P, Y, "world", "base_link"],
+        arguments=[
+            "--x",
+            x,
+            "--y",
+            y,
+            "--z",
+            z,
+            "--roll",
+            R,
+            "--pitch",
+            P,
+            "--yaw",
+            Y,
+            "--frame-id",
+            "world",
+            "--child-frame-id",
+            "base_link",
+        ],
     )
 
     spawn_robot = Node(

@@ -38,7 +38,7 @@
 #include "ros2srrc_data/action/robmove.hpp"
 
 // Include MoveIt!2:
-#include "moveit/move_group_interface/move_group_interface_improved.hpp"
+#include "moveit/move_group_interface/move_group_interface.hpp"
 #include <moveit/planning_scene_interface/planning_scene_interface.hpp>
 
 #include <moveit_msgs/action/move_group.hpp>
@@ -48,7 +48,7 @@
 #include <geometry_msgs/msg/pose.hpp>
 
 // Declaration of GLOBAL VARIABLE --> MoveIt!2 Interface:
-moveit::planning_interface::MoveGroupInterface move_group_interface_ROB = moveit::planning_interface::MoveGroupInterface(nullptr,nullptr);
+moveit::planning_interface::MoveGroupInterface move_group_interface_ROB = moveit::planning_interface::MoveGroupInterface(nullptr,"");
 
 // Declaration of GLOBAL VARIABLE --> ROBOT PARAMETER:
 std::string param_ROB = "none";

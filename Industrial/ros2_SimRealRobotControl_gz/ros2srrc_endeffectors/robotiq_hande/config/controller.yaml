@@ -4,9 +4,9 @@ controller_manager:
     update_rate: 250 #Hz
 
     hande_controller_LEFT:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     hande_controller_RIGHT:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
 
 hande_controller_LEFT:
   ros__parameters:

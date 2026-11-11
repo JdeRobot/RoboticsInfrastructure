@@ -4,17 +4,17 @@ controller_manager:
     update_rate: 250 #Hz
 
     robotiq_controller_LKJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     robotiq_controller_RKJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     robotiq_controller_LIKJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     robotiq_controller_RIKJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     robotiq_controller_LFTJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
     robotiq_controller_RFTJ:
-      type: position_controllers/GripperActionController
+      type: parallel_gripper_action_controller/GripperActionController
 
 robotiq_controller_LKJ:
   ros__parameters:

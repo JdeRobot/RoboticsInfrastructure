@@ -20,7 +20,7 @@ def generate_launch_description():
     gz_link_attacher_path = "/home/ws/install/gz_link_attacher/lib"
 
     gz_plugin_path = (
-        gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/humble/lib"
+        gz_link_attacher_path + ":" + gz_ros2_control_path + ":" + "/opt/ros/lyrical/lib"
     )
 
     resource_path = (

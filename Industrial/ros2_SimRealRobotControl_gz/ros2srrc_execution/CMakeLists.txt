@@ -72,6 +72,31 @@ add_executable(
 # Link directories:
 include_directories(${YAML_CPP_INCLUDE_DIR})
 
+# Add ament dependencies:
+target_link_libraries(move PUBLIC
+  ${YAML_CPP_LIBRARIES}
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  rclcpp_action::rclcpp_action
+  ros2srrc_data::ros2srrc_data
+)
+
+target_link_libraries(robmove PUBLIC
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  rclcpp_action::rclcpp_action
+  ros2srrc_data::ros2srrc_data
+)
+
+target_link_libraries(robpose PUBLIC
+  rclcpp::rclcpp
+  moveit_ros_planning_interface::moveit_move_group_interface
+  std_msgs::std_msgs
+  ros2srrc_data::ros2srrc_data
+)
+
 # Install executable:
 install(TARGETS
   move
@@ -92,31 +117,6 @@ install(
   DESTINATION include/
 )
 
-# Add ament dependencies:
-target_link_libraries(move
-  ${YAML_CPP_LIBRARIES}
-  rclcpp::rclcpp
-  moveit_ros_planning_interface::moveit_move_group_interface
-  std_msgs::std_msgs
-  rclcpp_action::rclcpp_action
-  ros2srrc_data::ros2srrc_data
-)
-
-target_link_libraries(robmove
-  rclcpp::rclcpp
-  moveit_ros_planning_interface::moveit_move_group_interface
-  std_msgs::std_msgs
-  rclcpp_action::rclcpp_action
-  ros2srrc_data::ros2srrc_data
-)
-
-target_link_libraries(robpose
-  rclcpp::rclcpp
-  moveit_ros_planning_interface::moveit_move_group_interface
-  std_msgs::std_msgs
-  ros2srrc_data::ros2srrc_data
-)
-
 # =========================================================== #
 # REQUIRED TO EXECUTE .py scripts:
 install(
@@ -126,5 +126,12 @@ install(
     share/${PROJECT_NAME}
 )
 
+ament_export_dependencies(
+  rclcpp
+  rclcpp_action
+  std_msgs
+  ros2srrc_data
+  moveit_ros_planning_interface
+)
 
 ament_package()
