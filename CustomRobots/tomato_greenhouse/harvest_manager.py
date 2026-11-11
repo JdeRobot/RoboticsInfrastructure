@@ -97,12 +97,6 @@ CRATE_CENTER = (0.56, 0.0)
 CRATE_HALF = (0.185, 0.285)
 CRATE_FLOOR = 0.40
 CRATE_HEIGHT = 0.14
-CRATE_WALL = 0.015
-# Harvested fruit is drawn as visuals of one weightless body pinned to this link of the robot
-CRATE_LINK = "base_footprint"
-# Fruit resting on another one sinks this share of their radii so the heap looks packed
-HEAP_OVERLAP = 0.8
-LOAD_DETACH_WAIT = 0.1
 # A fallen tomato counts and is removed once it has lain still for this long
 SETTLE_TIME = 3.0
 SETTLE_MOTION = 0.003
@@ -192,34 +186,11 @@ STALK_SEGMENT = """
 # Keeps a picked tomato in the hand until the fingers open
 ATTACH_PLUGIN = """
     <plugin filename="gz-sim-detachable-joint-system" name="gz::sim::systems::DetachableJoint">
-      <parent_link>{parent}</parent_link>
+      <parent_link>fruit</parent_link>
       <child_model>{robot}</child_model>
       <child_link>{link}</child_link>
       <detach_topic>{topic}</detach_topic>
     </plugin>"""
-
-# One body for the whole crate load, no collisions and no gravity so only its joint costs physics
-LOAD_LINK = """
-    <link name="load">
-      <gravity>false</gravity>
-      <inertial><mass>0.05</mass><inertia><ixx>1e-4</ixx><iyy>1e-4</iyy><izz>1e-4</izz></inertia></inertial>{visuals}
-    </link>"""
-
-LOAD_FRUIT = """
-      <visual name="{name}">
-        <pose>{x:.4f} {y:.4f} {z:.4f} {roll:.3f} {pitch:.3f} {yaw:.3f}</pose>
-        <geometry><ellipsoid><radii>{r:.4f} {r:.4f} {rz:.4f}</radii></ellipsoid></geometry>
-        <material>
-          <ambient>{cr:.3f} {cg:.3f} {cb:.3f} 1</ambient>
-          <diffuse>{cr:.3f} {cg:.3f} {cb:.3f} 1</diffuse>
-          <specular>0.5 0.5 0.5 1</specular>
-        </material>
-      </visual>
-      <visual name="{name}_calyx">
-        <pose>{cx:.4f} {cy:.4f} {cz:.4f} {roll:.3f} {pitch:.3f} {calyx_yaw:.3f}</pose>
-        <geometry><mesh><uri>model://tomato_fruit/meshes/calyx.obj</uri><scale>{cs:.4f} {cs:.4f} {cs:.4f}</scale></mesh></geometry>
-        <material><ambient>0.22 0.40 0.10 1</ambient><diffuse>0.22 0.40 0.10 1</diffuse></material>
-      </visual>"""
 
 # Short burst of particles, several of them in random directions make a splash
 EMITTER = """
@@ -283,14 +254,6 @@ def quat_mul(a: Quat, b: Quat) -> Quat:
     bx, by, bz, bw = b
     return (aw * bx + ax * bw + ay * bz - az * by, aw * by - ax * bz + ay * bw + az * bx,
             aw * bz + ax * by - ay * bx + az * bw, aw * bw - ax * bx - ay * by - az * bz)
-
-
-def rpy_to_quat(roll: float, pitch: float, yaw: float) -> Quat:
-    cr, sr = math.cos(roll / 2), math.sin(roll / 2)
-    cp, sp = math.cos(pitch / 2), math.sin(pitch / 2)
-    cy, sy = math.cos(yaw / 2), math.sin(yaw / 2)
-    return (sr * cp * cy - cr * sp * sy, cr * sp * cy + sr * cp * sy,
-            cr * cp * sy - sr * sp * cy, cr * cp * cy + sr * sp * sy)
 
 
 def quat_to_rpy(x: float, y: float, z: float, w: float) -> Vec3:
@@ -379,7 +342,7 @@ class Tomato:
         body = self._fruit_link(collision=LOOSE_MASK)
         if detach_topic:
             # The attach plugin belongs to the model so it goes after the link
-            body += ATTACH_PLUGIN.format(parent="fruit", robot=ROBOT, link=SPINDLE_LINK, topic=detach_topic)
+            body += ATTACH_PLUGIN.format(robot=ROBOT, link=SPINDLE_LINK, topic=detach_topic)
         return sdf_model(name, self.hanging_pose, body, False)
 
     def crushed_sdf(self, name: str, pose: Pose6) -> str:
@@ -389,17 +352,6 @@ class Tomato:
             mass=self.mass, rx=r * 1.2, ry=r * 1.1, rz=r * 0.45, cr=cr, cg=cg, cb=cb,
             bx=r * 0.3, by=-r * 0.25, bz=r * 0.3, br=r * 0.4)
         return sdf_model(name, pose, body, False)
-
-    def load_visuals(self, pos: Vec3, tilt: Vec3) -> str:
-        # The calyx follows the tilt of the fruit so it stays on top of it
-        roll, pitch, yaw = tilt
-        q = rpy_to_quat(roll, pitch, yaw)
-        top = rotate(q, (0.0, 0.0, self.rz * 0.97))
-        cr, cg, cb = self.color
-        return LOAD_FRUIT.format(
-            name=self.name, x=pos[0], y=pos[1], z=pos[2], roll=roll, pitch=pitch, yaw=yaw,
-            r=self.r, rz=self.rz, cr=cr, cg=cg, cb=cb, cx=pos[0] + top[0], cy=pos[1] + top[1],
-            cz=pos[2] + top[2], calyx_yaw=yaw + self.calyx_yaw, cs=self.r * 0.55)
 
     def _collision(self, bitmask: str) -> str:
         return FRUIT_COLLISION.format(r=self.r, rz=self.rz, bitmask=bitmask)
@@ -606,10 +558,6 @@ class HarvestManager(Node):
         self._splashes: list[tuple[float, str]] = []
         self._detach_pubs = {}
         self._score = new_score()
-        # Fruit shown in the crate with its pose in the robot frame
-        self._load: list[tuple[Tomato, Vec3, Vec3]] = []
-        self._load_entity: str | None = None
-        self._load_detach = None
 
         # Latest robot state from the topics
         self._finger_ref = 0.0
@@ -704,7 +652,6 @@ class HarvestManager(Node):
             self._grip = None
             self._open_around = None
             self._settling, self._splashes, self._detach_pubs = {}, [], {}
-            self._load, self._load_entity = [], None
             self._score = new_score(sum(1 for t in tomatoes.values() if not t.is_green))
             self._publish_score()
             self.get_logger().info(f"{len(tomatoes)} tomatoes hanging")
@@ -918,7 +865,7 @@ class HarvestManager(Node):
                 continue
             pos, quat = known
             if self._in_crate(pos):
-                self._collect(t, pos)
+                self._collect(t)
                 continue
             start = self._settling.get(t.name)
             if start is None or math.dist(pos, start[1]) > SETTLE_MOTION:
@@ -936,15 +883,13 @@ class HarvestManager(Node):
             t.state = State.LOST
             self._count("dropped")
 
-    def _collect(self, t: Tomato, pos: Vec3):
-        # Fruit inside the crate is counted and redrawn as part of the crate load
+    def _collect(self, t: Tomato):
+        # Whole fruit stays loose in the crate and rides along with the robot
         self._settling.pop(t.name, None)
-        self._gz.remove(t.entity)
         if t.state is State.CRUSHED:
+            self._gz.remove(t.entity)
             t.state = State.SQUASHED
-            return
-        self._add_to_load(t, pos)
-        if t.lost:
+        elif t.lost:
             t.state = State.LOST
             self._count("dropped")
         else:
@@ -953,43 +898,6 @@ class HarvestManager(Node):
             self._count("harvested")
             if t.is_green:
                 self._count("green_in_crate")
-
-    def _add_to_load(self, t: Tomato, pos: Vec3):
-        local = self._robot_frame(pos)
-        robot = self._pose_of(ROBOT)
-        if local is None or robot is None:
-            return
-        # Kept where it fell inside the walls and stacked on any fruit underneath
-        x = min(max(local[0], CRATE_CENTER[0] - CRATE_HALF[0] + t.r), CRATE_CENTER[0] + CRATE_HALF[0] - t.r)
-        y = min(max(local[1], CRATE_CENTER[1] - CRATE_HALF[1] + t.r), CRATE_CENTER[1] + CRATE_HALF[1] - t.r)
-        z = CRATE_FLOOR + CRATE_WALL + t.rz
-        for other, (ox, oy, oz), _ in self._load:
-            reach = HEAP_OVERLAP * (t.r + other.r)
-            gap = math.hypot(x - ox, y - oy)
-            if gap < reach:
-                z = max(z, oz + math.sqrt(reach * reach - gap * gap))
-        tilt = (random.uniform(-0.4, 0.4), random.uniform(-0.4, 0.4), random.uniform(-math.pi, math.pi))
-        self._load.append((t, (x, y, z), tilt))
-
-        # dartsim drags the robot along if a pinned body is removed so the old load is detached first
-        self._release_load()
-        name = self._gz.unique("crate_load")
-        topic = f"/tomato_greenhouse/{name}/detach"
-        visuals = "".join(fruit.load_visuals(p, tilt) for fruit, p, tilt in self._load)
-        body = LOAD_LINK.format(visuals=visuals) + ATTACH_PLUGIN.format(
-            parent="load", robot=ROBOT, link=CRATE_LINK, topic=topic)
-        (rx, ry, rz), q = robot
-        self._load_detach = self._gz_node.advertise(topic, Empty)
-        self._gz.create(name, sdf_model(name, (rx, ry, rz, *quat_to_rpy(*q)), body, False))
-        self._load_entity = name
-
-    def _release_load(self):
-        if not self._load_entity:
-            return
-        self._load_detach.publish(Empty())
-        time.sleep(LOAD_DETACH_WAIT)
-        self._gz.remove(self._load_entity)
-        self._load_entity = None
 
     def _robot_frame(self, pos: Vec3) -> Vec3 | None:
         robot = self._pose_of(ROBOT)
