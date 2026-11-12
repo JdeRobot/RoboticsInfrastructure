@@ -224,6 +224,9 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 99	Ur5 Physical	91
 100	Sausage exercise servo	92
 101	Warehouse 1 Nav2 Holo	93
+105	F1 Pursuit Easy	97
+106	F1 Pursuit Medium	98
+107	F1 Pursuit Hard	99
 \.
 
 --
@@ -312,6 +315,12 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 77	99	57	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 78	100	58	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 79	101	13	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+83	105	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+84	105	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
+85	106	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+86	106	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
+87	107	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+88	107	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
 \.
 
 --
@@ -374,6 +383,9 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 91	Ur5 Physical	/opt/jderobot/Launchers/physical.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/ur5_physical_harmonic.launch.py"}	ROS2	physical	pick_place.urdf
 92	Conveyor	/opt/jderobot/Launchers/sausage_exercise_servo.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/sausage_exercise.launch.py"}	ROS2	gz	sausage_exercise_servo.urdf
 93	Warehouse 1 Nav2	/opt/jderobot/Launchers/warehouse1_nav2.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/amazon_robot_harmonic.config","rviz":"/opt/jderobot/Launchers/rviz/warehouse1.launch.py"}	ROS2	gz	warehouse1.urdf
+97	F1 Pursuit Easy	/opt/jderobot/Launchers/f1_pursuit_easy.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
+98	F1 Pursuit Medium	/opt/jderobot/Launchers/f1_pursuit_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
+99	F1 Pursuit Hard	/opt/jderobot/Launchers/f1_pursuit_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
 \.
 
 --
@@ -438,6 +450,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 56	myAGV myCobot	/home/ws/src/CustomRobots/myagv_mycobot/launch/myagv_mycobot.launch.py	myagv_mycobot	namespace:=myagv_mycobot	myagv_mycobot/models/myagv_mycobot/myagv_mycobot.urdf.xacro
 57	Ur5 Physical	/home/ws/src/CustomRobots/robot_arms/launch/ur5_physical.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5_physical.urdf.xacro
 58	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
+60	F1 Pursuit Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=none namespace:=f1_rival color:=Blue	f1/models/f1/f1.urdf.xacro
 \.
 
 --
