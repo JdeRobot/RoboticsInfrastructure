@@ -1,0 +1,119 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="pursuit_start_line">
+    <static>true</static>
+    <!-- Grid line for the rival, visual only and split so the red line stays in sight -->
+    <link name="line">
+      <visual name="white_right">
+        <pose>0 -0.8150 0.0015 0 0 0</pose>
+        <geometry><box><size>0.28 1.4700 0.003</size></box></geometry>
+        <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+      </visual>
+      <visual name="black_r00">
+        <pose>-0.070 -0.1535 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r02">
+        <pose>-0.070 -0.4475 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r04">
+        <pose>-0.070 -0.7415 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r06">
+        <pose>-0.070 -1.0355 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r08">
+        <pose>-0.070 -1.3295 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r11">
+        <pose>0.070 -0.3005 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r13">
+        <pose>0.070 -0.5945 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r15">
+        <pose>0.070 -0.8885 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r17">
+        <pose>0.070 -1.1825 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_r19">
+        <pose>0.070 -1.4765 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="white_left">
+        <pose>0 0.8150 0.0015 0 0 0</pose>
+        <geometry><box><size>0.28 1.4700 0.003</size></box></geometry>
+        <material><ambient>0.95 0.95 0.95 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse></material>
+      </visual>
+      <visual name="black_l00">
+        <pose>-0.070 0.1535 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l02">
+        <pose>-0.070 0.4475 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l04">
+        <pose>-0.070 0.7415 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l06">
+        <pose>-0.070 1.0355 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l08">
+        <pose>-0.070 1.3295 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l11">
+        <pose>0.070 0.3005 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l13">
+        <pose>0.070 0.5945 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l15">
+        <pose>0.070 0.8885 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l17">
+        <pose>0.070 1.1825 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+      <visual name="black_l19">
+        <pose>0.070 1.4765 0.0017 0 0 0</pose>
+        <geometry><box><size>0.140 0.1470 0.003</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

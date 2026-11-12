@@ -227,6 +227,9 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 102	MMO-500 Tomato Greenhouse	94
 103	MMO-500 Tomato Harvest Bench	95
 104	MMO-500 Tomato Greenhouse Big	96
+105	F1 Pursuit Easy	97
+106	F1 Pursuit Medium	98
+107	F1 Pursuit Hard	99
 108	MMO-500 Warehouse Nav2	100
 \.
 
@@ -319,6 +322,12 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 80	102	59	{{4.6,0.0,0.0,0.0,0.0,3.1416}}
 81	103	59	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 82	104	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
+83	105	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+84	105	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
+85	106	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+86	106	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
+87	107	2	{{53.462,-10.734,0.004,0,0,-1.57}}
+88	107	60	{{-51.936,-1.368,0.004,0,0,1.2747}}
 89	108	41	{{0.0,0.0,0.02,0.0,0.0,0.0}}
 \.
 
@@ -385,6 +394,9 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 94	Tomato Greenhouse	/opt/jderobot/Launchers/tomato_greenhouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse.config"}	ROS2	gz	tomato_greenhouse.urdf
 95	Tomato Harvest Bench	/opt/jderobot/Launchers/tomato_harvest_bench.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_harvest_bench.config"}	ROS2	gz	tomato_harvest_bench.urdf
 96	Tomato Greenhouse Big	/opt/jderobot/Launchers/tomato_greenhouse_big.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse_big.config"}	ROS2	gz	tomato_greenhouse_big.urdf
+97	F1 Pursuit Easy	/opt/jderobot/Launchers/f1_pursuit_easy.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
+98	F1 Pursuit Medium	/opt/jderobot/Launchers/f1_pursuit_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
+99	F1 Pursuit Hard	/opt/jderobot/Launchers/f1_pursuit_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/simple_circuit.config"}	ROS2	gz	simple_circuit.urdf
 100	Mobile Manipulation Warehouse Nav2	/opt/jderobot/Launchers/mobile_manipulation_warehouse_nav2.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/mobile_manipulation.launch.py","gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 \.
 
@@ -451,6 +463,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 57	Ur5 Physical	/home/ws/src/CustomRobots/robot_arms/launch/ur5_physical.launch.py	ur5_robotiq	None	robot_arms/models/ur5/ur5_physical.urdf.xacro
 58	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
 59	MMO-500 Harvester	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500 end_effector:=harvest	mmo500/models/mmo500/mmo500.urdf.xacro
+60	F1 Pursuit Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=none namespace:=f1_rival color:=Blue	f1/models/f1/f1.urdf.xacro
 \.
 
 --

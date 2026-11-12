@@ -3,7 +3,11 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro" />
 
-  <xacro:macro name="holonomic" params="namespace">
+  <material name="Blue">
+    <color rgba="0.1 0.3 0.9 1.0" />
+  </material>
+
+  <xacro:macro name="holonomic" params="namespace color:=''">
 
     <link name="base">
       <origin rpy="0 0 0" xyz="0 0 0" />
@@ -21,6 +25,9 @@
         <geometry>
           <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2" />
         </geometry>
+        <xacro:if value="${color != ''}">
+          <material name="${color}" />
+        </xacro:if>
       </visual>
     </link>
 
