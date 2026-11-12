@@ -215,11 +215,11 @@ def launch_setup(context):
             arguments=[
                 controller_name,
                 "--switch-timeout",
-                "90",
+                "3600",
                 "--controller-manager-timeout",
-                "90",
+                "3600",
                 "--service-call-timeout",
-                "90",
+                "3660",
             ],
             output="screen",
         )
