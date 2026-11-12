@@ -72,6 +72,52 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Color and depth cameras at the same pose, gz only renders the depth one while someone listens to it -->
+  <xacro:macro name="rgbd_camera" params="link name namespace pose fov">
+    <gazebo reference="${link}">
+      <sensor name="${name}" type="camera">
+        <pose>${pose}</pose>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>15</update_rate>
+        <topic>/${namespace}/${name}/image</topic>
+        <camera name="${name}">
+          <camera_info_topic>/${namespace}/${name}/camera_info</camera_info_topic>
+          <horizontal_fov>${fov}</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>6.0</far>
+          </clip>
+        </camera>
+      </sensor>
+      <sensor name="${name}_depth" type="depth_camera">
+        <pose>${pose}</pose>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>15</update_rate>
+        <topic>/${namespace}/${name}/depth_image</topic>
+        <camera name="${name}_depth">
+          <camera_info_topic>/${namespace}/${name}/depth_camera_info</camera_info_topic>
+          <horizontal_fov>${fov}</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R_FLOAT32</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>6.0</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
   <xacro:macro name="ros2_control_plugin" params="namespace simulation_controllers">
     <gazebo>
       <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">

@@ -1,4 +1,5 @@
 import os
+import tempfile
 import xacro
 import yaml
 
@@ -31,6 +32,10 @@ def launch_setup(context):
     Y = LaunchConfiguration("Y")
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
+    end_effector = LaunchConfiguration("end_effector").perform(context)
+    harvest = end_effector == "harvest"
+    # Config files of the harvest head carry a suffix
+    suffix = "_harvest" if harvest else ""
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -48,7 +53,7 @@ def launch_setup(context):
     controllers_file = os.path.join(
         get_package_share_directory("mmo500_moveit_config"),
         "config",
-        "controller_manager.yaml",
+        f"controller_manager{suffix}.yaml",
     )
 
     robot_description_content = xacro.process_file(
@@ -56,6 +61,7 @@ def launch_setup(context):
         mappings={
             "namespace": namespace,
             "simulation_controllers": controllers_file,
+            "end_effector": end_effector,
         },
     ).toxml()
 
@@ -64,7 +70,7 @@ def launch_setup(context):
     # MoveIt configuration
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "mmo500_moveit_config", "srdf/mmo500.srdf"
+            "mmo500_moveit_config", f"srdf/mmo500{suffix}.srdf"
         )
     }
 
@@ -72,9 +78,12 @@ def launch_setup(context):
     kinematics_yaml = {
         "robot_description_kinematics": kinematics_yaml["/**"]["ros__parameters"]
     }
+    # KDL restarts from random seeds and the narrowed harvest joint limits need more of them
+    if harvest:
+        kinematics_yaml["robot_description_kinematics"]["ur10_manipulator"]["kinematics_solver_timeout"] = 1.0
 
     moveit_controllers = load_yaml(
-        "mmo500_moveit_config", "config/moveit_controllers.yaml"
+        "mmo500_moveit_config", f"config/moveit_controllers{suffix}.yaml"
     )
     moveit_controllers = moveit_controllers["/**"]["ros__parameters"]
 
@@ -152,17 +161,47 @@ def launch_setup(context):
         output="screen",
     )
 
+    bridge_arguments = [
+        f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+        f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+        f"/{namespace}/front_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+        f"/{namespace}/back_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+        f"/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+    ]
+
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         namespace=gz_namespace,
-        arguments=[
-            f"/{namespace}/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            f"/{namespace}/front_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-            f"/{namespace}/back_laser/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-            f"/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
-        ],
+        arguments=bridge_arguments,
+        output="screen",
+    )
+
+    # Lazy bridge so gz only renders a wrist camera image while someone subscribes to it
+    camera_topics = [
+        ("harvest_camera/image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
+        ("harvest_camera/depth_image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
+        ("harvest_camera/camera_info", "sensor_msgs/msg/CameraInfo", "gz.msgs.CameraInfo"),
+    ]
+    camera_config = os.path.join(tempfile.mkdtemp(prefix="mmo500_"), "harvest_camera_bridge.yaml")
+    with open(camera_config, "w") as fh:
+        yaml.safe_dump([
+            {
+                "ros_topic_name": f"/{namespace}/{topic}",
+                "gz_topic_name": f"/{namespace}/{topic}",
+                "ros_type_name": ros_type,
+                "gz_type_name": gz_type,
+                "direction": "GZ_TO_ROS",
+                "lazy": True,
+            }
+            for topic, ros_type, gz_type in camera_topics
+        ], fh)
+    camera_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        name="harvest_camera_bridge",
+        namespace=gz_namespace,
+        parameters=[{"config_file": camera_config}],
         output="screen",
     )
 
@@ -176,11 +215,11 @@ def launch_setup(context):
             arguments=[
                 controller_name,
                 "--switch-timeout",
-                "90",
+                "3600",
                 "--controller-manager-timeout",
-                "90",
+                "3600",
                 "--service-call-timeout",
-                "90",
+                "3660",
             ],
             output="screen",
         )
@@ -188,6 +227,7 @@ def launch_setup(context):
     joint_state_broadcaster_spawner = controller_spawner("joint_state_broadcaster")
     arm_controller_spawner = controller_spawner("arm_controller")
     gripper_controller_spawner = controller_spawner("gripper_controller")
+    twist_controller_spawner = controller_spawner("twist_controller")
 
     # MoveIt nodes
     move_group = Node(
@@ -269,20 +309,37 @@ def launch_setup(context):
         )
     )
 
+    # The harvest head also twists, its controller goes before MoveIt
+    last_spawner = gripper_controller_spawner
+    after_twist = []
+    if harvest:
+        after_twist = [
+            RegisterEventHandler(
+                OnProcessExit(
+                    target_action=gripper_controller_spawner,
+                    on_exit=[twist_controller_spawner],
+                )
+            )
+        ]
+        last_spawner = twist_controller_spawner
+
     after_gripper = RegisterEventHandler(
         OnProcessExit(
-            target_action=gripper_controller_spawner,
+            target_action=last_spawner,
             on_exit=moveit_nodes,
         )
     )
 
+    bridges = [gz_ros2_bridge, camera_bridge] if harvest else [gz_ros2_bridge]
+
     return [
         robot_state_publisher_node,
         gz_spawn_entity,
-        gz_ros2_bridge,
+        *bridges,
         after_spawn,
         after_joint_state_broadcaster,
         after_arm,
+        *after_twist,
         after_gripper,
         map_tf,
     ]
@@ -299,6 +356,8 @@ def generate_launch_description():
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("namespace", default_value="mmo500"),
         DeclareLaunchArgument("entity", default_value="mmo500"),
+        # robotiq or harvest
+        DeclareLaunchArgument("end_effector", default_value="robotiq"),
     ]
 
     return LaunchDescription(

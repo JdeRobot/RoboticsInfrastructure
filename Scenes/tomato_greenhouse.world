@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="default">
+    <!-- 2 ms step keeps the 10 ms controller period an exact multiple of the step -->
+    <physics name="2ms" type="ignored">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+    </plugin>
+    <!-- Juice splash of a burst tomato and bits of a torn truss -->
+    <plugin filename="gz-sim-particle-emitter-system" name="gz::sim::systems::ParticleEmitter">
+    </plugin>
+
+    <scene>
+      <grid>false</grid>
+      <shadows>false</shadows>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.70 0.82 0.95 1</background>
+      <sky></sky>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 20 0 0 0</pose>
+      <diffuse>0.85 0.83 0.78 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>0.35 0.25 -0.9</direction>
+    </light>
+
+    <!-- Peat floor inside, grass outside -->
+    <include>
+      <name>greenhouse_floor</name>
+      <uri>model://greenhouse_floor</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Roofless glass walls around the whole world, door on the east side -->
+    <include>
+      <name>greenhouse_glass</name>
+      <uri>model://greenhouse_glass</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Two numbered double rows of tomato plants along x, aisles at y 0 and +-2.4 -->
+    <include>
+      <name>greenhouse_tomato_rows</name>
+      <uri>model://greenhouse_tomato_rows</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>crate_stack_a_0</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-5.45 -3.05 0.00 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>crate_stack_a_1</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-5.45 -3.05 0.28 0 0 1.6108</pose>
+    </include>
+    <include>
+      <name>crate_stack_a_2</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-5.45 -3.05 0.56 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>crate_stack_c_0</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-5.45 3.05 0.00 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>crate_stack_c_1</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-5.45 3.05 0.28 0 0 1.6108</pose>
+    </include>
+    <include>
+      <name>crate_stack_d_0</name>
+      <uri>model://harvest_crate</uri>
+      <pose>-4.8 3.05 0.00 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>bumblebee_hive_1</name>
+      <uri>model://bumblebee_hive</uri>
+      <pose>-5.65 -2.4 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>bumblebee_hive_2</name>
+      <uri>model://bumblebee_hive</uri>
+      <pose>5.65 2.95 0 0 0 3.1416</pose>
+    </include>
+  </world>
+</sdf>

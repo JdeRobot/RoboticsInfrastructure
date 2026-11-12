@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="default">
+    <!-- 2 ms step keeps the 10 ms controller period an exact multiple of the step -->
+    <physics name="2ms" type="ignored">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+    </plugin>
+    <!-- Juice splash of a burst tomato and bits of a torn truss -->
+    <plugin filename="gz-sim-particle-emitter-system" name="gz::sim::systems::ParticleEmitter">
+    </plugin>
+
+    <scene>
+      <grid>false</grid>
+      <shadows>false</shadows>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.70 0.82 0.95 1</background>
+      <sky></sky>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 20 0 0 0</pose>
+      <diffuse>0.85 0.83 0.78 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>0.35 0.25 -0.9</direction>
+    </light>
+
+    <!-- Peat floor inside, grass outside -->
+    <include>
+      <name>greenhouse_floor</name>
+      <uri>model://greenhouse_floor</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Short plant line to practise the harvest alone, its trusses are in bench_layout.json -->
+    <model name="bench_line">
+      <static>true</static>
+      <link name="line_0">
+        <pose>0.5 -0.9 0 0 0 0</pose>
+        <collision name="gutter">
+          <pose>0 0 0.22 0 0 0</pose>
+          <geometry><box><size>2.0 0.26 0.44</size></box></geometry>
+        </collision>
+        <visual name="gutter">
+          <pose>0 0 0.33 0 0 0</pose>
+          <geometry><box><size>2.0 0.26 0.06</size></box></geometry>
+          <material><ambient>0.60 0.62 0.64 1</ambient><diffuse>0.60 0.62 0.64 1</diffuse></material>
+        </visual>
+        <visual name="slab">
+          <pose>0 0 0.40 0 0 0</pose>
+          <geometry><box><size>1.96 0.18 0.08</size></box></geometry>
+          <material><ambient>0.93 0.93 0.91 1</ambient><diffuse>0.93 0.93 0.91 1</diffuse></material>
+        </visual>
+        <visual name="stand_west">
+          <pose>-0.8 0 0.15 0 0 0</pose>
+          <geometry><box><size>0.04 0.04 0.30</size></box></geometry>
+          <material><ambient>0.30 0.30 0.32 1</ambient><diffuse>0.30 0.30 0.32 1</diffuse></material>
+        </visual>
+        <visual name="stand_east">
+          <pose>0.8 0 0.15 0 0 0</pose>
+          <geometry><box><size>0.04 0.04 0.30</size></box></geometry>
+          <material><ambient>0.30 0.30 0.32 1</ambient><diffuse>0.30 0.30 0.32 1</diffuse></material>
+        </visual>
+        <visual name="plant_0">
+          <pose>-0.45 0 0.44 0 0 1.5708</pose>
+          <geometry><mesh><uri>model://greenhouse_tomato_rows/meshes/tomato_plant_0.obj</uri></mesh></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr><metal><albedo_map>model://greenhouse_tomato_rows/materials/textures/palette.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+        </visual>
+        <visual name="plant_1">
+          <pose>0.05 0 0.44 0 0 1.5708</pose>
+          <geometry><mesh><uri>model://greenhouse_tomato_rows/meshes/tomato_plant_3.obj</uri></mesh></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr><metal><albedo_map>model://greenhouse_tomato_rows/materials/textures/palette.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+        </visual>
+        <visual name="plant_2">
+          <pose>0.55 0 0.44 0 0 1.5708</pose>
+          <geometry><mesh><uri>model://greenhouse_tomato_rows/meshes/tomato_plant_5.obj</uri></mesh></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr><metal><albedo_map>model://greenhouse_tomato_rows/materials/textures/palette.png</albedo_map><metalness>0</metalness><roughness>0.9</roughness></metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

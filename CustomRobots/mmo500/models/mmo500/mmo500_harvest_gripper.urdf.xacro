@@ -1,0 +1,359 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Shaft that leaves the wrist housing sideways, in the tool0 frame -->
+  <xacro:property name="harvest_shaft_x" value="0.06"/>
+  <xacro:property name="harvest_shaft_z" value="0.09"/>
+  <!-- Along the shaft, from the housing face to the finger pivots -->
+  <xacro:property name="harvest_hub_length" value="0.06"/>
+  <xacro:property name="harvest_finger_radius" value="0.016"/>
+  <xacro:property name="harvest_finger_length" value="0.14"/>
+  <xacro:property name="harvest_pad_length" value="0.03"/>
+  <xacro:property name="harvest_pad_bend" value="0.8"/>
+  <!-- Fingers splay out this much when open -->
+  <xacro:property name="harvest_splay" value="0.30"/>
+  <!-- Fully closed stops just before the three pads touch each other -->
+  <xacro:property name="harvest_closed" value="0.20"/>
+  <!-- Center of a held tomato beyond the finger pivots -->
+  <xacro:property name="harvest_hold_z" value="0.145"/>
+  <!-- Wrist camera above the shaft, rolled half a turn so the image is upright with the tool pointing down -->
+  <xacro:property name="harvest_camera_xyz" value="${harvest_shaft_x + 0.02} 0 ${harvest_shaft_z - 0.045}"/>
+  <xacro:property name="harvest_camera_tilt" value="-0.1"/>
+  <!-- The head spins a tomato several fast turns to snap its stem -->
+  <xacro:property name="harvest_twist_range" value="${10 * pi}"/>
+  <!-- Above the peak of a two turns per second spin, a trajectory peaks at one and a half times its mean speed -->
+  <xacro:property name="harvest_twist_speed" value="25.0"/>
+  <!-- Harvest crate carried over the front of the base, the harvest manager reads these numbers too -->
+  <xacro:property name="crate_xyz" value="0.56 0 0.40"/>
+  <xacro:property name="crate_inner_x" value="0.37"/>
+  <xacro:property name="crate_inner_y" value="0.57"/>
+  <xacro:property name="crate_height" value="0.14"/>
+
+  <xacro:macro name="harvest_box_inertia" params="m x y z">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${m * (y * y + z * z) / 12}" ixy="0" ixz="0"
+               iyy="${m * (x * x + z * z) / 12}" iyz="0"
+               izz="${m * (x * x + y * y) / 12}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="harvest_finger" params="index angle mimic">
+    <link name="harvest_finger_${index}">
+      <xacro:harvest_box_inertia m="0.01" x="0.01" y="0.01" z="${harvest_finger_length}"/>
+      <!-- Slim white rod -->
+      <visual>
+        <origin xyz="0 0 ${harvest_finger_length / 2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0028" length="${harvest_finger_length}"/>
+        </geometry>
+        <material name="harvest_white"/>
+      </visual>
+      <!-- Soft blue pad bent towards the fruit -->
+      <visual>
+        <origin xyz="${-sin(harvest_pad_bend) * harvest_pad_length / 2} 0 ${harvest_finger_length + cos(harvest_pad_bend) * harvest_pad_length / 2}" rpy="0 ${-harvest_pad_bend} 0"/>
+        <geometry>
+          <box size="0.007 0.012 ${harvest_pad_length}"/>
+        </geometry>
+        <material name="harvest_blue"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 ${harvest_finger_length}" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.0045"/>
+        </geometry>
+        <material name="harvest_blue"/>
+      </visual>
+      <!-- Only the pad touches the fruit so the fingers stop in front of it -->
+      <collision>
+        <origin xyz="${-sin(harvest_pad_bend) * harvest_pad_length / 2} 0 ${harvest_finger_length + cos(harvest_pad_bend) * harvest_pad_length / 2}" rpy="0 ${-harvest_pad_bend} 0"/>
+        <geometry>
+          <box size="0.007 0.012 ${harvest_pad_length}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Fruit held in the hand or falling uses another bit so it never fights the fingers -->
+    <gazebo reference="harvest_finger_${index}">
+      <collision>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+    </gazebo>
+
+    <!-- Zero is open with the finger splayed out, positive closes it towards the shaft axis -->
+    <joint name="harvest_finger_${index}_joint" type="revolute">
+      <parent link="harvest_spindle"/>
+      <child link="harvest_finger_${index}"/>
+      <origin xyz="${harvest_finger_radius * cos(angle)} ${harvest_finger_radius * sin(angle)} ${harvest_hub_length}" rpy="0 ${harvest_splay} ${angle}"/>
+      <axis xyz="0 -1 0"/>
+      <limit lower="0.0" upper="${harvest_closed}" effort="2.0" velocity="1.0"/>
+      <xacro:if value="${mimic}">
+        <mimic joint="harvest_finger_1_joint" multiplier="1.0" offset="0.0"/>
+      </xacro:if>
+    </joint>
+  </xacro:macro>
+
+  <!-- Fruit harvesting head with three fingers that grasp a tomato and twist it off -->
+  <xacro:macro name="harvest_gripper" params="parent namespace">
+
+    <material name="harvest_black">
+      <color rgba="0.07 0.07 0.08 1"/>
+    </material>
+    <material name="harvest_white">
+      <color rgba="0.94 0.94 0.92 1"/>
+    </material>
+    <material name="harvest_steel">
+      <color rgba="0.70 0.72 0.74 1"/>
+    </material>
+    <material name="harvest_blue">
+      <color rgba="0.16 0.42 0.92 1"/>
+    </material>
+
+    <link name="harvest_mount">
+      <xacro:harvest_box_inertia m="0.8" x="0.11" y="0.09" z="0.13"/>
+      <!-- Steel collar on the flange -->
+      <visual>
+        <origin xyz="0 0 0.025" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.05"/>
+        </geometry>
+        <material name="harvest_steel"/>
+      </visual>
+      <!-- Black wedge shaped housing -->
+      <visual>
+        <origin xyz="0.005 0 0.08" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.11 0.09 0.06"/>
+        </geometry>
+        <material name="harvest_black"/>
+      </visual>
+      <visual>
+        <origin xyz="-0.01 0 0.112" rpy="0 0.45 0"/>
+        <geometry>
+          <box size="0.085 0.088 0.05"/>
+        </geometry>
+        <material name="harvest_black"/>
+      </visual>
+      <!-- Silver plate around the shaft exit -->
+      <visual>
+        <origin xyz="${harvest_shaft_x - 0.002} 0 ${harvest_shaft_z - 0.005}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.006 0.06 0.05"/>
+        </geometry>
+        <material name="harvest_steel"/>
+      </visual>
+      <!-- White gear seen through the housing window -->
+      <visual>
+        <origin xyz="0.035 0.046 0.085" rpy="${pi / 2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.017" length="0.006"/>
+        </geometry>
+        <material name="harvest_white"/>
+      </visual>
+      <collision>
+        <origin xyz="0.005 0 0.065" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.11 0.09 0.13"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="harvest_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="harvest_mount"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Fixed to the housing so the image does not spin with the twist -->
+    <link name="harvest_camera_link">
+      <xacro:harvest_box_inertia m="0.05" x="0.023" y="0.042" z="0.042"/>
+      <visual>
+        <origin xyz="-0.0115 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.023 0.042 0.042"/>
+        </geometry>
+        <material name="harvest_steel"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0005 0.009 0" rpy="0 ${pi / 2} 0"/>
+        <geometry>
+          <cylinder radius="0.006" length="0.002"/>
+        </geometry>
+        <material name="harvest_black"/>
+      </visual>
+      <visual>
+        <origin xyz="0.0005 -0.009 0" rpy="0 ${pi / 2} 0"/>
+        <geometry>
+          <cylinder radius="0.006" length="0.002"/>
+        </geometry>
+        <material name="harvest_black"/>
+      </visual>
+      <collision>
+        <origin xyz="-0.0115 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.023 0.042 0.042"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Looks along the shaft, tilted towards it to center a fruit at the approach distance -->
+    <joint name="harvest_camera_joint" type="fixed">
+      <parent link="harvest_mount"/>
+      <child link="harvest_camera_link"/>
+      <origin xyz="${harvest_camera_xyz}" rpy="${pi} ${harvest_camera_tilt} 0"/>
+    </joint>
+
+    <!-- Optical frame with z forward and x right, the usual image convention -->
+    <link name="harvest_camera_optical"/>
+    <joint name="harvest_camera_optical_joint" type="fixed">
+      <parent link="harvest_camera_link"/>
+      <child link="harvest_camera_optical"/>
+      <origin xyz="0 0 0" rpy="${-pi / 2} 0 ${-pi / 2}"/>
+    </joint>
+
+    <!-- A sensor on a merged fixed link loses its pose so it hangs from the wrist, which coincides with the mount -->
+    <xacro:rgbd_camera link="ur10_wrist_3_link" name="harvest_camera" namespace="${namespace}"
+                       pose="${harvest_camera_xyz} ${pi} ${harvest_camera_tilt} 0" fov="1.5"/>
+
+    <!-- Twisting part, its z axis runs along the shaft -->
+    <link name="harvest_spindle">
+      <xacro:harvest_box_inertia m="0.1" x="0.03" y="0.03" z="0.06"/>
+      <visual>
+        <origin xyz="0 0 0.0175" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.008" length="0.035"/>
+        </geometry>
+        <material name="harvest_steel"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 ${0.035 + 0.0125}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.017" length="0.025"/>
+        </geometry>
+        <material name="harvest_white"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.02" length="0.006"/>
+        </geometry>
+        <material name="harvest_white"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.03" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.017" length="0.06"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Spins the fingers and the grasped fruit, five turns each way -->
+    <joint name="harvest_twist_joint" type="revolute">
+      <parent link="harvest_mount"/>
+      <child link="harvest_spindle"/>
+      <origin xyz="${harvest_shaft_x} 0 ${harvest_shaft_z}" rpy="0 ${pi / 2} 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${-harvest_twist_range}" upper="${harvest_twist_range}" effort="20.0" velocity="${harvest_twist_speed}"/>
+    </joint>
+
+    <!-- Finger 1 hangs below the shaft so the wrist camera looks between fingers 2 and 3 -->
+    <xacro:harvest_finger index="1" angle="${pi}" mimic="false"/>
+    <xacro:harvest_finger index="2" angle="${pi / 3}" mimic="true"/>
+    <xacro:harvest_finger index="3" angle="${-pi / 3}" mimic="true"/>
+
+    <!-- Where a held tomato sits, z along the shaft so it is the approach direction -->
+    <link name="gripper_tcp"/>
+    <joint name="gripper_tcp_joint" type="fixed">
+      <parent link="harvest_mount"/>
+      <child link="gripper_tcp"/>
+      <origin xyz="${harvest_shaft_x + harvest_hub_length + harvest_hold_z} 0 ${harvest_shaft_z}" rpy="0 ${pi / 2} 0"/>
+    </joint>
+
+    <ros2_control name="harvest_gripper" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="harvest_twist_joint">
+        <command_interface name="position">
+          <param name="min">${-harvest_twist_range}</param>
+          <param name="max">${harvest_twist_range}</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="harvest_finger_1_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">${harvest_closed}</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <!-- Mimic params drive them in Humble, Jazzy reads the URDF mimic tag instead -->
+      <joint name="harvest_finger_2_joint">
+        <param name="mimic">harvest_finger_1_joint</param>
+        <param name="multiplier">1.0</param>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="harvest_finger_3_joint">
+        <param name="mimic">harvest_finger_1_joint</param>
+        <param name="multiplier">1.0</param>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
+
+  <!-- Wooden crate of the greenhouse turned crosswise and half as tall -->
+  <xacro:macro name="harvest_crate" params="parent">
+    <xacro:property name="wall" value="0.015"/>
+    <link name="harvest_crate">
+      <xacro:harvest_box_inertia m="1.5" x="${crate_inner_x}" y="${crate_inner_y}" z="${crate_height}"/>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 ${pi / 2}"/>
+        <geometry>
+          <mesh filename="file://$(find custom_robots)/models/harvest_crate/meshes/crate.obj" scale="1 1 0.5"/>
+        </geometry>
+        <material name="crate_wood">
+          <color rgba="0.72 0.55 0.36 1"/>
+        </material>
+      </visual>
+      <collision name="crate_bottom">
+        <origin xyz="0 0 ${wall / 2}"/>
+        <geometry><box size="${crate_inner_x + 2 * wall} ${crate_inner_y + 2 * wall} ${wall}"/></geometry>
+      </collision>
+      <collision name="crate_front">
+        <origin xyz="${(crate_inner_x + wall) / 2} 0 ${crate_height / 2}"/>
+        <geometry><box size="${wall} ${crate_inner_y + 2 * wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_back">
+        <origin xyz="${-(crate_inner_x + wall) / 2} 0 ${crate_height / 2}"/>
+        <geometry><box size="${wall} ${crate_inner_y + 2 * wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_left">
+        <origin xyz="0 ${(crate_inner_y + wall) / 2} ${crate_height / 2}"/>
+        <geometry><box size="${crate_inner_x} ${wall} ${crate_height}"/></geometry>
+      </collision>
+      <collision name="crate_right">
+        <origin xyz="0 ${-(crate_inner_y + wall) / 2} ${crate_height / 2}"/>
+        <geometry><box size="${crate_inner_x} ${wall} ${crate_height}"/></geometry>
+      </collision>
+    </link>
+    <joint name="harvest_crate_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="harvest_crate"/>
+      <origin xyz="${crate_xyz}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+</robot>
