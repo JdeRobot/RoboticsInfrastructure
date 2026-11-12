@@ -462,6 +462,7 @@ web_gui	None
 state_monitor	None
 webcam	None
 rviz	None
+rqt	None
 video	None
 \.
 
