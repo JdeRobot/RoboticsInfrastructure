@@ -77,7 +77,9 @@ def generate_launch_description():
         ),
         launch_arguments={
             "use_sim_time": "True",
-            "map": os.path.join("/resources", "exercises", "mobile_manipulation/maps/map.yaml"),
+            "map": os.path.join(
+                "/resources", "exercises", "mobile_manipulation/maps/map.yaml"
+            ),
             "slam": "True",
             "params_file": params_file,
         }.items(),
