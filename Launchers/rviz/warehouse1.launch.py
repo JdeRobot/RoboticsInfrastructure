@@ -34,7 +34,9 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     # RViz with MoveIt configuration
-    rviz_config_file = os.path.join("/opt/jderobot/Launchers", "rviz", "warehouse1.rviz")
+    rviz_config_file = os.path.join(
+        "/opt/jderobot/Launchers", "rviz", "warehouse1.rviz"
+    )
 
     rviz_node = Node(
         package="rviz2",
@@ -47,7 +49,6 @@ def generate_launch_description():
             {"use_sim_time": True},
         ],
     )
-
 
     return LaunchDescription(
         [

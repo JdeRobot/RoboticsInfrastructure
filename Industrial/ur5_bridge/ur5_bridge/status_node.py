@@ -96,10 +96,7 @@ class StatusNode(Node):
         self.create_timer(1.0, self.check)
 
     def ready(self):
-        return (
-            self.robot_mode == RobotMode.RUNNING
-            and self.safety_mode in SAFETY_OK
-        )
+        return self.robot_mode == RobotMode.RUNNING and self.safety_mode in SAFETY_OK
 
     def on_robot_mode(self, msg):
         if msg.mode == self.robot_mode:
@@ -198,11 +195,7 @@ class StatusNode(Node):
 
     def check(self):
         stuck = self.robot_mode == RobotMode.RUNNING and not self.program_running
-        if (
-            stuck
-            and self.headless
-            and self.remote_client.service_is_ready()
-        ):
+        if stuck and self.headless and self.remote_client.service_is_ready():
             # Only e-Series robots answer, CB3 has no Local mode
             future = self.remote_client.call_async(IsInRemoteControl.Request())
             future.add_done_callback(self.on_remote)

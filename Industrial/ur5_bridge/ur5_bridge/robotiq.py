@@ -114,7 +114,9 @@ class RtuGripper:
         return reply
 
     def write(self, request):
-        frame = struct.pack(">BBHHB", RTU_SLAVE, 0x10, RTU_OUTPUT, 3, 6) + bytes(request)
+        frame = struct.pack(">BBHHB", RTU_SLAVE, 0x10, RTU_OUTPUT, 3, 6) + bytes(
+            request
+        )
         self.transaction(frame, 8)
 
     def read(self):

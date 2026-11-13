@@ -75,7 +75,7 @@ class CarSpawner(object):
                 del self.active_models[name]
                 print(f"Removed {name}")
 
-    #reset callback function
+    # reset callback function
     def reset(self, info, _ecm):
         self.active_models.clear()
         self.last_spawn = None
