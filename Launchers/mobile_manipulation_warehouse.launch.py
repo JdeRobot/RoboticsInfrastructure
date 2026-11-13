@@ -52,6 +52,15 @@ def generate_launch_description():
         output="screen",
     )
 
+    # Nav2 publishes on /cmd_vel while the robot listens on its namespaced topic
+    cmd_vel_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["/mmo500/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"],
+        remappings=[("/mmo500/cmd_vel", "/cmd_vel")],
+        output="screen",
+    )
+
     pkg_nav2_ros = FindPackageShare(package="nav2_bringup").find("nav2_bringup")
 
     params_file = os.path.join(
@@ -89,6 +98,7 @@ def generate_launch_description():
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(cmd_vel_bridge)
     ld.add_action(localization_cmd)
     ld.add_action(navigation_cmd)
 
