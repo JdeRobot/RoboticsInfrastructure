@@ -68,11 +68,9 @@ def launch_setup(context):
 
     moveit_controllers = load_yaml(
         "dobot_magician_gripper_moveit_config",
-        (
-            "config/moveit_controllers.yaml"
-            if has_gripper
-            else f"config/moveit_controllers_{end_effector}.yaml"
-        ),
+        "config/moveit_controllers.yaml"
+        if has_gripper
+        else f"config/moveit_controllers_{end_effector}.yaml",
     )["/**"]["ros__parameters"]
 
     ompl_planning = load_yaml(

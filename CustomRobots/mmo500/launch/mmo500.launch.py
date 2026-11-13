@@ -80,9 +80,7 @@ def launch_setup(context):
     }
     # KDL restarts from random seeds and the narrowed harvest joint limits need more of them
     if harvest:
-        kinematics_yaml["robot_description_kinematics"]["ur10_manipulator"][
-            "kinematics_solver_timeout"
-        ] = 1.0
+        kinematics_yaml["robot_description_kinematics"]["ur10_manipulator"]["kinematics_solver_timeout"] = 1.0
 
     moveit_controllers = load_yaml(
         "mmo500_moveit_config", f"config/moveit_controllers{suffix}.yaml"
@@ -183,30 +181,21 @@ def launch_setup(context):
     camera_topics = [
         ("harvest_camera/image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
         ("harvest_camera/depth_image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
-        (
-            "harvest_camera/camera_info",
-            "sensor_msgs/msg/CameraInfo",
-            "gz.msgs.CameraInfo",
-        ),
+        ("harvest_camera/camera_info", "sensor_msgs/msg/CameraInfo", "gz.msgs.CameraInfo"),
     ]
-    camera_config = os.path.join(
-        tempfile.mkdtemp(prefix="mmo500_"), "harvest_camera_bridge.yaml"
-    )
+    camera_config = os.path.join(tempfile.mkdtemp(prefix="mmo500_"), "harvest_camera_bridge.yaml")
     with open(camera_config, "w") as fh:
-        yaml.safe_dump(
-            [
-                {
-                    "ros_topic_name": f"/{namespace}/{topic}",
-                    "gz_topic_name": f"/{namespace}/{topic}",
-                    "ros_type_name": ros_type,
-                    "gz_type_name": gz_type,
-                    "direction": "GZ_TO_ROS",
-                    "lazy": True,
-                }
-                for topic, ros_type, gz_type in camera_topics
-            ],
-            fh,
-        )
+        yaml.safe_dump([
+            {
+                "ros_topic_name": f"/{namespace}/{topic}",
+                "gz_topic_name": f"/{namespace}/{topic}",
+                "ros_type_name": ros_type,
+                "gz_type_name": gz_type,
+                "direction": "GZ_TO_ROS",
+                "lazy": True,
+            }
+            for topic, ros_type, gz_type in camera_topics
+        ], fh)
     camera_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",

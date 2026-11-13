@@ -17,9 +17,7 @@ def generate_launch_description():
     package_dir = get_package_share_directory("custom_robots")
 
     # RViz with MoveIt configuration
-    rviz_config_file = os.path.join(
-        "/opt/jderobot/Launchers", "rviz", "warehouse1.rviz"
-    )
+    rviz_config_file = os.path.join("/opt/jderobot/Launchers", "rviz", "warehouse1.rviz")
 
     rviz_node = Node(
         package="rviz2",

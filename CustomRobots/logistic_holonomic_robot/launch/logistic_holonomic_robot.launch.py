@@ -4,16 +4,11 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command, IfElseSubstitution
-from launch.actions import (
-    DeclareLaunchArgument,
-    OpaqueFunction,
-    IncludeLaunchDescription,
-)
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, IncludeLaunchDescription
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-
 
 def launch_setup(context):
     use_sim_time = LaunchConfiguration("use_sim_time")

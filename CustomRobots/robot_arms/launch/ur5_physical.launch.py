@@ -306,8 +306,7 @@ def generate_launch_description():
         DeclareLaunchArgument("entity", default_value="ur5_robotiq"),
         # Each one defaults to an environment variable of the container
         DeclareLaunchArgument(
-            "ur_type",
-            default_value=EnvironmentVariable("UR_TYPE", default_value="ur5e"),
+            "ur_type", default_value=EnvironmentVariable("UR_TYPE", default_value="ur5e")
         ),
         DeclareLaunchArgument(
             "robot_ip",

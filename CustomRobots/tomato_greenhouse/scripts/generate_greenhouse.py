@@ -25,29 +25,15 @@ rng = np.random.default_rng(SEED)
 # Layouts shared with the world files and the harvest manager
 LAYOUTS = {
     # Two double rows of 6 m, aisles at y 0 and +-2.4
-    "normal": dict(
-        rows=[-1.2, 1.2],
-        half_len=3.0,
-        gh_x=6.0,
-        gh_y=3.6,
-        suffix="",
-        anchors="tomato_anchors.json",
-    ),
+    "normal": dict(rows=[-1.2, 1.2], half_len=3.0, gh_x=6.0, gh_y=3.6, suffix="",
+                   anchors="tomato_anchors.json"),
     # Four double rows of 10 m with the same aisles plus two more at y +-4.8
-    "big": dict(
-        rows=[-3.6, -1.2, 1.2, 3.6],
-        half_len=5.0,
-        gh_x=8.5,
-        gh_y=6.0,
-        suffix="_big",
-        anchors="tomato_anchors_big.json",
-    ),
+    "big": dict(rows=[-3.6, -1.2, 1.2, 3.6], half_len=5.0, gh_x=8.5, gh_y=6.0, suffix="_big",
+                anchors="tomato_anchors_big.json"),
 }
 parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
 parser.add_argument("--layout", choices=list(LAYOUTS), default="normal")
-parser.add_argument(
-    "models_dir", nargs="?", default=os.path.join(PACKAGE_DIR, "models")
-)
+parser.add_argument("models_dir", nargs="?", default=os.path.join(PACKAGE_DIR, "models"))
 parser.add_argument("anchors_json", nargs="?")
 ARGS = parser.parse_args()
 LAYOUT = LAYOUTS[ARGS.layout]
@@ -159,36 +145,12 @@ def box(mesh, center, size, color=None, yaw=0.0, tex_scale=None):
         return (c * x - s * y, s * x + c * y, z)
 
     faces = [
-        (
-            (1, 0, 0),
-            [(sx, -sy, -sz), (sx, sy, -sz), (sx, sy, sz), (sx, -sy, sz)],
-            (1, 2),
-        ),
-        (
-            (-1, 0, 0),
-            [(-sx, sy, -sz), (-sx, -sy, -sz), (-sx, -sy, sz), (-sx, sy, sz)],
-            (1, 2),
-        ),
-        (
-            (0, 1, 0),
-            [(sx, sy, -sz), (-sx, sy, -sz), (-sx, sy, sz), (sx, sy, sz)],
-            (0, 2),
-        ),
-        (
-            (0, -1, 0),
-            [(-sx, -sy, -sz), (sx, -sy, -sz), (sx, -sy, sz), (-sx, -sy, sz)],
-            (0, 2),
-        ),
-        (
-            (0, 0, 1),
-            [(-sx, -sy, sz), (sx, -sy, sz), (sx, sy, sz), (-sx, sy, sz)],
-            (0, 1),
-        ),
-        (
-            (0, 0, -1),
-            [(-sx, sy, -sz), (sx, sy, -sz), (sx, -sy, -sz), (-sx, -sy, -sz)],
-            (0, 1),
-        ),
+        ((1, 0, 0), [(sx, -sy, -sz), (sx, sy, -sz), (sx, sy, sz), (sx, -sy, sz)], (1, 2)),
+        ((-1, 0, 0), [(-sx, sy, -sz), (-sx, -sy, -sz), (-sx, -sy, sz), (-sx, sy, sz)], (1, 2)),
+        ((0, 1, 0), [(sx, sy, -sz), (-sx, sy, -sz), (-sx, sy, sz), (sx, sy, sz)], (0, 2)),
+        ((0, -1, 0), [(-sx, -sy, -sz), (sx, -sy, -sz), (sx, -sy, sz), (-sx, -sy, sz)], (0, 2)),
+        ((0, 0, 1), [(-sx, -sy, sz), (sx, -sy, sz), (sx, sy, sz), (-sx, sy, sz)], (0, 1)),
+        ((0, 0, -1), [(-sx, sy, -sz), (sx, sy, -sz), (sx, -sy, -sz), (-sx, -sy, -sz)], (0, 1)),
     ]
     for nv, quad, axes in faces:
         verts = [tr(p) for p in quad]
@@ -201,9 +163,7 @@ def box(mesh, center, size, color=None, yaw=0.0, tex_scale=None):
             if size[a1] > size[a0]:
                 a0, a1 = a1, a0
             off = (center[0] * 1.7 + center[1] * 2.3 + center[2] * 3.1) % 1.0
-            uvs = [
-                (p[a0] / tex_scale + off, p[a1] / tex_scale + off * 0.5) for p in quad
-            ]
+            uvs = [(p[a0] / tex_scale + off, p[a1] / tex_scale + off * 0.5) for p in quad]
         mesh.add(verts, norms, uvs, [(0, 1, 2), (0, 2, 3)])
 
 
@@ -296,12 +256,8 @@ def leaflet(mesh, origin, direction, side, length, width, color):
         elif i == stations - 2:
             faces += [(i, L(i), i + 1), (i, i + 1, R(i))]
         else:
-            faces += [
-                (i, L(i), L(i + 1)),
-                (i, L(i + 1), i + 1),
-                (i, i + 1, R(i + 1)),
-                (i, R(i + 1), R(i)),
-            ]
+            faces += [(i, L(i), L(i + 1)), (i, L(i + 1), i + 1),
+                      (i, i + 1, R(i + 1)), (i, R(i + 1), R(i))]
     # Orient so the upper face points up
     a, b, c = faces[0]
     nrm = np.cross(verts[b] - verts[a], verts[c] - verts[a])
@@ -320,23 +276,11 @@ def compound_leaf(mesh, origin, yaw, length, color, droop=1.0):
     steps = 10
     for i in range(steps + 1):
         t = i / steps
-        pitch = pitch0 - math.radians(75) * droop * t**1.3
-        d = np.array(
-            [
-                math.cos(pitch) * math.cos(yaw),
-                math.cos(pitch) * math.sin(yaw),
-                math.sin(pitch),
-            ]
-        )
+        pitch = pitch0 - math.radians(75) * droop * t ** 1.3
+        d = np.array([math.cos(pitch) * math.cos(yaw), math.cos(pitch) * math.sin(yaw), math.sin(pitch)])
         pts.append(p.copy())
         p = p + d * length / steps
-    tube(
-        mesh,
-        pts,
-        [0.0035 * (1 - 0.6 * i / steps) for i in range(steps + 1)],
-        0,
-        sides=4,
-    )
+    tube(mesh, pts, [0.0035 * (1 - 0.6 * i / steps) for i in range(steps + 1)], 0, sides=4)
     for frac, size in ((0.22, 0.08), (0.42, 0.12), (0.62, 0.14), (0.82, 0.13)):
         idx = int(frac * steps)
         base = pts[idx]
@@ -344,15 +288,11 @@ def compound_leaf(mesh, origin, yaw, length, color, droop=1.0):
         horiz = unit(np.cross(tang, [0, 0, 1]))
         for sgn in (1, -1):
             jitter = rng.normal(0, 0.12)
-            direction = unit(
-                tang * 0.55 + sgn * horiz * 0.85 + np.array([0, 0, -0.15 + jitter])
-            )
+            direction = unit(tang * 0.55 + sgn * horiz * 0.85 + np.array([0, 0, -0.15 + jitter]))
             ln = size * rng.uniform(0.85, 1.15)
             leaflet(mesh, base, direction, sgn * tang, ln, ln * 0.52, color)
     tip_dir = unit(pts[-1] - pts[-2])
-    leaflet(
-        mesh, pts[-1], tip_dir, unit(np.cross(tip_dir, [0, 0, 1])), 0.14, 0.075, color
-    )
+    leaflet(mesh, pts[-1], tip_dir, unit(np.cross(tip_dir, [0, 0, 1])), 0.14, 0.075, color)
 
 
 def plant_variant(seed):
@@ -382,22 +322,8 @@ def plant_variant(seed):
     # Twine from the growing tip to the high wire
     top = pts[-1]
     w = 0.002
-    quad_ds(
-        mesh,
-        top + [-w, 0, 0],
-        top + [w, 0, 0],
-        [w, 0, wire_local],
-        [-w, 0, wire_local],
-        7,
-    )
-    quad_ds(
-        mesh,
-        top + [0, -w, 0],
-        top + [0, w, 0],
-        [0, w, wire_local],
-        [0, -w, wire_local],
-        7,
-    )
+    quad_ds(mesh, top + [-w, 0, 0], top + [w, 0, 0], [w, 0, wire_local], [-w, 0, wire_local], 7)
+    quad_ds(mesh, top + [0, -w, 0], top + [0, w, 0], [0, w, wire_local], [0, -w, wire_local], 7)
 
     # Trusses in the harvest zone below the canopy, older ones lower
     trusses = []
@@ -422,14 +348,7 @@ def plant_variant(seed):
             tip = p + d * side * 0.012 + np.array([0, 0, -0.022])
             pedicels.append([p.copy(), tip])
             anchors.append(tip)
-        trusses.append(
-            {
-                "level": k,
-                "anchors": anchors,
-                "stalk": ped + rachis[1:],
-                "pedicels": pedicels,
-            }
-        )
+        trusses.append({"level": k, "anchors": anchors, "stalk": ped + rachis[1:], "pedicels": pedicels})
 
     # Leaves all along the stem, shorter on the truss side so the fruit stays visible
     yaw = rng.uniform(0, 2 * math.pi)
@@ -466,34 +385,16 @@ def line_mesh():
         x0 = -ROW_HALF_LEN + i * 1.0 + 0.5
         box(m, (x0, 0, 0.40), (0.96, 0.18, 0.08), 8)
     # Drip line on the slabs
-    tube(
-        m,
-        [(-ROW_HALF_LEN, 0.07, 0.447), (ROW_HALF_LEN, 0.07, 0.447)],
-        [0.006, 0.006],
-        10,
-        sides=4,
-    )
+    tube(m, [(-ROW_HALF_LEN, 0.07, 0.447), (ROW_HALF_LEN, 0.07, 0.447)], [0.006, 0.006], 10, sides=4)
     # Heating pipes under the gutter
     for y in (-0.09, 0.09):
-        tube(
-            m,
-            [(-ROW_HALF_LEN - 0.1, y, 0.12), (ROW_HALF_LEN + 0.1, y, 0.12)],
-            [0.025, 0.025],
-            11,
-            sides=8,
-        )
+        tube(m, [(-ROW_HALF_LEN - 0.1, y, 0.12), (ROW_HALF_LEN + 0.1, y, 0.12)], [0.025, 0.025], 11, sides=8)
     for x in (-ROW_HALF_LEN - 0.12, ROW_HALF_LEN + 0.12):
         tube(m, [(x, -0.09, 0.12), (x, 0.09, 0.12)], [0.026, 0.026], 11, sides=8)
     # End posts and the high wire
     for x in (-ROW_HALF_LEN - 0.12, ROW_HALF_LEN + 0.12):
         box(m, (x, 0, (WIRE_Z + 0.08) / 2), (0.05, 0.05, WIRE_Z + 0.08), 18)
-    tube(
-        m,
-        [(-ROW_HALF_LEN - 0.12, 0, WIRE_Z), (ROW_HALF_LEN + 0.12, 0, WIRE_Z)],
-        [0.003, 0.003],
-        18,
-        sides=4,
-    )
+    tube(m, [(-ROW_HALF_LEN - 0.12, 0, WIRE_Z), (ROW_HALF_LEN + 0.12, 0, WIRE_Z)], [0.003, 0.003], 18, sides=4)
     return m
 
 
@@ -506,22 +407,8 @@ def row_extras_mesh():
     for x in (-0.66 * ROW_HALF_LEN, 0.0, 0.66 * ROW_HALF_LEN):
         for y in (-LINE_OFFSET, LINE_OFFSET):
             yy = y + (0.05 if y > 0 else -0.05)
-            quad_ds(
-                m,
-                (x - 0.12, yy, 1.95),
-                (x + 0.12, yy, 1.95),
-                (x + 0.12, yy, 2.10),
-                (x - 0.12, yy, 2.10),
-                12,
-            )
-            quad_ds(
-                m,
-                (x - 0.002, yy, 2.10),
-                (x + 0.002, yy, 2.10),
-                (x + 0.002, y, WIRE_Z),
-                (x - 0.002, y, WIRE_Z),
-                7,
-            )
+            quad_ds(m, (x - 0.12, yy, 1.95), (x + 0.12, yy, 1.95), (x + 0.12, yy, 2.10), (x - 0.12, yy, 2.10), 12)
+            quad_ds(m, (x - 0.002, yy, 2.10), (x + 0.002, yy, 2.10), (x + 0.002, y, WIRE_Z), (x - 0.002, y, WIRE_Z), 7)
     return m
 
 
@@ -529,17 +416,10 @@ def sign_texture(path, number):
     img = Image.new("RGB", (256, 256), (245, 245, 240))
     d = ImageDraw.Draw(img)
     d.rectangle([6, 6, 249, 249], outline=(30, 90, 40), width=12)
-    font = ImageFont.truetype(
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 190
-    )
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 190)
     txt = str(number)
     bb = d.textbbox((0, 0), txt, font=font)
-    d.text(
-        ((256 - (bb[2] - bb[0])) / 2 - bb[0], (256 - (bb[3] - bb[1])) / 2 - bb[1]),
-        txt,
-        fill=(30, 90, 40),
-        font=font,
-    )
+    d.text(((256 - (bb[2] - bb[0])) / 2 - bb[0], (256 - (bb[3] - bb[1])) / 2 - bb[1]), txt, fill=(30, 90, 40), font=font)
     img.save(path)
 
 
@@ -556,10 +436,10 @@ def periodic_noise(size, scales, seed):
     out = np.zeros((size, size))
     fy = np.fft.fftfreq(size)[:, None]
     fx = np.fft.fftfreq(size)[None, :]
-    f = np.sqrt(fx**2 + fy**2)
+    f = np.sqrt(fx ** 2 + fy ** 2)
     for scale, amp in scales:
         spec = np.fft.fft2(r.normal(size=(size, size)))
-        filt = np.exp(-((f * scale) ** 2))
+        filt = np.exp(-(f * scale) ** 2)
         n = np.real(np.fft.ifft2(spec * filt))
         n = (n - n.mean()) / (n.std() + 1e-9)
         out += amp * n
@@ -581,14 +461,7 @@ def peat_texture(path, size=1024):
         col = tuple(int(v) for v in r.uniform([70, 45, 25], [120, 85, 50]))
         for dx in (-size, 0, size):
             for dy in (-size, 0, size):
-                d.line(
-                    [
-                        (x + dx, y + dy),
-                        (x + dx + ln * math.cos(a), y + dy + ln * math.sin(a)),
-                    ],
-                    fill=col,
-                    width=1,
-                )
+                d.line([(x + dx, y + dy), (x + dx + ln * math.cos(a), y + dy + ln * math.sin(a))], fill=col, width=1)
     # Perlite grains
     for _ in range(220):
         x, y = r.uniform(0, size, 2)
@@ -596,10 +469,7 @@ def peat_texture(path, size=1024):
         g = int(r.uniform(200, 240))
         for dx in (-size, 0, size):
             for dy in (-size, 0, size):
-                d.ellipse(
-                    [x + dx - rad, y + dy - rad, x + dx + rad, y + dy + rad],
-                    fill=(g, g, g - 8),
-                )
+                d.ellipse([x + dx - rad, y + dy - rad, x + dx + rad, y + dy + rad], fill=(g, g, g - 8))
     pil = pil.filter(ImageFilter.GaussianBlur(0.6))
     pil.save(path)
 
@@ -633,12 +503,7 @@ def wood_texture(path, size=512):
 def flat_quad_mesh(path, x0, x1, y0, y1, z, tile):
     m = Mesh()
     v = [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)]
-    uv = [
-        (x0 / tile, y0 / tile),
-        (x1 / tile, y0 / tile),
-        (x1 / tile, y1 / tile),
-        (x0 / tile, y1 / tile),
-    ]
+    uv = [(x0 / tile, y0 / tile), (x1 / tile, y0 / tile), (x1 / tile, y1 / tile), (x0 / tile, y1 / tile)]
     m.add(v, [(0, 0, 1)] * 4, uv, [(0, 1, 2), (0, 2, 3)])
     m.write(path)
 
@@ -696,9 +561,7 @@ def build_rows():
         sign_mesh(os.path.join(d, "meshes", "sign.obj"))
         # Enough numbered signs for the big layout too
         for k in range(len(LAYOUTS["big"]["rows"])):
-            sign_texture(
-                os.path.join(d, "materials", "textures", f"row_{k + 1}.png"), k + 1
-            )
+            sign_texture(os.path.join(d, "materials", "textures", f"row_{k + 1}.png"), k + 1)
 
     r = np.random.default_rng(SEED + 1)
     links = []
@@ -710,9 +573,7 @@ def build_rows():
             # Plants face the aisle on the outer side of the double row
             face_yaw = side * math.pi / 2
             stagger = 0.0 if side < 0 else PLANT_STEP / 2
-            xs = np.arange(
-                -ROW_HALF_LEN + 0.25 + stagger, ROW_HALF_LEN - 0.2, PLANT_STEP
-            )
+            xs = np.arange(-ROW_HALF_LEN + 0.25 + stagger, ROW_HALF_LEN - 0.2, PLANT_STEP)
             visuals = [f"""
         <visual name="line">
           <geometry><mesh><uri>{own}/plant_line.obj</uri></mesh></geometry>
@@ -729,29 +590,15 @@ def build_rows():
           {tex_material(pal)}
         </visual>""")
                 c, s = math.cos(yaw), math.sin(yaw)
-
                 def world(pt):
                     ax, ay, az = pt
-                    return [
-                        round(x + c * ax - s * ay, 4),
-                        round(y_line + s * ax + c * ay, 4),
-                        round(SLAB_TOP + az, 4),
-                    ]
-
+                    return [round(x + c * ax - s * ay, 4), round(y_line + s * ax + c * ay, 4), round(SLAB_TOP + az, 4)]
                 for t in variants[v]:
-                    anchors_out.append(
-                        {
-                            "line": line_id,
-                            "row": row_idx + 1,
-                            "plant": j,
-                            "level": t["level"],
-                            "anchors": [world(p) for p in t["anchors"]],
-                            "stalk": [world(p) for p in t["stalk"]],
-                            "pedicels": [
-                                [world(a), world(b)] for a, b in t["pedicels"]
-                            ],
-                        }
-                    )
+                    anchors_out.append({
+                        "line": line_id, "row": row_idx + 1, "plant": j, "level": t["level"],
+                        "anchors": [world(p) for p in t["anchors"]],
+                        "stalk": [world(p) for p in t["stalk"]],
+                        "pedicels": [[world(a), world(b)] for a, b in t["pedicels"]]})
             links.append(f"""
       <link name="line_{line_id}">
         <pose>0 {y_line:.3f} 0 0 0 0</pose>
@@ -770,10 +617,7 @@ def build_rows():
       </link>""")
             line_id += 1
         sign_vis = ""
-        for end, xs_, yaw in (
-            ("east", ROW_HALF_LEN + 0.145, 0.0),
-            ("west", -ROW_HALF_LEN - 0.145, math.pi),
-        ):
+        for end, xs_, yaw in (("east", ROW_HALF_LEN + 0.145, 0.0), ("west", -ROW_HALF_LEN - 0.145, math.pi)):
             sign_vis += f"""
         <visual name="sign_{end}">
           <pose>{xs_:.3f} 0 1.35 0 0 {yaw:.4f}</pose>
@@ -816,12 +660,8 @@ def build_floor():
     if not SHARED:
         peat_texture(os.path.join(d, "materials", "textures", "peat.png"))
         grass_texture(os.path.join(d, "materials", "textures", "grass.png"))
-        flat_quad_mesh(
-            os.path.join(d, "meshes", "grass.obj"), -60, 60, -60, 60, -0.01, 4.0
-        )
-    flat_quad_mesh(
-        os.path.join(d, "meshes", "peat.obj"), -GH_X, GH_X, -GH_Y, GH_Y, 0.0, 1.6
-    )
+        flat_quad_mesh(os.path.join(d, "meshes", "grass.obj"), -60, 60, -60, 60, -0.01, 4.0)
+    flat_quad_mesh(os.path.join(d, "meshes", "peat.obj"), -GH_X, GH_X, -GH_Y, GH_Y, 0.0, 1.6)
     peat = "model://greenhouse_floor/materials/textures/peat.png"
     with open(os.path.join(d, "model.sdf"), "w") as fh:
         fh.write(f"""<?xml version="1.0"?>
@@ -875,13 +715,7 @@ def build_glass():
             t = -length / 2 + k * length / n
             px = cx + math.cos(yaw) * t
             py = cy + math.sin(yaw) * t
-            box(
-                m,
-                (px, py, (KNEE_H + GLASS_TOP) / 2),
-                (0.05, 0.07, GLASS_TOP - KNEE_H),
-                13,
-                yaw=yaw,
-            )
+            box(m, (px, py, (KNEE_H + GLASS_TOP) / 2), (0.05, 0.07, GLASS_TOP - KNEE_H), 13, yaw=yaw)
         coll.append(f"""
       <collision name="{name}_wall">
         <pose>{cx} {cy} {GLASS_TOP / 2} 0 0 {yaw:.4f}</pose>
@@ -901,12 +735,7 @@ def build_glass():
       </visual>""")
     for sx in (-1, 1):
         for sy in (-1, 1):
-            box(
-                m,
-                (sx * GH_X, sy * GH_Y, GLASS_TOP / 2),
-                (0.12, 0.12, GLASS_TOP + 0.05),
-                13,
-            )
+            box(m, (sx * GH_X, sy * GH_Y, GLASS_TOP / 2), (0.12, 0.12, GLASS_TOP + 0.05), 13)
     # Sliding double door on the east wall
     for y in (-1.0, 1.0):
         box(m, (GH_X - 0.04, y, 1.25), (0.08, 0.08, 2.5), 18)
@@ -942,12 +771,7 @@ def build_crate():
     ts = 0.5
     for sx in (-1, 1):
         for sy in (-1, 1):
-            box(
-                m,
-                (sx * (L / 2 - 0.02), sy * (W / 2 - 0.02), H / 2),
-                (0.04, 0.04, H),
-                tex_scale=ts,
-            )
+            box(m, (sx * (L / 2 - 0.02), sy * (W / 2 - 0.02), H / 2), (0.04, 0.04, H), tex_scale=ts)
     for z in (0.045, 0.14, 0.235):
         for sy in (-1, 1):
             box(m, (0, sy * (W / 2 - 0.006), z), (L, 0.012, 0.07), tex_scale=ts)
@@ -1036,12 +860,7 @@ def build_fruit():
         verts.append((r * math.cos(a), r * math.sin(a), z))
     faces = [(0, 1 + k, 1 + (k + 1) % (sepals * 2)) for k in range(sepals * 2)]
     m.add(verts, [(0, 0, 1)] * len(verts), [(0.5, 0.5)] * len(verts), faces)
-    m.add(
-        verts,
-        [(0, 0, -1)] * len(verts),
-        [(0.5, 0.5)] * len(verts),
-        [(a, c, b) for a, b, c in faces],
-    )
+    m.add(verts, [(0, 0, -1)] * len(verts), [(0.5, 0.5)] * len(verts), [(a, c, b) for a, b, c in faces])
     m.write(os.path.join(d, "meshes", "calyx.obj"))
     with open(os.path.join(d, "model.sdf"), "w") as fh:
         fh.write("""<?xml version="1.0"?>

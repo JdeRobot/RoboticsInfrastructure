@@ -232,39 +232,12 @@ EMITTER = """
         <max_velocity>{vmax}</max_velocity>
         <material><diffuse>{color} 1</diffuse><emissive>{glow} 1</emissive></material>
       </particle_emitter>"""
-JUICE = dict(
-    count=14,
-    duration=0.15,
-    size=0.004,
-    lifetime=0.3,
-    rate=120,
-    vmin=0.05,
-    vmax=0.35,
-    color="0.8 0.06 0.03",
-    glow="0.35 0.02 0.01",
-)
-STEM_BITS = dict(
-    count=8,
-    duration=0.25,
-    size=0.0035,
-    lifetime=1.3,
-    rate=30,
-    vmin=0.03,
-    vmax=0.12,
-    color="0.42 0.62 0.20",
-    glow="0.10 0.18 0.04",
-)
-TRUSS_BITS = dict(
-    count=14,
-    duration=0.3,
-    size=0.004,
-    lifetime=1.3,
-    rate=40,
-    vmin=0.04,
-    vmax=0.18,
-    color="0.42 0.62 0.20",
-    glow="0.10 0.18 0.04",
-)
+JUICE = dict(count=14, duration=0.15, size=0.004, lifetime=0.3, rate=120, vmin=0.05, vmax=0.35,
+             color="0.8 0.06 0.03", glow="0.35 0.02 0.01")
+STEM_BITS = dict(count=8, duration=0.25, size=0.0035, lifetime=1.3, rate=30, vmin=0.03, vmax=0.12,
+                 color="0.42 0.62 0.20", glow="0.10 0.18 0.04")
+TRUSS_BITS = dict(count=14, duration=0.3, size=0.004, lifetime=1.3, rate=40, vmin=0.04, vmax=0.18,
+                  color="0.42 0.62 0.20", glow="0.10 0.18 0.04")
 
 
 def sdf_model(name: str, pose: Pose6, body: str, static: bool) -> str:
@@ -283,63 +256,31 @@ def segment_visual(name: str, a: Vec3, b: Vec3, radius: float, origin: Vec3) -> 
     dx, dy, dz = (b[i] - a[i] for i in range(3))
     cx, cy, cz = ((a[i] + b[i]) / 2 - origin[i] for i in range(3))
     return STALK_SEGMENT.format(
-        name=name,
-        cx=cx,
-        cy=cy,
-        cz=cz,
-        pitch=math.atan2(math.hypot(dx, dy), dz),
-        yaw=math.atan2(dy, dx),
-        radius=radius,
-        length=math.dist(a, b),
-        color=STALK_COLOR,
-    )
+        name=name, cx=cx, cy=cy, cz=cz, pitch=math.atan2(math.hypot(dx, dy), dz), yaw=math.atan2(dy, dx),
+        radius=radius, length=math.dist(a, b), color=STALK_COLOR)
 
 
 def splash_sdf(name: str, pos: Vec3, kind: dict) -> str:
     params = {k: v for k, v in kind.items() if k != "count"}
     emitters = "".join(
-        EMITTER.format(
-            i=i,
-            yaw=random.uniform(-math.pi, math.pi),
-            pitch=random.uniform(-1.2, 1.2),
-            **params,
-        )
-        for i in range(kind["count"])
-    )
-    return sdf_model(
-        name,
-        (*pos, 0, 0, 0),
-        f'\n    <link name="splash">{emitters}\n    </link>',
-        True,
-    )
+        EMITTER.format(i=i, yaw=random.uniform(-math.pi, math.pi), pitch=random.uniform(-1.2, 1.2), **params)
+        for i in range(kind["count"]))
+    return sdf_model(name, (*pos, 0, 0, 0), f'\n    <link name="splash">{emitters}\n    </link>', True)
 
 
 # Geometry
 
-
 def rotate(q: Quat, v: Vec3) -> Vec3:
     x, y, z, w = q
-    tx, ty, tz = (
-        2 * (y * v[2] - z * v[1]),
-        2 * (z * v[0] - x * v[2]),
-        2 * (x * v[1] - y * v[0]),
-    )
-    return (
-        v[0] + w * tx + y * tz - z * ty,
-        v[1] + w * ty + z * tx - x * tz,
-        v[2] + w * tz + x * ty - y * tx,
-    )
+    tx, ty, tz = 2 * (y * v[2] - z * v[1]), 2 * (z * v[0] - x * v[2]), 2 * (x * v[1] - y * v[0])
+    return (v[0] + w * tx + y * tz - z * ty, v[1] + w * ty + z * tx - x * tz, v[2] + w * tz + x * ty - y * tx)
 
 
 def quat_mul(a: Quat, b: Quat) -> Quat:
     ax, ay, az, aw = a
     bx, by, bz, bw = b
-    return (
-        aw * bx + ax * bw + ay * bz - az * by,
-        aw * by - ax * bz + ay * bw + az * bx,
-        aw * bz + ax * by - ay * bx + az * bw,
-        aw * bw - ax * bx - ay * by - az * bz,
-    )
+    return (aw * bx + ax * bw + ay * bz - az * by, aw * by - ax * bz + ay * bw + az * bx,
+            aw * bz + ax * by - ay * bx + az * bw, aw * bw - ax * bx - ay * by - az * bz)
 
 
 def quat_to_rpy(x: float, y: float, z: float, w: float) -> Vec3:
@@ -365,7 +306,6 @@ def ripeness_color(ripe: float) -> Vec3:
 
 
 # Tomatoes
-
 
 @dataclass(eq=False)
 class Tomato:
@@ -429,67 +369,39 @@ class Tomato:
         body = self._fruit_link(collision=LOOSE_MASK)
         if detach_topic:
             # The attach plugin belongs to the model so it goes after the link
-            body += ATTACH_PLUGIN.format(
-                robot=ROBOT, link=SPINDLE_LINK, topic=detach_topic
-            )
+            body += ATTACH_PLUGIN.format(robot=ROBOT, link=SPINDLE_LINK, topic=detach_topic)
         return sdf_model(name, self.hanging_pose, body, False)
 
     def crushed_sdf(self, name: str, pose: Pose6) -> str:
         cr, cg, cb = (c * 0.7 for c in self.color)
         r = self.r
         body = CRUSHED_LINK.format(
-            mass=self.mass,
-            rx=r * 1.2,
-            ry=r * 1.1,
-            rz=r * 0.45,
-            cr=cr,
-            cg=cg,
-            cb=cb,
-            bx=r * 0.3,
-            by=-r * 0.25,
-            bz=r * 0.3,
-            br=r * 0.4,
-        )
+            mass=self.mass, rx=r * 1.2, ry=r * 1.1, rz=r * 0.45, cr=cr, cg=cg, cb=cb,
+            bx=r * 0.3, by=-r * 0.25, bz=r * 0.3, br=r * 0.4)
         return sdf_model(name, pose, body, False)
 
     def crate_sdf(self, name: str, pose: Pose6) -> str:
         # A sphere is far cheaper to collide than the ellipsoid and the crate may hold dozens
-        return sdf_model(
-            name, pose, self._fruit_link(collision=LOOSE_MASK, sphere=True), False
-        )
+        return sdf_model(name, pose, self._fruit_link(collision=LOOSE_MASK, sphere=True), False)
 
     def _collision(self, bitmask: str, sphere: bool = False) -> str:
         if sphere:
             return SPHERE_COLLISION.format(r=self.rz, bitmask=bitmask)
         return FRUIT_COLLISION.format(r=self.r, rz=self.rz, bitmask=bitmask)
 
-    def _fruit_link(
-        self, visuals: str = "", collision: str | None = ALL_MASK, sphere: bool = False
-    ) -> str:
+    def _fruit_link(self, visuals: str = "", collision: str | None = ALL_MASK, sphere: bool = False) -> str:
         cr, cg, cb = self.color
         return FRUIT_LINK.format(
-            mass=self.mass,
-            inertia=0.4 * self.mass * self.r * self.r,
-            r=self.r,
-            rz=self.rz,
-            cr=cr,
-            cg=cg,
-            cb=cb,
-            calyx_z=self.rz * 0.97,
-            cs=self.r * 0.55,
-            calyx_yaw=self.calyx_yaw,
-            collision=self._collision(collision, sphere) if collision else "",
-            visuals=visuals,
-        )
+            mass=self.mass, inertia=0.4 * self.mass * self.r * self.r, r=self.r, rz=self.rz,
+            cr=cr, cg=cg, cb=cb, calyx_z=self.rz * 0.97, cs=self.r * 0.55, calyx_yaw=self.calyx_yaw,
+            collision=self._collision(collision, sphere) if collision else "", visuals=visuals)
 
     def _stalk_visuals(self, pedicel: bool) -> str:
         # Piece of truss this tomato hangs from, the first one also carries the peduncle
         stalk = self.truss["stalk"]
         first = 0 if self.j == 0 else 2 + self.j
-        visuals = [
-            segment_visual(f"stalk_{i}", stalk[i], stalk[i + 1], 0.004, self.center)
-            for i in range(first, 3 + self.j)
-        ]
+        visuals = [segment_visual(f"stalk_{i}", stalk[i], stalk[i + 1], 0.004, self.center)
+                   for i in range(first, 3 + self.j)]
         if pedicel:
             a, b = self.truss["pedicels"][self.j]
             visuals.append(segment_visual("pedicel", a, b, 0.002, self.center))
@@ -504,30 +416,22 @@ def bench_fruit(bench: dict) -> Fruit:
     for truss_id, truss in enumerate(bench["trusses"]):
         trusses[truss_id] = []
         for j, (r, ripe, turns) in enumerate(truss["fruit"]):
-            t = Tomato(
-                f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * 0.85, ripe, turns
-            )
+            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * 0.85, ripe, turns)
             tomatoes[t.name] = t
             trusses[truss_id].append(t)
     return tomatoes, trusses
 
 
-def greenhouse_sections(
-    gh: Greenhouse, trusses: list[dict]
-) -> dict[tuple[int, int], list[dict]]:
+def greenhouse_sections(gh: Greenhouse, trusses: list[dict]) -> dict[tuple[int, int], list[dict]]:
     sections = {}
     for truss in trusses:
         x = truss["anchors"][0][0]
-        section = min(
-            gh.sections_per_line - 1, max(0, int((x - gh.row_start_x) / SECTION_LENGTH))
-        )
+        section = min(gh.sections_per_line - 1, max(0, int((x - gh.row_start_x) / SECTION_LENGTH)))
         sections.setdefault((truss["line"], section), []).append(truss)
     return sections
 
 
-def greenhouse_fruit(
-    gh: Greenhouse, sections: dict[tuple[int, int], list[dict]]
-) -> Fruit:
+def greenhouse_fruit(gh: Greenhouse, sections: dict[tuple[int, int], list[dict]]) -> Fruit:
     keys = list(sections)
     per_section = {k: gh.truss_count // len(keys) for k in keys}
     for k in random.sample(keys, gh.truss_count % len(keys)):
@@ -537,9 +441,7 @@ def greenhouse_fruit(
         picked += random.sample(sections[k], min(n, len(sections[k])))
 
     # Lower trusses are older and riper and every line gets some ripe ones
-    bases = [
-        1.0 + gh.ripe_bias - 0.12 * t["level"] + random.gauss(0.0, 0.25) for t in picked
-    ]
+    bases = [1.0 + gh.ripe_bias - 0.12 * t["level"] + random.gauss(0.0, 0.25) for t in picked]
     by_line = {}
     for i, truss in enumerate(picked):
         by_line.setdefault(truss["line"], []).append(i)
@@ -556,16 +458,8 @@ def greenhouse_fruit(
         for j in range(count):
             ripe = min(1.0, max(0.0, base - 0.03 * j + random.gauss(0.0, 0.05)))
             r = radius * (1.0 - 0.04 * j) * random.uniform(0.92, 1.05)
-            t = Tomato(
-                f"tomato_{len(tomatoes)}",
-                truss_id,
-                truss,
-                j,
-                r,
-                r * random.uniform(0.80, 0.90),
-                ripe,
-                random.uniform(*SNAP_TURNS),
-            )
+            t = Tomato(f"tomato_{len(tomatoes)}", truss_id, truss, j, r, r * random.uniform(0.80, 0.90), ripe,
+                       random.uniform(*SNAP_TURNS))
             tomatoes[t.name] = t
             trusses[truss_id].append(t)
     return tomatoes, trusses
@@ -578,7 +472,6 @@ def read_data(name: str) -> dict:
 
 # gz
 
-
 def gz_service_worker(conn):
     """Serves the gz requests of the manager from a process without gz subscriptions."""
     node = GzNode()
@@ -590,22 +483,13 @@ def gz_service_worker(conn):
         if service == "remove":
             request, req_type = Entity(name=data, type=Entity.MODEL), Entity
         else:
-            factories = [
-                EntityFactory(sdf=sdf, name=name, allow_renaming=False)
-                for name, sdf in data
-            ]
+            factories = [EntityFactory(sdf=sdf, name=name, allow_renaming=False) for name, sdf in data]
             if service == "create":
                 request, req_type = factories[0], EntityFactory
             else:
                 request, req_type = EntityFactory_V(data=factories), EntityFactory_V
         try:
-            ok, reply = node.request(
-                f"/world/{WORLD}/{service}",
-                request,
-                req_type,
-                Boolean,
-                int(timeout * 1000),
-            )
+            ok, reply = node.request(f"/world/{WORLD}/{service}", request, req_type, Boolean, int(timeout * 1000))
             conn.send((job_id, bool(ok and reply.data)))
         except Exception:
             conn.send((job_id, False))
@@ -625,9 +509,7 @@ class GzWorld:
         self._lock = threading.Lock()
         context = multiprocessing.get_context("spawn")
         self._conn, child = context.Pipe()
-        self._worker = context.Process(
-            target=gz_service_worker, args=(child,), daemon=True
-        )
+        self._worker = context.Process(target=gz_service_worker, args=(child,), daemon=True)
         self._worker.start()
 
     def unique(self, base: str) -> str:
@@ -637,15 +519,11 @@ class GzWorld:
     def create(self, name: str, sdf: str) -> bool:
         return self.create_many([(name, sdf)])
 
-    def create_many(
-        self, models: list[tuple[str, str]], timeout: float = GZ_TIMEOUT
-    ) -> bool:
+    def create_many(self, models: list[tuple[str, str]], timeout: float = GZ_TIMEOUT) -> bool:
         service = "create" if len(models) == 1 else "create_multiple"
         ok = self._call(service, models, timeout)
         if not ok:
-            self._logger.error(
-                f"failed to spawn {', '.join(name for name, _ in models)}"
-            )
+            self._logger.error(f"failed to spawn {', '.join(name for name, _ in models)}")
         return ok
 
     def remove(self, name: str) -> bool:
@@ -678,7 +556,6 @@ class GzWorld:
 
 # Manager
 
-
 @dataclass
 class Grip:
     """Tomato between the fingers and where the grip started."""
@@ -689,14 +566,8 @@ class Grip:
 
 
 def new_score(ripe_total: int = 0) -> dict[str, int]:
-    return {
-        "harvested": 0,
-        "green_in_crate": 0,
-        "crushed": 0,
-        "dropped": 0,
-        "broken_trusses": 0,
-        "ripe_total": ripe_total,
-    }
+    return {"harvested": 0, "green_in_crate": 0, "crushed": 0, "dropped": 0, "broken_trusses": 0,
+            "ripe_total": ripe_total}
 
 
 class HarvestManager(Node):
@@ -736,12 +607,8 @@ class HarvestManager(Node):
         self._ops = threading.Lock()
         self._stop = threading.Event()
 
-        self.create_subscription(
-            JointState, f"/{ROBOT}/joint_states", self._on_joints, 10
-        )
-        self.create_subscription(
-            JointTrajectoryControllerState, GRIPPER_STATE_TOPIC, self._on_gripper, 10
-        )
+        self.create_subscription(JointState, f"/{ROBOT}/joint_states", self._on_joints, 10)
+        self.create_subscription(JointTrajectoryControllerState, GRIPPER_STATE_TOPIC, self._on_gripper, 10)
         # Latched so the HAL gets the current score when it starts
         latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self._score_pub = self.create_publisher(String, SCORE_TOPIC, latched)
@@ -751,9 +618,7 @@ class HarvestManager(Node):
         self._gz_score_pub = self._gz_node.advertise(SCORE_TOPIC, StringMsg)
         self._score_sent = 0.0
         self._gz_topics: list[str] = []
-        self._gz_subscribe(
-            Pose_V, f"/world/{WORLD}/dynamic_pose/info", self._on_poses, 20
-        )
+        self._gz_subscribe(Pose_V, f"/world/{WORLD}/dynamic_pose/info", self._on_poses, 20)
         # The ROS clock arrives every physics step and only resets matter here
         self._gz_subscribe(GzClock, f"/world/{WORLD}/clock", self._on_clock, 10)
 
@@ -807,10 +672,7 @@ class HarvestManager(Node):
             if ROBOT in poses and SPINDLE_LINK in poses:
                 (mp, mq), (lp, lq) = poses[ROBOT], poses[SPINDLE_LINK]
                 r = rotate(mq, lp)
-                self._spindle = (
-                    (mp[0] + r[0], mp[1] + r[1], mp[2] + r[2]),
-                    quat_mul(mq, lq),
-                )
+                self._spindle = ((mp[0] + r[0], mp[1] + r[1], mp[2] + r[2]), quat_mul(mq, lq))
 
     def _pose_of(self, entity: str) -> tuple[Vec3, Quat] | None:
         with self._lock:
@@ -822,10 +684,7 @@ class HarvestManager(Node):
         # A world reset already removes everything spawned at runtime
         with self._ops:
             tomatoes, trusses = self._make_fruit()
-            self._gz.create_many(
-                [(t.name, t.hanging_sdf(t.name)) for t in tomatoes.values()],
-                SPAWN_TIMEOUT,
-            )
+            self._gz.create_many([(t.name, t.hanging_sdf(t.name)) for t in tomatoes.values()], SPAWN_TIMEOUT)
             self._tomatoes, self._trusses = tomatoes, trusses
             self._grip = None
             self._open_around = None
@@ -871,12 +730,8 @@ class HarvestManager(Node):
             distance = math.dist(t.center, tcp)
             if t.collider and (t.state is not State.HANGING or distance > COLLIDER_OFF):
                 self._remove_collider(t)
-            elif (
-                not t.collider
-                and t.state is State.HANGING
-                and distance < COLLIDER_ON
-                and self._finger_ref < t.contact_angle
-            ):
+            elif not t.collider and t.state is State.HANGING and distance < COLLIDER_ON \
+                    and self._finger_ref < t.contact_angle:
                 # Fingers already closed past the fruit would get stuck inside a new collider
                 t.collider = self._gz.unique(f"{t.name}_col")
                 new.append((t.collider, t.collider_sdf(t.collider)))
@@ -942,11 +797,7 @@ class HarvestManager(Node):
         elif t.state is State.IN_HAND and not touching:
             known = self._pose_of(t.entity)
             where = self._robot_frame(known[0]) if known else None
-            at = (
-                f" at ({where[0]:.2f}, {where[1]:.2f}, {where[2]:.2f}) in the robot frame"
-                if where
-                else ""
-            )
+            at = f" at ({where[0]:.2f}, {where[1]:.2f}, {where[2]:.2f}) in the robot frame" if where else ""
             self.get_logger().info(f"{t.name} released{at}")
             self._drop(t, lost=False)
             self._grip = None
@@ -995,9 +846,7 @@ class HarvestManager(Node):
     def _burst(self, t: Tomato):
         self.get_logger().info(f"{t.name} burst")
         pose = t.hanging_pose
-        known = (
-            self._pose_of(t.entity) if t.state in (State.HELD, State.IN_HAND) else None
-        )
+        known = self._pose_of(t.entity) if t.state in (State.HELD, State.IN_HAND) else None
         if known:
             pose = (*known[0], *quat_to_rpy(*known[1]))
         self._detach_pubs.pop(t.entity, None)
@@ -1095,28 +944,18 @@ class HarvestManager(Node):
         local, robot = self._robot_frame(pos), self._pose_of(ROBOT)
         if local is None or robot is None:
             return
-        nx, ny = int(2 * CRATE_HALF[0] / CRATE_SLOT), int(
-            2 * CRATE_HALF[1] / CRATE_SLOT
-        )
+        nx, ny = int(2 * CRATE_HALF[0] / CRATE_SLOT), int(2 * CRATE_HALF[1] / CRATE_SLOT)
 
         def cell_center(ix: int, iy: int, layer: int) -> Vec3:
             # The upper layer sits in the hollows of the lower one
             shift = CRATE_SLOT / 2 if layer else 0.0
             x = CRATE_CENTER[0] + (ix - (nx - 1) / 2) * CRATE_SLOT + shift
             y = CRATE_CENTER[1] + (iy - (ny - 1) / 2) * CRATE_SLOT + shift
-            return (
-                x,
-                y,
-                CRATE_FLOOR + CRATE_BOTTOM + t.rz + 0.005 + layer * 0.8 * CRATE_SLOT,
-            )
+            return x, y, CRATE_FLOOR + CRATE_BOTTOM + t.rz + 0.005 + layer * 0.8 * CRATE_SLOT
 
         for layer in range(CRATE_LAYERS):
-            free = [
-                (ix, iy, layer)
-                for ix in range(nx - layer)
-                for iy in range(ny - layer)
-                if (ix, iy, layer) not in self._crate_slots
-            ]
+            free = [(ix, iy, layer) for ix in range(nx - layer) for iy in range(ny - layer)
+                    if (ix, iy, layer) not in self._crate_slots]
             if free:
                 break
         else:
@@ -1129,13 +968,7 @@ class HarvestManager(Node):
         yaw = quat_to_rpy(*q)[2] + random.uniform(-math.pi, math.pi)
         self._gz.remove(t.entity)
         t.entity = self._gz.unique(f"{t.name}_crate")
-        self._gz.create(
-            t.entity,
-            t.crate_sdf(
-                t.entity,
-                (rx + offset[0], ry + offset[1], rz + offset[2], 0.0, 0.0, yaw),
-            ),
-        )
+        self._gz.create(t.entity, t.crate_sdf(t.entity, (rx + offset[0], ry + offset[1], rz + offset[2], 0.0, 0.0, yaw)))
 
     def _robot_frame(self, pos: Vec3) -> Vec3 | None:
         robot = self._pose_of(ROBOT)
@@ -1149,11 +982,8 @@ class HarvestManager(Node):
         if local is None:
             return False
         x, y, z = local
-        return (
-            abs(x - CRATE_CENTER[0]) < CRATE_HALF[0]
-            and abs(y - CRATE_CENTER[1]) < CRATE_HALF[1]
-            and CRATE_FLOOR - 0.02 < z < CRATE_FLOOR + CRATE_HEIGHT
-        )
+        return (abs(x - CRATE_CENTER[0]) < CRATE_HALF[0] and abs(y - CRATE_CENTER[1]) < CRATE_HALF[1]
+                and CRATE_FLOOR - 0.02 < z < CRATE_FLOOR + CRATE_HEIGHT)
 
     # Effects and score
 
@@ -1179,12 +1009,8 @@ class HarvestManager(Node):
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Tomato harvest rules for the MMO-500")
-    parser.add_argument(
-        "layout", nargs="?", default="greenhouse", choices=[*GREENHOUSES, "bench"]
-    )
-    parser.add_argument(
-        "seed", nargs="?", type=int, help="fixes the random fruit of the greenhouse"
-    )
+    parser.add_argument("layout", nargs="?", default="greenhouse", choices=[*GREENHOUSES, "bench"])
+    parser.add_argument("seed", nargs="?", type=int, help="fixes the random fruit of the greenhouse")
     return parser.parse_args(remove_ros_args(argv)[1:])
 
 
