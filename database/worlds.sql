@@ -227,6 +227,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 102	MMO-500 Tomato Greenhouse	94
 103	MMO-500 Tomato Harvest Bench	95
 104	MMO-500 Tomato Greenhouse Big	96
+105	Bin picking	97
 \.
 
 --
@@ -318,6 +319,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 80	102	59	{{4.6,0.0,0.0,0.0,0.0,3.1416}}
 81	103	59	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 82	104	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
+83	105	24	{{0.4,-0.4,0.8,0.0,0.0,1.5708}}
 \.
 
 --
@@ -383,6 +385,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 94	Tomato Greenhouse	/opt/jderobot/Launchers/tomato_greenhouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse.config"}	ROS2	gz	tomato_greenhouse.urdf
 95	Tomato Harvest Bench	/opt/jderobot/Launchers/tomato_harvest_bench.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_harvest_bench.config"}	ROS2	gz	tomato_harvest_bench.urdf
 96	Tomato Greenhouse Big	/opt/jderobot/Launchers/tomato_greenhouse_big.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse_big.config"}	ROS2	gz	tomato_greenhouse_big.urdf
+97	Bin picking	/opt/jderobot/Launchers/bin_picking.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	bin_picking.urdf
 \.
 
 --
