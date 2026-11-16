@@ -83,19 +83,19 @@ runras="python3 RoboticsApplicationManager/robotics_application_services/main.py
 
 root="cd /"
 proxy="traefik"
-py_server="pylsp --ws --port 5000"
 sshd="/usr/sbin/sshd"
+lsp="/lsp/dist/server.mjs --port 5000 --languageServers /lsp/servers.yml"
 
 # TEST LOGS
 if [ $log == true ]; then
     DATE_TIME=$(date +%F-%H-%M) # FORMAT year-month-date-hours-mins
     mkdir -p /root/.roboticsacademy/log/$DATE_TIME/
-    script -q -c "$root & $proxy & $py_server & $runserver & $runram & $runras & $sshd ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
+    script -q -c "$root & $proxy & $lsp & $runserver & $runram & $runras & $sshd ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
     cp -r /root/.ros/log/* /root/.roboticsacademy/log/$DATE_TIME
 else
     if [ $debug == true ]; then
       { bash ; }
     else
-      { $root & $proxy & $py_server & $sshd & $runserver & $runram & $runras; }
+      { $root & $proxy & $lsp & $sshd & $runserver & $runram & $runras; }
     fi
 fi

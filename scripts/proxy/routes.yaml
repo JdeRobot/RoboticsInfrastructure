@@ -7,7 +7,7 @@ http:
           - "/rviz"
           - "/manager"
           - "/console"
-          - "/py_server"
+          - "/lsp"
           - "/ras"
   routers:
     app-http:
@@ -50,14 +50,14 @@ http:
       middlewares:
         - "api-stripprefix"
       service: console
-    pylsp-http:
+    lsp-http:
       entryPoints:
         - "http"
-      rule: "PathPrefix(`/py_server`)"
+      rule: "PathPrefix(`/lsp`)"
       priority: 9
       middlewares:
         - "api-stripprefix"
-      service: py_server
+      service: lsp
   services:
     app:
       loadBalancer:
@@ -84,7 +84,7 @@ http:
         strategy: "wrr"
         servers:
           - url: "http://127.0.0.1:6082"
-    py_server:
+    lsp:
       loadBalancer:
         strategy: "wrr"
         servers:

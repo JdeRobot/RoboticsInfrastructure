@@ -1,0 +1,5 @@
+langservers:
+  cpp:
+    - clangd-22
+  python:
+    - pylsp
