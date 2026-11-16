@@ -35,7 +35,11 @@ def generate_launch_description():
         gz_ros2_control_path = "/home/ws/install/gz_ros2_control/lib"
 
     gz_plugin_path = (
-        gz_ros2_control_path + ":" + gz_link_attacher_path + ":" + "/opt/ros/lyrical/lib"
+        gz_ros2_control_path
+        + ":"
+        + gz_link_attacher_path
+        + ":"
+        + "/opt/ros/lyrical/lib"
     )
 
     resource_path = (
