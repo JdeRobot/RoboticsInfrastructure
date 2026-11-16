@@ -227,6 +227,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 102	MMO-500 Tomato Greenhouse	94
 103	MMO-500 Tomato Harvest Bench	95
 104	MMO-500 Tomato Greenhouse Big	96
+108	MMO-500 Warehouse Nav2	100
 \.
 
 --
@@ -318,6 +319,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 80	102	59	{{4.6,0.0,0.0,0.0,0.0,3.1416}}
 81	103	59	{{0.0,0.0,0.0,0.0,0.0,0.0}}
 82	104	59	{{7.0,0.0,0.0,0.0,0.0,3.1416}}
+89	108	41	{{0.0,0.0,0.02,0.0,0.0,0.0}}
 \.
 
 --
@@ -368,7 +370,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 79	Visual Lander Circuit	/opt/jderobot/Launchers/visual_lander_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/visual_lander.config"}	ROS2	gz	visual_lander.urdf
 80	Follow Turtlebot	/opt/jderobot/Launchers/follow_turtlebot.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/follow_turtlebot.config"}	ROS2	gz	follow_turtlebot.urdf
 81	XLeRobot Home	/opt/jderobot/Launchers/xlerobot_home.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/xlerobot_home.config"}	ROS2	gz	xlerobot_home.urdf
-82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/mobile_manipulation.launch.py","gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
+82	Mobile Manipulation Warehouse	/opt/jderobot/Launchers/mobile_manipulation_warehouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 83	Mir100 Physical	/opt/jderobot/Launchers/physical.launch.py	None	ROS2	physical	mir100.urdf
 84	Vacuums Party House	/opt/jderobot/Launchers/vacuum_party_house.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
 85	Vacuums Party House with cat	/opt/jderobot/Launchers/vacuum_party_house_cat.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/vacuum_party_house.config"}	ROS2	gz	small_house.urdf
@@ -383,6 +385,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 94	Tomato Greenhouse	/opt/jderobot/Launchers/tomato_greenhouse.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse.config"}	ROS2	gz	tomato_greenhouse.urdf
 95	Tomato Harvest Bench	/opt/jderobot/Launchers/tomato_harvest_bench.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_harvest_bench.config"}	ROS2	gz	tomato_harvest_bench.urdf
 96	Tomato Greenhouse Big	/opt/jderobot/Launchers/tomato_greenhouse_big.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/tomato_greenhouse_big.config"}	ROS2	gz	tomato_greenhouse_big.urdf
+100	Mobile Manipulation Warehouse Nav2	/opt/jderobot/Launchers/mobile_manipulation_warehouse_nav2.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/mobile_manipulation.launch.py","gzsim":"/opt/jderobot/Launchers/visualization/mobile_manipulation_warehouse.config"}	ROS2	gz	mobile_manipulation_warehouse.urdf
 \.
 
 --
