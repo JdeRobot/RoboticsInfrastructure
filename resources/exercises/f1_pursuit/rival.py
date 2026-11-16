@@ -29,8 +29,10 @@ LEVELS = {
     "hard": {"V_MAX": 8.0, "V_MIN": 4.5, "A_LAT": 4.0},
 }
 
-# The chase is lost once the rival has driven this many laps
+# Par time is what the rival takes for this many laps, the score drops below 0 past it
 RIVAL_LAPS = 2
+# Being lapped is the worst result, a late catch never scores that low
+LAPPED_SCORE = -100
 
 BRAKE = 3.0
 CATCH_GAP = 1.5
@@ -208,7 +210,7 @@ def set_cmd(v, w):
     cmd_pub.publish(msg)
 
 
-def publish_status(state, elapsed, gap):
+def publish_status(state, elapsed, gap, score):
     msg = String()
     msg.data = json.dumps(
         {
@@ -217,6 +219,7 @@ def publish_status(state, elapsed, gap):
             "elapsed": round(elapsed, 2),
             "limit": round(limit, 2),
             "gap": round(gap, 2),
+            "score": score,
         }
     )
     status_pub.publish(msg)
@@ -227,7 +230,7 @@ def now():
 
 
 def score_for(seconds):
-    return max(10, int(round(100 * (1.0 - seconds / limit))))
+    return max(LAPPED_SCORE + 1, int(round(100 * (1.0 - seconds / limit))))
 
 
 waited = time.time()
@@ -256,12 +259,13 @@ rival_progress = Progress(rival[0][0], rival[0][1], LAP / 2.0)
 chaser_progress = Progress(chaser[0][0], chaser[0][1], 0.0)
 start = now()
 state = "racing"
+overtime = False
 stopped = False
 last_status = 0.0
 
 print(
-    "rival away on %s, %s level, catch it before it drives %d laps (%.0f s)"
-    % (circuit_name, level_name, RIVAL_LAPS, limit),
+    "rival away on %s, %s level, par time %.0f s, do not get lapped"
+    % (circuit_name, level_name, limit),
     flush=True,
 )
 
@@ -273,24 +277,30 @@ while rclpy.ok():
     if state == "racing":
         gap = rival_s - chaser_s
         elapsed = now() - start
+        score = score_for(elapsed)
+        close = math.hypot(x - cx, y - cy) < CATCH_RADIUS
 
         # Measured along the track, so a car across the infield never counts
-        if gap < CATCH_GAP and math.hypot(x - cx, y - cy) < CATCH_RADIUS:
+        if gap < CATCH_GAP and close:
             state = "caught"
             print("", flush=True)
             print("CAUGHT in %.1f seconds" % elapsed, flush=True)
-            print("SCORE %d out of 100" % score_for(elapsed), flush=True)
+            print("SCORE %d out of 100" % score, flush=True)
             print("", flush=True)
-        elif elapsed > limit:
-            state = "escaped"
+        # A whole lap ahead means the rival came round from behind
+        elif gap > LAP - CATCH_GAP and close:
+            state = "lapped"
+            score = LAPPED_SCORE
             print("", flush=True)
-            print("ESCAPED, the rival finished %d laps" % RIVAL_LAPS, flush=True)
-            print("it was still %.1f m ahead" % gap, flush=True)
-            print("SCORE 0 out of 100", flush=True)
+            print("LAPPED in %.1f seconds, the rival caught you" % elapsed, flush=True)
+            print("SCORE %d out of 100" % score, flush=True)
             print("", flush=True)
+        elif elapsed > limit and not overtime:
+            overtime = True
+            print("past the par time, the score is now below 0", flush=True)
 
     if time.time() - last_status > 0.1 or state != "racing":
-        publish_status(state, elapsed, gap)
+        publish_status(state, elapsed, gap, score)
         last_status = time.time()
 
     if state != "racing":
