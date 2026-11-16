@@ -77,9 +77,15 @@ Launch files live in `/opt/jderobot/Launchers`. "Robots" lists the robots the da
 | Monaco Circuit      |   ok   | <img src="media/scenes/monaco_circuit.jpg" width="160"> |  | monaco_circuit.launch.py      | F1                        |       |
 | Spa Circuit         |   ok   | <img src="media/scenes/spa_circuit.jpg" width="160"> |  | spa_circuit.launch.py         | F1                        |       |
 | Obstacle Avoidance  |   ok   | <img src="media/scenes/obstacle_avoidance.jpg" width="160"> |  | obstacle_avoidance_h.launch.py | F1 (laser)               |       |
-| F1 Pursuit Easy     |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_easy.launch.py    | 2x F1                     |       |
-| F1 Pursuit Medium   |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_medium.launch.py  | 2x F1                     |       |
-| F1 Pursuit Hard     |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_hard.launch.py    | 2x F1                     |       |
+| F1 Pursuit Simple Easy |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_simple_easy.launch.py | 2x F1                     |       |
+| F1 Pursuit Simple Medium |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_simple_medium.launch.py | 2x F1                     |       |
+| F1 Pursuit Simple Hard |   ok   | <img src="media/scenes/f1_pursuit.jpg" width="160"> |  | f1_pursuit_simple_hard.launch.py | 2x F1                     |       |
+| F1 Pursuit Montreal Easy |   ok   | <img src="media/scenes/f1_pursuit_montreal.jpg" width="160"> |  | f1_pursuit_montreal_easy.launch.py | 2x F1                     |       |
+| F1 Pursuit Montreal Medium |   ok   | <img src="media/scenes/f1_pursuit_montreal.jpg" width="160"> |  | f1_pursuit_montreal_medium.launch.py | 2x F1                     |       |
+| F1 Pursuit Montreal Hard |   ok   | <img src="media/scenes/f1_pursuit_montreal.jpg" width="160"> |  | f1_pursuit_montreal_hard.launch.py | 2x F1                     |       |
+| F1 Pursuit Montmelo Easy |   ok   | <img src="media/scenes/f1_pursuit_montmelo.jpg" width="160"> |  | f1_pursuit_montmelo_easy.launch.py | 2x F1                     |       |
+| F1 Pursuit Montmelo Medium |   ok   | <img src="media/scenes/f1_pursuit_montmelo.jpg" width="160"> |  | f1_pursuit_montmelo_medium.launch.py | 2x F1                     |       |
+| F1 Pursuit Montmelo Hard |   ok   | <img src="media/scenes/f1_pursuit_montmelo.jpg" width="160"> |  | f1_pursuit_montmelo_hard.launch.py | 2x F1                     |       |
 | City Large          |   ok   | <img src="media/scenes/city_large.jpg" width="160"> |  | basic_city.launch.py          | Autonomous car            |       |
 | Car Junction        |   ok   | <img src="media/scenes/car_junction.jpg" width="160"> |  | car_junction.launch.py        | Autonomous car            |       |
 | Autopark_line       |   ok   | <img src="media/scenes/autopark_line.jpg" width="160"> |  | autopark_line.launch.py       | Autonomous car            |       |

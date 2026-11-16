@@ -17,7 +17,10 @@ RIVAL_NAMESPACE = "f1_rival"
 CHASER_NAMESPACE = "f1"
 
 DEFAULT_LEVEL = "medium"
+DEFAULT_CIRCUIT = "simple_circuit"
+CIRCUITS = ("simple_circuit", "montreal_circuit", "montmelo_circuit")
 LEVEL_TIMEOUT = 10.0
+CLOCK_TIMEOUT = 5.0
 
 # Top speed, corner speed and lateral grip of the rival on each level
 LEVELS = {
@@ -34,9 +37,7 @@ CATCH_GAP = 1.5
 CATCH_RADIUS = 2.0
 SEARCH_WINDOW = 15
 
-CENTERLINE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "simple_circuit_centerline.csv"
-)
+TRACKS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ### NODE ###
 
@@ -52,6 +53,7 @@ rival = [None]
 chaser = [None]
 sim_time = [None]
 level = [None]
+circuit = [None]
 
 
 def pose_from(msg):
@@ -77,6 +79,10 @@ def level_callback(msg):
     level[0] = msg.data
 
 
+def circuit_callback(msg):
+    circuit[0] = msg.data
+
+
 node.create_subscription(
     Odometry, "/" + RIVAL_NAMESPACE + "/odom", rival_callback, qos_profile_sensor_data
 )
@@ -89,6 +95,7 @@ node.create_subscription(
 node.create_subscription(Clock, "/clock", clock_callback, qos_profile_sensor_data)
 # Latched by the world launcher, so it arrives however late this starts
 node.create_subscription(String, "/f1_pursuit/level", level_callback, latched)
+node.create_subscription(String, "/f1_pursuit/circuit", circuit_callback, latched)
 
 cmd_pub = node.create_publisher(Twist, "/" + RIVAL_NAMESPACE + "/cmd_vel", 10)
 status_pub = node.create_publisher(String, "/f1_pursuit/status", latched)
@@ -111,9 +118,9 @@ executor_thread.start()
 ### TRACK ###
 
 
-def load_track():
+def load_track(name):
     points = []
-    with open(CENTERLINE) as track_file:
+    with open(os.path.join(TRACKS_DIR, name + "_centerline.csv")) as track_file:
         for line in track_file:
             if line.startswith("#") or not line.strip():
                 continue
@@ -123,10 +130,6 @@ def load_track():
     for i in range(1, len(points)):
         stations.append(stations[-1] + math.dist(points[i - 1], points[i]))
     return points, stations, stations[-1] + math.dist(points[-1], points[0])
-
-
-TRACK, STATIONS, LAP = load_track()
-N = len(TRACK)
 
 
 def curvature(i):
@@ -220,7 +223,7 @@ def publish_status(state, elapsed, gap):
 
 
 def now():
-    return sim_time[0] if sim_time[0] is not None else time.time()
+    return sim_time[0] if use_sim_time else time.time()
 
 
 def score_for(seconds):
@@ -228,9 +231,13 @@ def score_for(seconds):
 
 
 waited = time.time()
-while level[0] is None and time.time() - waited < LEVEL_TIMEOUT:
+while (level[0] is None or circuit[0] is None) and time.time() - waited < LEVEL_TIMEOUT:
     time.sleep(0.05)
 level_name = level[0] if level[0] in LEVELS else DEFAULT_LEVEL
+circuit_name = circuit[0] if circuit[0] in CIRCUITS else DEFAULT_CIRCUIT
+
+TRACK, STATIONS, LAP = load_track(circuit_name)
+N = len(TRACK)
 
 SPEEDS = speed_profile(LEVELS[level_name])
 rival_lap = sum(math.dist(TRACK[i], TRACK[(i + 1) % N]) / SPEEDS[i] for i in range(N))
@@ -238,6 +245,12 @@ limit = RIVAL_LAPS * rival_lap
 
 while rival[0] is None or chaser[0] is None:
     time.sleep(0.05)
+
+# One clock for the whole race, sim time unless /clock never shows up
+waited = time.time()
+while sim_time[0] is None and time.time() - waited < CLOCK_TIMEOUT:
+    time.sleep(0.05)
+use_sim_time = sim_time[0] is not None
 
 rival_progress = Progress(rival[0][0], rival[0][1], LAP / 2.0)
 chaser_progress = Progress(chaser[0][0], chaser[0][1], 0.0)
@@ -247,8 +260,8 @@ stopped = False
 last_status = 0.0
 
 print(
-    "rival away on the %s level, catch it before it drives %d laps (%.0f s)"
-    % (level_name, RIVAL_LAPS, limit),
+    "rival away on %s, %s level, catch it before it drives %d laps (%.0f s)"
+    % (circuit_name, level_name, RIVAL_LAPS, limit),
     flush=True,
 )
 

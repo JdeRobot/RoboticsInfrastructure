@@ -11,10 +11,11 @@ from launch_ros.actions import Node
 def generate_launch_description():
     ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
-    # How fast the rival drives, one launcher per level
+    # Circuit and rival speed, one launcher per circuit and level
+    circuit = "montreal_circuit"
     level = "hard"
 
-    world_file_name = "f1_pursuit.world"
+    world_file_name = "f1_pursuit_montreal.world"
     worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
@@ -45,24 +46,31 @@ def generate_launch_description():
     )
 
     # Latched, because the rival is started well after the world is
-    level_cmd = ExecuteProcess(
-        cmd=[
-            "ros2",
-            "topic",
-            "pub",
-            "--qos-durability",
-            "transient_local",
-            "/f1_pursuit/level",
-            "std_msgs/msg/String",
-            f"data: {level}",
-        ],
-        output="screen",
-    )
+    race_cmds = [
+        ExecuteProcess(
+            cmd=[
+                "ros2",
+                "topic",
+                "pub",
+                "--qos-durability",
+                "transient_local",
+                topic,
+                "std_msgs/msg/String",
+                f"data: {value}",
+            ],
+            output="screen",
+        )
+        for topic, value in (
+            ("/f1_pursuit/circuit", circuit),
+            ("/f1_pursuit/level", level),
+        )
+    ]
 
     ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
-    ld.add_action(level_cmd)
+    for cmd in race_cmds:
+        ld.add_action(cmd)
 
     return ld
