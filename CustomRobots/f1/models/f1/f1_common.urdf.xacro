@@ -3,7 +3,7 @@
   xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro" />
 
-  <xacro:macro name="holonomic" params="namespace">
+  <xacro:macro name="holonomic" params="namespace color:=''">
 
     <link name="base">
       <origin rpy="0 0 0" xyz="0 0 0" />
@@ -17,9 +17,10 @@
           <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2" />
         </geometry>
       </collision>
+      <!-- Same car, the color picks a repainted livery like Car_blue.obj -->
       <visual name="car">
         <geometry>
-          <mesh filename="file://$(find custom_robots)/models/f1/meshes/Car.obj" scale="0.2 0.2 0.2" />
+          <mesh filename="file://$(find custom_robots)/models/f1/meshes/${'Car_' + color if color else 'Car'}.obj" scale="0.2 0.2 0.2" />
         </geometry>
       </visual>
     </link>
