@@ -178,24 +178,28 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose>0.6 0 0 0 0 1.57</pose>
     </model>
-
+ 
     <model name='bin_picking_grid'>
       <static>true</static>
       <pose>0.6 0 1.0 0 0 0</pose>
+
       <link name='grid'>
+
+        <!-- BASE -->
         <collision name='base_collision'>
           <pose>0 0 0.0015 0 0 0</pose>
           <geometry>
             <box>
-              <size>0.138 0.098 0.003</size>
+              <size>0.226 0.186 0.003</size>
             </box>
           </geometry>
         </collision>
+
         <visual name='base_visual'>
           <pose>0 0 0.0015 0 0 0</pose>
           <geometry>
             <box>
-              <size>0.138 0.098 0.003</size>
+              <size>0.226 0.186 0.003</size>
             </box>
           </geometry>
           <material>
@@ -203,168 +207,248 @@
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- ================================== -->
+        <!-- PAREDES DIVISORIAS EN X -->
+        <!-- ================================== -->
+
+        <!-- PARED X 1 -->
         <collision name='wall_x_1_collision'>
-          <pose>-0.068 0 0.0315 0 0 0</pose>
+          <pose>-0.112 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_x_1_visual'>
-          <pose>-0.068 0 0.0315 0 0 0</pose>
+          <pose>-0.112 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED X 2 -->
         <collision name='wall_x_2_collision'>
-          <pose>-0.034 0 0.0315 0 0 0</pose>
+          <pose>-0.056 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_x_2_visual'>
-          <pose>-0.034 0 0.0315 0 0 0</pose>
+          <pose>-0.056 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED X 3 -->
         <collision name='wall_x_3_collision'>
           <pose>0 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_x_3_visual'>
           <pose>0 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED X 4 -->
         <collision name='wall_x_4_collision'>
-          <pose>0.034 0 0.0315 0 0 0</pose>
+          <pose>0.056 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_x_4_visual'>
-          <pose>0.034 0 0.0315 0 0 0</pose>
+          <pose>0.056 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED X 5 -->
         <collision name='wall_x_5_collision'>
-          <pose>0.068 0 0.0315 0 0 0</pose>
+          <pose>0.112 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_x_5_visual'>
-          <pose>0.068 0 0.0315 0 0 0</pose>
+          <pose>0.112 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.002 0.098 0.057</size></box>
+            <box>
+              <size>0.002 0.186 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- ================================== -->
+        <!-- PAREDES DIVISORIAS EN Y -->
+        <!-- ================================== -->
+
+        <!-- PARED Y 1 -->
         <collision name='wall_y_1_collision'>
-          <pose>0 -0.048 0.0315 0 0 0</pose>
+          <pose>0 -0.092 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_y_1_visual'>
-          <pose>0 -0.048 0.0315 0 0 0</pose>
+          <pose>0 -0.092 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED Y 2 -->
         <collision name='wall_y_2_collision'>
-          <pose>0 -0.024 0.0315 0 0 0</pose>
+          <pose>0 -0.046 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_y_2_visual'>
-          <pose>0 -0.024 0.0315 0 0 0</pose>
+          <pose>0 -0.046 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED Y 3 -->
         <collision name='wall_y_3_collision'>
           <pose>0 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_y_3_visual'>
           <pose>0 0 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED Y 4 -->
         <collision name='wall_y_4_collision'>
-          <pose>0 0.024 0.0315 0 0 0</pose>
+          <pose>0 0.046 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_y_4_visual'>
-          <pose>0 0.024 0.0315 0 0 0</pose>
+          <pose>0 0.046 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
+        <!-- PARED Y 5 -->
         <collision name='wall_y_5_collision'>
-          <pose>0 0.048 0.0315 0 0 0</pose>
+          <pose>0 0.092 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
         </collision>
+
         <visual name='wall_y_5_visual'>
-          <pose>0 0.048 0.0315 0 0 0</pose>
+          <pose>0 0.092 0.0315 0 0 0</pose>
           <geometry>
-            <box><size>0.138 0.002 0.057</size></box>
+            <box>
+              <size>0.226 0.002 0.057</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.2 0.2 0.2 1</ambient>
             <diffuse>0.35 0.35 0.35 1</diffuse>
           </material>
         </visual>
+
       </link>
     </model>
+
 
     <model name='ground_logo_corner'>
       <static>1</static>

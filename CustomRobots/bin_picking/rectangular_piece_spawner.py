@@ -32,9 +32,9 @@ class rectangularPieceSpawner(Node):
         # DIMENSIONES DE LAS PIEZAS (metros)
         # ==========================================
 
-        self.PIECE_X = 0.030
-        self.PIECE_Y = 0.020
-        self.PIECE_Z = 0.055
+        self.PIECE_X = 0.050
+        self.PIECE_Y = 0.040
+        self.PIECE_Z = 0.075
 
         # Separacion minima entre piezas al generarlas
         self.MIN_GAP = 0.001
@@ -353,74 +353,54 @@ class rectangularPieceSpawner(Node):
 
     def spawn_all_pieces(self):
 
-        # Calcular numero de grupos
-        number_of_groups = math.ceil(
-            self.NUM_PIECES / self.PIECES_PER_GROUP
-        )
-
         self.get_logger().info(
-            f"Starting spawn of {self.NUM_PIECES} pieces "
-            f"in {number_of_groups} groups."
+            f"Starting simultaneous spawn of {self.NUM_PIECES} pieces."
         )
 
-        for group in range(number_of_groups):
+        positions = []
 
-            remaining = (
-                self.NUM_PIECES - self.counter
+        # Generar todas las posiciones antes de crear las piezas
+        for i in range(self.NUM_PIECES):
+
+            x = random.uniform(
+                self.MIN_X + self.PIECE_X,
+                self.MAX_X - self.PIECE_X
             )
 
-            number_in_group = min(
-                self.PIECES_PER_GROUP,
-                remaining
+            y = random.uniform(
+                self.MIN_Y + self.PIECE_Y,
+                self.MAX_Y - self.PIECE_Y
             )
 
-            self.get_logger().info(
-                f"Generating group {group + 1}/"
-                f"{number_of_groups} "
-                f"with {number_in_group} pieces."
+            yaw = random.uniform(-math.pi, math.pi)
+
+            # Distribuir las piezas por diferentes alturas
+            z = random.uniform(
+                self.FLOOR_Z + self.PIECE_Z / 2.0,
+                self.BOX_TOP_Z + 0.10
             )
 
-            # Generar posiciones sin solapamientos
-            positions = self.generate_positions(
-                number_in_group
+            positions.append({
+                "x": x,
+                "y": y,
+                "z": z,
+                "yaw": yaw
+            })
+
+        # Crear todas las piezas sin pausas entre ellas
+        for i, position in enumerate(positions):
+
+            name = f"piece_{i}"
+
+            success = self.spawn_piece(
+                name,
+                position,
+                position["z"]
             )
 
-            # Altura inicial de este grupo
-            group_z = (
-                self.SPAWN_BASE_Z
-                + group * self.SPAWN_GROUP_SEPARATION
-            )
+            if not success:
+                continue
 
-            for position in positions:
-
-                name = f"piece_{self.counter}"
-
-                # Pequeña variacion en la altura
-                z = (
-                    group_z
-                    + random.uniform(
-                        0.0,
-                        self.SPAWN_Z_JITTER
-                    )
-                )
-
-                success = self.spawn_piece(
-                    name,
-                    position,
-                    z
-                )
-
-                if success:
-                    # Dar tiempo a Gazebo para procesar
-                    # cada nueva entidad
-                    time.sleep(0.02)
-
-            self.get_logger().info(
-                f"Group {group + 1} completed. "
-                f"Spawned: {self.counter}"
-            )
-
-        # Publicar nombres de todas las piezas
         self.publish_graspable_objects()
 
         self.get_logger().info(
