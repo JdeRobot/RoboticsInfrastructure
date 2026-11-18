@@ -12,6 +12,12 @@ def generate_launch_description():
     worlds_dir = "/opt/jderobot/Scenes"
     world_path = os.path.join(worlds_dir, world_file_name)
 
+    # Spawner de piezas rectangulares
+    piece_spawner_path = (
+        "/home/ws/src/CustomRobots/bin_picking/"
+        "rectangular_piece_spawner.py"
+    )
+
     package_dir = get_package_share_directory("custom_robots")
     gazebo_models_path = os.path.join(package_dir, "models")
 
@@ -60,6 +66,24 @@ def generate_launch_description():
         output="screen",
     )
 
+    # ==================================================
+    # RECTANGULAR PIECE SPAWNER
+    # ==================================================
+
+    piece_spawner = ExecuteProcess(
+        cmd=["python3", piece_spawner_path],
+        output="screen",
+    )
+
     return LaunchDescription(
-        [set_gz_plugin_path, set_ld_library_path, set_resource_path, gz, gz_ros2_bridge]
+        [
+            set_gz_plugin_path,
+            set_ld_library_path,
+            set_resource_path,
+
+            gz,
+            gz_ros2_bridge,
+
+            piece_spawner,
+        ]
     )

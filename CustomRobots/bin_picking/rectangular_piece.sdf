@@ -1,0 +1,49 @@
+
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="rectangular_piece">
+
+    <static>false</static>
+
+    <link name="link">
+
+      <gravity>true</gravity>
+      <self_collide>false</self_collide>
+
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.00001427</ixx>
+          <iyy>0.00001635</iyy>
+          <izz>0.00000542</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.030 0.020 0.055</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.030 0.020 0.055</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>0.8 0.15 0.1 1</ambient>
+          <diffuse>0.9 0.2 0.1 1</diffuse>
+          <specular>0.2 0.2 0.2 1</specular>
+        </material>
+      </visual>
+
+    </link>
+  </model>
+</sdf>
