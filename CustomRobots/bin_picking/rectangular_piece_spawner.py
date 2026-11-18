@@ -18,42 +18,91 @@ class rectangularPieceSpawner(Node):
         super().__init__("rectangular_piece_spawner")
 
         # ==========================================
-        # CONFIGURACION DEL SPAWNER
+        # CONFIGURACION GENERAL
         # ==========================================
 
-        self.NUM_PIECES = 4
+        # Numero total de piezas
+        self.NUM_PIECES = 200
 
-        # Dimensiones de la pieza
+        # Numero de piezas por grupo de spawn
+        # Cada grupo se genera a una altura diferente
+        self.PIECES_PER_GROUP = 50
+
+        # ==========================================
+        # DIMENSIONES DE LAS PIEZAS (metros)
+        # ==========================================
+
         self.PIECE_X = 0.030
         self.PIECE_Y = 0.020
         self.PIECE_Z = 0.055
 
-        # Contenedor
+        # Separacion minima entre piezas al generarlas
+        self.MIN_GAP = 0.001
+
+        # ==========================================
+        # DIMENSIONES DEL CONTENEDOR
+        # ==========================================
+
         self.BOX_CENTER_X = -0.5
         self.BOX_CENTER_Y = 0.0
 
+        # Dimensiones interiores de la caja
         self.BOX_INNER_X = 0.47
         self.BOX_INNER_Y = 0.37
 
-        # Posiciones permitidas para el centro de las piezas.
-        # Se deja margen para que no toquen las paredes.
-
-        self.MIN_X = -0.70
-        self.MAX_X = -0.30
-
-        self.MIN_Y = -0.15
-        self.MAX_Y = 0.15
-
-        # Altura de la superficie interior del contenedor
+        # Altura del fondo interior
         self.FLOOR_Z = 0.78
 
-        # Separacion minima entre centros de piezas
-        self.MIN_DISTANCE = 0.05
+        # Altura de las paredes
+        self.BOX_HEIGHT = 0.20
 
-        # Numero maximo de intentos para encontrar posiciones
-        self.MAX_ATTEMPTS = 1000
+        # Parte superior de las paredes
+        self.BOX_TOP_Z = (
+            self.FLOOR_Z + self.BOX_HEIGHT
+        )
 
-        # Archivo SDF
+        # ==========================================
+        # ZONAS DE SPAWN
+        # ==========================================
+
+        # Las piezas aparecen por encima de las paredes
+        self.SPAWN_BASE_Z = self.BOX_TOP_Z + 0.12
+
+        # Separacion vertical entre grupos
+        # Debe ser mayor que la altura de la pieza
+        self.SPAWN_GROUP_SEPARATION = 0.070
+
+        # Pequeña variacion vertical aleatoria
+        self.SPAWN_Z_JITTER = 0.010
+
+        # ==========================================
+        # LIMITES DE GENERACION
+        # ==========================================
+
+        # Centro permitido dentro de la caja
+        self.MIN_X = (
+            self.BOX_CENTER_X - self.BOX_INNER_X / 2.0
+        )
+
+        self.MAX_X = (
+            self.BOX_CENTER_X + self.BOX_INNER_X / 2.0
+        )
+
+        self.MIN_Y = (
+            self.BOX_CENTER_Y - self.BOX_INNER_Y / 2.0
+        )
+
+        self.MAX_Y = (
+            self.BOX_CENTER_Y + self.BOX_INNER_Y / 2.0
+        )
+
+        # Intentos maximos para encontrar posiciones
+        self.MAX_ATTEMPTS = 10000
+
+        # ==========================================
+        # ARCHIVO SDF
+        # ==========================================
+
         self.PIECE_SDF = (
             "/home/ws/src/CustomRobots/"
             "bin_picking/rectangular_piece.sdf"
@@ -113,60 +162,190 @@ class rectangularPieceSpawner(Node):
         )
 
     # ==============================================
-    # GENERAR POSICIONES ALEATORIAS
+    # COMPROBAR SI DOS RECTANGULOS SE SOLAPAN
     # ==============================================
 
-    def generate_positions(self):
+    def overlaps(self, candidate, existing):
+
+        # Se comprueba el bounding box alineado con los ejes.
+        # Es una comprobacion conservadora para evitar
+        # solapamientos entre piezas antes del spawn.
+
+        return (
+            abs(candidate["x"] - existing["x"])
+            < candidate["half_x"] + existing["half_x"]
+            and
+            abs(candidate["y"] - existing["y"])
+            < candidate["half_y"] + existing["half_y"]
+        )
+
+    # ==============================================
+    # GENERAR POSICIONES ALEATORIAS PARA UN GRUPO
+    # ==============================================
+
+    def generate_positions(self, number_of_pieces):
 
         positions = []
 
         attempts = 0
 
         while (
-            len(positions) < self.NUM_PIECES
+            len(positions) < number_of_pieces
             and attempts < self.MAX_ATTEMPTS
         ):
 
             attempts += 1
 
+            # Orientacion aleatoria alrededor de Z
+            yaw = random.uniform(
+                -math.pi,
+                math.pi
+            )
+
+            # Semidimensiones de la pieza
+            half_x = self.PIECE_X / 2.0
+            half_y = self.PIECE_Y / 2.0
+
+            # Bounding box de la pieza rotada
+            cos_yaw = abs(math.cos(yaw))
+            sin_yaw = abs(math.sin(yaw))
+
+            rotated_half_x = (
+                cos_yaw * half_x
+                + sin_yaw * half_y
+                + self.MIN_GAP / 2.0
+            )
+
+            rotated_half_y = (
+                sin_yaw * half_x
+                + cos_yaw * half_y
+                + self.MIN_GAP / 2.0
+            )
+
+            # Posicion aleatoria dentro de la caja
             x = random.uniform(
-                self.MIN_X,
-                self.MAX_X
+                self.MIN_X + rotated_half_x,
+                self.MAX_X - rotated_half_x
             )
 
             y = random.uniform(
-                self.MIN_Y,
-                self.MAX_Y
+                self.MIN_Y + rotated_half_y,
+                self.MAX_Y - rotated_half_y
             )
+
+            candidate = {
+                "x": x,
+                "y": y,
+                "yaw": yaw,
+                "half_x": rotated_half_x,
+                "half_y": rotated_half_y
+            }
 
             valid = True
 
-            # Comprobar distancia respecto a las piezas anteriores
-            for p in positions:
+            # Comprobar solapamientos con las piezas
+            # que pertenecen al mismo grupo
 
-                distance = math.sqrt(
-                    (x - p["x"]) ** 2 +
-                    (y - p["y"]) ** 2
-                )
+            for existing in positions:
 
-                if distance < self.MIN_DISTANCE:
+                if self.overlaps(candidate, existing):
+
                     valid = False
                     break
 
             if valid:
+                positions.append(candidate)
 
-                positions.append({
-                    "x": x,
-                    "y": y
-                })
-
-        if len(positions) < self.NUM_PIECES:
+        if len(positions) < number_of_pieces:
 
             self.get_logger().error(
-                "Could not generate enough valid positions."
+                f"Could only generate {len(positions)} "
+                f"of {number_of_pieces} positions."
             )
 
         return positions
+
+    # ==============================================
+    # SPAWNEAR UNA PIEZA
+    # ==============================================
+
+    def spawn_piece(self, name, position, z):
+
+        x = position["x"]
+        y = position["y"]
+        yaw = position["yaw"]
+
+        # Mantenemos la pieza vertical
+        roll = 0.0
+        pitch = 0.0
+
+        cmd = [
+            "ros2",
+            "run",
+            "ros_gz_sim",
+            "create",
+
+            "-name",
+            name,
+
+            "-x",
+            str(x),
+
+            "-y",
+            str(y),
+
+            "-z",
+            str(z),
+
+            "-R",
+            str(roll),
+
+            "-P",
+            str(pitch),
+
+            "-Y",
+            str(yaw),
+
+            "-file",
+            self.PIECE_SDF,
+        ]
+
+        result = subprocess.run(
+            cmd,
+            check=False,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+
+            self.get_logger().error(
+                f"Failed to spawn {name}: "
+                f"{result.stderr.strip()}"
+            )
+
+            return False
+
+        self.pieces[name] = {
+            "x": x,
+            "y": y,
+            "z": z,
+            "roll": roll,
+            "pitch": pitch,
+            "yaw": yaw
+        }
+
+        self.counter += 1
+
+        self.get_logger().info(
+            f"Spawned {name} "
+            f"at x={x:.3f}, "
+            f"y={y:.3f}, "
+            f"z={z:.3f}, "
+            f"yaw={yaw:.3f}"
+        )
+
+        return True
 
     # ==============================================
     # SPAWNEAR TODAS LAS PIEZAS
@@ -174,101 +353,84 @@ class rectangularPieceSpawner(Node):
 
     def spawn_all_pieces(self):
 
-        positions = self.generate_positions()
+        # Calcular numero de grupos
+        number_of_groups = math.ceil(
+            self.NUM_PIECES / self.PIECES_PER_GROUP
+        )
 
-        for i, position in enumerate(positions):
+        self.get_logger().info(
+            f"Starting spawn of {self.NUM_PIECES} pieces "
+            f"in {number_of_groups} groups."
+        )
 
-            name = f"piece_{i}"
+        for group in range(number_of_groups):
 
-            x = position["x"]
-            y = position["y"]
-
-            # Orientacion aleatoria alrededor del eje Z
-            roll = 0.0
-            pitch = 0.0
-
-            yaw = random.uniform(
-                -math.pi,
-                math.pi
+            remaining = (
+                self.NUM_PIECES - self.counter
             )
 
-            # Centro de la pieza:
-            # mitad de su altura por encima del suelo
-            z = self.FLOOR_Z + self.PIECE_Z / 2.0
-
-            cmd = [
-                "ros2",
-                "run",
-                "ros_gz_sim",
-                "create",
-
-                "-name",
-                name,
-
-                "-x",
-                str(x),
-
-                "-y",
-                str(y),
-
-                "-z",
-                str(z),
-
-                "-R",
-                str(roll),
-
-                "-P",
-                str(pitch),
-
-                "-Y",
-                str(yaw),
-
-                "-file",
-                self.PIECE_SDF,
-            ]
-
-            result = subprocess.run(
-                cmd,
-                check=False,
-                capture_output=True,
-                text=True
+            number_in_group = min(
+                self.PIECES_PER_GROUP,
+                remaining
             )
-
-            if result.returncode != 0:
-
-                self.get_logger().error(
-                    f"Failed to spawn {name}: "
-                    f"{result.stderr.strip()}"
-                )
-
-                continue
-
-            self.pieces[name] = {
-                "x": x,
-                "y": y,
-                "z": z,
-                "roll": roll,
-                "pitch": pitch,
-                "yaw": yaw
-            }
-
-            self.counter += 1
 
             self.get_logger().info(
-                f"Spawned {name} "
-                f"at x={x:.3f}, "
-                f"y={y:.3f}, "
-                f"z={z:.3f}, "
-                f"yaw={yaw:.3f}"
+                f"Generating group {group + 1}/"
+                f"{number_of_groups} "
+                f"with {number_in_group} pieces."
             )
 
-        # Publicar nombres de las piezas
+            # Generar posiciones sin solapamientos
+            positions = self.generate_positions(
+                number_in_group
+            )
+
+            # Altura inicial de este grupo
+            group_z = (
+                self.SPAWN_BASE_Z
+                + group * self.SPAWN_GROUP_SEPARATION
+            )
+
+            for position in positions:
+
+                name = f"piece_{self.counter}"
+
+                # Pequeña variacion en la altura
+                z = (
+                    group_z
+                    + random.uniform(
+                        0.0,
+                        self.SPAWN_Z_JITTER
+                    )
+                )
+
+                success = self.spawn_piece(
+                    name,
+                    position,
+                    z
+                )
+
+                if success:
+                    # Dar tiempo a Gazebo para procesar
+                    # cada nueva entidad
+                    time.sleep(0.02)
+
+            self.get_logger().info(
+                f"Group {group + 1} completed. "
+                f"Spawned: {self.counter}"
+            )
+
+        # Publicar nombres de todas las piezas
         self.publish_graspable_objects()
 
         self.get_logger().info(
             f"Spawned {self.counter} rectangular pieces."
         )
 
+
+# ==============================================
+# MAIN
+# ==============================================
 
 def main():
 
