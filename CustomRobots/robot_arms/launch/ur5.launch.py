@@ -35,6 +35,8 @@ def launch_setup(context):
     P = LaunchConfiguration("P")
     Y = LaunchConfiguration("Y")
     gz_sensor = LaunchConfiguration("sensor")
+    end_effector = LaunchConfiguration("end_effector").perform(context)
+    is_rg2 = end_effector == "onrobot_rg2"
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -49,10 +51,14 @@ def launch_setup(context):
         package_dir,
         "models",
         "ur5",
-        "ur5.urdf.xacro",
+        "ur5_rg2.urdf.xacro" if is_rg2 else "ur5.urdf.xacro",
     )
 
-    controllers_file = os.path.join(package_dir, "config", "ur5_controllers.yaml")
+    controllers_file = os.path.join(
+        package_dir,
+        "config",
+        "ur5_rg2_controllers.yaml" if is_rg2 else "ur5_controllers.yaml",
+    )
 
     robot_description_content = xacro.process_file(
         xacro_file,
@@ -66,7 +72,7 @@ def launch_setup(context):
             "simulation_controllers": controllers_file,
             "hmi": "false",
             "EE": "true",
-            "EE_name": "robotiq_2f85",
+            "EE_name": end_effector,
             "camera": "true" if sensor == "camera" else "false",
         },
     ).toxml()
@@ -78,7 +84,7 @@ def launch_setup(context):
     # =========================
     robot_description_semantic = {
         "robot_description_semantic": load_file(
-            "ros2srrc_ur5_moveit2", "config/ur5robotiq_2f85.srdf"
+            "ros2srrc_ur5_moveit2", f"config/ur5{end_effector}.srdf"
         )
     }
 
@@ -95,7 +101,12 @@ def launch_setup(context):
     # CONTROLLERS (MoveIt)
     # =========================
     moveit_controllers = load_yaml(
-        "ur5_gripper_moveit_config", "config/moveit_controllers.yaml"
+        "ur5_gripper_moveit_config",
+        (
+            "config/moveit_controllers_rg2.yaml"
+            if is_rg2
+            else "config/moveit_controllers.yaml"
+        ),
     )
 
     ompl_planning = load_yaml("ur5_gripper_moveit_config", "config/ompl_planning.yaml")
@@ -153,7 +164,7 @@ def launch_setup(context):
             },
             {"use_sim_time": True},
             {"ROB_PARAM": "ur5"},
-            {"EE_PARAM": "robotiq_2f85"},
+            {"EE_PARAM": end_effector},
             {"ROB_GROUP": "ur5_manipulator"},
         ],
     )
@@ -222,7 +233,7 @@ def launch_setup(context):
             "-topic",
             "robot_description",
             "-name",
-            "ur5_robotiq",
+            "ur5_rg2" if is_rg2 else "ur5_robotiq",
             "-x",
             x,
             "-y",
@@ -344,6 +355,7 @@ def generate_launch_description():
         DeclareLaunchArgument("P", default_value="0"),
         DeclareLaunchArgument("Y", default_value="0"),
         DeclareLaunchArgument("sensor", default_value="none"),
+        DeclareLaunchArgument("end_effector", default_value="robotiq_2f85"),
     ]
 
     return LaunchDescription(

@@ -1,0 +1,5 @@
+The meshes in meshes/ and the joint geometry in urdf/onrobot_rg2_macro.urdf.xacro
+come from onrobot_rg_description in
+https://github.com/Osaka-University-Harada-Laboratory/onrobot
+(commit 46fae3557dd3aff678adf6b3320ec1338493d84a), released under the MIT License
+reproduced in LICENSE.
