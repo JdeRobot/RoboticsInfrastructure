@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+  OnRobot RG2 two finger gripper for gz-sim Harmonic.
+  Geometry and meshes from onrobot_rg_description (MIT, see ../LICENSE).
+  The driving joint rg2_finger_joint is 0 fully open and RG2_CLOSED fully closed,
+  the other five joints follow it as mimics so the fingers stay parallel.
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Open angle of the original model, used to move the joint zero to fully open -->
+  <xacro:property name="rg2_open" value="-0.558505"/>
+  <xacro:property name="rg2_closed" value="${0.785398 - rg2_open}"/>
+  <xacro:property name="rg2_mesh" value="package://ros2srrc_endeffectors/onrobot_rg2/meshes"/>
+  <!-- Height above the base where the finger pads meet when fully closed, used as the TCP -->
+  <xacro:property name="rg2_tcp_z" value="0.219"/>
+
+  <xacro:macro name="rg2_link" params="prefix name mesh mass rgba">
+    <link name="${prefix}${name}">
+      <inertial>
+        <mass value="${mass}"/>
+        <inertia ixx="1.0E-05" ixy="0" ixz="0" iyy="1.0E-05" iyz="0" izz="1.0E-05"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="${rg2_mesh}/visual/${mesh}.stl"/>
+        </geometry>
+        <material name="${prefix}${name}_material">
+          <color rgba="${rgba}"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="${rg2_mesh}/collision/${mesh}.stl"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- One finger, reflect is 1 for the left finger and -1 for the right one -->
+  <xacro:macro name="rg2_finger" params="prefix side reflect">
+    <xacro:rg2_link prefix="${prefix}" name="rg2_${side}_outer_knuckle" mesh="outer_knuckle" mass="0.05" rgba="0.8 0.8 0.8 1"/>
+    <xacro:rg2_link prefix="${prefix}" name="rg2_${side}_inner_knuckle" mesh="inner_knuckle" mass="0.05" rgba="0.8 0.8 0.8 1"/>
+    <xacro:rg2_link prefix="${prefix}" name="rg2_${side}_inner_finger" mesh="inner_finger" mass="0.05" rgba="0.1 0.1 0.1 1"/>
+
+    <!-- The left outer knuckle is the driving joint, its axis points the other way -->
+    <xacro:if value="${reflect == 1}">
+      <joint name="${prefix}rg2_finger_joint" type="revolute">
+        <origin xyz="0 -0.017178 0.125797" rpy="${-rg2_open} 0 0"/>
+        <parent link="${prefix}rg2_base_link"/>
+        <child link="${prefix}rg2_left_outer_knuckle"/>
+        <axis xyz="-1 0 0"/>
+        <limit lower="0" upper="${rg2_closed}" velocity="2.0" effort="40"/>
+      </joint>
+    </xacro:if>
+    <xacro:unless value="${reflect == 1}">
+      <joint name="${prefix}rg2_right_outer_knuckle_joint" type="revolute">
+        <origin xyz="0 0.017178 0.125797" rpy="${-rg2_open} 0 ${pi}"/>
+        <parent link="${prefix}rg2_base_link"/>
+        <child link="${prefix}rg2_right_outer_knuckle"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="${-rg2_closed}" upper="0" velocity="2.0" effort="40"/>
+        <mimic joint="${prefix}rg2_finger_joint" multiplier="-1" offset="0"/>
+      </joint>
+    </xacro:unless>
+
+    <joint name="${prefix}rg2_${side}_inner_knuckle_joint" type="revolute">
+      <origin xyz="0 ${reflect * -0.007678} 0.142297" rpy="${-rg2_open} 0 ${(reflect - 1) * pi / 2}"/>
+      <parent link="${prefix}rg2_base_link"/>
+      <child link="${prefix}rg2_${side}_inner_knuckle"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="${-rg2_closed}" upper="0" velocity="2.0" effort="40"/>
+      <mimic joint="${prefix}rg2_finger_joint" multiplier="-1" offset="0"/>
+    </joint>
+
+    <joint name="${prefix}rg2_${side}_inner_finger_joint" type="revolute">
+      <origin xyz="0 -0.039592 0.038177" rpy="${rg2_open} 0 0"/>
+      <parent link="${prefix}rg2_${side}_outer_knuckle"/>
+      <child link="${prefix}rg2_${side}_inner_finger"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="0" upper="${rg2_closed}" velocity="2.0" effort="40"/>
+      <mimic joint="${prefix}rg2_finger_joint" multiplier="1" offset="0"/>
+    </joint>
+
+    <gazebo reference="${prefix}rg2_${side}_inner_finger">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="onrobot_rg2" params="prefix parent *origin">
+    <joint name="${prefix}rg2_base_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${prefix}rg2_base_link"/>
+    </joint>
+
+    <xacro:rg2_link prefix="${prefix}" name="rg2_base_link" mesh="base_link" mass="0.7" rgba="0.8 0.8 0.8 1"/>
+
+    <xacro:rg2_finger prefix="${prefix}" side="left" reflect="1"/>
+    <xacro:rg2_finger prefix="${prefix}" side="right" reflect="-1"/>
+
+    <!-- Contact sensor for gz_link_attacher on the left finger pad -->
+    <gazebo reference="${prefix}rg2_left_inner_finger">
+      <sensor name="suction_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <contact>
+          <collision>${prefix}rg2_left_inner_finger_collision</collision>
+        </contact>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
