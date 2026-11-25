@@ -237,6 +237,7 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 112	F1 Pursuit Montmelo Easy	104
 113	F1 Pursuit Montmelo Medium	105
 114	F1 Pursuit Montmelo Hard	106
+115	Pick And Place OnRobot RG2 World	107
 116	Small Laser Mapping Warehouse Mir100	33
 \.
 
@@ -348,6 +349,7 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 99	113	60	{{-36.373,-18.590,0.004,0,0,0.0}}
 100	114	2	{{27.18,-31.55,0.0,0.0,0.01,-3.12}}
 101	114	60	{{-36.373,-18.590,0.004,0,0,0.0}}
+102	115	61	{{0.0,0.0,0.9,0.0,0.0,0.0}}
 103	116	62	{{0.0,0.0,0.1,0.0,0.0,0.0}}
 \.
 
@@ -424,6 +426,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 104	F1 Pursuit Montmelo Easy	/opt/jderobot/Launchers/f1_pursuit_montmelo_easy.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
 105	F1 Pursuit Montmelo Medium	/opt/jderobot/Launchers/f1_pursuit_montmelo_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
 106	F1 Pursuit Montmelo Hard	/opt/jderobot/Launchers/f1_pursuit_montmelo_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
+107	Pick And Place OnRobot RG2	/opt/jderobot/Launchers/pick_place_rg2.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_rg2_harmonic.launch.py"}	ROS2	gz	pick_place.urdf
 \.
 
 --
@@ -490,6 +493,7 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 58	Ur3 Camera Servo	/home/ws/src/CustomRobots/robot_arms/launch/ur3_servo.launch.py	ur3_robotiq	sensor:=camera	robot_arms/models/ur3/ur3_servo.urdf.xacro
 59	MMO-500 Harvester	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500 end_effector:=harvest	mmo500/models/mmo500/mmo500.urdf.xacro
 60	F1 Pursuit Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=none namespace:=f1_rival color:=blue	f1/models/f1/f1.urdf.xacro
+61	Ur5 OnRobot RG2	/home/ws/src/CustomRobots/robot_arms/launch/ur5.launch.py	ur5_rg2	end_effector:=onrobot_rg2	robot_arms/models/ur5/ur5_rg2.urdf.xacro
 62	Mir100 Laser Mapping	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=do150	mir100/models/mir100/mir100.urdf.xacro
 \.
 
