@@ -9,6 +9,7 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 import os
+import tempfile
 import xacro
 import yaml
 from ament_index_python.packages import get_package_share_directory
@@ -239,46 +240,48 @@ def launch_setup(context):
         output="screen",
     )
 
-    clock_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]"],
-        parameters=[{"use_sim_time": True}],
-    )
-
     nodes.append(robot_state_publisher)
     nodes.append(static_tf)
     nodes.append(spawn_robot)
-    nodes.append(clock_bridge)
 
     if sensor == "camera":
+        # Lazy bridge so gz only renders a camera while someone subscribes to it
+        camera_topics = [
+            (f"/{camera}/{topic}", ros_type, gz_type)
+            for camera in ("hand_camera", "base_camera")
+            for topic, ros_type, gz_type in (
+                ("image", "sensor_msgs/msg/Image", "gz.msgs.Image"),
+                ("camera_info", "sensor_msgs/msg/CameraInfo", "gz.msgs.CameraInfo"),
+            )
+        ]
+        camera_config = os.path.join(
+            tempfile.mkdtemp(prefix="ur3_"), "camera_bridge.yaml"
+        )
+        with open(camera_config, "w") as fh:
+            yaml.safe_dump(
+                [
+                    {
+                        "ros_topic_name": topic,
+                        "gz_topic_name": topic,
+                        "ros_type_name": ros_type,
+                        "gz_type_name": gz_type,
+                        "direction": "GZ_TO_ROS",
+                        "lazy": True,
+                    }
+                    for topic, ros_type, gz_type in camera_topics
+                ],
+                fh,
+            )
+
         camera_bridge = Node(
             package="ros_gz_bridge",
             executable="parameter_bridge",
-            arguments=[
-                "/hand_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-                "/base_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-            ],
-            output="screen",
-        )
-
-        gz_ros2_image_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            arguments=["/hand_camera/image"],
-            output="screen",
-        )
-
-        gz_ros2_base_image_bridge = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            arguments=["/base_camera/image"],
+            name="camera_bridge",
+            parameters=[{"config_file": camera_config}],
             output="screen",
         )
 
         nodes.append(camera_bridge)
-        nodes.append(gz_ros2_image_bridge)
-        nodes.append(gz_ros2_base_image_bridge)
 
     # =========================
     # CONTROLLERS
@@ -327,6 +330,25 @@ def launch_setup(context):
     )
 
     nodes.append(move_group)
+
+    # MoveIt Servo stays loaded and the HAL starts or stops it through its services
+    servo_yaml = load_yaml("ur3_gripper_moveit_config", "config/ur_servo.yaml")
+
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        parameters=[
+            {"moveit_servo": servo_yaml},
+            robot_description,
+            robot_description_semantic,
+            kinematics_yaml,
+            combined_planning,
+            {"use_sim_time": True},
+        ],
+        output="screen",
+    )
+
+    nodes.append(servo_node)
 
     # =========================
     # LAUNCH
