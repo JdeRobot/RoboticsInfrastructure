@@ -16,6 +16,7 @@
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
+  <depend>tf2_ros</depend>
   <!-- roslibpy is not a ROS package, install with pip (see README.md) -->
 
   <export>
