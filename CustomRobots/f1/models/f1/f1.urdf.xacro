@@ -10,12 +10,17 @@
   <xacro:property name="namespace" value="$(arg namespace)"/>
   <xacro:arg name="color" default=""/>
   <xacro:property name="color" value="$(arg color)"/>
+  <!-- A lidar only sees visuals whose flags share a bit with its mask, all bits by default -->
+  <xacro:arg name="visibility_flags" default="4294967295"/>
+  <xacro:arg name="laser_mask" default="4294967295"/>
+  <!-- Two cars only collide when their bitmasks share a bit -->
+  <xacro:arg name="collide_bitmask" default="65535"/>
 
   <xacro:include filename="$(find custom_robots)/models/f1/f1_gz.urdf.xacro"/>
   <xacro:include filename="$(find custom_robots)/models/f1/f1_common.urdf.xacro"/>
 
   <xacro:if value="$(arg holonomic)">
-    <xacro:holonomic namespace="${namespace}" color="${color}"/>
+    <xacro:holonomic namespace="${namespace}" color="${color}" visibility_flags="$(arg visibility_flags)" collide_bitmask="$(arg collide_bitmask)"/>
   </xacro:if>
 
   <xacro:if value="$(arg ackermann)">
@@ -27,6 +32,6 @@
   </xacro:if>
 
   <xacro:if value="$(arg laser)">
-    <xacro:f1_laser xyz="0.5 0 0.072" rpy="0 0 0" name="laser" parent="base" namespace="${namespace}"/>
+    <xacro:f1_laser xyz="0.5 0 0.072" rpy="0 0 0" name="laser" parent="base" namespace="${namespace}" mask="$(arg laser_mask)" visibility_flags="$(arg visibility_flags)"/>
   </xacro:if>
 </robot>

@@ -45,7 +45,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="f1_laser" params="xyz rpy name parent namespace">
+  <xacro:macro name="f1_laser" params="xyz rpy name parent namespace mask:=4294967295 visibility_flags:=4294967295">
     <link name="${name}_link">
       <visual>
         <geometry>
@@ -61,6 +61,9 @@
     </joint>
 
     <gazebo reference="${name}_link">
+      <visual>
+        <visibility_flags>${visibility_flags}</visibility_flags>
+      </visual>
       <sensor name="laser" type="gpu_lidar">
         <always_on>1</always_on>
         <visualize>1</visualize>
@@ -81,6 +84,7 @@
             <max>10.000000</max>
             <resolution>0.010000</resolution>
           </range>
+          <visibility_mask>${mask}</visibility_mask>
         </lidar>
       </sensor>
     </gazebo>

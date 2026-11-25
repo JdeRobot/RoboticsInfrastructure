@@ -238,6 +238,9 @@ COPY public.worlds (id, name, scene_id) FROM stdin;
 113	F1 Pursuit Montmelo Medium	105
 114	F1 Pursuit Montmelo Hard	106
 116	Small Laser Mapping Warehouse Mir100	33
+117	F1 Race Easy	107
+118	F1 Race Medium	108
+119	F1 Race Hard	109
 \.
 
 --
@@ -349,6 +352,12 @@ COPY public.worlds_robots (id, world_id, robot_id, poses) FROM stdin;
 100	114	2	{{27.18,-31.55,0.0,0.0,0.01,-3.12}}
 101	114	60	{{-36.373,-18.590,0.004,0,0,0.0}}
 103	116	62	{{0.0,0.0,0.1,0.0,0.0,0.0}}
+104	117	63	{{-0.710,0.680,0.004,0,0,-1.57}}
+105	117	64	{{0.790,0.680,0.004,0,0,-1.57}}
+106	118	63	{{-0.710,0.680,0.004,0,0,-1.57}}
+107	118	64	{{0.790,0.680,0.004,0,0,-1.57}}
+108	119	63	{{-0.710,0.680,0.004,0,0,-1.57}}
+109	119	64	{{0.790,0.680,0.004,0,0,-1.57}}
 \.
 
 --
@@ -424,6 +433,9 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 104	F1 Pursuit Montmelo Easy	/opt/jderobot/Launchers/f1_pursuit_montmelo_easy.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
 105	F1 Pursuit Montmelo Medium	/opt/jderobot/Launchers/f1_pursuit_montmelo_medium.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
 106	F1 Pursuit Montmelo Hard	/opt/jderobot/Launchers/f1_pursuit_montmelo_hard.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/montmelo_circuit.config"}	ROS2	gz	montmelo_line.urdf
+107	F1 Race Easy	/opt/jderobot/Launchers/f1_race_easy.launch.py	None	ROS2	gz	simple_circuit_obstacles.urdf
+108	F1 Race Medium	/opt/jderobot/Launchers/f1_race_medium.launch.py	None	ROS2	gz	simple_circuit_obstacles.urdf
+109	F1 Race Hard	/opt/jderobot/Launchers/f1_race_hard.launch.py	None	ROS2	gz	simple_circuit_obstacles.urdf
 \.
 
 --
@@ -491,6 +503,8 @@ COPY public.robots (id, name, launch_file_path, entity, extra_config, model_path
 59	MMO-500 Harvester	/home/ws/src/CustomRobots/mmo500/launch/mmo500.launch.py	mmo500	namespace:=mmo500 end_effector:=harvest	mmo500/models/mmo500/mmo500.urdf.xacro
 60	F1 Pursuit Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=none namespace:=f1_rival color:=blue	f1/models/f1/f1.urdf.xacro
 62	Mir100 Laser Mapping	/home/ws/src/CustomRobots/mir100/launch/mir100.launch.py	mir100	noise:=low namespace:=do150	mir100/models/mir100/mir100.urdf.xacro
+63	F1 Race Laser	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1	mode:=holo sensor:=laser namespace:=f1 visibility_flags:=1 laser_mask:=4294967293 collide_bitmask:=1	f1/models/f1/f1.urdf.xacro
+64	F1 Race Rival	/home/ws/src/CustomRobots/f1/launch/f1.launch.py	f1_rival	mode:=holo sensor:=laser namespace:=f1_rival color:=blue visibility_flags:=2 laser_mask:=4294967294 collide_bitmask:=2	f1/models/f1/f1.urdf.xacro
 \.
 
 --

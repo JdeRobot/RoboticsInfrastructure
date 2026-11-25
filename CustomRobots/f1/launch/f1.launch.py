@@ -22,6 +22,9 @@ def launch_setup(context):
     gz_namespace = LaunchConfiguration("namespace")
     gz_entity = LaunchConfiguration("entity")
     gz_color = LaunchConfiguration("color")
+    gz_visibility_flags = LaunchConfiguration("visibility_flags")
+    gz_laser_mask = LaunchConfiguration("laser_mask")
+    gz_collide_bitmask = LaunchConfiguration("collide_bitmask")
 
     package_dir = get_package_share_directory("custom_robots")
 
@@ -50,6 +53,9 @@ def launch_setup(context):
             "laser": "true" if f1_sensor == "laser" else "false",
             "namespace": namespace,
             "color": color,
+            "visibility_flags": gz_visibility_flags.perform(context),
+            "laser_mask": gz_laser_mask.perform(context),
+            "collide_bitmask": gz_collide_bitmask.perform(context),
         },
     ).toxml()
 
@@ -145,6 +151,10 @@ def generate_launch_description():
         DeclareLaunchArgument("namespace", default_value="f1"),
         DeclareLaunchArgument("entity", default_value="f1"),
         DeclareLaunchArgument("color", default_value=""),
+        # Bits that hide two cars from each other's laser and let them overlap
+        DeclareLaunchArgument("visibility_flags", default_value="4294967295"),
+        DeclareLaunchArgument("laser_mask", default_value="4294967295"),
+        DeclareLaunchArgument("collide_bitmask", default_value="65535"),
     ]
 
     return LaunchDescription(
