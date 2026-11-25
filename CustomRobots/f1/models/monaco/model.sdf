@@ -21,13 +21,65 @@
         </geometry>
       </visual>
 
+      <visual name="tunnel">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco_tunnel.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <visual name="harbour">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco_harbour.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <visual name="buildings">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco_buildings.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <visual name="banners">
+        <geometry>
+          <mesh>
+            <uri>model://monaco/meshes/monaco_banners.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://monaco/meshes/monaco_track.dae</uri>
+            <uri>model://monaco/meshes/monaco_collision.dae</uri>
             <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>1.0</kd>
+              <min_depth>0.005</min_depth>
+              <max_vel>0.1</max_vel>
+            </ode>
+          </contact>
+        </surface>
       </collision>
     </link>
   </model>

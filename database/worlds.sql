@@ -381,7 +381,7 @@ COPY public.scenes (id, name, launch_file_path, tools_config, ros_version, type,
 43	Autopark_sideways	/opt/jderobot/Launchers/autopark_sideways.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/autoparking.config"}	ROS2	gz	autopark_sideways.urdf
 46	3d Reconstruction	/opt/jderobot/Launchers/3d_reconstruction.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/3d_reconstruction.config"}	ROS2	gz	kobuki_1_reconstruction3d.urdf
 47	Spa Circuit	/opt/jderobot/Launchers/spa_circuit.launch.py	None	ROS2	gz	spa_circuit.urdf
-49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	None	ROS2	gz	monaco_circuit.urdf
+49	Monaco Circuit	/opt/jderobot/Launchers/monaco_circuit.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/monaco_circuit.config"}	ROS2	gz	monaco_circuit.urdf
 55	Rover 4wd Warehouse	/opt/jderobot/Launchers/rover_4wd_warehouse.launch.py	None	ROS2	gz	rover4wd_warehouse.urdf
 56	Pick And Place	/opt/jderobot/Launchers/pick_place.launch.py	{"rviz":"/opt/jderobot/Launchers/rviz/pick_place_harmonic.launch.py"}	ROS2	gz	pick_place.urdf
 57	Package delivery	/opt/jderobot/Launchers/package_delivery.launch.py	{"gzsim":"/opt/jderobot/Launchers/visualization/package_delivery.config"}	ROS2	gz	package_delivery.urdf

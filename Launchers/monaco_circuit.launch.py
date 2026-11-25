@@ -3,7 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -20,7 +20,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": ["-s -v4 ", world_path],
+            "gz_args": ["-s -v1 ", world_path],
             "on_exit_shutdown": "true",
         }.items(),
     )
@@ -41,9 +41,15 @@ def generate_launch_description():
         output="screen",
     )
 
+    racing_lights_cmd = ExecuteProcess(
+        cmd=["python3", "/opt/jderobot/Launchers/racing_lights_controller.py"],
+        output="screen",
+    )
+
     ld = LaunchDescription()
     ld.add_action(gazebo_server)
     ld.add_action(world_entity_cmd)
     ld.add_action(gz_ros2_bridge)
+    ld.add_action(racing_lights_cmd)
 
     return ld
