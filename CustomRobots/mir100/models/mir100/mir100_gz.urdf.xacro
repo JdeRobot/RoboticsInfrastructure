@@ -128,6 +128,11 @@
         <wheel_radius>${wheel_radius}</wheel_radius>
 
         <max_linear_acceleration>1.0</max_linear_acceleration>
+        <!-- Same limits as the real MiR100 diff drive controller -->
+        <min_linear_velocity>-1.0</min_linear_velocity>
+        <max_linear_velocity>1.0</max_linear_velocity>
+        <min_angular_velocity>-1.5</min_angular_velocity>
+        <max_angular_velocity>1.5</max_angular_velocity>
 
         <topic>/${namespace}/cmd_vel</topic>
 
