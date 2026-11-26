@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot name="ur5"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="fake_sensor_commands" default="false"/>
+  <xacro:arg name="sim_gazebo" default="false"/>
+  <xacro:arg name="sim_gz" default="true"/>
+  <xacro:arg name="simulation_controllers" default=""/>
+
+  <xacro:include filename="$(find custom_robots)/models/ur5/ur.urdf.xacro" />
+  <xacro:include filename="$(find ros2srrc_endeffectors)/onrobot_rg2/urdf/onrobot_rg2_macro.urdf.xacro" />
+  <xacro:include filename="$(find ros2srrc_endeffectors)/onrobot_rg2/urdf/onrobot_rg2.ros2_control.xacro" />
+  <xacro:include filename="$(find custom_robots)/models/ur5/ur.ros2_control.xacro" />
+
+  <!-- Gripper, fingers open along the same tool0 axis as the Robotiq of ur5.urdf.xacro -->
+  <xacro:onrobot_rg2 prefix="" parent="tool0">
+    <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
+  </xacro:onrobot_rg2>
+
+  <!-- Grasp point, tip of the MoveIt arm group so the HAL poses are where the object is grabbed -->
+  <link name="rg2_tcp"/>
+  <joint name="rg2_tcp_joint" type="fixed">
+    <origin xyz="0 0 ${rg2_tcp_z}" rpy="0 0 0"/>
+    <parent link="tool0"/>
+    <child link="rg2_tcp"/>
+  </joint>
+
+  <!-- ros2_control GRIPPER -->
+  <xacro:onrobot_rg2_ros2_control name="onrobot" prefix=""/>
+
+  <!-- ros2_control UR5 -->
+  <xacro:ur_ros2_control name="ur" prefix="" sim_gz="true" use_fake_hardware="false" script_filename="" output_recipe_filename="" input_recipe_filename="" tf_prefix="" hash_kinematics="" robot_ip="0.0.0.0" />
+
+</robot>

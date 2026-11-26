@@ -47,6 +47,7 @@ install(
     robotiq_hande
 
     dobot_gripper
+    onrobot_rg2
 
   DESTINATION
     share/${PROJECT_NAME}

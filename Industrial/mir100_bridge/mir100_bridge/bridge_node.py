@@ -11,10 +11,11 @@ import math
 
 import rclpy
 import roslibpy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TransformStamped, Twist
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, LaserScan
+from tf2_ros import TransformBroadcaster
 
 from mir100_bridge.host import resolve_robot_host, resolve_ros1_host
 
@@ -85,6 +86,8 @@ class Mir100Bridge(Node):
 
         # republish the robot's ROS1 sensor data as ROS2
         self.odom_pub = self.create_publisher(Odometry, self.ns("odom"), 10)
+        # robot_state_publisher only knows the fixed joints, the odom TF comes from here
+        self.tf_broadcaster = TransformBroadcaster(self)
         roslibpy.Topic(self.ros1, "/odom", "nav_msgs/Odometry").subscribe(self.on_odom)
 
         self.imu_pub = self.create_publisher(Imu, self.ns("imu"), 10)
@@ -132,8 +135,8 @@ class Mir100Bridge(Node):
     def on_odom(self, msg: dict):
         odom = Odometry()
         odom.header.stamp = self.get_clock().now().to_msg()
-        odom.header.frame_id = self.ns("odom").lstrip("/")
-        odom.child_frame_id = self.ns("base_footprint").lstrip("/")
+        odom.header.frame_id = "odom"
+        odom.child_frame_id = "base_footprint"
         pos = msg["pose"]["pose"]["position"]
         ori = msg["pose"]["pose"]["orientation"]
         odom.pose.pose.position.x = pos["x"]
@@ -150,10 +153,19 @@ class Mir100Bridge(Node):
         odom.twist.twist.angular.z = ang["z"]
         self.odom_pub.publish(odom)
 
+        tf = TransformStamped()
+        tf.header = odom.header
+        tf.child_frame_id = odom.child_frame_id
+        tf.transform.translation.x = pos["x"]
+        tf.transform.translation.y = pos["y"]
+        tf.transform.translation.z = pos["z"]
+        tf.transform.rotation = odom.pose.pose.orientation
+        self.tf_broadcaster.sendTransform(tf)
+
     def on_imu(self, msg: dict):
         imu = Imu()
         imu.header.stamp = self.get_clock().now().to_msg()
-        imu.header.frame_id = self.ns("imu_link").lstrip("/")
+        imu.header.frame_id = "imu_link"
         ori = msg["orientation"]
         imu.orientation.x = ori["x"]
         imu.orientation.y = ori["y"]
@@ -172,7 +184,7 @@ class Mir100Bridge(Node):
     def on_scan(self, ros1_topic: str, msg: dict):
         scan = LaserScan()
         scan.header.stamp = self.get_clock().now().to_msg()
-        scan.header.frame_id = self.ns(self.scan_frames[ros1_topic]).lstrip("/")
+        scan.header.frame_id = self.scan_frames[ros1_topic]
         scan.angle_min = msg["angle_min"]
         scan.angle_max = msg["angle_max"]
         scan.angle_increment = msg["angle_increment"]

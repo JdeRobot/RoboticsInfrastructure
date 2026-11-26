@@ -1,0 +1,5 @@
+# OnRobot RG2 joint specifications, 0 fully open and 1.3439 fully closed
+Limits:
+  Max: 1.3439
+  Min: 0.0
+JointsVector: [1.0, -1.0, -1.0, -1.0, 1.0, 1.0]
