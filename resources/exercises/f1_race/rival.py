@@ -196,14 +196,16 @@ def set_cmd(v, w):
     cmd_pub.publish(msg)
 
 
-def publish_status(state, elapsed, gap):
+def publish_status(state, elapsed, gap, score):
     msg = String()
     msg.data = json.dumps(
         {
             "state": state,
             "level": level_name,
             "elapsed": round(elapsed, 2),
+            "limit": round(limit, 2),
             "gap": round(gap, 2),
+            "score": score,
         }
     )
     status_pub.publish(msg)
@@ -211,6 +213,11 @@ def publish_status(state, elapsed, gap):
 
 def now():
     return sim_time[0] if use_sim_time else time.time()
+
+
+def score_for(progress):
+    # Share of the lap done, a win is the only way to reach 100
+    return max(0, min(99, int(100 * progress / LAP)))
 
 
 waited = time.time()
@@ -221,6 +228,8 @@ level_name = level[0] if level[0] in LEVELS else DEFAULT_LEVEL
 TRACK, STATIONS, LAP = load_route()
 N = len(TRACK)
 SPEEDS = speed_profile(LEVELS[level_name])
+# Lap time of the rival, what the student has to beat
+limit = sum(math.dist(TRACK[i], TRACK[(i + 1) % N]) / SPEEDS[i] for i in range(N))
 
 while rival[0] is None or student[0] is None:
     time.sleep(0.05)
@@ -238,7 +247,11 @@ state = "racing"
 stopped = False
 last_status = 0.0
 
-print("lights out, %s rival, first to finish one lap wins" % level_name, flush=True)
+print(
+    "lights out, %s rival laps in about %.0f s, first to finish one lap wins"
+    % (level_name, limit),
+    flush=True,
+)
 
 while rclpy.ok():
     x, y, yaw = rival[0]
@@ -249,11 +262,13 @@ while rclpy.ok():
         # Positive means the student is ahead
         gap = student_s - rival_s
         elapsed = now() - start
+        score = score_for(student_s)
 
         if student_s >= LAP or rival_s >= LAP:
             state = "won" if student_s >= rival_s else "lost"
             print("", flush=True)
             if state == "won":
+                score = 100
                 print("YOU WIN in %.1f seconds" % elapsed, flush=True)
             else:
                 print(
@@ -261,10 +276,11 @@ while rclpy.ok():
                     % (elapsed, -gap),
                     flush=True,
                 )
+            print("SCORE %d out of 100" % score, flush=True)
             print("", flush=True)
 
     if time.time() - last_status > 0.1 or state != "racing":
-        publish_status(state, elapsed, gap)
+        publish_status(state, elapsed, gap, score)
         last_status = time.time()
 
     if state != "racing":
