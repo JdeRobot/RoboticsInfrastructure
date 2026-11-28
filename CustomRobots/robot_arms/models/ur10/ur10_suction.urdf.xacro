@@ -74,6 +74,17 @@
     <preserveFixedJoint>true</preserveFixedJoint>
   </gazebo>
 
+  <!-- Keep the suction link attacher on the robot so it loads when Gazebo
+       spawns ur10_suction, rather than as a world-level plugin. -->
+  <xacro:if value="$(arg sim_gz)">
+    <gazebo>
+      <plugin filename="libgz_link_attacher.so" name="gz_link_attacher::LinkAttacher">
+        <robot_model_name>ur10_suction</robot_model_name>
+        <gripper_link_name>ls_vgr_link</gripper_link_name>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
   <!-- Contact sensor for gz_link_attacher (collision name matches the DAE collision above) -->
   <gazebo reference="ls_vgr_link">
     <sensor name="suction_contact" type="contact">
